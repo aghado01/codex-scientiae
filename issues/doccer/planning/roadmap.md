@@ -5,9 +5,9 @@ Decisions and the question ledger live in [decisions.md](decisions.md); complete
 move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 [../briefs/](../briefs/); evidence in [../discussions/](../discussions/).
 
-## Current state (2026-08-09)
+## Current state (2026-08-10)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D44**, contract harness **2324 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D46**, contract harness **2536 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the initial text/claim substrate
@@ -76,7 +76,8 @@ changed in D41; ThermoMapper-facing repair guidance lives in the ThermoMapper re
 
 D42 then splits D41's overloaded V-lane assurance row into the vector carrier, prefix-scan
 refinement, harvest bridge, future packed `SpanSet` equivalence, and future D3
-suppression-bitmap equivalence. V0/V1 remain independently available and Lean remains deferred.
+suppression-bitmap equivalence. D46 later closes V0 and its independent portable V1 reference;
+Lean remains deferred.
 A packed region or suppression backend advertised as interchangeable over arbitrary inputs is now
 a presumptive optimization-pressure activation; the exact obligation and cheaper-certificate
 check are recorded in the
@@ -105,7 +106,36 @@ cycles are explicit; callbacks, variables, negation, selection, and stage observ
 outside the contract. The `K5-SATURATE` gate was reapplied and deferred because this finite ground
 signature makes its hypotheses structural. The direct worklist, 24 seed/support/rule permutations,
 executable hierarchy diamond, and independent 256-program powerset oracle close K5b (harness
-2091→2324). K6 is now the default K execution lane.
+2091→2324). K6 then became the default K execution lane; D46 later placed the bounded V1 source
+chip immediately before it.
+
+D45 and its
+[K6 origin brief](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md) now freeze that lane
+before source work. `OriginBasis` is an exact reference-identity ordered namespace of uniquely
+tagged master slots and serves as the endpoint sort on both sides of a canonical finite
+`OriginRelation`.
+`ComposeOrigins` is ordinary output-to-source relation composition requiring the exact middle
+basis object; compatible masters and matching tags never substitute stage identity. Projection
+retains the exact relation and one disconnected-preserving `SpanSet` per source slot. K6 permits
+partial many-to-many lineage while K7 separately owns origin-or-synthetic output completeness and
+deletion residue. `TextSlice` supplies the total injective functional witness. The contract-only
+chip left the harness at 2324. D46's bounded independent V1 reference has since closed at 2536;
+K6 source implementation now resumes as the active default lane.
+
+D46 and its
+[V0 Boolean-vector/unit-mask brief](../briefs/sol-doccer-v0-boolean-vector-unit-mask-contract-20260810_013731.md)
+close the time-sensitive V0 type boundary after the
+[V1 implementation read-ahead](../discussions/sol-doccer-v1-portable-vector-read-ahead-20260810_013729.md)
+pressure-tests the source shape. The provisional D41 `V(M,W)` becomes a basisless immutable
+`BooleanVector` plus an explicitly compatible-master/exact-code-unit-window `Utf16UnitMask`.
+Every in-range unit window and direct set bit is valid; topology-atom harvest separately admits
+complete scalar-safe material and retains partial atoms as boundary residue. D46 also freezes
+forward inclusive prefix parity and inverse/chunk laws, typed material continuity, exact named
+classifier stamps, unknown-membership propagation, separate boundary/classifier residue, and
+transactional evidence-bearing claim emission. Private packed words remain representation rather
+than public identity. The portable `src/doccer/Vectors/` implementation and independent
+per-bit/byte-backed harness are now green (2324→2536; **V1 closed**). V2, packed `SpanSet`,
+suppression bitmap, A1, and generalized material bases remain separate.
 
 ## Sequencing doctrine
 
@@ -122,8 +152,10 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Origin execution lane (K6):** add output-to-tagged-source origin relations over one exact
-   tagged origin basis. K5b is closed and does not block K6.
+1. **Origin implementation (K6):** implement D45's exact `OriginBasis`, basis-relative atom/edge
+   values, canonical `OriginRelation`, exact-middle `ComposeOrigins`, disconnected-preserving
+   projection, and functional `TextSlice` adapter under the finite relation oracle. K5b is closed
+   and does not block K6.
 2. **Materialization (K7):** after K6, close D7's final lift with positive-material ordered output
    pieces, a new immutable master, residuals, and composed stage origins. K7 has only an optional
    K5a `FactReference` seam; it does not require saturation. `OffsetMap` becomes a restricted
@@ -141,18 +173,18 @@ order is:
    versus adjacent placement one named capability at a time. A fixed linear-ET compiler may follow
    K7; uncertain QSTR networks branch from K1 only when a real consumer appears.
 
-**Independent V/A lanes:** V0 may now close the compatible-master/exact-window UTF-16 code-unit
-Boolean-vector contract, unit residual, chunk carry, and direct/harvest exits. Its portable V1
-implementation follows independently and precedes any V2 accelerated backend. D42 requires V0 to
-state carrier, scan, and harvest obligations separately; V2 reapplies scan refinement per backend,
-while packed `SpanSet` and suppression-query equivalence remain separate future gates. A0
+**Independent V/A lanes:** D46 has closed V0 and the portable V1 basisless Boolean-vector plus
+explicit UTF-16 unit-mask reference, with scan, classifier, continuity, and harvest obligations
+separately registered and discharged for that first backend. Every V2 backend remains later.
+Packed `SpanSet` and suppression-query equivalence remain separate future gates. A0
 may establish named dense/sparse time and allocation baselines now; A1's word-skipping
 `ClaimSelection` walker
 and A2's reconstruct-once `PathSelection` recurrence may then land under the frozen D30/D37
 oracles. The per-capability HPC repertoire records span destinations, exact allocation, flat
 layouts, operation/worker scratch, bounded heaps, online reductions, deterministic parallel state, and
-reference/fast pairing—not a common framework. These lanes do not change K6's default priority or
-expose D20 numeric columns. Their evidence policy is Doccer's, not ThermoMapper's.
+reference/fast pairing—not a common framework. The completed bounded V1-before-K6 detour did not
+change K dependencies or expose D20 numeric columns. These lanes' evidence
+policy is Doccer's, not ThermoMapper's.
 
 **Parallel witness/census lane:** provisional PowerShell adapters may continue to reach directly
 into the packaged DLL during the latex-ingest rewrite. They remain site-local, disposable research
@@ -166,7 +198,7 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D44 leave K3/K4a and the first K4b/K4c
+universal no-false-negative equivalence load-bearing. D33–D46 leave K3/K4a and the first K4b/K4c
 executor on direct finite reference semantics. D37 reapplies the global-optimum trigger and keeps
 Lean deferred under one closed finite-DAG additive recurrence plus exhaustive differential
 evidence. D39 reapplies the structural gate and keeps Lean deferred under direct validators,
@@ -183,7 +215,14 @@ prefix-scan refinement, and harvest soundness/completeness are distinct obligati
 reapplies refinement per backend. Bit packing or a peer carrier is not automatic activation.
 A future packed `SpanSet` or D3 suppression bitmap advertised as interchangeable over
 arbitrary inputs presumptively meets optimization pressure; its chip must activate the smallest
-obligation unless a cheaper complete certificate or a weaker claim honestly closes the gate.
+obligation unless a cheaper complete certificate or a weaker claim honestly closes the gate. D45
+separately reapplies and defers K6 under direct exact finite relation semantics plus an exhaustive
+two-atom Boolean-matrix oracle. Reapply before a compressed/indexed/parallel or functional backend,
+stage fusion or intermediate-master elision, automatic slot lifting, or a novel K7 multi-source
+composition guarantee. D46 separately reapplies and defers the raw-vector, UTF-16-wrapper, scan,
+and harvest gates under one portable backend plus independent finite oracles; reapply for signature
+changes, public word layout, generalized common-basis masks, V2/fused refinement, or harvest that
+bypasses topology while claiming the same result.
 
 **The separate public CLI module over the public capability library/engine is committed by D13;
 its first durable vertical slice remains
@@ -198,7 +237,7 @@ The current `inspect`/`relate` commands remain disposable developer diagnostics.
 remain last: PowerShell veneers and LaTeX consumers become thin clients only after the relevant
 Doccer surface stabilizes.
 
-Other independent closures remain available under D14: V0/V1, the A0–A2 measured backend lane,
+Other independent closures remain available under D14: after the closed V1 chip, the A0–A2 measured backend lane,
 F7a correspondence, F8a/F8b low-level contract or current-carrier witnesses, F9a counted/online
 views over current populations, the F-UCD data-provenance record, a callable runtime Tier-1 law
 runner if demanded, and early `OffsetMap` pressure tests that do not pre-empt K6 origins.
@@ -262,14 +301,16 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 
 ## Open questions in play
 
-- See [decisions.md § Open](decisions.md): V0's exact public vector/classifier/harvest shape is
-  independently active contract work; the per-line terminator-kind view remains
-  unscheduled. D40 restores Doccer's historical register to its codepoint-address meaning and
+- See [decisions.md § Open](decisions.md): the per-line terminator-kind view remains unscheduled;
+  D45's K6 source implementation is the active default lane after V1 closure. D40 restores
+  Doccer's historical register to its codepoint-address meaning and
   removes the unrelated math-channel dependency; `math-register` remains only the legacy
   repository name pending migration. D41 keeps post-hoc alignment evidence distinct from actual
-  producer origins. D42 splits the V-lane formal obligations without activating Lean or changing
-  the K queue. D43 closes K5a and its implementation; D44 closes K5b ground saturation and its
-  implementation. All Tranche-2 stragglers are closed — see the
+  producer origins. D42 splits the V-lane formal obligations without activating Lean; D46 freezes
+  the raw/vector-wrapper boundary and closes the bounded portable V1 chip before K6.
+  D43 closes K5a and its implementation; D44 closes K5b ground saturation and its implementation;
+  D45 freezes K6's exact-stage relation contract.
+  All Tranche-2 stragglers are closed — see the
   [ledger](ledger.md).
 
 ## Standing context for future sessions

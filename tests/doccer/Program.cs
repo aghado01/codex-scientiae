@@ -108,6 +108,15 @@ internal static partial class Program
             FactSaturationIsPermutationIndependent();
             K5bHierarchyDiamondSaturatesCanonically();
             FactSaturationMatchesIndependentBoundedOracle();
+            BooleanVectorIsALogicalSequenceValue();
+            BooleanVectorAlgebraMatchesIndependentOracle();
+            BooleanPrefixParityMatchesIndependentOracle();
+            BooleanVectorLongAndTailCasesMatchOracle();
+            Utf16UnitMaskEnforcesBasisAndTypedContinuity();
+            Utf16UnitClassificationPropagatesUncertainty();
+            Utf16UnitHarvestIsScalarSafeAndComplete();
+            Utf16ClaimEmissionIsTransactionalAndEvidenceBearing();
+            BooleanVectorSupportsATestLocalByteBasis();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }

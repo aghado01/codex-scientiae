@@ -4,6 +4,14 @@ Runstamp 20260806_093159. Canon at entry: D1–D40; K0–K4 closed; contract har
 green. This is a planning and evidence chip. It changes no Doccer source surface and does not
 claim a new performance result.
 
+**Supersession note (2026-08-10):** D46 supersedes this brief's provisional single-carrier V0
+shape with a basisless `BooleanVector` and explicitly named `Utf16UnitMask`, and temporarily places
+their portable V1 reference implementation before the already frozen K6 source chip. The A/F
+lanes, V2 measurement gate, and separation of packed `SpanSet` and suppression work remain in
+force. See the
+[V1 read-ahead](../discussions/sol-doccer-v1-portable-vector-read-ahead-20260810_013729.md) and
+[D46 contract](sol-doccer-v0-boolean-vector-unit-mask-contract-20260810_013731.md).
+
 ## Decision (D41, amended after owner clarification)
 
 Keep the current K critical path unchanged: K5a remains the default next chip; K5b and K6 are

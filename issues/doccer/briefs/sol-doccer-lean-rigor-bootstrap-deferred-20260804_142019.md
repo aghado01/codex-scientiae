@@ -464,8 +464,8 @@ direct implementation.
 | K5a canonical fact/support identity | D43 immutable reference construction, canonical-order/equality laws, adversarial exact-basis validation, proposal permutations, and a manually supplied two-support diamond | before an alternate, persisted, compressed, or incremental fact/support backend claims the same extensional identity without complete differential evidence |
 | Positive finite saturation reaches one least fixed point with complete enabled support | D44 finite data-only ground rules, explicit key-space operator, reference worklist, independent bounded closure/support oracle, and order-permutation tests | before a wider rule carrier or alternate/compressed/parallel/incremental saturation claims the same fact and support semantics |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
-| Functional origins embed into relation-valued origins | reference relation tests | before origin compression, stage fusion, or functional fast paths |
-| Multi-source origin composition | ordinary relational reference implementation first | leading future Lean candidate if K6/K7 semantics or optimization remain disputed |
+| Functional origins embed into relation-valued origins | D45 exact-relation inclusion plus the pending direct `TextSlice` fixture and relation tests | before origin compression, stage fusion, or functional fast paths |
+| Exact-stage multi-source origin composition | D45 exact reference-identity middle basis, pending ordinary relational implementation, and independent Boolean-matrix oracle | leading future Lean candidate if automatic slot lifting, K6/K7 composition, stage fusion, or another backend remains disputed |
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
@@ -620,10 +620,48 @@ fallback selection, remainder units, aliasing, poisoned tails, and unsupported h
 - A peer vector consumed directly, or harvested through an explicitly different result sort,
   makes no same-carrier equivalence claim merely by existing.
 
-The overall harness status remains **deferred**. No V backend, packed `SpanSet`, or
-suppression bitmap has landed, so no present implementation decision requires the toolchain.
-D42 updates the trigger inventory and registry before that pressure arrives; it does not insert
-Lean into the K5/K6 queue.
+The overall harness status remained **deferred** at D42. No V backend, packed `SpanSet`, or
+suppression bitmap had landed, so that decision inserted no toolchain work into the K5/K6 queue.
+D46's later first V backend is assessed below under the split triggers.
+
+## 2026-08-10 D46 raw-vector and UTF-16-mask signature freeze
+
+D46 performs D42's required statement/signature pass after the
+[V1 implementation read-ahead](../discussions/sol-doccer-v1-portable-vector-read-ahead-20260810_013729.md)
+exposes the source boundary. The former V0 carrier obligation is now two rows:
+
+| Obligation | Frozen D46 claim | V1 assurance owner | Reactivation |
+|---|---|---|---|
+| Raw Boolean vector | logical length and bits define a basisless immutable value; Boolean/shift/population/parity/scan semantics ignore private packing and physical tails | independent per-bit oracle, exhaustive short algebra/scan census, multiword boundaries, poisoned tails | signature-changing proof pressure, public word layout, or alternate raw backend equivalence |
+| UTF-16 unit mask | compatible `TextMaster` value plus exact in-range numeric code-unit window and raw vector define the mask; unsafe unit boundaries are valid for direct use; typed continuity, exact classifier stamp, and narrow unknown membership remain visible | compatible/incompatible basis cases, unsafe-window/surrogate fixtures, typed-continuation refusal, and classification uncertainty laws | generalized common-basis mask, changed compatibility/window/residual signature, or cross-basis equivalence |
+
+The prefix row is now frozen as forward inclusive parity, adjacent-transition inversion, Boolean
+raw carry, typed material continuation, and conservative three-state classifier uncertainty. The
+harvest row is frozen as direct offset enumeration plus topology-atom accounting: admitted
+material and boundary residue exactly partition selected known units, while classifier unknown
+membership remains a separate residual and claim emission validates completely before mutation.
+
+These decisions still do not activate Lean for V1. There is one production portable backend and
+independent finite reference decompositions for the raw scan and topology harvest. A private
+`ulong[]` is the reference carrier representation, not an advertised second semantic backend.
+The V1 chip must nevertheless reapply this decision if its concrete API cannot realize the frozen
+signature without changing it.
+
+V2 word-cascade/SWAR/SIMD/parallel/fused refinement, public word layout, generalized basis masks,
+and topology-bypassing harvest retain their specific reactivation triggers. Packed `SpanSet` and
+D3 suppression equivalence remain the separate presumptive optimization-pressure obligations
+recorded by D42. D46 therefore changes no harness lifecycle state: the Lean bootstrap remains
+deferred.
+
+The portable V1 implementation subsequently landed on 2026-08-10 (runtime harness 2324→2536)
+without changing the frozen signatures or adding an alternate backend. Its independent executable
+owners cover all 511 vectors and 87,381 ordered pairs through length eight, 4,094 scan/carry cases,
+40,962 binary chunk splits through length ten, 87,381 P0 linearity pairs, multiword and poisoned-
+tail cases, and topology-atom accounting across BMP, surrogate-pair, split-window, and unpaired-
+surrogate geometry. Typed continuity, conservative three-state uncertainty, separate residuals,
+and prevalidated claim emission retain the D46 evidence stamps. This discharges all four V1
+first-backend registry rows without activating Lean. Every V2, fused, public-layout,
+topology-bypassing, packed-region, and suppression-equivalence trigger remains unchanged.
 
 ## 2026-08-09 D43 K5a fact/support assurance split
 
@@ -670,3 +708,35 @@ no wider carrier. Its independent closed-superset oracle exhausts all 256 progra
 complete two-fact zero/unary vocabulary; 24 seed/support/rule permutations, the ordinal-remap
 adversary, and the executable diamond cover the remaining D44 witnesses. This discharges the
 registered first-implementation burden without activating Lean or changing the reactivation gate.
+
+## 2026-08-10 D45 K6 exact-stage origin gate
+
+D45 resolves K6's previously provisional identity boundary before source work. `OriginBasis` is an
+exact reference object containing ordered uniquely tagged `TextMaster` slots and supplies both
+endpoint carriers of `OriginRelation`. Coordinates are finite slot/atom ordinals. Relation equality
+retains both exact basis references; `Identity` is the tagged-atom diagonal; and
+`ComposeOrigins` is ordinary relational composition only when the two relations share the same
+middle basis object. Compatible masters, matching tags, and independently reconstructed bases do
+not substitute that stage identity.
+
+The symmetric endpoint sort is the read-ahead decision that keeps multi-source stages closed under
+ordinary composition. It does not add automatic retagging, slot substitution, pass-through edges,
+or DAG flattening. K7 must present a complete relation over its exact middle stage, and it retains
+the independent obligations for positive output-piece reconstruction, origin-or-synthetic atom
+coverage, and deletion/conflict residue. A future automatic parallel/slot-lift operator would be a
+new law rather than an implication of finite relation composition.
+
+The gate is reapplied and remains deferred. The first implementation is a direct finite relation
+with no compression or alternate backend. An independent Boolean-matrix oracle can exhaust all 16
+relations, 256 composable pairs, and 4,096 triples on two-atom stages, while explicit adversaries
+cover exact-middle refusal, compatible duplicate slots, disconnected projection, empty material,
+and the total injective functional `TextSlice` embedding. Those executable owners are sufficient
+for ordinary identity and associativity and cannot presently choose a different signature.
+
+Reactivate before a compressed/indexed/parallel or functional fast path claims extensional
+equivalence, before fusion or intermediate-master elision claims to preserve lineage, before an
+automatic slot-lift/parallel constructor claims coherent composition laws, or when K7 introduces a
+novel multi-source reconstruction theorem not owned by direct construction-time validation. The
+contract-only D45 chip left the runtime harness at 2324; independent V1 then raised the current
+harness to 2536 without changing this K6 disposition. Recheck it after the K6 implementation
+report, but the source carrier alone does not require Lean.

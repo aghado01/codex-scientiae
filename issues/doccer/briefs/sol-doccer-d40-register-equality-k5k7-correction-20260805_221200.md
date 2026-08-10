@@ -14,7 +14,12 @@ conflated premises in the K5–K7 plan. This brief corrects those premises befor
 > K5b owns finite data-only ground implications, key-space least closure, complete enabled support,
 > final ordinal remapping, and the executable diamond. D40 remains authoritative for its
 > terminology correction, K4 equality correction, positive-K5b direction, and K5/K6/K7 sibling
-> sequencing. Where the texts conflict, D43 controls K5a and D44 controls K5b.
+> sequencing. D45's
+> [K6 origin contract](sol-doccer-k6-origin-contract-20260810_001537.md) supersedes D40's
+> provisional K6 carrier shape: one exact reference-identity ordered tagged `OriginBasis` is now
+> used at both relation endpoints, `ComposeOrigins` requires the exact middle basis object, and K6
+> remains partial relation-valued lineage while K7 owns synthetic completeness and deletion
+> residue. Where the texts conflict, D43 controls K5a, D44 controls K5b, and D45 controls K6.
 
 ## 1. Register is codepoint-address terminology; mathematics is a channel
 
@@ -205,7 +210,8 @@ removed.
 
 The Doccer build completes with zero warnings and the contract harness remains **1976 checks
 passed**. At D40 landing, K5a contract work was the default next chip and K6 contract work was an
-independently available sibling; the supersession note records the subsequent D43/D44 closure.
+independently available sibling; the supersession note records the subsequent D43/D44 closures and
+D45 K6 contract freeze.
 
 ## 9. Terminology amendment
 

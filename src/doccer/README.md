@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D44, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D46, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -34,6 +34,8 @@ and construction cost scales with what a job touches. "Full doccer" — sweep �
 ```text
 TextSpan / Allen relations        pure, zero dependencies
 SpanSet                           + master identity
+BooleanVector / Utf16UnitMask     + basisless bits and explicit UTF-16 windows
+Unit classification / harvest    + uncertainty, scalar residue, claim emission
 SpanBatch + ClaimSelection        + typed occurrence queries
 ClaimPairView                     + exact occurrence relations
 PairingResult                     + policy-stamped structural evidence
@@ -44,6 +46,7 @@ Packing / Cover / LaminarView     + exact structural-family validation
 HierarchyView / ResolutionMap     + explicit parent and layer incidence evidence
 FactKey / CanonicalFactTable      + master-relative semantic fact identity
 SupportHypergraph                 + exact-basis supplied support evidence
+FactSaturation                    + finite positive least closure and support
 Scoped collectors                 + declarative recognition
 Interval joins                    + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -87,31 +90,36 @@ consumers (T2-5):
 Doccer's expansion is many-sorted. The public vocabulary distinguishes valid master boundaries
 (`P`), located extents including diagonal empties (`L`), nonempty Allen intervals (`I`),
 identity-bearing claim occurrences (`C`), later canonical semantic facts (`F`), and later
-output-to-source origin relations (`O`). These are not interchangeable views of one universal
-span carrier:
+output-to-source origin relations (`O`), plus D46 basisless Boolean vectors (`B`) and explicit
+UTF-16 unit masks (`U`). These are not interchangeable views of one universal span carrier:
 
 - diagonal empty extents belong to located `L`, not to Allen `I`;
 - Allen `Equal` is geometric identity on `I`, never occurrence identity on `C`;
 - claim-pair identity is the ordinal diagonal on one exact frozen `SpanBatch`;
-- origin identity will be the atom diagonal on one exact ordered tagged origin basis; compatible
-  masters validate or project geometry but do not substitute source-slot identity.
+- D45 freezes origin identity as the tagged-atom diagonal on one exact reference-identity ordered
+  tagged `OriginBasis`; the same basis sort stamps both relation endpoints, and compatible masters
+  validate or project geometry but do not substitute source-slot or middle-stage identity.
 
-D41 additionally reserves a future Boolean-vector carrier over UTF-16 code-unit ordinals in an
-exact window on a compatible master value. Its zero vector is not an interval empty; direct
-numerical consumption and explicit candidate/claim harvest are separate exits, and incomplete
-classification remains unit-basis residual rather than occurrence residue. V0 contract work and
-the following V1 portable reference/two-exit implementation are independent of K5–K8, but no
-vector type, classifier surface, harvest API, or accelerated backend is implemented yet. V2 still
-requires a named Doccer workload and differential evidence. Any byte-addressed vector requires
-F3's separate coordinate map rather than aliasing the UTF-16 basis.
+D46 supersedes D41's provisional single vector carrier with two frozen V0 values. The implemented
+`BooleanVector` is a basisless immutable finite bit sequence whose logical length/bits—not private
+packing—define identity. An explicitly named `Utf16UnitMask` adds a compatible `TextMaster` value
+and exact numeric code-unit window. Any in-range window edge or set unit is valid for direct use,
+including an interior surrogate boundary; scalar safety belongs to topology-atom harvest. Zero/all
+values are not interval empties. Forward inclusive prefix parity, inverse transitions, raw chunk
+carry, typed material continuity, exact classifier stamps, narrowly defined unknown membership,
+separate boundary/classifier residue, and evidence-bearing transactional claim emission are
+implemented under `Vectors/`. The portable V1 reference is closed at 2536 harness checks; no
+accelerated backend is implemented, and the already frozen K6 implementation resumes next. A
+test-local byte wrapper demonstrates that the raw algebra is basisless, but D46 creates no public
+byte master or generic unit-mask family.
 
-D42 splits formal assurance for that lane into the carrier signature, prefix-scan refinement, and
-the vector-to-offset/span/claim harvest bridge. Future packed `SpanSet` equivalence and D3
-suppression-bitmap equivalence are separate obligations because geometry values and occurrence
-selections are different sorts. The split does not activate Lean or block V0/V1. V2 reapplies the
-gate per backend; a packed region or suppression backend advertised as interchangeable over
-arbitrary inputs is a presumptive optimization-pressure activation unless a smaller complete
-certificate or weaker claim closes it.
+D42/D46 split formal assurance for that lane into raw-vector signature, UTF-16-wrapper signature,
+prefix-scan refinement, and the vector-to-offset/span/claim harvest bridge. Future packed
+`SpanSet` equivalence and D3 suppression-bitmap equivalence are separate obligations because
+geometry values and occurrence selections are different sorts. The split does not activate Lean.
+V2 reapplies the gate per backend; a packed region or suppression backend advertised as
+interchangeable over arbitrary inputs is a presumptive optimization-pressure activation unless a
+smaller complete certificate or weaker claim closes it.
 
 D43 freezes the K5a fact/support surface, implemented under `src/doccer/Facts/`. `SpanBatch`
 remains the exact occurrence table. A fact key uses required ordinal domain/kind strings plus
@@ -130,13 +138,26 @@ space, retains every enabled support, then creates a new canonical table and rem
 final ordinals. `SaturationResult` retains the exact problem and result graph. No callback,
 variable-bearing rule language, negation, selection, or scheduler trace enters the contract.
 
+D45 freezes K6's source contract without implementing it. `OriginBasis` is an exact ordered
+namespace of uniquely tagged `TextMaster` slots and is used at both endpoints of a canonical finite
+`OriginRelation`. Atom coordinates are `(slot ordinal, atom ordinal)` over `TextTopology.Atoms`.
+`ComposeOrigins` is ordinary output-to-source relation composition and requires the exact shared
+middle basis object; matching tags or compatible masters never substitute it. Forward span
+projection retains the exact relation and one disconnected-preserving `SpanSet` per source slot.
+Relations remain partial and many-to-many: K7 separately owns origin-or-synthetic output coverage
+and deletion residue. `TextSlice` is the total injective functional witness.
+
+D46's now-closed V1 implementation was an execution-order detour rather than a K6 dependency.
+D45 remains frozen and K6 has resumed as the active default lane.
+
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
 `AllenCompose`, located `Seq`, the occurrence-level `ComposePairs`, and flat-path
-`PathSelection.Select` and `FactSaturation.Saturate` are implemented, while `ComposeOrigins` and
-`Materialize` remain reservations rather than implementation claims. Path selection is one exact
+`PathSelection.Select` and `FactSaturation.Saturate` are implemented. `ComposeOrigins` now has the
+frozen D45 contract but no source implementation; `Materialize` remains a contract reservation.
+Path selection is one exact
 nonnegative-additive complete-path executor, not a universal selection carrier. K4c additionally
 implements the separately named `Laminarizer.Admit` and
 `LaminarHierarchy.NearestContainers`; neither is routed through the path selector or an
@@ -319,7 +340,8 @@ owners and Lean reactivation triggers live in the D25 registry in
 
 These surfaces are absent because their contract or implementation gate is not closed. Contract
 closure is the only authorization gate on engine work; D43 and D44 crossed and implemented the
-K5a fact/support and K5b saturation gates. A
+K5a fact/support and K5b saturation gates, D45 crossed K6's contract gate, and D46 crossed and
+implemented V0/V1's vector/mask gates. K6 implementation is next. A
 consumer's arrival prioritizes and validates; it never authorizes, and its absence is never by
 itself a reason to leave a gap. Where the brief names a "first consumer"
 trigger, read it as a prioritization default for a contract whose remaining questions a real
@@ -335,11 +357,11 @@ closes honestly without one:
 - further density measures beyond gap cadence (never a generic `Density` verb — each future
   measure arrives individually named, declaring numerator, denominator, window basis, boundary
   policy, exclusions);
-- the D41 code-unit-vector substrate: V0 must first freeze compatible-window equality, Boolean and
-  chunk-carry operations, classifier/residual stamps, scalar-boundary harvest, and its separate
-  direct/harvest exits; independent V1 portable reference semantics precede V2 word/SWAR/SIMD
-  backends; D42 registers carrier, prefix-scan refinement, and harvest separately and reapplies
-  formal-assurance pressure per V2 backend;
+- V2 vector/mask acceleration: D46's portable V1 `BooleanVector`, explicit
+  compatible-master/exact-unit-window `Utf16UnitMask`, typed scan continuity, classifier unknown
+  semantics, topology-atom harvest, separate residuals, and evidence-bearing claim emission are
+  implemented; future word/SWAR/SIMD/parallel/fused backends each reapply D42/D46 assurance
+  pressure, and no public word layout is promised;
 - D41 measured implementation work: A0–A2 cover Doccer-owned workload/allocation evidence, a
   sparse set-bit walker, and reconstruct-once flat-path recurrence. A separate per-capability HPC
   repertoire applies to each admitted capability—span destinations, count-prefix-fill, flat/SoA layouts, operation/worker
@@ -353,8 +375,9 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K6's exact-tagged-basis origin algebra and K7 materialization; K5b is closed and does not block
-  either lane;
+- D45's now-active exact-stage `OriginBasis`/`OriginRelation` implementation, `ComposeOrigins`,
+  projection, and `TextSlice` adapter after closed V1; K7's output-piece/materialization contract and
+  source remain later; K5b is closed and does not block either lane;
 - further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
   other ties—require separately named contracts rather than widening D37 silently. Structural
   optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
@@ -376,9 +399,10 @@ closes honestly without one:
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source
 material; decides nothing about meaning. A feature failing the last test belongs in an adapter
-or the consumer. D41 permits a low-level code-unit-vector peer carrier once V0 closes; it does not
-embed what a vector means. D42 separates that carrier from same-semantics packed region and
-suppression backends and records their stronger proof gates. ThermoMapper is evidence for
+or the consumer. D46 permits a basisless low-level Boolean-vector peer carrier plus an explicit
+UTF-16 mask wrapper; neither embeds what a vector means. D42/D46 separate those values from
+same-semantics packed region and suppression backends and record their stronger proof gates.
+ThermoMapper is evidence for
 transferable patterns and capabilities,
 not authority over Doccer sequencing or gates; donor shortcomings become acceptance requirements
 of a lift. Syntax recognition remains in external adapters or declarative inventories unless a

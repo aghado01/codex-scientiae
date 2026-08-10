@@ -2,6 +2,11 @@
 
 Runstamp 20260809_215158. **Status: implemented; K5b closed; harness 2091→2324.**
 
+> **Subsequent handoff (2026-08-10):** D45's
+> [K6 origin contract](sol-doccer-k6-origin-contract-20260810_001537.md) freezes the independently
+> available next K lane. It does not amend this K5b contract or add a saturation dependency to K6
+> or K7.
+
 This brief supersedes the provisional K5b rule-carrier and saturation language in the
 [D40 correction](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) and the K5b
 handoff in the

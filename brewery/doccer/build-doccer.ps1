@@ -148,6 +148,18 @@ $expectedTypes = @(
     'CodexSci.Doccer.SaturationProblem'
     'CodexSci.Doccer.SaturationResult'
     'CodexSci.Doccer.FactSaturation'
+    'CodexSci.Doccer.BooleanVector'
+    'CodexSci.Doccer.BooleanPrefixParityResult'
+    'CodexSci.Doccer.Utf16UnitMask'
+    'CodexSci.Doccer.Utf16PrefixParityContinuation'
+    'CodexSci.Doccer.Utf16PrefixParityResult'
+    'CodexSci.Doccer.UnitClassifierStamp'
+    'CodexSci.Doccer.UnitTruthState'
+    'CodexSci.Doccer.Utf16UnitClassification'
+    'CodexSci.Doccer.Utf16ClassificationPrefixParityResult'
+    'CodexSci.Doccer.UnitMaskClaimStamp'
+    'CodexSci.Doccer.Utf16UnitHarvestResult'
+    'CodexSci.Doccer.Utf16ClaimEmissionResult'
     'CodexSci.Doccer.RegexCollector'
     'CodexSci.Doccer.PatternRule'
     'CodexSci.Doccer.ExecutionScope'
@@ -240,6 +252,165 @@ if ($groundRule.GetConstructors().Count -ne 1 -or
     $null -eq $saturationResult.GetProperty('Facts')) {
     throw 'Packaged K5 fact and saturation surface is incomplete.'
 }
+
+function Require-PublicMethod {
+    param(
+        [Type] $Type,
+        [string] $Name,
+        [bool] $Static,
+        [Type] $ReturnType,
+        [Type[]] $ParameterTypes
+    )
+
+    if ($null -eq $ParameterTypes) {
+        $ParameterTypes = [Type[]]@()
+    }
+    $flags = [Reflection.BindingFlags]::Public -bor
+        $(if ($Static) { [Reflection.BindingFlags]::Static } else { [Reflection.BindingFlags]::Instance })
+    $method = $Type.GetMethod($Name, $flags, $null, $ParameterTypes, $null)
+    if ($null -eq $method -or $method.ReturnType -ne $ReturnType) {
+        throw "Packaged $($Type.Name).$Name has the wrong public signature."
+    }
+}
+
+function Require-PublicProperty {
+    param([Type] $Type, [string] $Name, [Type] $PropertyType)
+
+    $property = $Type.GetProperty(
+        $Name,
+        [Reflection.BindingFlags]::Public -bor [Reflection.BindingFlags]::Instance)
+    if ($null -eq $property -or $property.PropertyType -ne $PropertyType -or -not $property.CanRead) {
+        throw "Packaged $($Type.Name).$Name has the wrong public property shape."
+    }
+}
+
+$booleanVector = $assembly.GetType('CodexSci.Doccer.BooleanVector', $true)
+$booleanScan = $assembly.GetType('CodexSci.Doccer.BooleanPrefixParityResult', $true)
+$unitMask = $assembly.GetType('CodexSci.Doccer.Utf16UnitMask', $true)
+$continuation = $assembly.GetType('CodexSci.Doccer.Utf16PrefixParityContinuation', $true)
+$unitScan = $assembly.GetType('CodexSci.Doccer.Utf16PrefixParityResult', $true)
+$classifierStamp = $assembly.GetType('CodexSci.Doccer.UnitClassifierStamp', $true)
+$truthState = $assembly.GetType('CodexSci.Doccer.UnitTruthState', $true)
+$classification = $assembly.GetType('CodexSci.Doccer.Utf16UnitClassification', $true)
+$classifiedScan = $assembly.GetType('CodexSci.Doccer.Utf16ClassificationPrefixParityResult', $true)
+$claimStamp = $assembly.GetType('CodexSci.Doccer.UnitMaskClaimStamp', $true)
+$harvest = $assembly.GetType('CodexSci.Doccer.Utf16UnitHarvestResult', $true)
+$emission = $assembly.GetType('CodexSci.Doccer.Utf16ClaimEmissionResult', $true)
+$textMaster = $assembly.GetType('CodexSci.Doccer.TextMaster', $true)
+$textSpan = $assembly.GetType('CodexSci.Doccer.TextSpan', $true)
+$spanLevel = $assembly.GetType('CodexSci.Doccer.SpanLevel', $true)
+$spanBatchBuilder = $assembly.GetType('CodexSci.Doccer.SpanBatchBuilder', $true)
+$spanSet = $assembly.GetType('CodexSci.Doccer.SpanSet', $true)
+$genericEnumerableInt = [Collections.Generic.IEnumerable[int]]
+$genericReadOnlyCollectionInt = [Collections.Generic.IReadOnlyCollection[int]]
+$genericReadOnlyListInt = [Collections.Generic.IReadOnlyList[int]]
+$equatableDefinition = [IEquatable[int]].GetGenericTypeDefinition()
+$equatableBooleanVector = $equatableDefinition.MakeGenericType($booleanVector)
+$equatableUnitMask = $equatableDefinition.MakeGenericType($unitMask)
+
+if ($booleanVector.GetConstructors().Count -ne 0 -or
+    $null -eq $unitMask.GetConstructor([Type[]]@($textMaster, $textSpan, $booleanVector)) -or
+    $continuation.GetConstructors().Count -ne 0 -or
+    $booleanScan.GetConstructors().Count -ne 0 -or
+    $unitScan.GetConstructors().Count -ne 0 -or
+    $null -eq $classifierStamp.GetConstructor([Type[]]@([string])) -or
+    $null -eq $classification.GetConstructor([Type[]]@($classifierStamp, $unitMask, $unitMask)) -or
+    $classifiedScan.GetConstructors().Count -ne 0 -or
+    $null -eq $claimStamp.GetConstructor([Type[]]@([string], $spanLevel, [string], [int], [string])) -or
+    $harvest.GetConstructors().Count -ne 0 -or
+    $emission.GetConstructors().Count -ne 0 -or
+    -not $genericReadOnlyCollectionInt.IsAssignableFrom($booleanVector) -or
+    -not $genericReadOnlyCollectionInt.IsAssignableFrom($unitMask) -or
+    -not $equatableBooleanVector.IsAssignableFrom($booleanVector) -or
+    -not $equatableUnitMask.IsAssignableFrom($unitMask) -or
+    -not $truthState.IsEnum -or
+    (($truthState.GetEnumNames() -join ',') -ne 'KnownFalse,KnownTrue,Unknown')) {
+    throw 'Packaged V1 carrier or result construction surface is incomplete.'
+}
+
+$null = Require-PublicMethod $booleanVector 'None' $true $booleanVector ([Type[]]@([int]))
+$null = Require-PublicMethod $booleanVector 'All' $true $booleanVector ([Type[]]@([int]))
+$null = Require-PublicMethod $booleanVector 'Create' $true $booleanVector ([Type[]]@([int], $genericEnumerableInt))
+foreach ($name in @('Or', 'And', 'Xor', 'AndNot')) {
+    $null = Require-PublicMethod $booleanVector $name $false $booleanVector ([Type[]]@($booleanVector))
+}
+foreach ($name in @('Not', 'AdjacentTransitions')) {
+    $parameters = if ($name -eq 'AdjacentTransitions') { [Type[]]@([bool]) } else { [Type[]]@() }
+    $null = Require-PublicMethod $booleanVector $name $false $booleanVector $parameters
+}
+$null = Require-PublicMethod $booleanVector 'ShiftTowardHigherOrdinals' $false $booleanVector ([Type[]]@([int]))
+$null = Require-PublicMethod $booleanVector 'ShiftTowardLowerOrdinals' $false $booleanVector ([Type[]]@([int]))
+$null = Require-PublicMethod $booleanVector 'Parity' $false ([bool]) ([Type[]]@())
+$null = Require-PublicMethod $booleanVector 'PrefixParity' $false $booleanScan ([Type[]]@([bool]))
+$null = Require-PublicMethod $booleanVector 'Contains' $false ([bool]) ([Type[]]@([int]))
+$null = Require-PublicProperty $booleanVector 'Length' ([int])
+$null = Require-PublicProperty $booleanVector 'Population' ([int])
+$null = Require-PublicProperty $booleanVector 'Count' ([int])
+$null = Require-PublicProperty $booleanVector 'IsEmpty' ([bool])
+$null = Require-PublicProperty $booleanVector 'Item' ([bool])
+$null = Require-PublicProperty $booleanScan 'Vector' $booleanVector
+$null = Require-PublicProperty $booleanScan 'CarryOut' ([bool])
+
+$null = Require-PublicMethod $unitMask 'Union' $false $unitMask ([Type[]]@($unitMask))
+$null = Require-PublicMethod $unitMask 'Intersect' $false $unitMask ([Type[]]@($unitMask))
+$null = Require-PublicMethod $unitMask 'SymmetricDifference' $false $unitMask ([Type[]]@($unitMask))
+$null = Require-PublicMethod $unitMask 'Subtract' $false $unitMask ([Type[]]@($unitMask))
+$null = Require-PublicMethod $unitMask 'Complement' $false $unitMask ([Type[]]@())
+$null = Require-PublicMethod $unitMask 'ShiftTowardHigherOrdinals' $false $unitMask ([Type[]]@([int]))
+$null = Require-PublicMethod $unitMask 'ShiftTowardLowerOrdinals' $false $unitMask ([Type[]]@([int]))
+$null = Require-PublicMethod $unitMask 'ContainsLocalOrdinal' $false ([bool]) ([Type[]]@([int]))
+$null = Require-PublicMethod $unitMask 'ContainsOffset' $false ([bool]) ([Type[]]@([int]))
+$null = Require-PublicMethod $unitMask 'PrefixParity' $false $unitScan ([Type[]]@([bool]))
+$null = Require-PublicMethod $unitMask 'HarvestScalarSpans' $false $harvest ([Type[]]@())
+$null = Require-PublicProperty $unitMask 'Master' $textMaster
+$null = Require-PublicProperty $unitMask 'Window' $textSpan
+$null = Require-PublicProperty $unitMask 'Vector' $booleanVector
+$null = Require-PublicProperty $unitMask 'Length' ([int])
+$null = Require-PublicProperty $unitMask 'Population' ([int])
+$null = Require-PublicProperty $unitMask 'Count' ([int])
+$null = Require-PublicProperty $unitMask 'IsEmpty' ([bool])
+$null = Require-PublicProperty $unitMask 'Item' ([bool])
+$null = Require-PublicMethod $continuation 'Seed' $true $continuation ([Type[]]@($textMaster, [int], [bool]))
+$null = Require-PublicMethod $continuation 'Continue' $false $unitScan ([Type[]]@($unitMask))
+$null = Require-PublicProperty $continuation 'Master' $textMaster
+$null = Require-PublicProperty $continuation 'NextOffset' ([int])
+$null = Require-PublicProperty $continuation 'Carry' ([bool])
+$null = Require-PublicProperty $unitScan 'Input' $unitMask
+$null = Require-PublicProperty $unitScan 'States' $unitMask
+$null = Require-PublicProperty $unitScan 'Continuation' $continuation
+$null = Require-PublicProperty $unitScan 'CarryOut' ([bool])
+
+$null = Require-PublicProperty $classifierStamp 'Name' ([string])
+$null = Require-PublicProperty $classification 'Classifier' $classifierStamp
+$null = Require-PublicProperty $classification 'Matches' $unitMask
+$null = Require-PublicProperty $classification 'Unknown' $unitMask
+$null = Require-PublicProperty $classification 'Master' $textMaster
+$null = Require-PublicProperty $classification 'Window' $textSpan
+$null = Require-PublicProperty $classification 'IsComplete' ([bool])
+$null = Require-PublicMethod $classification 'PrefixParity' $false $classifiedScan ([Type[]]@($truthState))
+$null = Require-PublicMethod $classification 'HarvestScalarSpans' $false $harvest ([Type[]]@())
+$null = Require-PublicProperty $classifiedScan 'Source' $classification
+$null = Require-PublicProperty $classifiedScan 'Classifier' $classifierStamp
+$null = Require-PublicProperty $classifiedScan 'KnownTrueStates' $unitMask
+$null = Require-PublicProperty $classifiedScan 'UnknownStates' $unitMask
+$null = Require-PublicProperty $classifiedScan 'CarryOut' $truthState
+
+$null = Require-PublicProperty $claimStamp 'Kind' ([string])
+$null = Require-PublicProperty $claimStamp 'Level' $spanLevel
+$null = Require-PublicProperty $claimStamp 'Source' ([string])
+$null = Require-PublicProperty $claimStamp 'Priority' ([int])
+$null = Require-PublicProperty $claimStamp 'RuleId' ([string])
+$null = Require-PublicProperty $harvest 'SourceMask' $unitMask
+$null = Require-PublicProperty $harvest 'SourceClassification' $classification
+$null = Require-PublicProperty $harvest 'AdmittedSpans' $spanSet
+$null = Require-PublicProperty $harvest 'BoundaryResidual' $unitMask
+$null = Require-PublicProperty $harvest 'ClassifierUnknown' $unitMask
+$null = Require-PublicMethod $harvest 'EmitClaims' $false $emission ([Type[]]@($spanBatchBuilder, $claimStamp))
+$null = Require-PublicProperty $emission 'Harvest' $harvest
+$null = Require-PublicProperty $emission 'Builder' $spanBatchBuilder
+$null = Require-PublicProperty $emission 'Evidence' $claimStamp
+$null = Require-PublicProperty $emission 'Ordinals' $genericReadOnlyListInt
+
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {
     throw "Packaged CLI failed its smoke run (exit $LASTEXITCODE, output '$relation')."

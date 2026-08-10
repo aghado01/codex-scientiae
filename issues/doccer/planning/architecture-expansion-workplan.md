@@ -15,12 +15,17 @@ The evidence base is:
   [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md),
   as superseded for K5a by the
   [D43 fact/support contract](../briefs/sol-doccer-k5a-contract-20260809_193131.md) and for K5b by
-  the [D44 saturation contract](../briefs/sol-doccer-k5b-saturation-contract-20260809_215158.md);
+  the [D44 saturation contract](../briefs/sol-doccer-k5b-saturation-contract-20260809_215158.md),
+  and for K6 by the
+  [D45 origin contract](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md);
 - [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
   [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
   [D41 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
 - [the material-basis/XOR inquiry](../discussions/sol-doccer-material-basis-and-public-composability-20260806_105530.md)
-  and [D42 Lean-gate addendum](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md);
+  and [D42 Lean-gate addendum](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md),
+  as adjudicated for V0 by the
+  [V1 read-ahead](../discussions/sol-doccer-v1-portable-vector-read-ahead-20260810_013729.md) and
+  [D46 contract](../briefs/sol-doccer-v0-boolean-vector-unit-mask-contract-20260810_013731.md);
 - the implemented contracts in [the engine README](../../../src/doccer/README.md).
 
 ## 1. Executive result
@@ -163,8 +168,8 @@ flowchart TD
     K6["K6: origin algebra"]
     K7["K7: rewrite plan + Materialize"]
     W["K8: cross-carrier integration"]
-    V0["V0: code-unit-vector contract"]
-    V1["V1: portable vector + two exits"]
+    V0["V0: raw vector + UTF-16-mask contract"]
+    V1["V1: portable vector/mask + two exits"]
     V2["V2: accelerated vector backends"]
     A0["A0: benchmark/allocation baseline"]
     A1["A1: selection set-bit walker"]
@@ -206,7 +211,7 @@ flowchart TD
     K4C --> W
     K5B --> W
     K7 --> W
-    K0 -.->|D41/D42 registry addenda| V0
+    K0 -.->|D41/D42/D46 registry addenda| V0
     V0 --> V1
     V1 --> V2
     A0 --> A1
@@ -251,9 +256,10 @@ is in the
 by the [D34 review adjudication](../briefs/sol-doccer-k3-k4a-review-adjudication-20260805_151759.md)
 and [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md).
 
-D41 adds V, A, and dependency-split F branches without inserting any into the K critical path. V0
-may close its carrier contract now; V1 follows independently, and V2 follows only measured
-reference semantics. A0–A2 may proceed beside K5–K8 because D30 and D37 already freeze their
+D41 adds V, A, and dependency-split F branches without a type edge into the K critical path. D46
+closes V0 as a basisless Boolean vector plus explicit UTF-16 unit-mask wrapper and has now closed
+its bounded portable V1 chip before K6 as execution order only. V2 follows only measured reference
+semantics. A0–A2 may proceed beside K5–K8 because D30 and D37 already freeze their
 observable behavior; the per-capability HPC repertoire applies inside later capabilities, not one
 utility framework. F7a is independent while F7b/F7c use K6/K7. F8a/F8b low-level work and F9a current-
 population work are independent; fitted/indexed/persisted or fact/origin-specific forms wait only
@@ -306,8 +312,9 @@ P_M &= \text{valid boundaries},\\
 L_M &= \{(i,j)\mid i\le j\}\quad\text{located extents},\\
 I_M &= \{(i,j)\mid i<j\}\quad\text{Allen intervals},\\
 C_M &= \text{identity-bearing claim occurrences},\\
-F_M &= \text{later canonical semantic facts},\\
-O_{N,M} &= \text{later output-to-source origin relations}.
+F_M &= \text{canonical semantic facts},\\
+G_M &= \text{finite grounded positive implications over }F_M,\\
+O_{A,B} &= \text{output-to-source atom origins between exact tagged stages}.
 \end{aligned}
 \]
 
@@ -321,7 +328,7 @@ Reserve unambiguous operation names:
 | <code>ComposePairs</code> | exact composition of claim-identity relations |
 | <code>Saturate</code> | positive fixed-point fact inference |
 | <code>Select</code> | explicit nonmonotone policy execution |
-| <code>ComposeOrigins</code> | basis-checked cross-master relational composition |
+| <code>ComposeOrigins</code> | ordinary output-to-source relation composition over one exact shared middle <code>OriginBasis</code> |
 | <code>Materialize</code> | realize a supplied output-piece plan as a new master |
 
 Exit gate:
@@ -329,7 +336,7 @@ Exit gate:
 - diagonal empties belong to \(L_M\), not Allen;
 - Allen <code>Equal</code> is identity on \(I_M\), never on claim IDs;
 - claim-pair identity is the ordinal diagonal on one frozen batch;
-- origin identity is the atom diagonal between compatible master bases;
+- origin identity is the tagged-atom diagonal on one exact reference-identity `OriginBasis`;
 - the formalization audit's corrections are reflected in public contract language;
 - the law registry names the assurance medium for each claim and records a concrete reactivation
   trigger wherever Lean is deferred.
@@ -880,37 +887,61 @@ parallel/incremental execution, and persistence remain separate contracts.
 ### K6 — origin algebra before materialization
 
 K6 is a sibling of K5a/K5b after K4b. It does not consume canonical facts or saturation; support
-and origin remain different types.
+and origin remain different types. D45 freezes the contract in the
+[origin brief](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md).
 
-Origin is a basis-stamped relation, not a generalized <code>OffsetMap</code>:
+Origin is a finite basis-stamped relation, not a generalized <code>OffsetMap</code>. An exact
+reference-identity <code>OriginBasis</code> contains an immutable ordered tuple of unique ordinal
+tags and exact <code>TextMaster</code> slots. Its carrier is the tagged disjoint union of the slots'
+<code>TextTopology.Atoms</code>. The same or compatible text may occupy two differently tagged slots
+without making them the same provenance identity.
+
+D45 uses that basis sort symmetrically at both endpoints:
 
 \[
-O_{N,M}\subseteq Atoms(N)\times TaggedAtoms(M_1+\cdots+M_k).
+O_{A,B}\subseteq TaggedAtoms(A)\times TaggedAtoms(B).
 \]
 
-Direction is fixed: output material to tagged source material.
+A normal materialization still uses a singleton output basis and a possibly multi-source input
+basis. The symmetric carrier is the smallest type-closed form for ordinary multi-source stage
+composition; it does not imply that one materialization emits several masters.
+
+Direction is fixed: output material to tagged source material. <code>OriginRelation</code> retains
+exact output/source basis references and a canonical edge set. <code>Identity(B)</code> is the full
+tagged-atom diagonal on that exact basis. For <code>R : A -&gt; B</code> and
+<code>S : B -&gt; C</code>, <code>R.ComposeOrigins(S)</code> is ordinary relational composition and
+requires <code>ReferenceEquals(R.SourceBasis, S.OutputBasis)</code>. Matching tags, exact masters,
+value-equal basis contents, and compatible master values cannot replace that middle object.
 
 Required semantics:
 
-- an output atom may have zero, one, or several source origins;
-- generated material carries an explicit synthetic/plan explanation rather than a fabricated
-  source offset;
-- span projection may return disconnected source regions and never silently substitutes a hull;
+- an output atom may have zero, one, or several source origins; relations may be many-to-many;
+- zero origins do not themselves assert synthesis or error—K7 separately requires origin or a
+  positive-material synthetic explanation for every output atom;
+- exact-relation-stamped span projection returns one <code>SpanSet</code> per source slot, preserves
+  disconnected regions, and never silently substitutes a hull or merges compatible slots;
 - deletion is plan/change residue or explicit absence, not a fictitious reverse origin;
-- copy origin, transformation origin, causal derivation, and claim support are different types.
-
-The identity-bearing basis is an exact ordered collection of tagged source slots. Two slots may
-hold value-compatible text while remaining distinct provenance identities. Master compatibility
-validates coordinates and explicit geometry projections; it never substitutes a source slot.
+- an empty span selects no material atoms; a singleton empty output master has zero atoms and an
+  empty identity relation while retaining its exact basis;
+- copy origin, transformation origin, correspondence, causal derivation, and claim support are
+  different types.
 
 Exit gate:
 
-- relational identity and associativity on one exact tagged origin basis;
-- functional origins embed in relation-valued origins;
-- the embedding preserves identity and composition;
-- composition requires the exact tagged middle origin basis/stage identity;
-- <code>TextSlice</code> supplies the injective functional special case;
+- exact-basis relation equality, tagged-atom identity, and associative <code>ComposeOrigins</code>;
+- functional/total origins embed as ordinary relation specializations and composition preserves
+  their standard laws;
+- compatible or value-identical clone middle bases fail loudly;
+- duplicate-compatible tagged source slots and disconnected projection remain distinct;
+- <code>TextSlice</code> supplies the exact total injective functional special case and slice chains
+  agree with direct rebase only when they reuse the exact middle basis;
+- a direct finite implementation agrees with an independent Boolean-matrix oracle on all
+  two-atom relations/pairs/triples; and
 - birth-event instrumentation from a future NSST backend is only one origin producer.
+
+K6 does not infer retagging, slot substitution, pass-through identity, or DAG flattening. A mixed-
+source K7 stage presents a complete relation over its exact middle stage; K7 may later justify a
+separately named parallel/slot-lift constructor if repeated plans need one.
 
 D41 keeps producer epistemics explicit. A stage that performs a transformation, including an
 explicit normalization producer, may emit actual origins because it observes the births and
@@ -936,6 +967,7 @@ OutputPiece
 
 MaterializationResult
   immutable output master
+  exact retained output OriginBasis
   ordered piece view
   stage origin relation
   residuals
@@ -955,7 +987,8 @@ Exit gate:
 - conflicts and unused pieces are refused or reported under a named policy;
 - the source remains immutable;
 - derivation answers why; origin answers where;
-- repeated materializations compose origins through retained intermediate masters.
+- repeated materializations reuse retained exact intermediate `OriginBasis` stages and compose
+  origins through them.
 
 Insertion and synthesis create positive output material. Deletion is absence or named plan/change
 residue, never a zero-width output piece or `SpanBatch` claim. K6/K7 do not reopen K4's inherited
@@ -982,40 +1015,51 @@ non-domain-owning cross-carrier examples:
 These are integration demonstrations, not the first validation of their component contracts and
 not durable codex-scientiae adapters unless separately promoted.
 
-## 6A. Dependency-split expansion lanes (D41, amended by D42)
+## 6A. Dependency-split expansion lanes (D41, amended by D42 and D46)
 
 ThermoMapper is mined here for transferable numerical/HPC patterns and useful capabilities, not
 for policy. Donor-local implementation gates do not constrain Doccer. Where a donor implementation
 is incomplete, the Doccer lane states the stronger contract the lift must satisfy; repair guidance
 for ThermoMapper itself lives in that repository's auxiliary review.
 
-### V0–V2 — code-unit vectors
+### V0–V2 — Boolean vectors and UTF-16 unit masks
 
-V0 is contract work available beside the K arc. Reserve an immutable Boolean vector over the
-UTF-16 code-unit ordinals of exact window <code>W</code> on a compatible
-<code>TextMaster</code> value. Zero/all values are vector values rather than interval empties;
-F3 byte addressing is a separate coordinate map. Freeze:
+D46 closes V0 by replacing D41's provisional single basis-stamped vector with two carriers:
 
-- compatible-master/equal-window basis and value equality;
-- Boolean operations, bounded shifts, set-bit/population operations, pointwise XOR/parity,
-  forward inclusive prefix parity, adjacent transitions, and explicit chunk carry-in/carry-out;
-- classifier identity/completeness and a code-unit-basis residual;
-- scalar-boundary validation during offset/span harvest; and
-- two distinct exits: direct peer-value/index consumption and explicit candidate/claim harvest
-  with producer evidence.
+- `BooleanVector` is a basisless immutable finite bit value. Logical length and bits define
+  equality; zero/all values are numerical values rather than interval empties. It owns Boolean
+  algebra, ordinal-explicit bounded shifts, population/set-bit enumeration, parity, forward
+  inclusive prefix parity, adjacent transitions, and the raw Boolean chunk law. Private word
+  packing is neither public identity nor a second backend.
+- `Utf16UnitMask` stamps a compatible `TextMaster`, exact in-range numeric code-unit window, and an
+  equal-length raw vector. It deliberately admits window edges and bits inside surrogate pairs for
+  direct use. Equal-window basis checks, typed prefix continuity, exact classifier stamps, and
+  material exits belong here rather than in the raw carrier. The explicit name avoids making
+  current UTF-16 `TextMaster` semantics look like a generalized material basis.
 
-A harvest result connects unit evidence to emitted candidates; it does not equate a vector
-residual with an occurrence selection or K4 result residual. D42 registers the carrier, prefix-scan
-refinement, and harvest bridge separately. It also keeps future packed `SpanSet`
-equivalence and D3 suppression-bitmap equivalence in their own rows; neither is inherited merely
-because all can use bits.
+Classification retains disjoint known-true and unknown-membership masks. Unknown means the event
+bit is unknown, not merely unsupported. The lifted scan propagates uncertainty through the suffix
+and carries three-state continuity evidence; the raw scan remains complete and residual-free.
 
-V1 is independently available after V0 and lands a portable reference plus both exits before
-optimization. V2 may add word/SWAR,
-<code>Vector&lt;T&gt;</code>, or architecture-specific backends only for measured operations and
-must agree differentially with V1 across remainder units, chunk boundaries, surrogate edges,
-residual zones, and runtime fallback paths. A layout technique such as
-<code>MemoryMarshal.Cast</code> supplies no semantic or portability shortcut.
+The direct exit enumerates every selected code-unit offset without topology. The scalar-safe
+harvest exit admits exactly fully selected topology atoms wholly inside the window, retains every
+partial selected atom as boundary residue, keeps classifier unknown membership separate, and
+normalizes admitted material to `SpanSet`. Evidence-bearing claim emission validates the whole
+compatible-builder request before mutation. A harvest result never equates unit, occurrence, or
+K4 residual sorts.
+
+V1 has landed the private-word portable value, obvious ordinal scan, typed UTF-16 wrapper,
+classifier/residual result, both exits, an independent per-bit oracle, exhaustive
+short/multiword/chunk/surrogate laws, and a test-local byte-backed neutrality probe (harness
+2324→2536; zero warnings). It stops before a public word layout, generalized basis, A1, packed
+`SpanSet`, suppression bitmap, or domain classifier. D42 keeps carrier, scan, harvest, future
+packed-region equivalence, and D3 suppression-query equivalence in separate registry rows.
+
+V2 may add word-cascade/SWAR, <code>Vector&lt;T&gt;</code>, carry-less-multiply, parallel, fused, or
+architecture-specific paths only for measured operations. Every backend must agree differentially
+with V1 across remainder units, chunk boundaries, surrogate edges, residual zones, poisoned tails,
+and runtime fallback paths. A layout technique such as <code>MemoryMarshal.Cast</code> supplies no
+semantic or portability shortcut.
 
 ### A0–A2 — measured backend work and transfer repertoire
 
@@ -1109,10 +1153,15 @@ least-fixed-point theorem. Reactivate before a changed variable-bearing/callback
 alternate, parallel, compressed, or incremental backend claims the same fact and complete-support
 semantics.
 
-D42 splits D41's V-lane gate without declaring a present activation:
+D42 splits D41's V-lane gate without declaring a present activation, and D46 freezes the first
+signatures:
 
-- **V0 carrier signature:** ask whether proof pressure can change basis, window/length identity,
-  residual sort, or the direct/harvest result boundary.
+- **Raw-vector signature:** D46 fixes basisless length/bit identity, logical tails, raw operations,
+  and private packing; reapply if proof pressure can change that signature or a public/alternate
+  word layout claims equivalence.
+- **UTF-16-mask signature:** D46 fixes compatible-master/exact-unit-window identity, arbitrary
+  in-range unit boundaries, typed continuity, classifier stamps, and residual meanings; reapply
+  for a generalized common-basis mask or signature-changing proof pressure.
 - **Prefix-scan refinement:** V1 remains reference-owned; reapply for each V2 word/SWAR/SIMD,
   carry-less-multiply, chunked, or fused backend. A complete fixed-width linearity certificate may
   own a kernel more cheaply than Lean; random/bounded tests alone do not prove universal equality.
@@ -1164,10 +1213,12 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
 | K5a | compatible-master fact-key identity, canonical deduplication/order, exact table/occurrence evidence, immutable support, and alternative-support preservation |
 | K5b | D44 finite ground-rule monotonicity, fixed-point termination, key-to-final-ordinal freeze, fair-order independence, and complete enabled support |
-| K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
-| V0 carrier | compatible-window identity/equality, ordinary vector empties, residual sort, and distinct direct/harvest exits |
-| V prefix scan | pointwise XOR/parity, prefix/transition inversion, chunk/carry agreement, logical-tail independence, residual refinement, and V2 backend equivalence |
-| V harvest bridge | set-bit to ordered offset/span/claim soundness and completeness, scalar-boundary residue, and producer-evidence preservation |
+| K6 | exact tagged-stage identity, functional-origin embedding, ordinary origin composition, disconnected projection, and exact-middle refusal |
+| K7 | positive output-piece partition, origin-or-synthetic coverage, residue, and exact reconstruction |
+| V0 raw vector | basisless length/bit identity, ordinary zero/all values, logical tails, Boolean/shift/population/parity semantics, and representation independence |
+| V0 UTF-16 mask | compatible-master/exact-unit-window identity, arbitrary in-range unit boundaries, typed continuity, exact classifier stamps, and narrow unknown-membership semantics |
+| V prefix scan | forward inclusive prefix/transition inversion, chunk/carry agreement, logical-tail independence, classifier uncertainty refinement, and V2 backend equivalence |
+| V harvest bridge | direct unit offsets plus topology-atom span/claim soundness and completeness, separate scalar-boundary/classifier residue, transactional mutation, and producer-evidence preservation |
 | packed `SpanSet` | encode/decode and point-membership extensionality, normalization, and advertised Boolean-operation equivalence to the interval-list reference |
 | D3 suppression bitmap | equality of `Excluded` with `Coverage(Q)` and `Admitted` with its complement as `SpanSet` values for the same exact suppressor selection |
 
@@ -1224,7 +1275,7 @@ Known concrete geometry continues to use exact joins and validators.
 | F4 indexed joins | acceleration after K2/K3 reference semantics |
 | F5 agreement scoring | after K4 selection/result shape |
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
-| V0–V2 code-unit vectors | V0 carrier/scan/harvest contracts and V1 portable reference/two exits independently available; V2 only after Doccer-measured evidence and its per-backend D42 gate; packed `SpanSet` and suppression equivalence remain separate future obligations |
+| V0–V2 vectors/masks | D46 closes V0 and V1 as basisless `BooleanVector` plus explicit `Utf16UnitMask`, classifier/continuity, topology-atom harvest, and evidence-bearing claim emission; V2 only after Doccer-measured evidence and its per-backend D42/D46 gate; packed `SpanSet` and suppression equivalence remain separate future obligations |
 | A0–A2 measured backend work | independently available under frozen D30/D37 semantics; HPC patterns apply per capability rather than through a common framework |
 | F7 correspondence/derived origins | F7a distance/correspondence independent; F7b requires K6; F7c promotion/materialization integration requires its named K6/K7 carriers |
 | F8 direct measures/hash/rolling/signature/index/sketch work | F8a/F8b independent; current populations can witness in-memory F8c/F8d; persisted artifacts after F2; always separate from D1 identity |
@@ -1266,10 +1317,12 @@ the joint located/graph core as D35, the flat result closure as D36, additive co
 selection as D37, the K4c contract as D38, structural-family closure as D39, the post-K4
 coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, the
 V-lane formal-assurance split as D42, the K5a fact/support contract as D43, and the finite positive
-ground-saturation contract as D44. K2, K3, all K4 lanes, K5a, and K5b are closed. K6
-origin-contract work is the default active K chip; K5b does not block K6 or K7. D41 records the
-round-2 capability excavation without changing those edges: V0/V1, A0–A2, F7a, F8a/F8b contract
-work, and F9a current-population work are independently available. V2 follows reference semantics
+ground-saturation contract as D44. D45 freezes the exact-stage relation-valued K6 origin contract,
+and D46 freezes the V0 basisless-vector/UTF-16-mask contract after its V1 implementation
+read-ahead. K2, K3, all K4 lanes, K5a, K5b, and portable V1 are closed. D45 K6 is now the active
+chip, and K5b does not block K6 or K7. D41 records
+the round-2 capability excavation without changing type edges: A0–A2, F7a, F8a/F8b contract work,
+and F9a current-population work remain independently available. V2 follows reference semantics
 and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes wait only for
 their named carriers. Most broader F8/F9 implementation remains post-K execution priority rather
 than a K8 type dependency.
@@ -1286,6 +1339,14 @@ carrier or fixed-point claim. D44 reapplies and defers the K5b gate because fini
 rules make the positive operator and termination hypotheses structural. Reapply for a wider rule
 carrier or alternate/parallel/incremental/compressed saturation semantics. D42 splits
 D41's V-lane gate into carrier signature, prefix-scan refinement, harvest, packed `SpanSet`,
-and suppression-query obligations. V0/V1 remain unblocked. Reapply per V2 backend; presume
+and suppression-query obligations. D46 subdivides and closes the raw-vector and UTF-16-wrapper
+signatures for V1 without activating Lean. Reapply per V2 backend; presume
 activation when a packed region or suppression backend claims arbitrary-input interchangeability,
-unless a smaller complete certificate or weaker contract honestly closes the gate.
+unless a smaller complete certificate or weaker contract honestly closes the gate. D45 reapplies
+and defers the K6 gate because the first surface is an exact finite relation with a direct
+Boolean-matrix oracle. Reapply for a second/compressed/functional backend, stage fusion or
+intermediate elision, automatic slot lifting, or a novel K7 multi-source composition guarantee.
+D46 separately reapplies the raw-vector, wrapper, scan, and harvest gates and defers them under one
+portable implementation plus independent finite oracles. Reapply for signature changes, public
+word layout, generalized common-basis masks, V2/fused refinement, or topology-bypassing harvest
+that claims the same result.
