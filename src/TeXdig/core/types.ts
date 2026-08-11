@@ -32,12 +32,33 @@ export interface SourceSpan {
   endUtf16: number;
 }
 
+export type SourceLanguage = "latex" | "bibtex" | "asset";
+
+/**
+ * Engine classification of each file in the deposited tree. The census parses
+ * include-graph-reachable LaTeX, bibliography resources, and the .bbl sidecar;
+ * class/style/asset files are inventoried (sha, length) but not parsed in
+ * stage 1. A .tex file reachable by no include edge is a diagnostic, not a
+ * silent omission.
+ */
+export type SourceRole =
+  | "entrypoint"
+  | "included"
+  | "bibliography-resource"
+  | "bbl-sidecar"
+  | "class-or-style"
+  | "asset"
+  | "unreachable-tex";
+
 /** One row of `sources.jsonl`. */
 export interface SourceFileRecord {
   id: SourceId;
   sha256: string;
   lengthUtf16: number;
-  entrypoint: boolean;
+  language: SourceLanguage;
+  role: SourceRole;
+  /** True when stage 1 actually parsed and coverage-audited this file. */
+  parsed: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -49,6 +70,8 @@ export type WitnessKind = "lexical" | "parser";
 export interface WitnessRecord {
   witness: WitnessKind;
   span: SourceSpan;
+  /** Which parser produced a `parser` sighting: unified-latex for LaTeX/.bbl, latex-utensils for .bib. */
+  instrument?: "unified-latex" | "latex-utensils";
   /** Scanner rule or parser node type that produced this sighting. */
   detail?: string;
 }
@@ -192,7 +215,43 @@ export type CensusEntity =
       /** Sectioning command name (`section`, `subsection*`, ...) when marker is `section`. */
       name?: string;
       titleSpan?: SourceSpan;
+    })
+  // --- BibTeX census entities (parser witness: latex-utensils) -------------
+  // The bib language mirrors the LaTeX census: @string is its macro-definition,
+  // crossref its inheritance, and field values re-enter unified-latex as LaTeX
+  // fragments in cut 2. Census records sites and shapes only; resolution
+  // (@string substitution, concat folding, crossref) is a join, not a census.
+  | (CensusEntityBase & {
+      kind: "bib-entry";
+      /** Entry type as written, lowercased (`article`, `inproceedings`, ...). */
+      entryType: string;
+      citeKey?: string;
+      /** Interior extent between the entry braces, when both are witnessed. */
+      bodySpan?: SourceSpan;
+    })
+  | (CensusEntityBase & {
+      kind: "bib-string";
+      /** The DEFINED abbreviation name — the bib analogue of `macro-definition`. */
+      abbreviationName: string;
+      valueSpan?: SourceSpan;
+    })
+  | (CensusEntityBase & { kind: "bib-preamble" })
+  /** Explicit @comment blocks and implicit inter-entry text (BibTeX ignores it; coverage must not). */
+  | (CensusEntityBase & { kind: "bib-comment" })
+  | (CensusEntityBase & {
+      kind: "bib-field";
+      /** The owning `bib-entry` (or `bib-string`) entity. */
+      entryId: EntityId;
+      /** Field name as written, lowercased. */
+      fieldName: string;
+      valueSpan: SourceSpan;
+      valueShape: BibValueShape;
+      /** For `concat`, the parts with their own spans and shapes, as latex-utensils exposes them. */
+      parts?: { span: SourceSpan; shape: Exclude<BibValueShape, "concat"> }[];
     });
+
+/** Value shapes latex-utensils distinguishes; `abbreviation` sites are binding-join inputs in cut 2. */
+export type BibValueShape = "text" | "number" | "abbreviation" | "concat";
 
 export type CensusKind = CensusEntity["kind"];
 
@@ -207,6 +266,10 @@ export type Pillar = "envelope" | "spine" | "fence";
  * witnessed lexically and/or as parser string/whitespace nodes) — the spine is
  * never defined as the complement of the other pillars, so residue stays a
  * real signal rather than a vacuous zero.
+ *
+ * The pillar vocabulary spans both languages: in .bib sources, entries,
+ * @string, and @preamble claim as `fence`; inter-entry implicit-comment runs
+ * claim as `spine`; `envelope` does not occur.
  */
 export interface PillarClaim {
   pillar: Pillar;
@@ -246,6 +309,9 @@ export const DiagnosticCodes = {
   UnknownEnvironment: "census/unknown-environment",
   OpaqueRegion: "census/opaque-region",
   Residue: "census/residue",
+  UnreachableSource: "census/unreachable-source",
+  BibParseError: "census/bib-parse-error",
+  BibDuplicateKey: "census/bib-duplicate-key",
 } as const;
 
 export type DiagnosticCode = (typeof DiagnosticCodes)[keyof typeof DiagnosticCodes];

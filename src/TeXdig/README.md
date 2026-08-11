@@ -26,13 +26,20 @@ attributed to the tree fingerprint via the job identity digest.
 
 ## Model
 
+- **Complete source**: the census covers every file of the deposited tree — the entrypoint and
+  include-reachable `.tex`, bibliography resources (`.bib`), and the `.bbl` sidecar are parsed and
+  coverage-audited; class/style/asset files are inventoried unparsed. Bibliography material is a
+  first-class census subject, not a later lane: `@string` is the bib language's macro-definition,
+  `crossref` its inheritance, and field values re-enter unified-latex as LaTeX fragments in cut 2.
 - **Three pillars as overlays**: document envelope (structural markers, floats), prose spine
   (positive text-run claims — never defined as the complement), and fenced spans (environments, math
-  carriers, verbatim, comments). Claims may overlap (a float is both fence and envelope); the union
-  must cover. Exclusivity violations are not errors; unclaimed residue is.
-- **Two witnesses**: a dumb lexical scanner (complete positions, shallow typing) and unified-latex
-  (rich typing, known position gaps). Reconciliation fills parser gaps from the raw stream and
-  surfaces disagreement as findings. Original LaTeX is always a source slice, never `printRaw`.
+  carriers, verbatim, comments; in `.bib`, entries/@string/@preamble). Claims may overlap (a float is
+  both fence and envelope); the union must cover. Exclusivity violations are not errors; unclaimed
+  residue is.
+- **Two witnesses, two instruments**: a dumb lexical scanner (complete positions, shallow typing)
+  against the parser witness — unified-latex for LaTeX and `.bbl`, latex-utensils for `.bib` (both
+  rich typing, known position gaps). Reconciliation fills parser gaps from the raw stream and
+  surfaces disagreement as findings. Original source is always a slice, never `printRaw`.
 - **Ordering**: comment/verbatim stratification precedes fence census precedes control-sequence
   census — the small vocabulary of things that change what everything else means is swept first.
 
