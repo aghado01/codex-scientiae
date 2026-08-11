@@ -1,0 +1,88 @@
+\section{Examples of cover assignment schemes} \label{sec:examples}
+
+We now give example strategies to define cover assignment schemes, beginning with the one that corresponds to the standard Mapper construction defined in Section~\ref{sec:background}.
+
+
+\subsection{Standard cover assignment scheme}
+\label{sec:stdMapper}
+
+
+%It is possible to link our construction to the classical Mapper graph construction, i.e. the Mapper graph built to approximate the Reeb graph of a continuous function.\\
+%\noindent As before, $\Xs$ is a point cloud of size $n$ in  a general metric space$(\Metrsp,d)$. As explained before, a deterministic clustering algorithm has been fixed for defining the function $\MapComp$. 
+Let $f\colon\Xs_n \rightarrow \R$ be a filter function  and let $(\interv_j)_{1\leq j\leq r}$ be a finite cover of the image $f(\Xs_n)$ of $f$.
+%Let $r'=\sum_{j=1}^r k_j$, where $k_j$ is the number of clusters detected by the fixed clustering algorithm $\Clus$ on $f^{-1}(I_j)$. 
+The standard Mapper graph is then defined as $\MapComp(e^\ast)$, where for every $1\leq i \leq n$ and 
+%$1\leq j'=(j,k) \leq r'$ (with $1\leq j\leq r$ and $1\leq k\leq k_j$):
+$1\leq j \leq r$:
+$$e^\ast_{i,j}=1 \text{ if } f(x_i)\in \interv_j.$$ %\text{ and }x_i\in \mathcal C_{j,k}.$$
+The cover assignment scheme $A^\ast$, in this case, is such that every entry $A^\ast_{i,j}$ follows a Dirac distribution on $1$ if $f (x_i)\in \interv_j$,
+%and $x_i\in \mathcal C_{j,k}$, 
+and a Dirac distribution on  $0$ otherwise. In other words, the parameters of the Bernoulli distributions satisfy $p_{i,j} (\Xs_n) = p_{i,j} (x_i) = 1 $ if  $f (x_i)\in \interv_j$,
+%and $x_i\in \mathcal C_{j,k}$, 
+and $0$ otherwise, that is
+\[
+    \mathbb{P}(A^\ast=e | \Xs_n)= 
+\begin{cases}
+    1& \text{ if } e=e^\ast ,\\
+    0              & \text{ otherwise.}
+\end{cases}
+\]
+In this degenerated situation, the random variables $A^\ast_{i,j}$ are all independent conditionally to $\Xs_n$, and $A^\ast_{i,j}$ conditionally to $\Xs_n$ is equal to $A^\ast_{i,j}$ conditionally to $x_i$. 
+
+
+
+%Note also that the different coordinates of $A^\ast$ conditionally follow Dirac distributions in $\{0,1\}$, but we assume that they can be seen as an extension of the Bernoulli distribution when the success probability is either 1 or 0.\\
+% The conditional risk of the cover assignment scheme $A^\ast$ is : 
+% $$\mathbb{E}_{\mathbb{X}_n,\theta}(\mathcal{L}(A^\ast,\theta))=\mathcal{L}(e^\ast,\theta).$$
+
+\begin{remark}
+    An alternative and relevant approach for the standard Mapper graph is to define the intervals $I_j$ via the quantiles of the distribution of $f(\Xs_n)$.  
+In this case, the random variables $A^\ast_{i,j}$ do not only depend on $x_i$, but also on the whole point cloud $\Xs_n$.
+\end{remark}
+
+
+\subsection{Smooth relaxation of the standard cover assignment scheme}
+\label{sec:Smooth}
+
+Given some $\delta>0$, we can now define a cover assignment scheme $A_\delta$ that approximates the cover assignment scheme $A^\ast$ arising from the standard Mapper graph,
+but that also enjoys useful smoothness properties in the optimization setting that we will consider in the next section. %, when $\delta$ is close to zero.\\
+Specifically, using the same notations as before, and denoting each element of the cover with $I_j=[a_j,b_j]$, consider, for each $j\in\{1,...,r\}$, the function $q_j\colon X  \longrightarrow [0,1]$ defined with:
+\begin{align*}
+&x \mapsto 
+\begin{cases}
+    1,& \text{if } f(x)\in [a_j,b_j]\\
+    \exp(1-1/(1-(\frac{a_i-f(x)}{\delta})^2)),& \text{if } f(x)\in [a_j-\delta,a_j]\\
+    \exp(1-1/(1-(\frac{f(x)-b_i}{\delta})^2)),& \text{if } f(x)\in [b_j,b_j+\delta]\\
+    0,              & \text{otherwise}
+\end{cases}
+\end{align*}
+\noindent
+Now, define $A_\delta=(A_{\delta,i,j})_{\substack{1\leq i\leq n \\ 1\leq j\leq r}}$ to be the random variable in $\{0,1\}^{n\times r}$ such that for every $(i,j)\in\{1,...,n\}\times\{1,...,r\}$:
+$$ A_{\delta,i,j}\mid \Xs_n \sim \mathcal{B}(q_j(x_i)),$$
+%and we take 
+with the $ A_{\delta,i,j}$'s being jointly independent conditionally to $\Xs_n$.
+As for the standard cover, the Bernoulli parameter $p_{i,j} = q_j(x_i)$ depends on its associated point $x_i$ and also on the chosen filter $f$. 
+%This remark will be important in Section~\ref{sec:optim}.
+
+
+Moreover, notice that for every $x_i\in\Xs_n$ and $j\in\{1,...,r\}$:
+
+$$
+    q_j(x_i)\xrightarrow[\delta \to 0]{}\begin{cases}
+    1,& \text{if } f(x_i)\in I_j\\
+    0,              & \text{otherwise,}
+\end{cases}
+$$
+and this shows that $A_\delta\xrightarrow[\delta \to 0]{\mathcal{L}}A^\ast.$ Note that even though we can approximate the standard Mapper graph in this way, we do not always want to do so. For example, there could be cases where $\delta$ needs to be large enough so as to account for some uncertainty on the bounds of the cover $(\interv_j)_{1\leq j\leq r}$. 
+
+
+%The reason behind considering such an approximation of $A^\ast$ is because it allows for useful smoothness properties in the optimization setting that we will consider in the following section.  
+\begin{remark}
+Note that the same relaxed construction can be made for a multi-dimensional Mapper, i.e., for filter functions taking values in $\R^d$ \cite{carriere2022statistical}, by making slight adjustments to the definition of $q_j$ %, for every $j\in\{1,...,r\}$, 
+using the Euclidean norm.
+\end{remark}
+ 
+
+
+An additional example of a possible cover assignment scheme, which does not imply the existence of a filter function, is given in Appendix \ref{apdx:gaussian}.
+

@@ -1,0 +1,320 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Absil et~al.]{Absil, Mahony \harvardand\
+  Sepulchre}{2008}{absil_optimization_2008-1}
+Absil, P.-A., Mahony, R. \harvardand\ Sepulchre, R.  \harvardyearleft
+  2008\harvardyearright .
+\newblock {\em Optimization Algorithms on Matrix Manifolds}, {Princeton
+  University Press}, {Princeton, N.J. ; Woodstock}.
+
+\harvarditem{Afsari}{2011}{afsari_riemannian_2011}
+Afsari, B.  \harvardyearleft 2011\harvardyearright .
+\newblock {{RIEMANNIAN L}}{\textsubscript{p}} {{CENTER OF MASS}}:
+  {{EXISTENCE}}, {{UNIQUENESS}}, {{AND CONVEXITY}}, {\em Proceedings of the
+  American Mathematical Society} {\bf 139}(2):~655--673.
+
+\harvarditem[Aggarwal et~al.]{Aggarwal, Chowdhury \harvardand\
+  Chellappa}{2004}{aggarwal_system_2004}
+Aggarwal, G., Chowdhury, A. K.~R. \harvardand\ Chellappa, R.  \harvardyearleft
+  2004\harvardyearright .
+\newblock A system identification approach for video-based face recognition,
+  {\em Proceedings of the Pattern Recognition, 17th International Conference on
+  ({{ICPR}}'04) Volume 4 - Volume 04}, {{ICPR}} '04, {IEEE Computer Society},
+  {USA}, pp.~175--178.
+
+\harvarditem{Akaike}{1974}{akaike_new_1974}
+Akaike, H.  \harvardyearleft 1974\harvardyearright .
+\newblock A new look at the statistical model identification, {\em IEEE
+  Transactions on Automatic Control} {\bf 19}(6):~716--723.
+
+\harvarditem[Arnaudon et~al.]{Arnaudon, Barbaresco \harvardand\
+  Yang}{2013}{nielsen_medians_2013}
+Arnaudon, M., Barbaresco, F. \harvardand\ Yang, L.  \harvardyearleft
+  2013\harvardyearright .
+\newblock Medians and {{Means}} in {{Riemannian Geometry}}: {{Existence}},
+  {{Uniqueness}} and {{Computation}}, {\em in} F.~Nielsen \harvardand\
+  R.~Bhatia (eds), {\em Matrix {{Information Geometry}}}, {Springer Berlin
+  Heidelberg}, {Berlin, Heidelberg}, pp.~169--197.
+
+\harvarditem[Banerjee et~al.]{Banerjee, Dhillon, Ghosh \harvardand\
+  Sra}{2005}{banerjee_clustering_2005}
+Banerjee, A., Dhillon, I.~S., Ghosh, J. \harvardand\ Sra, S.  \harvardyearleft
+  2005\harvardyearright .
+\newblock Clustering on the unit hypersphere using von mises-fisher
+  distributions, {\em Journal of Machine Learning Research} {\bf
+  6}(46):~1345--1382.
+
+\harvarditem{Bhattacharya \harvardand\
+  Bhattacharya}{2012}{bhattacharya_nonparametric_2012-1}
+Bhattacharya, A. \harvardand\ Bhattacharya, R.~N.  \harvardyearleft
+  2012\harvardyearright .
+\newblock {\em Nonparametric Inference on Manifolds: With Applications to Shape
+  Spaces}, number~2 in {\em Institute of Mathematical Statistics Monographs},
+  {Cambridge University Press}, {Cambridge, UK ; New York}.
+
+\harvarditem{Bhattacharya \harvardand\
+  Dunson}{2012}{bhattacharya_nonparametric_2012-2}
+Bhattacharya, A. \harvardand\ Dunson, D.  \harvardyearleft
+  2012\harvardyearright .
+\newblock Nonparametric {{Bayes}} classification and hypothesis testing on
+  manifolds, {\em Journal of Multivariate Analysis} {\bf 111}:~1--19.
+
+\harvarditem{Bishop}{2006}{bishop_pattern_2006}
+Bishop, C.~M.  \harvardyearleft 2006\harvardyearright .
+\newblock {\em Pattern Recognition and Machine Learning}, Information Science
+  and Statistics, {Springer}, {New York}.
+
+\harvarditem[Bissacco et~al.]{Bissacco, Chiuso, {Yi Ma} \harvardand\
+  Soatto}{2001}{bissacco_recognition_2001}
+Bissacco, A., Chiuso, A., {Yi Ma} \harvardand\ Soatto, S.  \harvardyearleft
+  2001\harvardyearright .
+\newblock Recognition of human gaits, {\em Proceedings of the 2001 {{IEEE
+  Computer Society Conference}} on {{Computer Vision}} and {{Pattern
+  Recognition}}. {{CVPR}} 2001}, Vol.~2, {IEEE Comput. Soc}, {Kauai, HI, USA},
+  pp.~II--52--II--57.
+
+\harvarditem[Bouveyron et~al.]{Bouveyron, Celeux, Murphy \harvardand\
+  Raftery}{2019}{bouveyron_model-based_2019}
+Bouveyron, C., Celeux, G., Murphy, T.~B. \harvardand\ Raftery, A.~E.
+  \harvardyearleft 2019\harvardyearright .
+\newblock {\em Model-{{Based Clustering}} and {{Classification}} for {{Data
+  Science}}: {{With Applications}} in {{R}}}, first edn, {Cambridge University
+  Press}.
+
+\harvarditem{Brent}{2002}{brent_algorithms_2002}
+Brent, R.~P.  \harvardyearleft 2002\harvardyearright .
+\newblock {\em Algorithms for Minimization without Derivatives}, {Dover
+  Publications}, {Mineola, N.Y}.
+
+\harvarditem[Burden et~al.]{Burden, Faires \harvardand\
+  Burden}{2016}{burden_numerical_2016}
+Burden, R.~L., Faires, J.~D. \harvardand\ Burden, A.~M.  \harvardyearleft
+  2016\harvardyearright .
+\newblock {\em Numerical Analysis}, tenth edition edn, {Cengage Learning},
+  {Boston, MA}.
+
+\harvarditem{Cavanaugh}{1997}{cavanaugh_unifying_1997}
+Cavanaugh, J.~E.  \harvardyearleft 1997\harvardyearright .
+\newblock Unifying the derivations for the {{Akaike}} and corrected {{Akaike}}
+  information criteria, {\em Statistics \& Probability Letters} {\bf
+  33}(2):~201--208.
+
+\harvarditem[Dempster et~al.]{Dempster, Laird \harvardand\
+  Rubin}{1977}{dempster_maximum_1977}
+Dempster, A.~P., Laird, N.~M. \harvardand\ Rubin, D.~B.  \harvardyearleft
+  1977\harvardyearright .
+\newblock Maximum {{Likelihood}} from {{Incomplete Data Via}} the
+  {{{\emph{EM}}}} {{Algorithm}}, {\em Journal of the Royal Statistical Society:
+  Series B (Methodological)} {\bf 39}(1):~1--22.
+
+\harvarditem[Dhillon et~al.]{Dhillon, Mallela \harvardand\
+  Modha}{2003}{dhillon_information-theoretic_2003}
+Dhillon, I.~S., Mallela, S. \harvardand\ Modha, D.~S.  \harvardyearleft
+  2003\harvardyearright .
+\newblock Information-theoretic co-clustering, {\em Proceedings of the Ninth
+  {{ACM SIGKDD}} International Conference on Knowledge Discovery and Data
+  Mining}, {{KDD}} '03, {Association for Computing Machinery}, {New York, NY,
+  USA}, pp.~89--98.
+
+\harvarditem{Dhillon \harvardand\ Modha}{2001}{dhillon_concept_2001}
+Dhillon, I.~S. \harvardand\ Modha, D.~S.  \harvardyearleft
+  2001\harvardyearright .
+\newblock Concept {{Decompositions}} for {{Large Sparse Text Data Using
+  Clustering}}, {\em Machine Learning} {\bf 42}(1/2):~143--175.
+
+\harvarditem{do~Carmo}{1992}{carmo_riemannian_1992}
+do~Carmo, M.~P.  \harvardyearleft 1992\harvardyearright .
+\newblock {\em Riemannian Geometry}, Mathematics. {{Theory}} \& Applications,
+  {Birkh\"auser}, {Boston}.
+
+\harvarditem{Fisher}{1953}{fisher_dispersion_1953}
+Fisher, R.  \harvardyearleft 1953\harvardyearright .
+\newblock Dispersion on a {{Sphere}}, {\em Proceedings of the Royal Society A:
+  Mathematical, Physical and Engineering Sciences} {\bf 217}(1130):~295--305.
+
+\harvarditem[Fletcher et~al.]{Fletcher, Venkatasubramanian \harvardand\
+  Joshi}{2009}{fletcher_geometric_2009-1}
+Fletcher, P.~T., Venkatasubramanian, S. \harvardand\ Joshi, S.
+  \harvardyearleft 2009\harvardyearright .
+\newblock The geometric median on {{Riemannian}} manifolds with application to
+  robust atlas estimation, {\em NeuroImage} {\bf 45}(1):~S143--S152.
+
+\harvarditem{Fr{\'e}chet}{1948}{frechet_les_1948}
+Fr{\'e}chet, M.~R.  \harvardyearleft 1948\harvardyearright .
+\newblock {Les \'el\'ements al\'eatoires de nature quelconque dans un espace
+  distanci\'e}, {\em Annales de l'institut Henri Poincar\'e} {\bf
+  10}(4):~215--310.
+
+\harvarditem{Goodall \harvardand\ Mardia}{1999}{goodall_projective_1999}
+Goodall, C.~R. \harvardand\ Mardia, K.~V.  \harvardyearleft
+  1999\harvardyearright .
+\newblock Projective shape analysis, {\em Journal of Computational and
+  Graphical Statistics} {\bf 8}(2):~143--168.
+
+\harvarditem{Gopal \harvardand\
+  Yang}{2014}{gopal_2014_MisesfisherClusteringModels}
+Gopal, S. \harvardand\ Yang, Y.  \harvardyearleft 2014\harvardyearright .
+\newblock Von mises-fisher clustering models, {\em in} E.~P. Xing \harvardand\
+  T.~Jebara (eds), {\em Proceedings of the 31st International Conference on
+  Machine Learning}, Vol.~32 of {\em Proceedings of Machine Learning Research},
+  {PMLR}, {Bejing, China}, pp.~154--162.
+
+\harvarditem{Grove \harvardand\ Karcher}{1973}{grove_how_1973-1}
+Grove, K. \harvardand\ Karcher, H.  \harvardyearleft 1973\harvardyearright .
+\newblock How to conjugate {{C1}}-close group actions, {\em Mathematische
+  Zeitschrift} {\bf 132}(1):~11--20.
+
+\harvarditem{Hannan \harvardand\ Quinn}{1979}{hannan_determination_1979-1}
+Hannan, E.~J. \harvardand\ Quinn, B.~G.  \harvardyearleft 1979\harvardyearright
+  .
+\newblock The determination of the order of an autoregression, {\em Journal of
+  the Royal Statistical Society. Series B (Methodological)} {\bf
+  41}(2):~190--195.
+
+\harvarditem[Hastie et~al.]{Hastie, Tibshirani \harvardand\
+  Friedman}{2009}{hastie_elements_2009-1}
+Hastie, T., Tibshirani, R. \harvardand\ Friedman, J.~H.  \harvardyearleft
+  2009\harvardyearright .
+\newblock {\em The Elements of Statistical Learning: Data Mining, Inference,
+  and Prediction}, Springer Series in Statistics, 2nd ed edn, {Springer}, {New
+  York, NY}.
+
+\harvarditem{Hauberg}{2018}{hauberg_directional_2018-1}
+Hauberg, S.  \harvardyearleft 2018\harvardyearright .
+\newblock Directional {{Statistics}} with the {{Spherical Normal
+  Distribution}}, {\em 2018 21st {{International Conference}} on {{Information
+  Fusion}} ({{FUSION}})}, {IEEE}, {Cambridge, United Kingdom}, pp.~704--711.
+
+\harvarditem{Hornik \harvardand\ Gr{\"u}n}{2014}{hornik_movmf_2014}
+Hornik, K. \harvardand\ Gr{\"u}n, B.  \harvardyearleft 2014\harvardyearright .
+\newblock {{{\textbf{movMF}}}} : {{An}} {{{\emph{R}}}} {{Package}} for
+  {{Fitting Mixtures}} of von {{Mises}}-{{Fisher Distributions}}, {\em Journal
+  of Statistical Software} {\bf 58}(10).
+
+\harvarditem{Hothorn \harvardand\ Everitt}{2014}{hothorn_handbook_2014}
+Hothorn, T. \harvardand\ Everitt, B.  \harvardyearleft 2014\harvardyearright .
+\newblock {\em A Handbook of Statistical Analyses Using {{R}}}, third edition
+  edn, {CRC Press, Taylor \& Francis Group}, {Boca Raton}.
+
+\harvarditem{Householder}{1970}{householder_numerical_1970}
+Householder, A.~S.  \harvardyearleft 1970\harvardyearright .
+\newblock {\em The Numerical Treatment of a Single Nonlinear Equation},
+  {McGraw-Hill}, {London}.
+
+\harvarditem{Jaccard}{1912}{jaccard_distribution_1912-1}
+Jaccard, P.  \harvardyearleft 1912\harvardyearright .
+\newblock {{THE DISTRIBUTION OF THE FLORA IN THE ALPINE ZONE}}.1, {\em New
+  Phytologist} {\bf 11}(2):~37--50.
+
+\harvarditem{Jupp \harvardand\ Mardia}{1979}{jupp_maximum_1979}
+Jupp, P.~E. \harvardand\ Mardia, K.~V.  \harvardyearleft 1979\harvardyearright
+  .
+\newblock Maximum {{Likelihood Estimators}} for the {{Matrix Von
+  Mises}}-{{Fisher}} and {{Bingham Distributions}}, {\em The Annals of
+  Statistics} {\bf 7}(3).
+
+\harvarditem{Kendall}{1990}{kendall_probability_1990-1}
+Kendall, W.~S.  \harvardyearleft 1990\harvardyearright .
+\newblock Probability, {{Convexity}}, and {{Harmonic Maps}} with {{Small Image
+  I}}: {{Uniqueness}} and {{Fine Existence}}, {\em Proceedings of the London
+  Mathematical Society} {\bf s3-61}(2):~371--406.
+
+\harvarditem{Lee}{1997}{lee_riemannian_1997}
+Lee, J.~M.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em Riemannian Manifolds: An Introduction to Curvature}, number 176
+  in {\em Graduate Texts in Mathematics}, {Springer}, {New York}.
+
+\harvarditem{Ley \harvardand\ Verdebout}{2017}{ley_modern_2017-1}
+Ley, C. \harvardand\ Verdebout, T.  \harvardyearleft 2017\harvardyearright .
+\newblock {\em Modern Directional Statistics}, Chapmann \& {{Hall}}/{{CRC}}
+  Interdisciplinary Statistics Series, {CRC Press, Taylor \& Francis Group},
+  {Boca Raton London New York}.
+
+\harvarditem{Macqueen}{1967}{macqueen_methods_1967}
+Macqueen, J.  \harvardyearleft 1967\harvardyearright .
+\newblock Some methods for classification and analysis of multivariate
+  observations, {\em In 5-Th Berkeley Symposium on Mathematical Statistics and
+  Probability}, pp.~281--297.
+
+\harvarditem{Mardia \harvardand\ Jupp}{2000}{mardia_directional_2000}
+Mardia, K.~V. \harvardand\ Jupp, P.~E.  \harvardyearleft 2000\harvardyearright
+  .
+\newblock {\em Directional Statistics}, Wiley Series in Probability and
+  Statistics, {J. Wiley}, {Chichester ; New York}.
+
+\harvarditem[McLachlan et~al.]{McLachlan, Lee \harvardand\
+  Rathnayake}{2019}{mclachlan_finite_2019}
+McLachlan, G.~J., Lee, S.~X. \harvardand\ Rathnayake, S.~I.  \harvardyearleft
+  2019\harvardyearright .
+\newblock Finite {{Mixture Models}}, {\em Annual Review of Statistics and Its
+  Application} {\bf 6}(1):~355--378.
+
+\harvarditem[Mullen et~al.]{Mullen, Ardia, Gil, Windover \harvardand\
+  Cline}{2011}{mullen_deoptim_2011}
+Mullen, K., Ardia, D., Gil, D., Windover, D. \harvardand\ Cline, J.
+  \harvardyearleft 2011\harvardyearright .
+\newblock {{DEoptim}}: {{An R}} package for global optimization by
+  {{Differential Evolution}}, {\em Journal of Statistical Software} {\bf
+  40}(6):~1--26.
+
+\harvarditem{Patrangenaru \harvardand\
+  Ellingson}{2016}{patrangenaru_nonparametric_2016}
+Patrangenaru, V. \harvardand\ Ellingson, L.  \harvardyearleft
+  2016\harvardyearright .
+\newblock {\em Nonparametric Statistics on Manifolds and Their Applications to
+  Object Data Analysis}, {CRC Press, Taylor \& Francis Group}, {Boca Raton}.
+
+\harvarditem{Pennec}{2006}{pennec_intrinsic_2006}
+Pennec, X.  \harvardyearleft 2006\harvardyearright .
+\newblock Intrinsic {{Statistics}} on {{Riemannian Manifolds}}: {{Basic Tools}}
+  for {{Geometric Measurements}}, {\em Journal of Mathematical Imaging and
+  Vision} {\bf 25}(1):~127--154.
+
+\harvarditem[Pennec et~al.]{Pennec, Sommer \harvardand\
+  Fletcher}{2020}{pennec_riemannian_2020}
+Pennec, X., Sommer, S. \harvardand\ Fletcher, T.  \harvardyearleft
+  2020\harvardyearright .
+\newblock {\em Riemannian {{Geometric Statistics}} in {{Medical Image
+  Analysis}}}, {Academic Press}, {San Diego}.
+
+\harvarditem{{R Core Team}}{2021}{r_core_team_r_2021}
+{R Core Team}  \harvardyearleft 2021\harvardyearright .
+\newblock {\em R: {{A}} Language and Environment for Statistical Computing}, {R
+  Foundation for Statistical Computing}, {Vienna, Austria}.
+
+\harvarditem{Rand}{1971}{rand_objective_1971-2}
+Rand, W.~M.  \harvardyearleft 1971\harvardyearright .
+\newblock Objective {{Criteria}} for the {{Evaluation}} of {{Clustering
+  Methods}}, {\em Journal of the American Statistical Association} {\bf
+  66}(336):~846--850.
+
+\harvarditem{Schwarz}{1978}{schwarz_estimating_1978-1}
+Schwarz, G.  \harvardyearleft 1978\harvardyearright .
+\newblock Estimating the {{Dimension}} of a {{Model}}, {\em The Annals of
+  Statistics} {\bf 6}(2).
+
+\harvarditem{Sra}{2012}{sra_short_2012}
+Sra, S.  \harvardyearleft 2012\harvardyearright .
+\newblock A short note on parameter approximation for von {{Mises}}-{{Fisher}}
+  distributions: And a fast implementation of {{I}} s (x), {\em Computational
+  Statistics} {\bf 27}(1):~177--190.
+
+\harvarditem{Storn \harvardand\ Price}{1997}{storn_differential_1997}
+Storn, R. \harvardand\ Price, K.  \harvardyearleft 1997\harvardyearright .
+\newblock Differential {{Evolution}} \textendash{} {{A Simple}} and {{Efficient
+  Heuristic}} for global {{Optimization}} over {{Continuous Spaces}}, {\em
+  Journal of Global Optimization} {\bf 11}(4):~341--359.
+
+\harvarditem{Strehl \harvardand\ Ghosh}{2002}{strehl_cluster_2002}
+Strehl, A. \harvardand\ Ghosh, J.  \harvardyearleft 2002\harvardyearright .
+\newblock Cluster {{Ensembles}} \textemdash{} a {{Knowledge Reuse Framework}}
+  for {{Combining Multiple Partitions}}, {\em Journal of Machine Learning
+  Research} {\bf 3}:~583--617.
+
+\harvarditem{You \harvardand\ Park}{2021}{you_re-visiting_2021}
+You, K. \harvardand\ Park, H.-J.  \harvardyearleft 2021\harvardyearright .
+\newblock Re-visiting {{Riemannian}} geometry of symmetric positive definite
+  matrices for the analysis of functional connectivity, {\em NeuroImage} {\bf
+  225}:~117464.
+
+\end{thebibliography}

@@ -1,0 +1,144 @@
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\documentclass[smallextended]{svjour3}       %
+%
+%
+\smartqed  %
+%
+
+%
+%
+\usepackage{newtxtext,newtxmath}  %
+%
+%
+%
+%
+
+%
+%
+\usepackage{ulem}
+
+\newcommand{\revisionRemove}[1]{\sout{#1}}
+\newcommand{\revision}[1]{{\color{purple} #1}}
+\renewcommand{\revision}[1]{{\color{black} #1}}
+\renewcommand{\revisionRemove}[1]{}
+%
+%
+%
+%
+\usepackage{my}
+\hypersetup{
+    colorlinks=true,
+    linkcolor= violet,
+    %
+    urlcolor= violet,
+    citecolor = violet
+}
+\begin{document}
+
+\title{Temporal Network Analysis Using Zigzag Persistence}
+\titlerunning{Temporal Network Analysis Using Zigzag Persistence}
+
+\author{Audun D. Myers         \and
+        David E. Muñoz 	  \and
+        Firas A. Khasawneh$^*$ 	  \and
+        Elizabeth Munch 	
+}
+
+\institute{A. Myers \at
+              Michigan State University, College of Engineering \\
+              \email{myersau3@msu.edu}           %
+%
+           \and
+           D. Muñoz \at
+              Michigan State University, College of Engineering
+           \and
+           F. Khasawneh ($^*$corresponding author) \at
+              Michigan State University, College of Engineering \\
+              \email{khasawn3@egr.msu.edu}           %
+           \and
+           E. Munch \at
+              Michigan State University, College of Engineering 
+}
+
+
+\date{Preprint as of \today}
+%
+
+
+\maketitle
+
+\begin{abstract}
+\input{sections/sec-abstract}
+\keywords{Zigzag Persistence \and Temporal Graph \and Topological Signal Processing \and Dynamical Network \and Topological Data Analysis \and Persistent Homology \and Signal Processing \and Transportation Network}
+%
+%
+\end{abstract}
+
+\input{./sections/sec-intro}
+\input{./sections/sec-background}
+\input{./sections/sec-method}
+\input{./sections/sec-results}
+\input{./sections/sec-conclusion}
+\begin{acknowledgements}
+\input{./sections/sec-acknowledgements}
+\end{acknowledgements}
+
+
+\section*{Conflict of interest}
+On behalf of all authors, the corresponding author states that there is no conflict of interest.
+
+
+%
+%
+%
+%
+%
+
+%
+\bibliographystyle{unsrt}
+\bibliography{dyn_net_zz_bib}
+\appendix
+\input{./sections/sec-appendix}
+\end{document}
+%

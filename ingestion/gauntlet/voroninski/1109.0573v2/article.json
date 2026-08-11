@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1109.0573v2",
+  "initialized_utc": "2026-08-11T08:30:43.131099Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "PhaseRetrieval.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Phase Retrieval via Matrix Completion",
+        "authors_tex": [
+          "Emmanuel J. Cand\\`{e}s\\thanks{Departments of Mathematics and\n    of Statistics, Stanford University, Stanford CA 94305}, \\, Yonina\n  C. Eldar\\thanks{Department of Electrical Engineering Technion, Israel\n    Institute of Technology, Israel}, \\, Thomas\n  Strohmer\\thanks{Department of Mathematics, University of California\n    at Davis, Davis CA}\\,\\, and Vladislav Voroninski\\thanks{Department of\n    Mathematics, University of California at Berkeley, Berkeley CA}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1109.0573v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1585133,
+      "sha256": "5282a63bdc0c490fa01e87861ed0040cf58d141f234b43e03f87e2708b8266aa",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1109.0573v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1109.0573v2.tar.gz",
+      "entrypoint": "PhaseRetrieval.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 23,
+      "tex_files": 1,
+      "sha256": "3a2ad3646a4f347a1594eba3f7dad32e41d9e5bfcb4ab3421618e1ab0bb0b6fd"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1109.0573v2.pdf",
+      "format": "application/pdf",
+      "bytes": 1418947,
+      "sha256": "defc5a22a839ce7aa8566d952d734c4e1b7563e43886905fc59e6c15f89d9006"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:43.131099Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 24
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 23
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "PhaseRetrieval.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

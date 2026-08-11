@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Geometry of hypersphere}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{The von Mises-Fisher and spherical normal distributions}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{The spherical Laplace distribution}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Definition}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Sampling}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Maximum likelihood estimation}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Parameter estimation}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Estimation of the location}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Estimation of the scale}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{Application to clustering}{}% 12
+\BOOKMARK [1][-]{section.6}{Experiments}{}% 13
+\BOOKMARK [2][-]{subsection.6.1}{Estimating parameters}{section.6}% 14
+\BOOKMARK [2][-]{subsection.6.2}{Clustering}{section.6}% 15
+\BOOKMARK [1][-]{section.7}{Conclusions}{}% 16

@@ -1,0 +1,245 @@
+\documentclass[english,a4paper,cleveref,nosubfigcap, nolineno, thm-restate]{socg-lipics-v2021}
+\bibliographystyle{plainurl}
+
+\hideLIPIcs
+\pagestyle{empty}
+
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz-cd}
+\tikzcdset{scale cd/.style={every label/.append style={scale=#1},
+    cells={nodes={scale=#1}}}}
+\usepackage{xcolor}
+\usepackage{quiver}
+\usepackage{tipa}
+\usepackage{float}
+\usepackage{pgf}
+\usepackage{scalerel}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphbox}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{thmtools}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{cleveref}
+
+\crefname{figure}{Figure}{Figures}
+\crefname{section}{Section}{Sections}
+\crefname{subsection}{{Section}}{{Sections}}
+\crefname{subsubsection}{{Section}}{{Sections}}
+\crefname{appendix}{{Appendix}}{{Appendices}}
+\crefname{equation}{{Equation}}{{Equations}}
+\crefname{remark}{{Remark}}{{Remarks}}
+\crefname{theorem}{{Theorem}}{{Theorems}}
+\crefname{definition}{{Definition}}{{Definitions}}
+\crefname{lemma}{{Lemma}}{{Lemmas}}
+\crefname{proposition}{{Proposition}}{{Propositions}}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{table}{{Table}}{{Tables}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=black,      
+    urlcolor=blue,
+    citecolor = blue,
+    pdftitle={Mapper Interleaving Loss Computation},
+    }
+    
+\crefname{figure}{Figure}{Figures}
+\crefname{section}{Section}{Sections}
+\crefname{equation}{Equation}{Equations}
+\crefname{remark}{Remark}{Remarks}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{definition}{Definition}{Definitions}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{table}{Table}{Tables}
+
+\newtheorem{problem}{Problem}
+\crefformat{problem}{P#2#1#3} 
+
+\newcommand{\mybf}[1]{\textbf{\sffamily{#1}}}
+%-------------------------------------------------------
+% Liz's Alphabet
+%-------------------------------------------------------
+
+%---------Mathbb-------%
+\newcommand{\Xspace}{{\mathbb X}}
+\newcommand{\Rspace}{{\mathbb R}}
+
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\W}{\mathbb{W}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\X}{{\mathbb X}}
+
+\newcommand{\Y}{{\mathbb Y}}
+\newcommand{\Z}{{\mathbb Z}}
+%---------Mathcal------%
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\GG}{\mathcal{G}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\II}{\mathcal{I}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\RR}{\mathcal{R}}
+\renewcommand{\SS}{\mathcal{S}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\UU}{\mathcal{U}}
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cU}{\mathcal{U}}
+
+
+%--------Categories-------%%
+\newcommand{\End}{\mathbf{End}}
+
+
+\newcommand{\Asgn}{\mathrm{Asgn}}
+\newcommand{\Func}{\mathrm{Func}}
+\newcommand{\Open}{\mathbf{Open}}
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Int}{\mathbf{Int}}
+\newcommand{\Top}{\mathbf{Top}}
+
+\newcommand{\obj}{\mathrm{obj}}
+\newcommand{\mor}{\mathrm{mor}}
+
+\newcommand{\maxnorm}[1]{\left\lVert #1 \right\rVert_{\max}}
+
+%Colimit
+\makeatletter
+\newcommand{\colim@}[2]{%
+  \vtop{\m@th\ialign{##\cr
+    \hfil$#1\operator@font colim$\hfil\cr
+    \noalign{\nointerlineskip\kern1.5\ex@}#2\cr
+    \noalign{\nointerlineskip\kern-\ex@}\cr}}%
+}
+\newcommand{\colim}{%
+  \mathop{\mathpalette\colim@{\rightarrowfill@\textstyle}}\nmlimits@
+}
+\makeatother
+
+\newcommand{\e}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\newcommand{\inv}{^{-1}}
+\newcommand{\radius}{\ensuremath{\mathrm{radius}}}
+\newcommand{\1}{\mathbbm{1}}
+\renewcommand{\Im}{\mathrm{Im}}
+\newcommand{\id}{\mathrm{Id}}
+\newcommand{\Id}{\id}
+
+\newcommand{\mycomment}[1]{}
+
+
+%-----TODOS-------------------%
+\newcommand{\Liz}[1]{{\color{violet}\textbf{Liz:} #1}}
+\newcommand{\liz}[1]{\Liz{#1}} 
+\newcommand{\Erin}[1]{{\color{WildStrawberry}\textbf{Erin:} #1}}
+\newcommand{\erin}[1]{{\color{WildStrawberry}\textbf{Erin:} #1}}
+\newcommand{\Bei}[1]{{\color{magenta}\textbf{Bei:} #1}}
+\newcommand{\Sarah}[1]{{\color{cyan}\textbf{Sarah:} #1}}
+\newcommand{\Ishika}[1]{{\color{orange}\textbf{Ishika:} #1}}
+%-----END TODOS---------------%
+
+\newcommand*{\Parallelogramr}[1][]{
+  \pgfpicture\pgfsetroundjoin
+    \pgftransformxslant{.6}
+    \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{.60em}{.65em}}
+    \pgfusepath{stroke,#1}
+  \endpgfpicture}
+  
+\newcommand*{\Parallelograml}[1][]{
+  \pgfpicture\pgfsetroundjoin
+    \pgftransformxslant{-.6}
+    \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{.60em}{.65em}}
+    \pgfusepath{stroke,#1}
+  \endpgfpicture}
+  
+\newcommand{\triangled}{\raisebox{\depth}{$\bigtriangledown$}}
+\newcommand{\triangleu}{\bigtriangleup}
+
+\newcommand{\Lpl}{L_{\scaleobj{.7}{\Parallelograml}}}
+\newcommand{\Lpr}{L_{\scaleobj{.7}{\Parallelogramr}}}
+\newcommand{\Ltd}{L_{\bigtriangledown}}
+\newcommand{\Ltu}{L_{\bigtriangleup}}
+
+\renewcommand{\phi}{\varphi}
+\newcommand{\tF}{\widetilde{F}}
+\newcommand{\tG}{\widetilde{G}}
+\newcommand{\tphi}{\widetilde{\phi}} 
+\newcommand{\tpsi}{\widetilde{\psi}} 
+
+\newcommand{\phitt}{\texttt{phi}}
+\newcommand{\psitt}{\texttt{psi}}
+\newcommand{\vtt}{\texttt{v}}
+\newcommand{\wtt}{\texttt{w}}
+\newcommand{\Vtt}{\texttt{V}}
+\newcommand{\Ett}{\texttt{E}}
+
+%------------
+\title{Towards an Optimal Bound for the Interleaving Distance on Mapper Graphs 
+\thanks{This research was partially supported by a grant from the Department of Energy (DOE) DE-SC0021015 and grants from the National Science Foundation (NSF) DMS-2301361, CCF-1907591, CCF-2106578, CCF-2142713, CCF-2106672, and CCF-1907612.}
+}
+
+\titlerunning{Optimal Bounds for Mapper Graph Interleaving}
+
+\author{Erin Wolf Chambers}{ University of Notre Dame, USA}{echambe2@nd.dot.edu}{https://orcid.org/0000-0001-8333-3676}{}
+\author{Ishika Ghosh}{Michigan State University, USA}{ghoshis3@msu.edu}{https://orcid.org/0000-0002-7901-5912}{}
+\author{Elizabeth Munch}{Michigan State University, USA}{muncheli@msu.edu}{https://orcid.org/0000-0002-9459-9493}{}
+\author{Sarah Percival}{University of New Mexico, USA}{spercival@msu.edu}{https://orcid.org/0000-0003-1024-4618}{}
+\author{Bei Wang}{University of Utah, USA}{beiwang@sci.utah.edu}{https://orcid.org/0000-0002-9240-0700}{}
+
+\date{}
+\ccsdesc[500]{Mathematics of computing~Algebraic topology}
+\ccsdesc[500]{Theory of computation~Computational geometry} 
+
+\keywords{Mapper graphs, geometric graphs, interleaving distance, integer linear programming}
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Mapper graphs are widely used tools in topological data analysis and visualization. They can be understood as discrete approximations of Reeb graphs, providing insight into the shape and connectivity of complex data. Given a high-dimensional point cloud together with a real-valued function defined on it, a mapper graph summarizes the induced topological structure: each node represents a local neighborhood, and edges connect nodes whose corresponding neighborhoods overlap. Our focus is the interleaving distance for mapper graphs, arising as a discretized analogue of the interleaving distance for Reeb graphs—a quantity known to be NP-hard to compute. This distance measures how similar two mapper graphs are by quantifying how much they must be ``stretched'' to be made comparable. Recent work introduced a loss function that gives an upper bound on this distance. The loss evaluates how far a given collection of maps, called an assignment, is from being a true interleaving. Importantly, it is computationally tractable, offering a practical way to bound the distance, however the quality of the bound is dependent on the choice of assignment.
+In this paper, we develop the first framework for bounding the interleaving distance on mapper graphs. We present the bound in two ways: first, by formulating an integer linear program (ILP) that determines whether an $n$-interleaving exists for a given $n$; and second, by constructing an ILP that identifies an assignment with minimal loss for that $n$.
+We also evaluate the method on small examples where the interleaving distance is known, and on benchmark and simulated datasets, demonstrating the utility of the approach for classification tasks based on mapper graphs.
+% To assess the effectiveness, we evaluate the method on small mapper graphs with known interleaving distances and show that the optimized upper bound coincides with the true distance in these cases. We further demonstrate the utility of the approach on both benchmark and simulated datasets by computing all pairwise optimal losses for the resulting mapper graphs and leveraging these distance bounds for classification.
+
+\end{abstract}
+
+\input{sections/sec-intro}
+\input{sections/sec-background}
+\input{sections/sec-problems}
+\input{sections/sec-datastructure}
+\input{sections/sec-implementation}
+\input{sections/sec-experiments}
+\input{sections/sec-discussion}
+
+\bibliography{refs-mapper-loss}
+
+\appendix
+\input{sections/sec-appendix}   
+\end{document}

@@ -1,0 +1,94 @@
+\subsection{Functors, Cosheaves and Mapper Graphs}
+\label{sec:CategoryTheory}
+
+We work in a category-theoretic setting and provide a brief overview of the necessary definitions, with more details provided in \cite{curry2013sheaves,riehl2017category}. 
+
+A \emph{category} $\cC$ is a collection of objects $X,Y,Z,\dots$ along with morphisms $f,g,h,\dots$ such that 
+\begin{enumerate}
+    \item each morphism $f$ has a designated domain $X$ and codomain $Y$,
+    \item every object has an identity morphism $\1_X\colon X \to X$,
+    \item any pair of morphisms $f\colon X \to Y$ and $g\colon Y \to Z$ has a composite morphism $g \circ  f\colon X \to Z$ which satisfies an identity axiom, where $f\colon X \to Y = \1_Y \circ  f = f \circ \1_X$, and an associativity axiom, where $h\circ (g\circ f) = (h\circ g)\circ f$.
+  \end{enumerate}
+Many settings in mathematics can be viewed as categories: $\Set$ is the category whose objects are sets and morphisms are set maps; 
+$\Top$ is the category whose objects are topological spaces and morphisms are continuous functions;
+and, for a given topological space $X$, $\Open(X)$ is the category whose objects are the open sets and morphisms are given by inclusion. A category is \emph{small} if the collections of objects and morphisms are both sets.
+
+Given two categories $\cC$ and $\cD$, a \emph{functor} $F\colon\cC \to \cD$ maps each object $x \in \cC$ to an object $F(x) \in \cD$ and each morphism $f\colon X \to Y$ to a morphism $F[f]\colon F(X) \to F(Y)$ that satisfies the following properties: for any $X \in \cC$, $F[\1_X] = \1_{F(X)}$; for any $f,g \in \cC$ for which the composition $gf$ is defined, we have $F[gf] = F[g] F[f]$. 
+Given two functors $F,G\colon \cC \to \cD$, a \emph{natural transformation} $\eta\colon F \Rightarrow G$ is a collection of maps $\eta_X\colon F(X) \to G(X)$ such that for any morphism $f\colon X \to Y$ in $\cC$, the diagram 
+\begin{equation*}
+\begin{tikzcd}
+X\ar[d,  "f"] 
+& F(X) 
+    \ar[r, "\eta_X"] 
+    \ar[d, "{F[f]}"']
+& G(X) 
+    \ar[d, "{G[f]}"]
+\\
+Y 
+& F(Y) \ar[r, "\eta_Y"] 
+& G(Y)
+\end{tikzcd}
+\end{equation*}
+commutes. 
+One example of a functor is $\pi_0\colon\Top \to \Set$, where $\pi_0(X)$ denotes the set of path-connected components of a topological space $X$, and the morphisms are set maps $\pi_0[f]\colon \pi_0(X) \to \pi_0(Y)$ sending a path-connected component $A$ in $X$ to the element $f(A)$ in $Y$.
+
+In the special case where $J$ is a small category, a diagram is simply a functor $F\colon J \to \cC$.
+Let $c \in \cC$. By a slight abuse of notation, we define the constant functor $c \colon J \to \cC$, $c(j) \mapsto c$ for all $j \in J$ and all morphisms are sent to the identity morphism. 
+In this setting, a \emph{cocone} is a natural transformation $\lambda\colon F \to c$.
+We denote $\lambda_j\colon F(j) \to c$ 
+%
+and note that for any $f\colon j \to k$ in $J$, $\lambda_k \circ F[f] = \lambda_j$. 
+A cocone $\lambda\colon F \to c$ is a \emph{colimit} if, for any other cocone $\lambda'\colon F \to c'$, there is a unique  morphism $u\colon c \to c'$ such that the diagram
+\begin{equation*}
+\begin{tikzcd}
+F(j) 
+    \ar[rr, "{F[f]}"]
+    \ar[dr, "\lambda_j"]
+    \ar[ddr, "\lambda_j'"']
+&& F(k)
+    \ar[dl, "\lambda_k"']
+    \ar[ddl, "\lambda_k'"]
+\\
+& c \ar[d, dashed, "u"] \\
+& c'
+\end{tikzcd}
+\end{equation*}
+commutes for all $f\colon j \to k$ in $J$. 
+We denote this by $\colim_I(F)$, and note that this always exists and is unique in our setting where $\cD =\Set$.
+
+For the rest of this paper, we turn our attention to functors of the form $F\colon\Open(X) \to \Set$, called \emph{pre-cosheaves}. 
+We are particularly interested in the case when a pre-cosheaf is a \emph{cosheaf}. In short, a cosheaf is a presheaf that is entirely and uniquely defined by any open cover of ${U \in \Open(X)}$.
+More rigorously, given an object $U \in \Open(X)$ and a cover $\{U_\alpha\}_{\alpha \in A}$ of $U$, define a category $\cU = \{U_\alpha \cap U_{\alpha'} \mid \alpha,\alpha' \in A \}$ with morphisms given by inclusion. As these open sets $U_\alpha$ are themselves objects in $\Open(X)$, the functor $F\colon\cU \to \Set$ is well-defined, so we can consider its colimit $\lambda\colon F \to L$. A \emph{cosheaf} is a functor $F$ whose unique map $L \to F(U)$ given by the colimit definition is an isomorphism for every $U \in \Open(X)$.
+
+
+%
+
+
+
+%
+%
+%
+%
+%
+
+
+%
+%
+%
+%
+
+%
+%
+
+
+
+
+%
+%
+%
+%
+%
+%
+%
+%
+%

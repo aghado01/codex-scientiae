@@ -1,0 +1,266 @@
+%\documentclass[manuscript,screen,review]{acmart}
+\documentclass[manuscript,screen]{acmart}
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+
+%% Rights management information. This information should be updated.
+\setcopyright{acmlicensed}
+\copyrightyear{2023} % Update to the current year
+\acmYear{2023}
+\acmDOI{10.1145/XXXXXXX.XXXXXXX} % Replace with your article's DOI
+\acmISBN{978-1-4503-XXXX-X/23/06} % Update ISBN
+
+%% Load necessary packages
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{subfig}         % for subfigures, choose this or subcaption
+
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}       % include graphics
+\usepackage{textcomp}       % additional text symbols
+\usepackage{algorithm}      % for algorithm environments
+\usepackage{algpseudocode}  % for algorithm pseudocode
+\let\Bbbk\relax
+\usepackage{amssymb}        % for additional math symbols, uncommented
+\usepackage{mathtools}      % for additional math tools
+\usepackage{amsthm}         % for theorem environments
+\usepackage{csquotes}       % for context-sensitive quotation facilities
+\usepackage{multirow}       % for tables with multiple rows
+\usepackage{multicol}       % for multi-column layouts
+\usepackage{color,soul}     % for highlighting text
+\usepackage{wrapfig}        % for wrapping text around figures
+\usepackage{float}          % for controlling float placement
+\usepackage{lipsum}         % for generating filler text
+\usepackage{cleveref}       % for referencing labels intelligently
+\usepackage{tikz, tikz-cd}  % for drawing diagrams
+\usepackage{adjustbox}      % for adjusting boxes
+\usepackage{hyperref}       % for managing hyperlinks, uncommented
+
+ \usepackage{listings}
+\usepackage{xcolor}
+
+\usetikzlibrary{shapes.geometric, positioning, trees}
+
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    keepspaces=true,
+}
+%\usepackage{subcaption}
+
+%% Custom macros
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\newcommand{\BZ}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\h}{\mathcal{H}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\s}{\mathcal{S}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\VR}{\mathcal{R}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\e}{\epsilon}
+\newcommand{\p}{\mathcal{P}}
+
+\newcommand{\PD}{\rm{PD}}
+\newcommand{\PB}{\rm{PB}}
+\newcommand{\PM}{\rm{PM}}
+\newcommand{\TE}{\rm{TE}}
+\newcommand{\bigo}{\mathcal{O}}
+
+
+\newcommand{\CA}[1]{\textcolor{blue}{\textbf{CA:}} \textcolor{magenta}{\textbf{#1}}}
+\newcommand{\BC}[1]{\textcolor{blue}{\textbf{BC:}} \textcolor{magenta}{\textbf{#1}}}
+\newcommand{\textN}[1]{\textcolor{blue}{\textbf{#1}}}
+\newcommand{\textO}[1]{\textcolor{red}{\textbf{#1}}}
+
+%% Theorem environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newtheorem{term}{Key Term}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+%% For managing citations, it is recommended to use bibliography files in BibTeX format.
+%%\citestyle{acmauthoryear} % Uncomment for author-year citation style
+
+%% end of the preamble, start of the body of the document source.
+
+\setcounter{tocdepth}{3}
+
+\begin{document}
+
+
+\title{Topological Methods in Machine Learning: A Tutorial for Practitioners}
+
+
+\author{Baris Coskunuzer}
+\email{coskunuz@utdallas.edu}
+\orcid{0000-0001-7462-8819}
+\affiliation{%
+  \institution{University of Texas at Dallas}
+  \city{Richardson}
+  \state{TX}
+  \country{USA}
+}
+\author{C\"{u}neyt G\"{u}rcan Ak\c{c}ora}
+\email{cuney.akcora@ucf.edu}
+\orcid{0000-0002-2882-6950}
+\affiliation{%
+  \institution{University of Central Florida}
+  \city{Orlando}
+  \state{FL}
+  \country{USA}}
+
+
+\renewcommand{\shortauthors}{Coskunuzer-Akcora}
+
+
+\begin{abstract}
+Topological Machine Learning (TML) is an emerging field that leverages techniques from algebraic topology to analyze complex data structures in ways that traditional machine learning methods may not capture. This tutorial provides a comprehensive introduction to two key TML techniques, persistent homology and the Mapper algorithm, with an emphasis on practical applications. Persistent homology captures multi-scale topological features such as clusters, loops, and voids, while the Mapper algorithm creates an interpretable graph summarizing high-dimensional data. To enhance accessibility, we adopt a data-centric approach, enabling readers to gain hands-on experience applying these techniques to relevant tasks. We provide step-by-step explanations, implementations, hands-on examples, and case studies to demonstrate how these tools can be applied to real-world problems. The goal is to equip researchers and practitioners with the knowledge and resources to incorporate TML into their work, revealing insights often hidden from conventional machine learning methods. The tutorial code is available at \url{https://github.com/cakcora/TopologyForML}.
+\end{abstract}
+
+ 
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10002950.10003648.10003700</concept_id>
+       <concept_desc>Mathematics of computing~Algebraic topology</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010147.10010257.10010293.10010294</concept_id>
+       <concept_desc>Computing methodologies~Learning paradigms</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010147.10010257.10010282</concept_id>
+       <concept_desc>Computing methodologies~Machine learning algorithms</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010147.10010257.10010293.10010319</concept_id>
+       <concept_desc>Computing methodologies~Machine learning applications</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010405.10010497</concept_id>
+       <concept_desc>Applied computing~Life and medical sciences</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+   <concept>
+       <concept_id>10010405.10010432</concept_id>
+       <concept_desc>Applied computing~Physical sciences and engineering</concept_desc>
+       <concept_significance>300</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Mathematics of computing~Algebraic topology}
+\ccsdesc[500]{Computing methodologies~Learning paradigms}
+\ccsdesc[500]{Computing methodologies~Machine learning algorithms}
+\ccsdesc[500]{Computing methodologies~Machine learning applications}
+\ccsdesc[300]{Applied computing~Life and medical sciences}
+\ccsdesc[300]{Applied computing~Physical sciences and engineering}
+
+
+
+
+
+ 
+\keywords{Topological Data Analysis, Machine Learning, Persistent Homology, Mapper, Multiparameter Persistence}
+
+\received{20 September 2024}
+\received[revised]{12 March 20xx}
+\received[accepted]{5 June 20xx}
+
+ 
+\maketitle
+
+\tableofcontents
+
+\section{Introduction} \label{sec:intro}
+\input{sections/1-intro}
+
+\section{Background} \label{sec:background}
+\input{sections/2-background}
+
+\section{Persistent Homology} \label{sec:PH}
+\input{sections/3-PH}
+
+\section{Multiparameter Persistence} \label{sec:MP}
+\input{sections/4-MP}
+
+\section{Mapper} \label{sec:mapper}
+\input{sections/5-Mapper}
+
+\section{Applications} \label{sec:applications}
+\input{sections/6-Applications}
+
+\section{Future Directions} \label{sec:future}
+\input{sections/7-Future}
+
+
+
+\section{Conclusion} \label{sec:conclusion}
+In this tutorial, we have introduced the key concepts of topological methods, particularly focusing on persistent homology and the mapper algorithm, and demonstrated their practical application in machine learning tasks. By providing a clear and accessible roadmap, we aimed to equip readers with the tools and understanding necessary to integrate TDA techniques into their research workflows. The strength of these methods lies in their ability to capture and quantify intricate, multi-scale topological features that are often missed by traditional ML approaches.
+
+As demonstrated through various case studies, including cancer diagnosis, shape recognition, and drug discovery, TDA offers unique insights and interpretability, which are increasingly valuable in today's era of complex data. The integration of persistent homology for feature extraction and mapper for intuitive data visualization opens new pathways for researchers to explore the underlying structures of their data.
+
+Looking forward, the continued development of software libraries, scalable algorithms, and more interpretable models will play a crucial role in making topological machine learning even more accessible to a broader audience. The future directions we highlighted, such as topological deep learning and automated TDA models, provide exciting opportunities for further advancements in the field.
+
+We hope this tutorial serves as a foundational resource for those new to TDA and inspires further exploration of topological methods in machine learning and beyond. By embracing these techniques, researchers can unlock novel insights and push the boundaries of what is possible in data analysis.
+
+\begin{acks}
+This work was partially supported by the National Science Foundation under grants  DMS-2202584, 2229417, and DMS-2220613 and by the Simons Foundation under grant \# 579977.
+The authors acknowledge the \href{http://www.tacc.utexas.edu}{Texas Advanced Computing Center} (TACC) at The University of Texas at Austin for providing computational resources that have contributed to the research results reported within this paper. 
+\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{main}
+
+\clearpage
+
+\appendix
+\input{sections/8-appendix}
+
+
+
+
+ 
+
+\end{document}
+ 

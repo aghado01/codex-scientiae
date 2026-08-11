@@ -1,0 +1,106 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2504.14164v1",
+  "initialized_utc": "2026-08-11T08:29:54.981670Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Learning over von Mises–Fisher Distributions via a Wasserstein-like Geometry",
+        "authors_tex": [
+          "Kisung You",
+          "Dennis Shung",
+          "Mauro Giuffr\\`{e}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2504.14164v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 6301758,
+      "sha256": "7c90e965f6fdb20db1a24bc85a5a64fc2fd465da22f2566eb779cd10625601d1",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2504.14164v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2504.14164v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 20,
+      "tex_files": 1,
+      "sha256": "f50c31e2a4a3d88d8256b0184e62f658ce4560471d0b715dbcd1e395fbd3fe73"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2504.14164v1.pdf",
+      "format": "application/pdf",
+      "bytes": 4766476,
+      "sha256": "9200dd7c7c70753b4a5af43e511d5be907008c2df8e8d74429f1c5724acee433"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:29:54.981670Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 21
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 20
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "main.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

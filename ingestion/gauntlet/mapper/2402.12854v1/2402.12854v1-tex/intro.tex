@@ -1,0 +1,54 @@
+\section{Introduction}
+
+%Mapper is an efficient algorithm in the field of TDA, application + math developments.
+%Its main weakness is its lack of robustness : many parameters too choose; cf papers.
+
+
+
+\paragraph*{Mapper graphs and TDA.} The Mapper graph introduced in \cite{singh2007topological} is an essential tool of Topological Data Analysis (TDA), and has been used many times for visualization purposes
+on different types of data, including, but not limited to, single-cell sequencing~\cite{wang2018topological,zechel2014topographical}, neural network architectures~\cite{9605336,joseph2021topological}, or 3D meshes~\cite{wang2020exploration,rosen2018inferring}.
+Moreover, its ability to precisely encode (within the graph) the presence and sizes of geometric and topological structures in the data in a mathematically founded way
+(through the use of algebraic topology) has also proved beneficial for highlighting subpopulations of interest, which are usually detected as peculiar
+topological structures of significant sizes, and identifying the key features that best explain such subpopulations against the rest of the Mapper graph.
+This general pipeline has become a key component in, e.g., biological inference in single-cell data sets, where differentiating stem cells can usually
+be recovered from branching patterns in the corresponding Mapper graphs~\cite{Rizvi2017}.
+
+\paragraph*{Parameter selection.} However, it has quickly become clear that the Mapper graph is quite sensitive to its parameters, in the
+sense that the structure of the graph can vary a lot under (even small) changes of its parameters. As such, several pipelines based on Mapper
+graphs actually involve brute force optimization: they first compute a grid of Mapper graphs corresponding to many different sets of parameters,
+and then they pick the best one, either by manual inspection or with arbitrary criteria---leading to prohibitive running times.
+In order to deal with this issue, several methods have been proposed in the literature for either assessing the statistical robustness of a given Mapper graph with respect to the distribution of the studied dataset~\cite{belchi2020numerical, Brown2021}, or for tuning the Mapper parameters automatically~\cite{carriere2018statistical}. 
+Unfortunately, most tuning methods
+involve simple heuristics that only work for some, but not all Mapper parameters; in particular, the so-called {\em filter parameter} has never been treated, to the best of our knowledge. This is mostly because it is a general continuous function, and can thus vary in a much wilder parameter space than the other Mapper parameters.
+
+In another line of work, ensemble methods have recently been proposed to combine Mapper graphs over multiple parameter sets, rather than trying to find the best one \cite{kang2021ensemble,fitzpatrick2023ensemble},
+%This empirically ensemble methods are known
+so as to be able to produce outputs that are more robust. However, this imposes to aggregate families of completely different filter functions, with no guarantees on the resulting graph. %will lead  to a relevant final Mapper. 
+In this work, we follow a different approach, and rather attempt at identifying an "optimal" filter function by minimizing specific loss functions.
+
+
+Another approach related to our work is \cite{bui2020f}, where an alternative way of constructing Mapper graphs is proposed using a fuzzy clustering algorithm. %Our framework shares with F-Mapper 
+Even though we also adopt a probabilistic approach (that allows, e.g., a point to belong to disconnected intervals in the cover of the filter range), the underlying probabilistic formalism 
+that we use is new, while there is none in \cite{bui2020f}. In particular, we introduce stochastic {\it assignment schemes} and we address the parameter selection problem within this framework. 
+
+
+
+
+ 
+
+
+
+\paragraph*{Contributions.} Our contribution is three-fold:
+\begin{itemize}
+    \item We introduce {\em Soft Mapper}: a generalization of the combinatorial Mapper graph in the form of a probability distribution on Mapper graphs,
+% define a generalized Mapper as a distribution on Mapper (attention,  c'est bien defini ? cf mesurabilité dans papier avec Steve ???), which provides a smoothed  version of the original Mapper we call the Soft Mapper. 
+    \item We propose a filter optimization framework adapted to a smooth Soft Mapper distribution with provable convergence guarantees,
+%In this framework, we  propose an optimization method to find a filter function
+    \item We implement and showcase the efficiency of Mapper filter optimization through Soft Mapper on various data sets, with public, open-source code in \texttt{TensorFlow}. 
+\end{itemize}
+
+The following of the article is organized as follows: in Section~\ref{sec:background} we recall the basics on the Mapper algorithm, then in Section~\ref{sec:soft_mapper} we detail the Soft Mapper construction, which is the main  focus of this work. We provide several interesting special cases of Soft Mapper in Section~\ref{sec:examples}, before introducing topological losses that are specific to Mapper graphs in Section~\ref{sec:tpological_loss}. We then present our optimization setting, in which a parameterized family of Mapper filter functions is optimized, in Section~\ref{sec:optim}, and we 
+apply it on
+%finally show the results of using our method in order to derive an optimal filters for 
+3-dimensional shapes and single cell RNA-sequencing data in Section~\ref{sec:experiments}. Finally, we discuss the results of this article and present possible future work directions in Section~\ref{sec:discussion}.
+

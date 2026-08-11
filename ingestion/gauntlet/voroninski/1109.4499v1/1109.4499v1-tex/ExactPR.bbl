@@ -1,0 +1,124 @@
+\begin{thebibliography}{10}
+
+\bibitem{BBC07}
+R.~Balan, B.~Bodmann, P.~Casazza, and D.~Edidin.
+\newblock Fast algorithms for signal reconstruction without phase.
+\newblock In {\em Wavelets XII}, volume 6701 of {\em Proc. SPIE}, pages
+  670111920--670111932, 2007.
+
+\bibitem{BBC09}
+R.~Balan, B.~Bodmann, P.~Casazza, and D.~Edidin.
+\newblock Painless reconstruction from magnitudes of frame coefficients.
+\newblock {\em J.\ Four.\ Anal.\ Appl.}, 15:488--501, 2009.
+
+\bibitem{BCE06}
+R.~Balan, P.~Casazza, and D.~Edidin.
+\newblock On signal reconstruction without noisy phase.
+\newblock {\em Appl.\ Comp.\ Harm.\ Anal.}, 20:345--356, 2006.
+
+\bibitem{Beck98}
+C.~Beck and R.~D'Andrea.
+\newblock Computational study and comparisons of {LFT} reducibility methods.
+\newblock In {\em Proceedings of the American Control Conference}, pages
+  1013--1017, 1998.
+
+\bibitem{BCG10}
+S.~Becker, E.~Cand{\`e}s, and M.~Grant.
+\newblock Templates for convex cone problems with applications to sparse signal
+  recovery.
+\newblock Technical report, Department of Statistics, Stanford University,
+  2010.
+\newblock Preprint available at http://tfocs.stanford.edu/tfocs/paper.shtml.
+
+\bibitem{IndykGilbert}
+R.~Berinde, A.~Gilbert, P.~Indyk, H.~Karloff, and M.~Strauss.
+\newblock Combining geometry and combinatorics: A unified approach to sparse
+  signal recovery.
+\newblock {\em CoRR}, pages --1--1, 2008.
+
+\bibitem{CESV}
+E.~Cand\`es, Y.~Eldar, T.~Strohmer, and V.~Voroninski.
+\newblock Phase retrieval via matrix completion.
+\newblock {\em Preprint}, 2011.
+
+\bibitem{MCNoise}
+E.~Cand\`es and Y.~Plan.
+\newblock {Matrix completion with noise}.
+\newblock {\em Proceedings of the IEEE}, 98(6):925--936, 2010.
+
+\bibitem{CT05}
+E.~J. Cand\`{e}s and T.~Tao.
+\newblock Decoding by linear programming.
+\newblock {\em IEEE Trans. on Information Theory}, 51(2):4203--4215, 2005.
+
+\bibitem{CMP10}
+A.~Chai, M.~Moscoso, and G.~Papanicolaou.
+\newblock Array imaging using intensity-only measurements.
+\newblock Technical report, Stanford University, 2010.
+
+\bibitem{DavisKahan}
+C.~Davis and W.~M. Kahan.
+\newblock {The rotation of eigenvectors by a perturbation. III.}
+\newblock {\em SIAM J. Numer. Anal.}, 7:1--46, 1970.
+
+\bibitem{Fin04}
+J.~Finkelstein.
+\newblock Pure-state informationally complete and {``really''} complete
+  measurements.
+\newblock {\em Phys. Rev. A}, 70:052107, 2004.
+
+\bibitem{Gross09}
+D.~Gross.
+\newblock Recovering low-rank matrices from few coefficients in any basis,
+  2009.
+\newblock Available at {\tt http://arvix.org/abs/0910.1879.}
+
+\bibitem{QSTC}
+D.~Gross, Y.~Liu, S.~T. Flammia, S.~Becker, and J.~Eisert.
+\newblock Quantum-state tomography via compressed sensing.
+\newblock {\em Physical Review Letters}, 105(15), 2010.
+
+\bibitem{Hur89}
+N.~Hurt.
+\newblock {\em Phase Retrieval and Zero Crossings}.
+\newblock Kluwer Academic Publishers, Norwell, MA, 1989.
+
+\bibitem{KST95}
+M.~Klibanov, P.~Sacks, and A.~Tikhonravov.
+\newblock The phase retrieval problem.
+\newblock {\em Inverse problems}, 11:1995, 1--28.
+
+\bibitem{LV11}
+Y.~Lu and M.~Vetterli.
+\newblock Sparse spectral factorization: Unicity and reconstruction algorithms.
+\newblock In {\em The 36th International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, Prague, Czech Republic, 2011.
+
+\bibitem{Mesbahi97}
+M.~Mesbahi and G.~P. Papavassilopoulos.
+\newblock On the rank minimization problem over a positive semidefinite linear
+  matrix inequality.
+\newblock {\em IEEE Transactions on Automatic Control}, 42(2):239--243, 1997.
+
+\bibitem{Roc70}
+R.~Rockafellar.
+\newblock {\em Convex analysis}.
+\newblock Princeton Landmarks in Mathematics and Physics. Princeton University
+  Press, 1970.
+
+\bibitem{SC91}
+H.~Sahinoglou and S.~Cabrera.
+\newblock On phase retrieval of finite-length sequences using the initial time
+  sample.
+\newblock {\em IEEE Transactions on Circuits and Systems}, 38(5):954--958,
+  1991.
+
+\bibitem{VershyninRMT}
+R.~Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.~C. Eldar and G.~Kutyniok, editors, {\em Compressed Sensing:
+  Theory and Applications}. Cambridge University Press, 2010.
+\newblock To Appear. Preprint available at
+  \url{http://www-personal.umich.edu/~romanv/papers/papers.html}.
+
+\end{thebibliography}

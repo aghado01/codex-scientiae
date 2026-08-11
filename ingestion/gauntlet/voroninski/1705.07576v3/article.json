@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1705.07576v3",
+  "initialized_utc": "2026-08-11T08:30:57.525237Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "deep_cs_arxiv.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Global Guarantees for Enforcing Deep Generative Priors by Empirical Risk",
+        "authors_tex": [
+          "Paul Hand\\thanks{This work was accepted for presentation at Conference on Learning Theory (COLT) 2018.  Both authors contributed equally.  }\\ \\thanks{Department of Mathematics and Khoury College of Computer and Information Sciences, Northeastern University, Boston, MA} \\  and Vladislav Voroninski$^*$\\thanks{Helm.ai, Menlo Park, CA}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1705.07576v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 102819,
+      "sha256": "8e2b567b040f92c6cdda5b1fe3edc0c32f73c6e392f6adc9ce97a5d08817e92a",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1705.07576v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1705.07576v3.tar.gz",
+      "entrypoint": "deep_cs_arxiv.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 3,
+      "tex_files": 1,
+      "sha256": "65acc2e3879b82905e7313fdffe2eb45509291f92a3990fe07e3637a298485b2"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1705.07576v3.pdf",
+      "format": "application/pdf",
+      "bytes": 398015,
+      "sha256": "09ba7f9b8e067b6ece1739cea34cb777bf898917b6cfb59adac459b7b3e39be6"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:57.525237Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 3
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 3
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "deep_cs_arxiv.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

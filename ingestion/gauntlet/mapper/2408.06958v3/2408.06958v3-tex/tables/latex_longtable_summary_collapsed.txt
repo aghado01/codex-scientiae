@@ -1,0 +1,28 @@
+\begin{longtable}{lr}
+\caption{Average clustering performance of AuToMATo vs. reference clustering algorithms}
+\label{table:summary_of_results} \\
+\toprule
+Algorithm & Fowlkes-Mallows score \\
+\midrule
+\endfirsthead
+\caption[]{Average clustering performance of AuToMATo vs. reference clustering algorithms} \\
+\toprule
+Algorithm & Fowlkes-Mallows score \\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{Continued on next page} \\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+AuToMATo & \textbf{0.8554±0.0228} \\
+DBSCAN & 0.8457 \\
+Average linkage & 0.8321 \\
+HDBSCAN & 0.8209 \\
+Single linkage & 0.8156 \\
+TTK clustering algorithm & 0.8019 \\
+Complete linkage & 0.7592 \\
+Ward linkage & 0.5896 \\
+FINCH & 0.5074 \\
+\end{longtable}

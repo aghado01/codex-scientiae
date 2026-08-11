@@ -1,0 +1,117 @@
+\begin{thebibliography}{10}
+
+\bibitem{phasemaxJustin}
+Sohail Bahmani and Justin Romberg.
+\newblock Phase retrieval meets statistical learning theory: A flexible convex
+  relaxation.
+\newblock {\em arXiv preprint arXiv:1610.04210}, 2016.
+
+\bibitem{xfel1}
+M.J. Bogan and et~al.
+\newblock Single particle x-ray diffractive imaging.
+\newblock {\em Nano Lett.}, 8(2):310--316, 2008.
+
+\bibitem{cai2015optimal}
+T~Tony Cai, Xiaodong Li, and Zongming Ma.
+\newblock Optimal rates of convergence for noisy sparse phase retrieval via
+  thresholded wirtinger flow.
+\newblock {\em arXiv preprint arXiv:1506.03382}, 2015.
+
+\bibitem{CL2012}
+Emmanuel~J Cand\`{e}s and Xiaodong Li.
+\newblock Solving quadratic equations via phaselift when there are about as
+  many equations as unknowns.
+\newblock {\em Found. of Comput. Math.}, pages 1--10, 2012.
+
+\bibitem{RPCA}
+Emmanuel~J. Cand{\`{e}}s, Xiaodong Li, Yi~Ma, and John Wright.
+\newblock Robust principal component analysis?
+\newblock {\em CoRR}, abs/0912.3599, 2009.
+
+\bibitem{wirtinger}
+Emmanuel~J Candes, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and algorithms.
+\newblock {\em Information Theory, IEEE Transactions on}, 61(4):1985--2007,
+  2015.
+
+\bibitem{CSV2013}
+Emmanuel~J Cand\`{e}s, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Comm. Pure Appl. Math.}, 66(8):1241--1274, 2013.
+
+\bibitem{CJSC2013}
+Yudong Chen, Ali Jalali, Sujay Sanghavi, and Constantine Caramanis.
+\newblock Low-rank matrix recovery from errors and erasures.
+\newblock {\em Information Theory, IEEE Transactions on}, 59(7):4324--4337,
+  2013.
+
+\bibitem{xfel2}
+M.~Dierolf and et~al.
+\newblock Ptychographic x-ray computed tomography at the nanoscale.
+\newblock {\em Nature}, 467:436--440, 2010.
+
+\bibitem{phasemax}
+Tom Goldstein and Christoph Studer.
+\newblock Phasemax: Convex phase retrieval via basis pursuit.
+\newblock {\em arXiv preprint arXiv:1610.07531}, 2016.
+
+\bibitem{phaseliftrobust}
+Paul Hand.
+\newblock Phaselift is robust to a constant fraction of arbitrary errors.
+\newblock {\em ArXiv preprint https://arxiv.org/abs/1502.04241}, 2015.
+
+\bibitem{ShapeFit}
+Paul Hand, Choongbum Lee, and Vladislav Voroninski.
+\newblock Shapefit: Exact location recovery from corrupted pairwise directions.
+\newblock {\em CoRR}, abs/1506.01437, 2015.
+
+\bibitem{sparsephasemax}
+Paul Hand and Vladislav Voroninski.
+\newblock Compressed phaseless sensing in the natural parameter space via
+  linear programming.
+\newblock {\em arXiv preprint https://arxiv.org/abs/1611.05985}, 2016.
+
+\bibitem{phasemaxelementary}
+Paul Hand and Vladislav Voroninski.
+\newblock An elementary proof of convex phase retrieval in the natural
+  parameter space via the linear program phasemax.
+\newblock {\em arXiv preprint arXiv:1611.03935}, 2016.
+
+\bibitem{huber2011robust}
+Peter~J Huber.
+\newblock {\em Robust statistics}.
+\newblock Springer, 2011.
+
+\bibitem{medianwirtingerflow}
+Yingbin~Liang Huishuai~Zhang, Yuejie~Chi.
+\newblock Provable non-convex phase retrieval with outliers: Median
+  truncatedwirtinger flow.
+\newblock In {\em 33rd International Conference on Machine Learning,
+  Proceedings of}, pages 1022--1031, 2016.
+
+\bibitem{Li2013}
+Xiaodong Li.
+\newblock Compressed sensing and matrix completion with constant proportion of
+  corruptions.
+\newblock {\em Constructive Approximation}, 37(1):73--99, 2013.
+
+\bibitem{Amit}
+Onur {\"{O}}zyesil and Amit Singer.
+\newblock Robust camera location estimation by convex programming.
+\newblock {\em CoRR}, abs/1412.0165, 2014.
+
+\bibitem{V2012}
+R.~Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.C. Eldar and G.~Kutyniok, editors, {\em Compressed Sensing:
+  Theory and Applications}. Cambridge University Press, 2012.
+
+\bibitem{voroninski2016strong}
+Vladislav Voroninski and Zhiqiang Xu.
+\newblock A strong restricted isometry property, with an application to
+  phaseless compressed sensing.
+\newblock {\em Applied and Computational Harmonic Analysis}, 40(2):386--395,
+  2016.
+
+\end{thebibliography}

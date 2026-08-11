@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Soft Mapper construction}\label{sec:soft_mapper}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section, we introduce our new construction {\em Soft Mapper}, which generalizes Mapper graphs and can be used for non-convex optimization.
+In order to do so, we first
+%We start by giving a 
+provide a
+general formalization of the Mapper construction that 
+%allows us to avoid  introducing 
+does {\em not} require
+overlapping intervals and filter functions. 
+Then, we use this formalization to 
+%construct a generalized Mapper called 
+define \emph{Soft Mapper}, which essentially consists in a distribution on regular Mapper graphs. 
+
+\subsection{Mapper graphs built on latent cover assignments}
+
+Let $\Xs_n=\{x_1,...,x_n\}$ be a point cloud lying in a metric space $(\Metrsp,d)$ and let $r \in \mathbb N^\star$. 
+%A standard approach is to consider 
+For instance, $\Xs_n$  can be obtained from sampling $\Metrsp^n$ according to some distribution $\muXs$.
+Then, let $\Clus$ be a clustering algorithm on $(\Metrsp,d)$, that is assumed to be fixed in the following of this work.
+
+\paragraph*{Latent cover assignments.} Any binary matrix $e \in {\{0,1\}}^{n\times r}$ is then called an \emph{r-latent cover assignment} of $\Xs_n$, where $e_{i,j}=1$ must be understood as point $x_i$ belonging to the $j$-th element of a \emph{latent cover} of the data.  For instance, in the standard version of Mapper presented in Section~\ref{sec:background}, the latent cover is obtained from a family of pre-images of intervals that cover the range of the filter function.
+
+The procedure to compute a Mapper graph given an $r$-latent cover assignment 
+%$(e_{i,j})_{\substack{1\leq i\leq n \\ 1\leq j\leq r}}$ 
+$e \in {\{0,1\}}^{n\times r}$
+is straightforward: simply replace $f^{-1}(\interv_j)$ by $\{x_i\,:\,e_{i,j}=1\}$ in the generic Mapper algorithm in Section~\ref{sec:background}, then derive the pullback cover using the clustering algorithm $\Clus$, and finally compute the Mapper graph as the nerve of the pullback cover.
+
+
+%\begin{enumerate}
+%    \item For every $j\in\{1,...,r\}$, define $A_j\subseteq\mathbb{X}_n$ as $\{x_i\,:\,e_{i,j}=1\}$,
+%    \item Apply a clustering algorithm to each $A_j$, $j\in\{1,...,r\}$. This produces a cover $\mathcal{C}=\{C_{1,1},...,C_{1,K_1},...,C_{r,1},...,C_{r,K_r}\}$ of $\mathbb{X}_n$ called the \emph{pullback cover}, where $C_{j,k}$ is the $k$-th cluster of $I_j$,
+%    \item The Mapper graph is the $1$-skeleton of the nerve complex of $\mathcal{C}$. 
+%    It can be seen as a graph with a vertex $v_{j,k}$ for each $C_{j,k}$, and an edge between two vertices $v_{j,k}$ and $v_{j',k'}$ if and only if $C_{j,k}\cap C_{j',k'}\neq \emptyset$. 
+%\end{enumerate}
+
+
+\paragraph*{Mapper function.} Let $\mathbb{K}$ be the set of simplicial complexes of dimension less or equal to $1$ (i.e., graphs) and such that their sets of vertices (i.e., their $0-$skeletons) are subsets of the power set $\mathcal{P}(\Xs_n)$. We define the Mapper complex generating function as:
+$$
+\MapComp \colon {\{0,1\}}^{n\times r}\longrightarrow \mathbb{K}, 
+$$
+where $\MapComp$ takes a latent cover assignment as input and creates the corresponding Mapper graph. %associated to $\Xs_n$. 
+
+\subsection{Cover assignment scheme and Soft Mapper}
+\label{sec:CovAssign}
+
+Now, we define stochastic schemes for generating latent cover assignments, that we call {\em cover assignment schemes}.
+
+%Hereafter, we consider that that $\Xs$ is a random sample in $\Metrsp^n$, according to a joint distribution $\mathbb{P}_\Xs$. 
+%\bert{J'ai retiré le fait que $Xs$ serait random car à aucun moment on n'utilise la loi de  la mention la loi de }
+ 
+\begin{definition}
+\label{def:cas}
+A \emph{cover assignment scheme} is a double indexed sequence of random variables 
+$$A=(A_{i,j})_{\substack{1\leq i\leq n \\ 1\leq j\leq r}}$$ 
+%where for each $(i,j)\in\{1,...,n\}\times\{1,...,r\}$, 
+such that each
+$A_{i,j}$ is a Bernoulli random variable conditionally to $\Xs_n$. Let $p_{i,j}(\Xs_n)$ be the parameter of the Bernoulli distribution of $(A_{i,j}|\Xs_n)$, which is thus a function of the point cloud $\Xs_n$.
+%the occurrence of the values $\Xs$ (i.e. having $\{0,1\}$ as an image space).
+\end{definition}
+
+%\noindent Note that, in the previous definition, we consider that $\Xs$ is a realization a random variable in $\Metrsp^n$. We will denote the conditional probability given the occurrence $\Xs$ as $\mathbb{P}_\Xs$ in the rest of the paper.
+
+Note that, in Definition~\ref{def:cas}, the Bernoulli variables $A_{i,j}$ are not assumed to be independent nor identically distributed. 
+Moreover, $p_{i,j}(\Xs_n)$ can depend only on its associated point $x_i$, or on the whole point cloud $\Xs_n$.
+
+\begin{definition}
+Let $A$ be a cover assignment scheme. 
+%Following Definition~\ref{def:cas}, 
+The \emph{Soft Mapper} of $A$ is defined as the associated 
+distribution of Mapper complexes, which corresponds to the push forward measure of the distribution of $A$ by the map $\MapComp$. %Note that this distribution is also conditional to $\Xs$.
+\end{definition}
+
+
+
+
+%random variable in $\mathbb{K}$ defined by MapperComplex($A$). 

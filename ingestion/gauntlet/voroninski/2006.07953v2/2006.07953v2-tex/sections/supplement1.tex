@@ -1,0 +1,138 @@
+\section{Global landscape analysis under deterministic conditions}
+
+As mentioned, the proof of Theorem \ref{thm:main_rand} and Proposition \ref{prop:rand_localmin}, will be based on deterministic conditions on 
+the weights of the network and the noise matrix.
+In particular we will consider the minimization problem \eqref{eq:minM} with: \[M = G(\xstar)G(\xstar)^\T + H,\] for an unknown symmetric matrix $H \in \R^{n \times n}$ and nonzero $\xstar \in \R^k$. 
+
+Recall the definition \ref{def:WDC} of the WDC.
+Below we will say that a $d$-layer generative network $G$ of the form \eqref{eq:Gx}, satisfies the WDC with constant $\eps>0$ if every weight matrix $W_i$ has the WDC with constant 
+$\eps$ for all $i = 1, \dots d$.
+
+We can now describe the landscape of the minimization problem \eqref{eq:minM} in a deterministic settings. 
+\begin{thm}\label{thm:dir_deriv}
+	
+	Consider a generative network $G: \R^k \to \R^n$ as in \eqref{eq:Gx} and 
+	the minimization problem \eqref{eq:minM} with unknown nonzero $\xstar$ and symmetric $H$.
+	Fix $\eps > 0$ such that $K_1 d^{16} \sqrt{\eps} \leq 1$ and let $d \geq 2$. 
+	Suppose that $G$ satisfies the WDC with constant $\eps$ and assume that:
+	\begin{equation}\label{eq:noise}
+	\|\Lambda_x^\T H \Lambda_x \|_2 \leq \frac{\omega}{2^d}  \qquad \text{for all}\; x \in \R^k, % \frac{\|\xstar\|^2}{2^{2d}} \, \omega
+	\end{equation}
+	with $2^d d^{12} w \leq K_2 \| \xstar \|^2$ and $K_2 < 1$. 
+	
+	Then for all $x \in \R^k$:
+	\begin{itemize}
+		\item if $x \notin \mathcal{B}(\xstar, r_+)~\cup~\mathcal{B}(-\rho_d \xstar, r_-)~\cup~\{0\}$ and \\$v_x \in \pa f(x)$:
+		\[
+		D_{-v_x} f(x) < 0
+		\]
+		where 
+		\[
+		r_+ = K_3 (d^4 {\eps^{1/2}} + 2^d \omega  \|\xstar\|_2^{-2}) d^{10} \|\xstar\|_2,
+		\]
+		and
+		\[
+		r_- =  K_4 (d^2 {\eps}^{1/4} + 2^{d/2} \omega^{1/2} \|\xstar\|_2^{-1}) d^{10}  \|\xstar\|
+		\]
+		\item if $x \in \mathcal{B}(0,  \|\xstar\|_2/16 \pi) \backslash \{0\}$  and $v_x \in \pa f(x)$ then 
+		\[\langle x, v_x\rangle < 0\]
+		while if $x = 0$ and $v \in \mathcal{S}^{k-1}$ then 
+		\[D_{-v} f(0) = 0\]
+	\end{itemize} 
+	Here $\rho_d$ is a positive number that converges to 1 as $d \to \infty$ and $K_1, \dots, K_4$ are universal constants.
+\end{thm}
+
+Similarly, below we give the deterministic version of Proposition \ref{prop:rand_localmin}.
+\begin{prop}\label{prop:local_min}
+	Under the assumptions of Theorem \ref{thm:dir_deriv}, for any $\phi_d \in [\rho_d, 1]$, it holds that:
+	\begin{equation}\label{eq:localmin}
+	f(x) < f(y)
+	\end{equation}
+	for all $x \in \mathcal{B}(\phi_d \xstar, \varrho \|\xstar\| d^{-12})$ and $y \in \mathcal{B}(- \phi_d \xstar, \varrho  \|\xstar\| d^{-12})$ where $\varrho<1$ is a universal constant.
+\end{prop}
+
+The rest of the paper is organized as follows.
+After summarizing the notation used throughout the paper in 
+Section \ref{sec:Notation} and deriving concentration results for the subgradients from the WDC in Section \ref{subsec:prelim}, we give the proof of Theorem \ref{thm:dir_deriv} in Section \ref{sec:proof_det}. In Section
+\ref{sec:proof_loc_min} we prove Proposition \ref{prop:local_min}, while Section
+\ref{sec:supp_proof} contains the proofs of supplementary lemmas needed in the main results. 
+Finally in Section \ref{sec:rand_proofs}, we derive the main Theorem \ref{thm:main_rand} and Proposition \ref{prop:local_min} from the corresponding deterministic ones by
+controlling the noise terms and recalling a result of \cite{hand2017global} which shows that the WDC holds with high probability.
+
+\subsection{Notation}\label{sec:Notation}
+
+We now collect the notation that is used throughout the paper.  For any real number $a$, let $\relu(a) = \max(a, 0)$ and for any vector $v \in \R^n$, denote the entrywise application of $\relu$ as $\relu(v)$ . Let $\diag(W x > 0)$ be the diagonal matrix with $i$-th diagonal element equal to 1 if $(Wx)_i > 0$ and 0 otherwise.
+For any vector $x$ we denote with $\|x\|$ its Euclidean norm 
+and for any matrix  $A$ we denote with $\|A\|$ its spectral norm and with $\|A\|_F$ its Frobenius norm. The euclidean inner product between two vectors $a$ and $b$ is $\langle a,b \rangle$, while for 
+two matrices $A$ and $B$ their Frobenius inner product will be denoted by $\langle A, B\rangle_F$.
+For any nonzero vector $x \in \R^n$, let $\hat{x} = x/\|x\|$.  For a set $S$ we will write $|S|$ for its cardinality and $S^c$ for its complement.
+Let $\mathcal{B}(x,r)$ be the Euclidean ball of radius $r$ centered at $x$, and $\mathcal{S}^{k-1}$ be the unit sphere in $\R^k$.
+With $D_v f(x)$ we denote the (normalized) one-sided directional derivative of $f$ in direction $v$: $D_{v} f(x) = \lim_{t \to 0} \frac{f(x + t v) - f(x)}{t \|v\|_2}$.
+We will write $\gamma = \Omega(\delta)$ to mean that 
+there exists a positive constant $C$ such that $\gamma \geq C \delta$ and similarly $\gamma = \bigO(\delta)$ if $\gamma \leq C \delta$. Additionally we will use $a = b + O_1(\delta)$ when 
+$\|a - b\| \leq \delta$, where the norm is understood to be the absolute value for scalars, the Euclidean norm for vectors and the spectral norm for matrices.
+
+%Let $\theta_0 = \angle(x, \xstar)$ and for $i \geq 0$ let $\theta_{i+1} = g(\theta_{i})$ where $g$ is defined in \eqref{eq:def_g}.
+
+\subsection{Preliminaries}\label{subsec:prelim}
+
+At a differentiable point, the gradient of $f$ is given by \eqref{eq:gradx} and will be denoted by $\vtilde_x$ and .
+By the WDC, $\vtilde_x$ concentrates up to the 
+noise level around the direction $h_x \in \R^k$:
+\begin{equation} \label{eq:h_def}
+h_x := \big[ \frac{1}{2^{2d}} x x^\T - \htilde_{x,\xstar} \htilde_{x,\xstar}^\T \big] x,
+\end{equation}
+where $\htilde_{x,\xstar}$ is defined below and
+is a continuous function of $x$ and $\xstar$. The vector field  $\htilde_{x,\xstar}$ depends on a function that controls how the 
+angles are contracted by the deep network, and defined as:
+\begin{equation}\label{eq:def_g}
+g(\theta) := \cos^{-1}\big( \frac{(\pi - \theta) \cos \theta + \sin \theta}{\pi} \big)
+\end{equation}
+With this definition we let $\htilde_{x,\xstar}$ be:
+\[
+\htilde_{x,\xstar} := \frac{1}{2^d} \big[ \big(\prod_{i=0}^{d-1} \frac{\pi - \bar{\theta}_i}{\pi} \big) \xstar + \sum_{i=1}^{d-1} \frac{\sin \bar{\theta}_i }{\pi}   \big(\prod_{j=i+1}^{d-1} \frac{\pi - \bar{\theta}_j}{\pi}\big) {\|\xstar\|} \hat{x} \big]
+\]
+where $\theta_i := g(\bar{\theta}_{i-1})$ for $g$ given by \eqref{eq:def_g} and $\theta_0 = \angle(x,y)$. For brevity of notation below we will use $\htilde_x = \htilde_{x,\xstar}$. For later convenience we also  define the following vectors:
+\begin{equation*}
+\begin{aligned}
+p_x &:= \Lambda_x^\T \Lambda_x x; \\
+q_x &:= \Lambda_x^\T \Lambda_\xstar  \xstar; \\
+\vbar_x &:=  [p_x p_x^\T - q_x q_x^\T] \,x; \\
+\eta_x &:= \Lambda_x^\T H \Lambda_x \, x.
+\end{aligned}
+\end{equation*}
+and note that when $f$ is differentiable at $x$, then $\vtilde_x:= \nabla f(x) = \vbar_x - \eta_x$, in particular for zero noise $\vtilde_x = \vbar_x$.
+
+We now observe the following facts.
+\begin{lemma}[Lemma 8 in \cite{HV17}]\label{lemma:conctrWDC}
+	Suppose that $d\geq 2$ and the WDC holds with $\eps < 1/(16 \pi d^2)^2$, then for all nonzero $x, \xstar \in \R^k$,
+	\begin{align}
+	\langle\Lambda_x x, \Lambda_\xstar \xstar \rangle &\geq \frac{1}{4 \pi} \frac{1}{2^d} \|x\|_2 \|\xstar\|, \label{eq:LxLy}\\
+	\| \Lambda_x^\T \Lambda_\xstar \xstar - \htilde_{x,\xstar} \| &\leq 24 \frac{d^3 \sqrt{\eps}}{2^d} \|\xstar\|,  \; \text{and} \label{eq:htilde_conctr} \\
+	\|\Lambda_x\|^2 \leq \frac{1}{2^d} (1 + 2 \eps)^d\leq \frac{1+ 4 \eps d}{2^d}  &\leq \frac{13}{12} \frac{1}{2^d} \label{eq:Lx_bound}. 
+	\end{align}
+\end{lemma}
+\begin{proof}
+	The first two bounds can be found in \citep[Lemma 8]{HV17}. The third bound follows noticing that the WDC implies:
+	\[
+	\|\Lambda_x \|^2 \leq \Pi_{i=d}^1 \| W_{i,+,x} \|^2 \leq \frac{1}{2^d} (1 + 2 \eps)^d \leq \frac{1 + 4 \eps d}{2^d} \leq \frac{13}{12}\frac{1}{2^d}
+	\]
+	where we used $\log(1+z) \leq z$ and $e^{z}\leq (1 + 2 z)$ for all $0\leq z \leq 1$.
+\end{proof}
+
+The next lemma shows that the noiseless gradient $\vbar_x$, concentrates around $h_x$.
+\begin{lemma}\label{lemma:conctr_grad1}
+	Suppose $d\geq 2$ and the WDC holds with $\eps < 1/(16 \pi d^2)^2$, then for all nonzero $x, \xstar \in \R^k$:
+	\[
+	\|\vbar_x - h_x \| \leq 86 \frac{ d^4 \sqrt{\eps}}{2^{2d}} \max(\|\xstar\|^2, \| x\|^2) \|x\|
+	\]
+\end{lemma}
+
+
+We now use the characterization of the Clarke subdifferential given in \eqref{eq:subdiff}, to derive a bound on the concentration of $v_x \in \pa f(x)$ around $h_x$ up to the noise level.
+\begin{lemma}\label{lemma:conctr_grad2}
+	Under the assumption of Lemma \ref{lemma:conctr_grad1}, and with $H$ satisfying \eqref{eq:noise}, for any $v_x \in \pa f(x)$:
+	\[
+	\|v_x - h_x \| \leq 86 \frac{ d^4 \sqrt{\eps}}{2^{2d}} \max(\|\xstar\|^2, \| x\|^2) \|x\| +   \frac{\omega}{2^{d}} \,  \| x\|
+	\]
+\end{lemma}

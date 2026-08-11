@@ -1,0 +1,78 @@
+\providecommand{\href}[2]{#2}\begingroup\raggedright\begin{thebibliography}{10}
+
+\bibitem{saxenaNeuralPopulationDoctrine2019}
+S.~Saxena and J.~P. Cunningham, ``Towards the neural population doctrine,'' \href{http://dx.doi.org/10.1016/j.conb.2019.02.002}{{\em Current Opinion in Neurobiology} {\bfseries 55} (Apr., 2019) 103--111}.
+
+\bibitem{gallego2017neural}
+J.~A. Gallego, M.~G. Perich, L.~E. Miller, and S.~A. Solla, ``Neural manifolds for the control of movement,'' {\em Neuron} {\bfseries 94} no.~5, (2017) 978--984.
+
+\bibitem{dicarloHowDoesBrain2012}
+J.~J. DiCarlo, D.~Zoccolan, and N.~C. Rust, ``How does the brain solve visual object recognition?'' \href{http://dx.doi.org/10.1016/j.neuron.2012.01.010}{{\em Neuron} {\bfseries 73} no.~3, (Feb., 2012) 415--434}.
+
+\bibitem{chungNeuralPopulationGeometry2021}
+S.~Chung and L.~F. Abbott, ``Neural population geometry: {{An}} approach for understanding biological and artificial neural networks,'' \href{http://dx.doi.org/10.1016/j.conb.2021.10.010}{{\em Current Opinion in Neurobiology} {\bfseries 70} (Oct., 2021) 137--144}.
+
+\bibitem{perichNeuralManifoldView2025}
+M.~G. Perich, D.~Narain, and J.~A. Gallego, ``A neural manifold view of the brain,'' \href{http://dx.doi.org/10.1038/s41593-025-02031-z}{{\em Nature Neuroscience} {\bfseries 28} no.~8, (Aug., 2025) 1582--1597}.
+
+\bibitem{chaudhuri2019intrinsic}
+R.~Chaudhuri, A.~S. Ger{\c{s}}hon, and H.~Sompolinsky, ``Intrinsic dimensionality of behavioral and neural representations,'' {\em Annual review of neuroscience} {\bfseries 42} (2019) 381--410.
+
+\bibitem{petruccoNeuralDynamicsArchitecture2023}
+L.~Petrucco, H.~Lavian, Y.~K. Wu, F.~Svara, V.~{\v S}tih, and R.~Portugues, ``Neural dynamics and architecture of the heading direction circuit in zebrafish,'' \href{http://dx.doi.org/10.1038/s41593-023-01308-5}{{\em Nature Neuroscience} {\bfseries 26} no.~5, (May, 2023) 765--773}.
+
+\bibitem{gardnerToroidalTopologyPopulation2022}
+R.~J. Gardner, E.~Hermansen, M.~Pachitariu, Y.~Burak, N.~A. Baas, B.~A. Dunn, M.-B. Moser, and E.~I. Moser, ``Toroidal topology of population activity in grid cells,'' \href{http://dx.doi.org/10.1038/s41586-021-04268-7}{{\em Nature} {\bfseries 602} no.~7895, (Feb., 2022) 123--128}.
+
+\bibitem{gao2017theory}
+P.~Gao, E.~Trautmann, B.~M. Yu, G.~Santhanam, S.~Ryu, K.~V. Shenoy, and S.~Ganguli, ``A theory of multineuronal dimensionality, dynamics and measurement,'' {\em bioRxiv} (2017) 214262.
+
+\bibitem{fortunatoNonlinearManifoldsUnderlie2024}
+C.~Fortunato, J.~{Bennasar-V{\'a}zquez}, J.~Park, J.~C. Chang, L.~E. Miller, J.~T. Dudman, M.~G. Perich, and J.~A. Gallego, ``Nonlinear manifolds underlie neural population activity during behaviour,'' Apr., 2024.
+
+\bibitem{brennanQuantitativeModelConserved2019}
+C.~Brennan and A.~Proekt, ``A quantitative model of conserved macroscopic dynamics predicts future motor commands,'' \href{http://dx.doi.org/10.7554/eLife.46814}{{\em eLife} {\bfseries 8} (July, 2019) e46814}.
+
+\bibitem{edelsbrunner2000topological}
+H.~Edelsbrunner, D.~Letscher, and A.~Zomorodian, ``Topological persistence and simplification,'' {\em Proceedings 41st Annual Symposium on Foundations of Computer Science} (2000) 454--463.
+
+\bibitem{carlsson2009topology}
+G.~Carlsson, ``Topology and data,'' {\em Bulletin of the American Mathematical Society} {\bfseries 46} no.~2, (2009) 255--308.
+
+\bibitem{giusti2015clique}
+C.~Giusti, E.~Pastalkova, C.~Curto, and V.~Itskov, ``Clique topology reveals intrinsic geometric structure in neural correlations,'' {\em Proceedings of the National Academy of Sciences} {\bfseries 112} no.~44, (2015) 13455--13460.
+
+\bibitem{riemanncliques}
+M.~W. Reimann, M.~Nolte, M.~Scolamiero, K.~Turner, R.~Perin, G.~Chindemi, P.~Dłotko, R.~Levi, K.~Hess, and H.~Markram, ``Cliques of neurons bound into cavities provide a missing link between structure and function,'' \href{http://dx.doi.org/10.3389/fncom.2017.00048}{{\em Frontiers in Computational Neuroscience} {\bfseries Volume 11 - 2017} (2017) }. \url{https://www.frontiersin.org/journals/computational-neuroscience/articles/10.3389/fncom.2017.00048}.
+
+\bibitem{carlsson2009zigzag}
+G.~Carlsson, V.~de~Silva, and D.~Morozov, ``Zigzag persistent homology and real-valued functions,'' {\em Proceedings of the Annual Symposium on Computational Geometry} (2009) 247--256.
+
+\bibitem{sensorium2023}
+P.~Turishcheva, P.~G. Fahey, L.~Hansel, R.~Froebe, K.~Ponder, M.~Vystrčilová, K.~F. Willeke, M.~Bashiri, E.~Wang, Z.~Ding, A.~S. Tolias, F.~H. Sinz, and A.~S. Ecker, ``The dynamic sensorium competition for predicting large-scale mouse visual cortex activity from videos,'' 2024.
+\newblock \url{https://arxiv.org/abs/2305.19654}.
+
+\bibitem{bubenik2015statistical}
+P.~Bubenik, ``Statistical topological data analysis using persistence landscapes,'' {\em Journal of Machine Learning Research} {\bfseries 16} no.~1, (2015) 77--102.
+
+\bibitem{Hubert1985ComparingP}
+L.~J. Hubert and P.~Arabie, ``Comparing partitions,'' {\em Journal of Classification} {\bfseries 2} (1985) 193--218. \url{https://api.semanticscholar.org/CorpusID:189915041}.
+
+\bibitem{rieckcubical}
+B.~Rieck, T.~Yates, C.~Bock, K.~Borgwardt, G.~Wolf, N.~Turk-Browne, and S.~Krishnaswamy, ``Uncovering the topology of time-varying fmri data using cubical persistence,'' in {\em Proceedings of the 34th International Conference on Neural Information Processing Systems}, NIPS '20.
+\newblock Curran Associates Inc., Red Hook, NY, USA, 2020.
+
+\bibitem{dionysus}
+D.~Morozov, ``Dionysus2,'' 2012.
+\newblock \url{https://www.mrzv.org/software/dionysus2/}.
+
+\bibitem{dey2022fastcomputationzigzagpersistence}
+T.~K. Dey and T.~Hou, \href{http://dx.doi.org/10.4230/LIPIcs.ESA.2022.43}{``{Fast Computation of Zigzag Persistence},''} in {\em 30th Annual European Symposium on Algorithms (ESA 2022)}, S.~Chechik, G.~Navarro, E.~Rotenberg, and G.~Herman, eds., vol.~244 of {\em Leibniz International Proceedings in Informatics (LIPIcs)}, pp.~43:1--43:15.
+\newblock Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik, Dagstuhl, Germany, 2022.
+\newblock \url{https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ESA.2022.43}.
+
+\bibitem{gardinazzipersistent}
+Y.~Gardinazzi, K.~Viswanathan, G.~Panerai, A.~Cazzaniga, M.~Biagetti, {\em et~al.}, ``Persistent topological features in large language models,'' in {\em Forty-second International Conference on Machine Learning}.
+\newblock 2025.
+
+\end{thebibliography}\endgroup

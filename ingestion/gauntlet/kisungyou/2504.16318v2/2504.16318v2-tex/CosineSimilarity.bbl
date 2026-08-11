@@ -1,0 +1,191 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Bogolin et~al.]{Bogolin, Croitoru, Jin, Liu \harvardand\
+  Albanie}{2022}{bogolin_2022_CrossModalRetrieval}
+Bogolin, S.-V., Croitoru, I., Jin, H., Liu, Y. \harvardand\ Albanie, S.
+  \harvardyearleft 2022\harvardyearright .
+\newblock Cross {{Modal Retrieval}} with {{Querybank Normalisation}}, {\em 2022
+  {{IEEE}}/{{CVF Conference}} on {{Computer Vision}} and {{Pattern
+  Recognition}} ({{CVPR}})}, IEEE, New Orleans, LA, USA, pp.~5184--5195.
+
+\harvarditem[Chen et~al.]{Chen, Kornblith, Norouzi \harvardand\
+  Hinton}{2020}{chen_2020_SimpleFrameworkContrastive}
+Chen, T., Kornblith, S., Norouzi, M. \harvardand\ Hinton, G.  \harvardyearleft
+  2020\harvardyearright .
+\newblock A simple framework for contrastive learning of visual
+  representations, {\em Proceedings of the 37th {{International Conference}} on
+  {{Machine Learning}}}, {{ICML}}'20, JMLR.org.
+
+\harvarditem[Draganov et~al.]{Draganov, Vadgama, Damrich, B{\"o}hm, Maes, Kobak
+  \harvardand\ Bekkers}{2025}{draganov_2025_ImportanceEmbeddingNorms}
+Draganov, A., Vadgama, S., Damrich, S., B{\"o}hm, J.~N., Maes, L., Kobak, D.
+  \harvardand\ Bekkers, E.  \harvardyearleft 2025\harvardyearright .
+\newblock On the {{Importance}} of {{Embedding Norms}} in {{Self-Supervised
+  Learning}}.
+
+\harvarditem{Fisher}{1953}{fisher_1953_DispersionSphere}
+Fisher, R.  \harvardyearleft 1953\harvardyearright .
+\newblock Dispersion on a {{Sphere}}, {\em Proceedings of the Royal Society A:
+  Mathematical, Physical and Engineering Sciences} {\bf 217}(1130):~295--305.
+
+\harvarditem[Gao et~al.]{Gao, Yao \harvardand\
+  Chen}{2021}{gao_2021_SimCSESimpleContrastive}
+Gao, T., Yao, X. \harvardand\ Chen, D.  \harvardyearleft 2021\harvardyearright
+  .
+\newblock {{SimCSE}}: {{Simple Contrastive Learning}} of {{Sentence
+  Embeddings}}, {\em Proceedings of the 2021 {{Conference}} on {{Empirical
+  Methods}} in {{Natural Language Processing}}}, Association for Computational
+  Linguistics, Online and Punta Cana, Dominican Republic, pp.~6894--6910.
+
+\harvarditem[Grill et~al.]{Grill, Strub, Altch{\'e}, Tallec, Richemond,
+  Buchatskaya, Doersch, Pires, Guo, Azar, Piot, Kavukcuoglu, Munos \harvardand\
+  Valko}{2020}{grill_2020_BootstrapYourOwna}
+Grill, J.-B., Strub, F., Altch{\'e}, F., Tallec, C., Richemond, P.~H.,
+  Buchatskaya, E., Doersch, C., Pires, B.~A., Guo, Z.~D., Azar, M.~G., Piot,
+  B., Kavukcuoglu, K., Munos, R. \harvardand\ Valko, M.  \harvardyearleft
+  2020\harvardyearright .
+\newblock Bootstrap your own latent a new approach to self-supervised learning,
+  {\em Proceedings of the 34th {{International Conference}} on {{Neural
+  Information Processing Systems}}}, {{NIPS}} '20, Curran Associates Inc., Red
+  Hook, NY, USA.
+
+\harvarditem[He et~al.]{He, Fan, Wu, Xie \harvardand\
+  Girshick}{2020}{he_2020_MomentumContrastUnsupervised}
+He, K., Fan, H., Wu, Y., Xie, S. \harvardand\ Girshick, R.  \harvardyearleft
+  2020\harvardyearright .
+\newblock Momentum {{Contrast}} for {{Unsupervised Visual Representation
+  Learning}}, {\em 2020 {{IEEE}}/{{CVF Conference}} on {{Computer Vision}} and
+  {{Pattern Recognition}} ({{CVPR}})}, IEEE, Seattle, WA, USA, pp.~9726--9735.
+
+\harvarditem[Jia et~al.]{Jia, Yang, Xia, Chen, Parekh, Pham, Le, Sung, Li
+  \harvardand\ Duerig}{2021}{jia_2021_ScalingVisualVisionlanguage}
+Jia, C., Yang, Y., Xia, Y., Chen, Y.-T., Parekh, Z., Pham, H., Le, Q., Sung,
+  Y.-H., Li, Z. \harvardand\ Duerig, T.  \harvardyearleft 2021\harvardyearright
+  .
+\newblock Scaling up visual and vision-language representation learning with
+  noisy text supervision, {\em International Conference on Machine Learning},
+  PMLR, pp.~4904--4916.
+
+\harvarditem{Lee}{1997}{lee_1997_RiemannianManifoldsIntroduction}
+Lee, J.~M.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em Riemannian Manifolds: An Introduction to Curvature}, number 176
+  in {\em Graduate Texts in Mathematics}, Springer, New York.
+
+\harvarditem[Liang et~al.]{Liang, Cao, Zheng, Ren \harvardand\
+  Gao}{2021}{liang_2021_LearningRemoveIsotropic}
+Liang, Y., Cao, R., Zheng, J., Ren, J. \harvardand\ Gao, L.  \harvardyearleft
+  2021\harvardyearright .
+\newblock Learning to {{Remove}}: {{Towards Isotropic Pre-trained BERT
+  Embedding}}, {\em in} I.~Farka{\v s}, P.~Masulli, S.~Otte \harvardand\
+  S.~Wermter (eds), {\em Artificial {{Neural Networks}} and {{Machine
+  Learning}} -- {{ICANN}} 2021}, Vol. 12895, Springer International Publishing,
+  Cham, pp.~448--459.
+
+\harvarditem{Machina \harvardand\
+  Mercer}{2024}{machina_2024_AnisotropyNotInherent}
+Machina, A. \harvardand\ Mercer, R.  \harvardyearleft 2024\harvardyearright .
+\newblock Anisotropy is {{Not Inherent}} to {{Transformers}}, {\em Proceedings
+  of the 2024 {{Conference}} of the {{North American Chapter}} of the
+  {{Association}} for {{Computational Linguistics}}: {{Human Language
+  Technologies}} ({{Volume}} 1: {{Long Papers}})}, Association for
+  Computational Linguistics, Mexico City, Mexico, pp.~4892--4907.
+
+\harvarditem[Mikolov et~al.]{Mikolov, Chen, Corrado \harvardand\
+  Dean}{2013}{mikolov_2013_EfficientEstimationWord}
+Mikolov, T., Chen, K., Corrado, G. \harvardand\ Dean, J.  \harvardyearleft
+  2013\harvardyearright .
+\newblock Efficient {{Estimation}} of {{Word Representations}} in {{Vector
+  Space}}.
+
+\harvarditem[Oyama et~al.]{Oyama, Yokoi \harvardand\
+  Shimodaira}{2023}{oyama_2023_NormWordEmbedding}
+Oyama, M., Yokoi, S. \harvardand\ Shimodaira, H.  \harvardyearleft
+  2023\harvardyearright .
+\newblock Norm of {{Word Embedding Encodes Information Gain}}, {\em Proceedings
+  of the 2023 {{Conference}} on {{Empirical Methods}} in {{Natural Language
+  Processing}}}, Association for Computational Linguistics, Singapore,
+  pp.~2108--2130.
+
+\harvarditem[Pennington et~al.]{Pennington, Socher \harvardand\
+  Manning}{2014}{pennington_2014_GloveGlobalVectors}
+Pennington, J., Socher, R. \harvardand\ Manning, C.  \harvardyearleft
+  2014\harvardyearright .
+\newblock Glove: {{Global Vectors}} for {{Word Representation}}, {\em
+  Proceedings of the 2014 {{Conference}} on {{Empirical Methods}} in {{Natural
+  Language Processing}} ({{EMNLP}})}, Association for Computational
+  Linguistics, Doha, Qatar, pp.~1532--1543.
+
+\harvarditem[Radford et~al.]{Radford, Kim, Hallacy, Ramesh, Goh, Agarwal,
+  Sastry, Askell, Mishkin, Clark, Krueger \harvardand\
+  Sutskever}{2021}{radford_2021_LearningTransferableVisual}
+Radford, A., Kim, J.~W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry,
+  G., Askell, A., Mishkin, P., Clark, J., Krueger, G. \harvardand\ Sutskever,
+  I.  \harvardyearleft 2021\harvardyearright .
+\newblock Learning {{Transferable Visual Models From Natural Language
+  Supervision}}.
+
+\harvarditem{Reimers \harvardand\
+  Gurevych}{2019}{reimers_2019_SentenceBERTSentenceEmbeddings}
+Reimers, N. \harvardand\ Gurevych, I.  \harvardyearleft 2019\harvardyearright .
+\newblock Sentence-{{BERT}}: {{Sentence Embeddings}} using {{Siamese
+  BERT-Networks}}, {\em in} K.~Inui, J.~Jiang, V.~Ng \harvardand\ X.~Wan (eds),
+  {\em Proceedings of the 2019 {{Conference}} on {{Empirical Methods}} in
+  {{Natural Language Processing}} and the 9th {{International Joint
+  Conference}} on {{Natural Language Processing}} ({{EMNLP-IJCNLP}})},
+  Association for Computational Linguistics, Hong Kong, China, pp.~3982--3992.
+
+\harvarditem[Salton et~al.]{Salton, Wong \harvardand\
+  Yang}{1975}{salton_1975_VectorSpaceModel}
+Salton, G., Wong, A. \harvardand\ Yang, C.~S.  \harvardyearleft
+  1975\harvardyearright .
+\newblock A vector space model for automatic indexing, {\em Communications of
+  the ACM} {\bf 18}(11):~613--620.
+
+\harvarditem{Sch{\"u}tze}{1998}{schutze_1998_AutomaticWordSense}
+Sch{\"u}tze, H.  \harvardyearleft 1998\harvardyearright .
+\newblock Automatic word sense discrimination, {\em Computational Linguistics}
+  {\bf 24}(1):~97--123.
+
+\harvarditem{Wang \harvardand\
+  Isola}{2020}{wang_2020_UnderstandingContrastiveRepresentation}
+Wang, T. \harvardand\ Isola, P.  \harvardyearleft 2020\harvardyearright .
+\newblock Understanding contrastive representation learning through alignment
+  and uniformity on the hypersphere, {\em Proceedings of the 37th
+  {{International Conference}} on {{Machine Learning}}}, {{ICML}}'20, JMLR.org.
+
+\harvarditem[Yokoi et~al.]{Yokoi, Takahashi, Akama, Suzuki \harvardand\
+  Inui}{2020}{yokoi_2020_WordRotatorsDistance}
+Yokoi, S., Takahashi, R., Akama, R., Suzuki, J. \harvardand\ Inui, K.
+  \harvardyearleft 2020\harvardyearright .
+\newblock Word {{Rotator}}'s {{Distance}}, {\em Proceedings of the 2020
+  {{Conference}} on {{Empirical Methods}} in {{Natural Language Processing}}
+  ({{EMNLP}})}, Association for Computational Linguistics, Online,
+  pp.~2944--2960.
+
+\harvarditem{You \harvardand\
+  Suh}{2022}{you_2022_ParameterEstimationModelbased}
+You, K. \harvardand\ Suh, C.  \harvardyearleft 2022\harvardyearright .
+\newblock Parameter estimation and model-based clustering with spherical normal
+  distribution on the unit hypersphere, {\em Computational Statistics \& Data
+  Analysis} {\bf 171}:~107457.
+
+\harvarditem[Zhai et~al.]{Zhai, Wang, Mustafa, Steiner, Keysers, Kolesnikov
+  \harvardand\ Beyer}{2022}{zhai_2022_LiTZeroShotTransfer}
+Zhai, X., Wang, X., Mustafa, B., Steiner, A., Keysers, D., Kolesnikov, A.
+  \harvardand\ Beyer, L.  \harvardyearleft 2022\harvardyearright .
+\newblock {{LiT}}: {{Zero-Shot Transfer}} with {{Locked-image}} text
+  {{Tuning}}, {\em 2022 {{IEEE}}/{{CVF Conference}} on {{Computer Vision}} and
+  {{Pattern Recognition}} ({{CVPR}})}, IEEE, New Orleans, LA, USA,
+  pp.~18102--18112.
+
+\harvarditem[Zhou et~al.]{Zhou, Ethayarajh, Card \harvardand\
+  Jurafsky}{2022}{zhou_2022_ProblemsCosineMeasure}
+Zhou, K., Ethayarajh, K., Card, D. \harvardand\ Jurafsky, D.  \harvardyearleft
+  2022\harvardyearright .
+\newblock Problems with {{Cosine}} as a {{Measure}} of {{Embedding Similarity}}
+  for {{High Frequency Words}}, {\em Proceedings of the 60th {{Annual Meeting}}
+  of the {{Association}} for {{Computational Linguistics}} ({{Volume}} 2:
+  {{Short Papers}})}, Association for Computational Linguistics, Dublin,
+  Ireland, pp.~401--423.
+
+\end{thebibliography}

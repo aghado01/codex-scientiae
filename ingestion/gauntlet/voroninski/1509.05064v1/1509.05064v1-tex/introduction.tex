@@ -1,0 +1,479 @@
+\section{Introduction}
+Structure from Motion (SfM) is the task of recovering 3d structure from a collection of images taken from different vantage points \cite{StefanosBook}.  In the SfM problem, camera poses are represented by locations $\toi \in \mathbb{R}^3, i = 1\ldots \nl$ and rotation matrices $R_i \in SO(3), i =1 \ldots \nl$, where $R_i$ maps coordinates in the frame of the $i$th camera to the world frame. For a generic structure point $p \in \mathbb{R}^3$, there exists a unique point in each imaging plane given by perspective projection.  A pair of image points is said to correspond when they are both projections of the same point in 3d space.
+ Given enough point correspondences between a pair of views, epipolar geometry yields the relative rotation and direction between  those views. Pairwise relative camera poses can then be used to estimate the individual poses $(\toi, R_i), i=1\ldots \nl$ up to a Euclidean transformation. Knowledge of camera poses and point correspondences allows one to estimate 3d structure via triangulation. Finally, the pose and structure estimates are used as initialization for bundle adjustment, which is the simultaneous nonlinear refinement of structure and camera poses. In summary, SfM typically consists of four steps: 1) identify point correspondences; 2) recover camera orientations and locations in global coordinates; 3) triangulate structure points using estimates of camera pose and correspondences; and 4) perform bundle adjustment.
+
+A central difficulty of SfM is that point correspondences are prone to errors because they are found purely by local photometric information, which is subject to projective transformations from camera motion, specularities, occlusions, variable lighting conditions, shadows, and repetitive structures commonly found in manmade scenes. Thus, every step of the above SfM pipeline  needs to  tolerate highly corrupted input data. For the correspondence step, techniques such as Random Sampling Consensus (RANSAC) are used to reduce the number of outliers among candidate correspondences initially obtained by brute-force photometric matching. Unfortunately, even after applying RANSAC, outliers in point correspondences are generally unavoidable. 
+
+Mathematically, once a set of correspondences has been established, the SfM problem can be formulated as the $d=3$ case of the following. Let $\Tnot$ be a collection of $\nl$ distinct vectors  $\tonum{1}, \ldots, \tonum{\nl} \in \R^d$, and let $\Pnot$ be a collection of $\ns$ distinct vectors  $\ponum{1}, \ldots, \ponum{\ns} \in \R^d$. Associated to locations $\Tnot$ is a set of orientations $R = \{R_i\}_{i \in [\nl]} \in SO(d)$.  The pairs $(\toi, R_i)$ represents poses from which observations  of the points $\poj$ are collected. Let $G(\nl,\ns, E)$ be a bipartite graph on $\nl + \ns$ vertices, where $E = \Eg \sqcup \Eb$, with $\Eb$ and $\Eg$ corresponding to pairwise direction observations that are respectively `corrupted' and `uncorrupted.'  That is, for each $ij \in E$, we are given a vector $\vij$, where
+\begin{align*}
+v_{ij} = \frac{R_i^t(\toi - \poj)}{\|R_i^t( \toi - \poj)\|_2} \text{ for } ij \in \Eg, \qquad \vij \in \mathbb{S}^{d-1} \text{ for } ij \in \Eb.
+\end{align*}
+An uncorrupted observation $\vij$ is exactly the direction of $R_i^t(\toi - \poj)$, and a corrupted observation is an arbitrary direction.  Consider the task of finding the unknown locations $\Tnot$ and structure points $\Pnot$, up to a global translation and scale, and the orientations $R$, up to a global rotation, without knowledge of the decomposition $E = \Eg \sqcup \Eb$, nor the nature of the corruptions. 
+
+Estimating camera orientations $R_i$ from from corrupted relative rotations $R_i^t R_j$ is a tractable and relatively well-understood problem. For instance, a method based on Lie group averaging performs well in practice \cite{AMIT_13}, and a semidefinite program based on lifting and least unsquared deviations (LUD) has rigorous guarantees of exact recovery from corrupted relative rotations \cite{WangSingerSynchronization}.  Once camera orientations are estimated, one can use epipolar geometry to obtain a set of relative direction estimates of camera locations. These estimates are partially corrupted since they are computed from the initial point correspondences. Camera locations in a global reference frame can be estimated using the 1dSfM approach of \cite{1dsfm}, which screens for outliers based on inconsistencies in 1d projections; however, this approach is not robust to self-consistent outliers.  Alternatively, locations can be found by recent methods such as LUD \cite{AMIT} or the ShapeFit algorithm \cite{HLV2015}, which are both convex programs. It was proven in \cite{HLV2015} that ShapeFit recovers locations exactly from partially corrupted pairwise directions under broad technical assumptions. 
+
+Having obtained an estimate of camera orientations and locations, one can recover an estimate of the 3d structure by triangulation, for instance by minimizing the quadratic reprojection error or maximizing a likelihood estimate. Bundle adjustment then proceeds by jointly optimizing this reprojection error or likelihood estimate with respect to camera poses and 3d structure. It is important to initialize bundle adjustment close to the global minimum, because it is  non-convex and susceptible to getting stuck in local minima.  
+
+In this paper, we consider compressing two sub-steps of the pipeline --- camera location recovery and structure recovery by triangulation --- into one provably corruption-robust step based on the ShapeFit algorithm. Namely, once camera rotations are estimated, our approach uses the raw image coordinates of point correspondences to recover the camera locations and structure points simultaneously.  If a structure point $p_j$ is visible to a calibrated camera at location $t_i$, then its image coordinates under perspective projection provide a vector $\vijtilde $ that has the same direction as $R_i^t(t_i - p_j)$.  If the orientation $R_i$ is known and accurate, then the direction of $t_i - p_j$ is also known.  Equivalently,  if all the orientations $R_i$ are known, we can take each $R_i$ to be the identity without loss of generality. When a point correspondence is incorrect, the estimated direction of $t_i-p_j$ can of course be arbitrarily corrupted. We thus arrive at the following recovery problem.
+
+%Let $\Tnot$ be a collection of $\nl$ distinct vectors  $\tonum{1}, \ldots, \tonum{\nl} \in \R^d$ representing camera locations.  Let $\Pnot$ be a collection of $\ns$ distinct vectors  $\ponum{1}, \ldots, \ponum{\ns} \in \R^d$ representing structure locations. 
+%Associated to locations $\Tnot$ is a set of orientations $R = \{R_i\}_{i=1}^{\nl} \in SO(d)$, and a given pair $(\toi, R_i)$ represents a pose from which observations of the points $\poi$ are collected.
+ %Let $G(\nl,\ns, E)$ be a bipartite graph on $\nl + \ns$ vertices, where $E = \Eg \sqcup \Eb$, with $\Eb$ and $\Eg$ corresponding to pairwise direction observations that are respectively `corrupted' and `uncorrupted.'  That is, 
+ 
+With $T^{(0)}$ and $P^{(0)}$ defined as above, for each $ij \in E$, we are given a vector $\vij$, where
+\begin{align}
+\vij = \frac{\toi - \poj}{\bigl\| \toi - \poj \bigr\|_2} \text{ for } ij \in \Eg, \qquad \vij \in \mathbb{S}^{d-1} \text{ for } ij \in \Eb.  \label{location-recovery-measurements}
+\end{align}
+Thus, an uncorrupted observation $\vij$ is exactly the direction of $\toi - \poj$, and a corrupted observation is an arbitrary direction. The task is to find the unknown locations $\Tnot$, $\Pnot$ up to global translation and scale, without knowledge of the decomposition $E = \Eg \sqcup \Eb$, nor the nature of the corruptions.
+
+To summarize, we propose the following modified pipeline for Structure from Motion: 1) establish point correspondences; 2) estimate global orientations of the cameras; 3) estimate the camera locations and structure points simultaneously; and 4) run bundle adjustment.
+
+We will show that ShapeFit, a tractable convex program, can exactly solve the recovery problem in Step 3 under broad deterministic assumptions and under a random model. In \cite{HLV2015}, the present authors showed that ShapeFit recovers camera locations exactly from corrupted pairwise direction under suitable assumptions. The result in \cite{HLV2015} strongly relies on the existence of triangles in the graph of observations, whereas in our present setting, the underlying graphs are bipartite and necessarily do not contain triangles. In this bipartite setting, we will prove a deterministic recovery result for ShapeFit based on the presence of cycles of length 4. We also show that under a random Gaussian and Erdos-Renyi model, ShapeFit recovers structure and locations exactly from known orientations and corrupted correspondences with high probability in the high dimensional case. To the best of our knowledge, these are the first theoretical results guaranteeing exact location and structure recovery from corrupted correspondences and known orientations.
+
+\subsection{ Problem formulation}
+The location recovery problem is to recover a set of points in $\mathbb{R}^d$ from observations of pairwise directions between those points. Since relative direction observations are invariant under a global translation and scaling, one can at best hope to recover the locations $\Tnot = \{ \tonum{1},\ldots, \tonum{n}\}$ and structure points $\Pnot = \{ \ponum{1},\ldots, \ponum{n}\}$ up to such a transformation. That is, successful recovery from $\{v_{ij}\}_{(i,j) \in E}$ is finding two sets  of vectors ${\{\alpha(\toi + w)\}_{i \in [\nl]}}, {\{\alpha(\poj + w)\}_{j \in [\ns]}}$ for some $w \in \mathbb{R}^d$ and $\alpha >0$. We will say that two pairs of sets of vectors $(T,P) $ and $(\Tnot,\Pnot)$ are equal up to global translation and scale if there exists a vector $w$ and a scalar $\alpha >0 $ such that $t_i = \alpha(\toi + w)$ for all $i \in [\nl]$ and $p_j = \alpha(\poj + w)$ for all $j \in [\ns]$.  In this case, we will say that $(T,P)$ and $(\Tnot,\Pnot)$ have the same `shape,' and we will denote this property as $(T,P) \sim (\Tnot,\Pnot)$. The location recovery problem is then stated as:
+%That is, one can at best hope to recover $\ti - \tbar = \alpha (\toi - \tnotbar)$ for all $i$ and for some $\alpha > 0$, where $\tbar = \sum_{i=1}^n t_i$ and $\tnotbar = \sum_{i=1}^n \toi$. We will say that two sets of n vectors $T_0$ and $T$ have the same `shape' if there exists a vector $w \in \mathbb{R}^d$ and a scalar $\alpha \in \mathbb{R}$ such that $\toi = \alpha(t_i + w)$ for all $i \in [n]$.  
+\begin{alignat*}{2}
+&\text{Given:} &\quad &G(\nl,\ns,E), \quad \{\vij\}_{ij \in E} \text{\ \  satisfying \eqref{location-recovery-measurements} }\\
+&\text{Find:} && T = \{t_1, \ldots, t_{\nl} \} \in \mathbb{R}^{d \times \nl}, P = \{p_1, \ldots, p_{\ns} \} \in \mathbb{R}^{d \times \ns} \quad \text{such that} \quad (T,P) \sim (\Tnot,\Pnot) % \sim T_0 \notag%= \{t_1,\ldots, t_n\} \quad \text{such that } T \sim T_0 = \{t_1^0,\ldots t_n^0\} \notag %\{\toi\} \text{ up to global translation and scale.} \notag
+\end{alignat*}
+
+
+For this problem to be information theoretically well-posed under arbitrary corruptions, the maximum number of corrupted observations affecting any particular location $t_i$ must be at most $\frac{\ns}{2}$.  Similarly, the maximum number affecting any particular structure point $p_j$ must be at most $\frac{\nl}{2}$.  Otherwise, suppose that for some location $\toi$ of structure point $\poj$, half of its associated observations $v_{ij}$ are consistent with $\toi$, and the other half are corrupted so as to be consistent with some arbitrary alternative location $w$. Distinguishing between $\toi$ and $w$ is then impossible in general. A similar argument follows for some structure point $\poj$. Formally, let $\deg_b(t_i)$ be the degree of location $t_i$ in the graph $G(\nl,\ns, \Eb)$ and let $\deg_b(p_j)$ be the degree of structure point $p_j$ in the graph $G(\nl,\ns, \Eb)$. Then, well-posedness under adversarial corruption requires that $\max_{i \in [\nl]} \deg_b(t_i) \leq \gamma \nl$ and $\max_{j \in [\ns]} \deg_b(v_j) \leq \gamma \ns$, for some $\gamma<1/2$,
+
+Beyond the above necessary degree condition on $E_g$ for well-posedness of recovery, we do not assume anything about the nature of corruptions. That is, we work with adversarially chosen corrupted edges $E_b$ and arbitrary corruptions of observations associated to those edges. To solve the location recovery problem in this challenging setting, we utilize the convex program called ShapeFit \cite{HLV2015}:
+\begin{align}
+\min_{\substack{ \{t_i\}_{i \in [\nl]} \\ \{p_j\}_{j\in [\ns]}}} \ \sum_{ij \in E} \| \Pvijp (t_i - p_j) \|_2 \quad \text{ subject to } \quad \sum_{ij \in E} \langle t_i - p_j, \vij \rangle = 1, \ \ \  \sum_{i=1}^{\nl} t_i + \sum_{j=1}^{\ns} p_j = 0 \label{shapefit}
+\end{align}
+where $\Pvijp$ is the projector onto the orthogonal complement of the span of $\vij$.  
+
+This convex program is a second order cone problem with $d(\nl + \ns)$ variables and two constraints.  Hence, the search space has dimension $d(\nl+\ns)-2$, which is minimal due to the $d(\nl + \ns)$ degrees of freedom in the locations $\{t_i\}$ and structure points $\{p_j\}$ and the two inherent degeneracies of translation and scale.
+
+\subsection{Main result}
+
+In this paper, we consider the model where the $\nl$ locations and $\ns$ structure points are i.i.d. Gaussian, and where pairwise direction observations are given according to an \erdosrenyi bipartite random graph.  We show that in a high-dimensional setting, ShapeFit \emph{exactly} recovers the locations and structure points with high probability, provided that $\nl$ and $\ns$ are sub-exponential in $d$, and provided that at most a fixed fraction of observations are \emph{adversarially} corrupted.
+
+\begin{theorem} \label{thm:bipartite-random}
+Let $N = \max(\nl,\ns), n = \min(\nl, \ns)$. Let $G(\Vl \cup \Vs,E)$ be drawn from a bipartite-\erdosrenyi graph with $p >0$. Take $ \tnot_1, \ldots \tnot_{\nl}, \pnot_1, \ldots, \pnot_{\ns} \sim \mathcal{N}(0, I_{d \times d})$ to be independent from each other and $G$. Then, there exist absolute constants $c,c_3, C>0$ such that for $\gamma = c_3 p^4$, if \\
+$$\max\left(\frac{1}{c_3 p^4}, Cd, \frac{2 \log(eN)}{p}, \Omega(c_3 \log^2 N)\right) \leq  n \le N \leq e^{\frac{1}{8}c d }$$ 
+and $d = \Omega(1)$, then there exists an event with probability at least  $1 - O( e^{-\Omega(\frac{1}{2}c_3^{-1/2} n^{1/2})} + e^{-\frac{1}{2} cd})$, on which the following holds:\\[1em]
+For all subgraphs $\Eb$ satisfying $\max_{i\in [\nl]} \deg_b(\ti) \leq \gamma \ns$ and $\max_{j \in [\ns]} \deg_b(\pj) \leq \gamma \nl$ and all pairwise direction corruptions  $\vij \in \mathbb{S}^{d-1}$ for $ij \in \Eb$,  the convex program \eqref{shapefit} has a unique minimizer equal to $\left\{\alpha \{\toi -\tpbar \}_{i \in [\nl]}, \alpha \{\poi -\tpbar\}_{j \in [\ns]}  \right\}$ for some positive $\alpha$ and for $\tpbar = \frac{1}{\nl + \ns} \left(\sum_{i \in [\nl]} \toi + \sum_{j \in [\ns]} \poj \right)$. 
+\end{theorem}
+
+This probabilistic recovery theorem is based on a set of deterministic conditions that we prove are sufficient to guarantee exact recovery.  These conditions are satisfied with high probability in the model described above.  See Section \ref{sec-deterministic-theorem} for the deterministic conditions.
+
+This recovery theorem is high-dimensional in the sense that the probability estimate and the exponential upper bound on $\nl + \ns$ are only meaningful for $d= \Omega(1)$.  Concentration of measure in high dimensions and the upper bound on $\nl + \ns$ ensure control over the angles and distances between random points. As a result, lower dimensional spaces are a more challenging regime for recovery.  
+
+Numerical simulations empirically verify the main message of these recovery theorem: ShapeFit simultaneously recovers a set of locations and structure points exactly from corrupted direction observations, provided that up to a constant fraction of the observations at each location and structure point are corrupted. We present numerical studies in the physically relevant setting of $\mathbb{R}^3$, with an underlying random \erdosrenyi bipartite graph of observations. Further numerical simulations show that recovery is stable to the additional presence of noise on the uncorrupted measurements.  That is, locations and structure points are simultaneously recovered approximately under such conditions, with a favorable dependence of the estimation error on the measurement noise. 
+
+
+
+\subsection{Organization of the paper}
+Section \ref{sec-notation} presents the notation used throughout the rest of the paper.   Section \ref{sec-proofs-high-d} presents the proof of Theorem \ref{thm:bipartite-random}.  Section \ref{sec-simulations} presents results from numerical simulations.
+
+
+\subsection{Notation} \label{sec-notation}
+Let $[k] = \{1, \ldots, k\}$.  Let $\Vl = [\nl]$ and $\Vs = [\ns]$.  Let $N = \max(\nl, \ns)$ and $n = \min(\nl, \ns)$. 
+. Let $e_i$ be the $i$th standard basis element.  
+For a bipartite graph $G(\Vl \cup \Vs, E)$, we write an arbitrary edge as an ordered pair $(i,j)$, where $i \in \Vl$ and $j \in \Vs$.  Let $\Knn$ be the complete bipartite graph on $\nl + \ns$ vertices.  A cycle of length 4 will be denoted as $C_4$.  Let $E(\Knn)$ be the set of edges in $\Knn$. 
+Let  $\| \cdot \|_2$ be the standard $\ell_2$ norm on a vector. For any nonzero vector $v$, let $\hat{v} = v / \|v\|_2$.
+For a subspace $W$, let $\proj_W$ be the orthogonal projector onto $W$. For a vector $v$, let $\proj_{v^\perp}$ be the orthogonal projector onto the orthogonal complement of the span of $\{v\}$.
+
+Let $T$ denote the set $T = \{ \ti\}_{i \in \Vl }$, for $\ti \in \R^{d}$.  Let $P$ denote the set $P = \{\pj\}_{j \in \Vs}$, for $\pj \in \R^{d}$.  For $i \in \Vl, j \in \Vs$, define $\tij = \ti - \pj$
+for all $i \in \Vl, j \in \Vs$.  For $i,k \in \Vl$, define $\tik = \ti - \tk$.  For $j,l \in \Vs$, define $\tjl = \pj - \pl$. 
+Define $\bar{\zeta} = \frac{1}{\nl+\ns} \left( \sum_{i \in \Vl} \ti + \sum_{j \in \Vs} \pj  \right)$.  Define $\toij$, $\Tnot$, $\bar{\zeta}^{(0)}$, $\Pnot$, similarly. We define $\muinf = \max_{i\neq j} \|\toij\|_2$.  For a scalar $c$ and a set of vectors $X \subseteq \R^{d}$, let $c X = \{c x : x \in X\}$. 
+ For a given $G=G(\Vl \cup \Vs,E)$ and $\{\vij\}_{ij \in E}$, where $\vij \in \R^{d}$ have unit norm, 
+ let $R(T, P) = \sum_{ij \in E} \| \Pvijp \tij \|_2$.   Let $L(T,P) = \sum_{ij \in E} \< \tij, \vij \>$.  Let $\lij = \< \tij, \vij \>$, and similarly for $\loij$.  In this notation, ShapeFit is
+\[
+\min_{T,P} R(T,P) \quad \text{subject to} \quad  L(T,P) = 1, \quad \overline{\zeta}  = 0
+\]
+For vectors $v_1, \ldots, v_k$, let $S(v_1, \ldots, v_k) = \Span(v_1, \ldots, v_k)$ be the vector space spanned by these vectors.  
+Given $\tij$ and $\toij$, define $\deltaij$, $\etaij$, and $\sij$ such that 
+\[
+\tij = (1 + \deltaij) \toij + \etaij \sij
+\]
+where $\sij$ is a unit vector orthogonal to $\toij$ and $\etaij = \| P_{\toijperp} \tij \|_2$.
+Note that $\eta_{ij} \ge 0$. 
+
+
+%\section{Introduction}
+% 
+%
+%%Let $t_1...t_n \in \mathbb{R}^d$. We consider the task of recovering $\{t_i\}_{i=1}^n$ up to a global translation and scale from observations of $\{ (t_i - t_j)/\|t_i-t_j\|_2 \}$ for $(i,j) \in [n] \times [n]$, where an adversarially chosen constant fraction of the observation pairs, are arbitrarily corrupted. \\
+%%
+%%A special case of this problem, for $d =3$, is a necessary subtask in the Structure from Motion (SfM) pipeline of 3D structure recovery from a collection of images, a vital aspect of modern computer vision. In the SfM problem, camera locations are represented as vectors in $\mathbb{R}^3$ and given a collection of images $I_1... I_n$, for any point in $\mathbb{R}^3$, there is a unique projection of it in each image $I_i$ (barring occlusions). By building local coordinate frames around salient points in the images, based entirely on photometric information, and comparing them across images combinatorially (or with help from epipolar geometry constraints), one obtains an estimate of a set of point correspondences. I.e. one obtains a set of equivalence classes, where each class corresponds to a physical point in 3d space. Given sufficiently many such sets of correspondences, epipolar geometry yields estimates of the relative directions and rotations between pairs of camera locations. Noise in these estimates is inherent to any real-world application, and worse yet, due to the inherent challenges of the image formation process (illumination changes, specularities, occlusions, shadows etc), severe outliers in estimated point correspondences are unavoidable. \\
+%%
+%%Once an estimate of camera locations and rotations is obtained, 3d structure is estimated using minimization of reprojection error (bundle adjustment). The problem of estimating camera rotations from relative rotations has been well-addressed (citations), while most approaches to camera location estimation, in particular in in regard to robustness to outliers, lack robustness to outliers. \\
+%%
+%%In this paper, we propose a novel approach to location recovery from pairwise direction observations, which is provably robust to corruptions under rather broad assumptions. 
+%
+%Let $T$ be a collection of $n$ distinct vectors $\tonum{1},\tonum{2},\ldots,\tonum{n} \in \mathbb{R}^d$, and let $G = ([n],E)$ be a graph, where $[n] = \{1,2\ldots,n\}$, and $E = \Eg \sqcup \Eb$, with $\Eb$ and $\Eg$ corresponding to pairwise direction observations that are respectively corrupted and uncorrupted. That is, for each $ij \in E$, we are given a vector $\vij$, where
+%\begin{align}
+%\vij = \frac{\toi - \toj}{\bigl \|\toi - \toj \bigr\|_2} \text{ for } ij \in \Eg, \qquad \vij \in \mathbb{S}^{d-1}  \text{ for } ij \in \Eb. \label{measurements}
+%\end{align}
+%Thus, an uncorrupted observation $\vij$ is exactly the direction of $\toi$ relative to $\toj$, and a corrupted observation is an arbitrary unit vector. Consider the task of recovering the locations $T$ up to a global translation and scale, from only the observations $\{ v_{ij} \}_{ij \in E}$, and without any knowledge about the decomposition $E = E_g  \sqcup E_b $, nor the nature of the pairwise direction corruptions.
+%
+%A special case of this problem, with $d=3$, is a necessary subtask in the Structure from Motion (SfM) pipeline for 3D structure recovery from a collection of images taken from different vantage points, a vital aspect of modern computer vision. In the SfM problem, camera locations and orientations are represented as vectors and rotations in $\mathbb{R}^3$, with respect to some global reference frame. Given a collection of images, and for any point in $\R^3$, there is a unique perspective projection of it onto each imaging plane. %Thus, each physical point in $\mathbb{R}^3$ yields an equivalence class of points $x_i \in I_{i}, i = 1,2\ldots n$ 
+%By building local coordinate frames around salient points in the given images, based entirely on photometric information, and comparing them across images, one obtains an estimate of a set of point correspondences. That is, one obtains a set of equivalence classes, where each class corresponds to a physical point in 3D space. Given sufficiently many such sets of point correspondences, epipolar geometry and physical constraints yield estimates of the relative directions and orientations between pairs of cameras. Noise in these estimates is inherent to any real-world application, and worse yet, due to intrinsic challenges arising from the image formation process and properties of man-made scenes (illumination changes, specularities, occlusions, shadows, duplicate structures etc), severe outliers in estimated point correspondences and hence relative camera poses are unavoidable. 
+%
+%%\red{The $d=3$ special case of this problem is a \color{blue} necessary subtask in the Structure from Motion (SfM) pipeline for 3D structure recovery from a collection of images from different vantage points.  \red{The SfM problem is} a vital aspect of modern computer vision. \red{In it}, camera locations and orientations are respectively represented as \red{3D} vectors and rotations \red{relative to } some global reference frame. \red{Given a collection of images, there is a unique {\color{blue} perspective} projection of any point in $\R^3$ onto each imaging plane.} %Thus, each physical point in $\mathbb{R}^3$ yields an equivalence class of points $x_i \in I_{i}, i = 1,2\ldots n$ 
+%%\red{Based on photometric information, one can build local coordinate frames around salient points in the images.  Comparing these frames across images, one obtains an estimate of a set of point correspondences. }
+%%%That is, one obtains a set of equivalence classes, where each class corresponds to a physical point in 3D space. 
+%%Given sufficiently many sets of point correspondences, epipolar geometry and physical constraints yield estimates of the relative directions and orientations between pairs of cameras. Noise in these estimates is inherent to any real-world application.  Worse yet, severe data outliers in point correspondences are unavoidable due to illumination changes, specularities, occlusions, shadows, and other causes.}
+%
+%Once camera locations and orientations are estimated, 3D structure can then be recovered by a process called bundle adjustment \cite{1dSfm_22}, which is a simultaneous nonlinear refinement of 3D structure, camera locations, and camera orientations.
+%%Relative camera poses are used to estimate camera locations and orientations with respect to a global reference frame, and using this information, 3D structure is then recovered using a process of simultaneous nonlinear refinement of camera and structure, called bundle adjustment \cite{1dSfm_22}. 
+%Bundle-adjustment is a local method, which generally works well when started close to an optimum. Thus, it is critical to obtain accurate camera location and rotation estimates for initialization. SfM therefore consists of three steps: 1) estimating relative camera pose from point correspondences, 2) recovering camera locations and orientations in a global coordinate framework, and 3) bundle adjustment. While the first and third steps have well-founded theories and algorithms, methods for the second step are mostly heuristically motivated. 
+%
+%Several efficient and stable algorithms exist for estimating global camera orientations \cite{1dSfm_11,1dSfm_7, 1dSfm_3, 1dSfm_18,1dSfm_8,1dSfm_19,1dSfm_13,1dSfm_5,1dSfm_10, 1dSfm_5,AMIT_13,1dSfm_17,AMIT_25}.  Hence, it is standard to recover locations separately based on estimates of the orientations.
+%
+%%Since the problem of estimating camera orientations from relative rotations has been well-addressed, with several existing efficient and stable algorithms \cite{1dSfm_11,1dSfm_7, 1dSfm_3, 1dSfm_18,1dSfm_8,1dSfm_19,1dSfm_13,1dSfm_5,1dSfm_10, AMIT_2,AMIT_13,AMIT_24,AMIT_25}, it is standard to recover locations separately, based on estimates of the orientations. 
+%
+%%([11,7,3,18,8,19,13,5,10] from 1dSfM, [2,13,14,24,25,32] from Amit), (for instance it can be done robustly and accurately via rotation averaging ([15] in Jiang)
+%
+%%\textbf{Mention? there has been recent re-emergence of interest in global methods, to reduce computation time/accuracy. }\\
+%
+%%\textbf{citations in the following paragraph are from 1dSfM, [11,3], [16-18], [4], [19] ,[6]) }
+%
+%%There have been many approaches to location recovery from relative directions. For instance, some based on least squares \cite{1dSfm_11, 1dSfm_3, AMIT_2,AMIT_5,AMIT_12} [11,3](1dSFM) and [2,5,12](Singer), SOCP and $l_\infty$ methods [16-18](1dSfM) and [19,27] (Singer), spectral methods [4](1dSfM), similarity transformations for pair alignment [19], Lie-algebraic averaging [13](Singer) and even markov random fields [6], and many others [28, 32, 25] (Singer) [14](1dSfM). \\
+%
+%There have been many different approaches to location recovery from relative directions, such as least squares \cite{1dSfm_11, 1dSfm_3,1dSfm_4,1dSfm_17}, second-order cone programs and $l_\infty$ methods \cite{1dSfm_16,1dSfm_17,1dSfm_18, AMIT_19,AMIT_27}, spectral methods \cite{1dSfm_4}, similarity transformations for pair alignment \cite{1dSfm_19}, Lie-algebraic averaging \cite{AMIT_13}, markov random fields \cite{1dSfm_6}, and several others \cite{1dSfm_19,AMIT_32,AMIT_25, 1dSfm_14}. Unfortunately, most location recovery algorithms either lack robustness to correspondence errors (which are unavoidable in large unordered datasets), at times produce illegitimate collapsed solutions, or suffer from convergence to local minima, in sum causing large errors in or a complete degradation of, the recovered locations.
+%
+%%Two algorithms are notable exceptions to these drawbacks.  
+%There are some recent notable exceptions to the above limitations.
+%% which perform well empirically, but they lack theoretical justification of robustness to outliers. 
+%An algorithm called 1dSfM \cite{1dsfm} focuses on removing outliers by examining inconsistencies along one-dimensional projections, before attempting to recover camera locations. 
+%However, one drawback of this method is that it does not reason about self-consistent outliers, which occur due to repetitive structures, commonly found in man-made scenes. 
+%Also, \"{O}zye\c{s}\.{i}l  and Singer propose a convex program over $dn + |E|$ variables for location recovery and empirically demonstrate its robustness to outliers \cite{AMIT}.  While both of these methods exhibit favorable empirical performance, they lack theoretical guarantees of robustness to outliers.
+%
+%In this paper, we propose a novel convex program for location recovery from pairwise direction observations, and prove that this method recovers locations exactly, in the face of adversarial corruptions, and under rather broad technical assumptions. To the best of our knowledge, this is the first theoretical result guaranteeing location recovery in the challenging case of corrupted pairwise direction observations.
+%%no previously existing algorithm for solving the location recovery problem has been proven to exactly recover locations from adversarially corrupted observations. \\ 
+%We also demonstrate that this method performs well empirically, recovering locations exactly under severe corruptions of relative directions, and is stable to the simultaneous presence of noise on all the observations, as well as a fraction of arbitrary corruptions.
+%
+%%---------END of INTRO ---------\\
+%
+%%\textbf{More from 1dSfM}\\
+%%
+%%There is a class of methods which focus on removing outliers before solving for structure. For instance 1dSfM, ([24] [18] in 1dSfM). ---From 1dSfM: "Zach et al. [24] detect outlier epipolar geometries by looking at loop closure in graph cycles. Moulon et al. improve on this approach, and also robustly fit trifocal tensors to find less noisy translations. Our method for outlier removal is similar in motivation to [18] (no theoretica guarantees), but by projecting into a single dimension we solve tractable subproblems that reduce to a simple combinatorial graph problem."--- 
+%%
+%%The issue with these methods is that due to their local nature, it cannot cope with self-consistent outliers, due for instance to repetitive structures in the scene at hand, a common aspect of man-made scenes. Our approach is global, in that it tries to isolate a dominant structure. 
+%%
+%%"A second limitation is that our method does not reason about self-consistent outliers, such as those arising from ambiguous structures in the scene. To deal with these cases, SfM disambiguation methods could be used [24, 15, 23]."
+%%
+%%-thus, 1dSFM removal of outliers is an inherently local process (?). While for use, we truly have a global scheme for estimating the locations.
+%%
+%%"In the future we hope to explore further ways of aggregating 1DSfM subproblems than simple summation, which could shed light on more complicated outliers, such as those arising from ambiguous scene structures."
+%%
+%%- our method handles all types of outliers equally effectively. in the event of self-consistent outliers, the objective function would still look for the shape that's globally most consistent with the observations.
+%%
+%%While methods like 1dSFM preprocesses the translations with an outlier removal algorithm, we do both outlier removal and location estimation simultaneously. I.e. it's baked into the algorithm. Also, no theoretical guarantees for anything.
+%%
+%%----
+%%Sinha et al attempt to enforce global structure, however their proposed method is non-convex and with no theoretical guarantees. With large duplicate structures, the
+%%erroneous match pairs can form large, self-consistent sets (Sinha et al, Structure from motion for scenes with large duplicate structures). Sinha here proposes a global way of disambiguating repeated structures, but the optimization is non convex and no theoretical guarantees. 
+%
+%
+%
+%%Mention other approaches with outlier robustness, ([24] [18] in 1dSfM), [Amit], and [1DSfM] itself. 
+%
+%
+%
+%
+%
+%%Ozeysil and Singer introduce a different convex program, called LUD, to solve the location recovery problem robustly to outliers. %They show that their program succeeds in the noiseless and corruptionless case under the assumption of parallel rigidity of the measurement graph. The same argument applies for ShapeFit in the corruptionless case and in the case where measurements are accurate up to a minus sign (unless there are exactly half of edges that are corrupted, in which the program will return zero). The authors of [Amit] also demonstrate that LUD performs well empirically, however they do not provide any theoretical justification beyond the noiseless case. To the best of our knowledge, the outlier-robustness theoretical guarantees presented here are the first of their kind.
+%
+%%There are some recent notable exceptions (for instance cite Amit and 1dSFM), which perform well empirically, but they do not come with any theoretical guarantees of robustness to corruptions.  \\
+%
+%%Translations. Like the rotations problem, the translations problem is often formulated as computing global camera translations from pairwise ones. Some approaches are based on a linear system of cross product constraints [11, 3] (3 is an Amit Singer paper, linear system for translations, not robust to outliers, based on least squares. 11 is also based on cross product constraints and linear least squares). Others use Second Order Cone Programming, based on the l$\infty$ norm [16?18]. These require very careful attention to outliers. 
+%
+%%Brand et al. [4] use a spectral approach, without addressing outliers. Sinha et al. [19] robustly compute similarity transformations that align pairs of reconstructions, and then average over these transformations. 
+%
+% %Finally, Crandall et al. [6] take a different approach to optimization, using a complex scheme involving a discrete Markov Random Field search and a continuous Levenberg-Marquardt refinement to robustly explore the solution space.
+%
+%%Our translations solver optimizes an objective function that depends only on comparing measurement directions to model directions, as opposed to other methods [11, 3] where the objective function is also a function of the distance between images. To avoid the resulting bias, Govindu proposes an iterative reweighting scheme [11], which is unnecessary in our approach. Jiang et al. discuss the importance of geometric vs. algebraic cost functions, as they minimize a value that has physical significance. In this sense our cost function is also geometric (but in the space of measurements, rather than in the solution space). "
+%
+%
+%%------ Amit's paper
+%%
+%%\textbf{From Singer paper}
+%%Existing methods for SfM can roughly be classified into two main categories; incremental approaches
+%%(e.g. [1, 6, 11, 16, 29, 30, 41]), that integrate images to the estimation process one by one (or in small
+%%groups) and global methods, that aim to estimate the camera motion (and sometimes also the 3D structure)
+%%jointly for all images. Incremental methods are prone to accumulation of estimation errors at each
+%%step. On the other hand, for the global methods, since simultaneous estimation of motion and 3D structure
+%%is computationally expensive for large sets, a generally adapted procedure is to estimate motion
+%%and structure separately. Assuming an accurate, stable motion estimation algorithm, a single instance of
+%%reprojection error minimization is usually enough to obtain high quality structure estimates.
+%%Since orientation estimation is a relatively well-posed problem, with several efficient and stable existing
+%%methods (e.g. [2, 13, 14, 24, 25, 32]), it is customary to estimate the locations separately (based
+%%on the orientation estimates). However, specifically for large, unordered sets of images, many of the
+%%existing methods for estimating the camera locations suffer from instability to errors in corresponding
+%%points (producing location estimates clustered around a few locations, as for [2, 5, 12, 28]), sensitivity
+%%to outliers in direction measurements (e.g., the ?? approach of [19, 27]) and susceptibility to local solutions
+%%in non-convex formulations (e.g., [13]). Hence, a robust, efficient formulation for global location
+%%estimation, with provable guarantees is of high value
+%%
+%%[2,5,12] in Amit - least squares. problem: spurious solutions 
+%%
+%%There exist several different approaches in the literature for location estimation. The works of [2, 5,
+%%12], formulate the problem as finding a least squares solution to a linear system of equations derived
+%%from pairwise direction measurements (we will refer to this method as ?the least squares? (LS) solver).
+%%However, empirical observations have pointed out the sensitivity of the LS solver to errors in direction
+%%measurements, in the form of a tendency to produce spurious solutions clustering around a few locations.
+%%The multistage linear method of [28] attempts to eliminate the clustering solutions by also estimating the
+%%relative scales between cameras, however, it often fails to produce accurate location estimates. The Lie
+%%algebraic averaging method of [13] is an efficient alternative, but suffers from convergence to local minima,
+%%resulting in large estimation errors in the presence of noisy point correspondences. [27] formulates
+%%a quasi-convex method (based on iterative optimization of a functional of the ?? norm). However, since
+%%the ?? norm is highly prone to outliers in pairwise directions, this method usually fails to produce ac-curate location estimates. A relatively accurate and efficient method, which is also closely related to our
+%%formulation, is studied in [32]. Based on minimizing the ?2 norm of the error in direction measurements
+%%(linearized in ti?s), this method also employs linear pairwise constraints to eliminate clustering solutions
+%%(hence, we refer to this method as ?the constrained least squares? (CLS) solver). However, in the presence
+%%of outliers in direction measurements, the accuracy of the CLS solver is degraded significantly. A
+%%recently introduced alternative is ?the semidefinite relaxation? (SDR) solver of [25]. Formulated as an
+%%abstract problem to estimate locations from pairwise ?lines? (i.e., from measurements of ±?ij , where
+%%the sign is unknown), this method aims to resolve the instability (and hence, the clustering solutions) of
+%%the LS method by introducing extra non-convex constraints in the LS problem, and then relaxing them.
+%%However, semidefinite programming is computationally expensive for large data sets, and similar to the
+%%CLS method, the accuracy of the locations estimated by the SDR is reduced in the presence of outlier
+%%pairwise lines.
+%%
+%% 
+%%---------
+%%
+%%
+%%
+%%---------
+%
+%
+%
+%
+%
+%
+%
+%
+%%The gold standard method for structure from motion is bundle adjustment?the joint nonlinear refinement of camera and structure parameters [22]. However, bundle adjustment is a largely local search, and its success depends critically on initialization. Given a good initial guess, bundle adjustment can produce high quality solutions, but if the guess is bad, the optimization may fall into local minima far from the optimal solution. For this reason most SfM methods focus on creating a close-enough initialization which can then be refined with bundle adjustment; sequential (or incremental) SfM methods are one such approach that use repeated bundle adjustment on increasingly large problems to reach a good solution.
+%
+%%\subsection{Relation to prior work on location recovery}
+%
+%
+%
+%
+%
+%%Structure-from-motion (SfM) methods simultaneously
+%%estimate scene structure and camera motion from multiple
+%%images. Conventional SfM systems often consist of three
+%%steps. First, relative poses between camera pairs or triplets
+%%are computed from matched image feature points, e.g. by
+%%the five-point [25, 23] or six-point [32, 40] algorithm. Second,
+%%all camera poses (including orientations and positions)
+%%and scene point coordinates are recovered in a global coordinate
+%%system according to these relative poses. If camera
+%%intrinsic parameters are unknown, self-calibration algorithms,
+%%e.g. [30], should be applied. Third, a global nonlinear
+%%optimization algorithm, e.g. bundle adjustment (BA)
+%%[41], is applied to minimize the reprojection error, which
+%%guarantees a maximum likelihood estimation of the result.
+%%While there are well established theories for the first and
+%%the third steps, the second step in existing systems are often
+%%ad-hoc and heuristic. Some well-known systems, such
+%%as [36, 2], compute camera poses in an incremental fashion where cameras are added one by one to the global coordinate
+%%system. Other successful systems, e.g. [11, 22, 17],
+%%take a hierarchical approach to gradually merge short sequences
+%%or partial reconstructions. In either case, intermediate
+%%BA is necessary to ensure successful reconstruction.
+%%However, frequent intermediate BA causes reconstruction
+%%inefficiency, and the incremental approach often suffers
+%%from large drifting error. Thus, it is highly desirable that all
+%%camera poses are solved simultaneously for efficiency and
+%%accuracy. There are several interesting pioneer works in this
+%%direction, e.g. [13, 19, 24, 46]. More recently, Sinha et al.
+%%[35] designed a robust multi-stage linear algorithm to register
+%%pairwise reconstructions with some compromise in accuracy.
+%%Arie-Nachimson et al. [3] derived a novel linear algorithm
+%%that is robust to different camera baseline lengths. Yet
+%%it still suffers from the same degeneracy as [13] for collinear
+%%cameras (e.g. cameras along a street).
+%%
+%%More from Jiang: While global rotations
+%%can be computed robustly and accurately by rotation averaging
+%%[15], translations are difficult because the input pairwise
+%%relative translations are only known up to a scale.
+%
+%
+%
+%
+%
+%
+% 
+%
+%%We consider the task of recovering a set of points in $\R^d$ from observations of the relative direction between pairs of points.  This problem is a necessary subtask in the reconstruction of  a three-dimensional object from a series of two-dimensional images.  In this application, the points are the locations of the cameras where each picture was taken.  Based on important features of the object that are visible in multiple images, one can estimate the relative direction of pairs of camera locations.  The feature identification and tracking tasks tend to induce large errors on a fraction of pairwise directions.  As a result, we seek a location recovery procedure that is robust to large corruptions of the pairwise direction measurements.
+%
+%\subsection{Problem formulation}
+%%Formally, suppose $T_0 = \{\toi \in \R^d, i \in [n] \}$ is a set of unknown locations.  Let $G=([n], E)$ be a graph whose edges represent pairs of positions for which we observe relative directions.  Let $E$ be partitioned into $E = \Eg \sqcup \Eb$, where $\Eg$ and $\Eb$ correspond to observations that are respectively uncorrupted and corrupted. The observations $\vij$ are defined as
+%%\begin{align}
+%%\vij = \frac{\toi - \toj}{\|\toi - \toj\|_2} \in \mathbb{S}^{d-1} \text{ for } ij \in \Eg, \qquad \vij \in \mathbb{S}^{d-1}  \text{ for } ij \in \Eb. \label{measurements}
+%%\end{align}
+%%That is, an uncorrupted observation $\vij$ is exactly the direction of $\toi$ relative to $\toj$. A corrupted observation is an arbitrary unit vector. \\  %We consider the challenging case where the graph $\Eb$ and the corruptions $\{\vij\}_{ij \in \Eb}$ are \emph{adversarially} chosen.\\
+%The location recovery problem is to recover a set of points in $\mathbb{R}^d$ from observations of pairwise directions between those points.  
+%Since relative direction observations are invariant under a global translation and scaling, one can at best hope to recover the locations $\Tnot = \{ \tonum{1},\ldots, \tonum{n}\}$ up to such a transformation. That is, successful recovery from $\{v_{ij}\}_{(i,j) \in E}$ is finding a set of vectors ${\{\alpha(\toi + w)\}_{i \in [n]}}$ for some $w \in \mathbb{R}^d$ and $\alpha >0$. We will say that two sets of n vectors $T = \{t_1,\ldots,t_n\}$ and $\Tnot$ are equal up to global translation and scale if there exists a vector $w$ and a scalar $\alpha >0 $ such that $t_i = \alpha(\toi + w)$ for all $i \in [n]$.  In this case, we will say that $T$ and $\Tnot$ have the same `shape,' and we will denote this property as $T \sim \Tnot$. The location recovery problem is then stated as:
+%%That is, one can at best hope to recover $\ti - \tbar = \alpha (\toi - \tnotbar)$ for all $i$ and for some $\alpha > 0$, where $\tbar = \sum_{i=1}^n t_i$ and $\tnotbar = \sum_{i=1}^n \toi$. We will say that two sets of n vectors $T_0$ and $T$ have the same `shape' if there exists a vector $w \in \mathbb{R}^d$ and a scalar $\alpha \in \mathbb{R}$ such that $\toi = \alpha(t_i + w)$ for all $i \in [n]$.  
+%\begin{alignat}{2}
+%&\text{Given:} &\quad &G([n],E), \quad \{\vij\}_{ij \in E} \text{\ \  satisfying \eqref{measurements} }\notag\\
+%&\text{Find:} && T = \{t_1, \ldots, t_n \} \in \mathbb{R}^{d \times n}, \quad \text{such that} \quad T \sim \Tnot % \sim T_0 \notag%= \{t_1,\ldots, t_n\} \quad \text{such that } T \sim T_0 = \{t_1^0,\ldots t_n^0\} \notag %\{\toi\} \text{ up to global translation and scale.} \notag
+%\end{alignat}
+%
+%
+%For this problem to be information theoretically well-posed under arbitrary corruptions, the maximum number of corrupted observations affecting any particular location must be at most $\frac{n}{2}$.  Otherwise, suppose that for some location $\toi$, half of its associated observations $v_{ij}$ are consistent with $\toi$ and the other half are corrupted so as to be consistent with some arbitrary alternative location $w$. Distinguishing between $\toi$ and $w$ is then impossible in general. Formally, let $\deg_b(i)$ be the degree of location $i$ in the graph $([n], \Eb)$. Then well-posedness under adversarial corruption requires that $\max_i \deg_b(i) \leq \gamma n$ for some $\gamma<1/2$. 
+%
+%Beyond the above necessary degree condition on $E_g$ for well-posedness of recovery, we do not assume anything else about the nature of corruptions. That is, we work with adversarially chosen corrupted edges $E_b$ and arbitrary corruptions of observations associated to those edges. To solve the location recovery problem in this challenging setting, we introduce a simple convex program called ShapeFit:
+%\begin{align}
+%\min_{\{t_i\} \in \mathbb{R}^d, i \in [n]} \sum_{ij \in E} \| \Pvijp (t_i - t_j) \|_2 \quad \text{ subject to } \quad \sum_{ij \in E} \langle t_i - t_j, \vij \rangle = 1, \ \  \sum_{i=1}^n t_i = 0 \label{shapefit}
+%\end{align}
+%where $\Pvijp$ is the projector onto the orthogonal complement of the span of $\vij$.  
+%
+%This convex program is a second order cone problem with $dn$ variables and two constraints.  Hence, the search space has dimension $dn-2$, which is minimal due to the $dn$ degrees of freedom in the locations $\{t_i\}$ and the two inherent degeneracies of translation and scale.
+%
+
+%\subsection{Main results}
+%
+%In this paper, we consider the model where pairwise direction observations about $n$  i.i.d. Gaussian locations are given according to an \erdosrenyi random graph.  We start by showing that in a high-dimensional setting, ShapeFit \emph{exactly} recovers the locations with high probability, provided that there are fewer than an exponential number of locations, and provided that at most a fixed fraction of observations are \emph{adversarially} corrupted.
+%
+%This probabilistic recovery theorem is based on a set of deterministic conditions that we prove are sufficient to guarantee exact recovery.  These conditions are satisfied with high probability in the model described above.  See Section \ref{sec-deterministic-theorem} for the deterministic conditions.
+%
+%Numerical simulations empirically verify the main message of these recovery theorems: ShapeFit recovers a set of locations exactly from corrupted direction observations, provided that up to a constant fraction of the observations at each location are corrupted. We present numerical studies in the setting of locations in $\mathbb{R}^3$, with an underlying random \erdosrenyi graph of observations. Further numerical simulations show that recovery is stable to the additional presence of noise on the uncorrupted measurements.  That is, locations are recovered approximately under such conditions, with a favorable dependence of the estimation error on the measurement noise. 
+%
+%
+%\begin{theorem} \label{thm-complete}
+%Let $G([n],E)$ be drawn from $G(n,p)$ for some $p = \Omega(n^{-1/4})$. Take $ \tnot_1, \ldots \tnot_n \sim \mathcal{N}(0, I_{d \times d})$ to be i.i.d., independent from $G$. There exists an absolute constant $c>0$ and a $\gamma = \Omega(p^4)$ not depending on $n$, such that if $\max(\frac{2^6}{c^6}, \frac{4^3}{c^3} \log^3 n) \leq  n \leq e^{\frac{1}{6}c d}$ and $d = \Omega(1)$, then there exists an event with probability at least  $1- e^{-n^{1/6}} - 13 e^{-\frac{1}{2}c d}$, on which the following holds:\\[1em]
+%For arbitrary  subgraphs $\Eb$ satisfying $\max_i \deg_b(i) \leq \gamma n$ and arbitrary pairwise direction corruptions  $\vij \in \mathbb{S}^{d-1}$ for $ij \in \Eb$,  the convex program \eqref{shapefit} has a unique minimizer equal to $\left \{\alpha \Bigl(\toi - \tnotbar \Bigr)\right\}_{i \in [n]}$ for some positive $\alpha$ and for $\tnotbar = \frac{1}{n}\sum_{i\in [n]} \toi$. 
+%\end{theorem}
+%
+%This probabilistic recovery theorem is based on a set of deterministic conditions that we prove are sufficient to guarantee exact recovery.  These conditions are satisfied with high probability in the model described above.  See Section \ref{sec-deterministic-theorem} for the deterministic conditions.
+%
+%
+%This recovery theorem is high-dimensional in the sense that the probability estimate and the exponential upper bound on $n$ are only meaningful for $d= \Omega(1)$.  Concentration of measure  in high dimensions and the upper bound on $n$ ensure control over the angles and distances between random points. As a result, lower dimensional spaces are a more challenging regime for recovery.  
+%
+%Our other main result is in the physically relevant setting of three-dimensional Euclidean space, where for instance the locations correspond to camera locations.  In this setting, we prove that exact recovery holds for any sufficiently large number of locations, provided that a poly-logarithmically small fraction of observations are adversarially corrupted.
+%
+%
+%\begin{theorem} \label{thm-3d} 
+%There exists $n_0 \in \mathbb{N}$ and $c \in \mathbb{R}$ such that the following holds for all $n \ge n_0$.
+%Let $G([n],E)$ be drawn from $G(n,p)$ for some $p = \Omega( n^{-1/5} \log^{3/5} n)$. Take $ \tnot_1, \ldots \tnot_n  \in \R^3$, where $\toi \sim \mathcal{N}(0, I_{3 \times 3})$ are i.i.d., independent from $G$. 
+%%If $n_0 \leq  n  $, then 
+%There exists $\gamma = \Omega(p^5 / \log^3 n)$ and an event of probability at least  $1- \frac{1}{n^{4}}$ %, where $c>0$ is an absolute constant, 
+%on which the following holds:\\[1em]
+%For arbitrary  subgraphs $\Eb$ satisfying $\max_i \deg_b(i) \leq \gamma n$ and arbitrary pairwise direction corruptions $\vij \in \mathbb{S}^2$ for $ij \in \Eb$,  the convex program \eqref{shapefit} has a unique minimizer equal to $\left \{\alpha \Bigl(\toi - \tnotbar \Bigr)\right\}_{i \in [n]}$ for some positive $\alpha$ and for $\tnotbar = \frac{1}{n}\sum_{i\in [n]} \toi$. 
+%\end{theorem}
+%%\begin{theorem} \label{thm-complete}
+%%There exist positive $\fstar, \gamma$ such that the following holds.  Let $\tnot_1, \ldots \tnot_n \sim \mathcal{N}(0, I_d)$ be i.i.d.  If $16 \leq n \leq e^{\gamma d / 3}$, there is an event with probability at least $1 - 4 e^{-\gamma d}$ on which
+%%\begin{quote}For all $\Eb$ satisfying $\max_i \deg_b(i) \leq \fstar \cdot n$, and for all $\{\vij\}$ satisfying \eqref{measurements}, the solution of ShapeFit is unique and equals $\{\alpha(\toi - \tnotbar) \}$ for some $\alpha > 0$.  \end{quote}
+%%
+%%with probability at least $1 - e^{-\gamma d}$, the following holds.  For all $\Eb \subset E$ and for all $\{\vij\}$ satisfying \eqref{measurements}, $$\max_i \deg_b(i) \leq \eps n \Rightarrow  \{\alpha(\toi - \bar{\toi}) \} \text{ is the unique minimizer of ShapeFit} \text{ for some } \alpha > 0.$$ Here, $\eps$ and $c_i$ are positive universal constants.
+%%\end{theorem}
+%
+%
+%%\begin{theorem} \label{thm-complete}
+%%There exist positive constants $\fstar, c_1, c_2, \gamma$ such that the following holds.  If $\tnot_1, \ldots \tnot_n$ are i.i.d. $\mathcal{N}(0, I_d)$, there is an event on which 
+%%\begin{quote}For all $\Eb$ satisfying $\max_i \deg_b(i) \leq \fstar \cdot n$, and for all $\{\vij\}$ satisfying \eqref{measurements}, the solution of ShapeFit is unique and equals $\{\alpha(\toi - \tnotbar) \}$ for some $\alpha > 0$.  \end{quote}
+%%If $c_1 \leq n \leq e^{c_2 d}$, the probability of this event is at least $1 - e^{-\gamma d}$.
+%%
+%%with probability at least $1 - e^{-\gamma d}$, the following holds.  For all $\Eb \subset E$ and for all $\{\vij\}$ satisfying \eqref{measurements}, $$\max_i \deg_b(i) \leq \eps n \Rightarrow  \{\alpha(\toi - \bar{\toi}) \} \text{ is the unique minimizer of ShapeFit} \text{ for some } \alpha > 0.$$ Here, $\eps$ and $c_i$ are positive universal constants.
+%%\end{theorem}
+%
+%
+%
+%
+%
+%%
+%%
+%%Exact recovery also occurs for measurements that are provided along an Erdos-Reyni random graph.
+%%
+%%\begin{theorem}
+%%Fix $p>0$.  There exist p-dependent $\eps, c$ such the the following holds.  Fix $d$.  Let $G$ be an Erdos-Reyni random graph with probability $p$ on $[n]$.  Fix $\Eb \subset E$ such that $\deg_b(i) \leq \eps n / \sqrt{n}$.  Let $\toi \sim \mathcal{N}(0, I_d)$.  If $\poly(d) \leq n \leq c e^d$, then with probability at least $1 - c e^{-c n}$ we have the following.  For all $\{\vij\}_{ij \in \Eb}$, the optimizer $\tsi$ of ShapeFit is unique and $\tsi = \alpha(\toi - \bar{\toi})$ for some $\alpha > 0$.
+%%\end{theorem}
+%
+%%In both theorems, the number of recoverable locations is assumed to be less than exponential in the ambient dimensionality.  We believe this to be an artifact of the proof, and we suspect the condition could be removed.  The permissible scaling of the number of bad measurements at each location is optimal up to a logarithmic factor.  
+%
+%%In addition to the main theorem, we verify empirically that ShapeFit recovers exactly a set of locations exactly, from corrupted pairwise direction observations, provided the proportion of corruptions affecting each location is no more than a half - empirically we see evidence of exact recovery right up to the inherent $1/2$ threshold.
+%
+%Numerical simulations empirically verify the main message of these recovery theorems: ShapeFit recovers a set of locations exactly from corrupted direction observations, provided that up to a constant fraction of the observations at each location are corrupted. We present numerical studies in the setting of locations in $\mathbb{R}^3$, with an underlying random \erdosrenyi graph of observations. Further numerical simulations show that recovery is stable to the additional presence of noise on the uncorrupted measurements.  That is, locations are recovered approximately under such conditions, with a favorable dependence of the estimation error on the measurement noise. 
+%
+%\
+%
+%%\textcolor{blue}{In addition to the main theorem, we verify empirically that ShapeFit exhibits favorable performance, recovering locations exactly from corrupted relative directions observations. Favorable performance persists in any dimension $\geq 2$. Additionally, our numerical experiments provide evidence that recovery via ShapeFit is stable wrt to noise, as well as arbitrary corruptions.  }
+%
+%%Successful recovery holds empirically in $\R^3$ when the uncorrupted measurements are exact and the set of measurements are given by an Erdos-Reyni random graph. 
+%
+%\subsection{Intuition.} \label{sec-motivation}
+%
+%ShapeFit is a convex program that seeks a set of points whose pairwise directions agree with as many of the corresponding observations as possible.  %To do this task with a unique minimizer, the optimization problem must  incentivize the correct  shape and distinguish a particular translation and scale.  
+%The objective, $\sum_{ij \in E} \| \Pvijp (t_i - t_j) \|_2$, incentivizes the correct shape, while permitting translation and a possibly-negative global scale.  Each term $\|\Pvijp (\ti - \tj)\|_2$ is a length-scaled notion for how rotated $t_i - t_j$ is relative to $\pm \vij$.  The objective is in this sense a measure of how much total rotation is needed to deform all $\{t_i - t_j\}_{ij \in E}$ into the observed directions of $\{\pm \vij\}$.  Successful recovery would mean that $\{\|\Pvijp (t_i - t_j)\|_2\}_{ij \in E}$ is sparse.  Motivated by the sparsity promoting properties of $\ell_1$-minimization, the objective in ShapeFit is precisely the $\ell_1$ norm over the edges $E(G)$ of these $\ell_2$ lengths.  
+%
+%The first constraint in ShapeFit, $\sum_{ij \in E} \langle t_i - t_j, \vij \rangle = 1$, requires that the recovered locations correlate with the provided observations by a strictly positive amount.  It prevents the trivial solution and resolves the global scale ambiguity.  As opposed to the objective, this constraint forbids negative scalings of $\{\toi\}_{i \in [n]}$.  The second constraint, $\sum_{i=1}^n t_i = 0$,  resolves the global translation ambiguity.
+%
+%
+%
+%
+%
+%
+%%Theorem \ref{thm-complete} shows that the ShapeFit algorithm \emph{exactly} recovers a set of random points from corrupted observations of the directions between pairs of points.  It assumes that at most a fixed fraction of the observations involving any location are corrupted.  This scaling of the number of permissible corruptions can not be improved by any method.  The recovery guarantee holds even in the case that the corrupted observations and the values taken by these corruptions are selected \emph{adversarially}.
+%
+%%Result is nontrivial for dimensions above a certain threshold.
+%
+%%We  now consider the behavior of ShapeFit in terms of the number of locations to be recovered.  The proof of Theorem \ref{thm-complete} assumes that the random locations are all roughly of the same scale and that triples of locations are not approximately collinear. Both of these assumptions break down for exponentially many random locations.  Hence, the theorem assumes that there are at most exponentially many locations.  This condition may be an artifact of the proof technique.  
+%
+%%The recovery theorem and simulations suggest many interesting and important questions.  Is ShapeFit robust to noise in all the good measurements?  Can the result be extended to sparser measurement graphs?  Can the exponential upper bound in the number of locations be removed?    We leave these questions for future research.  
+%
+%\subsection{Organization of the paper}
+%Section \ref{sec-notation} presents the notation used throughout the rest of the paper.   Section \ref{sec-proofs-high-d} presents the proof of Theorem \ref{thm-complete}.  Section \ref{sec-proofs-three-d} presents the proof of Theorem \ref{thm-3d}. Section \ref{sec-simulations} presents results from numerical simulations.
+%
+%
+%\subsection{Notation} \label{sec-notation}
+%Let $[n] = \{1, \ldots, n\}$. Let $e_i$ be the $i$th standard basis element.  
+%Let $K_n$ be the complete graph on $n$ vertices.  Let $E(K_n)$ be the set of edges in $K_n$. 
+%Let  $\| \cdot \|_2$ be the standard $\ell_2$ norm on a vector. For any nonzero vector $v$, let $\hat{v} = v / \|v\|_2$.
+%For a subspace $W$, let $\proj_W$ be the orthogonal projector onto $W$. For a vector $v$, let $\proj_{v^\perp}$ be the orthogonal projector onto the orthogonal complement of the span of $\{v\}$.
+%
+%Let $T$ denote the set $T = \{ \ti\}_{i \in [n]}$, for $\ti \in \R^{d}$.  Define $\tij = \ti - \tj$
+%for all distinct $i,j \in [n]$.    
+%We define $\muinf = \max_{i\neq j} \|\toij\|_2$, and we define $\mu=\frac{1}{|E(G)|}\sum_{ij\in E(G)}\|\toij\|_2$.
+%Define $\Tbar = \frac{1}{n} \sum_{i \in [n]} \ti$.  Define $\toij$, $\Tnot$, and $\Tnotbar$ similarly.  For a scalar $c$, let $c T = \{c t_i\}_{i\in [n]}$. 
+% For a given $G=G([n],E)$ and $\{\vij\}_{ij \in E}$, where $\vij \in \R^{d}$ have unit norm, 
+% let $R(T) = \sum_{ij \in E} \| \Pvijp (\ti - \tj) \|_2$.   Let $L(T) = \sum_{ij \in E} \< \ti - \tj, \vij \>$.  Let $\lij = \< \ti - \tj, \vij \>$, and similarly for $\loij$.  In this notation, ShapeFit is
+%\[
+%\min_T R(T) \quad \text{subject to} \quad  L(T) = 1, \quad \Tbar = 0
+%\]
+%For vectors $v_1, \ldots, v_k$, let $S(v_1, \ldots, v_k) = \Span(v_1, \ldots, v_k)$ be the vector space spanned by these vectors.  
+%Given $\tij$ and $\toij$, define $\deltaij$, $\etaij$, and $\sij$ such that 
+%\[
+%\tij = (1 + \deltaij) \toij + \etaij \sij
+%\]
+%where $\sij$ is a unit vector orthogonal to $\toij$ and $\etaij = \| P_{\toijperp} \tij \|_2$.
+%Note that $\eta_{ij} \ge 0$. 
+
+%\red{old draft
+%Let $[n] = \{1, \ldots, n\}$. Let $e_i$ be the $i$th standard basis element.  Let $K_n$ be the complete graph on $n$ vertices.  Let $E(K_n)$ be the set of edges in $K_n$.  
+%Let $\Id$ be the $d \times d$ identity matrix.  Let  $\| \cdot \|_2$ be the standard $\ell_2$ norm on a vector. For any nonzero vector $v$, let $\hat{v} = v / \|v\|_2$.  For a matrix $X$, define $\|X\|_\text{op}$ as the largest singular value of $X$.
+%For a subspace $W$, let $\proj_W$ be the orthogonal projector onto $W$. For a vector $v$, let $\proj_{v^\perp}$ be the orthogonal projector onto the orthogonal complement of the span of $\{\vijp\}$.  %For two random variables $x$ and $y$, we write $x =^d y$ if they have the same distribution.
+%Define $\tij = \ti - \tj$.   Let $T$ denote the set $T = \{ \ti\}_{i \in [n]}$.    Let $\Tbar = \frac{1}{n} \sum_{i \in [n]} \ti$.  Define $\toij$, $\Tnot$, and $\Tnotbar$ similarly.  For a scalar $c$, let $c T = \{c t_i\}_{i\in [n]}$. 
+%%Let $T - \Tbar = \{\ti - \Tbar\}_{i\in[n]}$.  
+% For a given $G=G([n],E)$ and $\{\vij\}_{ij \in E}$, let $R(T) = \sum_{ij \in E} \| \Pvijp (\ti - \tj) \|_2$.   Let $L(T) = \sum_{ij \in E} \< \ti - \tj, \vij \>$.  Let $\lij = \< \ti - \tj, \vij \>$, and similarly for $\loij$.  In this notation, ShapeFit is
+%\[
+%\min_T R(T) \quad \text{subject to} \quad  L(T) = 1, \quad \Tbar = 0
+%\]
+%Let $S(v_1, \ldots, v_k) = \Span(v_1, \ldots, v_k)$ be the vector space spanned by $v_1, \ldots v_k$.  
+%Given $\tij$ and $\toij$, define $\deltaij$, $\etaij$, and $\sij$ such that 
+%\[
+%\tij = (1 + \deltaij) \toij + \etaij \sij
+%\]
+%where $\sij$ is a unit vector orthogonal to $\toij$ and $\etaij = \| P_{\toijperp} \tij \|_2$.
+%}
+
+
+
+
+
+
+
+

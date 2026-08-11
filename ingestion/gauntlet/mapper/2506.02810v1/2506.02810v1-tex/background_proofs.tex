@@ -1,0 +1,176 @@
+\section{Proofs for Section~\ref{sec:background}}\label{apdx:proofs}
+\subsection{Proof of Proposition~\ref{prop:g_equiv}}
+Denoting $w=(dx_1(v),...,dx_d(v))$, we have:
+
+$$\g(v,v)=w^T\cdot \G(p)\cdot w,$$
+and 
+
+$$\g_0(v,v)=w^T\cdot w,$$
+
+where $\G(p):=\left[\g_{i,j}\right]_{i,j}$ is the symmetric positive-definite matrix given by $\g_{i,j}=\g(\partial_{i_{|p}},\partial_{j_{|p}})$.\\
+
+Hence,
+$$\lambda(p)\cdot \sqrt{\g_0(v,v)}\leq \sqrt{\g(v,v)}\leq \mu(p)\cdot \sqrt{\g_0(v,v)}$$
+
+\subsection{Proof of Proposition~\ref{prop:dis_equiv}}
+
+Let $p\in\man$ and let $U$ be a coordinate neighborhood of $p$.
+Up to shrinking $U$, we can assume that:
+$$U=\{q\in\man\, ,\, \dis_0(p,q)\leq\eps\},$$
+for a given, small enough $\eps>0$, and where $\dis_0$ is the distance associated to the metric $\g_0$, given by 
+$$\dis_0(p,q)=\sqrt{x_1(q)^2+\dots+x_d(q)^2},$$
+where $q$ is given in local coordinates by $x(q)=(x_1(q),...,x_d(q))$.
+
+From Proposition~\ref{prop:g_equiv}, there exist continuous functions $\lambda,\mu\colon U\rightarrow(0,\infty)$ such that for every $q\in U$ and $v\in\tangent_q\man$, one has
+$$\lambda(q)\cdot \sqrt{\g_0(v,v)}\leq \sqrt{\g(v,v)}\leq \mu(q)\cdot \sqrt{\g_0(v,v)}.$$
+Furthermore, $\lambda(q),\mu(q)\rightarrow \lambda(p),\mu(p)$ as $q\rightarrow p$ because $\lambda$ and $\mu$ are continuous.
+
+Now, let $\gamma\colon[0,1]\rightarrow\man$ be a piecewise-$C^{\infty}$ curve such that $\gamma(0)=p$ and $\gamma(1)=q\in U$.
+
+\begin{itemize}
+\item If $\gamma$ is a segment for $\dis_0$, then it lies in $U$ (as $\dis_0(p,q)\leq\eps$). We also have:
+%
+\begin{align*}
+\dis_0(p,q)&=\int_0^1\sqrt{\g_0\left(\frac{d\gamma(t)}{dt},\frac{d\gamma(t)}{dt}\right)}\, dt\\
+&\geq \frac{1}{\sup_{t\in[0,1]}\ \mu(\gamma(t))}\int_0^1\sqrt{\g\left(\frac{d\gamma(t)}{dt},\frac{d\gamma(t)}{dt}\right)}\, dt\\
+&=\frac{\length(\gamma)}{\sup_{t\in[0,1]}\ \mu(\gamma(t))}\\
+&\geq \frac{\dis(p,q)}{\sup_{t\in[0,1]}\ \mu(\gamma(t))}.
+\end{align*}
+%
+\item If $\gamma$ lies inside $U$, then:
+%
+\begin{align*}
+\length(\gamma)&=\int_0^1\sqrt{\g\left(\frac{d\gamma(t)}{dt},\frac{d\gamma(t)}{dt}\right)}\, dt\\
+&\geq \inf_{t\in[0,1]}\ \lambda(\gamma(t)) \cdot \int_0^1\sqrt{\g_0\left(\frac{d\gamma(t)}{dt},\frac{d\gamma(t)}{dt}\right)}\, dt\\
+&\geq \inf_{t\in[0,1]}\ \lambda(\gamma(t))\cdot\dis_0(p,q)
+\end{align*}
+%
+\item If $\gamma$ leaves $U$, then there exists a smallest $t_0$ such that $\gamma(t_0)\notin U$. We have:
+%
+\begin{align*}
+\length(\gamma)&\geq\int_0^{t_0}\sqrt{\g\left(\frac{d\gamma(t)}{dt},\frac{d\gamma(t)}{dt}\right)}\, dt\\
+&\geq \inf_{t\in[0,1]}\ \lambda(\gamma(t))\cdot\int_0^{t_0}\sqrt{\g_0\left(\frac{d\gamma(t)}{dt},\frac{d\gamma(t)}{dt}\right)}\, dt\\
+&\geq \inf_{t\in[0,1]}\ \lambda(\gamma(t))\cdot\eps\\
+&\geq \inf_{t\in[0,1]}\ \lambda(\gamma(t))\cdot\dis_0(p,q)
+\end{align*}
+%\mathieu{Un dessin illustrant les 3 cas pourrait être sympa.}
+Like mentioned above, $\lambda(q),\mu(q)\rightarrow \lambda(p),\mu(p)$ as $q\rightarrow p$, therefore (and by shrinking $U$ again if necessary) we can ensure that $\lambda_0=\inf_{r\in U}\lambda(r)>0$ and that $\mu_0=\sup_{r\in U}\mu(r)<\infty$.
+
+We have proved that for every $q\in U$, one has
+$$\lambda_0\cdot\dis_0(p,q)\leq \dis(p,q)\leq\mu_0\cdot\dis_0(p,q),$$
+and we finally see that, as $q\rightarrow p$:
+$$\lambda_0,\mu_0\rightarrow \lambda(p),\mu(p).$$
+%Finally, notice that by definition of $\mu_0$ and $\lambda_0$ and since $\lambda(q),\mu(q)\rightarrow 1$ as $q\rightarrow p$, we know that $$\frac{\dis(p,q)}{\dis_0(p,q)}\rightarrow 1\text{ as }q\rightarrow p.$$
+\end{itemize}
+
+\subsection{Proof of Proposition~\ref{prop:geo_vol}}
+Let us consider a chart $\varphi\colon U\rightarrow\R^d$ around $p$ such that $\varphi(p)=(0,...,0)$ and 
+
+$$\g(\partial_{i_{|p}},\partial_{j_{|p}})=
+\begin{cases}
+1, \text{ if } i=j\\
+0, \text{ otherwise}
+\end{cases}$$
+
+so as to have $\g_p=\g_0$, where $\g_0$ is the Euclidean metric in local coordinates.
+
+For a small enough $\eps>0$ and by Proposition~\ref{prop:dis_equiv}, we know that 
+$$\ball_0(p,\eps/\mu_0)\subseteq\ball(p,\eps)\subseteq \ball_0(p,\eps/\lambda_0)\subseteq U,$$
+for $\lambda_0,\mu_0>0$, where $\ball_0(p,\cdot)$ stands for the Euclidean ball using the distance $\dis_0$ in local coordinates.
+
+As such,
+$$\vol\left(\ball_0(p,\eps/\mu_0)\right)\leq \vol\left(\ball(p,\eps)\right)\leq \vol\left(\ball_0(p,\eps/\lambda_0)\right).$$
+Furthermore, $\lambda_0,\mu_0\rightarrow 1$ as $\eps\rightarrow 0$ because $\g_p=\g_0$.\\
+Denote
+$$c=\inf\{\deter(\G(q)),q\in\ball_0(p,\eps/\mu_0)\},$$
+$$C=\sup\{\deter(\G(q)),q\in\ball_0(p,\eps/\lambda_0)\},$$
+where $\G=\left[\g(\partial_i,\partial_j)\right]_{i,j}$.
+Since $\deter(\G(p))=1$ (as $\g_p=\g_0$) and $\G$ is smooth, we have $c,C\rightarrow 1$ as $\eps\rightarrow 0$.
+
+Now, denoting the Lebesgue measure in $\R^d$ as $l$, we have
+\begin{itemize}
+\item One one hand: \begin{align*}
+\vol\left(\ball_0(p,\eps/\mu_0)\right)&=\int_{\{x\in\R^d,\,\Vert x\Vert\leq \eps/\mu_0\}}\sqrt{\deter(\G)}\circ\varphi^{-1}\,dl\\
+&\geq \sqrt{c}\int_{\{x\in\R^d,\,\Vert x\Vert\leq \eps/\mu_0\}}\,dl\\
+&\geq \sqrt{c}\cdot\alpha_d\cdot \left(\frac{\eps}{\mu_0}\right)^d
+\end{align*}
+
+\item On the other hand:\begin{align*}
+\vol\left(\ball_0(p,\eps/\lambda_0)\right)&=\int_{\{x\in\R^d,\,\Vert x\Vert\leq \eps/\lambda_0\}}\sqrt{\deter(\G)}\circ\varphi^{-1}\,dl\\
+&\leq \sqrt{C}\int_{\{x\in\R^d,\,\Vert x\Vert\leq \eps/\lambda_0\}}\,dl\\
+&\leq \sqrt{C}\cdot \alpha_d\cdot \left(\frac{\eps}{\lambda_0}\right)^d
+\end{align*}
+\end{itemize}
+
+As such,
+$$\vol\left(\ball(p,\eps)\right)\underset{\eps\rightarrow 0}{\sim} \alpha_d\cdot\eps^d$$
+
+\subsection{Proof of Proposition~\ref{prop:grad}}
+The coordinate vector fields are a basis of the tangent spaces $\tangent_p\man$ for all $p\in U$. As such, in $U$, the gradient $\nabla f$ can be expressed as a linear combination:
+$$\nabla f=\sum_{i=1}^d a_i\cdot\partial_i.$$
+Now, we know that for all $i$:
+$$\g\left(\nabla f,\partial_i\right)=df(\partial_i)=\frac{\partial f}{\partial x_i},$$
+and as such
+$$\sum_{j=1}^d a_j\cdot \g\left(\partial_j,\partial_i\right)=\frac{\partial f}{\partial x_i}.$$
+This gives
+$$(a_1,...,a_d)\cdot\left[\g(\partial_i,\partial_j)\right]_{i,j}=\left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right),$$
+and
+$$(a_1,...,a_d)=\left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right)\cdot\left[\g(\partial_i,\partial_j)\right]_{i,j}^{-1}.$$
+
+Furthermore,
+\begin{align*}
+g\left(\nabla f,\nabla f\right)&=(a_1,...,a_d)\cdot\left[\g(\partial_i,\partial_j)\right]_{i,j}\cdot(a_1,...,a_d)^T\\
+&=\left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right)\cdot\left[\g(\partial_i,\partial_j)\right]_{i,j}^{-1}\cdot\left[\g(\partial_i,\partial_j)\right]_{i,j}\cdot \left[\g(\partial_i,\partial_j)\right]_{i,j}^{-1}\cdot \left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right)^T\\
+&=\left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right)\cdot \left[\g(\partial_i,\partial_j)\right]_{i,j}^{-1}\cdot \left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right)^T.
+\end{align*}
+As such,
+$$\frac{1}{\mu(p)}\cdot \sqrt{\sum_{i=1}^d\frac{\partial f(p)}{\partial x_i}^2}\leq \sqrt{\g\left(\nabla f(p),\nabla f(p)\right)}\leq \frac{1}{\lambda(p)}\cdot \sqrt{\sum_{i=1}^d\frac{\partial f(p)}{\partial x_i}^2}.$$
+
+
+
+
+%\subsection{Proof of Lemma~\ref{lem:F}}
+%The proof for this lemma follows closely from the proof of Theorem 3.2. in \cite{milnor1963morse}. We will construct a function $F_{\epsilon}$ that coincides with $f$ everywhere but on a small neighborhood around the critical point $p$.\\
+%By Lemma~\ref{lem:morse}, there exists a Morse chart $\varphi\colon U\rightarrow\mathbb{R}^n$ where $f=v-\xi+\eta$, such that $\forall q\in U_i$:
+%\begin{itemize}
+%    \item $\xi(q)=\sum_{j=1}^{i}\varphi(q)_j^2$,
+%    \item $\eta(q)=\sum_{j=i+1}^{n}\varphi(q)_j^2$,
+%\end{itemize}
+%where $i$ depends only on the Hessian of $f$ at $p$.\\
+%
+%We also have 
+%
+%$$\ball_{\sqrt{\epsilon}}=\left\{q\in U,\, \xi(q)+\eta(q)\leq\epsilon\right\}.$$
+%
+%Let $\mu\colon \mathbb{R}\rightarrow\mathbb{R}$ be a smooth function such that:
+%\begin{itemize}
+%    \item $\mu(0)>\epsilon$,
+%    \item $\mu(r)=0$ if $r\geq \epsilon$, and
+%    \item $-1<\mu'(r)\leq 0$.
+%\end{itemize}
+%Now, define $F_\epsilon$ to be:
+%\begin{align*}
+%    F_\epsilon\colon\man&\longrightarrow\mathbb{R}\\
+%    q&\longmapsto \begin{cases}
+%    f(q),& \text{ if } q\notin U\\
+%    f(q)-\mu(\xi(q)+\eta(q)),& \text{ if } q\in U
+%    \end{cases}
+%\end{align*}
+%
+%$F_\epsilon$ is smooth and $F_\epsilon\leq f$. Moreover, outside $\ball_{\sqrt{\epsilon}}$, $f$ and $F_\epsilon$ coincide.\\
+%
+%Notice also that the critical points of $F_\epsilon$ are the same as those of $f$. This is because the two functions coincide outside of $U$, and inside $U$ we have:
+%$$\nabla F_\epsilon=\left(-1-\mu'(\xi+\eta)\right)\cdot\nabla\xi+\left(1-\mu'(\xi+\eta)\right)\cdot\nabla\eta,$$
+%$$\left(-1-\mu'(\xi+\eta)\right)<0,$$
+%$$\left(1-\mu'(\xi+\eta)\right)\geq 1,$$
+%and $\nabla\xi$ and $\nabla\eta$ vanish only at the origin of the chart which corresponds to $p$.\\\\
+%Now, $$F_\epsilon^{-1}[f(p)-\epsilon,f(p)+\epsilon]\subseteq f^{-1}[f(p)-\epsilon,f(p)+\epsilon].$$
+%
+%This is because $f$ and $F$ coincide outside of $\ball_{\sqrt{\epsilon}}$ and inside we have $f\geq F$ and
+%$$f=f(p)-\xi+\eta\leq f(p)+\xi+\eta\leq f(p)+\epsilon.$$
+%
+%Hence, $F_\epsilon^{-1}[f(p)-\epsilon,f(p)+\epsilon]$ can not contain any critical points aside from $p$. However,
+% $$F_\epsilon(p)=f(p)-\mu(0)<f(p)-\epsilon.$$
+%Therefore, $F_\epsilon^{-1}[f(p)-\epsilon,f(p)+\epsilon]$ does not contain critical points.
+% 
+%

@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1807.04261v1",
+  "initialized_utc": "2026-08-11T08:30:59.684093Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Phase Retrieval Under a Generative Prior",
+        "authors_tex": [
+          "Paul Hand\\footremember{Rice}{Department of Computational and Applied Mathematics, Rice University, Houston, TX}, Oscar Leong\\footrecall{Rice} , and Vladislav Voroninski\\footremember{Helm}{Helm.ai, Menlo Park, CA}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1807.04261v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1380968,
+      "sha256": "8d9262c764550c258ff4b27b6eca46cfd1f51c48ad1bce33de0685e62ca4d480",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1807.04261v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1807.04261v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 10,
+      "tex_files": 1,
+      "sha256": "200166328d805f0d1b31e185f46a75530816bd83c8a46cc4e389a8e42787ae24"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1807.04261v1.pdf",
+      "format": "application/pdf",
+      "bytes": 2112451,
+      "sha256": "5e5d43dd8d6022612578a230fd8041c827b3deda650fd0de3eb9afde36fa4849"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:59.684093Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 10
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 10
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "main.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

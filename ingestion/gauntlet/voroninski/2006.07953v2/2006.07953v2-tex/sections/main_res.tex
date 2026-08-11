@@ -1,0 +1,270 @@
+\section{Low-rank matrix recovery under a generative network prior}\label{sec:SpikedRes}
+We are now ready to formulate our main theoretical result
+for the spiked random matrix models. Its analysis will be based on
+the following assumptions on the weights of the network.
+
+\begin{assumption}\label{hyp:randW}
+	The generative network $G$ defined in \eqref{eq:Gx}, has weights $W_i \in \R^{n_i \times n_{i-1}}$ with i.i.d. entries from $\mathcal{N}(0,1/n_i)$ and satisfying the expansivity  condition with constant $\eps >0$:
+	\begin{equation*}
+	n_{i+1} \geq c \eps^{-2} \log(1/\eps) n_{i} \log n_{i}
+	\end{equation*}
+	for all $i$ and a universal constant $c > 0$.
+\end{assumption}
+
+We remark that no assumption on the layer-wise independence of the weight matrices is required.
+
+Due to the non-smoothness of the Relu activation functions, the generative network $G$ and the loss function $f$ are not differentiable everywhere. Therefore, following \cite{HHHV18}, we resort to some concepts from nonsmooth analysis \footnote{The reader is referred to \cite{clason2017nonsmooth} for more details.}. Since $f$ is continuous and piecewise smooth, at every point $x \in \R^k$,  $f$  has a \textit{Clarke subdifferential} given by:
+\begin{equation}\label{eq:subdiff}
+\pa f(x) = \text{conv} \{ v_1, v_2, \dots, v_T \}
+\end{equation}
+where conv denotes the convex hull of the vectors $v_1, \dots, v_T$, gradients of the $T$ smooth functions adjoint at $x$.  
+In particular at a point where $f$ is differentiable $\pa f(x) = \{\nabla f(x) \}$. The terms subgradients will be used for the vectors $v_x \in \pa f(x)$.  
+
+The next theorem will demonstrate the favorable optimization geometry of the minimization problem \eqref{eq:minM} for the spiked matrix models \eqref{eq:wishart_Y} and \eqref{eq:wigner_Y}. 
+We will show that provided that the noise scales linearly with the latent dimension $k$, outside 0 and two small Euclidean balls around $\xstar$ and a negative multiple of $\xstar$, 
+the subgradient $v_x$ give a descent direction
+for the function $f(x)$. We let 
+$\mathcal{B}(x,r)$ denotes
+the Euclidean ball of radius $r$ around $x$, and $D_v f(x)$ denotes the (normalized) one-sided directional derivative of $f$ in direction $v$: $D_{v} f(x) = \lim_{t \to 0} \frac{f(x + t v) - f(x)}{t \|v\|_2}$.
+
+\begin{thm}[Global Landscape Analysis]\label{thm:main_rand}
+	Let Assumption \ref{hyp:randW} be satisfied with $\eps \leq K_1 d^{-96}$, consider the minimization problem \eqref{eq:minM} and assume that the noise variance ${\omega}$ satisfies ${\omega} \leq K_2 \|\xstar\|_2^2 2^{-d}/d^{44}$ where:
+	\begin{itemize}
+		\item for the \textbf{Spiked Wishart Model} \eqref{eq:wishart_Y}  take $M~=\Sigma_N-\sigma^2 I_n$ with $\Sigma_N = Y^\T Y/N$ and:
+		\[
+		{\omega} :={(\|\ystar\|_2^2 + \sigma^2)}  \max \Bigg\{\sqrt{\frac{113 k \log (3\, n_1^d n_2^{d-1} \dots n_{d-1}^2 n) }{N}}, \frac{52 k \log (3\, n_1^d n_2^{d-1} \dots n_{d-1}^2 n) }{N} \Bigg\};
+		\]
+		
+		\item for the \textbf{Spiked Wigner Model} \eqref{eq:wigner_Y}  take $M = Y$ and:
+		\[
+		{\omega} := {\nu} \sqrt{  \frac{30 k \log (3\, n_1^d n_2^{d-1} \dots n_{d-1}^2 n)  }{n}}.
+		\]
+	\end{itemize}
+	
+	Then for $\gamma_\eps > 0$ depending polynomially on $\eps$,
+	with probability at least  $1 - 2e^{- k \log n} - \sum_{i=1}^d 8 n_i e^{- \gamma_\eps n_{i-1}}$
+	the following holds.
+	
+	For all $x \in \R^k$:
+	\begin{itemize}
+		\item if $x \notin \mathcal{B}(\xstar, r_+)~\cup~\mathcal{B}(-\rho_d \xstar, r_-)~\cup~\{0\}$ and $v_x \in \pa f(x)$:
+		\[
+		D_{-v_x} f(x) < 0
+		\]
+		where 
+		\[
+		r_+ = K_3 (d^{14} {\eps^{1/2}} + 2^d d^{10} \omega  \|\xstar\|_2^{-2})  \|\xstar\|_2,
+		\]
+		and
+		\[
+		r_- =  K_4 (d^{12} {\eps}^{1/4} + 2^{d/2} d^{10} \omega^{1/2} \|\xstar\|_2^{-1})   \|\xstar\|_2
+		\]
+		\item if $x \in \mathcal{B}(0,  \|\xstar\|_2/16 \pi) \backslash \{0\}$  and $v_x \in \pa f(x)$ then \[\langle x, v_x\rangle < 0\]
+		while if $x = 0$ and $v \in \mathcal{S}^{k-1}$ then 
+		\[
+		D_{-v} f(0) = 0
+		\]
+	\end{itemize} 
+	Here $K_1, \dots, K_4$  are universal constants and $0< \rho_d \leq 1$ depends only on the depth $d$ and converges to 1 as $d \to \infty$.
+\end{thm}
+
+
+
+% Noise scaling
+According to the theorem the subgradients of $f$ are direction of strict descent for any nonzero point outside the two Euclidean balls around $\xstar$ and $-\xstar$. Furthermore, there are no other spurious critical points or non-escapable saddles apart from the local maximum $x = 0$.
+
+For small enough $\eps > 0$, the size of the two neighborhoods around $\xstar$ and $-\xstar$ is a function of the control parameter $\omega$.
+This quantity is analogous to the effective SNR $\sigma^2 \sqrt{s \log(n)/N}$
+which governs sharp transitions in Sparse PCA \cite{amini2008high}.
+In particular, for the Wishart model (structured PCA problem), in the interesting regime $k \log(n) \lesssim N$ and at fixed depth $d$, the size of the ball around $\xstar$ shrinks at the optimal rate $\sqrt{k \log(n)/N}$, implying that a number of samples $N$ proportional to $k$ is sufficient for a consistent estimate. In the same fashion, for the Wigner model the size of the noise $\nu$
+it is required to be inversely proportional to the optimal rate $\sqrt{k/n}$.
+
+We note that the quantity $2^d$ in the hypothesis and conclusions of the theorem, is an artifact of the scaling of the network and it should not be taken as requiring exponentially small noise. Indeed under the assumptions on the weights 
+specified above, these matrices have spectral norm approximately 1, while the application of the Relu function zeros out approximately half of the entries of its argument leading to an ``effective'' operator norm of approximately $1/2$. The other polynomial dependence on the depth $d$ are likely not optimal and optimizing the proof for superior dependence on $d$ would not drastically alter the fundamental theoretical advance. As we show in the numerical experiments the bounds are quite conservative and the actual dependence on the depth is much better in practice.
+
+Having analyzed the behavior of the loss $f$ outside the two balls around $x$ and $-\rho_d \xstar$, the next proposition 
+will describe the local properties of these two neighborhoods.
+
+% COMMENT 
+\begin{comment}
+\begin{figure}
+\centering
+\includegraphics[width=0.6\linewidth]{imgs/loss_surf3}
+\caption{ Loss surface $ \frac{1}{4} \|G(x)G(x)^\T - Y\|^2_F$ of a network $G$ with ReLU
+activation functions, latent dimension $k = 2$, $n_1 = 250$ nodes in hidden layer and space dimension $n = 1500$ and with random Gaussian weights in each layer. The matrix $Y$ is from a spiked Wishart model with $N = 100$ and $\sigma = 1$,  and the exact latent vector is $\xstar = [1,0]$. As predicted by our theory, the surface
+has a critical point near $- \xstar$, a global minimum at $\xstar$ and a local maximum at 0.} \label{fig:losssurf3}
+\end{figure}
+
+In Figure \ref{fig:losssurf3} we plot the landscape geometry of \eqref{eq:minM} for the Wishart model $\sigma = 1$ and $N = 100$, and in case of a 2 layer random network with latent dimension $k = 2$, hidden dimension 
+$h_1 = 250$ and output dimension $n = 1500$. The point $\xstar = [1,0]$ is a global minimum, and as predicted by our theory, $x = 0$ is local maximum and there is a local minimum in the vicinity of $-\xstar$. Note moreover that in this regime $N << n$ and 
+PCA fails.
+\end{comment}
+%\begin{thm}
+%	Assume that the assumptions of Theorem  \ref{thm:main_rand} are satisfied.
+%	
+%	A. If $x \in \mathcal{B}(\xstar, r_+)$ and $y \in \mathcal{B}(\rho_d \xstar, \phi r_+)$ it holds that:
+%	\[
+%		f(y) > f(x)
+%	\]
+%	
+%	B. In addition let $\vartheta = (3\, n_1^d n_2^{d-1} \dots n_{d-1}^2 n)$, then:
+%	\begin{itemize}
+%		\item for the \textbf{Spiked Wishart Model}, for all $x \in \mathcal{B}(\xstar, r_+)$ and $\tilde{\sigma} = \sigma/\|\ystar\|$
+%		\[
+%			\| G(x) - G(\xstar )\|	\leq K_6 \Big(d^4 {\eps^{1/2}} +  {(1 + \tilde{\sigma}^2)} \sqrt{\frac{30 k \log \vartheta }{N}} \Big) d^{10} \|G(\xstar)\|_2,
+%		\]
+%		
+%		\item  for the \textbf{Spiked Wigner Model}, for all $x \in \mathcal{B}(\xstar, r_+)$ and $\tilde{\nu} = \nu/\|\ystar\|^2$ and :
+%		\[
+%		\| G(x) - G(\xstar )\|	\leq K_7 \Big(d^4 {\eps^{1/2}} +  \tilde{\nu} \sqrt{\frac{30 k \log \vartheta }{N}} \Big) d^{10} \|G(\xstar)\|_2,
+%		\]
+%		
+%	\end{itemize}
+%		
+%\end{thm}
+
+
+\begin{prop}\label{prop:rand_localmin}
+	Let the assumptions of Theorem  \ref{thm:main_rand} be satisfied.
+	
+	A. For any $x \in \mathcal{B}(\xstar, r_+)$ and $y \in \mathcal{B}(- \rho_d \, \xstar, r_-)$ it holds that:
+	\[
+	f(x) < f(y)
+	\]
+	
+	B. In addition, for $K_5$ and $K_6$ positive absolute constants:
+	\begin{itemize}
+		\item for the \textbf{Spiked Wishart Model}, for all $x \in \mathcal{B}(\xstar, r_+)$:
+		\[
+		\| G(x) - \ystar\|_2	\leq K_5 \Big(d^4 {\eps^{1/2}} +  \frac{\omega}{\| \ystar\|_2^2 } \Big) d^{10} \|\ystar\|_2,
+		\]
+		
+		\item  for the \textbf{Spiked Wigner Model}, for all $x \in \mathcal{B}(\xstar, r_+)$:
+		\[
+		\| G(x) - \ystar\|_2	\leq K_6 \Big(d^4 {\eps^{1/2}} + \frac{\omega}{\| \ystar\|_2^2 } \Big) d^{10} \|\ystar\|_2,
+		\]
+		
+	\end{itemize}
+	
+\end{prop}
+
+The previous results imply that, for $\eps$ small enough and under the assumptions on the noise level $\omega$, any point $x$ in the benign neighborhood $\mathcal{B}(\xstar, r_+)$ has reconstruction error $\| G(x) - \ystar\|$ which scales optimally according to \eqref{eq:ws_scaling} or \eqref{eq:wg_scaling}.
+
+\subsection{Proofs outline and techniques}
+
+%consider the minimization problem \eqref{eq:minM} with: $$M = G(\xstar)G(\xstar)^\T + H,$$ for an unknown symmetric matrix $H \in \R^{n \times n}$ and nonzero $\xstar \in \R^k$. 
+
+The bulk of the analysis will be based on deterministic conditions on 
+the weights of the network.
+In particular we leverage a set of techinical results 
+recently introduced by \cite{hand2017global}.
+
+For $W \in \R^{n \times k}$ and $x \in \R^k$, define the operator $W_{+,x} := \diag(W x > 0) W$ such that $\relu(W x) = W_{+,x} x$.  Moreover let $W_{1,+,x} = (W_1)_{+,x} = \diag(W_1 x > 0) W_1$, and for $ 2 \leq i \leq d$:
+\[
+W_{i,+,x} = \diag(W_i, \Pi_{j=i-1}^{1} W_{j,+,x}  x > 0)W_i, 
+\]
+where $\Pi_{i=d}^{1} W_{i} = W_d W_{d-1} \dots W_1$. 
+Finally we let $\Lambda_x=~\Pi_{j=d}^{1} W_{j,+,x} $
+and note that $G(x) = \Lambda_x x$.
+
+\begin{definition}[Weight Distribution Condition \citep{hand2017global}]\label{def:WDC}
+	We say that $W \in \R^{n \times k}$ satisfies the \textbf{Weight Distribution Condition (WDC)} with constant $\epsilon > 0$ if for all $x_1, x_2 \in \R^k$:
+	\[
+	\| W_{+,x_1}^\T W_{+,x_2} - Q_{x_1,x_2}\|_2 \leq \eps,
+	\] 
+	where
+	\[
+	Q_{x_1,x_2} = \frac{\pi - \theta_{x_1,x_2}}{2 \pi} I_k + \frac{\sin \theta_{x_1,x_2}}{2 \pi} M_{\hat{x}_2\leftrightarrow \hat{x}_2}
+	\]
+	and $\theta_{x_1,x_2} = \angle (x_1,x_2)$, $\hat{x}_1 = x_1/\|x_1\|_2$, $\hat{x}_2 = x_2/\|x_2\|_2$, $I_k$ is the $k\times k$ identity matrix and $M_{\hat{x}_1\leftrightarrow \hat{x}_2}$ is the matrix that sends $\hat{x}_1 \mapsto \hat{x}_2$, $\hat{x}_2 \mapsto \hat{x}_1$, and with kernel span$(\{x_1,x_2\})^\perp$.
+\end{definition}
+
+Note that $Q_{x_1,x_2}$ is the expected value of $W_{+,x_1}^\T W_{+,x_2}$ when $W$ has rows $w_i \sim \mathcal{N}(0,I_k/n)$ and if $x_1 = x_2$ then $Q_{x_1,y_2}$ is an isometry up to the scaling factor $1/2$. 
+This condition ensures that the angle between two 
+vectors in the latent space is approximately preserved at the output layer and in turn guarantees the invertibility of the network. Under the Assumption \ref{hyp:randW}, \cite{hand2017global} shows that the WDC holds with high probability for all layers of the generative network $G$.
+
+
+% so that $G(x) = \Lambda_x x$.% and %if $f$ is differentiable at $x$:
+%\[
+%	\vtilde_{x} = \nabla f(x) = \Lambda_x^\T [\Lambda_x x x^\T \Lambda_x^\T - M ] \Lambda_x x.
+%\]
+\begin{comment} 
+With these tools at our disposal we can now describe the landscape of the minimization problem \eqref{eq:minM} in a deterministic settings. 
+\begin{thm}\label{thm:dir_deriv}
+
+Consider a generative network $G: \R^k \to \R^n$ as in \eqref{eq:Gx} and 
+the minimization problem \eqref{eq:minM} with unknown nonzero $\xstar$ and symmetric $H$.
+Fix $\eps > 0$ such that $K_1 d^{16} \sqrt{\eps} \leq 1$ and let $d \geq 2$. 
+Suppose that $G$ satisfies the WDC with constant $\eps$ and assume that:
+\begin{equation}\label{eq:noise}
+\|\Lambda_x^\T H \Lambda_x \|_2 \leq \frac{\omega}{2^d}  \qquad \text{for all}\; x \in \R^k, % \frac{\|\xstar\|^2}{2^{2d}} \, \omega
+\end{equation}
+with $2^d d^{12} w \leq K_2 \| \xstar \|^2$ and $K_2 < 1$. 
+
+Then for all $x \in \R^k$:
+\begin{itemize}
+\item if $x \notin \mathcal{B}(\xstar, r_+)~\cup~\mathcal{B}(-\rho_d \xstar, r_-)~\cup~\{0\}$ and \\$v_x \in \pa f(x)$:
+\[
+D_{-v_x} f(x) < 0
+\]
+where 
+$$r_+ = K_3 (d^4 {\eps^{1/2}} + 2^d \omega  \|\xstar\|_2^{-2}) d^{10} \|\xstar\|_2,
+$$
+and
+$$r_- =  K_4 (d^2 {\eps}^{1/4} + 2^{d/2} \omega^{1/2} \|\xstar\|_2^{-1}) d^{10}  \|\xstar\|$$
+\item if $x \in \mathcal{B}(0,  \|\xstar\|_2/16 \pi) \backslash \{0\}$  and $v_x \in \pa f(x)$ then $$\langle x, v_x\rangle < 0$$
+while if $x = 0$ and $v \in \mathcal{S}^{k-1}$ then 
+$$D_{-v} f(0) = 0$$
+\end{itemize} 
+Here $\rho_d$ is a positive number that converges to 1 as $d \to \infty$ and $K_1, \dots, K_4$.
+\end{thm}
+
+The deterministic version of Proposition \ref{prop:rand_localmin}.
+
+\begin{prop}\label{prop:local_min}
+Under the assumptions of Theorem \ref{thm:dir_deriv}, for any $\phi_d \in [\rho_d, 1]$, it holds that:
+\begin{equation}\label{eq:localmin}
+f(x) < f(y)
+\end{equation}
+for all $x \in \mathcal{B}(\phi_d \xstar, \varrho \|\xstar\| d^{-12})$ and $y \in \mathcal{B}(- \phi_d \xstar, \varrho  \|\xstar\| d^{-12})$ where $\varrho<1$ is a universal constant.
+\end{prop}
+\end{comment}
+
+%\subsubsection*{Outline of the proofs}
+Next we observe that at a differentiable point the gradient of $f$, defined in \eqref{eq:minM}, is given by:
+\begin{equation}\label{eq:gradx}
+\nabla f(x) = \Lambda_x^\T [\Lambda_x x x^\T \Lambda_x^\T - M ] \Lambda_x x.
+\end{equation}
+Using the WDC, then, we demonstrate that $\nabla_x f(x)$ concentrates up to the noise level around a direction $h_x \in \R^k$ which is a continuous function of nonzero $x$ and $\xstar$.
+%\begin{equation} \label{eq:h_def}
+%h_x := \big[ \frac{1}{2^{2d}} x x^\T - \htilde_{x,\xstar} %\htilde_{x,\xstar}^\T \big] x,
+%\end{equation}
+%where $\htilde_{x,\xstar}$ is defined below and
+%is a continuous function of $x$ and $\xstar$. The vector field  %$\htilde_{x,\xstar}$ depends on a function that controls how the 
+%angles are contracted by the deep network, and defined as:
+%\begin{equation}\label{eq:def_g}
+%	g(\theta) := \cos^{-1}\big( \frac{(\pi - \theta) \cos \theta + \sin \theta}{\pi} \big)
+%\end{equation}
+%With this definition we let $\htilde_{x,\xstar}$ be:
+%\[
+%	\htilde_{x,\xstar} := \frac{1}{2^d} \big[ \big(\prod_{i=0}^{d-1} \frac{\pi - \bar{\theta}_i}{\pi} \big) \xstar + \sum_{i=1}^{d-1} \frac{\sin \bar{\theta}_i }{\pi}   \big(\prod_{j=i+1}^{d-1} \frac{\pi - \bar{\theta}_j}{\pi}\big) {\|\xstar\|} \hat{x} \big]
+%\]
+%where $\theta_i := g(\bar{\theta}_{i-1})$ for $g$ given by \eqref{eq:def_g} and $\theta_0 = \angle(x,y)$. For brevity of notation below we will use $\htilde_x = \htilde_{x,\xstar}$.
+Furthermore using the characterization \eqref{eq:subdiff} of the Clarke subdifferential,
+we show that this concentration extends also at non-differentiable points for subgradients.
+
+A direct analysis then shows that any directional derivative of $f$ at zero is zero and
+that $h_x$ is small in a neighborhood 
+of $\xstar$ and its negative multiple $-\rho_d \xstar$. This in turn guarantees the existence of a descent direction in the complement of these sets.
+
+Similarly, we use the WDC to show
+that up to noise level, the loss function $f$ concentrates around:
+\[
+f_E(x) = \frac{1}{4} \Big( \frac{1}{2^{2d}} \|x\|^4_2 +  \frac{1}{2^{2d}} \|\xstar\|^4_2  - 2 \langle x, \tilde{h}_x\rangle^2 \Big).
+\]
+where $\htilde_{x,\xstar}$ is  continuous for nonzero $x$ and $\xstar$. 
+Directly analyzing the properties of $f_E$ in a neighborhood of $\xstar$ and $-\rho_d \xstar$ allows to derive the first point of Proposition \ref{prop:rand_localmin}. The last part of Proposition \ref{prop:rand_localmin} follows by noticing that the generator $G$ is locally Lipschitz.
+
+Finally we extend a technique of \cite{HHHV18} to control 
+the noise term: in our case a Gaussian Orthogonal matrix $\mathcal{H}$ for the spiked Wigner model \eqref{eq:wigner_Y}, and the differene between the empirical and the population covariance $\Sigma_N - \Sigma$ for the spiked Wishart model. 
+The analysis is based on a counting argument on the subspaces spanned by a depth $d$ generative networks, which leads to the sought rate-optimal bounds.

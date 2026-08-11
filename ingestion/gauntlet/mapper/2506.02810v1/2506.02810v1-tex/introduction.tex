@@ -1,0 +1,107 @@
+\section{Introduction}
+
+
+The Mapper algorithm is a popular method from topological data analysis (TDA) for data visualization and inference. It provides a synthetic representation of a given dataset based on the topological variations of a continuous function defined on the data, often referred to as {\em filter function}. This representation typically takes the form of a graph, which facilitates data visualization and exploration. Indeed, the topological features of the Mapper graph (connected components, branches, loops, etc) are representatives of the topological features of the dataset, and can be used to identify its structures and subpopulations of interest. See Figure~\ref{fig:mapper_example} for an illustation. As such, Mapper graphs have been successfully used in numerous applications, including, but not limited to, 3D meshes~\cite{wang2020exploration,rosen2018inferring}, single-cell sequencing~\cite{wang2018topological,zechel2014topographical},  machine learning~\cite{Bruel-Gabrielsson2018, Naitzat2018}, or neural network architectures~\cite{Mitra21,joseph2021topological}. 
+
+More fundamentally, the Mapper graph can be seen as a discrete version of the Reeb graph, which is a topological quotient space obtained by identifying the connected components of the level sets of a filter function, see Figure~\ref{fig:reeb_graph_example} for an illustration. Since the introduction of the Mapper algorithm, several metrics have been proposed to compare the resulting Mapper graph with its target Reeb graph, and more generally to compare several Mapper graphs and Reeb graphs together. As both objects are intrinsically combinatorial when computed over smooth enough filter functions (such as Morse type functions), %\bert{on peut dire cela aussi du Reeb ?}, 
+these metrics focus on the combinatorial and algebraic aspects of Reeb and Mapper graphs. This point of view is also reinforced by the fact that the Mapper was initially introduced and studied in a deterministic setting for finite metric spaces. 
+
+A prominent example of such metrics is the one proposed in \cite{de2016categorified}, where Reeb graphs are studied from an algebraic point of view by considering them as cosheaves, i.e., covariant functors defined on the category of open intervals in $\R$ where morphisms are given by inclusions, that satisfy a specific \emph{gluing} property. This property is satisfied in the case of Reeb graphs, after considering Reeb graphs as functors that associate to every open interval $\interv$ the set of connected components of $\preim{f}{\interv}$, and to every inclusion $\interv\subseteq\mathrm{J}$ the induced inclusion of the corresponding connected components. The authors of \cite{munch_convergence_2016} then build on this point of view by proposing a similar categorified definition of the Mapper graph, as a functor on the category whose objects consist of the simplices of the nerve of an open cover with inclusions as morphisms and that, similarly to the Reeb graph, maps these objects to the set of connected components of the associated preimages of cover elements. In this context, the \emph{interleaving distance} between the Reeb graph and the Mapper graph, defined by the authors in \cite{de2016categorified}, is well-defined and upper bounded by the \emph{resolution} of the open cover, as proved in \cite{munch_convergence_2016}.
+
+Another line of work was initiated by \cite{carriere2018structure}, in which pseudometrics between Reeb and Mapper graphs are provided that focus on the topological features of graphs, as characterized by \emph{extended persistent homology}. More precisely, by introducing an intermediate construction called the \emph{MultiNerve Mapper}, the authors are able to link the extended persistence diagram of the Mapper graph to a pruned version of the extended persistence diagram of the Reeb graph. This in turn induces a natural alternative to the standard \emph{bottleneck distance} between extended persistence diagrams, that allows to quantify how close the Reeb and Mapper graphs are, and how stable the Mapper graph is with respect to perturbations of filter functions and open covers. 
+
+Other notable distances for Reeb and Mapper graphs include the edit distance~\cite{bauer_edit_2016, bauer_reeb_2021}, which quantifies the number of edit transformations (such as, e.g., vertices and edges addition or deletion) one has to make in order to go from one graph to the other, and the functional distortion distance~\cite{bauer_measuring_2014}, which measures how path lengths (w.r.t. filter function values) are distorted under the action of any continuous function that sends one graph onto the other. Both distances enjoy some theoretical guarantees: while the functional distortion distance is known to be stable, the edit distance has been proved to be universal~\cite{bauer_reeb_2021}. 
+%\bert{dire un truc en plus pour les décrire ?}
+
+
+In practice, the Mapper graph comes in the form of a stochastic object, as it is usually built from a random set of data points sampled in a metric space according to some probability measure. It is thus natural to study the convergence of the Mapper graph to the Reeb graph with a {\em statistical} perspective, using the metrics mentioned above. For instance, an alternative Mapper construction called the \emph{enhanced Mapper} is given in~\cite{brown2021probabilistic}, in which it is proved to approximate the Reeb graph (up to the resolution of the cover) w.r.t. the interleaving distance with high probability, when computed on a large enough sample.  Based on the extended persistent homology approach developed in~\cite{carriere2018structure}, the authors in \cite{carriere2018statistical} provide rates of convergence of Mapper graphs to the Reeb graph in expected value using an appropriate variation of the bottleneck distance.  
+Finally, the statistical convergence of the Mapper complex (in the case of multivariate and stochastic filters) has been proposed in  \cite{carriere2022statistical} using the Gromov-Hausdorff distance.
+
+However, in all of these approaches, the target Reeb graph remains a fully deterministic object: although the sampling measure is taken into account in the construction of the Mapper graph or in the necessary hypotheses to ensure convergence, the Reeb graph does not come with a measure-oriented description. {\em In this article, we propose a new perspective on Mapper and Reeb graphs by considering these objects as metric measure spaces.} This approach is motivated by theoretical considerations - we want to enrich the mathematical descriptions of these objects - and also by practical applications of Mapper graphs, in which they are frequently visualized with node sizes corresponding to their respective masses, i.e., how many points they contain. 
+
+\paragraph{Contributions.} In this article, we study the Reeb and Mapper graphs of Morse filter functions for data points sampled on probability measures supported on Riemannian manifolds. {\bf Our contributions are two-fold:}
+
+\begin{itemize}
+    \item {\bf We endow Reeb and Mapper graphs with metric measure space structures}, and then rigorously introduce the Gromov-Wassertein metric between these spaces. This point of view can be seen as the measure-aware version of the Gromov-Hausdorff metric proposed in \cite{carriere2022statistical}. Overall, this allows us to incorporate measure information in the computation of distances between Reeb and Mapper graphs, an information that is usually lost or hidden in other approaches, due to their combinatorial nature. %of these graphs.
+    
+    \item {\bf We study the convergence of the Mapper to the Reeb graph in this framework.} In our main result (Theorem~\ref{thm:main_result}), we provide an upper bound on the expectation of the $p$-Gromov-Wasserstein  distance (for any $p >0$) between the Mapper graph, chosen with an appropriate resolution, and the Reeb graph, under a sampling generative model. This bound is of the order of  $n^{-\frac{\nu}{d+\alpha}} $,
+    where $\nu=\min\left\{\frac{1}{2},\frac{d}{p(d+1)}\right\}$ for any $\alpha >0$, and where $d$ is the metric dimension of the measure. This upper bound relies in part on results on the convergence of the empirical measure in mean Wasserstein distance in a Polish metric space~\cite{weed2019sharp}. %In particular, this approach allows us to derive rates of convergence that only depend on some intrinsic dimension of the measure.
+\end{itemize}
+
+\paragraph{Related work.} Since their introduction in \cite{memoli2011gromov} for object matching, Gromov-Wasserstein metrics have been widely used in many applications for comparing 
+heterogeneous data, including, e.g., shape and graph matching \cite{memoli2009spectral,xu2019gromov,xu2019scalable,koehl2023computing}, which makes them particularly well-suited for comparing %It thus makes sense to compare 
+Reeb and Mapper graphs. %according to this metric. 
+While applications and computational aspects of the Gromov-Wasserstein metrics have been studied extensively, the statistical aspects have not been carefully studied until very recently \cite{han2023covariance,zhang2024gromov, rioux2024limit}. In particular, in \cite{zhang2024gromov},  the empirical quadratic Gromov-Wasserstein convergence rate over Euclidean spaces of different dimensions $d_x$ and $d_y$ is shown to be less than $n^{-2/ \max(\min(d_x,d_y),4)}$. Note that this result does not apply straightforwardly to the study of Reeb and Mapper graphs (which cannot be seen as Euclidean spaces), %we are interested in in this article is very different, 
+and we follow a different route for deriving our rates of convergence. %in this article.
+
+%The main idea of their approaches is to relate this question to the asymptotic control of the \emph{covering number} of the underlying metric space. In particular, we rely on the results of~\cite{weed2019sharp} to bound one of the terms in our Gromov-Wasserstein bound between the Reeb graph and the Mapper graph in a similar manner.   
+
+
+A close yet different approach than ours is the one proposed in \cite{wangMeasureTheoreticReebGraphs2024} - indeed, in this work, the authors also 
+aim at adapting Reeb graphs and spaces for metric measure space inputs.
+However, a crucial difference with our method is in the treatment of the measure itself:
+while the goal of ~\cite{wangMeasureTheoreticReebGraphs2024} is to 
+%adapt smoothing functors in order to 
+produce a new measure-aware space %$X_{\mes}$ 
+and filter %$f_{\mes}:\spa\rightarrow\R$ 
+for the computation of Reeb graphs,
+%that takes the measure $\mes$ into account with
+%$f_{\mes} := F_{\mes} \circ f$, where $F_{\mes}(x):=\mes((-\infty, x])$ is the cumulative distribution function of $\mes$, 
+and to study their stability properties, our approach directly incorporates the measure in the Reeb and Mapper graphs by considering them as metric measure spaces.
+%
+Similarly, the authors of \cite{ruscitti2024improving} have proposed a modification of the Mapper algorithm to account for the data distribution in the filter space, in order to define better suited open covers, and then provide rates of convergence with respect to the bottleneck distance, in a similar vein than \cite{carriere2018statistical}. Again, our approach differs from this one in that the measure is not used for a better tuning of the Mapper parameters, but is rather directly incorporated in both Reeb and Mapper graphs, and in the distance between them. %, allowing to directly take it into account when comparing them. 
+
+
+\paragraph{Summary.} Section~\ref{sec:background} provides some necessary background on Reeb and Mapper graphs, as well as some elements of Riemannian geometry and Morse theory. In Section~\ref{sec:reeb_mms}, we define a metric structure on the Reeb graph with the Hausdorff distance, and we study its induced topology. Similarly, we introduce a metric measure space structure for the Mapper graph in Section~\ref{sec:mapper_mms}. The main result of this article about the rates of convergence of Mapper graphs to Reeb graphs in terms of the Gromov-Wasserstein distance is given in Section~\ref
+{sec:mapper}. Finally, in Section~\ref{sec:appl}, we provide some illustrations of the practical use of Gromov-Wasserstein metrics to compare Mapper graphs.
+ 
+\begin{comment}
+
+
+
+$\mes$ by 
+equipping Reeb graphs with a new measure $\mes \circ \pi^{-1}$ derived from $\mes$ and interpreting the Reeb graphs {\em themselves} as metric measure spaces, which in turns allows us to use the {\em Gromov-Wasserstein distance} $\gromov_p$ directly to compare them, and (2) we study the inference problem of quantifying the difference between the Reeb graph and its computable approximation, the Mapper graph (also interpreted as a metric measure space) in terms of the $\gromov_p$ distance. 
+ 
+
+
+\begin{itemize}
+    \item Convergence and stability of the Mapper graph has been studied according to several metrics: give a list...
+    \item Mapper is intrinsically a random object, we propose to study this convergence with a mms approach.
+    \item We build on the results of \cite{BoissardLeGouic2014} and \cite{weed2019sharp}  to bound the estimation error.
+\end{itemize}
+
+There exist several approaches for comparing the Reeb graph and the Mapper graph in the literature:
+\begin{itemize}
+\item In~\cite{de2016categorified}, Reeb graphs are studied from an algebraic point of view by considering them as cosheaves. These are covariant functors, defined on the category of open intervals in $\R$ where morphisms are given by inclusions, that satisfy a specific \emph{gluing} property. This becomes the case for Reeb graphs by defining them as the functor that associates to an open interval $\interv$ the set of connected components of $\preim{f}{\interv}$ and to the inclusion $\interv\subseteq\mathrm{J}$ the induced inclusion of the corresponding connected components.
+
+The authors of \cite{munch2015convergence} build on this point of view by considering a categorified definition of the Mapper, as a functor on the category whose objects consist of the simplices of the nerve of an open cover with inclusions as morphisms and that, similarly to the Reeb graph, maps these objects to the set of connected components of the associated preimages of cover elements. In this context, the \emph{interleaving distance} between the Reeb graph and the Mapper graph, defined by the authors in \cite{de2016categorified}, is bounded by the \emph{resolution} of the open cover.
+
+In the same spirit, an alternative Mapper construction called the \emph{enhanced Mapper} is given in~\cite{brown2021probabilistic}, in which it is proved to approximate the Reeb graph (up to the resolution of the cover) w.r.t. the interleaving distance with high probability, when computed on a large enough sample. 
+\mathieu{Other notables distances for Reeb graphs include the edit distance~\cite{bauer_edit_2016, bauer_reeb_2021} and the functional distortion distance~\cite{bauer_measuring_2014}, even though these have not been studied in a stochastic setting to the best of our knowledge.}
+
+\item A \emph{persistent homology} based approach is explored in~\cite{carriere2018structure}. By introducing an intermediate construction called the \emph{MultiNerve} Mapper, the authors are able to link the extended persistence diagram of the Mapper to a pruned version of the extended persistence diagram of the Reeb graph. This in turn gives an alternative to the \emph{bottleneck distance} for which the Mapper is proven to be stable with respect to filter perturbation. In~\cite{carriere2018statistical}, this approach is applied to the setting of Mapper graphs computed on random samples and convergence results between the Mapper and the Reeb graph in expected value of the bottleneck distance are showed.     
+
+\item In this article, we follow existing works that study the convergence of a measure to an associated empirical measure in mean Wasserstein distance. Both \cite{BoissardLeGouic2014} and \cite{weed2019sharp} tackle this question in the case where the measure is defined on a general polish metric space, with the latter providing sharper asymptotics and lower bounds. The main idea of their approaches is to relate this question to the asymptotic control of the \emph{covering number} of the underlying metric space. In particular, we rely on the results of~\cite{weed2019sharp} to bound one of the terms in our Gromov-Wasserstein bound between the Reeb graph and the Mapper graph in a similar manner.   
+Overall, this allows to incorporate measure and density information in the computation of distances between Reeb graphs and Mapper graphs, an information that is usually lost in other approaches, due to the combinatorial nature of the Mapper graphs.
+
+ 
+\item A close yet different approach than ours is the one proposed in \cite{wangMeasureTheoreticReebGraphs2024}---indeed, in this work, the authors also 
+aim at adapting Reeb graphs and spaces for metric measure space inputs.
+However, a crucial difference with our method is in the treatment of the measure itself:
+while the goal of ~\cite{wangMeasureTheoreticReebGraphs2024} is to 
+%adapt smoothing functors in order to 
+produce a new measure-aware space $X_{\mes}$ and filter $f_{\mes}:\spa\rightarrow\R$ for the computation of Reeb graphs and spaces,
+%that takes the measure $\mes$ into account with
+%$f_{\mes} := F_{\mes} \circ f$, where $F_{\mes}(x):=\mes((-\infty, x])$ is the cumulative distribution function of $\mes$, 
+and to study their stability properties, our approach is different in two ways: (1) we incorporate $\mes$ by 
+equipping Reeb graphs with a new measure $\mes \circ \pi^{-1}$ derived from $\mes$ and interpreting the Reeb graphs {\em themselves} as metric measure spaces, which in turns allows us to use the {\em Gromov-Wasserstein distance} $\gromov_p$ directly to compare them, and (2) we study the inference problem of quantifying the difference between the Reeb graph and its computable approximation, the Mapper graph (also interpreted as a metric measure space) in terms of the $\gromov_p$ distance.
+ 
+\item The recent work of \cite{ruscitti2024improving} is also a attempt to propose a more probabilistic oriented version of Mapper. It proposes a  proposes a modification of the Mapper algorithm to account for the distribution of data in the filter space, particularly to better define the coverings. 
+ 
+
+\end{itemize}
+
+%\mathieu{mentionner edit distance et/ou functional distortion distance ?}
+%\mathieu{discuter le papier de Bei \cite{wangMeasureTheoreticReebGraphs2024}}
+
+\end{comment}

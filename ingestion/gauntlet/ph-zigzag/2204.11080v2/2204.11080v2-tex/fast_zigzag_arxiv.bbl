@@ -1,0 +1,172 @@
+\begin{thebibliography}{10}
+
+\bibitem{alman2021refined}
+Josh Alman and Virginia~Vassilevska Williams.
+\newblock A refined laser method and faster matrix multiplication.
+\newblock In {\em Proceedings of the 2021 ACM-SIAM Symposium on Discrete
+  Algorithms (SODA)}, pages 522--539. SIAM, 2021.
+
+\bibitem{bauer2021ripser}
+Ulrich Bauer.
+\newblock Ripser: Efficient computation of vietoris--rips persistence barcodes.
+\newblock {\em Journal of Applied and Computational Topology}, 5(3):391--423,
+  2021.
+
+\bibitem{bauer2014clear}
+Ulrich Bauer, Michael Kerber, and Jan Reininghaus.
+\newblock Clear and compress: Computing persistent homology in chunks.
+\newblock In {\em Topological methods in data analysis and visualization III},
+  pages 103--117. Springer, 2014.
+
+\bibitem{bauer2017phat}
+Ulrich Bauer, Michael Kerber, Jan Reininghaus, and Hubert Wagner.
+\newblock Phat -- persistent homology algorithms toolbox.
+\newblock {\em Journal of Symbolic Computation}, 78:76--90, 2017.
+
+\bibitem{BDM15}
+Jean{-}Daniel Boissonnat, Tamal~K. Dey, and Cl{\'{e}}ment Maria.
+\newblock The compressed annotation matrix: An efficient data structure for
+  computing persistent cohomology.
+\newblock {\em Algorithmica}, 73(3):607--619, 2015.
+
+\bibitem{carlsson2010zigzag}
+Gunnar Carlsson and Vin de~Silva.
+\newblock Zigzag persistence.
+\newblock {\em Foundations of Computational Mathematics}, 10(4):367--405, 2010.
+
+\bibitem{carlsson2019parametrized}
+Gunnar Carlsson, Vin de~Silva, Sara Kali{\v{s}}nik, and Dmitriy Morozov.
+\newblock Parametrized homology via zigzag persistence.
+\newblock {\em Algebraic \& Geometric Topology}, 19(2):657--700, 2019.
+
+\bibitem{carlsson2009zigzag-realvalue}
+Gunnar Carlsson, Vin de~Silva, and Dmitriy Morozov.
+\newblock Zigzag persistent homology and real-valued functions.
+\newblock In {\em Proceedings of the Twenty-Fifth Annual Symposium on
+  Computational Geometry}, pages 247--256, 2009.
+
+\bibitem{carlsson2019persistent}
+Gunnar Carlsson, Anjan Dwaraknath, and Bradley~J. Nelson.
+\newblock Persistent and zigzag homology: A matrix factorization viewpoint.
+\newblock {\em arXiv preprint arXiv:1911.10693}, 2019.
+
+\bibitem{chen2011persistent}
+Chao Chen and Michael Kerber.
+\newblock Persistent homology computation with a twist.
+\newblock In {\em Proceedings 27th European Workshop on Computational
+  Geometry}, volume~11, pages 197--200, 2011.
+
+\bibitem{CK13}
+Chao Chen and Michael Kerber.
+\newblock An output-sensitive algorithm for persistent homology.
+\newblock {\em Comput. Geom.: Theory and Applications}, 46(4):435--447, 2013.
+
+\bibitem{cohen2009extending}
+David Cohen-Steiner, Herbert Edelsbrunner, and John Harer.
+\newblock Extending persistence using {P}oincar{\'e} and {L}efschetz duality.
+\newblock {\em Foundations of Computational Mathematics}, 9(1):79--103, 2009.
+
+\bibitem{de2011dualities}
+Vin de~Silva, Dmitriy Morozov, and Mikael Vejdemo-Johansson.
+\newblock Dualities in persistent (co)homology.
+\newblock {\em Inverse Problems}, 27(12):124003, 2011.
+
+\bibitem{derksen2005quiver}
+Harm Derksen and Jerzy Weyman.
+\newblock Quiver representations.
+\newblock {\em Notices of the AMS}, 52(2):200--206, 2005.
+
+\bibitem{dey2021graph}
+Tamal~K. Dey and Tao Hou.
+\newblock Computing zigzag persistence on graphs in near-linear time.
+\newblock In {\em 37th International Symposium on Computational Geometry, SoCG
+  2021}, volume 189 of {\em LIPIcs}, pages 30:1--30:15. Schloss Dagstuhl -
+  Leibniz-Zentrum f{\"{u}}r Informatik, 2021.
+
+\bibitem{dey2021updating}
+Tamal~K. Dey and Tao Hou.
+\newblock Updating zigzag persistence and maintaining representatives over
+  changing filtrations.
+\newblock {\em arXiv preprint arXiv:2112.02352}, 2021.
+
+\bibitem{dey2021computing}
+Tamal~K. Dey, Woojin Kim, and Facundo M{\'{e}}moli.
+\newblock Computing generalized rank invariant for 2-parameter persistence
+  modules via zigzag persistence and its applications.
+\newblock In {\em 38th International Symposium on Computational Geometry, SoCG
+  2022}, volume 224 of {\em LIPIcs}, pages 34:1--34:17, 2022.
+
+\bibitem{edelsbrunner2000topological}
+Herbert Edelsbrunner, David Letscher, and Afra Zomorodian.
+\newblock Topological persistence and simplification.
+\newblock In {\em Proceedings 41st Annual Symposium on Foundations of Computer
+  Science}, pages 454--463. IEEE, 2000.
+
+\bibitem{Gabriel72}
+Peter Gabriel.
+\newblock {Unzerlegbare Darstellungen I}.
+\newblock {\em Manuscripta Mathematica}, 6(1):71--103, 1972.
+
+\bibitem{hatcher2002algebraic}
+Allen Hatcher.
+\newblock {\em Algebraic Topology}.
+\newblock Cambridge University Press, 2002.
+
+\bibitem{holme2012temporal}
+Petter Holme and Jari Saram{\"a}ki.
+\newblock Temporal networks.
+\newblock {\em Physics Reports}, 519(3):97--125, 2012.
+
+\bibitem{maria2014zigzag}
+Cl{\'e}ment Maria and Steve~Y. Oudot.
+\newblock Zigzag persistence via reflections and transpositions.
+\newblock In {\em Proceedings of the Twenty-Sixth Annual ACM-SIAM Symposium on
+  Discrete Algorithms}, pages 181--199. SIAM, 2014.
+
+\bibitem{maria2016computing}
+Cl{\'e}ment Maria and Steve~Y. Oudot.
+\newblock Computing zigzag persistent cohomology.
+\newblock {\em arXiv preprint arXiv:1608.06039}, 2016.
+
+\bibitem{maria2019discrete}
+Cl{\'e}ment Maria and Hannah Schreiber.
+\newblock Discrete morse theory for computing zigzag persistence.
+\newblock In {\em Workshop on Algorithms and Data Structures}, pages 538--552.
+  Springer, 2019.
+
+\bibitem{milosavljevic2011zigzag}
+Nikola Milosavljevi{\'c}, Dmitriy Morozov, and Primoz Skraba.
+\newblock Zigzag persistent homology in matrix multiplication time.
+\newblock In {\em Proceedings of the Twenty-Seventh Annual Symposium on
+  Computational Geometry}, pages 216--225, 2011.
+
+\bibitem{Dionysus2}
+Dmitriy Morozov.
+\newblock {\tt Dionysus2}.
+\newblock URL: \url{https://www.mrzv.org/software/dionysus2/}.
+
+\bibitem{oudot2015zigzag}
+Steve~Y. Oudot and Donald~R. Sheehy.
+\newblock Zigzag zoology: Rips zigzags for homology inference.
+\newblock {\em Foundations of Computational Mathematics}, 15(5):1151--1186,
+  2015.
+
+\bibitem{gudhi:urm}
+{The GUDHI Project}.
+\newblock {\em {GUDHI} User and Reference Manual}.
+\newblock {GUDHI Editorial Board}, 2015.
+\newblock URL: \url{http://gudhi.gforge.inria.fr/doc/latest/}.
+
+\bibitem{zhang2020gpu}
+Simon Zhang, Mengbai Xiao, and Hao Wang.
+\newblock {GPU}-accelerated computation of {V}ietoris-{R}ips persistence
+  barcodes.
+\newblock In {\em 36th International Symposium on Computational Geometry (SoCG
+  2020)}. Schloss Dagstuhl-Leibniz-Zentrum f{\"u}r Informatik, 2020.
+
+\bibitem{zomorodian2005computing}
+Afra Zomorodian and Gunnar Carlsson.
+\newblock Computing persistent homology.
+\newblock {\em Discrete \& Computational Geometry}, 33(2):249--274, 2005.
+
+\end{thebibliography}

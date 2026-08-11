@@ -1,0 +1,17 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Problem formulation and main results}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Related work}{}% 3
+\BOOKMARK [1][-]{section.3}{Low-rank matrix recovery under a generative network prior}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Proofs outline and techniques}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{A subgradient method and numerical experiments}{}% 6
+\BOOKMARK [1][-]{appendix.A}{Global landscape analysis under deterministic conditions}{}% 7
+\BOOKMARK [2][-]{subsection.A.1}{Notation}{appendix.A}% 8
+\BOOKMARK [2][-]{subsection.A.2}{Preliminaries}{appendix.A}% 9
+\BOOKMARK [2][-]{subsection.A.3}{Proof of Theorem 3}{appendix.A}% 10
+\BOOKMARK [3][-]{subsubsection.A.3.1}{Control of the zeros of hx}{subsection.A.3}% 11
+\BOOKMARK [2][-]{subsection.A.4}{Proof of Proposition 2}{appendix.A}% 12
+\BOOKMARK [2][-]{subsection.A.5}{Supplementary proofs}{appendix.A}% 13
+\BOOKMARK [1][-]{appendix.B}{Proofs for the random spiked and generative models}{}% 14
+\BOOKMARK [2][-]{subsection.B.1}{Spiked Wigner Model}{appendix.B}% 15
+\BOOKMARK [2][-]{subsection.B.2}{Spiked Wishart Model}{appendix.B}% 16
+\BOOKMARK [2][-]{subsection.B.3}{Proof of Proposition 1}{appendix.B}% 17

@@ -1,0 +1,81 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Mapper graphs \cite{Singh2007} have become an increasingly popular tool in topological data analysis (TDA), generating substantial interest in both theory \cite{alvarado2024, Brown2020, Carriere2017b} and practice \cite{Purvine2023, Rathore2023, Rizvi2017, Saggar2018, zhou2023comparing}. 
+Their construction yields a graphical representation of the data as follows. Let $\chi$ be a dataset equipped with a distance function $d \colon \chi \times \chi \to \R$ and a filter function $f \colon \chi \to \mathbb{R}$. Choose a cover $\cU$ of the image $f(\chi)$. 
+The mapper graph is defined by assigning a vertex to each cluster obtained from the restriction of the dataset to the preimage $f^{-1}(U)$ for each $U \in \cU$. An edge is drawn between two vertices whenever the corresponding clusters have nonempty intersection.
+In the continuous setting, one begins with a topological space $\X$ and a function $f \colon \X \to \R$, and considers the inverse images of the sets in $\cU$. The mapper graph is then defined as the nerve of the connected components of the inverse cover $\{f^{-1}(U) \mid U \in \cU\}$; see \cref{fig:mapper} for an illustration. From this perspective, the Mapper graph may be regarded as a discretization of a Reeb graph \cite{Reeb}, although this broader generalization is not needed in the present work.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{cup_mapper.png}
+\vspace{-2mm}
+\caption{An example of a 2D input space (a \textit{cup} from the MPEG-7 dataset) together with the corresponding mapper graph, computed using a filtration function given by the pixel $y$-coordinate, is shown on the right. Vertices are labeled for reference only and do not affect the function values.}
+\label{fig:mapper}
+\vspace{-4mm}
+\end{figure} 
+
+A key limitation of mapper graphs is that, in practice, their use has been largely confined to qualitative assessment and exploratory data analysis. This is primarily because quantitative evaluation of mapper graph quality has so far relied mostly on theoretical guarantees. In particular, comparing an output mapper graph with a ground-truth mapper graph requires a computable similarity measure. Although several distances between mapper and Reeb graphs have been proposed (see \cref{sec:RelatedWork}), most are difficult to apply in practice due to prohibitive computational complexity. Here, we focus on the interleaving distance for mapper graphs. This construction arises from a discretization of the interleaving distance for Reeb graphs \cite{deSilva2016}, itself adapted from translating interleavings for algebraic and topological representations \cite{bubenik2015metrics, Chazal2009, deSilva2018} to graph-based objects. However, like most available metrics, it is NP-hard to compute in general \cite{bjerkevik2017computational, bubenik2015metrics}. 
+ 
+In this paper, we use the framework given in \cite{chambers2023bounding} to bound the interleaving distance.
+Formally, we encode our mapper inputs as cosheaves (see e.g.~\cite{curry2013sheaves, riehl2017category}) of the form $F\colon \Open(\cU) \rightarrow \Set$ for a given cover $\cU$.
+We can define a thickening operation on the elements of $\Open(\cU)$,  which amounts to a discretized version of thickening of open intervals in $\R$, and then define the smoothing of a functor $F^n$ by post-composing with this thickening operation. 
+Then an $n$-interleaving is a pair of natural transformations $\phi\colon F \to G^n$ and $\psi\colon G \to F^n$ that commute with each other up to this thickening operation. 
+The interleaving distance $d_I(F,G)$ is given by the minimum $n$ for which such an interleaving can be found. 
+
+We build on the theoretical work of \cite{chambers2023bounding}, which provides a bound on the interleaving distance for mapper graphs given a construction called an \emph{unnatural transformation}; i.e.~a collection of maps with the structure of a natural transformation but without promised commutativity.
+Specifically, we call a pair $(\phi,\psi)$ an $n$-assignment if it satisfies the setup of an $n$-interleaving but potentially does not commute.
+In this paper, we encode the information of these assignments in binary matrices. 
+Our first major contribution is to show that verifying whether a given assignment constitutes an interleaving, as well as computing the terms appearing in the bound of \cite{chambers2023bounding}, can be reduced to a collection of matrix multiplication problems. These formulations are summarized in \cref{tab:theList} and established in \cref{thm:interleaving,thm:LossEquivMatrices}.
+Then, treating the entries in the unnatural transformation matrices as variables, we set up an integer linear program (ILP) which we can pass to publicly available solvers. 
+The result is the first publicly available code which provides bounds for the interleaving distance between mapper graphs, in the package \texttt{ceREEBerus} \cite{cereeberus}. 
+Further, we give experiments, with code available on Github \cite{losspapergithubexperiments}, using \texttt{ceREEBerus} to compute the distance between mapper graphs in both synthetic settings and for larger benchmark datasets (See \cref{sec:experiments}).
+While the ILP formulation does not guarantee that the computed bound is optimal (and hence equal to the true interleaving distance), in all experiments where the true distance is known, it recovers the correct interleaving distance.
+In summary, our contributions include: 
+\begin{itemize}
+\item \mybf{Matrix formulation of interleavings.} We encode $n$-assignments as binary matrices and show that both interleaving verification and the computation of bounds from \cite{chambers2023bounding} reduce to a collection of matrix multiplication problems. See \cref{sec:AllMatrices}.
+
+\item \mybf{Algorithmic characterization.} We provide explicit matrix-based criteria for checking interleavings and evaluating the associated bounds, with formal guarantees established in \cref{thm:interleaving,thm:LossEquivMatrices}.
+
+\item \mybf{Optimization framework.} By treating the entries of the assignment matrices as variables, we formulate the problem as an ILP, enabling the use of off-the-shelf solvers. See \cref{sec:ILP}.
+
+\item \mybf{Software contribution.} We include an implementation in the Python package \texttt{ceREEBerus} \cite{cereeberus}, the first publicly available implementation for computing bounds on the interleaving distance between mapper graphs. 
+
+\item \mybf{Empirical validation.} We evaluate our approach on both synthetic and benchmark datasets, and in all experiments where the true interleaving distance is known, our method recovers the correct value despite the lack of optimality guarantees.
+See \cref{sec:experiments}.
+\end{itemize}
+
+\section{Related Work}
+\label{sec:RelatedWork} 
+
+The mapper graph may be regarded as a discretization of the Reeb graph \cite{Reeb}, which captures the evolution of connected components of level sets of a topological space. Since a Reeb graph is, in most settings, a graph equipped with a function, one can compare Reeb graphs using standard graph distances (e.g., graph edit distance \cite{Gao2010}) by ignoring the function. However, given the topological nature of the construction, it is more desirable to employ a distance that accounts for the function.
+
+There is now an extensive family of distances between Reeb graphs, including 
+the interleaving distance \cite{Chambers2021,deSilva2016}, 
+the functional distortion distance \cite{Bauer2013}, 
+the universal distance \cite{Bauer2022,Bauer2020}, 
+the functional contortion distance \cite{Bauer2022}, 
+the bottleneck distance between the relevant persistence diagrams \cite{Carriere2017}, 
+and graph edit distances \cite{Bauer2016, Bauer2020}. 
+See \cite{Bollen2021,Yan2021a} for surveys. 
+Work employing the interleaving distance---especially for the analysis of mapper graphs---includes convergence results showing that mapper graph converges to the Reeb graph \cite{Brown2020,Munch2016,Oulhaj2025}.
+However, those works convert a mapper graph into a Reeb graph and use the continuous distance, whereas we directly construct an interleaving distance between the mapper graphs themselves.
+There is also extensive work understanding how parameter choices affect the resulting mapper graph \cite{Carriere2018,Carriere2017b} and automatic parameter tuning~\cite{alvarado2025gmapper,chalapathi2021adaptive}. 
+
+Beyond Reeb and mapper graphs, the interleaving distance appears broadly throughout the TDA literature across a wide range of input objects, originating with its introduction for persistence modules \cite{Chazal2009}. 
+It has since expanded to include 
+multiparameter persistence modules \cite{Berkouk2021,Lesnick2015}, 
+filtered spaces \cite{Blumberg2023}, 
+merge trees \cite{Beurskens2023,Morozov2013}, 
+labeled Reeb graphs \cite{Lan2024},
+formigrams \cite{Kim2023a}, 
+labeled merge trees \cite{Curry2022,Gasparovic2024,Munch2019, Yan2019}, 
+and more general categorical constructions \cite{Botnan2020,Cruz2019,deSilva2018,Kim2023,Meehan2017,Scoccola2020}.
+Yet in many such settings, the interleaving distance is NP-hard to compute \cite{bjerkevik2020computing,bjerkevik2017computational}, resulting in a metric that is well-studied in theory but rarely used in practice. 
+
+Among these works, most do not provide implementations, though there are a few notable exceptions. The interleaving distance for labeled merge trees \cite{Munch2019} lies in P, and implementations are available (e.g., \cite{Yan2019}). In \cite{Curry2022}, labelings derived from Gromov--Wasserstein couplings are used to bound the interleaving distance between unlabeled merge trees. 
+In \cite{Chambers2025}, the addition metric measure space decoration on the Reeb graph is used to define a distance using the Gromov-Hausdorff distance.
+Optimal transport--type distances have also been explored for mapper graphs by modeling them as hypergraphs~\cite{zhou2023comparing}, providing a practical alternative. Finally, \cite{Pegoraro2021} employs an ILP, based on the merge-tree-specific formulation of \cite{FarahbakhshTouli2019}, to obtain bounds on the merge tree interleaving distance. As with mapper graphs in this paper, existing algorithms for merge tree interleavings yield bounds rather than guaranteed exact computations.
+
+
+

@@ -1,0 +1,145 @@
+\section{Introduction}
+
+In this paper we study the problem of estimating a spike vector $\ystar \in \R^n$ from data $Y$ consisting of a rank-1 matrix perturbed with random noise. In particular, the following random models for $Y$ will be considered.
+\begin{itemize}
+	\item The \textbf{Spiked Wishart Model} in which $Y \in \R^{N \times n}$ is given by:
+	\begin{equation}\label{eq:wishart_Y}
+	Y = u \, \ystar^\T + \sigma \mathcal{Z},
+	\end{equation}
+	where $\sigma > 0$, $u \sim \mathcal{N}(0,I_n)$ and $\mathcal{Z}$ are independent
+	and $\mathcal{Z}_{ij}$ are i.i.d. from $\mathcal{N}(0,1)$.
+	
+	\item The \textbf{Spiked Wigner Model} in which $Y  \in \R^{n \times n}$ is given by:
+	\begin{equation}\label{eq:wigner_Y}
+	Y = \ystar \ystar^\T + \nu \mathcal{H} 
+	\end{equation}
+	where $\nu > 0$, $\mathcal{H} \in \R^{n \times n}$ 
+	is drawn from a \textit{Gaussian Orthogonal Ensemble} GOE$(n)$, 
+	i.e. $\mathcal{H}_{ii} \sim \mathcal{N}(0, 2/n)$ for all $1 \leq i \leq n$ and $\mathcal{H}_{ij} = \mathcal{H}_{ji} \sim \mathcal{N}(0,1/n)$ for $1 \leq j < i \leq n$.
+\end{itemize}
+Spiked random matrices have been extensively studied in recent years as they serve as a mathematical model for many statistical inverse problems such as PCA \citep{johnstone2001distribution,amini2008high, deshpande2014sparse, vu2012minimax}, synchronization over graphs \citep{abbe2014decoding,bandeira2015non,javanmard2016phase} and community detection  \citep{mcsherry2001spectral,deshpande2016asymptotic,moore2017computer}. They are, moreover, connected to the rank-1 case of other linear inverse problems such as matrix sensing and matrix completion under RIP-like assumptions on the measurements operator \cite{bhojanapalli2016global,zhang2018much}. 
+
+\begin{comment}
+\red{[Can you do without this text in red?]In the noiseless case ($\mathcal{Z} = 0$ or $\mathcal{H} = 0$) the spike $\ystar$ can be exactly recovered (up to scaling) from the leading right singular vector of the matrix $Y$.  In the noisy case, classical results in random matrix theory have then studied the spectral properties of the matrices $Y$ in the  $N,n \to \infty$ regime, identifying phase transition with respect to the signal-to-noise ratio above which $\ystar$ correlates with the top singular vector of $Y$, and below which the two vectors are instead asymptotically orthogonal \cite{baik2006eigenvalues,feral2007largest}. These critical values have been shown to furthermore correspond to information-theoretical limits for the detection problem (distinguishing between the case $\ystar=0$ and $\ystar \neq 0$) \cite{onatski2013asymptotic,ke2016detecting,perry2016optimality, banks2018information}. It follows that} in \red{these}
+\end{comment}
+In the high-dimensional/low signal-to-noise ratio 
+regimes, it is fundamental to leverage additional prior information on the low-rank component in order to obtain consistent estimates of $\ystar$. 
+Recent works, however,  have discovered that some priors give rise to gaps between what is statistically-theoretically optimal and can be achieved with unbounded computational resources, and what instead can be achieved with polynomial-time algorithms. A prominent example is represented by 
+the Sparse PCA problem in which the vector $\ystar$ in \eqref{eq:wishart_Y} is taken to be sparse (see next section and \cite{bandeira2018notes,kunisky2019notes} for surveys of recent approaches).  
+
+In this paper we study the spiked random matrix models  \eqref{eq:wishart_Y} and \eqref{eq:wigner_Y}, where 
+the prior information on the planted signal $\ystar$ 
+comes from a learned generative network. 
+In particular, we assume that a generative neural network $G: \R^k \to \R^n$ with $k < n$, has been trained on a data set of spikes, and the unknown spike $\ystar \in \R^n$ lies on the range of $G$, i.e. we can write $\ystar = G(\xstar)$ for some $\xstar \in \R^k$.
+As a mathematical model for the trained $G$, we consider  
+a $d$-layer feed forward network of the form:
+\begin{equation}\label{eq:Gx}
+G(x) = \relu(W_d \dots \relu(W_2 \relu(W_1 x)) \dots)
+\end{equation}
+with weight matrices $W_i \in \R^{n_i \times n_{i-1}}$ and $\relu(x) = \max(x,0)$  is applied entrywise. We furthermore assume that the network is expansive, i.e. $n = n_d > n_{d-1} > \dots > n_0 = k$, and the weights have Gaussian entries. This  modeling assumption was introduced in \cite{HV17}, and additionally it and its variants were used in \cite{HHHV18,oscar2018phase,ma2018invertibility,hand2019global,song2019surfing}. See  Section \ref{sec:informal} for justifications of this model. 
+
+Generative priors have been shown to close a computational-to-statistical gap in the Compressive Phase Retrieval problem. %in which a signal has to be recovered from compressed magnitude-only linear measurements. 
+With a sparsity prior the information-theoretically optimal sample complexity is proportional to the sparsity level $s$ of the signal, on the other hand the best known algorithms (convex methods \cite{hand2016compressed,li2013sparse,ohlsson2011compressive}, iterative thresholding \cite{cai2016optimal, wang2017sparse, yuan2019phase}, etc.) require a sample complexity proportional to $s^2$ for stable recovery, a barrier which might not be resolvable by polynomial-time algorithms \cite{barbier2019optimal}.
+Under the generative prior \eqref{eq:Gx}, \cite{oscar2018phase} has shown that, compressive phase retrieval is possible via gradient descent over a nonlinear objective with sample complexity proportional (up to log factors) to the underlying signal dimensionality $k$.
+This result suggests that it may be possible to use generative priors to close other computational-to-statistical gaps such as for models \eqref{eq:wishart_Y} and \eqref{eq:wigner_Y}. 
+Indeed, recently \cite{aubin2019spiked}
+considered these low-rank models and the generative network prior \eqref{eq:Gx}
+and shows that 
+in the asymptotic limit $k,n,N \to \infty$ with $n/k = \bigO(1)$ 
+and  $N/n = \bigO(1)$, an Approximate-Message Passing algorithm  achieves the statistical information-theoretic lower bound 
+and no computational-to-statistical gap is present.  %This paper seeks to show that there is no computational-statistical gap for this problem in the nonasymptotic case with finite dimensional models and finite data.
+%
+%manifld contrary to the sparsity case \cite{li2013sparse}, phase retrieval does not have a statistical to compuational gap. This success gives hope that the same might be the case for spiked matrix
+
+
+
+This paper analyzes the low-rank matrix models \eqref{eq:wishart_Y} and \eqref{eq:wigner_Y} under the generative network prior \eqref{eq:Gx}. 
+
+The contributions of this paper are as follows.  We
+analyze the global landscape of a natural least-square loss over the range of the generative network demonstrating its benign optimization geometry. Our result provide further evidences for the claim that rank-one matrix recovery 
+does not have  computational-to-statistical gaps when enforcing a generative prior in the non-asymptotic finite-data regime. This provides a second problem for which generative priors have closed such gaps in a non-asymptotic case.  
+%\red{In addition to our focus on the non-asymptotic regime, our analysis departs from \cite{aubin2019spiked} 
+%as we obtain statistically-optimal bounds 
+%by directly analyzing the optimization geometry of the %problem, demonstrating the benign properties that make it %favorable to gradient descent methods. 
+%[Do we need this?]} 
+We further corroborate these findings by proposing a (sub)gradient algorithm which, as shown by our numerical experiments, is able to recover the sought spike with optimal sample complexity. 
+This paper, therefore, strengthens the case for generative networks as priors for statistical inverse problems, not only because of their ability to learn natural signal priors, but also because of their capacity to lead to statistically optimal polynomial-time algorithms and zero computational-to-statistical gaps. 
+
+\subsection{Problem formulation and main results}\label{sec:informal}
+
+We consider the rank-one matrix recovery problem under a deep generative prior.  We assume that the signal spike lies in the range of the generative prior $\ystar = G(\xstar)$.  To estimate $\ystar$, we propose to 
+first find an estimate $\hat{x}$ of the latent variable $\xstar$ and then use $G(\hat{x}) \approx \ystar$.
+We thus consider the following  minimization problem\footnote{Under the  conditions below on the generative network, it was shown in \citep{HV17} that $G$ is invertible and therefore there exists a unique $\xstar$ that satisfies $\ystar = G(x)$.}:
+\begin{equation}\label{eq:minM}
+\min_{x \in \R^k} f(x) := \frac{1}{4} \| G(x)G(x)^\T - {M}\|_F^2.
+\end{equation}
+where:
+\begin{itemize}
+	\item for the \textbf{Wishart model} \eqref{eq:wishart_Y} we take $M =  \Sigma_N - \sigma^2 I_n$ with $\Sigma_N = Y^\T Y/N$.
+	
+	\item for the \textbf{Wigner model} \eqref{eq:wigner_Y} we take $M = Y$.
+\end{itemize}
+Despite the objective function \eqref{eq:minM} being nonconvex and nonsmooth, we show that it enjoys a favorable global optimization geometry for Gaussian weight matrices $\{W_i\}_{i=1}^d$. 
+The informal version of our main results for the two spiked models is given below.
+\begin{thm}[Informal]\label{thm:informal}
+	Let $\ystar = G(\xstar)$ for a given a generative network $G: \R^k \to \R^n$ as in \eqref{eq:Gx}.
+	Assume that each layer is sufficiently expansive, i.e.  $n_{i+1} = \Omega(n_i \log n_i)$, and the weights are Gaussian. Consider the minimization problem  \eqref{eq:minM} and assume 
+	that up to factors dependent on the number of layers $d$:
+	\begin{itemize}
+		\item  for the \textbf{Wishart model}:
+		%$(\sigma^2+\|\ystar\|_2^2) 2^d \sqrt{k\, \text{poly}(d)\, (\log n) /N} = \bigO(1)$
+		$\sqrt{k \log n \, /N} \lesssim 1 $,
+		\item for the \textbf{Wigner model}: 
+		%$\nu\, 2^d \sqrt{k \, \text{poly}(d)\,(\log{n})/n} = \bigO(1),$
+		$\nu \sqrt{k \log n \, /n} \lesssim 1$.
+	\end{itemize}
+	With high probability:
+	\begin{enumerate}[label=\Alph*.]
+		\item for any nonzero point $x \in \R^k$ outside two small neighborhoods of $\xstar$ and $- \rho_d \xstar$ with $0 < \rho_d  \leq 1$, the objective function \eqref{eq:minM} has a direction of strict descent given almost everywhere by the gradient of $f$;
+		%\item for any nonzero point $x \in \R^k$ outside two small neighborhoods of $\xstar$ and $- \rho_d \xstar$ with $0 < \rho_d  \leq 1$, the one-sided directional derivative of the objective function $f$ is a direction of strict descent;
+		
+		\item the objective function values near
+		$-\rho_d \xstar$ are larger than those near $\xstar$, while $x = 0$ is a local maximum;
+		
+		\item for any point $x$ in the small neighborhood around of $\xstar$, up to polynomials in $d$:
+		\begin{itemize}
+			\item for the \textbf{Wishart model}:	
+			\begin{equation}\label{eq:ws_scaling}
+			\| G(x) - \ystar\|_2	\lesssim \sqrt{\frac{k \log n }{N}},
+			\end{equation}
+			\item  for the \textbf{Wigner model}: 
+			\begin{equation}\label{eq:wg_scaling}
+			\| G(x) - \ystar\|_2	\lesssim \nu \sqrt{\frac{k \log n}{n}}.
+			\end{equation}
+		\end{itemize}
+	\end{enumerate}
+\end{thm}
+
+% Favorable optimization geometry
+% No spurious critical points, 
+Our main result characterizes the global optimization geometry of the problem \eqref{eq:minM} for a network with an expansive architecture and Gaussian weights. 
+Even though the objective function in \eqref{eq:minM} is a piecewise-quartic polynomial, we show that outside two small neighborhoods around $\xstar$ and a negative multiple of it, there are no other spurious local minima or saddles, and every nonzero point has a strict linear descent direction. The point $x = 0$ is a local maximum and a neighborhood around $\xstar$ contains the global minimum of $f$.
+
+We note, moreover, that for any point $x$ in the ``benign neighborhood'' of $\xstar$, the reconstruction error $\| G(x) - \ystar \|$ has information-theoretically optimal rates \eqref{eq:ws_scaling} and \eqref{eq:wg_scaling} corresponding (up to $\log$ factors) to the best achievable even in the simple case of a $k$-dimensional subspace prior. This implies that for the Wishart model the number of samples required to estimate $\ystar$ scales like the latent dimension $k$ which corresponds to the intrinsic degrees of freedom of the signal $\ystar$. Similarly for the Wigner model this implies that enforcing the generative network prior leads to a reduction of the noise by a factor of ${k}/{n}$. 
+
+
+Furthermore we observe that the direction of descent guaranteed by the theorem are almost everywhere given by the gradient of the objective function $f$. Our result, therefore, suggests 
+that spiked matrix recovery
+with a deep (random) generative network prior can be solved rate-optimally by simply minimizing over the range of the network via simple and computationally tractable algorithms such as gradient descent methods. For small enough step sizes, the iterates of these methods would converge to  one of the two neighborhoods where the gradients are small (identified in Theorem \ref{thm:informal}A), and avoiding the bad neighborhood of $- \rho_d \xstar$ can be done by exploiting the knowledge of the properties of the loss function (described in Theorem \ref{thm:informal}B) as done in Algorithm \ref{alg:subgrad} below and shown in the numerical experiments.
+Finally, proving a convexity-like property of the ``benign neighborhood'' around $\xstar$ would ensure that the iterates will remain in this neighborhood and gradient descent will converge to a point with optimal error-rates \eqref{eq:ws_scaling} and \eqref{eq:wg_scaling}.
+Formally proving the optimality and polynomial runtime of a gradient method for spiked matrix recovery is left for future work. 
+
+
+
+Regarding the Gaussian weight assumption, we observe that there is empirical evidence that the distribution of the weights of deep neural networks have properties consistent with those of Gaussian matrices \citep{arora2015deep}. Moreover, these observations have been used in advancing the theoretical understanding of deep network trained in supervised setting and in particular their ability to preserve the metric structure of the data \citep{giryes2016deep}. The randomness 
+assumption has been further used by \citep{arora2014provable} to show that autoencoders with random weights can be learned in polynomial time. 
+More recently, a series of works (see for example \citep{li2018learning, du2018gradient, oymak2019towards, mei2019generalization, chizat2019lazy}) have been dedicated to theoretical guarantees for training deep neural networks in the close-to-random regime of the \textit{Neural Tangent Kernel} \citep{jacot2018neural}. 
+Finally, as for the case of compressed sensing in which the analysis of the random setting has led to considerable understanding 
+of the problem as well as tangible practical innovations, we hope that the analysis of the random setting for deep generative networks will provide 
+insights and generate novel developments in the field of statistical inverse problems. 
+
+
+
+We finally observe that signal recovery problems where multiple signal structures hold simultaneously,
+e.g. low-rankness and sparsity, have been notoriously difficult, leading to no tractable algorithms at optimal sample complexity (see the next section for further details). Consequently, one might expect that enforcing low-rankness and generative priors would be comparably hard. In this work, we show instead that this combination of structural priors is not inherently difficult. 
+This would motivate practitioners to invest in building and using generative priors, as those studied in this paper, in contexts where other priors have been traditionally used with suboptimal theoretical guarantees or empirical performance. 

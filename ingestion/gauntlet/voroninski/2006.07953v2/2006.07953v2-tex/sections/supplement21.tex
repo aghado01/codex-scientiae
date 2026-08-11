@@ -1,0 +1,98 @@
+\subsection{Proof of Proposition \ref{prop:local_min}}\label{sec:proof_loc_min}
+
+Recall that $f(x):= 1/4 \|G(x)G(x)^\T - G(\xstar)G(\xstar)^\T - H\|^2_F$, we next define the following loss functions:
+\[
+\begin{aligned}
+f_0(x) &:= \frac{1}{4} \|G(x)G(x)^\T - G(\xstar)G(\xstar)^\T\|^2_F, \\
+f_H(x) &:= f_0(x) - \frac{1}{2} \langle G(x)G(x)^\T- G(\xstar)G(\xstar)^\T, H  \rangle_F, \\
+f_E(x) &:= \frac{1}{4} \bigg( \frac{1}{2^{2d}}\|x\|^4 + \frac{1}{2^{2d}} \|\xstar\|^4 -2 \langle x, \htilde_x \rangle^2 \bigg).
+\end{aligned}
+\]
+In particular notice that $f(x) = f_H(x) + 1/4 \|H\|^2_F$. Below we show that assuming the WDC is satisfied 
+$f_0(x)$ concentrates around $f_E(x)$. 
+
+\begin{lemma}\label{lemma:f0_conctr}
+	Suppose that $d\geq 2$ and the WDC holds with $\eps < 1/(16 \pi d^2)^2$, then for all nonzero $x, \xstar \in \R^k$
+	%\[
+	%		|f_0(x) - f_E(x)| \leq 	\frac{43}{2^{2d}} d^4 \sqrt{\epsilon} \max\big( \|x\|^2, \|\xstar\|^2 \big)^2	
+	%\]
+	%\[
+	%	|f_0(x) - f_E(x)| \leq	\frac{13}{2^{2d}} d^3 \sqrt{\eps} (\|x\|^4  + \|\xstar\|^4)	+ \frac{18}{2^{2d}} d^4 \sqrt{\eps} \|x\|^2 \|\xstar\|^2
+	%\]
+	\[
+	|f_0(x) - f_E(x)| \leq	\frac{16}{2^{2d}}  (\|x\|^4  + \|\xstar\|^4) d^4 \sqrt{\eps}
+	\]
+\end{lemma}
+
+We next consider the loss $f_E$ and show that 
+in a neighborhood $-\rho_d \xstar$, this loss function has larger values than 
+in a neighborhood of $ \xstar$.
+
+\begin{lemma}\label{lemma:UPandLOW}
+	Fix $0 < a \leq 1/ (2\pi^3 d^3)$ and $\phi_d \in [\rho_d , 1]$ then:
+	\[
+	\begin{aligned}
+	%f_E(x) &\leq \frac{1}{2^{2d}} \|\xstar\|^4 + \frac{1}{2^{2d+2}} \big( 1 + 16 d a - 2 {\phi^2} \big)  \|\xstar\|^4 \quad \forall x \in \mathcal{B}(\phi_d \xstar, a \|\xstar\|) \; \text{and}\\
+	f_E(x) &\leq \frac{1}{2^{2d+2}} \|\xstar\|^4 + \frac{1}{2^{2d+2}}  \big[ (a + \phi_d)^4 - 2 \phi_d^2 + 2 \pi d a \big] \|\xstar\|^4 \quad \forall x \in \mathcal{B}(\phi_d \xstar, a \|\xstar\|) \; \text{and}\\
+	f_E(x) &\geq \frac{1}{2^{2d+2}} \|\xstar\|^4 + \frac{1}{2^{2d+2}}  \big[ (a - \phi_d)^4 - 2 \rho_d^2 \phi_d^2 - 40 \pi d^3 a \big] \|\xstar\|^4 \quad \forall x \in \mathcal{B}(- \phi_d \xstar, a \|\xstar\|).\\
+	\end{aligned}
+	\]
+\end{lemma}
+
+
+The above two lemmas are now used to prove Proposition \ref{prop:local_min}.
+\begin{proof}[Proof of Proposition \ref{prop:local_min}]
+	Let $x \in \mathcal{B}(\pm \phi_d \,\xstar, \varphi \|\xstar\|)$ for a $0 < \varphi < 1$ that will be specified below, and observe that by the assumptions on the noise:
+	\[
+	\begin{aligned}
+	|\langle G(x) G(x)^\T - G(\xstar)G(\xstar)^\T, H \rangle_F| &\leq |G(x)^\T H G(x)| + |G(\xstar)^\T H G(\xstar)| \\
+	&\leq \frac{\omega}{2^d} (\|x\|^2 + \|\xstar\|^2) \\
+	&\leq \frac{\omega}{2^d} ((\phi_d + \varphi)^2 + 1) \| \xstar \|^2,
+	\end{aligned}
+	\] 
+	and therefore by Lemma \ref{lemma:f0_conctr}:
+	\[
+	\begin{aligned}
+	|f_0(x) - f_E(x)| &+  \frac{1}{2}|\langle G(x) G(x)^\T - G(\xstar)G(\xstar)^\T, H \rangle_F| \leq \\
+	&\leq \frac{16}{2^{2d}} ((\phi_d + \varphi)^4 + 1) \|\xstar\|^4 d^4 \sqrt{\eps} + \frac{\omega}{2^d} ((\phi_d + \varphi)^2 + 1) \| \xstar \|^2 \\
+	&\leq \frac{272}{2^{2d}}\|\xstar\|^4 d^4 \sqrt{\eps} + \frac{\omega}{2^d} ((\phi_d + \varphi)^2 + 1) \| \xstar \|^2
+	\end{aligned}
+	\]  
+	We next take $\varphi = \eps$ and $x \in \mathcal{B}(\phi_d \,\xstar, \varphi \|\xstar\|)$, so that by Lemma \ref{lemma:UPandLOW} and the assumption $2^d d^{12} w \leq K_2 \| \xstar \|^2$, we have:
+	\[
+	\begin{aligned}
+	f_H(x) &\leq f_E(x) + |f_0(x) - f_E(x)| + \frac{1}{2}  |\langle G(x) G(x)^\T - G(\xstar)G(\xstar)^\T, H \rangle_F | \\
+	&\leq \frac{1}{2^{2d+2}} \big[ 1 + (\eps + \phi_d)^4 - 2 \phi_d^2 + 2 \pi d \eps  \big] \|\xstar \|^4 
+	+ 272 d^4 \sqrt{\eps} \|\xstar\|^4
+	+ \frac{\omega}{2^{d+1}} (2 + 2 \eps + \eps^2) \|\xstar\|^2 \\
+	%&\leq \frac{1}{2^{2d +2}} \big[ 1 - 2 \phi_d^2 + (\eps + \phi_d)^4 \big]  \|\xstar\|^4 
+	%+\big( \frac{\pi d}{2} + 374 d^4 \big)\sqrt{\eps} \|\xstar\|^4  + %\frac{\omega}{2^{d+1}}(2 + 3 \sqrt{\eps}) \|\xstar\|^4 \\
+	&\leq \frac{1}{2^{2d +2}} \big[ 1 - 2 \phi_d^2 + (\eps + \phi_d)^4 \big]  \|\xstar\|^4 
+	+\frac{1}{2^{2d}}\Big(\frac{3}{2} 2^d \|\xstar\|^{-2} \omega +  \frac{\pi d}{2} + 272 d^4 \Big)\sqrt{\eps} \|\xstar\|^4  + \frac{\omega }{2^{d}}\|\xstar\|^2\\
+	&\leq \frac{1}{2^{2d +2}} \big[ 1 - 2 \phi_d^2 + (\eps + \phi_d)^4 \big]  \|\xstar\|^4 
+	+\frac{1}{2^{2d}}\Big(\frac{3}{2} K_2 d^{-12} +  \frac{\pi d}{2} + 272 d^4 \Big)\sqrt{\eps} \|\xstar\|^4  + K_2 \frac{\|\xstar\|^4}{2^{2d}} d^{-12}.
+	\end{aligned}
+	\]
+	Similarly if $y \in \mathcal{B}(- \phi_d \,\xstar, \varphi \|\xstar\|)$, and $\varphi = \eps$ we obtain:
+	\[
+	\begin{aligned}
+	f_H(y) &\geq f_E(y) - |f_0(y) - f_E(y)| - \frac{1}{2}  |\langle G(y) G(y)^\T - G(\xstar)G(\xstar)^\T, H \rangle | \\
+	&\geq \frac{1}{2^{2d +2}} \big[ 1 - 2 \phi_d^2 \rho_d^2 + (\eps - \phi_d)^4 \big]  \|\xstar\|^4 
+	- \frac{1}{2^{2d}} \Big( \frac{3}{2} 2^d \|\xstar\|^{-2} \omega +  10 \pi d^3 + 272 d^4 \Big)\sqrt{\eps} \|\xstar\|^4  - \frac{\omega }{2^{d}}\|\xstar\|^2
+	\\&\geq \frac{1}{2^{2d +2}} \big[ 1 - 2 \phi_d^2 \rho_d^2 + (\eps - \phi_d)^4 \big]  \|\xstar\|^4 
+	- \frac{1}{2^{2d}} \Big( \frac{3}{2} K_2 d^{-12} +  10 \pi d^3 + 272 d^4 \Big)\sqrt{\eps} \|\xstar\|^4  - K_2 \frac{\|\xstar\|^4}{2^{2d}} d^{-12}.
+	\end{aligned}
+	\]
+	In order to guarantee that $f(y) > f(x)$, it suffices to have:
+	\[
+	2 (1 - \rho_d^2) \phi_d^2 -  8 K_2 d^{-12} > 4 C_d \sqrt{\eps}
+	\]
+	with $C_d := (544 d^4 + 10 \pi d^3 \pi + 3 K_2 d^{-12} + \pi d/2 + 1/100)$,
+	that is to
+	require:
+	\[
+	\varphi = {\eps} < \bigg( \frac{(1 - \rho_d^2) \phi_d^2 - 4 K_2 d^{-12}}{2 C_d} \bigg)^2.
+	\]
+	Finally notice that by Lemma 17 in \cite{HHHV18} it holds that $1- \rho_d \geq (K (d +2))^{-2}$ for some numerical constant $K$, we  therefore choose 
+	$\eps = \varrho/d^{12}$ for some $\varrho >0$ small enough.
+\end{proof}

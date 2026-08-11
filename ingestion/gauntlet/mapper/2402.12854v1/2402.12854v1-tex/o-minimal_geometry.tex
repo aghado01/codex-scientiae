@@ -1,0 +1,19 @@
+\section{Elements of o-minimal geometry}\label{apdx:o-minimal}
+
+\begin{definition} An o-minimal structure on the field of real numbers $\mathbb{R}$ is a collection $(S_n)_{n\in\mathbb{N}}$ where each $S_n$ is a set of subsets of $\mathbb{R}^n$ that satisfies:
+\begin{enumerate}
+    \item  All algebraic subsets of $\mathbb{R}^n$ are in $S_n$;
+    \item  $S_n$ is a Boolean subalgebra of the powerset of $\mathbb{R}^n$ (i.e. stable by finite union, finite intersection and complementary);
+    \item  if $A\in S_n$ and $B\in S_m$, then $A\times B\in S_{n+m}$;
+    \item  if $\pi\colon\mathbb{R}^{n+1}\to\mathbb{R}^n$ is the linear projection onto the first $n$ coordinates and $A\in S_{n+1}$ then $\pi(A)\in S_n$;
+    \item  $S_1$ is exactly the family of finite unions of points and intervals.
+\end{enumerate}
+\end{definition}
+
+The elementary example of an o-minimal structure is the collection of semi-algebraic sets. An element $A\in S_n$ for some $n\in\mathbb{N}$ is called a definable set. Furthermore, a map $f \colon  A\to \mathbb{R}^m$ is called a definable map if its graph (i.e. $\{(x,f(x))\,:\,x\in A\}$) is in $S_{n+m}$. 
+
+Definable maps are stable under addition, product and composition. A function that is coordinate-wise definable is also definable. Moreover, the result of \cite{wilkie1996model} shows that there exists an o-minimal structure that contains the graph of the exponential function. 
+
+An important property of definable maps is that they admit a finite Whitney stratification. This means that if $f \colon  A\to \mathbb{R}^m$ is definable with $A\in S_n$, then $A$ can be decomposed into a finite union of smooth manifolds such that the restriction of $f$ to each of these manifolds is a smooth function. 
+
+For more details on o-minimal geometry, see \cite{coste2000introduction}.

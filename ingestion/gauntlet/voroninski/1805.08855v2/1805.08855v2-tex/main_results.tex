@@ -1,0 +1,136 @@
+
+\section{Main results}
+
+%We let the noise $\noise$ be zero-mean Gaussian with co-variance matrix $\sigma /n I$.
+For our analysis, we consider a fully-connected generative network $G\colon \R^k \to \R^n$ with Gaussian weights and no bias terms. Specifically, we assume that the weights $W_i$ are independently and identically distributed as~$\mathcal N(0,2/n_i)$, but do not require them to be independent across layers.
+Moreover, we assume that the network is sufficiently \textit{expansive}:
+
+\newtheorem*{block}{Expansivity condition}
+\begin{block} 
+%We say that the expansivity condition holds if
+%\[
+%n_i \geq c \log(d) n_{i-1} \log n_{i-1},
+%\quad
+%\text{for all }
+%i,
+%\]
+We say that the expansivity condition with constant $\epsilon>0$ holds if
+\[
+n_i \geq c \epsilon^{-2} \log(1/\eps) n_{i-1} \log n_{i-1},
+\quad
+\text{for all }
+i,
+\]
+where $c$ is a particular numerical constant.
+ %(since we think of $\epsilon$ as a small constant, we can think of $c(\epsilon)$ as a constant).
+\end{block}
+%
+\noindent
+In a real-world generative network the weights are learned from training data, and are not drawn from a Gaussian distribution. Nonetheless, the motivation for selecting Gaussian weights for our analysis is as follows:
+\begin{enumerate}
+\item The empirical distribution of weights from deep neural networks often have statistics consistent with Gaussians.  AlexNet is a concrete example~\citep{Arora15}.
+%\item random convolutional generative networks have show impressive denoising, inpainting, and superresolution performance when trained against a single image, as done with the Deep Image Prior \citep{DIP}; and
+\item The field of theoretical analysis of recovery guarantees for deep learning is nascent, and Gaussian networks can permit theoretical results because of well developed theories for random matrices.
+\item It is not clear which non-Gaussian distribution for weights is superior from the joint perspective of realism and analytical tractability.
+%\item  Truly random nets, such as in the Deep Image Prior \citep{DIP}, are increasingly becoming of practical relevance.  Thus, theoretical advances on random nets is of independent interest.
+% RH: The DIP is not a random image model..
+\end{enumerate}
+
+The network model we consider is fully connected.  We anticipate that the analysis of this paper can be extended to the case of generative convolutional neural networks.  This extension has already happened for theoretical results concerning the favorability of the optimization landscape for compressive sensing under generative priors~\citep{ma2018invertibility}, as mentioned previously. %detailed in Section~\ref{sec:introduction}.}
+
+\noindent We are now ready to state our main result. % It states that after polynomially many steps (with respect to $d$), the gradient method begins to converge linearly to a ball around $\xo$ with radius proportional to the noise level.  In particular, in the case of zero noise, the theorem provides an exact recovery guranatee.  %pertaining to denoising zero-mean Gaussian noise with co-variance matrix $\sigma /n I$.
+
+%We show that with high probability, the iterates of Algorithm~\ref{alg} converge to a ball whose radius is determined by the noise.
+%Our main result is as follows:
+%In the case of a Gaussian network with Gaussian measurements, the WDC and RRIC are satisfied with high probability if the network is sufficiently expansive and there are a sufficient number of measurements.
+
+\begin{theorem}
+\label{thm:main-rescaled}
+%Suppose that WDC holds with some epsilon $\epsilon$ satisfying $\epsilon < K/c^{30}$.
+Consider a network with the weights in the $i$-th layer, $W_i \in \R^{n_i \times n_{i-1}}$, i.i.d.~$\mathcal N(0,2/n_i)$ distributed, and suppose that the network satisfies the expansivity condition for $\epsilon = K/d^{90}$. %$\epsilon$ satisfying %$K d^{45} \sqrt{\eps} \leq 1$. $\epsilon \leq K/d^{90}$.
+Also, suppose that the noise variance $\omega$, defined for notational convenience as 
+\[
+\omega
+\defeq
+\sqrt{ 18\sigma^2 \frac{k}{n}
+\log(n_1^d n_2^{d-1}\ldots n_d)},
+\]
+obeys
+\[
+\omega \leq \frac{\norm{\xo} K_1}{d^{16}}.
+\]
+Consider the iterates of Algorithm~\ref{alg} with stepsize
+$\alpha = K_4\frac{1}{d^2}$.
+Then, there exists a number of steps $N$ upper bounded by
+\[
+N
+\leq
+K_2 d^{86}
+\frac{f(x_0)}{ \norm{\xo}}
+%+ \bigl(\frac{K_7 2^d}{\alpha}\bigr)^2,
+\]
+% \rhcomment{ note that the first term in $\frac{f(\xo) 2^d / \norm{\xo}}{d^4 \eps} + \bigl(\frac{K_7 2^d}{\alpha}\bigr)^2$  dominates, due to epsilon being small and our choice of the stepsize $\alpha$}
+such that after $N$ steps, the iterates of Algorithm~\ref{alg} obey
+\begin{align}
+\label{eq:errorxixo-rescaled}
+\norm{x_i -\xo}
+\leq
+\frac{K_5}{d^{36}}  \norm{\xo} 
++
+K_6 d^6 \omega,
+\quad
+\text{for all $i \geq N$},
+\end{align}
+with probability at least
+$1-2e^{-2k \log n} - \sum_{i=2}^d 8 n_i e^{-K_7 n_{i-2} }
+- 8 n_1 e^{-K_7  k  \log d / d^{180}}
+$.
+In addition, for all $i > N$, we have
+\begin{align}
+\|x_{i} - x_*\| &\leq (1 -  \alpha 7/8 )^{i - N} \|x_N - x_*\| + K_8 \omega \hbox{ and }  \label{GA:e68} \\
+\|G(x_{i}) - G(x_*)\| &\leq 1.2 (1 -  \alpha 7/8 )^{i - N} \|x_N - x_*\| + 1.2 K_8 \omega, \label{GA:e74}
+\end{align}
+where $\alpha < 1$ is the stepsize of the algorithm.
+Here, $K_1,K_2, \ldots$ are numerical constants, and $x_0$ is the initial point in the optimization.
+%Then there exists \red{$N < \frac{\poly(d)}{\sqrt{\eps}} \frac{f(\xo) 2^{-d}}{\|x_*\|}  $ such that $x_i \in \setS_\beta^+$ for all $i \geq N$}
+\end{theorem}
+
+%Also, note that while the weights of any layer of the network are assumed to be i.i.d. Gaussian, there is no assumption on the independence between $W_i$ and $W_j$ for $i \neq j$.
+
+Our result guarantees that after polynomially many iterations (with respect to $d$), the algorithm converges linearly to a region satisfying
+\[
+\norm{x_i - \xo}^2
+\lesssim
+\sigma^2 \frac{k}{n},
+\]
+where the notation $\lesssim$ absorbs a factor logarithmic in $n$ and polynomial in $d$.
+One can show that $G$ is Lipschitz in a region around $\xo$\footnote{The proof of Lipschitzness follows from applying the Weight Distribution Condition in Section~\ref{sec:WDC}.},
+%(as established in~\citep{huang_provable_2018}), our result guarantees that for $\epsilon$ sufficiently small, after sufficiently many iterates,
+\[
+\norm{G(x_i) - G(\xo)}^2
+\lesssim
+\sigma^2 \frac{k}{n}.
+\]
+Thus, the theorem guarantees that our algorithm yields the denoising rate of $\sigma^2 k/n$, and, as a consequence, denoising based on a generative deep prior provably reduces the energy of the noise in the original image by a factor of $k/n$.  
+
+In the case of $\sigma=0$, the theorem guarantees convergence to the global minimizer $\xo$.   We note that the intention of this paper is to show rate-optimality of recovery with respect to the noise power, the latent code dimensionality, and the signal dimensionality.  As a result, no attempt was made to establish optimal bounds with respect to the scaling of constants or to powers of $d$.  The bounds provided in the theorem are highly conservative in the constants and dependency on the number of layers, $d$, in order to keep the proof as simple as possible.  Numerical experiments shown later reveal that the parameter range for successful denoising are much broader than the constants suggest. As this result is the first of its kind for rigorous analysis of denoising performance by deep generative networks, we anticipate the results can be improved in future research, as has happened for other problems, such as sparsity-based compressed sensing and phase retrieval.  %Finally, for practical application in denoising, it is appropriate to consider $d$ to be fixed, as a deep generative model can be trained based on a corpus of data before any particular denoising problem is solved.
+%  Rigorous recovery guarantees using neural networks is a nascent field  We anticipate that those aspects of Theorem \ref{thm:main-rescaled} could be considerably improved, but doing so would considerably increase the technical complexity of the proofs.
+%we do not attempt to do so because (1) better control of those constants would significantly increase the technical complexity, (2)
+
+Finally, we remark that Theorem~\ref{thm:main-rescaled} can be generalized to the case where $y_\ast$ only approximately lies in the range of the generator, i.e., 
+$G(x_\ast) \approx y_\ast$. Specifically, if $\norm{G(x_\ast) - y_\ast }$ is sufficiently small, the error induced by this perturbation is proportional to \norm{G(x_\ast) - y_\ast }.
+
+%%%
+
+\subsection{\label{sec:WDC}
+The Weight Distribution Condition (WDC)}
+
+To prove our main result, we make use of a deterministic condition on $G$, called the Weight Distribution Condition (WDC), and then show that Gaussian $W_i$, as given by the statement of Theorem~\ref{thm:main-rescaled} are such that $W_i / \sqrt{2}$ satisfies the WDC with the appropriate probability for all $i$, provided the expansivity condition holds.
+Our main result, Theorem~\ref{thm:main-rescaled}, continues to hold for any weight matrices such that $W_i/\sqrt{2}$ satisfy the WDC.
+
+The condition is on the spatial arrangement of the network weights within each layer.
+We say that the matrix $W \in \R^{n \times k}$ satisfies the \textit{Weight Distribution Condition} with constant $\eps$ if for all nonzero $x,y \in \R^k$,
+\begin{align}
+\Bigl \| \sum_{i=1}^n 1_{\innerprod{w_i}{x}>0} 1_{\innerprod{w_i}{y}>0} \cdot w_i w_i^t  - \Qxy \Bigr \| \leq \eps,  \text{ with } \Qxy = \frac{\pi - \theta_0}{2 \pi} I_k + \frac{\sin \theta_0}{2\pi}  \Mxyhat, \label{WDC}
+\end{align}
+where $w_i \in \R^k$ is the $i$th row of $W$; $\Mxyhat \in \R^{k \times k}$ is the matrix\footnote{A formula for $\Mxyhat$ is as follows.  If $\theta_0 = \angle(\xhat, \yhat) \in (0, \pi)$ and $R$ is a rotation matrix such that $\xhat$ and $\yhat$ map to $e_1$ and $\cos \theta_0 \cdot e_1 + \sin \theta_0 \cdot e_2$ respectively, then $\Mxyhat = R^t \begin{pmatrix} \cos \theta_0 & \sin \theta_0 & 0 \\ \sin \theta_0 & - \cos \theta_0 & 0 \\ 0 & 0 & 0_{k-2} \end{pmatrix} R$, where $0_{k-2}$ is a $k-2 \times k-2$ matrix of zeros.  If $\theta_0 = 0$ or $\pi$, then $\Mxyhat = \xhat \xhat^t$ or $- \xhat \xhat^t$, respectively.} such that $\xhat \mapsto \yhat$, $\yhat \mapsto \xhat$, and $z \mapsto 0$ for all $z \in \Span(\{x,y\})^\perp$;  $\xhat = x/\|x\|_2$  and $\yhat = y /\|y\|_2$;  $\theta_0 = \angle(x, y)$; and $1_S$ is the indicator function on $S$.  The norm in the left hand side of \eqref{WDC} is the spectral norm.  Note that an elementary calculation\footnote{To do this calculation, take $x=e_1$ and $y = \cos \theta_0\cdot e_1 + \sin \theta_0 \cdot e_2$ without loss of generality.  Then each entry of the matrix can be determined analytically by an integral that factors in polar coordinates.} gives that $\Qxy = \E[\sum_{i=1}^n 1_{\innerprod{w_i}{x}>0} 1_{\innerprod{w_i}{y}>0} \cdot w_i w_i^t ]$ for $w_i \sim \mathcal{N}(0, I_k/n)$.  As the rows $w_i$ correspond to the neural network weights of the $i$th neuron in a layer given by $W$, the WDC provides a deterministic property under which the set of neuron weights within the layer given by $W$ are distributed approximately like a Gaussian.  The WDC could also be interpreted as a deterministic property under which the neuron weights are distributed approximately like a high dimensional vector chosen uniformly from a sphere of a particular radius.  Note that if $x=y$, $\Qxy$ is an isometry up to a factor of $1/2$.

@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2604.17395v1",
+  "initialized_utc": "2026-08-11T08:30:23.397306Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "combined.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "A Null Model for Assessing\\\\ Mapper-Based Subtype Claims\\thanks{Submitted to the editors \\today.\n\\funding{This work received no external funding.}}",
+        "authors_tex": [
+          "Chad M. Topaz\\thanks{Williams College, Williamstown, MA, and University of Colorado Boulder, Boulder, CO\n  (\\email{cmt6@williams.edu}).}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 217,
+        "sha256": "ec11b1a8ac8faceb15aae32f3232ef27a10f17c0468da0fde7f7248da657f6f1"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2604.17395v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 74246,
+      "sha256": "b90e867bb9d66370f9289b37c19578b695441f22eb47b6dfb3bc8b5a9fdc8ee3",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2604.17395v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2604.17395v1.tar.gz",
+      "entrypoint": "combined.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 5,
+      "tex_files": 1,
+      "sha256": "edfcbc9da7ea48339628c37555aa05993111fe4ad5b0b116f2bfb2b285166963"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2604.17395v1.pdf",
+      "format": "application/pdf",
+      "bytes": 588427,
+      "sha256": "e4364ca45cc30a6bd0b870e46f0ec94053a9b4745955c899504e817063a2ae16"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:23.397306Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 5
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 5
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "combined.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

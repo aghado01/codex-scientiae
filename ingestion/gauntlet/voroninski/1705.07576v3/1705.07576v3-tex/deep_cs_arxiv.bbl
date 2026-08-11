@@ -1,0 +1,444 @@
+\begin{thebibliography}{10}
+
+\bibitem{adler2018learned}
+Jonas Adler and Ozan {\"O}ktem.
+\newblock Learned primal-dual reconstruction.
+\newblock {\em IEEE Transactions on Medical Imaging}, 2018.
+
+\bibitem{BDC}
+Ali Ahmed, Benjamin Recht, and Justin~K. Romberg.
+\newblock Blind deconvolution using convex programming.
+\newblock {\em CoRR}, abs/1211.5608, 2012.
+
+\bibitem{akhtar2018threat}
+Naveed Akhtar and Ajmal Mian.
+\newblock Threat of adversarial attacks on deep learning in computer vision: A
+  survey.
+\newblock {\em arXiv preprint arXiv:1801.00553}, 2018.
+
+\bibitem{Sanjeev}
+Sanjeev Arora, Yingyu Liang, and Tengyu Ma.
+\newblock Why are deep nets reversible: {A} simple theory, with implications
+  for training.
+\newblock {\em CoRR}, abs/1511.05653, 2015.
+
+\bibitem{Burer1}
+Bandeira, Boumal, and Voroninski.
+\newblock On the low-rank approach for semidefinite programs arising in
+  synchronization and community detection.
+\newblock {\em JMLR}, 49:1--22, 2016.
+
+\bibitem{barak2016nearly}
+Boaz Barak, Samuel~B Hopkins, Jonathan Kelner, Pravesh~K Kothari, Ankur Moitra,
+  and Aaron Potechin.
+\newblock A nearly tight sum-of-squares lower bound for the planted clique
+  problem.
+\newblock {\em arXiv preprint arXiv:1604.03084}, 2016.
+
+\bibitem{Baraniuk2008}
+Richard Baraniuk, Mark Davenport, Ronald DeVore, and Michael Wakin.
+\newblock A simple proof of the restricted isometry property for random
+  matrices.
+\newblock {\em Constructive Approximation}, 28(3):253--263, 2008.
+
+\bibitem{Price}
+Ashish Bora, Ajil Jalal, Eric Price, and Alexandros~G. Dimakis.
+\newblock Compressed sensing using generative models.
+\newblock {\em arXiv:1703.03208}, 2017.
+
+\bibitem{CESV2011}
+E.~Cand\`{e}s, Y.~Eldar, T.~Strohmer, and V.~Voroninski.
+\newblock Phase retrieval via matrix completion.
+\newblock {\em SIAM J. Imaging Sci.}, 6(1):199--225, 2013.
+
+\bibitem{wirtinger}
+Emmanuel~J Candes, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and algorithms.
+\newblock {\em Information Theory, IEEE Transactions on}, 61(4):1985--2007,
+  2015.
+
+\bibitem{MC}
+Emmanuel~J. Cand{\`{e}}s and Benjamin Recht.
+\newblock Exact matrix completion via convex optimization.
+\newblock {\em CoRR}, abs/0805.4471, 2008.
+
+\bibitem{CRT2005}
+Emmanuel~J. Cand\`{e}s, Justin~K. Romberg, and Terence Tao.
+\newblock Stable signal recovery from incomplete and inaccurate measurements.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  59(8):1207--1223, 2006.
+
+\bibitem{CSV2013}
+Emmanuel~J Cand\`{e}s, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Comm. Pure Appl. Math.}, 66(8):1241--1274, 2013.
+
+\bibitem{chen2015solving}
+Yuxin Chen and Emmanuel Candes.
+\newblock Solving random quadratic systems of equations is nearly as easy as
+  solving linear systems.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  739--747, 2015.
+
+\bibitem{chen2016projected}
+Yuxin Chen and Emmanuel Candes.
+\newblock The projected power method: An efficient algorithm for joint
+  alignment from pairwise differences.
+\newblock {\em arXiv preprint arXiv:1609.05820}, 2016.
+
+\bibitem{dai2017scan}
+Wei Dai, Joseph Doyle, Xiaodan Liang, Hao Zhang, Nanqing Dong, Yuan Li, and
+  Eric~P Xing.
+\newblock Scan: Structure correcting adversarial network for chest x-rays organ
+  segmentation.
+\newblock {\em arXiv preprint arXiv:1703.08770}, 2017.
+
+\bibitem{dar2017transfer}
+Salman Ul~Hassan Dar and Tolga {\c{C}}ukur.
+\newblock A transfer-learning approach for accelerated mri using deep neural
+  networks.
+\newblock {\em arXiv preprint arXiv:1710.02615}, 2017.
+
+\bibitem{daubechies1992ten}
+Ingrid Daubechies.
+\newblock {\em Ten lectures on wavelets}, volume~61.
+\newblock Siam, 1992.
+
+\bibitem{Donoho}
+David Donoho.
+\newblock For most large underdetermined systems of linear equations the
+  minimal l1-norm solution is also the sparsest solution.
+\newblock {\em Communications on Pure and Applied Mathematics}, 59(6), 2006.
+
+\bibitem{donoho2009counting}
+David Donoho and Jared Tanner.
+\newblock Counting faces of randomly projected polytopes when the projection
+  radically lowers dimension.
+\newblock {\em Journal of the American Mathematical Society}, 22(1):1--53,
+  2009.
+
+\bibitem{giryes2016deep}
+Raja Giryes, Guillermo Sapiro, and Alexander~M Bronstein.
+\newblock Deep neural networks with random gaussian weights: a universal
+  classification strategy?
+\newblock {\em IEEE Trans. Signal Processing}, 64(13):3444--3457, 2016.
+
+\bibitem{Goodfellow-et-al-2016}
+Ian Goodfellow, Yoshua Bengio, and Aaron Courville.
+\newblock {\em Deep Learning}.
+\newblock MIT Press, 2016.
+\newblock \url{http://www.deeplearningbook.org}.
+
+\bibitem{GAN}
+Ian~J. Goodfellow, Jean Pouget-Abadie, Bing Mirza, Mehdi;~Xu, David
+  Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio.
+\newblock Generative adversarial networks.
+\newblock {\em arXiv:1406.2661}, 2014.
+
+\bibitem{hammernik2017learning}
+Kerstin Hammernik, Teresa Klatzer, Erich Kobler, Michael~P Recht, Daniel~K
+  Sodickson, Thomas Pock, and Florian Knoll.
+\newblock Learning a variational network for reconstruction of accelerated mri
+  data.
+\newblock {\em Magnetic resonance in medicine}, 2017.
+
+\bibitem{hong2017generative}
+Yongjun Hong, Uiwon Hwang, Jaeyoon Yoo, and Sungroh Yoon.
+\newblock How generative adversarial nets and its variants work: An overview of
+  gan.
+\newblock {\em arXiv preprint arXiv:1711.05914}, 2017.
+
+\bibitem{huang2017blind}
+Wen Huang and Paul Hand.
+\newblock Blind deconvolution by a steepest descent algorithm on a quotient
+  manifold.
+\newblock {\em arXiv preprint arXiv:1710.03309}, 2017.
+
+\bibitem{ilyas2017robust}
+Andrew Ilyas, Ajil Jalal, Eirini Asteri, Constantinos Daskalakis, and
+  Alexandros~G Dimakis.
+\newblock The robust manifold defense: Adversarial training using generative
+  models.
+\newblock {\em arXiv preprint arXiv:1712.09196}, 2017.
+
+\bibitem{johnson2016perceptual}
+Justin Johnson, Alexandre Alahi, and Li~Fei-Fei.
+\newblock Perceptual losses for real-time style transfer and super-resolution.
+\newblock In {\em European Conference on Computer Vision}, pages 694--711.
+  Springer, 2016.
+
+\bibitem{karras2017progressive}
+Tero Karras, Timo Aila, Samuli Laine, and Jaakko Lehtinen.
+\newblock Progressive growing of gans for improved quality, stability, and
+  variation.
+\newblock {\em arXiv preprint arXiv:1710.10196}, 2017.
+
+\bibitem{kelly2017deep}
+Brendan Kelly, Thomas~P Matthews, and Mark~A Anastasio.
+\newblock Deep learning-guided image reconstruction from incomplete data.
+\newblock {\em arXiv preprint arXiv:1709.00584}, 2017.
+
+\bibitem{kingma2013auto}
+Diederik~P Kingma and Max Welling.
+\newblock Auto-encoding variational bayes.
+\newblock {\em arXiv preprint arXiv:1312.6114}, 2013.
+
+\bibitem{kohl2017adversarial}
+Simon Kohl, David Bonekamp, Heinz-Peter Schlemmer, Kaneschka Yaqubi, Markus
+  Hohenfellner, Boris Hadaschik, Jan-Philipp Radtke, and Klaus Maier-Hein.
+\newblock Adversarial networks for the detection of aggressive prostate cancer.
+\newblock {\em arXiv preprint arXiv:1702.08014}, 2017.
+
+\bibitem{ledig2016photo}
+Christian Ledig, Lucas Theis, Ferenc Husz{\'a}r, Jose Caballero, Andrew
+  Cunningham, Alejandro Acosta, Andrew Aitken, Alykhan Tejani, Johannes Totz,
+  Zehan Wang, et~al.
+\newblock Photo-realistic single image super-resolution using a generative
+  adversarial network.
+\newblock {\em arXiv preprint}, 2016.
+
+\bibitem{li2016rapid}
+Xiaodong Li, Shuyang Ling, Thomas Strohmer, and Ke~Wei.
+\newblock Rapid, robust, and reliable blind deconvolution via nonconvex
+  optimization.
+\newblock {\em arXiv preprint arXiv:1606.04933}, 2016.
+
+\bibitem{li2013sparse}
+Xiaodong Li and Vladislav Voroninski.
+\newblock Sparse signal recovery from quadratic measurements via convex
+  programming.
+\newblock {\em SIAM Journal on Mathematical Analysis}, 45(5):3019--3033, 2013.
+
+\bibitem{lipton2017precise}
+Zachary~C Lipton and Subarna Tripathi.
+\newblock Precise recovery of latent vectors from generative adversarial
+  networks.
+\newblock {\em arXiv preprint arXiv:1702.04782}, 2017.
+
+\bibitem{liu2017high}
+Yang Liu, Feng Li, Lei Xin, Jie Fu, and Puming Huang.
+\newblock High efficient optical remote sensing images acquisition for
+  nano-satellite: reconstruction algorithms.
+\newblock In {\em Image and Signal Processing for Remote Sensing XXIII}, volume
+  10427, page 104271Y. International Society for Optics and Photonics, 2017.
+
+\bibitem{lohit2017convolutional}
+Suhas Lohit, Kuldeep Kulkarni, Ronan Kerviche, Pavan Turaga, and Amit Ashok.
+\newblock Convolutional neural networks for non-iterative reconstruction of
+  compressively sensed images.
+\newblock {\em arXiv preprint arXiv:1708.04669}, 2017.
+
+\bibitem{lucas2018using}
+Alice Lucas, Michael Iliadis, Rafael Molina, and Aggelos~K Katsaggelos.
+\newblock Using deep neural networks for inverse problems in imaging: Beyond
+  analytical methods.
+\newblock {\em IEEE Signal Processing Magazine}, 35(1):20--36, 2018.
+
+\bibitem{MRM:MRM21391}
+Michael Lustig, David Donoho, and John~M. Pauly.
+\newblock Sparse mri: The application of compressed sensing for rapid mr
+  imaging.
+\newblock {\em Magnetic Resonance in Medicine}, 58(6):1182--1195, 2007.
+
+\bibitem{ma2017implicit}
+Cong Ma, Kaizheng Wang, Yuejie Chi, and Yuxin Chen.
+\newblock Implicit regularization in nonconvex statistical estimation: Gradient
+  descent converges linearly for phase retrieval, matrix completion and blind
+  deconvolution.
+\newblock {\em arXiv preprint arXiv:1711.10467}, 2017.
+
+\bibitem{mahapatra2017retinal}
+Dwarikanath Mahapatra.
+\newblock Retinal vasculature segmentation using local saliency maps and
+  generative adversarial networks for image super resolution.
+\newblock {\em arXiv preprint arXiv:1710.04783}, 2017.
+
+\bibitem{mahmood2017unsupervised}
+Faisal Mahmood, Richard Chen, and Nicholas~J Durr.
+\newblock Unsupervised reverse domain adaption for synthetic medical images via
+  adversarial training.
+\newblock {\em arXiv preprint arXiv:1711.06606}, 2017.
+
+\bibitem{Mallat}
+S.~Mallat.
+\newblock Group invariant scattering.
+\newblock {\em Comm. Pure Appl. Math.}, 65(10):1331–1398, 2012.
+
+\bibitem{mao2016image}
+Xiao-Jiao Mao, Chunhua Shen, and Yu-Bin Yang.
+\newblock Image restoration using convolutional auto-encoders with symmetric
+  skip connections. arxiv preprint.
+\newblock {\em arXiv preprint arXiv:1606.08921}, 2, 2016.
+
+\bibitem{mardani2017deep}
+Morteza Mardani, Enhao Gong, Joseph~Y Cheng, Shreyas Vasanawala, Greg
+  Zaharchuk, Marcus Alley, Neil Thakur, Song Han, William Dally, John~M Pauly,
+  et~al.
+\newblock Deep generative adversarial networks for compressed sensing automates
+  mri.
+\newblock {\em arXiv preprint arXiv:1706.00051}, 2017.
+
+\bibitem{mardani2017recurrent}
+Morteza Mardani, Hatef Monajemi, Vardan Papyan, Shreyas Vasanawala, David
+  Donoho, and John Pauly.
+\newblock Recurrent generative adversarial networks for proximal learning and
+  automated compressive image recovery.
+\newblock {\em arXiv preprint arXiv:1711.10046}, 2017.
+
+\bibitem{maunu2017well}
+Tyler Maunu, Teng Zhang, and Gilad Lerman.
+\newblock A well-tempered landscape for non-convex robust subspace recovery.
+\newblock {\em arXiv preprint arXiv:1706.03896}, 2017.
+
+\bibitem{moeskops2017adversarial}
+Pim Moeskops, Mitko Veta, Maxime~W Lafarge, Koen~AJ Eppenhof, and Josien~PW
+  Pluim.
+\newblock Adversarial training and dilated convolutions for brain mri
+  segmentation.
+\newblock In {\em Deep Learning in Medical Image Analysis and Multimodal
+  Learning for Clinical Decision Support}, pages 56--64. Springer, 2017.
+
+\bibitem{mousavi2017learning}
+Ali Mousavi and Richard~G Baraniuk.
+\newblock Learning to invert: Signal recovery via deep convolutional networks.
+\newblock In {\em Acoustics, Speech and Signal Processing (ICASSP), 2017 IEEE
+  International Conference on}, pages 2272--2276. IEEE, 2017.
+
+\bibitem{mousavi2015deep}
+Ali Mousavi, Ankit~B Patel, and Richard~G Baraniuk.
+\newblock A deep learning approach to structured signal recovery.
+\newblock In {\em Communication, Control, and Computing (Allerton), 2015 53rd
+  Annual Allerton Conference on}, pages 1336--1343. IEEE, 2015.
+
+\bibitem{Murty1987}
+Katta~G. Murty and Santosh~N. Kabadi.
+\newblock Some np-complete problems in quadratic and nonlinear programming.
+\newblock {\em Mathematical Programming}, 39(2):117--129, Jun 1987.
+
+\bibitem{nie2017medical}
+Dong Nie, Roger Trullo, Jun Lian, Caroline Petitjean, Su~Ruan, Qian Wang, and
+  Dinggang Shen.
+\newblock Medical image synthesis with context-aware generative adversarial
+  networks.
+\newblock In {\em International Conference on Medical Image Computing and
+  Computer-Assisted Intervention}, pages 417--425. Springer, 2017.
+
+\bibitem{oord2016pixel}
+Aaron van~den Oord, Nal Kalchbrenner, and Koray Kavukcuoglu.
+\newblock Pixel recurrent neural networks.
+\newblock {\em arXiv preprint arXiv:1601.06759}, 2016.
+
+\bibitem{quan2017compressed}
+Tran~Minh Quan, Thanh Nguyen-Duc, and Won-Ki Jeong.
+\newblock Compressed sensing mri reconstruction with cyclic loss in generative
+  adversarial networks.
+\newblock {\em arXiv preprint arXiv:1709.00753}, 2017.
+
+\bibitem{radford2015unsupervised}
+Alec Radford, Luke Metz, and Soumith Chintala.
+\newblock Unsupervised representation learning with deep convolutional
+  generative adversarial networks.
+\newblock {\em arXiv preprint arXiv:1511.06434}, 2015.
+
+\bibitem{rezende2014stochastic}
+Danilo~Jimenez Rezende, Shakir Mohamed, and Daan Wierstra.
+\newblock Stochastic backpropagation and approximate inference in deep
+  generative models.
+\newblock {\em arXiv preprint arXiv:1401.4082}, 2014.
+
+\bibitem{rippel2017real}
+Oren Rippel and Lubomir Bourdev.
+\newblock Real-time adaptive image compression.
+\newblock {\em arXiv preprint arXiv:1705.05823}, 2017.
+
+\bibitem{rivenson2017deep}
+Yair Rivenson, Zolt{\'a}n G{\"o}r{\"o}cs, Harun G{\"u}naydin, Yibo Zhang,
+  Hongda Wang, and Aydogan Ozcan.
+\newblock Deep learning microscopy.
+\newblock {\em Optica}, 4(11):1437--1443, 2017.
+
+\bibitem{sonderby2016amortised}
+Casper~Kaae S{\o}nderby, Jose Caballero, Lucas Theis, Wenzhe Shi, and Ferenc
+  Husz{\'a}r.
+\newblock Amortised map inference for image super-resolution.
+\newblock {\em arXiv preprint arXiv:1610.04490}, 2016.
+
+\bibitem{song2017pixeldefend}
+Yang Song, Taesup Kim, Sebastian Nowozin, Stefano Ermon, and Nate Kushman.
+\newblock Pixeldefend: Leveraging generative models to understand and defend
+  against adversarial examples.
+\newblock {\em arXiv preprint arXiv:1710.10766}, 2017.
+
+\bibitem{Simplicity}
+Jost~Tobias Springenberg, Alexey Dosovitskiy, Thomas Brox, and Martin~A.
+  Riedmiller.
+\newblock Striving for simplicity: The all convolutional net.
+\newblock {\em CoRR}, abs/1412.6806, 2014.
+
+\bibitem{WrightPR}
+Ju~Sun, Qing Qu, and John Wright.
+\newblock A geometric analysis of phase retrieval.
+\newblock {\em CoRR}, abs/1602.06664, 2016.
+
+\bibitem{szegedy2013intriguing}
+Christian Szegedy, Wojciech Zaremba, Ilya Sutskever, Joan Bruna, Dumitru Erhan,
+  Ian Goodfellow, and Rob Fergus.
+\newblock Intriguing properties of neural networks.
+\newblock {\em arXiv preprint arXiv:1312.6199}, 2013.
+
+\bibitem{velankar2009pdbe}
+Sameer Velankar, Christoph Best, B~Beuth, CH~Boutselakis, N~Cobley, AW~Sousa
+  Da~Silva, Dimitris Dimitropoulos, Adel Golovin, Miriam Hirshberg, Melford
+  John, et~al.
+\newblock Pdbe: protein data bank in europe.
+\newblock {\em Nucleic acids research}, 38(suppl\_1):D308--D317, 2009.
+
+\bibitem{V2012}
+R.~Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.C. Eldar and G.~Kutyniok, editors, {\em Compressed Sensing:
+  Theory and Applications}. Cambridge University Press, 2012.
+
+\bibitem{wendel1962problem}
+James~G Wendel.
+\newblock A problem in geometric probability.
+\newblock {\em Math. Scand}, 11:109--111, 1962.
+
+\bibitem{wolterink2017generative}
+Jelmer~M Wolterink, Tim Leiner, Max~A Viergever, and Ivana I{\v{s}}gum.
+\newblock Generative adversarial networks for noise reduction in low-dose ct.
+\newblock {\em IEEE transactions on medical imaging}, 36(12):2536--2545, 2017.
+
+\bibitem{xue2017segan}
+Yuan Xue, Tao Xu, Han Zhang, Rodney Long, and Xiaolei Huang.
+\newblock Segan: Adversarial network with multi-scale $ l\_1 $ loss for medical
+  image segmentation.
+\newblock {\em arXiv preprint arXiv:1706.01805}, 2017.
+
+\bibitem{yang2017dagan}
+Guang Yang, Simiao Yu, Hao Dong, Greg Slabaugh, Pier~Luigi Dragotti, Xujiong
+  Ye, Fangde Liu, Simon Arridge, Jennifer Keegan, Yike Guo, et~al.
+\newblock Dagan: Deep de-aliasing generative adversarial networks for fast
+  compressed sensing mri reconstruction.
+\newblock {\em IEEE Transactions on Medical Imaging}, 2017.
+
+\bibitem{yeh2017semantic}
+Raymond~A Yeh, Chen Chen, Teck~Yian Lim, Alexander~G Schwing, Mark
+  Hasegawa-Johnson, and Minh~N Do.
+\newblock Semantic image inpainting with deep generative models.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5485--5493, 2017.
+
+\bibitem{yuan2017adversarial}
+Xiaoyong Yuan, Pan He, Qile Zhu, Rajendra~Rana Bhat, and Xiaolin Li.
+\newblock Adversarial examples: Attacks and defenses for deep learning.
+\newblock {\em arXiv preprint arXiv:1712.07107}, 2017.
+
+\bibitem{zhu2016generative}
+Jun-Yan Zhu, Philipp Kr{\"a}henb{\"u}hl, Eli Shechtman, and Alexei~A Efros.
+\newblock Generative visual manipulation on the natural image manifold.
+\newblock In {\em European Conference on Computer Vision}, pages 597--613.
+  Springer, 2016.
+
+\end{thebibliography}

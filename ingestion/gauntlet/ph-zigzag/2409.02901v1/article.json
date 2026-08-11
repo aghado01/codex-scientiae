@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2409.02901v1",
+  "initialized_utc": "2026-08-11T08:30:37.077363Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "MAIN.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Topological Methods in Machine Learning: A Tutorial for Practitioners",
+        "authors_tex": [
+          "Baris Coskunuzer",
+          "C\\\"{u}neyt G\\\"{u}rcan Ak\\c{c}ora"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2409.02901v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 10247622,
+      "sha256": "bcb1ec3351c8abd1c96d1b1ba90d15a5985875044cb495745850676b366800cd",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2409.02901v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2409.02901v1.tar.gz",
+      "entrypoint": "MAIN.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 85,
+      "tex_files": 9,
+      "sha256": "20dbf7811f7cc1dc54b832c6014bfa6258b5749496907c08007888541d6496ef"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2409.02901v1.pdf",
+      "format": "application/pdf",
+      "bytes": 7043804,
+      "sha256": "aad70ea459ce7c395dda0770c5afdb8c8c0008d3156e9570d221364b4206608e"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:37.077363Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 87
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 85
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 9
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "MAIN.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

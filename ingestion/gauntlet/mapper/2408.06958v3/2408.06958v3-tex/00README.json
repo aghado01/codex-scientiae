@@ -1,0 +1,81 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "biblio.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/concentric_circles_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/mapper_concentric_circles_automato_15_intervals_0.3_overlap_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/mapper_concentric_circles_dbscan_15_intervals_0.3_overlap_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/mapper_concentric_circles_hdbscan_15_intervals_0.3_overlap_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/mapper_diabetes_automato_4_intervals_0.5_overlap_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/mapper_diabetes_dbscan_4_intervals_0.5_overlap_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/mapper_diabetes_hdbscan_4_intervals_0.5_overlap_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_dbscan_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_finch_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_hdbscan_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_linkage_average_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_linkage_complete_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_linkage_single_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_linkage_ward_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "svg-inkscape/summary_graph_fms_ttk_collapsed_benchmarks_without_noise_svg-raw.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tmlr.bst"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

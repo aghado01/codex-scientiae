@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2605.03266v1",
+  "initialized_utc": "2026-08-11T08:30:05.751358Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "manuscript.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Intrinsic effective sample size for manifold-valued Markov chain Monte Carlo via kernel discrepancy",
+        "authors_tex": [
+          "Kisung You"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 219,
+        "sha256": "617532b3e6913e02fae667c6759390dfa4031514d63891614b45a74f061bb96b"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2605.03266v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 259464,
+      "sha256": "5e1bd3c3854d65ee6aa60784eb243e7738d68f981dd9d03e1942d509a41966da",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2605.03266v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2605.03266v1.tar.gz",
+      "entrypoint": "manuscript.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 8,
+      "tex_files": 2,
+      "sha256": "bd0d2846e9eaf10421114eb17cb3500fdf828b39446b5cc19c073cc852340bcf"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2605.03266v1.pdf",
+      "format": "application/pdf",
+      "bytes": 444076,
+      "sha256": "5d896e4b8ec848df7d0f6eaefcc38b8bc6c2d532ad043f60a86a7e6566110a87"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:05.751358Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 9
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 8
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "manuscript.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

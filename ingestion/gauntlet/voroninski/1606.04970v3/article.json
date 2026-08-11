@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1606.04970v3",
+  "initialized_utc": "2026-08-11T08:30:52.381178Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "SDPlowrank.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "The non-convex Burer--Monteiro approach works\\\\on smooth semidefinite programs",
+        "authors_tex": [
+          "Nicolas Boumal$_\\star$ \\\\ Department of Mathematics \\\\ Princeton University \\\\ \\texttt{nboumal@math.princeton.edu} \\And Vladislav Voroninski$_\\star$ \\\\ Department of Mathematics \\\\ Massachusetts Institute of Technology \\\\ \\texttt{vvlad@math.mit.edu} \\And Afonso S.\\ Bandeira \\\\ Department of Mathematics and Center for Data Science \\\\ Courant Institute of Mathematical Sciences, New York University \\\\ \\texttt{bandeira@cims.nyu.edu}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1606.04970v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 50408,
+      "sha256": "def770d83efa798b3e047c33c89ae8a88a6f7760b061cba0fb12fc869101c97c",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1606.04970v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1606.04970v3.tar.gz",
+      "entrypoint": "SDPlowrank.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 5,
+      "tex_files": 3,
+      "sha256": "6a2273079cd5b3cbf063fe33cdb6d8ee037d6a3c747f7337eda54a3eb75643e5"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1606.04970v3.pdf",
+      "format": "application/pdf",
+      "bytes": 307374,
+      "sha256": "4204664d966734a51c02a9e2b8f5d25c5b6e26f41f003243993a1b3b371cf2dc"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:52.381178Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 5
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 5
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 3
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "SDPlowrank.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,669 @@
+\section{Mapper graphs as Metric Measure Spaces}\label{sec:mapper_mms}
+%\subsection{Mapper graphs as metric spaces} 
+
+
+Let $\sample_n= \{x_1,\dots,x_n\}\subset \man$ be an $n$-sample taken inside $\man$. In this section, we aim at turning the Mapper $\mapper$ built from $\sample_n$, and constructed using a function $f\colon\,\man\rightarrow\R$ and some cover of its image, as a metric measure space. 
+
+In this article, we restrict the focus to Mapper {\em graphs}, i.e., we only consider the $1$-skeleton of the Mapper complexes. 
+%$\mapper$ to be its associated $1-$dimensional simplicial complex, i.e., 
+An element $\simp$ of $\mapper$ is thus either a $0$-dimensional simplex (vertex) or a $1$-dimensional simplex (edge). See Section~\ref{subsec:reeb_mapper_def}. 
+
+The Mapper graph $\mapper$ can be embedded in $\comp(\man)\cup\{\varnothing\}$ in the following way:
+
+ \begin{itemize}
+     \item A vertex $\simp_0$ associated to a cluster $\cluster_{j,k}$ is represented by $$\cluster_{j,k}\setminus \left(\bigcup_{\substack{j'\neq j \\k'\neq k}}\cluster_{j',k'}\right),$$
+     \item An edge $\simp_1$ associated to two vertices, and hence to the corresponding two clusters $\cluster_{j,k}$ and $\cluster_{j',k'}$ is represented by $$\cluster_{j,k}\cap \cluster_{j',k'}\setminus\left(\bigcup_{\substack{j''\neq j,j' \\k''\neq k,k'}}\cluster_{j'',k''}\right).$$
+ \end{itemize}
+ 
+The elements of $\mapper$ belong to the space of all subsets of $\sample_n$, and are therefore compact subsets of $\spa$. It is possible for some simplex to have the empty set $\varnothing$ to be its representative, e.g., when a cluster is included in its intersection with another cluster. 
+Moreover, we chose the representatives of the simplices in $\mapper$ so as to have an element $x_i$ of $\spa_n$ be in one and only one $\simp\in\mapper$. This allows to define a map
+ $$\DD\colon\sample_n\longrightarrow\mapper,$$
+ that associates $x_i$ to the unique simplex that contains it. 
+Using the convention
+ $ \haus\left(A,\varnothing\right)=\diam\left(\man\right) $ 
+ for every $A\subseteq\man$, it is clear that $\left(\mapper,\haus\right)$ is a metric space.
+
+  
+ \medskip 
+ 
+ %\subsection{Measures on Mapper graphs}
+ Any measure on $\sample_n$, defined as a mixture of Dirac measures on $\man$ centered on each $x_i$, can be pushed forward onto $\mapper$ using $\DD$. For example, denoting the empirical measure by $$\diracn=\frac{1}{n}\sum_{i=1}^n \dirac_{x_i},$$
+% where $\dirac_{x_i}$ is the Dirac measure centered at $x_i$,
+for some points $x_i$ sampled according to a measure $\mes$ on $\man$, we have that $(\mapper,\haus,\diracn\circ\DD^{-1})$ is a metric measure space.
+%
+Notice that the support of $\diracn\circ\DD^{-1}$ is 
+ $\mapper\setminus \preim{\DD}{\left\{\varnothing\right\}}.$ 
+
+\section{A bound on the Gromov-Wasserstein distance between the Reeb graph and the Mapper graph}\label{sec:mapper}
+
+
+
+Let $\man$ be a compact connected Riemannian manifold of dimension $d$. Let  $f\colon\man\rightarrow\R$ be a Morse function and $\mes$ be a Borel probability measure on $\man$.
+
+We make two assumptions:
+
+ \begin{hypothesis} \label{hypRicci}
+    %One major geometric assumption on $\man$ which concerns its Ricci curvature: 
+    The Ricci curvature $\ricci$ of $\man$ is lower bounded: $$\ricci\geq(d-1)\cdot k  $$
+    where $k \in \R$.
+\end{hypothesis}
+
+\begin{hypothesis}\label{hypdensity}
+	%A second assumption concerning $\mes$: 
+	The measure $\mes$ is absolutely continuous with respect to the volume measure $\vol$ and admits an upper bounded density, i.e., $$\sup\frac{d\mes}{d\vol}<+\infty.$$ Furthermore, we assume that $\mes$ is fully supported on $\man$.  
+\end{hypothesis}
+
+Note that when $\man$ is a submanifold of an Euclidean space, Assumption~\ref{hypRicci} can be satisfied by assuming that the {\em reach} of $\man$, denoted by $\tau_{\man}$, is positive: $\tau_{\man}>0$ (see Proposition A.1. in~\cite{aamari2019estimating}). Assumptions on the reach of submanifolds are popular in literature (see, e.g., \cite{niyogi2008finding,burgisser2018computing}). 
+
+Let $\sample_n=\{x_1,...,x_n\}$ be an $n$-sample taken in $\man$ with respect to $\mes$ and let $\diracn=\frac{1}{n}\sum_{i=1}^n \dirac_{x_i}$ be the associated empirical measure. In this section, we compare the Reeb graph $\Reeb:=\reeb_f(\man)$ and the Mapper $\mapper$ built on $\sample_n$ according to $\gromov$ metrics.
+
+
+\subsection{Main result}
+%\bert{Utiliser le terme {\it gomic} comme Mathieu \cite{carriere2018structure} ?}
+First, we specify the Mapper parameters that will be used in our results.
+%, and in particular the covering used.
+We will assume a {\em homogeneous covering of resolution} $r\in\N$, i.e., the intervals $\mathbb{I}=\{\interv_1,...,\interv_r\}$ that cover the range of the filter $f(\sample_n)$ in the Mapper are all of the same length and consecutive intervals have a percentage $0<g<1/2$ of their length in common. More specifically, we take $\interv_j=[a_j,b_j]$ where:
+$$a_j=\min f+(j-1)\cdot\frac{\max f-\min f}{r}-\frac{g}{2-2\cdot g}\cdot\frac{\max f - \min f}{r},$$
+$$b_j=\min f+j\cdot\frac{\max f-\min f}{r}+\frac{g}{2-2\cdot g}\cdot\frac{\max f - \min f}{r}.$$
+
+Now, given a set of intervals $\mathbb{I}=\{\interv_1,...,\interv_r\}$ used to cover the range of the filter $f(\sample_n)$ in the Mapper, we define the {\em refinement} of $\mathbb{I}$ as:
+$$\mathbb{J}=\left\{\interv_1\setminus\interv_2,\interv_1\cap\interv_2,\interv_2\setminus(\interv_1\cup\interv_3),\interv_2\cap\interv_3,\dots\right\}.$$
+
+The family $\mathbb{J}$ is a refinement of $\mathbb{I}$ in the sense that it corresponds to a collection of elementary blocks of $\mathbb{I}$. Notice also that two elements of $\mathbb{J}$ intersect in at most one point. 
+
+We call {\em maximal width} $\coverwidth$ of the cover $\mathbb{I}$ the maximal length of an element in $\mathbb{J}$. Looking at the definition of $\interv_j=[a_j,b_j]$ above, we see that
+$$\coverwidth=\frac{\max f - \min f}{r}.$$ 
+Similarly, the {\em minimal width} of an element in $\mathbb{J}$ is given by 
+ $\frac{g}{1-g}\cdot\coverwidth.$ 
+
+We now state the main theorem of this article. %is the following Theorem. 
+Its proof, as well as explicit constants, are provided in Proposition~\ref{prop:reeb_mapper}, Corollary~\ref{cor:estim} and Proposition~\ref{prop:apprx}.
+
+\begin{theorem}\label{thm:main_result}
+Under %the assumptions specified above, in particular under 
+Assumptions~\ref{hypRicci} and~\ref{hypdensity}, and using the definitions above, 
+%and for $\mapper$ defined for the covering introduced above, 
+consider the two metric measure spaces $(\overline{\reeb},\haus,\mes\circ\pi^{-1})$ and $(\mapper,\haus,\diracn\circ\DD^{-1})$ corresponding to the Reeb graph and to the Mapper graph respectively.  
+For any $\alpha>0$, $p \geq 1$ and a resolution $r(n)$ of the Mapper satisfying $r(n)\underset{n\rightarrow\infty}{\sim}n^{\frac{1}{d+\alpha}}$, we then have, for any large enough sample size $n$:
+ $$\mathbb{E}\left(\gromov_p(\overline{\reeb},\mapper)\right)\lesssim n^{-\frac{\nu}{d+\alpha}} $$
+ where $$\nu=\min\left\{\frac{1}{2},\frac{d}{p(d+1)}\right\}.$$ 
+\end{theorem}
+
+\begin{remark}We give a discussion on the optimality of this bound. When $\frac{d}{p(d+1)}\leq\frac{1}{2}$, the upper bound given in Theorem~\ref{thm:main_result} is achieved by the bound on $\max_{\mathrm{J}\in\mathbb{J}}\vol\left( \preim{f}{\mathrm{J}}\right)$ given in Lemma~\ref{lem:meas}, see the proofs of Proposition~\ref{prop:apprx} and Theorem~\ref{thm:main_result} for details. Note moreover that this upper bound  is sharp. To see this, consider for instance the case where $\man$ is the graph of the function $x\mapsto x^2$ over the segment $[-1,1]$: $\man=\{(x,x^2),\,x\in[-1,1]\}$, with the metric $\g$ being induced by the Euclidean metric in $\R^2$. We are interested in $\vol\left( \preim{f}{[0,\coverwidth]}\right)$. We have:
+\begin{align*}
+\vol\left( \preim{f}{[0,\coverwidth]}\right)&=\int_{-\sqrt{\coverwidth}}^{\sqrt{\coverwidth}}\sqrt{1+4t^2}\,dt\\
+&=\frac{1}{4}\left[t\sqrt{1+t^2}+\log\left(t+\sqrt{1+t^2}\right)\right]^{2\sqrt{\coverwidth}}_{-2\sqrt{\coverwidth}}\\
+&\underset{r\rightarrow\infty}{\sim}2\sqrt{\coverwidth}=2\coverwidth^{\frac{d}{d+1}}.
+\end{align*}
+Note that in this example $\man$ has a boundary. We can circumvent this if needed by, for example, attaching the two points in the boundary in a smooth manner. This will not change our argument since $\preim{f}{[0,\coverwidth]}$ is located away from the boundary.
+\end{remark}
+
+
+\begin{proof}
+From Proposition~\ref{prop:reeb_mapper}, we have the decomposition
+$$\gromov_p(\overline{\reeb},\mapper)\leq \estim_n+\appr_n.$$
+
+On one hand, since $\frac{d+\alpha}{\nu}>\max\{2d,2p\}$, Corollary~\ref{cor:estim} shows that
+$$\mathbb{E}\left(\estim_n\right)\lesssim n^{-\frac{\nu}{d+\alpha}}.$$
+
+On the other hand, Proposition~\ref{prop:apprx} gives
+$$\mathbb{E}\left(\appr_n^p\right)\leq \left(\lambda+\xi\cdot\sqrt{\coverwidth}\right)^p
+    +\tilde{\eta}\cdot\coverwidth^{\frac{d}{d+1}}+\frac{\zeta}{\lambda^d}\cdot\exp\left(\frac{-na\lambda^d}{2^d}\right),$$
+    for every $\lambda>0$ such that
+$$\omega_f\left(\lambda\right)\leq\frac{g}{1-g}\cdot\frac{\coverwidth}{4}.$$
+where the constants $\xi$, $\tilde{\eta}$ and $\zeta$ are given in Proposition~\ref{prop:apprx}. The third term, that is given by 
+$$\frac{\zeta}{\lambda^d}\cdot\exp\left(\frac{-na\lambda^d}{2^d}\right),$$
+converges to zero for   $\lambda(n) \gtrsim n^{-\frac{1}{d+\alpha}}$.
+Furthermore, since $f$ is smooth on a compact manifold, it is $L$-Lipschitz for some $L>0$. 
+In Proposition~\ref{prop:apprx}, the assumption
+$$\omega_f\left(\lambda\right)\leq\frac{g}{1-g}\cdot\frac{\coverwidth}{4},$$
+where $\omega_f$ is the modulus of continuity of $f$, can be satisfied by choosing
+$$\lambda=\frac{g}{1-g}\cdot\frac{\coverwidth}{4L}.$$
+Therefore, in order to make the term above converge to zero (exponentially fast), a sufficient condition is
+$$\coverwidth(n)\underset{n\rightarrow\infty}{\sim} n^{-\frac{1}{d+\alpha}},$$
+or equivalently
+$$r(n)\underset{n\rightarrow\infty}{\sim} n^{\frac{1}{d+\alpha}}.$$
+Moreover, the two other terms in Proposition~\ref{prop:apprx} are dominated by $\coverwidth^{p\nu}$.
+As such, 
+$\mathbb{E}\left(\appr_n^p\right) \lesssim n^{-\frac{p\nu}{d+\alpha}},$
+and therefore
+$$\mathbb{E}\left(\appr_n\right)\lesssim n^{-\frac{\nu}{d+\alpha}}$$
+and finally
+$$\mathbb{E}\left(\gromov_p(\overline{\reeb},\mapper)\right)\lesssim n^{-\frac{\nu}{d+\alpha}}.$$
+\end{proof}
+
+
+\subsection{Approximation-Estimation Decomposition}
+\begin{proposition}\label{prop:reeb_mapper}
+ Consider the two metric measure spaces $(\overline{\reeb},\haus,\mes\circ\pi^{-1})$ and $(\mapper,\haus,\diracn\circ\DD^{-1})$ corresponding to the Reeb graph and to the Mapper graph respectively. We have:
+ %
+ $$\gromov_p(\overline{\reeb},\mapper)\leq \wasser_p(\mes\circ\pi^{-1},\diracn\circ\pi^{-1})+\left(\frac{1}{n}\sum_{i=1}^n\haus([x_i]_{\sim_f},\DD(x_i))^p\right)^{\frac{1}{p}}.$$
+ %
+ \end{proposition}
+ 
+ \begin{proof}
+ Consider the metric measure space $\overline{\reeb}_n=(\overline{\reeb},\haus,\diracn\circ\pi^{-1})$ obtained with the empirical measure on the Reeb graph.
+ 
+ On one hand,
+ %
+$$\gromov_p(\overline{\reeb},\overline{\reeb}_n)\leq\wasser_p(\mes\circ\pi^{-1},\diracn\circ\pi^{-1}).$$
+%
+On the other hand, 
+%
+$$\gromov_p^p(\overline{\reeb}_n,\mapper)\leq \inf_{\eta}\int_{\overline{\reeb}\times\mapper}\haus(a,\simp)^p\,d\eta(a,\simp),$$
+%
+ where the infimum is taken over all coupling measures $\eta$ on $\overline{\reeb}\times\mapper$ that have marginals $\diracn\circ\pi^{-1}$ and $\diracn\circ\DD^{-1}$. Indeed, the Hausdorff distance $\haus$ can be defined on $\overline{\reeb}\sqcup\mapper$ via its inclusion in $\comp(\man)$, and is thus a metric coupling of $\haus$ restricted to $\overline{\reeb}$ and $\haus$ restricted to $\mapper$. Furthermore, consider the map
+ \begin{align*}
+     \phi\colon\sample_n&\longrightarrow\overline{\reeb}\times\mapper\\
+     x_i&\longmapsto([x_i]_{\sim_f},\DD(x_i))
+ \end{align*}
+ It is clear that $\diracn\circ\phi^{-1}$ is an example of such a coupling measure $\eta$. Hence,
+ \begin{align*}
+    \gromov_p^p(\overline{\reeb}_n,\mapper)&\leq \int_{\overline{\reeb}\times\mapper}\haus(a,\simp)^p\,d\diracn\circ\phi^{-1}(a,\simp) \\
+    &=\int_{\sample_n}\haus([x]_{\sim_f},\DD(x))^p\,d\diracn(x)\\
+    &=\frac{1}{n}\sum_{i=1}^n\haus([x_i]_{\sim_f},\DD(x_i))^p.
+ \end{align*}
+Finally,
+  \begin{align*}
+    \gromov_p(\overline{\reeb},\mapper)&\leq \gromov_p(\overline{\reeb},\overline{\reeb}_n)+\gromov_p(\overline{\reeb}_n,\mapper)\\
+    &\leq\wasser_p(\mes\circ\pi^{-1},\diracn\circ\pi^{-1})+\left(\frac{1}{n}\sum_{i=1}^n\haus([x_i]_{\sim_f},\DD(x_i))^p\right)^{\frac{1}{p}}.
+ \end{align*}
+ \end{proof}
+  The bound given in Proposition~\ref{prop:reeb_mapper} contains two terms:
+ \begin{enumerate}
+     \item $\estim_n=\wasser_p(\mes\circ\pi^{-1},\diracn\circ\pi^{-1})$, and
+     \item $\appr_n=\left(\frac{1}{n}\sum_{i=1}^n\haus([x_i]_{\sim_f},\DD(x_i))^p\right)^{\frac{1}{p}}$.
+ \end{enumerate}
+ 
+The term $\estim_n$ can be interpreted as an estimation error. It measures how representative the discrete measure associated to the $n$-sample $\sample_n$ is of the measure $\mes$, in terms of the distance in the Reeb graph. The term $\appr_n$ can be interpreted as an approximation error. It measures how well the Mapper graph captures the same stratification than the one in the Reeb graph. It is small if, for most of the sample points $x_i$, the simplex containing $x_i$ is close (in Hausdorff distance) from the Reeb graph element that contains $x_i$.
+
+ \subsection{The estimation error \texorpdfstring{$\estim_n$}{TEXT} }
+ 
+ \subsubsection{Covering numbers for Reeb graphs}
+ 
+ Following the works of \cite{BoissardLeGouic2014} and \cite{weed2019sharp}, in this section, we aim at bounding the estimation error $\estim_n$ using the $\eps$-covering number of $(\reeb,\haus)$.
+ 
+ \begin{definition}
+ Given a metric space $\spa$, $S\subseteq\spa$ and $\eps>0$, the $\eps$-covering number of $S$, $\covn_\eps(S)$, is the minimum integer $m$ such that there exist balls $B_1,\dots,B_m$ in $\spa$ of radius $\eps$ such that $S\subseteq\bigcup_{i=1}^m B_i$.
+ \end{definition}
+ 
+ Note that we have $\covn_\eps(\reeb)=\covn_\eps(\bar \reeb)$, since $\reeb\subseteq\bar\reeb$ and any $\eps$-covering of $\reeb$ is also an $\eps$-covering of $\bar\reeb$, as $\bar\reeb$ is the minimal closed subset that contains $\reeb$.
+ 
+ \begin{proposition}\label{prop:covn}
+There exists $\eps'>0$ such that for every $\eps\leq\eps'$ we have
+  $$\covn_\eps(\reeb)\leq N_c+\left(\frac{\beta}{\eps}\right)^{2d},$$
+  where $N_c$ is the number of elements in $\reeb$ associated to critical values, $d$ is the dimension of $\man$ and $\beta$ is a constant depending on $f$ and $\man$. 
+%   and $\gamma$ is a function satisfying:
+%   $$\gamma(\epsilon)=2\epsilon+\underset{\epsilon\rightarrow0}{o}(\epsilon).$$
+ \end{proposition}
+ 
+  \begin{proof}
+ First, let $\eps>0$ and  take $N_c$ balls $\ball_1,\dots,\ball_{N_c}\subseteq \reeb$ of radius $\eps$, one around each element of $\reeb$ associated to a critical value. %Denote $\reeb_\epsilon$ as $\reeb\setminus\bigcup_{i=1}^{N_c}B_i$.\\\\
+
+ Second, let $\{v_1,\dots,v_{k+1}\}$ be the critical values of $f$, and let
+ $$\man_\eps :=\man\setminus \bigcup_{c \in \critic(f)}\ball\left(c,\frac{\eps}{4\left|\critic(f)\right|}\right).$$
+ For $1\leq j\leq k$, let the sets $\{S_{j,l}\}_{j,l}$ 
+ %where the $\{S_{j,l}\}_l$ are 
+ denote the connected components of $\man\cap \preim{f}{(v_j,v_{j+1})}$. Notice that there are no critical points in any of the $S_{j,l}$.
+ 
+ We start with the next technical result that connect balls of $(\man,d)$ with those of $(\reeb,\haus)$.
+ 
+ \begin{assertion*}
+ For every $\eps>0$, every $(j,l)$ and every $x\in S_{j,l}$:
+ $$\ball\left(x,\frac{\eps\cdot \inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}{2\sup_{p\in\man}\Vert\nabla f(p)\Vert}\right)\cap S_{j,l}\subseteq \preim{\pi}{\ball\left([x]_{\sim_f},\eps\right)}.$$
+ \end{assertion*}
+ 
+ \begin{proof}
+ Let $y\in \ball\left(x,\frac{\eps\cdot \inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}{2\sup_{p\in\man}\Vert\nabla f(p)\Vert}\right)\cap S_{j,l}$. W.l.o.g., we assume that $f(y)>f(x)$.
+ 
+From Lemma~\ref{lem:flow}, we can introduce the gradient flow $(\psi_t)_t$ %associated to the gradient 
+of $f$, such that  $\psi_{f(y)-f(x)}$  is a diffeomorphism between $\preim{f}{\{f(x)\}}$ and $\preim{f}{\{f(y)\}}$. Moreover, since $x$ and $y$ are both in $S_{j,l}$, then $\psi_{f(y)-f(x)}$ is in particular a diffeomorphism between $[x]_{\sim_f}$ and $[y]_{\sim_f}$. Thus, for any point $p$ in $[x]_{\sim_f}$, there exists a point $q$ in $[y]_{\sim_f}$ (and conversely) such that the curve
+ \begin{align*}
+ \gamma\colon[0,f(y)-f(x)]&\longrightarrow \man\\
+ u&\longmapsto\psi_{u+f(x)}(p)
+ \end{align*}
+connect $p = \gamma(0)$ to $q := \gamma(f(y)-f(x))$.
+
+% Since $x$ and $y$ are in $S_{j,l}$, 
+% and that there are no critical points in $S_{j,l}$, we can use the flow $(\psi_t)_t$ associated to the gradient of $f$ (see Lemma~\ref{lem:flow}) to send any point $p$ in $[x]$ to a point $q$ in $[y]$ (and conversely) using the curve:
+% \begin{align*}
+% \gamma\colon[0,f(y)-f(x)]&\longrightarrow \man\\
+% u&\longmapsto\psi_u(p)
+% \end{align*}
+%where $\gamma(0)=p$ and $\gamma(f(y)-f(x))=q$.\\
+Now, for every $c\in\critic(f)$, if $\gamma$ enters $\ball\left(c,\frac{\eps}{4\left|\critic(f)\right|}\right)$ consider 
+$$u^c_0=\inf\left\{u\in[0,f(y)-f(x)],\,\gamma(u)\in \ball\left(c,\frac{\eps}{4\left|\critic(f)\right|}\right)\right\},$$
+and 
+$$u^c_1=\sup\left\{u\in[0,f(y)-f(x)],\,\gamma(u)\in \ball\left(c,\frac{\eps}{4\left|\critic(f)\right|}\right)\right\}.$$
+Otherwise take $u^c_0=u^c_1=0$.
+Notice that
+$$\dis(\gamma(u^c_0),\gamma(u^c_1))\leq \frac{\eps}{2\left|\critic(f)\right|}.$$
+Denoting
+ $$\mathcal{U}=[0,f(y)-f(x)]\setminus\bigcup_{c \in \critic(f)}[u^c_0,u^c_1],$$
+ we have 
+ $$\gamma\left(\mathcal{U}\right)\in\man_\eps$$
+ Furthermore:
+\begin{align*}
+\dis(p,q)&\leq\int_{u\in \mathcal{U}}\left\Vert\frac{d\psi_{u+f(x)}(p)}{du}\right\Vert\,du + \sum_{c \in \critic(f)} \dis(\gamma(u^c_0),\gamma(u^c_1))\\
+&\leq\int_{u\in \mathcal{U}}\frac{du}{\Vert\nabla f(\psi_{u+f(x)}(p))\Vert} + \sum_{c \in \critic(f)} \dis(\gamma(u^c_0),\gamma(u^c_1))\\
+&\leq\frac{f(y)-f(x)}{\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}+ \sum_{c \in \critic(f)} \frac{\eps}{2\left|\critic(f)\right|}\\
+&\leq\frac{\dis(x,y)\cdot \sup_{p\in\man}\Vert\nabla f(p)\Vert}{\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}+\frac{\eps}{2}\\
+&\leq\eps
+\end{align*}
+ As such, $\haus([x]_{\sim_f},[y]_{\sim_f})\leq\eps$.
+ \end{proof}
+ 
+ Using the previous assertion, we will bound the $\eps$-covering number of $\reeb$.
+ 
+Let $e=\frac{\eps\cdot \inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}{2\sup_{p\in\man}\Vert\nabla f(p)\Vert}$ and consider minimal $e$-coverings of each $S_{j,l}$.
+%
+Now, for every $x$ such that $f(x)$ is not a critical value, $x$ is in one of the $S_{j,l}$. As such, it is in one of the balls of radius $e$ that cover $S_{j,l}$, centered, say, on $x_i$. Accordingly, by the previous assertion $[x]_{\sim_f}\in\ball\left([x_i]_{\sim_f},\eps\right)$.
+
+We proved that
+
+$$\covn_\eps\left(\reeb\right)\leq N_c+\sum_{j,l}\covn_e\left(S_{j,l}\right).$$
+ 
+ Fix one of the $S_{j,l}$. We now bound $\covn_e\left(S_{j,l}\right)$. If $\{\ball(x_i,e)\}_i$ is a minimal covering, the balls $\{\ball(x_i,e/2)\}_i$ are disjoint. Hence, %\bert{def du volume quelque part ?}
+ $$\vol\left(\bigcup_{i}\ball(x_i,e/2)\right)=\sum_{i}\vol\left(\ball(x_i,e/2)\right).$$
+Also, %\bert{intercepter avec $M$ ? On devrait plutot se ramener à $S_{j,l}$ pour éviter de faire sortir le cardinal $\left|\{S_{j,l}\}_{j,l}\right|$ à la fin}
+$$\bigcup_{i}\ball(x_i,e/2)\subseteq \man,$$
+
+and as such
+$$\sum_{i}\frac{\vol\left(\ball(x_i,e/2)\right)}{\vol\left(\man\right)}\leq 1.$$
+We now use Theorem~\ref{thm:bishop_gromov} since we assumed that the Ricci curvature of $\man$ verifies $\ricci\geq(d-1)\cdot k$. We have:
+
+$$\frac{\vol\left(\ball(x_i,e/2)\right)}{v(d,k,e/2)}\geq\frac{\vol\left(\man\right)}{v(d,k,\diam(\man))},$$
+and as such
+
+$$\sum_i \frac{v(d,k,e/2)}{v(d,k,\diam(\man))}\leq\sum_{i}\frac{\vol\left(\ball(x_i,e/2)\right)}{\vol\left(\man\right)}.$$
+Hence,
+
+$$\covn_e\left(S_{j,l}\right)\leq\frac{v(d,k,\diam(\man))}{v(d,k,e/2)}.$$
+
+Looking at Proposition~\ref{prop:geo_vol}, we know that 
+$$v(d,k,e/2)\underset{e\rightarrow0}{\sim}\alpha_d\cdot\frac{e^d}{2^d},$$
+where $\alpha_d$ is the volume of the unit ball in $\mathbb{R}^d$.
+For every small enough $e$, and hence small enough $\epsilon$, we have
+$$v(d,k,e/2)\geq \frac{\alpha_d}{2}\cdot \frac{e^d}{2^d}.$$
+
+We conclude that
+$$\covn_e\left(S_{j,l}\right)\leq \frac{2^{d+1}\cdot v(d,k,\diam(\man))}{\alpha_d\cdot e^d}.$$
+Accordingly
+$$\covn_\epsilon(S)\leq N_c+\left(\frac{\Tilde{\beta}}{\eps\cdot\Gamma(\eps)}\right)^d,$$
+where:
+\begin{align*}
+    \Tilde{\beta}&=\left(\frac{2\left|\{S_{j,l}\}_{j,l}\right|\cdot v(d,k,\diam(\man))}{\alpha_d}\right)^{\frac{1}{d}}\cdot4\sup_{p\in\man}\Vert\nabla f(p)\Vert,\\
+    \Gamma(\eps)&=\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert.
+\end{align*}
+
+
+It only remains now to investigate the behavior of $\Gamma(\eps)$ when $\eps\rightarrow 0$.
+
+For $\eps$ small enough, $\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert$ is reached in a neighborhood of a critical point $c$, at a point $p$ such that
+$$\dis(p,c)\geq\frac{\eps}{4\left|\critic(f)\right|}.$$
+
+ Now, writing $f$ inside a Morse coordinate neighborhood $U\subseteq\man$ centered at $c$ (see Lemma~\ref{lem:morse}) gives:\\
+ $$\sqrt{\sum_{i=1}^d\frac{\partial f(p)^2}{\partial x_i}}=2\sqrt{\sum_{i=1}^d x_i^2},$$
+ 
+ where $x(p)=(x_1,...,x_d)$ is the representation of the point $p\in U$ in local coordinates.\\
+Proposition~\ref{prop:grad} gives:
+$$\Vert \nabla f(p) \Vert\geq \frac{1}{\mu(p)}\cdot \sqrt{\sum_{i=1}^d\frac{\partial f(p)^2}{\partial x_i}},$$
+
+with $\mu(p)=\max\{\sqrt{\rho},\, \rho\in\mathrm{Sp(G)}\}$ where $\mathrm{Sp(G)}$ is the spectrum of the metric tensor $\G(p)=\left[\g(\partial_i,\partial_j)\right]_{i,j}$. The function $\mu$ is continuous and $\mu(p)\rightarrow\mu(c)<\infty$ as $p\rightarrow c$. Taking $\mu_0=\sup \mu(p)$ in a small neighborhood of $c$, we have $\mu_0<\infty$ and 
+$$\Vert \nabla f(p) \Vert\geq \frac{1}{\mu_0}\cdot \sqrt{\sum_{i=1}^d\frac{\partial f(p)^2}{\partial x_i}},$$
+ 
+Moreover, Proposition~\ref{prop:dis_equiv} shows that:
+$$\dis_0(p,c)=\sqrt{\sum_{i=1}^d x_i^2}\geq \frac{1}{\mu_0} \cdot \dis(p,c),$$
+for small enough $\eps$. Hence,
+$$\Vert \nabla f(p) \Vert \geq \frac{2}{\mu_0^2}\cdot \frac{\eps}{4\left|\critic(f)\right|}.$$
+
+
+
+Finally,
+$$\covn_\eps(\reeb)\leq N_c+\left(\frac{\beta}{\eps}\right)^{2d},$$
+where 
+$$\beta=\left(2\Tilde{\beta}\cdot \mu_0^2\cdot\left|\critic(f)\right| \right)^{\frac{1}{2}}$$
+
+ \end{proof}
+ 
+\subsubsection{Convergence rate for the estimation error} 
+We first restate Proposition 5. from~\cite{weed2019sharp}.
+\begin{proposition}\label{prop:weed}
+Let $(\spa,d)$ be a Polish metric space with $\diam(\spa)\leq 1$, $\mes$ be a probability measure on $\spa$ and $\diracn$ be an empirical measure associated to a random sample $\sample_n$ taken from $\mes$. \\
+Let $p\in[1,\infty)$. Suppose there exists $\eps'>0$ and $s>2p$ such that for all $\eps\leq\eps'$
+$$-\frac{\log \covn_{\eps,s}}{\log\eps}\leq s,$$
+ where $$\covn_{\eps,s}=\inf\left\{\covn_\eps(B)\, ,\,\mes(B)\geq 1-\eps^{\frac{sp}{s-2p}}\right\}.$$
+ Then,
+ $$\wasser_p^p(\mes,\diracn)\leq C_1'n^{-\frac{p}{s}}+C_2'n^{-\frac{1}{2}},$$
+ where 
+ $$C_1'=3^{\frac{3sp}{s-2p}+1}\left(\frac{1}{3^{\frac{s}{2}-p}-1}+3\right),$$
+ and
+ $$C_2'=\left(27/\eps'\right)^{\frac{s}{2}}.$$
+
+\end{proposition}
+
+We now apply Proposition~\ref{prop:weed} to bound the estimation error $\estim_n$, using our asymptotic control over the covering number of $\reeb$ in Proposition~\ref{prop:covn}.
+
+ \begin{corollary}\label{cor:estim}
+For every $s>\max(2d,2p)$, we have
+ $$\mathbb{E}\left(\estim_n^p\right)\leq C_1n^{-\frac{p}{s}}+C_2n^{-\frac{1}{2}},$$
+ where 
+ $$C_1=\diam\left(\man\right)^p\cdot3^{\frac{3sp}{s-2p}+1}\left(\frac{1}{3^{\frac{s}{2}-p}-1}+3\right),$$
+ $$C_2=\diam\left(\man\right)^p\cdot\left(27/\eps'\right)^{\frac{s}{2}},$$
+ and $\eps'>0$.
+ \end{corollary}
+ \begin{proof}
+ We have $\estim_n=\wasser_p(\mes\circ\pi^{-1},\diracn\circ\pi^{-1})$. Moreover, $\diracn\circ\pi^{-1}$ is an empirical measure associated to $\mes\circ\pi^{-1}$, since for every Borel subset $A$ of $\overline{\reeb}$:
+ \begin{align*}
+     \diracn\circ\pi^{-1}(A)&=\frac{1}{n}\sum_{i=1}^n\ind_{x_i\in\pi^{-1}(A)} \\
+     &=\frac{1}{n}\sum_{i=1}^n\ind_{[x_i]_{\sim_f}\in A},
+ \end{align*}
+ and 
+ $$[x_i]_{\sim_f}\overset{\mathrm{iid}}{\sim}\mes\circ\pi^{-1},$$
+ because 
+  \begin{align*}
+     \mathbb{P}([x_i]_{\sim_f}\in A)&=\mathbb{P}(x_i\in \pi^{-1}(A)) \\
+     &=\mes\circ\pi^{-1}(A),
+ \end{align*}
+ where we used that $\diracn$ is an empirical measure associated to $\mes$.
+ 
+In~\cite{weed2019sharp}, the metric spaces $\spa$ are assumed to verify $\diam(\spa)\leq 1$. This can be achieved in our case by considering a normalized version of $\haus$ in $\bar \reeb$, defined as $\haus/\diam(\man)$. Notice that covering numbers $\covn'_\eps(\cdot)$ of this normalized space satisfy
+$$\covn'_\eps(\cdot)=\covn_{(\diam(\man)\cdot\eps)}(\cdot).$$
+Moreover, the Wasserstein distance $\wasser'_p$ in the normalized space satisfies:
+$$\wasser'_p(\cdot,\cdot)=\frac{1}{\diam(\man)}\wasser_p(\cdot,\cdot).$$
+Now, we can use Proposition 5. in~\cite{weed2019sharp} to prove our result. The only assumption made in this proposition is that, for any small enough $\eps$ and $s>2p$: 
+ $$-\frac{\log \covn'_{\eps,s}}{\log\eps}\leq s,$$
+ where $$\covn'_{\eps,s}=\inf\left\{\covn'_\eps(B)\, ,\,\mes\circ\pi^{-1}(B)\geq 1-\eps^{\frac{sp}{s-2p}}\right\}.$$
+ We see that:
+ $$\covn'_{\eps,s}\leq\covn'_\eps(\reeb)=\covn_{(\diam(\man)\cdot\eps)}(\reeb).$$
+ As such, using Proposition~\ref{prop:covn}, for any small enough $\eps$, we have
+ $$-\frac{\log \covn'_{\eps,s}}{\log\eps}\leq-\frac{\log\left( N_c+\left(\frac{\beta}{\diam(\man)\cdot\eps}\right)^{2d}\right)}{\log\eps}\underset{\eps\rightarrow0}{\longrightarrow}2d.$$
+ Hence, for every $s>\max(2d,2p)$ there exists $\eps'>0$ such that for every $\eps\leq\eps'$:
+ $$-\frac{\log \covn'_{\eps,s}}{\log\eps}\leq s.$$
+ Applying Proposition~\ref{prop:weed} gives
+ $$\wasser_p^{'^p}(\mes\circ\pi^{-1},\diracn\circ\pi^{-1})\leq C_1'n^{-\frac{p}{s}}+C_2'n^{-\frac{1}{2}},$$
+ where 
+ $$C_1'=3^{\frac{3sp}{s-2p}+1}\left(\frac{1}{3^{\frac{s}{2}-p}-1}+3\right),$$
+ and
+ $$C_2'=\left(27/\eps'\right)^{\frac{s}{2}}.$$
+ As such,
+ $$\wasser_p^p(\mes\circ\pi^{-1},\diracn\circ\pi^{-1})\leq \diam\left(\man\right)^p\cdot C_1'n^{-\frac{p}{s}}+\diam\left(\man\right)^p\cdot C_2'n^{-\frac{1}{2}},$$
+ which concludes the proof.
+  \end{proof}
+
+Note that the constants $C_1$ and $C_2$ in Corollary~\ref{cor:estim} are, up to a constant, the same as in Proposition 5 of~\cite{weed2019sharp}, and $\eps'$ in the expression of $C_2$ is the same as in the proof of Corollary~\ref{cor:estim}.  
+
+ \subsection{The approximation error \texorpdfstring{$\appr_n$}{TEXT}}
+ \subsubsection{Comparing Reeb graph and Mapper graph elements}
+We focus here on the second term in the upper bound of Proposition~\ref{prop:reeb_mapper}:
+$$\appr_n=\left(\frac{1}{n}\sum_{i=1}^n\haus([x_i]_{\sim_f},\DD(x_i))^p\right)^{\frac{1}{p}}.$$
+Recall that given a cover $\mathbb{I}=\{\interv_1,\dots,\interv_r\}$ of the range of the filter $f(\sample_n)$, the {\em refinement} of $\mathbb{I}$ is defined as:
+$$\mathbb{J}=\left\{\interv_1\setminus\interv_2,\interv_1\cap\interv_2,\interv_2\setminus(\interv_1\cup\interv_3),\interv_2\cap\interv_3,\dots\right\}.$$
+For every critical point $c\in\critic(f)$, we know that there exists a Morse chart $\varphi\colon U\subseteq\man\rightarrow\R^d$ around $c$ by Lemma~\ref{lem:morse}. Recall that the Riemannian metric $\g$ can be represented in this chart as a symmetric positive-definite matrix $\G(c)$.
+%We will denote for every $p\in U$
+%$$\lambda(p)=\min\{\sqrt{\rho},\,\rho\in\mathrm{Sp}(\G(p))\},$$
+%and
+%$$\mu(p)=\max\{\sqrt{\rho},\,\rho\in\mathrm{Sp}(\G(p))\},$$
+%where $\mathrm{Sp}(\G(p))$ is the spectrum of $\G(p)$.
+
+\begin{lemma}\label{lem:delta}
+Let $x_i\in\sample_n$ and $\mathrm{J}\in\mathbb{J}$ such that $\mathrm{J}$ does not contain critical values and is not adjacent to another refined cover element $\mathrm{J}'$ that contains critical values. For any large enough resolution $r$, if $x_i\in\mathrm{J}$, then for every $x_j\in\DD(x_i)$:
+$$\dis(x_j,[x_i]_{\sim_f})\leq\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}}\cdot\sqrt{\coverwidth}$$
+where $\mu(c)$ is the square root of the spectral radius of $\G(c)$, see Section~\ref{sec:elemRiem}.
+\end{lemma}
+%\bert{Le lemme donne la vitesse uniquement pour les situations où on est dans la chart. Ca pourrait etre intéressant de donner un résultat plus fin, et ensuite le corollaire pour le comportement asymp}
+%\mathieu{dessin ?}
+
+\begin{proof}
+First, notice that if $\mathrm{J}$ does not correspond to an intersection of two intervals, i.e., it is of the form $\mathrm{J}=\interv_j\setminus(\interv_{j-1}\cup\interv_{j+1})$, then $\DD(x_i)$ is a subset of the connected component of $x_i$ in $\preim{f}{\mathrm{J}}$.
+
+Second, when $\mathrm{J}$ is an intersection, of the form $\mathrm{J}=\interv_j\cap\interv_{j+1}$, our assumption that $\mathrm{J}$ does not contain critical values and is not adjacent to another refined cover element $\mathrm{J}'$ that contains critical values implies that $\preim{f}{\interv_j\cup\interv_{j+1}}$ is homeomorphic to a finite collection of cylinders whose heights are given by the function values (see Theorem~\ref{thm:morse}). As such, the connected components of  $\preim{f}{\mathrm{J}}$ are exactly the intersections of the connected components of $\preim{f}{\interv_j}$ and $\preim{f}{\interv_{j+1}}$. Therefore, $\DD(x_i)$ is also a subset of the connected component of $x_i$ in $\preim{f}{\mathrm{J}}$ in this case.
+
+Let $x_j\in\DD(x_i)$. Then  $x_j$ is in the same connected component of $\preim{f}{\mathrm{J}}$ than $x_i$, as demonstrated above. Since $\mathrm{J}$ does not contain critical values, we can therefore send $x_j$ to a point $\psi_{f(x_i)-f(x_j)}(x_j)$ in $[x_i]_{\sim_f}$ using the gradient flow of $f$. See the proof of Theorem~\ref{thm:morse} for more details. We can therefore write:
+
+\begin{align*}
+\dis(x_j,\psi_{f(x_i)-f(x_j)}(x_j))&\leq\left|\int_{0}^{f(x_i)-f(x_j)}\left\Vert\frac{d\psi_{u}(p)}{du}\right\Vert\,du \right| \\
+&\leq \left|\int_{0}^{f(x_i)-f(x_j)}\frac{1}{\Vert\nabla f(\psi_{u}(p))\Vert}\,du \right|\\
+&\leq\frac{|f(x_i)-f(x_j)|}{\inf_{p\in \preim{f}{\mathrm{J}}}\Vert\nabla f(p)\Vert}\\
+&\leq\frac{\coverwidth}{\inf_{p\in \preim{f}{\mathrm{J}}}\Vert\nabla f(p)\Vert}.
+\end{align*}
+
+Now, if $\preim{f}{\mathrm{J}}$ is sufficiently close to a critical point $c$, in the sense that it intersects a Morse coordinate neighborhood $U\subseteq\man$ around $c$ in a non-empty region, we can use Lemma~\ref{lem:morse} to write:
+ $$f(p)=f(c)-\sum_{j=1}^ix_j^2+\sum_{j=i+1}^dx_j^2,$$
+where $x(p)=(x_1,\dots,x_d)$ is the representation of $p\in U$ in local coordinates. Proposition~\ref{prop:grad} therefore gives:
+$$\Vert\nabla f(p)\Vert\geq\frac{2\Vert x(p)\Vert_0}{\mu(p)},$$
+where $\Vert\cdot\Vert_0$ is the Euclidean norm in local coordinates. 
+However, these local coordinates also induce:
+$$|f(p)-f(c)|\leq \Vert x(p)\Vert_0^2,$$
+and therefore %\bert{plutot $\Vert\nabla f \circ \phi(x)$ }
+$$\Vert\nabla f(p)\Vert\geq\frac{2\sqrt{|f(p)-f(c)|}}{\mu(p)}.$$ 
+Since $\mathrm{J}$ does not contain critical values and is not adjacent to another refined cover element $\mathrm{J}'$ that contains critical values, this means that in $U\cap \preim{f}{\mathrm{J}}$, we have 
+$$|f(p)-f(c)|\geq \frac{g}{1-g}\cdot\coverwidth,$$
+the latter being the minimal width of a refined cover element. 
+As such:
+$$\frac{1}{\inf_{p\in U\cap \preim{f}{\mathrm{J}}}\Vert\nabla f(p)\Vert}\leq \frac{\sup_{p\in U}\mu(p)}{2}\cdot\sqrt{\frac{1-g}{g}}\cdot\frac{1}{\sqrt{\coverwidth}}.$$
+We see that $\sup_{p\in U}\mu(p)\rightarrow\mu(c)$ as $p\rightarrow c$. Hence, upon shrinking $U$ further if necessary, we can guarantee that
+$$\sup_{p\in U}\mu(p)\leq 2\mu(c).$$
+Notice that the Morse charts around critical points (that we used so far in our proof) are fixed beforehand and do not depend on the resolution $r$. Moreover, away from critical points, $\Vert\nabla f(p)\Vert$ is lower bounded by a constant $C>0$ depending only on $f$ and $\man$. % \bert{fixer des le départ les cartes locales autour des points critiques pour rendre un peu plus explicite le controle (et rassurer ainsi le lecteur sur le fait qu'il n'y a pas à gratter ici}
+
+Therefore,
+%
+$$\dis(x_j,\psi_{f(x_i)-f(x_j)}(x_j))\leq \max\left(\frac{1}{C},\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}}\cdot\frac{1}{\sqrt{\coverwidth}}\right)\cdot\coverwidth.$$
+%
+Finally, since $\coverwidth\underset{r\rightarrow\infty}{\longrightarrow}0$, we proved our result.
+\end{proof}
+
+We now define the modulus of continuity associated to $f$.
+\begin{definition}
+Let $g\colon\man\rightarrow\R$ be a uniformly continuous function. We call modulus of continuity of $g$ the function:
+ \begin{align*}
+     \omega_g\colon\R^+&\longrightarrow\R^+\\
+     \lambda&\longmapsto \sup_{\dis(x,y)\leq\lambda}|g(x)-g(y)| .
+ \end{align*}
+\end{definition}
+
+In our case $f$ is a Morse function and hence continuously differentiable. This means that the modulus of continuity $\omega_f$ of $f$ is well defined.
+
+\begin{lemma}\label{lem:slice}
+Let $\lambda>0$ such that $\haus(\sample_n,\man)\leq \lambda$ and
+$$\omega_f\left(\lambda\right)\leq\frac{g}{1-g} \frac{\coverwidth}{4}.$$
+Let $x_i\in\sample_n$ and $\mathrm{J}\in\mathbb{J}$ such that $\mathrm{J}$ does not contain critical values and is not adjacent to another refined cover element $\mathrm{J}'$ that contains critical values. For any large enough resolution $r$, if $x_i\in\mathrm{J}$ then for every $y\in[x_i]_{\sim_f}$:
+$$\dis(y,\DD(x_i))\leq \lambda+\frac{1}{2}\cdot\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}}\cdot\sqrt{\coverwidth}.$$
+\end{lemma}
+
+\begin{proof}
+Let $\mathrm{J}:=[v,w]$ and let $S$ be the connected component of $x_i$ inside $\preim{f}{\mathrm{J}}$. 
+We assumed that $\mathrm{J}$ does not contain critical values. As such, $f\left(S\right)=\mathrm{J}$, otherwise $f$ would reach either a local maximum or a local minimum in $S$. 
+We will denote $\Tilde{S_\lambda}=S\setminus (\preim{f}{\{v\}}\cup \preim{f}{\{w\}})^{\lambda}$, i.e., $\Tilde{S_\lambda}$ is comprised of the points of $S$ that %minus all points that 
+are at a distance at least $\lambda$ from $\preim{f}{\{v\}}$ or $\preim{f}{\{w\}}$.
+
+The assumption $\omega_f\left(\lambda\right)\leq\frac{g}{1-g}\cdot\frac{\coverwidth}{4}$ guarantees that $\Tilde{S}_\lambda$ is not empty, as the set
+$$S\cap \preim{f}{ \left(v+\frac{g}{1-g}\cdot\frac{\coverwidth}{4},w-\frac{g}{1-g}\cdot\frac{\coverwidth}{4}\right)}$$
+%\subseteq\Tilde{S}_\lambda,$$
+is included in $\Tilde{S}_\lambda$, and is non-empty  
+%and $S\cap f^{-1}\left(v+\frac{g}{1-g}\cdot\frac{\coverwidth}{4},w-\frac{g}{1-g}\cdot\frac{\coverwidth}{4}\right)$ is non-empty 
+because $f\left(S\right)=\mathrm{J}$, like mentioned above. 
+
+We can also immediately see that $\haus(\sample_n\cap S,\Tilde{S}_\lambda)\leq\lambda$, since we know that $\haus(\sample_n,\man)\leq \lambda$.
+Therefore, for every $p\in\Tilde{S}_\lambda$, there exists $x_j$ in $\sample_n\cap S$ and hence in $\DD(x_i)$, such that $\dis(p,x_j)\leq\lambda$.
+
+
+Now, let $q$ be a point that is at a distance less than $\lambda$ from either $\preim{f}{\{v\}}$ or $\preim{f}{\{w\}}$. Since we assumed that $\mathrm{J}$ does not contain critical values, we can send $q$ to a point $p=\psi_{\frac{v+w}{2}-f(q)}(q)$ in $S\cap \preim{f}{\left\{\frac{v+w}{2}\right\}}$ using the gradient flow of $f$ (see the proof of Theorem~\ref{thm:morse}). Notice that $p\in\Tilde{S}_\lambda$ because $f(p)=\frac{v+w}{2}$. 
+We also have:
+\begin{align*}
+\dis(p,q)&\leq\left|\int_{0}^{f(p)-f(q)}\left\Vert\frac{d\psi_{u}(q)}{du}\right\Vert\,du \right| \\
+&\leq\frac{\coverwidth}{2\inf_{p\in \preim{f}{\mathrm{J}}}\Vert\nabla f(p)\Vert}
+\end{align*}
+since $$\left|f(p)-f(q)\right|\leq \frac{\coverwidth}{2}.$$
+
+We further assumed that $\mathrm{J}$ does not contain critical values and is not adjacent to another refined cover element $\mathrm{J}'$ that contains critical values. The same argument made in the proof of Lemma~\ref{lem:slice} shows that
+$$\frac{1}{\inf_{p\in \preim{f}{\mathrm{J}}}\Vert\nabla f(p)\Vert}\leq \max\left(\frac{1}{C},\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}}\cdot\frac{1}{\sqrt{\coverwidth}}\right)$$
+where $C$ is a constant depending only on $f$ and $\man$.\\
+Taking a large enough resolution $r$, we have that
+$$\dis(p,q)\leq\frac{1}{2}\cdot\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}}\cdot\sqrt{\coverwidth}.$$
+Since $p\in\Tilde{S}_\lambda$ and $\haus(\sample_n\cap S,\Tilde{S}_\lambda)\leq\lambda$, there exists $x_j\in\sample_n\cap S$ such that 
+%
+\begin{align*}
+\dis(x_j,q)&\leq\dis(x_j,p)+\dis(p,q)\\
+&\leq \lambda+\frac{1}{2}\cdot\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}}\cdot\sqrt{\coverwidth}.
+\end{align*}
+%
+Now, $x_j\in\DD(x_i)$ because $x_j\in S$ which proves our result.
+\end{proof}
+
+
+\subsubsection{Hausdorff convergence rate for the sample}
+We now focus on the convergence rate in Hausdorff distance between $\sample_n$ and $\man$. Following the works of~\cite{chazal2014convergence} and~\cite{carriere2018statistical}, we recall that the measure $\mes$, with respect to which the points are sampled, is $(a,b)$-standard.  
+
+\begin{definition}
+Let $\nu$ be a Borel probability measure on $\man$. Let $a>0$ and $b>0$.
+We say that $\nu$ is $(a,b)$-standard if for every $x\in\man$ and $r>0$:
+$$\nu\left(\ball\left(x,r\right)\right)\geq \min\left(1,ar^b\right).$$
+\end{definition}
+
+ The $(a,b)$-standard assumption is fairly popular in the set estimation literature (see for example~\cite{cuevas2009set}) and is verified for example when $\mes$ is absolutely continuous with respect to the volume measure and $b=d$, the dimension of $\man$.
+ 
+We recall Theorem 2 of~\cite{chazal2014convergence} that links the $(a,b)$-standard assumption to the Hausdorff convergence rate between a sample and the support of $\mes$.
+ 
+ \begin{theorem}\label{thm:ab}
+ Let $\nu$ be a Borel probability measure on $\man$. Let $\sample_n$ be a sample of $n$ points taken from $\nu$. Denote $\spa_\nu$ the support of $\nu$. 
+ If $\nu$ is $(a,b)$-standard then for every $\eps>0$:
+ $$\mathbb{P}\left(\haus(\sample_n,\spa_\nu)>2\eps\right)\leq\min\left(\frac{2^b}{a\eps^b}\exp(-na\eps^b),1\right).$$
+ \end{theorem}
+
+\subsubsection{Convergence rate for the volume of a cover element preimage}
+We are interested here in an upper bound on the convergence rate of the volume of preimages of refined cover elements:
+$$\max_{\mathrm{J}\in\mathbb{J}}\vol\left( \preim{f}{\mathrm{J}}\right).$$
+\begin{lemma}\label{lem:meas}
+%Suppose that $\mu$ is absolutely continuous with respect to the volume measure. \bert{lien avec hyp ab standard}
+For any large enough resolution $r$, we have:
+$$\max_{\mathrm{J}\in\mathbb{J}}\vol\left( \preim{f}{\mathrm{J}}\right)\leq \eta\cdot\coverwidth^{\frac{d}{d+1}},$$
+where
+$$\eta=\max_{c\in\critic(f)}\mu(c)^2\cdot\sup_{v\notin f(\critic(f))}\vol_{d-1}\left(\preim{f}{\{v\}}\right)+2\alpha_d\left|\critic(f)\right|,$$
+and where $\vol_{d-1}\left(\preim{f}{\{v\}}\right)$ is the $(d-1)$-dimensional volume of $\preim{f}{\{v\}}$ seen as a submanifold of $\man$ and $\alpha_d$ is the volume of the unit ball in $\R^d$.
+
+\end{lemma}
+\begin{proof}
+%Through out this proof, we use Proposition~\ref{prop:geo_vol} that gives an asymptotic control for the volume of small geodesic balls.
+We will use the Coarea Formula (see Chapter \RN{2}, Theorem 5.8. in~\cite{sakai1996riemannian}) which states that for every integrable function $u\colon\man\rightarrow\R$, we have:
+
+$$\int_\man u\Vert\nabla f\Vert\,d\vol=\int_{\R}\int_{\preim{f}{\{v\}}}u\,d\vol_v\,dv,$$
+
+where $\vol_v$ is the volume measure induced on the $(d-1)$-dimensional manifold $\preim{f}{\{v\}}$, $v$ being a non-critical value. Note that in the integral in the right hand side of the equation above, we only consider non-critical values $v$ of $f$. This is possible because the set of critical values of $f$ has measure 0 in $\R$ by Sard's Theorem.
+
+Let $\mathrm{J}$ be a refined cover element. Let $\eps>0$ and consider $$\man_\eps=\man\setminus \bigcup_{c \in \critic(f)}\ball\left(c,\eps\right).$$
+Applying the Coarea Formula to $u=\ind_{\preim{f}{\mathrm{J}}\cap\man_\eps},$ gives
+\begin{align*}
+\vol\left(\preim{f}{\mathrm{J}}\cap\man_\eps\right)=\int_\man u\,d\vol&\leq\frac{1}{\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}\cdot \int_\man u\Vert\nabla f\Vert\,d\vol\\
+&=\frac{1}{\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}\cdot\int_{\R}\int_{\preim{f}{\{v\}}}u\,d\vol_v\,dv\\
+&\leq\frac{1}{\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}\cdot\int_{\mathrm{J}}\int_{\preim{f}{\{v\}}}\,d\vol_v\,dv\\
+&\leq \frac{1}{\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert}\cdot\coverwidth\cdot\sup_{v\notin f(\critic(f))}\vol_{d-1}\left(\preim{f}{\{v\}}\right).
+\end{align*}
+Moreover, for small enough $\eps$, as $\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert$ is achieved in a neighborhood of a critical point $c$ at a point $p$ such that $\dis(c,p)\geq\eps$, we have (see the proof of Proposition~\ref{prop:covn}):
+$$\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert \geq \frac{2\eps}{\mu_0^2},$$
+where $\mu_0\rightarrow\mu(c)$ as $p\rightarrow c$. As such, for small enough $\eps$, we have
+$$\mu_0\leq\sqrt{2}\mu(c),$$
+and therefore
+$$\inf_{p\in\man_\eps}\Vert\nabla f(p)\Vert \geq \frac{\eps}{\mu(c)^2}.$$
+Accordingly,
+$$\vol\left(\preim{f}{\mathrm{J}}\cap\man_\eps\right)\leq\frac{\max_{c\in\critic(f)}\mu(c)^2}{\eps}\cdot\coverwidth\cdot\sup_{v\notin f(\critic(f))}\vol_{d-1}\left(\preim{f}{\{v\}}\right).$$
+Now, by Proposition~\ref{prop:geo_vol}, for every $c\in\critic(f)$, there exists $\eps'_c$ such that for every $\eps\leq\eps'_c$ we have
+$$\vol\left(\ball\left(c,\eps\right)\right)\leq 2\alpha_d\cdot\eps^d.$$
+Taking $\eps'=\min_{c\in\critic(f)}\eps'_c$, we have that for $\eps\leq\eps'$:
+$$\sum_{c\in\critic(f)}\vol\left(\ball\left(c,\eps\right)\right)\leq 2\alpha_d\left|\critic(f)\right|\cdot\eps^d.$$
+As such, for small enough $\eps>0$, we have
+\begin{align*}
+\vol\left(\preim{f}{\mathrm{J}}\right)&\leq\vol\left(\preim{f}{\mathrm{J}}\cap\man_\eps\right)+\sum_{c\in\critic(f)}\vol\left(\ball\left(c,\eps\right)\right)\\
+&\leq\frac{\max_{c\in\critic(f)}\mu(c)^2}{\eps}\cdot\coverwidth\cdot\sup_{v\notin f(\critic(f))}\vol_{d-1}\left(\preim{f}{\{v\}}\right)+2\alpha_d\left|\critic(f)\right|\cdot\eps^d.
+\end{align*}
+
+Since $\coverwidth\underset{r\rightarrow\infty}{\longrightarrow}0$, we can choose $$\eps=\coverwidth^{\frac{1}{d+1}},$$
+and we will have, for a large enough resolution $r$,
+$$\vol\left(\preim{f}{\mathrm{J}}\right)\leq\left[\max_{c\in\critic(f)}\mu(c)^2\cdot\sup_{v\notin f(\critic(f))}\vol_{d-1}\left(\preim{f}{\{v\}}\right)+2\alpha_d\left|\critic(f)\right|\right]\cdot\coverwidth^{\frac{d}{d+1}}.$$
+\end{proof}
+
+
+
+\subsubsection{Convergence rate for the approximation error}
+
+ 
+We now put together Lemmas~\ref{lem:delta}, \ref{lem:slice} and \ref{lem:meas} in the following proposition.
+
+ 
+
+\begin{proposition}\label{prop:apprx}
+Let $\lambda>0$ such that
+$$\omega_f\left(\lambda\right)\leq\frac{g}{1-g}\cdot\frac{\coverwidth}{4}.$$
+For any large enough resolution $r$, we have
+$$\mathbb{E}\left(\appr_n^p\right)\leq \left(\lambda+\xi\cdot\sqrt{\coverwidth}\right)^p
+    +\tilde{\eta}\cdot\coverwidth^{\frac{d}{d+1}}+\frac{\zeta}{\lambda^d}\cdot\exp\left(\frac{-na\lambda^d}{2^d}\right),$$
+    %+\mathbb{P}\left(\haus(\man,\man_n)>\lambda\right)\cdot\diam(\man)^p,$$
+    where
+    $$\xi=\max_{c\in\critic(f)}\mu(c)\cdot\sqrt{\frac{1-g}{g}},$$
+    $$\tilde{\eta}=3 |\critic(f)| \left[\sup\frac{d\mes}{d\vol}\right]\cdot\diam(\man)^p\cdot\eta,$$
+    $$\eta=\max_{c\in\critic(f)}\mu(c)^2\cdot\sup_{v\notin f(\critic(f))}\vol_{d-1}\left(f^{-1}\{v\}\right)+2\alpha_d\left|\critic(f)\right|,$$
+    $$\zeta=\frac{4^d\diam(\man)^p}{a}.$$
+
+\end{proposition}
+
+\begin{proof}
+By definition,
+$$\appr_n^p=\frac{1}{n}\sum_{i=1}^n\haus([x_i]_{\sim_f},\DD(x_i))^p.$$
+Since $\sample_n$ consists of i.i.d. samples:
+$$\mathbb{E}\left(\appr_n^p\right)=\mathbb{E}\left(\haus([x_1]_{\sim_f},\DD(x_1))^p\right).$$
+
+
+First, if $\haus(\man,\sample_n)>\lambda$, we use the loose bound $$\haus([x_1]_{\sim_f},\DD(x_1))\leq\diam(\man).$$
+Now, assume that $\haus(\man,\sample_n)\leq\lambda$.
+We will denote $\mathbb{J}_c\subseteq\mathbb{J}$ as the collection of elements $\mathrm{J}$ in $\mathbb{J}$ that either contain critical values, or are adjacent to elements containing critical values. We see that $|\mathbb{J}_c|\leq 3|\critic(f)|$.
+%, where $|\critic(f)|$ is the number of critical values of $f$.\\
+
+\begin{itemize}
+	\item If $f(x_1)\in \bigcup_{\mathrm{J}\in  \mathbb{J}_c} \mathrm{J} $, we use the bound $\haus([x_1]_{\sim_f},\DD(x_1))\leq\diam(\man)$.
+    \item If $f(x_1) \notin \bigcup_{\mathrm{J}\in  \mathbb{J}_c} \mathrm{J}  $, we can use Lemmas~\ref{lem:delta} and \ref{lem:slice} to prove that
+    $$\haus([x_1]_{\sim_f},\DD(x_1))\leq\lambda+\xi\cdot\sqrt{\coverwidth}.$$
+\end{itemize}
+
+
+As such,
+$$\haus([x_1]_{\sim_f},\DD(x_1))^p\leq
+\left(\lambda+\xi\cdot\sqrt{\coverwidth}\right)^p+
+\ind_{f(x_1) \in \bigcup_{\mathrm{J}\in  \mathbb{J}_c} \mathrm{J} }\cdot \diam(\man)^p+\ind_{\haus(\man,\sample_n)>\lambda}\cdot \diam(\man)^p.$$
+Accordingly,
+\begin{align*}
+    \mathbb{E}\left(\haus([x_1]_{\sim_f},\DD(x_1))^p\right)\leq&
+    \left(\lambda+\xi\cdot\sqrt{\coverwidth}\right)^p+
+    \mathbb{P}\left(f(x_1) \in \bigcup_{\mathrm{J}\in  \mathbb{J}_c} \mathrm{J} \right)\cdot \diam(\man)^p\\
+    &+\mathbb{P}\left(\haus(\man,\sample_n)>\lambda\right)\cdot \diam(\man)^p,
+\end{align*}
+and by Lemma~\ref{lem:meas} we obtain
+\begin{align*}
+    \mathbb{P}\left(f(x_1) \in \bigcup_{\mathrm{J}\in  \mathbb{J}_c} \mathrm{J}  \right)&=\mes\left( \preim{f}{\bigcup_{\mathrm{J}\in\mathbb{J}_c}\mathrm{J}}\right)\\
+    &\leq \sum_{\mathrm{J}\in\mathbb{J}_c} \max_{\mathrm{J}\in\mathbb{J}}\mes\left( \preim{f}{\mathrm{J}}\right)\\
+    &\leq 3|\critic(f)|\cdot\max_{\mathrm{J}\in\mathbb{J}}\mes\left(\preim{f}{\mathrm{J}}\right)\\
+    &\leq 3|\critic(f)|\left[\sup\frac{d\mes}{d\vol}\right]\cdot\max_{\mathrm{J}\in\mathbb{J}}\vol\left(\preim{f}{\mathrm{J}}\right)\\
+    &\leq 3|\critic(f)|\left[\sup\frac{d\mes}{d\vol}\right]\eta\cdot\coverwidth^{\frac{d}{d+1}}.
+\end{align*}
+The measure $\mes$ satisfies the $(a,b)$-standard assumption for $b=d$ and it is fully supported on $\man$ by Assumption~\ref{hypdensity}. Using Theorem~\ref{thm:ab}, we have:
+
+$$\mathbb{P}\left(\haus(\man,\sample_n)>\lambda\right)\leq\min\left(\frac{4^d}{a\lambda^d}\exp\left(\frac{-na\lambda^d}{2^d}\right),1\right).$$
+
+Combining all three bounds leads to the result.
+
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+
+\section{Notation Table}
+
+
+\begin{table}[h!]
+\footnotesize
+\centering
+\caption{Notation and Main Symbols \label{notations}}
+\begin{tabular}{ccc}
+\toprule
+\textbf{Notation} & \textbf{Description} & \textbf{Details} \\
+\midrule
+$(\X, d)$ & Topological space with metric $d$ & $d(x, y)$ defines the distance between points $x$ and $y$ \\
+%$d(x, y)$ & Distance between points $x$ and $y$ & Calculated using the metric $d$ \\
+$\chi(\C)$ & Euler characteristics of $\C$ & Topological invariant to characterize $\C$ \\
+$\h_k(\X)$ & $k$-th homology group of $\X$ & Describes $k$-dimensional holes in $\X$ \\
+$\C_k(\X)$ & $k$-chains of $\X$ & All $k$-subcomplexes in $\X$ \\
+$\Z_k(\X)$ &  $k$-cycles of $\X$ & $k$-subcomplexes in $\X$ without boundary \\
+$\B_k(\X)$ & $k$-boundaries of $\X$ & Boundaries of $(k+1)$-subcomplexes \\
+$\partial_k$ & Boundary operator & Maps $\C_k(\X)$ to $\C_{k-1}(\X)$\\
+$\I=\{\e_i\}$ & Threshold set & Used to define filtration \\
+$\{\K_i\}$ & Filtration & Nested sequence of simplicial complexes \\
+$\PD_k(\X)$ & $k$-th persistence diagram of $\X$ & Visualizes persistent features \\
+$\PB_k(\X)$ & $k$-th persistence barcode of $\X$ & Alternate view of persistence \\
+$\N_r(\X)$ & $r$-neighborhood of $\X$ & Forms covering space \\
+$\VR_r(\X)$ & Rips complex of point cloud $\X$ & Built from pairwise distances \\
+$\check\C_r(\X)$ & \v{C}ech complex of point cloud $\X$ & Constructed using open balls \\
+$\G=(\V, \E)$ & Graph, vertices, edges & $\V$ are vertices, $\E$ are edges \\
+$\W=\{w_{ij}\}$ & Edge weights of $\G$ & Assigns weight $w_{ij}$ to edge $e_{ij}$ \\
+$\G^k$ & $k$-th power of graph $\G$ & Higher-order graph structure \\
+$\wt{\G}$ & Clique complex of $\G$ & Contains all maximal cliques \\
+$\Delta_{ij}$ & Pixel at $(i,j)$-coordinate & A pixel in an $m\times n$-size image \\
+$\W_p(\cdot, \cdot)$ & Wasserstein distance & Measures distance between PDs  \\
+$\W_\infty(\cdot, \cdot)$ & Bottleneck distance & Measures distance between PDs \\
+$\vec{\beta}_k(\X)$ & Betti vector for $\PD_k(\X)$ & Summarizes homological features \\
+$\beta_i(\X)$ &  $i^{th}$ Betti number of $\X$ & Rank of $\h_i(\X)$ \\
+$\{\K_{ij}\}$ & Bifiltration & Nested sequence of spaces in two parameters\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Dataset Resources}
+
+As we develop this tutorial to introduce topological methods to the ML community, we also seek to highlight their real-world applications to the mathematics community. For those eager to gain hands-on experience with topological techniques using real-world datasets, Table~\ref{tab:datalibraries} lists the commonly utilized datasets. For task-specific datasets, you can explore the collections at~\url{https://paperswithcode.com/datasets} and \url{https://www.kaggle.com}.
+
+
+\begin{table}[h!]
+  \caption{\textbf{Datasets Resources.} The list of commonly used benchmark datasets in ML.}
+    \label{tab:datalibraries}
+    \centering
+    \resizebox{1.\linewidth}{!}{
+    \begin{tabular}{l c l l l}
+        \toprule
+        \textbf{Format} & \textbf{Dataset} & \textbf{Task} &  \textbf{Dataset URL} \\
+        \midrule
+ & ModelNet & Shape classification & \url{https://modelnet.cs.princeton.edu}\\
+%& ScanObjectNN  & Shape classification & \url{https://hkust-vgd.github.io/scanobjectnn}\\
+{\bf Point}& UCR& Time Series Classification& \url{https://www.cs.ucr.edu/~Eeamonn/time_series_data_2018/}\\
+{\bf Cloud}& Broad Institute & Single Cell Genotyping & \url{https://singlecell.broadinstitute.org/single_cell} \\
+& 3D-PointCloud & Various & \url{https://github.com/zhulf0804/3D-PointCloud}\\
+\midrule
+\multirow{5}{*}{\bf Graph} & Small Benchmarks & Graph Classification & \url{https://paperswithcode.com/task/graph-classification}\\
+ & Small Benchmarks & Node Classification & \url{https://paperswithcode.com/task/node-classification}\\
+  & Small Benchmarks & Link Prediction & \url{https://paperswithcode.com/task/link-prediction}\\
+& OGB (Large Benchmarks) & Graph, Node, Link & \url{https://ogb.stanford.edu}\\
+& TUDatasets (Small Benchmarks)& Graph, Node, Link & \url{https://chrsmrrs.github.io/datasets}\\
+& TGB (Temporal Graphs) & Dynamic Prediction& \url{https://tgb.complexdatalab.com/}\\
+\midrule
+\multirow{4}{*}{\bf Image} &MNIST & Handwritten Digits & \url{https://yann.lecun.com/exdb/mnist}\\
+&MedMNIST & Medical Image Classification & \url{https://medmnist.com/}\\
+&Fashion MNIST &  Image Classification & \url{https://www.kaggle.com/datasets/zalando-research/fashionmnist}\\
+& Various Collections& Image Classification& \url{https://paperswithcode.com/datasets?task=image-classification}\\
+        \bottomrule
+    \end{tabular}}
+\end{table}

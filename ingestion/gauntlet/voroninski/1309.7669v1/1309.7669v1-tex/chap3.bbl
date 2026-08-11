@@ -1,0 +1,50 @@
+\begin{thebibliography}{1}
+
+\bibitem{Three}
+Bernstein's inequality.
+\newblock {\em Wikipedia}.
+
+\bibitem{DAP}
+V.~Voroninski. D.~Mondragon.
+\newblock Determination of all pure quantum states from a minimal number of
+  observables.
+\newblock {\em Arxiv, http://arxiv.org/abs/1306.1214}, 2013.
+
+\bibitem{Five}
+X.~Li E.~Candes.
+\newblock Solving quadratic equations via phaselift when there are about as
+  many equations as unknowns.
+\newblock {\em Arxiv. http://arxiv.org/abs/1208.6247}, August 2012.
+
+\bibitem{SOR}
+L.~Demanet.~P. Hand.
+\newblock Stable optimizationless recovery from phaseless linear measurements.
+\newblock {\em Arxiv. http://arxiv.org/abs/1208.1803}, 2012.
+
+\bibitem{HMW11}
+T.~Heinosaari~L. Mazzarella and M.M. Wolf.
+\newblock Quantum tomography under prior information.
+\newblock {\em Preprint, [arXiv:1109.5478],}, 2011.
+
+\bibitem{DMBlog}
+D.~Mixon.
+\newblock Short, fat matrices.
+\newblock {\em Online Blog}, 2012.
+
+\bibitem{One}
+J.~Novak.
+\newblock Truncations of random unitary matrices and young tableaux.
+\newblock {\em The electronic journal of combinatorics}, 14(R21), 2007.
+
+\bibitem{CSV}
+E.~Cand\`es~T. Strohmer and V.~Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Communications on Pure and Applied Mathematics}, 2011.
+
+\bibitem{Two}
+T.~Tao.
+\newblock Talagrands concentration inequality - blog entry.
+\newblock 2009.
+
+\end{thebibliography}

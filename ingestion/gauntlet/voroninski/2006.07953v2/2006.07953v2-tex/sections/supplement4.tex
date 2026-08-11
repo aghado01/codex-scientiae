@@ -1,0 +1,129 @@
+%\section{Proofs of the Spike Random Models }
+\section{Proofs for the random spiked and generative models}\label{sec:rand_proofs}
+
+%\subsubsection{{Proofs of recover in the spike Wigner model}
+We are now ready to prove our main results for random spiked models and generative networks with random weights. We begin by recalling the following fact on the WDC of a single Gaussian layer. 
+
+\begin{lemma}[Lemma 11 in \cite{HV17}]\label{lemma:rndWDC}
+	Fix $0 < \eps < 1$ and suppose $W \in \R^{n \times k}$ has $i.i.d. \;\mathcal{N}(0,1/n)$ entries. Then if $n \geq C_\eps k \log k$, then with probability at least $1 - 8 n \exp(-\gamma_\eps k)$, $W$ satisfies the WDC with constant $\eps$. Here $C_\eps$ and $\gamma_\eps^{-1}$ depend 
+	polynomially on $\eps^{-1}$.
+\end{lemma}
+
+By a union bound over all layers, using the above result we can 
+conclude that the WDC holds simultaneously for all layers of the network with probability at least
+$    1  - \sum_{i=1}^d 8 n_i e^{- \gamma_\eps n_{i-1}}.$
+Note in particular that this argument does not requires the independence of the layers.
+
+By Lemma \ref{lemma:rndWDC}, with high probability 
+the  random generative network $G$ satisfies the WDC. Therefore if we can guarantee the assumptions on the noise term, then the proof of the main Theorem \ref{thm:main_rand}
+follows from the deterministic Theorem \ref{thm:dir_deriv} and the previous lemma. 
+
+Before turning to the bounds of the noise terms in the spiked models,
+we recall the following lemma which bounds the number of possible $\Lambda_x$ for $x\neq 0$. Note that this is related to the number of possible regions defined by a deep Relu network.
+
+\begin{lemma}[Proof of Lemma 8 in \cite{HHHV18}]\label{lemma:NLx}
+	Consider a network $G$ as defined in \eqref{eq:Gx} with $d \geq 2$, weight matrices $W_i \in \R^{n_i \times n_{i-1}}$ with i.i.d. entries $\mathcal{N}(0,1/n_i)$ and $\log(10) \leq k/4 \log(n_1)$. Then, with probability one, for any $x \neq 0$ the number of different matrices $\Lambda_x$ is:
+	\[
+	| \{ \Lambda_x | x \neq 0 \} | \leq 10^{d^2} (n_1^d n_2^{d-1} \dots n_d )^k \leq (n_1^d n_2^{d-1} \dots n_d)^{2 k}
+	\] 
+\end{lemma}
+
+In the next section we use this lemma to control the noise term $\Lambda_x^\T H \Lambda_x$ where:
+\begin{itemize}
+	\item in the \textbf{Spiked Wishart Model} $H~=~\Sigma_N~-~\Sigma$;
+	\item in the \textbf{Spiked Wigner Model} $H~=\mathcal{H}$.
+\end{itemize}
+
+We then conclude in section \ref{sec:min_rand} with the proof of Proposition \ref{prop:rand_localmin}.B.
+
+\subsection{Spiked Wigner Model}
+
+Recall that in the Wigner model $Y = G(\xstar) G(\xstar)^\T + \mathcal{H}$ and  the symmetric noise matrix $\mathcal{H}$ follows a \textit{Gaussian Orthogonal Ensemble} GOE$(\nu, n)$, that is $\mathcal{H}_{ii} \sim \mathcal{N}(0, 2\nu/n)$ for all $1 \leq i \leq n$ and $\mathcal{H}_{ij} \sim \mathcal{N}(0,\nu/n)$ for $1 \leq j < i \leq n$. 
+Our goal is to bound $ \| \Lambda_x^\T \mathcal{H} \Lambda_x \| $ uniformly over $x$ with high probability.
+%and we need to bound $\|\Lambda_x^\T H \Lambda_x \|_2$ with high probability. 
+%Note that since $H$ is symmetric:
+%\[ 
+%	\|\Lambda_x^\T H \Lambda_x \|_2 = \max_{z \in S^{k-1}} |z^\T \Lambda_x^\T H \Lambda_x z|
+%\] 
+
+\noindent Fix $x \in \R^{k}$, 
+and let $\mathcal{N}_{{1}/{4}}$ be a $1/4$-net on the sphere $\mathcal{S}^{k-1}$ such that $|\mathcal{N}_{1/4}| \leq 9^k$ and:
+\[
+\|\Lambda_x^\T \mathcal{H} \Lambda_x \| \leq 2 \max_{z \in \mathcal{N}_{{1}/{4}}} |\langle \Lambda_x^\T \mathcal{H} \Lambda_x z,   z\rangle|.
+\]
+For any  $z \in\mathcal{N}_{{1}/{4}}$ let $\ell_{x,z} := \Lambda_x z \in \R^n$ and note that by the assumption on the  entries of $\mathcal{H}$ it holds that
+$\ell_{x,z}^\T \mathcal{H} \ell_{x,z} \sim  \mathcal{N}(0,  {\nu^2 \|\ell_{x,z}\|^4}/{n})$.
+%\[\ell_{x,z}^\T H \ell_{x,z}\sim \mathcal{N}\Big(0, \frac{\sigma^2}{n} \big(\sum_{i} \ell_{x,z}_i^4 + 2 \sum_{i < j} \ell_{x,z}_i^2 \ell_{x,z}_j^2  \big) \Big) \sim \mathcal{N}(0,  \frac{\sigma^2 \|\ell_{x,z}\|^4}{n}).\]
+In particular by Lemma \ref{lemma:conctrWDC}, the quadratic form $\ell_{x,z}^\T \mathcal{H} \ell_{x,z}$ is sub-Gaussian with parameter $\gamma^2$ given by: 
+\[{\gamma}^2 := \frac{\nu^2}{n} \Big(\frac{13}{12}\Big)^2 \frac{1}{2^{2d}}.\]
+%and a standard sub-Gaussian tail bound gives:
+%\[
+%	\PX( |\langle \Lambda_x^\T H \Lambda_x z,   z\rangle| \geq 2 u ) \leq 2 e^{-\frac{t^2}{2 {\gamma}^2}}.
+%\]
+Then for fixed $x \in \R^k$, standard sub-Gaussian tail bounds and a union bound over $\mathcal{N}_{{1}/{4}}$ give:
+\[
+\begin{aligned}
+\PX\big[ \| \Lambda_x^\T \mathcal{H}  \Lambda_x \| \geq 2 u \big]
+&\leq \PX\big[ \max_{z \in \mathcal{N}_{1/4}} \| \ell_{x,z}^\T \mathcal{H} \ell_{x,z}\| \geq u \big] \\
+&\leq \sum_{z \in \mathcal{N}_{1/4}} \PX\big[  \| \ell_{x,z}^\T \mathcal{H}  \ell_{x,z}\| \geq u \big]
+\leq 2 \cdot 9^{k} e^{-\frac{u^2}{2 {\gamma}^2}}.
+\end{aligned}
+\]
+Lemma \ref{lemma:NLx}, then ensures that the number of possible $\Lambda_x$ is at most $(n_1^d n_2^{d-1} \dots n_d)^{2 k}$, so a union bound over this set allows to conclude that:
+\[
+\PX\big[ \| \Lambda_x^\T \mathcal{H}  \Lambda_x \| \leq  \frac{\nu}{2^d} \sqrt{  \frac{30 k \log (3\, n_1^d n_2^{d-1} \dots n_d)}{n}}, \; \text{for all}\, x \big] 		
+\geq 1 - 2 e^{- k \log (n)}.
+\]
+
+\subsection{Spiked Wishart Model}
+
+Recall that the data $\{y_i \}_{i=1}^N$ are i.i.d. samples from $\mathcal{N}(0, \Sigma)$ where $\Sigma = G(\xstar)G(\xstar)^\T + \sigma^2 I_n$.
+In the minimization problem \eqref{eq:minM} we take $Y = \Sigma_N - \sigma^2 I_n$ where $\Sigma_N$ is the empirical covariance matrix. The symmetric noise matrix $H$ is then given by $H = \Sigma_N - \Sigma$ and by the Law of Large Numbers $H \to 0$ as $N \to \infty$.
+We bound $\|\Lambda_x^\T H \Lambda_x \|$ with high probability uniformly over $x \in \R^k$.
+
+Fix $x \in \R^k$, let $\mathcal{N}_{{1}/{4}}$ be a $1/4$-net on the sphere $\mathcal{S}^{k-1}$ such that $|\mathcal{N}_{1/4}| \leq 9^k$, and notice that:
+\[
+\|\Lambda_x^\T H \Lambda_x \| \leq 2 \max_{z \in \mathcal{N}_{{1}/{4}}} |z^\T \Lambda_x^\T H \Lambda_x   z|.
+\]
+By a union bound on $\mathcal{N}_{1/4}$ we obtain for any fixed $z \in \mathcal{N}_{{1}/{4}}$:
+\[
+\PX\big[\|\Lambda_x^\T H \Lambda_x\| \geq 2 u \big] \leq 9^k \PX\big[|z^T \Lambda_x^\T H \Lambda_x z | \geq u\big].
+\]
+Let $\ell_x := \Lambda_x z$ and note that:
+\[
+\begin{aligned}
+z^T \Lambda_x^\T H \Lambda_x z &= \frac{1}{N} \sum_{i=1}^N (\ell_{x}^\T y_i)^2 - \EX[(\ell_{x}^\T y_i)^2 ]  %\\
+%&= \frac{1}{N} \sum_{i=1}^N \nu_i - \EX[\nu_i ] 
+\end{aligned}
+\]
+Since $s_i := \ell_{x}^\T y_i \sim \mathcal{N}(0,\gamma^2)$ where $\gamma^2 = \ell_{x}^\T \Sigma \ell_{x}$, then
+for $u/\gamma^2 \in (0,1)$ by small deviation bounds for $\chi^2$ random variables (see for example \cite[Example 2.11]{wainwright2019high}): 
+\[ 
+\begin{aligned}
+\PX\big[\|\Lambda_x^\T H \Lambda_x\| \geq 2 u \big] \leq 9^k \PX\Big[|\frac{1}{N}\sum_{i=1} ({s_i}/{\gamma})^2 - 1| \geq \frac{u}{\gamma^2}\Big]  
+\leq 2 \exp\big[ k \log 9 - \frac{N}{8}\frac{u^2}{\gamma^4} \big].
+\end{aligned}
+\]
+Recall now that $|\{\Lambda_x | x \neq 0 \}| \leq (n_1^d n_2^d \dots n_d )^k$, then
+proceeding as for the Wigner case by a union bound over all possible $\Lambda_x$:
+\[
+\PX\big[ \| \Lambda_x^\T H \Lambda_x \| \leq 2 \sqrt{\frac{24 k \log (3\, n_1^d n_2^{d-1} \dots n_d) }{N}} \gamma^2, \;\text{for all}\; x  \big] \geq 1 - 2 e^{- k \log(3 n)} 
+\]
+Similarly when $u/\gamma^2 \geq 1$ we obtain 
+\[
+\PX\big[ \| \Lambda_x^\T H \Lambda_x \| \leq 2 {\frac{24 k \log (3\, n_1^d n_2^{d-1} \dots n_d) }{N}} \gamma^2, \;\text{for all}\; x  \big] \geq 1 - 2 e^{- k \log(3 n)} 
+\]
+\subsection{Proof of Proposition \ref{prop:rand_localmin}}\label{sec:min_rand}
+
+Observe that Proposition \ref{prop:rand_localmin}.A follows from Proposition \ref{prop:local_min} after noticing that the assumptions on $\eps$ and $\omega$ in Theorem \ref{thm:main_rand} imply that $ \mathcal{B}(\xstar, r_+) \subset \mathcal{B}(\xstar, \varrho \|\xstar\| d^{-12})$ and $\mathcal{B}(- \rho_d \, \xstar, r_-) \subset  \mathcal{B}(-\rho_d \xstar, \varrho \|\xstar\| d^{-12})$. 
+
+We next recall the following fact on the local Lipschitz property of the generative network.
+
+\begin{lemma}[Lemma 21 in \cite{HHHV18}]
+	Suppose $x \in \mathcal{B}(\xstar, d \sqrt{\eps} \|\xstar\|)$, and the WDC holds with $\eps < 1/(200)^4 /d^6$. Then it holds that:
+	\[
+	\|G(x) - G(\xstar) \|\leq \frac{1.2}{2^{d/2}} \|x - \xstar\|.
+	\]
+\end{lemma}
+
+The proof of Proposition \ref{prop:rand_localmin}.B follows now from $\ystar = G(\xstar)$, the above Lemma, the bounds \eqref{eq:LxLy} and \eqref{eq:Lx_bound} and the assumptions on $\epsilon$ and the noise term.

@@ -1,0 +1,114 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2504.03865v3",
+  "initialized_utc": "2026-08-11T09:08:00.826080Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "mapper-loss-main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Towards an Optimal Bound for the Interleaving Distance on Mapper Graphs \n\\thanks{This research was partially supported by a grant from the Department of Energy (DOE) DE-SC0021015 and grants from the National Science Foundation (NSF) DMS-2301361, CCF-1907591, CCF-2106578, CCF-2142713, CCF-2106672, and CCF-1907612.}",
+        "authors_tex": [
+          "Erin Wolf Chambers",
+          "Ishika Ghosh",
+          "Elizabeth Munch",
+          "Sarah Percival",
+          "Bei Wang"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 312,
+        "sha256": "25cafe1296589f353024a019c872e97ff6cfb719276a7c292ca79fa07967d49a"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2504.03865v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1979435,
+      "sha256": "3cc694a24dbd19b25c6790da0feb0dd519157f5bfe01fdf71b36e4573cee193e",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2504.03865v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2504.03865v3.tar.gz",
+      "entrypoint": "mapper-loss-main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 43,
+      "tex_files": 12,
+      "sha256": "4db116a33b5343b1f98a3d79b95cd703444fdc5f43dcda36144a96947781b325"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2504.03865v3.pdf",
+      "format": "application/pdf",
+      "bytes": 2698744,
+      "sha256": "645b3805e3d51748c5c82c84d95eeb27cbfe047f9e8e0096019568dc9c2b6517"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T09:08:00.826080Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 45
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 43
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 12
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "mapper-loss-main.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

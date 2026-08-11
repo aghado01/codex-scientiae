@@ -1,0 +1,107 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2111.15058v3",
+  "initialized_utc": "2026-08-11T08:32:23.259115Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "arXiv_Mar25.tex",
+      "selection": "explicit",
+      "declarations": {
+        "title_tex": "Computing Generalized Rank Invariant for 2-Parameter Persistence Modules via Zigzag Persistence and its Applications",
+        "authors_tex": [
+          "Tamal K. Dey",
+          "Woojin Kim",
+          "Facundo M\\'emoli"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2111.15058v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 255719,
+      "sha256": "748670720a6fd1caa6f12fe894d63a51eab6aea0527dae31e3f130936d0e4754",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2111.15058v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2111.15058v3.tar.gz",
+      "entrypoint": "arXiv_Mar25.tex",
+      "entrypoint_selection": "explicit",
+      "files": 14,
+      "tex_files": 2,
+      "sha256": "07e823a8096617733b45d29ac523b15f5645bba2a4a990084d5bc8e6ac6f3b34"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2111.15058v3.pdf",
+      "format": "application/pdf",
+      "bytes": 474241,
+      "sha256": "ebdbd89c2210f468c9431d32f4403b6eaaae398c7a4f520620b0763341c45cb9"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:32:23.259115Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 15
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 14
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "not-applicable",
+        "entrypoint": "arXiv_Mar25.tex",
+        "reason": "entrypoint named explicitly; the ambiguity scan did not run",
+        "selection": "explicit"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

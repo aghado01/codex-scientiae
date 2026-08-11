@@ -1,0 +1,307 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Agueh \harvardand\
+  Carlier}{2011}{agueh_2011_BarycentersWassersteinSpace}
+Agueh, M. \harvardand\ Carlier, G.  \harvardyearleft 2011\harvardyearright .
+\newblock Barycenters in the {Wasserstein} {Space}, {\em SIAM Journal on
+  Mathematical Analysis} {\bf 43}(2):~904--924.
+
+\harvarditem[Ambrosio et~al.]{Ambrosio, Gigli \harvardand\
+  Savaré}{2005}{ambrosio_2005_GradientFlowsMetric}
+Ambrosio, L., Gigli, N. \harvardand\ Savaré, G.  \harvardyearleft
+  2005\harvardyearright .
+\newblock {\em Gradient flows: in metric spaces and in the space of probability
+  measures}, Lectures in mathematics {ETH} {Zürich}, Birkhäuser, Boston.
+
+\harvarditem[Arjovsky et~al.]{Arjovsky, Chintala \harvardand\
+  Bottou}{2017}{arjovsky_2017_WassersteinGenerativeAdversarial}
+Arjovsky, M., Chintala, S. \harvardand\ Bottou, L.  \harvardyearleft
+  2017\harvardyearright .
+\newblock Wasserstein generative adversarial networks, {\em in} D.~Precup
+  \harvardand\ Y.~W. Teh (eds), {\em Proceedings of the 34th international
+  conference on machine learning}, Vol.~70 of {\em Proceedings of machine
+  learning research}, PMLR, pp.~214--223.
+
+\harvarditem[Bazaraa et~al.]{Bazaraa, Jarvis \harvardand\
+  Sherali}{2010}{bazaraa_2010_LinearProgrammingNetwork}
+Bazaraa, M.~S., Jarvis, J.~J. \harvardand\ Sherali, H.~D.  \harvardyearleft
+  2010\harvardyearright .
+\newblock {\em Linear programming and network flows}, 4th ed edn, John Wiley \&
+  Sons, Hoboken, NJ.
+
+\harvarditem[Benamou et~al.]{Benamou, Carlier, Cuturi, Nenna \harvardand\
+  Peyré}{2015}{benamou_2015_IterativeBregmanProjections}
+Benamou, J.-D., Carlier, G., Cuturi, M., Nenna, L. \harvardand\ Peyré, G.
+  \harvardyearleft 2015\harvardyearright .
+\newblock Iterative {Bregman} {Projections} for {Regularized} {Transportation}
+  {Problems}, {\em SIAM Journal on Scientific Computing} {\bf
+  37}(2):~A1111--A1138.
+
+\harvarditem[Bernton et~al.]{Bernton, Jacob, Gerber \harvardand\
+  Robert}{2019}{bernton_2019_ParameterEstimationWasserstein}
+Bernton, E., Jacob, P.~E., Gerber, M. \harvardand\ Robert, C.~P.
+  \harvardyearleft 2019\harvardyearright .
+\newblock On parameter estimation with the {Wasserstein} distance, {\em
+  Information and Inference: A Journal of the IMA} {\bf 8}(4):~657--676.
+
+\harvarditem[Burago et~al.]{Burago, Burago, Ivanov \harvardand\
+  Ivanov}{2001}{burago_2001_CourseMetricGeometry}
+Burago, D.~J., Burago, J.~D., Ivanov, S. \harvardand\ Ivanov, S.~V.
+  \harvardyearleft 2001\harvardyearright .
+\newblock {\em A {Course} in {Metric} {Geometry}}, number~33 in {\em Graduate
+  {Studies} in {Mathematics}}, American Mathematical Society, Providence, RI.
+
+\harvarditem{Calinski \harvardand\
+  Harabasz}{1974}{calinski_1974_DendriteMethodCluster}
+Calinski, T. \harvardand\ Harabasz, J.  \harvardyearleft 1974\harvardyearright
+  .
+\newblock A dendrite method for cluster analysis, {\em Communications in
+  Statistics - Theory and Methods} {\bf 3}(1):~1--27.
+
+\harvarditem[Courty et~al.]{Courty, Flamary, Tuia \harvardand\
+  Rakotomamonjy}{2017}{courty_2017_OptimalTransportDomain}
+Courty, N., Flamary, R., Tuia, D. \harvardand\ Rakotomamonjy, A.
+  \harvardyearleft 2017\harvardyearright .
+\newblock Optimal {Transport} for {Domain} {Adaptation}, {\em IEEE Transactions
+  on Pattern Analysis and Machine Intelligence} {\bf 39}(9):~1853--1865.
+
+\harvarditem{Cuturi}{2013}{cuturi_2013_SinkhornDistancesLightspeed}
+Cuturi, M.  \harvardyearleft 2013\harvardyearright .
+\newblock Sinkhorn distances: {Lightspeed} computation of optimal transport,
+  {\em in} C.~Burges, L.~Bottou, M.~Welling, Z.~Ghahramani \harvardand\
+  K.~Weinberger (eds), {\em Advances in neural information processing systems},
+  Vol.~26, Curran Associates, Inc.
+
+\harvarditem[Genevay et~al.]{Genevay, Cuturi, Peyré \harvardand\
+  Bach}{2016}{genevay_2016_StochasticOptimizationLargescale}
+Genevay, A., Cuturi, M., Peyré, G. \harvardand\ Bach, F.  \harvardyearleft
+  2016\harvardyearright .
+\newblock Stochastic optimization for large-scale optimal transport, {\em
+  Proceedings of the 30th {International} {Conference} on {Neural}
+  {Information} {Processing} {Systems}}, {NIPS}'16, Curran Associates Inc., Red
+  Hook, NY, USA, pp.~3440--3448.
+
+\harvarditem{Gray \harvardand\ Neuhoff}{1998}{gray_1998_Quantization}
+Gray, R. \harvardand\ Neuhoff, D.  \harvardyearleft 1998\harvardyearright .
+\newblock Quantization, {\em IEEE Transactions on Information Theory} {\bf
+  44}(6):~2325--2383.
+
+\harvarditem[Hao et~al.]{Hao, Stuart, Kowalski, Choudhary, Hoffman, Hartman,
+  Srivastava, Molla, Madad, Fernandez-Granda \harvardand\
+  Satija}{2024}{hao_2024_DictionaryLearningIntegrative}
+Hao, Y., Stuart, T., Kowalski, M.~H., Choudhary, S., Hoffman, P., Hartman, A.,
+  Srivastava, A., Molla, G., Madad, S., Fernandez-Granda, C. \harvardand\
+  Satija, R.  \harvardyearleft 2024\harvardyearright .
+\newblock Dictionary learning for integrative, multimodal and scalable
+  single-cell analysis, {\em Nature Biotechnology} {\bf 42}(2):~293--304.
+
+\harvarditem{Hoffman \harvardand\
+  Gelman}{2014}{hoffman_2014_NoUTurnSamplerAdaptively}
+Hoffman, M.~D. \harvardand\ Gelman, A.  \harvardyearleft 2014\harvardyearright
+  .
+\newblock The {No}-{U}-{Turn} {Sampler}: {Adaptively} {Setting} {Path}
+  {Lengths} in {Hamiltonian} {Monte} {Carlo}, {\em Journal of Machine Learning
+  Research} {\bf 15}(47):~1593--1623.
+
+\harvarditem[Hornik et~al.]{Hornik, Feinerer, Kober \harvardand\
+  Buchta}{2012}{hornik_2012_SphericalMeansClustering}
+Hornik, K., Feinerer, I., Kober, M. \harvardand\ Buchta, C.  \harvardyearleft
+  2012\harvardyearright .
+\newblock Spherical k -{Means} {Clustering}, {\em Journal of Statistical
+  Software} {\bf 50}(10).
+
+\harvarditem{Kantorovitch}{1958}{kantorovitch_1958_TranslocationMasses}
+Kantorovitch, L.  \harvardyearleft 1958\harvardyearright .
+\newblock On the {Translocation} of {Masses}, {\em Management Science} {\bf
+  5}(1):~1--4.
+
+\harvarditem{Kreitmeier}{2011}{kreitmeier_2011_OptimalVectorQuantization}
+Kreitmeier, W.  \harvardyearleft 2011\harvardyearright .
+\newblock Optimal vector quantization in terms of {Wasserstein} distance, {\em
+  Journal of Multivariate Analysis} {\bf 102}(8):~1225--1239.
+
+\harvarditem[Lanzetti et~al.]{Lanzetti, Bolognani \harvardand\
+  Dörfler}{2025}{lanzetti_2025_FirstOrderConditionsOptimization}
+Lanzetti, N., Bolognani, S. \harvardand\ Dörfler, F.  \harvardyearleft
+  2025\harvardyearright .
+\newblock First-{Order} {Conditions} for {Optimization} in the {Wasserstein}
+  {Space}, {\em SIAM Journal on Mathematics of Data Science} {\bf
+  7}(1):~274--300.
+
+\harvarditem[LeCun et~al.]{LeCun, Cortes \harvardand\
+  Burges}{1998}{lecun_1998_MNISTDatabaseHandwritten}
+LeCun, Y., Cortes, C. \harvardand\ Burges, C.  \harvardyearleft
+  1998\harvardyearright .
+\newblock The {MNIST} {Database} of {Handwritten} {Digits}.
+
+\harvarditem{MacQueen}{1967}{macqueen_1967_MethodsClassificationAnalysis}
+MacQueen, J.~B.  \harvardyearleft 1967\harvardyearright .
+\newblock Some {Methods} for {Classification} and {Analysis} of {Multivariate}
+  {Observations}, {\em in} L.~M.~L. Cam \harvardand\ J.~Neyman (eds), {\em
+  Proc. of the fifth berkeley symposium on mathematical statistics and
+  probability}, Vol.~1, University of California Press, pp.~281--297.
+
+\harvarditem[Manning et~al.]{Manning, Raghavan \harvardand\
+  Schütze}{2008}{manning_2008_IntroductionInformationRetrieval}
+Manning, C.~D., Raghavan, P. \harvardand\ Schütze, H.  \harvardyearleft
+  2008\harvardyearright .
+\newblock {\em Introduction to information retrieval}, Cambridge University
+  Press, New York.
+
+\harvarditem{McCann}{1997}{mccann_1997_ConvexityPrincipleInteracting}
+McCann, R.~J.  \harvardyearleft 1997\harvardyearright .
+\newblock A {Convexity} {Principle} for {Interacting} {Gases}, {\em Advances in
+  Mathematics} {\bf 128}(1):~153--179.
+
+\harvarditem[McInnes et~al.]{McInnes, Healy \harvardand\
+  Melville}{2020}{mcinnes_2020_UMAPUniformManifold}
+McInnes, L., Healy, J. \harvardand\ Melville, J.  \harvardyearleft
+  2020\harvardyearright .
+\newblock {UMAP}: {Uniform} {Manifold} {Approximation} and {Projection} for
+  {Dimension} {Reduction}.
+
+\harvarditem{Mitchell}{1997}{mitchell_1997_TwentyNewsgroups}
+Mitchell, T.  \harvardyearleft 1997\harvardyearright .
+\newblock Twenty {Newsgroups}.
+
+\harvarditem{Monge}{1781}{monge_1781_MemoireTheorieDeblais}
+Monge, G.  \harvardyearleft 1781\harvardyearright .
+\newblock {\em Mémoire sur la théorie des déblais et des remblais}, De
+  l'Imprimerie Royale.
+
+\harvarditem{Nesterov}{2018}{nesterov_2018_LecturesConvexOptimization}
+Nesterov, Y.  \harvardyearleft 2018\harvardyearright .
+\newblock {\em Lectures on {Convex} {Optimization}}, Vol. 137 of {\em Springer
+  {Optimization} and {Its} {Applications}}, Springer International Publishing,
+  Cham.
+
+\harvarditem{Otsu}{1979}{otsu_1979_ThresholdSelectionMethod}
+Otsu, N.  \harvardyearleft 1979\harvardyearright .
+\newblock A {Threshold} {Selection} {Method} from {Gray}-{Level} {Histograms},
+  {\em IEEE Transactions on Systems, Man, and Cybernetics} {\bf 9}(1):~62--66.
+
+\harvarditem{Otto}{2001}{otto_2001_GeometryDissipativeEvolution}
+Otto, F.  \harvardyearleft 2001\harvardyearright .
+\newblock The geometry of dissipative evolution equations: the porous medium
+  equation, {\em Communications in Partial Differential Equations} {\bf
+  26}(1-2):~101--174.
+
+\harvarditem{Peyré \harvardand\
+  Cuturi}{2019}{peyre_2019_ComputationalOptimalTransport}
+Peyré, G. \harvardand\ Cuturi, M.  \harvardyearleft 2019\harvardyearright .
+\newblock Computational {Optimal} {Transport}: {With} {Applications} to {Data}
+  {Science}, {\em Foundations and Trends® in Machine Learning} {\bf
+  11}(5-6):~355--607.
+
+\harvarditem[Ramdas et~al.]{Ramdas, Trillos \harvardand\
+  Cuturi}{2017}{ramdas_2017_WassersteinTwoSampleTesting}
+Ramdas, A., Trillos, N. \harvardand\ Cuturi, M.  \harvardyearleft
+  2017\harvardyearright .
+\newblock On {Wasserstein} {Two}-{Sample} {Testing} and {Related} {Families} of
+  {Nonparametric} {Tests}, {\em Entropy} {\bf 19}(2):~47.
+
+\harvarditem{Rand}{1971}{rand_1971_ObjectiveCriteriaEvaluation}
+Rand, W.~M.  \harvardyearleft 1971\harvardyearright .
+\newblock Objective {Criteria} for the {Evaluation} of {Clustering} {Methods},
+  {\em Journal of the American Statistical Association} {\bf
+  66}(336):~846--850.
+
+\harvarditem{Rousseeuw}{1987}{rousseeuw_1987_SilhouettesGraphicalAid}
+Rousseeuw, P.~J.  \harvardyearleft 1987\harvardyearright .
+\newblock Silhouettes: {A} graphical aid to the interpretation and validation
+  of cluster analysis, {\em Journal of Computational and Applied Mathematics}
+  {\bf 20}:~53--65.
+
+\harvarditem[Schiebinger et~al.]{Schiebinger, Shu, Tabaka, Cleary, Subramanian,
+  Solomon, Gould, Liu, Lin, Berube, Lee, Chen, Brumbaugh, Rigollet,
+  Hochedlinger, Jaenisch, Regev \harvardand\
+  Lander}{2019}{schiebinger_2019_OptimalTransportAnalysisSingleCell}
+Schiebinger, G., Shu, J., Tabaka, M., Cleary, B., Subramanian, V., Solomon, A.,
+  Gould, J., Liu, S., Lin, S., Berube, P., Lee, L., Chen, J., Brumbaugh, J.,
+  Rigollet, P., Hochedlinger, K., Jaenisch, R., Regev, A. \harvardand\ Lander,
+  E.~S.  \harvardyearleft 2019\harvardyearright .
+\newblock Optimal-{Transport} {Analysis} of {Single}-{Cell} {Gene} {Expression}
+  {Identifies} {Developmental} {Trajectories} in {Reprogramming}, {\em Cell}
+  {\bf 176}(4):~928--943.e22.
+
+\harvarditem[Solomon et~al.]{Solomon, De~Goes, Peyré, Cuturi, Butscher,
+  Nguyen, Du \harvardand\
+  Guibas}{2015}{solomon_2015_ConvolutionalWassersteinDistances}
+Solomon, J., De~Goes, F., Peyré, G., Cuturi, M., Butscher, A., Nguyen, A., Du,
+  T. \harvardand\ Guibas, L.  \harvardyearleft 2015\harvardyearright .
+\newblock Convolutional wasserstein distances: efficient optimal transportation
+  on geometric domains, {\em ACM Transactions on Graphics} {\bf 34}(4):~1--11.
+
+\harvarditem[Srivastava et~al.]{Srivastava, Li \harvardand\
+  Dunson}{2018}{srivastava_2018_ScalableBayesBarycenter}
+Srivastava, S., Li, C. \harvardand\ Dunson, D.~B.  \harvardyearleft
+  2018\harvardyearright .
+\newblock Scalable bayes via barycenter in wasserstein space, {\em Journal of
+  Machine Learning Research} {\bf 19}(1):~312--346.
+
+\harvarditem{{Stan Development
+  Team}}{2025}{standevelopmentteam_2025_StanReferenceManual}
+{Stan Development Team}  \harvardyearleft 2025\harvardyearright .
+\newblock Stan {Reference} {Manual}.
+
+\harvarditem{Stein \harvardand\
+  Shakarchi}{2011}{stein_2011_FunctionalAnalysisIntroduction}
+Stein, E.~M. \harvardand\ Shakarchi, R.  \harvardyearleft 2011\harvardyearright
+  .
+\newblock {\em Functional analysis: introduction to further topics in
+  analysis}, number~4 in {\em Princeton lectures in analysis}, Princeton
+  University Press, Princeton, NJ.
+
+\harvarditem{Strehl \harvardand\
+  Ghosh}{2002}{strehl_2002_ClusterEnsemblesKnowledge}
+Strehl, A. \harvardand\ Ghosh, J.  \harvardyearleft 2002\harvardyearright .
+\newblock Cluster ensembles—a knowledge reuse framework for combining
+  multiple partitions, {\em Journal of machine learning research} {\bf
+  3}(Dec):~583--617.
+
+\harvarditem{Takatsu}{2011}{takatsu_2011_WassersteinGeometryGaussian}
+Takatsu, A.  \harvardyearleft 2011\harvardyearright .
+\newblock Wasserstein geometry of {Gaussian} measures, {\em Osaka Journal of
+  Mathematics} {\bf 48}(4):~1005 -- 1026.
+
+\harvarditem{Villani}{2003}{villani_2003_TopicsOptimalTransportation}
+Villani, C.  \harvardyearleft 2003\harvardyearright .
+\newblock {\em Topics in {Optimal} {Transportation}}, Vol.~58 of {\em Graduate
+  {Studies} in {Mathematics}}, American Mathematical Society, S.l.
+
+\harvarditem{You}{2020}{you_2020_T4transportToolsComputational}
+You, K.  \harvardyearleft 2020\harvardyearright .
+\newblock T4transport: {Tools} for {Computational} {Optimal} {Transport}.
+
+\harvarditem[You et~al.]{You, Shung \harvardand\
+  Giuffrè}{2025}{you_2025_WassersteinMedianProbability}
+You, K., Shung, D. \harvardand\ Giuffrè, M.  \harvardyearleft
+  2025\harvardyearright .
+\newblock On the {Wasserstein} {Median} of {Probability} {Measures}, {\em
+  Journal of Computational and Graphical Statistics} {\bf 34}(1):~253--266.
+
+\harvarditem{Zemel \harvardand\
+  Panaretos}{2019}{zemel_2019_FrechetMeansProcrustes}
+Zemel, Y. \harvardand\ Panaretos, V.~M.  \harvardyearleft 2019\harvardyearright
+  .
+\newblock Fréchet means and {Procrustes} analysis in {Wasserstein} space, {\em
+  Bernoulli} {\bf 25}(2).
+
+\harvarditem[Zhuang et~al.]{Zhuang, Chen \harvardand\
+  Yang}{2022}{zhuang_2022_WassersteinKmeansClustering}
+Zhuang, Y., Chen, X. \harvardand\ Yang, Y.  \harvardyearleft
+  2022\harvardyearright .
+\newblock Wasserstein {K}-means for clustering probability distributions, {\em
+  Proceedings of the 36th {International} {Conference} on {Neural}
+  {Information} {Processing} {Systems}}, {NIPS} '22, Curran Associates Inc.,
+  Red Hook, NY, USA.
+
+\harvarditem[Álvarez Esteban et~al.]{Álvarez Esteban, del Barrio,
+  Cuesta-Albertos \harvardand\
+  Matrán}{2016}{alvarez-esteban_2016_FixedpointApproachBarycenters}
+Álvarez Esteban, P.~C., del Barrio, E., Cuesta-Albertos, J. \harvardand\
+  Matrán, C.  \harvardyearleft 2016\harvardyearright .
+\newblock A fixed-point approach to barycenters in {Wasserstein} space, {\em
+  Journal of Mathematical Analysis and Applications} {\bf 441}(2):~744--762.
+
+\end{thebibliography}

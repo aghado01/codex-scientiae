@@ -1,0 +1,185 @@
+\section{Problems} 
+\label{sec:Problems}
+
+Ultimately, the goal of this paper is to solve the following problem. 
+
+\begin{problem}
+\label{prob:ComputeInterleavingDist}
+\emph{Compute the interleaving distance.}
+\begin{itemize}
+    \item \emph{Input:}  A pair of mapper graphs represented by cosheaves  $F$ and $G$. 
+    \item \emph{Question:} Compute the interleaving distance, $d_I(F,G)$. 
+\end{itemize}
+\end{problem}
+
+We will give further details on the input structure in \cref{sec:DataStructure}. 
+For the moment, however, following standard practice in complexity theory, we focus on the binary decision version of the problem.
+
+\begin{problem} 
+\label{prob:BinaryDecision} 
+\emph{Binary decision problem.}
+\begin{itemize}
+    \item \emph{Input:} Fixed $n\geq 0$ and a pair of mapper graphs represented by cosheaves  $F$ and $G$. 
+    \item \emph{Question:} Is there an $n$-interleaving between $F$ and $G$? 
+\end{itemize}
+\end{problem}
+
+Of course, searching for a polynomial time algorithm to answer \cref{prob:ComputeInterleavingDist} is a fool's errand. 
+By \cite{bjerkevik2017computational}, \cref{prob:BinaryDecision} is graph isomorphism complete when $n=0$; and is NP-complete when $n >0$. 
+Still, if we assume we can answer the binary decision problem \cref{prob:BinaryDecision}, then we can use a standard binary search algorithm to answer \cref{prob:ComputeInterleavingDist} as follows. 
+Initially we find a plausible interval  within which to search for $n$ by doubling $n \in \{0, 1, 2, 4,\cdots\}$ iteratively until \cref{prob:BinaryDecision} returns \textit{Yes}.
+That is, for $A = 2^{j-1}$, P\ref{prob:BinaryDecision} returns \textit{No} and for $B = 2^j$, P\ref{prob:BinaryDecision} returns \textit{Yes}; then we will use $[A,B]$ as our initial interval.
+Then, we run standard binary search on the interval $[A,B]$ using the response to P\ref{prob:BinaryDecision} to determine whether to replace the interval with the top or bottom half. 
+This is given in \cref{alg:BinarySearch}, where we use \texttt{is\_interleaved}$(F,G, n)$ for the subroutine that answers P\ref{prob:BinaryDecision}. 
+
+\begin{algorithm}
+\caption{Binary Search For $N$}
+\label{alg:BinarySearch}
+\begin{algorithmic}[1]
+\Procedure{BinarySearch}{$F,G$}
+    \State $i=0$
+    \While {\texttt{is\_interleaved}$(F,G, 2^i)$ is False} 
+        \State {$i \gets i+1$}
+    \EndWhile
+    %
+    \State $ A \gets max(0, 2^{i-1} + 1)$, $B \gets 2^i$
+    \While{$A \neq B$}
+        \State $n \gets \lfloor (A + B) / 2 \rfloor$
+        \If{\texttt{is\_interleaved}$(F,G, n)$ is False}
+            \State $A \gets n+1$ \Comment{Next interval is $[n+1,B]$}
+        \Else
+            \State  $B \gets n$ \Comment{Next interval is $[A,n]$}
+        \EndIf
+    \EndWhile
+    \State \Return $A$ \Comment{Result is $d_I(F,G) \leq A$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+Thus, we focus this paper on building an optimization framework to provide a solution to \cref{prob:BinaryDecision}. 
+We can proceed by searching, given a fixed $n$, for an $n$-assignment $(\phi,\psi)$ until we find a pair that forms an $n$-interleaving. 
+However, the framework built up in the previous section gives an additional viewpoint for this search. 
+We can instead look for an $n$-assignment $(\phi,\psi)$ that minimizes the loss function of \cref{shortdef} used in the bound in \cref{maintheorem}, thereby making the bound on the interleaving distance as small as possible. 
+This is exemplified in the following problem. 
+
+\begin{problem} 
+\label{prob:LossComputation} 
+\emph{Loss computation problem.}
+\begin{itemize}
+    \item \emph{Input:} Fixed $n\geq 0$ and a pair of mapper graphs represented by cosheaves  $F$ and $G$. 
+    \item \emph{Question:} Find the value $L = \inf_{\phi,\psi}L_B(\phi,\psi)$ over all $n$-assignments $\phi$, $\psi$. This implies that $d_I(F,G) \leq n+L$.  
+\end{itemize}
+\end{problem}
+
+First, note that there is a polynomial time reduction from  \cref{prob:LossComputation}  to \cref{prob:BinaryDecision}. 
+Indeed, there is an $n$-interleaving iff $\inf_{\phi,\psi}L_B(\phi,\psi) = 0$. 
+This implies that since \cref{prob:BinaryDecision} is NP-hard, \cref{prob:LossComputation} is NP-hard as well (specifically, GI-complete for $n=0$, NP-complete for $n >0$). 
+Thus, looking for a polynomial time algorithm for \cref{prob:LossComputation} is again unlikely to result in success (unless $P=NP$) so we shall not try. 
+
+What we can do in polynomial time is the following. 
+If we fix the input $n$-assignment, we have a modified version of \cref{prob:BinaryDecision} as follows.
+
+\begin{problem} 
+\label{prob:BinaryDecisionFixedAssignment} 
+\emph{Binary decision problem for fixed $\phi$ and $\psi$.}
+\begin{itemize}
+    \item \emph{Input:} Fixed $n\geq 0$, a pair of mapper graphs represented by cosheaves  $F$ and $G$, and an $n$-assignment $\phi$, $\psi$. 
+    \item \emph{Question:} Is $(\phi,\psi)$ an $n$-interleaving between $F$ and $G$? 
+\end{itemize}
+\end{problem}
+
+Similarly, for a fixed $\phi$ and $\psi$, we have a modified version of \cref{prob:LossComputation} as follows. 
+
+\begin{problem} 
+\label{prob:LossComputationFixedAssignment} 
+\emph{Loss computation problem for fixed $\phi$ and $\psi$.}
+\begin{itemize}
+    \item \emph{Input:} Fixed $n\geq 0$, a pair of mapper graphs represented by cosheaves  $F$ and $G$, and an $n$-assignment $\phi$, $\psi$. 
+    \item \emph{Question:} Compute $L = L_B(\phi,\psi)$, and thus $d_I(F,G) \leq n+L$.  
+\end{itemize}
+\end{problem}
+
+It was shown in \cite{chambers2023bounding} that \cref{prob:LossComputationFixedAssignment} can be solved in polynomial time. Thus, the primary source of computational complexity lies in searching for an optimal assignment, and hence the lowest bound. To address this, we develop an optimization formulation that searches for a best assignment to answer \cref{prob:BinaryDecision} or \cref{prob:LossComputation}; when combined with binary search, this also yields a solution to \cref{prob:ComputeInterleavingDist}.
+
+The resulting loss value can, in a single run, provide a na\"ive bound on the distance between the input mapper graphs. However, as we show below, there are examples in which the minimum achievable loss for a fixed $n$ does not yield a tight bound on the interleaving distance.
+ 
+
+\begin{example}
+\label{ex:binarySearchExample}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.3\linewidth, align = c]{BinarySearch.pdf}
+    \qquad
+    \includegraphics[width=0.4
+    \linewidth, align = c]{interleave_example_loss_Down_Fork.pdf}
+    \caption{(Left) An example of a pair of mapper graphs where the binary search on $n$ is required. (Right) The computed loss and interleaving bound for this example. }
+    \label{fig:BinarySearchExample}
+\end{figure}
+
+In this example, we present a pair of graphs and a choice of $n$ for which every assignment satisfies $d_I \lneq n + L_B(\phi,\psi)$, demonstrating that a loss computation for a single choice of $n$ is not enough and therefore a binary search over $n$ is indeed necessary. 
+Consider the two mapper graphs shown on the left of \cref{fig:BinarySearchExample} and fix $n = 1$.
+Focusing on the vertices $x$ and $z$, note that the only feasible assignment is $\phi(x) = \phi(z) = [y]$, where $[y]$ denotes the connected component containing $y$ in the 1-smoothing of $G$, i.e., $[y] \in G(S_{\sigma_1}^1)$. In the opposite direction, the vertex $y$ has two possible assignments, so $\psi(y)$ may be either $[x]$ or $[z]$ in $F(S_{\sigma_1}^1)$.
+Then in the diagram 
+\begin{equation*}
+\begin{tikzcd}
+    F(S_{\sigma_1}) \ar[rr] \ar[dr] 
+    && F(S_{\sigma_1}^2) 
+    & \substack{x\\z} \ar[rr] \ar[dr] && \substack{{[x]}\\{[z]}}
+    \\
+    & G(S_{\sigma_1}^1) \ar[ur] 
+    &&& {[y]}\ar[ur, dashed, "?"]
+\end{tikzcd}
+\end{equation*}
+either choice for $y$ will result in the other object not commuting. 
+Then the loss is given by 
+%
+\[
+k = \lceil d_F^{S_{\sigma_i}^2}([x],[y]) / 2 \rceil = \lceil 3/2 \rceil = 2,
+\]
+%
+so the interleaving bound is $n+k = 1+2 = 3$. 
+However, we can build an interleaving for $n =2$ by sending the left tail of $F$ to the left tail of $G$, showing that the true interleaving $d_I(F,G) = 2$ is strictly less than any possible bound found by the solver for a single choice of $n$.
+This can be remedied, however, by running a binary search over $n$, which we implement.
+
+\end{example}
+
+Because the above example shows we might not get a tight bound by only optimizing the assignments for a given $n$, we take the following modification. 
+At the expense of higher computation time per run, we have a second version of binary search where we use the output of P\ref{prob:LossComputation} to its greatest extent. 
+As before, we use an exponential search to find an initial interval $[A,B]$. 
+However, we modify the binary search as follows. 
+Given the midpoint $n \in [A,B]$, we use P\ref{prob:LossComputation} to compute the loss $L$. 
+If $L =0$, this is equivalent to finding an $n$-interleaving, and so the next interval to search will be $[A,n]$. 
+If on the other hand, $L>0$, then algorithm has found an $n+L$ interleaving, and the next interval to search will be $[n+1, \min\{n+L, B\}]$. 
+This modified binary search is given in \cref{alg:ConstrainedBinarySearch}, where we use \texttt{loss}$(F,G,n)$ to represent the output of P\ref{prob:LossComputation}. 
+
+\begin{algorithm}
+\caption{Constrained Binary Search For $N$}
+\label{alg:ConstrainedBinarySearch}
+\begin{algorithmic}[1]
+\Procedure{ConstrainedBinarySearch}{$F,G$}
+    \State $i=0$
+    \While {\texttt{is\_interleaved}$(F,G, 2^i)$ is False} 
+        \State {$i \gets i+1$}
+    \EndWhile
+    \State $A \gets max(0,2^{i-1}+1)$, $B \gets 2^i$
+    \While{$A \neq B$}
+        \State $n \gets \lfloor (A + B) / 2 \rfloor$
+        \State $L \gets \texttt{loss}(F,G,n)$
+        \If{$L >0$}
+            \State $A \gets n+1$, $B \gets \min\{n+L, B\}$ \Comment{Next interval is $[n+1,\min\{n+L, B\}]$}
+        \Else \Comment{$L = 0$}
+            \State  $B \gets n$ \Comment{Next interval is $[A,n]$}
+        \EndIf
+    \EndWhile
+    \State \Return $A$ \Comment{Result is $d_I(F,G) \leq A$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In \cref{sec:DataStructure}, we give explicit constructions of the representations of $F$ and $G$ as graphs, and use these to develop optimization algorithms for P\ref{prob:BinaryDecision} and P\ref{prob:LossComputation}. We then combine these solutions with binary search, as described above, to obtain the smallest available upper bound $d_I(F,G) \leq N$.
+
+While we cannot prove that this $N$ equals the interleaving distance---unsurprising given that the problem is NP-hard and we do not resolve whether $\mathrm{P}=\mathrm{NP}$---our experiments (\cref{sec:experiments}) show that this approach recovers the interleaving distance in several cases where the true value is known.
+

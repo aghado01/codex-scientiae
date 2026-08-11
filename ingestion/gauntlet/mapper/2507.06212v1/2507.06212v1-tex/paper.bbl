@@ -1,0 +1,59 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Singh et~al.(2007)Singh, M{\'e}moli, Carlsson, et~al.]{singh2007topological}
+Gurjeet Singh, Facundo M{\'e}moli, Gunnar~E Carlsson, et~al.
+\newblock Topological methods for the analysis of high dimensional data sets and 3d object recognition.
+\newblock \emph{PBG@ Eurographics}, 2:\penalty0 091--100, 2007.
+
+\bibitem[Lum et~al.(2013)Lum, Singh, Lehman, Ishkanov, Vejdemo-Johansson, Alagappan, Carlsson, and Carlsson]{lum2013extracting}
+Pek~Y Lum, Gurjeet Singh, Alan Lehman, Tigran Ishkanov, Mikael Vejdemo-Johansson, Muthu Alagappan, John Carlsson, and Gunnar Carlsson.
+\newblock Extracting insights from the shape of complex data using topology.
+\newblock \emph{Scientific reports}, 3\penalty0 (1):\penalty0 1236, 2013.
+
+\bibitem[Müllner and Babu(2013)]{mullner2013pymapper}
+Daniel Müllner and Aravindakshan Babu.
+\newblock Python mapper: An open-source toolchain for data exploration, analysis and visualization.
+\newblock \url{http://danifold.net/mapper}, 2013.
+
+\bibitem[van Veen et~al.(2019)van Veen, Saul, Eargle, and Mangham]{KeplerMapper_JOSS}
+Hendrik~Jacob van Veen, Nathaniel Saul, David Eargle, and Sam~W. Mangham.
+\newblock Kepler mapper: A flexible python implementation of the mapper algorithm.
+\newblock \emph{Journal of Open Source Software}, 4\penalty0 (42):\penalty0 1315, 2019.
+\newblock \doi{10.21105/joss.01315}.
+\newblock URL \url{https://doi.org/10.21105/joss.01315}.
+
+\bibitem[Tauzin et~al.(2020)Tauzin, Lupo, Tunstall, Pérez, Caorsi, Medina-Mardones, Dassatti, and Hess]{tauzin2020giottotda}
+Guillaume Tauzin, Umberto Lupo, Lewis Tunstall, Julian~Burella Pérez, Matteo Caorsi, Anibal Medina-Mardones, Alberto Dassatti, and Kathryn Hess.
+\newblock giotto-tda: A topological data analysis toolkit for machine learning and data exploration, 2020.
+
+\bibitem[Simi(2024)]{simi_2024_14194667}
+Luca Simi.
+\newblock tda-mapper, November 2024.
+\newblock URL \url{https://doi.org/10.5281/zenodo.14194667}.
+
+\bibitem[Vejdemo-Johansson and Leshchenko(2020)]{vejdemo2020certified}
+Mikael Vejdemo-Johansson and Alisa Leshchenko.
+\newblock Certified mapper: Repeated testing for acyclicity and obstructions to the nerve lemma.
+\newblock In \emph{Topological Data Analysis: The Abel Symposium 2018}, pages 491--515. Springer, 2020.
+
+\bibitem[Alvarado et~al.(2024)Alvarado, Belton, Lee, Palande, Percival, Purvine, and Tymochko]{alvarado2024graphmappergraph}
+Enrique~G Alvarado, Robin Belton, Kang-Ju Lee, Sourabh Palande, Sarah Percival, Emilie Purvine, and Sarah Tymochko.
+\newblock Any graph is a mapper graph, 2024.
+\newblock URL \url{https://arxiv.org/abs/2408.11180}.
+
+\bibitem[Rousseeuw(1987)]{rousseeuw1987silhouettes}
+Peter~J Rousseeuw.
+\newblock Silhouettes: a graphical aid to the interpretation and validation of cluster analysis.
+\newblock \emph{Journal of computational and applied mathematics}, 20:\penalty0 53--65, 1987.
+
+\bibitem[El-Sonbaty et~al.(2004)El-Sonbaty, Ismail, and Farouk]{el2004efficient}
+Yasser El-Sonbaty, Mohamed~A Ismail, and Mohamed Farouk.
+\newblock An efficient density based clustering algorithm for large databases.
+\newblock In \emph{16th IEEE international conference on tools with artificial intelligence}, pages 673--677. IEEE, 2004.
+
+\end{thebibliography}

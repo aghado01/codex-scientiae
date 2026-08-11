@@ -1,0 +1,171 @@
+\begin{thebibliography}{10}
+
+\bibitem{AngluinValiant}
+Dana Angluin and Leslie~G. Valiant.
+\newblock Fast probabilistic algorithms for hamiltonian circuits and matchings.
+\newblock In {\em Proceedings of the Ninth Annual ACM Symposium on Theory of
+  Computing}, STOC '77, pages 30--41, New York, NY, USA, 1977. ACM.
+
+\bibitem{1dSfm_3}
+Mica Arie-Nachimson, Shahar~Z Kovalsky, Ira Kemelmacher-Shlizerman, Amit
+  Singer, and Ronen Basri.
+\newblock Global motion estimation from point matches.
+\newblock In {\em 3D Imaging, Modeling, Processing, Visualization and
+  Transmission (3DIMPVT), 2012 Second International Conference on}, pages
+  81--88. IEEE, 2012.
+
+\bibitem{1dSfm_4}
+Matthew Brand, Matthew Antone, and Seth Teller.
+\newblock Spectral solution of large-scale extrinsic camera calibration as a
+  graph embedding problem.
+\newblock In {\em Computer Vision-ECCV 2004}, pages 262--273. Springer, 2004.
+
+\bibitem{1dSfm_5}
+Avishek Chatterjee and Venu~Madhav Govindu.
+\newblock Efficient and robust large-scale rotation averaging.
+\newblock In {\em Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, pages 521--528. IEEE, 2013.
+
+\bibitem{1dSfm_6}
+David Crandall, Andrew Owens, Noah Snavely, and Dan Huttenlocher.
+\newblock Discrete-continuous optimization for large-scale structure from
+  motion.
+\newblock In {\em Computer Vision and Pattern Recognition (CVPR), 2011 IEEE
+  Conference on}, pages 3001--3008. IEEE, 2011.
+
+\bibitem{1dSfm_7}
+Peter Eades, Xuemin Lin, and William~F Smyth.
+\newblock A fast and effective heuristic for the feedback arc set problem.
+\newblock {\em Information Processing Letters}, 47(6):319--323, 1993.
+
+\bibitem{1dSfm_8}
+Olof Enqvist, Fredrik Kahl, and Carl Olsson.
+\newblock Non-sequential structure from motion.
+\newblock In {\em Computer Vision Workshops (ICCV Workshops), 2011 IEEE
+  International Conference on}, pages 264--271. IEEE, 2011.
+
+\bibitem{1dSfm_10}
+Johan Fredriksson and Carl Olsson.
+\newblock Simultaneous multiple rotation averaging using lagrangian duality.
+\newblock In {\em Computer Vision--ACCV 2012}, pages 245--258. Springer, 2013.
+
+\bibitem{1dSfm_11}
+Venu~Madhav Govindu.
+\newblock Combining two-view constraints for motion estimation.
+\newblock In {\em Computer Vision and Pattern Recognition, 2001. CVPR 2001.
+  Proceedings of the 2001 IEEE Computer Society Conference on}, volume~2, pages
+  II--218. IEEE, 2001.
+
+\bibitem{AMIT_13}
+Venu~Madhav Govindu.
+\newblock Lie-algebraic averaging for globally consistent motion estimation.
+\newblock In {\em Computer Vision and Pattern Recognition, 2004. CVPR 2004.
+  Proceedings of the 2004 IEEE Computer Society Conference on}, volume~1, pages
+  I--684. IEEE, 2004.
+
+\bibitem{1dSfm_13}
+Richard Hartley, Khurrum Aftab, and Jochen Trumpf.
+\newblock L1 rotation averaging using the weiszfeld algorithm.
+\newblock In {\em Computer Vision and Pattern Recognition (CVPR), 2011 IEEE
+  Conference on}, pages 3041--3048. IEEE, 2011.
+
+\bibitem{1dSfm_14}
+Nianjuan Jiang, Zhaopeng Cui, and Ping Tan.
+\newblock A global linear method for camera pose registration.
+\newblock In {\em Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, pages 481--488. IEEE, 2013.
+
+\bibitem{1dSfm_16}
+Fredrik Kahl.
+\newblock Multiple view geometry and the $l^\infty$-norm.
+\newblock In {\em Computer Vision, 2005. ICCV 2005. Tenth IEEE International
+  Conference on}, volume~2, pages 1002--1009. IEEE, 2005.
+
+\bibitem{AMIT_19}
+Fredrik Kahl and Richard Hartley.
+\newblock Multiple-view geometry under the $l_\infty$-norm.
+\newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions
+  on}, 30(9):1603--1617, 2008.
+
+\bibitem{LaurentMassart}
+B.~Laurent and P.~Massart.
+\newblock Adaptive estimation of a quadratic functional by model selection.
+\newblock {\em Ann. Statist.}, 28(5):1302--1338, 10 2000.
+
+\bibitem{L2004}
+J.~L\"{o}fberg.
+\newblock Yalmip : A toolbox for modeling and optimization in {MATLAB}.
+\newblock In {\em Proceedings of the CACSD Conference}, Taipei, Taiwan, 2004.
+
+\bibitem{1dSfm_17}
+Daniel Martinec and Tomas Pajdla.
+\newblock Robust rotation and translation estimation in multiview
+  reconstruction.
+\newblock In {\em Computer Vision and Pattern Recognition, 2007. CVPR'07. IEEE
+  Conference on}, pages 1--8. IEEE, 2007.
+
+\bibitem{1dSfm_18}
+Pierre Moulon, Pascal Monasse, and Renaud Marlet.
+\newblock Global fusion of relative motions for robust, accurate and scalable
+  structure from motion.
+\newblock In {\em Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, pages 3248--3255. IEEE, 2013.
+
+\bibitem{AMIT}
+Onur \"{O}zye\c{s}\.{i}l and Amit Singer.
+\newblock Robust camera location estimation by convex programming.
+\newblock {\em CoRR}, abs/1412.0165, 2014.
+
+\bibitem{AMIT_25}
+Onur \"{O}zye\c{s}\.{i}l, Amit Singer, and Ronen Basri.
+\newblock Camera motion estimation by convex programming.
+\newblock {\em CoRR}, abs/1312.5047, 2013.
+
+\bibitem{AMIT_27}
+Kristy Sim and Richard Hartley.
+\newblock Recovering camera motion using $l^\infty$ minimization.
+\newblock In {\em Computer Vision and Pattern Recognition, 2006 IEEE Computer
+  Society Conference on}, volume~1, pages 1230--1237. IEEE, 2006.
+
+\bibitem{1dSfm_19}
+Sudipta~N Sinha, Drew Steedly, and Richard Szeliski.
+\newblock A multi-stage linear approach to structure from motion.
+\newblock In {\em Trends and Topics in Computer Vision}, pages 267--281.
+  Springer, 2012.
+
+\bibitem{TTT1999}
+K.~C. Toh, M.J. Todd, and R.~H. Tutuncu.
+\newblock Sdpt3 - a matlab software package for semidefinite programming.
+\newblock {\em Optimization Methods and Software}, 11:545--581, 1998.
+
+\bibitem{1dSfm_22}
+Bill Triggs, Philip~F McLauchlan, Richard~I Hartley, and Andrew~W Fitzgibbon.
+\newblock Bundle adjustment—a modern synthesis.
+\newblock In {\em Vision algorithms: theory and practice}, pages 298--372.
+  Springer, 2000.
+
+\bibitem{AMIT_32}
+Roberto Tron and Ren{\'e} Vidal.
+\newblock Distributed image-based 3-d localization of camera sensor networks.
+\newblock In {\em Decision and Control, 2009 held jointly with the 2009 28th
+  Chinese Control Conference. CDC/CCC 2009. Proceedings of the 48th IEEE
+  Conference on}, pages 901--908. IEEE, 2009.
+
+\bibitem{TTT2003}
+R.H. Tutuncu, K.C. Toh, and M.J. Todd.
+\newblock Solving semidefinite-quadratic-linear programs using sdpt3.
+\newblock {\em Mathematical Programming Ser. B}, 95:189--217, 2003.
+
+\bibitem{Vershynin}
+R.~Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.C. Eldar and G.~Kutyniok, editors, {\em Compressed Sensing:
+  Theory and Applications}. Cambridge University Press, 2012.
+
+\bibitem{1dsfm}
+Kyle Wilson and Noah Snavely.
+\newblock Robust global translations with 1dsfm.
+\newblock In {\em Proceedings of the European Conference on Computer Vision
+  ({ECCV})}, 2014.
+
+\end{thebibliography}

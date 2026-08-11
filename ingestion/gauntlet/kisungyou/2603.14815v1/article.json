@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2603.14815v1",
+  "initialized_utc": "2026-08-11T08:30:00.875648Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "write-arxiv.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "On Heterogeneity in Wasserstein Space",
+        "authors_tex": [
+          "Kisung You\\footnote{\\url{kisung.you@baruch.cuny.edu}}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 383,
+        "sha256": "47a7e262bc63ed16d0818ee43fd453016afacb88bc3bc99d1556b462fd79e53e"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2603.14815v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 544803,
+      "sha256": "cb35034dc66787933a926e47bb214d3cf1c5d2f927840a541ce064fa5206a88b",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2603.14815v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2603.14815v1.tar.gz",
+      "entrypoint": "write-arxiv.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 7,
+      "tex_files": 1,
+      "sha256": "f933a1c7c423a8f94f540f006a407493528eb3b9563f9cb7ad3a10804cba4400"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2603.14815v1.pdf",
+      "format": "application/pdf",
+      "bytes": 762410,
+      "sha256": "618fca5148a3e406ad807f8d4bffd24c6537d9299f4994a2c29f022d99b5ca6b"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:00.875648Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 7
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 7
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "write-arxiv.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

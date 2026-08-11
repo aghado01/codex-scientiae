@@ -1,0 +1,63 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Topological risk of Soft Mappers}\label{sec:tpological_loss}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We now switch to the problem of designing filter functions automatically for Mapper graphs using Soft Mapper.
+%go back to the initial problem general setting, where $\Xs$ is a point cloud in a  metric space $\Metrsp$. 
+%Our aim is to find a relevant filter for computing Mapper graphs. 
+To answer this ill-posed problem, we propose to look for filter functions that are optimal with respect to some topological criteria associated to their (Soft)Mapper graphs.
+In particular, we focus on topological losses based on {\em persistent homology}.
+
+
+
+%Let $\Theta$ be a non-zero integer and consider a parameterized family of functions $\{f_\theta\colon\mathbb{R}^p\longrightarrow\mathbb{R},\,\theta\in\mathbb{R}^{\Theta}\}$.\\
+\subsection{Topological signature for Mapper graphs}
+\label{sec:MapPers}
+
+\paragraph*{Persistent homology.}
+%\ziy{J'ai l'impression qu'on ne peut pas se passer du fait d'avoir une fonction filtre pour définir une filtration sur les Mappers de taille différente d'une manière similaire. On peut toutefois enlever le fait que ça dépend de paramètres. On peut faire en sorte de ne commencer à parler de paramètres qu'à partir de la section "optim". J'ai noté cette fonction F pour qu'on voit qu'elle peut ne pas avoir de rapport avec f qui est le filtre Mapper.}
+Persistent homology is a powerful tool that allows to encode the topological information contained in a nested family of simplicial complexes, also called a \emph{filtered simplicial complex}, see for instance \cite{edelsbrunner2022computational} for a general introduction. It traces the evolution of the homology groups of the nested complexes across different scales, producing topological descriptors that are, in particular, useful in machine learning pipelines \cite{chazal2021introduction}.
+In the context of Mapper graphs, a variation of persistent homology called {\em extended} persistent homology has been proved useful, as applying it on Mapper graphs produces descriptors called {\em extended persistence diagrams}. These diagrams only require to define a {\em filtration function} on the graph, and are made of points in the Euclidean plane, each point encoding the presence and size (w.r.t. the filtration function) of a particular topological structure of the Mapper graph (such as a connected component, a branch or a loop).
+%Regular persistence can be extended by tracking, not only the evolution of the homology groups for an increasing scale, but also for a decreasing one. This extended persistence is practical because it gives information about the "essential" part of regular persistence, i.e. the homology groups that do not disappear in the filtered simplicial complex. In particular, we use it in our Mapper complex framework to track homology groups in dimension 1 (i.e. loops).
+See Section 2 of \cite{carriere2020perslay} for a brief introduction to extended persistence and \cite{cohen2009extending} for a detailed presentation. 
+
+We now define a filtration function on Mapper graphs in order to compute extended persistence diagrams. Let  $\mathcal{F}(\Xs_n,\mathbb{R})$ be the space of real valued functions defined on the point cloud $\Xs_n$. 
+For a function $F \in \mathcal{F}(\Xs_n,\R)$, we first associate a filtration $\phi$ to some $K \in {\rm im}(\text{MapComp})$ with: 
+$$\forall \sigma\in K\,:\,\phi(\sigma)=\max_{c\in\sigma}\frac{\sum_{x\in c} F(x) }{\text{card}(c)},$$
+that is, node filtration values are defined as the average filter values of the data points associated to the node, and edge filtration values are computed as the maximum of their node values.  
+Then, we compute the extended persistence diagram (which we consider as a subset of 
+%$\mathbb{R}^2\times\mathbb{R}$
+$\mathbb{R}^2$
+) of the filtered simplicial complex $(K,\phi)$. We denote by $\MapPers$ the function that takes a Mapper graph and a scalar function on $\Xs_n$, and then outputs the persistence diagram:
+$$
+\MapPers \colon \mathbb{K}\times\mathcal{F}(\Xs_n,\R)\longrightarrow \mathcal{P}(\R^2).
+$$
+
+% and denoting  such functions, we want to compute the persistent homology of a produced Mapper complex $K$. To this end, we define the following function :
+
+
+
+
+\paragraph*{Persistence specific loss.}
+Now, we introduce a generic notation for a loss function---or, more simply, a statistic---that associates a real value to any extended persistence diagram. Denoting $\PD$ as the set of subsets of $\R^2$ consisting of a finite number of points outside the diagonal $\Delta=\{(x,x):x\in\mathbb{R}\}$, such a function can be written as $\loss \colon \PD \longrightarrow \mathbb{R}.$
+
+\subsection{Statistical risk of the topological signature associated to Soft Mapper}
+ 
+We finally compute the loss 
+associated to %of the extended persistence diagram of 
+a Mapper graph with the function
+
+\begin{align*}
+\mathcal{L} \colon& {\{0,1\}}^{n\times r}\times\mathcal{F}(\Xs_n,\R)  \longrightarrow \R\\
+&(e,F) \longmapsto \loss \left(\MapPers \left( \MapComp(e),F \right) \right).
+\end{align*}
+
+
+\noindent Then, we define the risk of a Soft Mapper $\MapComp(A)$ by integrating the loss according to the distribution of the Soft Mapper, or equivalently according to the distribution of the cover assignment scheme: 
+$$\mathbb{E} \left( \mathcal{L}(A,F) | \Xs_n\right)=\sum_{e\in {\{0,1\}}^{n\times r}}\mathcal{L}(e,F)\cdot\mathbb{P}(A=e |\Xs_n).$$
+\noindent
+
+Here, %$\Xs_n$ is seen as a random sample, and thus 
+both the distribution of $A$ and the risk are conditional to $\Xs_n$. 
+Note that the risk could also be integrated with respect to the distribution  of $\Xs_n$. However, in this article, we only consider the non-integrated version of the risk. 
+%\bert{si on faisait du sous echantillonnage ou du bootstrap ce serait different, mais ici j'ai l'impression que l'on travaille exclusivement conditionnellement à $\Xs$}

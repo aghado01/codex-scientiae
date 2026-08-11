@@ -1,0 +1,1236 @@
+\documentclass{article}
+\RequirePackage[colorlinks,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+
+\usepackage[final]{nips_2016}
+
+\input{preamble}
+
+\title{The non-convex Burer--Monteiro approach works\\on smooth semidefinite programs}
+
+%\author{Nicolas Boumal \and Vladislav Voroninski \and Afonso S.\ Bandeira}
+
+\author{Nicolas Boumal$_\star$ \\ Department of Mathematics \\ Princeton University \\ \texttt{nboumal@math.princeton.edu} \And Vladislav Voroninski$_\star$ \\ Department of Mathematics \\ Massachusetts Institute of Technology \\ \texttt{vvlad@math.mit.edu} \And Afonso S.\ Bandeira \\ Department of Mathematics and Center for Data Science \\ Courant Institute of Mathematical Sciences, New York University \\ \texttt{bandeira@cims.nyu.edu}}
+
+
+\newcommand{\1}{\mathbf{1}}
+
+\begin{document}
+
+\maketitle
+
+{\let\thefootnote\relax\footnote{$\star$The first two authors contributed equally.}}
+\setcounter{footnote}{0}
+
+\begin{abstract}
+%%%%	Computational tasks arising in machine learning are often naturally framed as optimization problems. When these are not tractable, it is common to resort to convex relaxations. Semidefinite programs (SDP's) are particularly popular in that context.
+%%%	Semidefinite programs (SDP's) can be solved in polynomial time by interior point methods, but scalability can be an issue. To address this shortcoming, over a decade ago, Burer and Monteiro proposed to solve SDP's with few equality constraints via rank-restricted, non-convex surrogates. %, thus leveraging the fact that such SDP's admit low-rank solutions.
+%%%	Remarkably, for some applications, local optimization methods seem to converge to global optima of these non-convex surrogates reliably.
+%%%	Although some theory supports this empirical success, a complete explanation of it remains an open question.
+%%%%	
+%%%	In this paper, we consider a class of SDP's which includes applications such as max-cut, community detection in the stochastic block model, robust PCA, phase retrieval and synchronization of rotations. We show that the low-rank Burer--Monteiro formulation of SDP's in that class almost never has any spurious local optima.
+%%%	
+%%%%	identify a class of SDP's for which the non-convex low-rank problem has no spurious local optimizers, thus explaining why local optimization methods reach global optimizers.
+	
+Semidefinite programs (SDPs) can be solved in polynomial time by interior point methods, but scalability can be an issue. To address this shortcoming, over a decade ago, Burer and Monteiro proposed to solve SDPs with few equality constraints via rank-restricted, non-convex surrogates. Remarkably, for some applications, local optimization methods seem to converge to global optima of these non-convex surrogates reliably. Although some theory supports this empirical success, a complete explanation of it remains an open question. In this paper, we consider a class of SDPs which includes applications such as max-cut, community detection in the stochastic block model, robust PCA, phase retrieval and synchronization of rotations. We show that the low-rank Burer--Monteiro formulation of SDPs in that class almost never has any spurious local optima.
+\vspace{2mm}
+\\
+\textcolor{blue}{This paper was corrected on April 9, 2018. Theorems~\ref{thm:masterthm} and~\ref{thm:approxtolerance} had the assumption that $\calM$~\eqref{eq:M} is a manifold. From this assumption it was stated that $\T_Y\calM = \{ \dot Y \in \Rnp : \calA(\dot Y Y\transpose + Y \dot Y\transpose) = 0 \}$, which is not true in general. To ensure this identity, the theorems now make the stronger assumption that gradients of the constraints $\calA(YY\transpose) = b$ are linearly independent for all $Y$ in $\calM$. All examples treated in the paper satisfy this assumption. Appendix~\ref{apdx:regularity} gives details.}
+\end{abstract}
+
+%\TODO{Have numerics. Worst case, they can go in the supplementary material at NIPS if we go in. Will make it easier in the conclusion and for the global argument if we are indeed faster. If not, cite Journeee instead of my own papers to support computations.}
+
+
+\section{Introduction}
+
+
+We consider semidefinite programs (SDPs) of the form
+\begin{align}
+f^* = \min_{X\in\Snn} \inner{C}{X} \quad \textrm{ subject to }  \quad \calA(X) = b, \ X \succeq 0,
+\tag{SDP}
+\label{eq:SDP}
+\end{align}
+where $\inner{C}{X} = \trace(C\transpose X)$, $C \in \Snn$ is the symmetric cost matrix, $\calA \colon \Snn \to \Rm$ is a linear operator capturing $m$ equality constraints with right hand side $b\in\Rm$ and the variable $X$ is symmetric, positive semidefinite.
+Interior point methods solve~\eqref{eq:SDP} in polynomial time~\citep{nesterov2004introductory}. In practice however, for $n$ beyond a few thousands, such algorithms run out of memory (and time), prompting research for alternative solvers.
+
+If~\eqref{eq:SDP} has a compact search space, then it admits a global optimum of rank at most~$r$, where $\frac{r(r+1)}{2} \leq m$~\citep{pataki1998rank,barvinok1995problems}.
+Thus, if one restricts the search space of~\eqref{eq:SDP} to matrices of rank at most $p$ with $\frac{p(p+1)}{2} \geq m$, then the  globally  optimal value remains unchanged. This restriction is easily enforced by factorizing $X = YY\transpose$ where $Y$ has size $n\times p$, yielding an equivalent quadratically constrained quadratic program:
+\begin{align}
+q^* = \min_{Y\in\Rnp} \inner{CY}{Y} \quad \textrm{ subject to } \quad \calA(YY\transpose) = b.
+\tag{P}
+\label{eq:QCQP}
+\end{align}
+%Since~\eqref{eq:SDP} is a relaxation of~\eqref{eq:QCQP} (up to parameterization), $q^* \geq f^*$.
+In general, \eqref{eq:QCQP} is non-convex, making it a priori unclear how to solve it globally. Still, the benefits are that it is lower dimensional than~\eqref{eq:SDP} and has no conic constraint.
+%In the early 2000's,
+This has motivated~\citet{sdplr,burer2005local} to try and solve~\eqref{eq:QCQP} using local optimization methods, with surprisingly good results. They developed theory in support of this observation (details below). About their results, %they write the following about their results:
+\citet[\S3]{burer2005local} write (mutatis mutandis):
+\begin{quote}
+	``\emph{How large must we take $p$ so that the local minima of~\eqref{eq:QCQP} are guaranteed to map to global minima of~\eqref{eq:SDP}? Our theorem asserts that we need only\footnote{The condition on $p$ and $m$ is slightly, but inconsequentially, different in~\citep{burer2005local}.} $\frac{p(p+1)}{2} > m$ (with the important caveat that positive-dimensional faces of~\eqref{eq:SDP} which are `flat' with respect to the objective function can harbor non-global local minima).}''
+\end{quote}
+The caveat---the existence or non-existence of non-global local optima, or their potentially adverse effect for local optimization algorithms---was not further discussed.
+
+In this paper, assuming $\frac{p(p+1)}{2} > m$, we show that if the search space of~\eqref{eq:SDP} is \emph{compact} and if the search space of~\eqref{eq:QCQP} is a \emph{regularly defined smooth manifold}, then, for almost all cost matrices $C$,
+%% PAA ADD begin
+if $Y$ satisfies first- and second-order necessary optimality conditions for~\eqref{eq:QCQP}, then $Y$ is a global optimum of~\eqref{eq:QCQP} and, since $\frac{p(p+1)}{2} \geq m$, $X = YY\transpose$ is a global optimum of~\eqref{eq:SDP}. In other words,
+%% PAA ADD end
+first- and second-order necessary optimality conditions for~\eqref{eq:QCQP} are also \emph{sufficient} for global optimality---an unusual theoretical guarantee in non-convex optimization.
+
+Notice that this is a statement about the optimization problem itself, not about specific algorithms. Interestingly, known algorithms for optimization on manifolds converge to \emph{second-order critical points},\footnote{Second-order critical points satisfy first- and second-order necessary optimality conditions.} regardless of initialization~\citep{boumal2016globalrates}.
+
+For the specified class of SDPs, our result improves on those of~\citep{burer2005local} in two important ways. Firstly, for almost all $C$, we formally exclude the existence of spurious local optima.\footnote{Before Prop.\ 2.3 in~\citep{burer2005local}, the authors write: ``The change of variables $X = YY\transpose$ does not introduce any extraneous local minima.'' This is sometimes misunderstood to mean~\eqref{eq:QCQP} does not have spurious local optima, when it actually means that the local optima of~\eqref{eq:QCQP} are in exact correspondence with the local optima of ``\eqref{eq:SDP} \emph{with the extra constraint $\rank(X) \leq p$},'' which is also non-convex and thus also liable to having local optima. Unfortunately, this misinterpretation has led to some confusion in the literature.} Secondly, we only require the computation of second-order critical points of~\eqref{eq:QCQP} rather than local optima (which is hard in general~\citep{vavasis1991nonlinear}). Below, we make a statement about computational complexity, and we illustrate the practical efficiency of the proposed methods through numerical experiments.
+%, whereas existing results only contained those to peculiar faces of the search space of the SDP, without statement as to the difficulties they may pose for local optimization methods.
+
+SDPs which satisfy the compactness and smoothness assumptions occur in a number of applications including Max-Cut, robust PCA,  $\mathbb{Z}_2$-synchronization, community detection, cut-norm approximation, phase synchronization, phase retrieval, synchronization of rotations and the trust-region subproblem---see Section~\ref{sec:examples} for references.
+
+
+%\TODO{QBP : \url{http://www.maths.lth.se/computers/vision/publdb/reports/pdf/olsson-eriksson-etal-cvpr-07.pdf} ; numerical example should be robust pca (McCoy and Tropp, Algorithm 1 (not 2)) / phasecut if get good results.}
+
+%\TODO{Take inspiration from complexity paper to sell this. Perhaps just need to open with a more general paragraph, and lead to max-cut clearly as ``just an example''.}
+
+%\TODO{Avoid a glitch with matrix $A$ and $C$.}
+
+%\TODO{We should add a note about what was known by BM about
+%	local optima of high rank having to be in weird faces, we should
+%	highlight this A LOT because the reviewers will think that BM had
+%	already proven this and will quickly dismiss the paper. So this
+%	distinction should be done in the paper very often, I would say at
+%	least 3 or 4 times.}
+
+\subsection*{A simple example: the Max-Cut problem}
+
+Given an undirected graph, Max-Cut is the NP-hard problem of clustering the~$n$ nodes of this graph in two classes, $+1$ and $-1$, such that as many edges as possible join nodes of different signs. If $C$ is the adjacency matrix of the graph, Max-Cut is expressed as
+\begin{align}
+	\max_{x\in\Rn} \frac{1}{4}\sum_{i,j=1}^n C_{ij}(1-x_ix_j) \quad \textrm{ s.t. } \quad x_1^2 = \cdots = x_n^2 = 1.
+	\tag{Max-Cut}
+	\label{eq:maxcut}
+\end{align}
+%Introducing the rank 1, positive semidefinite matrix $X=xx\transpose$, this is equivalent to %\TODO{notation}
+%\begin{align*}
+%	\max_{X\in\Snn} \frac{1}{4}\left( \1\transpose A \1 - \trace(AX) \right) \textrm{ s.t. } \diag(X) = \1, X \succeq 0, \rank(X) = 1.
+%\end{align*}
+
+%The Goemans-Williamson relaxation for this problem is a semidefinite program (SDP)
+Introducing the positive semidefinite matrix $X = xx\transpose$, both the cost and the constraints may be expressed linearly in terms of $X$. Ignoring that $X$ has rank 1 yields the well-known convex relaxation in the form of a semidefinite program (up to an affine transformation of the cost): %which consists in dropping the rank constraint. Up to constants in the cost, this yields
+\begin{align}
+	\min_{X\in\Snn} \inner{C}{X} \quad \textrm{ s.t. } \quad \diag(X) = \1, \ X \succeq 0.
+	\tag{Max-Cut SDP}
+	\label{eq:maxcutsdp}
+\end{align}
+%which can be derived by rewriting \label{eq:maxcut} in terms of $xx\transpose$, and using $X \succeq 0$ as a proxy for $X = xx\transpose$, which can be viewed as dropping a rank constraint on $X$. 
+%for which the celebrated result of \cite{} gives an approximation ratio of .878. 
+If a solution $X$ of this SDP has rank 1, then $X=xx\transpose$ for some $x$ which is then an optimal cut. In the general case of higher rank $X$, \citet{goemans1995maxcut} exhibited the celebrated rounding scheme to produce approximately optimal cuts (within a ratio of .878) from $X$.
+
+%showed that, even when $X$ has rank larger than 1, $X$ can be used to produce an approximately optimal cut (capturing 86\% of an optimal cut in expectation).
+
+%Interior point methods solve~\eqref{eq:maxcutsdp} in polynomial time~\citep{nesterov2004introductory}. In practice however, for $n$ beyond a few thousands, such algorithms run out of memory (and time). % because they involve full spectral factorizations.
+%\footnote{Recent work on generic first-order methods for SDP's is promising~\citep{renegar2014efficient}, but code is not fast yet.}
+%In the early 2000's, \citet{sdplr,burer2005local} suggested to restrict the search space of the SDP to matrices of rank at most $p$, by directly over-parameterizing the resulting variety as $X = YY\transpose$ for $Y$ of size $n\times p$,
+%relax the rank only partially: instead of implicitly replacing $\rank(X) \leq 1$ by $\rank(X) \leq n$, consider
+%\begin{align*}
+%	\min_{X\in\Snn} \trace(AX) \textrm{ s.t. } \diag(X) = \1, X \succeq 0, \rank(X) \leq p,
+%%	\label{eq:maxcutsdprank}
+%\end{align*}
+%for some $p$ such that at least one of the global optimizers of~\eqref{eq:maxcutsdp} is included (to preserve equivalence). \citet[\S4.1]{goemans1995maxcut} have noted that it is sufficient to require $\frac{p(p+1)}{2} \geq n$. This parametrization yields a problem without conic constraint:
+%The two problems are equivalent provided the SDP admits a global optimize of rank at most $p$. For this, it is sufficient to have $\frac{p(p+1)}{2} \geq n$. Indeed,
+%The search space of the latter
+%of~\eqref{eq:maxcutsdprank}
+%is
+%conveniently
+%redundantly
+%parameterized as $X = YY\transpose$ for $Y$ of size $n\times p$, so that it is equivalent to
+The corresponding Burer--Monteiro non-convex problem with rank bounded by $p$ is:
+\begin{align}
+	\min_{Y\in\Rnp} \inner{CY}{Y} \quad \textrm{ s.t. } \quad  \diag(YY\transpose) = \1.
+	\tag{Max-Cut BM}
+	\label{eq:maxcutBM}
+\end{align}
+%For $p \ll n$, it is much lower dimensional than the SDP. On the other hand, it is non-convex, which means there is no reason a priori to suspect it can be solved to global optimality. Nevertheless, \citet{burer2005local} make the following encouraging points (which will be justified below):
+%\begin{enumerate}
+%%i)
+%	\item If $Y$ is a \emph{rank-deficient local optimum} for~\eqref{eq:maxcutBM}, then $X=YY\transpose$ is globally optimal for~\eqref{eq:maxcutsdp}; and
+%%ii)
+%	\item In practice, L-BFGS on~\eqref{eq:maxcutBM} in augmented Lagrangian form with $\frac{p(p+1)}{2} > n$ (a local method)  typically converges to a rank-deficient local optimum, and hence, a global optimum.
+%\end{enumerate}
+
+%\begin{enumerate}
+%%	\item If $\frac{p(p+1)}{2} \geq n$, then any optimal $Y$ for~\eqref{eq:maxcutBM} turns into an optimal $X=YY\transpose$ for~\eqref{eq:maxcutsdp}, that is, the two problems are equivalent.
+%	\item If $Y$ is a \emph{rank-deficient local optimizer} for~\eqref{eq:maxcutBM}, then $X=YY\transpose$ is globally optimal for~\eqref{eq:maxcutsdp}.
+%	\item In practice, running L-BFGS on~\eqref{eq:maxcutBM} in augmented Lagrangian form
+%	% I checked the above denomination of the algorithm they use; it's fine; their sentence is: "limited memory BFGS, first-order augmented Lagrangian algorithm"
+%	with $\frac{p(p+1)}{2} > n$ appears to typically converge to a rank-deficient local optimizer, hence, a global optimizer.
+%\end{enumerate}
+
+The constraint $\diag(YY\transpose)=\1$ requires each row of $Y$ to have unit norm; that is: $Y$ is a point on the Cartesian product of $n$ unit spheres in $\Rp$, which is a smooth manifold. Furthermore, all $X$ feasible for the SDP have identical trace equal to $n$, so that the search space of the SDP is compact. Thus, our results stated below apply:
+
+%Still, two important theoretical caveats remain:
+%\begin{enumerate}
+%%i) 
+%	\item How can one compute a local optimum of~\eqref{eq:maxcutBM}? Indeed, computing optima (even local, even for quadratic problems) is NP-hard in general~\citep{vavasis1991nonlinear}; and
+%%ii) 
+%	\item Even if it can be done, how can one know in advance that the found local optima will be rank deficient (and hence globally optimal)?
+%\end{enumerate}
+%\begin{enumerate}
+%	\item How can one compute a local optimizer of~\eqref{eq:maxcutBM}? Indeed, computing optimizers (even local, even for quadratic problems) is NP-hard in general~\citep{vavasis1991nonlinear}.
+%	\item Even if it can be done, how can one know in advance that the found local optimizers will be rank deficient (and hence globally optimal)?
+%\end{enumerate}
+%Specifically about the second point,
+%%consider a suboptimal local optimum $Y$ of the non-convex problem (necessarily of full rank, if one exists) and the corresponding $X = YY\transpose$. The latter lies in a face of the convex search space of~\eqref{eq:maxcutsdp}. \citet{burer2005local} argued that this face must be peculiar, in that the cost function must be constant (and suboptimal) over it, and it must have positive dimension.
+%%
+%\citet[\S3]{burer2005local} write (mutatis mutandis):
+%\begin{quote}
+%	``\emph{How large must we take $p$ so that the local minima of~\eqref{eq:maxcutBM} are guaranteed to map to global minima of~\eqref{eq:maxcutsdp}? Our theorem asserts that we need only $\frac{p(p+1)}{2} > n$ (with the important caveat that positive-dimensional faces of~\eqref{eq:maxcutsdp} which are `flat' with respect to the objective function can harbor non-global local minima).}''
+%\end{quote}
+%The existence or non-existence of problematic faces was not further discussed.%, but it was generally believed this is a mild technicality.
+
+%In this paper, we positively address both caveats for a class of semidefinite programs with a rich range of applications. In particular for Max-Cut, our results imply the following:
+
+
+%Thus, for appropriate~$p$ and almost all~$C$ in that sense, so-called \emph{second-order critical points} and global optima coincide:
+%In other words:
+\begin{quote}
+	\emph{For $p = \left\lceil\sqrt{2n}\,\right\rceil$, for almost all $C$, even though~\eqref{eq:maxcutBM} is non-convex,
+	%it has no inescapable traps.
+	any local optimum $Y$ is a global optimum (and so is $X=YY\transpose$), and all saddle points have an escape (the Hessian has a negative eigenvalue).
+	}
+\end{quote}
+%
+We note that, for $p>n/2$, the same holds for \emph{all} $C$~\citep{boumal2015staircase}.
+
+%\TODO{Mind the glitch about finite set of graphs and almost all.}
+
+% 
+%A recent result of~\citet{montanari2016grothendieck} also gives some guarantees on the optimality gap at all local optimizers $Y$, and this for all $p$ and all $C$.
+
+%Max-Cut is only the motivational example for this paper. From here on, we consider a larger class of SDP's. For more about Max-Cut per se, we direct the reader to the rich literature. For other applications covered by our main results, see Section~\ref{sec:examples}.
+
+
+%There is a large body of work about the Max-Cut problem.
+%At this point, we want to stress that this paper is not about Max-Cut. This is a paper about solving a class of SDP's as delineated in the next section, from which Max-Cut is an especially simple example for motivation. %With this in mind, we de not devote further attention to the rich literature of algorithms dedicated to Max-Cut in particular.
+
+%\TODO{To explain this on the board to someone, I always just explain MaxCut problem, SDP relax and approx result, Pataki--Barvinok, Burer--Monteiro (rank def local opt + penalized + empirical success), Journee (optim on manifolds: better empirical success), then give our result: for almost all $C$, if $p$ is big enough, socp is global opt, and approx socp can be computed. Then caveats: approx socp does not translate into approx global opt for small $p$: need large $p$ for that (new result nonetheless); do have a posteriori computable optimality gap bound for all $p$ though; and complexity for computing approx socp still poor (but fresh theory: should be improvable.) Then you can mention this works for a larger set of applications: conditions are that SDP has compact search space and reduced problem is on a smooth manifold.}
+
+%\TODO{}
+
+%\TODO{}
+
+%\TODO{do mention that the nice SDP's are often relaxations of problems which are naturally on the manifold themselves; when there is theory saying that the relaxation does interesting things, it's interesting to use them to initialize, then round/project and refine. The machinery here allows to do all of that with the same Riemannian algorithms.}
+
+%blabla about non-convex programming, semidefinite relaxations and scalable algorithms for machine learning. Ref BM, theory, uses, successes in literature. Point at what's known and what's missing in the literature. What's missing should be contrasted with experience. Keep it short at this stage. Rush for the result! Same as when I explain it on the board to someone who has 5 minutes.
+
+%\TODO{copy/paste to work} While it is true that~\eqref{eq:SDP} can be solved in polynomial time using interior point methods~\cite{nesterov2004introductory}, said methods tend to be slow in practice on large problem instances because they involve full spectral factorizations of matrices of size $n$. Interestingly, it is well-known that all extreme points of the search space of~\eqref{eq:SDP} have rank $r$ bounded as $\frac{r(r+1)}{2} \leq m$~\cite{shapiro1982rank,barvinok1995problems,pataki1998rank}. Under somes conditions (for example, if the search space of~\eqref{eq:SDP} is bounded~\cite[Cor.\,32.3.2]{rockafellar1997convex}), one of the extreme points is optimal, meaning that restricting the search space of~\eqref{eq:SDP} to matrices of rank similarly bounded does not change its optimal value. This is interesting because such a rank restriction may significantly reduce the dimension of the search space. This has in particular motivated excellent work by~\citet{sdplr,burer2005local}.
+
+%\TODO{NO : already way too long. --- Mention that for the maximum eigenvalue problem and the Trust-Region Subproblem, the SDP relaxations have $m = 1,2$ constraints and always admit a solution of rank 1; in those cases, the search space of the non-convex problem is a smooth compact manifold, and the socp's are always optimal, regardless of $C$.}
+
+%\TODO{cite \citep{renegar2014efficient} about first order methods for SDP's, but no (public) software yet to compare.}
+
+\subsection*{Notation}
+
+$\Snn$ is the set of real, symmetric matrices of size $n$. A symmetric matrix $X$ is positive semidefinite ($X \succeq 0$) if and only if $u\transpose X u \geq 0$ for all $u\in\Rn$. For matrices $A, B$, the standard Euclidean inner product is $\inner{A}{B} = \trace(A\transpose B)$. The associated (Frobenius) norm is $\|A\| = \sqrt{\inner{A}{A}}$. $\Id$ is the identity operator and $I_n$ is the identity matrix of size $n$.
+
+\section{Main results}
+
+%We consider semidefinite programs of the form
+%\begin{align}
+%	f^* = \min_{X\in\Snn} \inner{C}{X} \textrm{ subject to } \calA(X) = b, X \succeq 0,
+%\tag{SDP}
+%%\label{eq:SDP}
+%\end{align}
+%where $\calA \colon \Snn \to \Rm$ is a linear operator capturing $m$ equality constraints.
+%%
+%Restricting the search space of~\eqref{eq:SDP} to matrices of rank at most $p$ (and reparameterizing the search space by factorizing $X = YY\transpose$) yields a quadratically constrained quadratic program,
+%\begin{align}
+%	q^* = \min_{Y\in\Rnp} \inner{CY}{Y} \textrm{ subject to } \calA(YY\transpose) = b.
+%\tag{QCQP}
+%%\label{eq:QCQP}
+%\end{align}
+%Since~\eqref{eq:SDP} is a relaxation of~\eqref{eq:QCQP} (up to parameterization), $q^* \geq f^*$. In general, \eqref{eq:QCQP} is non-convex, making it a priori unclear how to solve it globally. The benefits are that it is lower dimensional than~\eqref{eq:SDP} and has no conic constraint.
+
+%\emph{Second-order critical points} are points which satisfy first- and second-order necessary optimality conditions.
+%Our main result shows an equivalence between the global optima of a class of~\eqref{eq:SDP}'s and the second-order critical points of the corresponding~\eqref{eq:QCQP}'s, an unusual property in non-convex programming.
+%Importantly, all local optimizers are second-order critical points.
+Our main result establishes conditions under which first- and second-order necessary optimality conditions for~\eqref{eq:QCQP} are sufficient for global optimality. Under those conditions, it is a fortiori true that global optima of~\eqref{eq:QCQP} map to global optima of~\eqref{eq:SDP}, so that local optimization methods on~\eqref{eq:QCQP} can be used to solve the higher-dimensional, cone-constrained~\eqref{eq:SDP}.
+
+
+
+We now specify the necessary optimality conditions of~\eqref{eq:QCQP}. Under the assumptions of our main result below (Theorem~\ref{thm:masterthm}), the search space
+\begin{align}
+\calM & = \calM_p = \{ Y \in \Rnp : \calA(YY\transpose) = b \}
+\label{eq:M}
+\end{align}
+is a smooth and compact manifold of dimension $np - m$. As such, it can be linearized at each point $Y\in\calM$ by a tangent space, differentiating the constraints~\citep[eq.\,(3.19)]{AMS08}:
+\begin{align}
+	\T_Y\calM & = \{ \dot Y \in \Rnp : \calA(\dot Y Y\transpose + Y \dot Y\transpose) = 0 \}.
+	\label{eq:TYM}
+\end{align}
+Endowing the tangent spaces of $\calM$ with the (restricted) Euclidean metric $\inner{A}{B} = \trace(A\transpose B)$ turns $\calM$ into a Riemannian submanifold of $\Rnp$.
+%
+In general, second-order optimality conditions can be intricate to handle~\citep{ruszczynski2006nonlinear}. Fortunately, here, the smoothness of both the search space~\eqref{eq:M} and the cost function
+\begin{align}
+	f(Y) & = \inner{CY}{Y}
+	\label{eq:f}
+\end{align}
+make for straightforward conditions. In spirit, they coincide with the well-known conditions for unconstrained optimization.
+%(Appendix~\ref{sec:proofs} gives definitions and explicit expressions for the Riemannian gradient and Hessian.) %; see Section~\ref{sec:proofs} for definitions and formulas.
+As further detailed in Appendix~\ref{sec:proofs}, the Riemannian gradient $\grad f(Y)$ is the orthogonal projection of the classical gradient of $f$ to the tangent space $\T_Y\calM$. The Riemannian Hessian of $f$ at $Y$ is a similarly restricted version of the classical Hessian of $f$ to the tangent space.
+%Here, the \emph{Riemannian gradient} is the orthogonal projection of the classical gradient to the tangent space, and the \emph{Riemannian Hessian} is the differential of the gradient vector field on $\calM$---see Section~\ref{sec:proofs}.
+\begin{definition}\label{def:criticalpts}
+	A (first-order) \emph{critical point} for~\eqref{eq:QCQP} is a point $Y \in \calM$ such that
+	\begin{align}
+	\grad f(Y) & = 0,
+	\tag{1st order nec.\ opt.\ cond.}
+	\end{align}
+	where $\grad f(Y) \in \T_Y\calM$ is the Riemannian gradient at $Y$ of
+	%$f|_\calM$.
+	$f$ restricted to $\calM$.
+	A \emph{second-order critical point} for~\eqref{eq:QCQP} is a critical point $Y$ such that
+	\begin{align}
+	\Hess f(Y) \succeq 0,
+	\tag{2nd order nec.\ opt.\ cond.}
+	\end{align}
+	where $\Hess f(Y) \colon \T_Y\calM \to \T_Y\calM$ is the Riemannian Hessian at $Y$ of $f$ restricted to $\calM$ (a symmetric linear operator).
+\end{definition}
+\begin{proposition}\label{prop:optconditions}
+	All local (and global) optima of~\eqref{eq:QCQP} are second-order critical points.
+\end{proposition}
+\begin{proof}
+	See~\cite[Rem.~4.2 and Cor.~4.2]{yang2012optimality}.
+	%\TODO{ref; perhaps in the complexity paper.}
+\end{proof}
+%
+%\emph{First-order critical points} (or simply critical points) satisfy the first-order necessary optimality conditions, namely, $\grad f(Y) = 0$. \emph{Second-order critical points} further satisfy the second-order necessary optimality conditions, namely, $\Hess f(Y) \succeq 0$, where $\Hess f(Y)$ is a symmetric operator on $\T_Y\calM$. These are the standard first- and second-order KKT conditions for~\eqref{eq:QCQP}: all local optimizers are second-order critical points.\footnote{This statement normally requires to check that certain constraint qualifications hold; this is indeed the case. \TODO{ref some things}} Theorem~\ref{thm:masterthm} states that these conditions are also sufficient for global optimality.
+%
+
+
+
+
+
+We can now state our main result. In the theorem statement below,
+%``for almost all $C$'' means that the matrices $C$ for which the property does not hold (if they exist) form a (Lebesgue) zero-measure subset of $\Snn$.
+%Here,
+``for almost all $C$'' means potentially troublesome cost matrices form at most a (Lebesgue) zero-measure subset of $\Snn$, in the same way that almost all square matrices are invertible.
+In particular, given any matrix $C\in\Snn$, perturbing $C$ to $C+\sigma W$ where $W$ is a Wigner random matrix results in an acceptable cost matrix with probability 1, for arbitrarily small $\sigma > 0$.
+\begin{theorem}\label{thm:masterthm}
+	Given constraints $\calA \colon \Snn \to \Rm$, $b\in\Rm$ and $p$ satisfying $\frac{p(p+1)}{2} > m$, if
+%	(i) the search space of~\eqref{eq:SDP} is compact and (ii) the search space of~\eqref{eq:QCQP} is a smooth manifold, 
+	\begin{itemize}
+		\item[(i)] the search space of~\eqref{eq:SDP} is compact; and
+		\item[(ii)] the search space of~\eqref{eq:QCQP} is a regularly-defined smooth manifold, in the sense that $A_1Y, \ldots, A_mY$ are linearly independent in $\Rnp$ for all $Y \in \calM$ (see Appendix~\ref{apdx:regularity}),
+	\end{itemize}
+	then for almost all cost matrices $C\in\Snn$, any second-order critical point of~\eqref{eq:QCQP} is globally optimal. Under these conditions, if $Y$ is globally optimal for~\eqref{eq:QCQP}, then the matrix $X = YY\transpose$ is globally optimal for~\eqref{eq:SDP}. %In particular, given an optimal $Y$ for , the matrix $X = YY\transpose$ is optimal for~\eqref{eq:SDP}.
+\end{theorem}
+The assumptions are discussed in the next section. The proof---see Appendix~\ref{sec:proofs}---follows directly from the combination of two intermediate results:
+\begin{enumerate}
+	\item If $Y$ is \emph{rank deficient} and second-order critical for~\eqref{eq:QCQP}, then it is globally optimal and $X=YY\transpose$ is optimal for~\eqref{eq:SDP}; and
+	\item If $\frac{p(p+1)}{2} > m$, then, for almost all $C$, every first-order critical $Y$ is rank-deficient.
+\end{enumerate}
+The first step holds in a more general context,
+% I was going to write: without the manifold assumption; but actually in there they also need to assume constraint qualifications, which imply the search space is locally a manifold. So it's not clear they proved a much more general result. But it is true that in the manifold case you can also make the statement for nonlinear convex functions, which Journée et al. did for a restricted set of manifolds.
+as previously established by~\citet{sdplr,burer2005local}. The second step is new and crucial, as it allows to formally exclude the existence of spurious local optima, generically in $C$, thus resolving the caveat mentioned in the introduction.
+
+%\TODO{copied--}Note that, at the cost of restricting the class of SDP's it applies to, this theorem improves on the results of~\citep{burer2005local} in two important ways. Firstly, it only requires the computation of second-order critical points rather than local optima. Secondly, in relation to the quote in the introduction, for almost any given $C$, we formally exclude the existence of spurious local optima, whereas existing results only contained those to peculiar faces of the search space of the SDP, without statement as to the difficulties they may pose for local optimization methods.
+
+%\begin{proof}
+%	Combine Corollary~\ref{cor:rankdefsocpopt} and Lemma~\ref{lem:criticalptsrankdeficient} in Section~\ref{sec:proofs}.
+%\end{proof}
+%In the following sections, we subsequently justify the assumptions of this theorem, illustrate it with applications, and prove it.
+
+%We now specify the necessary optimality conditions more precisely and discuss computational issues. 
+
+
+The smooth structure of~\eqref{eq:QCQP} naturally suggests using \emph{Riemannian optimization} to solve it~\citep{AMS08}, which is something that was already proposed by~\citet{journee2010low} in the same context.
+Importantly, known algorithms
+%---in particular, the \emph{Riemannian trust-region method} (RTR)---
+converge to second-order critical points regardless of initialization.
+%, as per recent results in Riemannian optimization~\citep{boumal2016globalrates}.
+%%%This is in stark contrast with previous analyses
+%%%%of~\eqref{eq:QCQP} in relation to~\eqref{eq:SDP}
+%%%which required computation of local optima~\citep{sdplr,journee2010low}, which is hard in general~\citep{vavasis1991nonlinear}.
+We state here a recent computational result to that effect.
+%We note that, for standard trust-region algorithms, the rate of $1/\varepsilon^3$ is sharp even when optimizing over a linear space~\citep{cartis2012complexity}.
+\begin{proposition}\label{prop:complexity}
+	Under the numbered assumptions of Theorem~\ref{thm:masterthm}, the Riemannian trust-region method (RTR)~\citep{genrtr} initialized with any $Y_0\in\calM$ returns in $\calO(1/\varepsilon_g^2\varepsilon_H^{} + 1/\varepsilon_H^3)$ iterations a point $Y\in\calM$ such that
+	\begin{align*}
+		f(Y) & \leq f(Y_0), & \|\grad f(Y)\| & \leq \varepsilon_g, & \textrm{ and } & & \Hess f(Y) \succeq -\varepsilon_H \Id.
+	\end{align*}
+\end{proposition}
+\begin{proof}
+	Apply the main results of~\citep{boumal2016globalrates} using that $f$ has locally Lipschitz continuous gradient and Hessian in $\Rnp$ and $\calM$ is a compact submanifold of $\Rnp$.
+	%One must use the Riemannian Hessian in the trust-region model and
+%	The algorithm requires a \emph{second-order retraction}: a map $R_Y$ from $\T_Y\calM$ to $\calM$ which agrees with geodesics up to second order around $Y$ (and smoothly depends on $Y$ and its input). By~\citep[Thm.~22]{absil2012retractions}, given a point $Y$ and a tangent vector $\dot Y$, setting $R_Y(\dot Y)$ to be the orthogonal projection of $Y+\dot Y$ to $\calM$ is acceptable.
+%	\TODO{Will reference a main theorem and corollaries in paper with Absil and Cartis to check that assumptions are fulfilled. Don't go into details of cost of iterations... Need a second order retraction: consider orthogonal projection and~\citep{absil2012retractions}. Need to make sure that projection \emph{and} retraction will take poly time. Otherwise, say each iteration requires this and that and such.}
+\end{proof}
+Essentially, each iteration of RTR requires evaluation of one cost and one gradient, a bounded number of Hessian-vector applications, and one projection from $\Rnp$ to $\calM$. In many important cases, this projection amounts to Gram--Schmidt orthogonalization of small blocks of $Y$---see Section~\ref{sec:examples}. % about the Hessian: worst case, you apply it \dim\calM times to get the whole matrix in some basis, then apply the polytime ideas described in the complexity paper. no dependence on \varepsilon_H.
+
+Proposition~\ref{prop:complexity} bounds worst-case iteration counts for arbitrary initialization. In practice, a good initialization point may be available, making the local convergence rate of RTR more informative. For RTR, one may expect superlinear or even quadratic local convergence rates near isolated local minimizers~\citep{genrtr}.
+%\footnote{Minimizers are never isolated in~\eqref{eq:QCQP} because of the invariance in the cost: $f(YQ) = f(Y)$ for any orthogonal $Q \in O(p)$. Notwithstanding, superlinear rates are observed in practice. This is partly addressed in~\citep{journee2010low} where optimization is conducted on the quotient manifold $\calM / O(p)$.}
+While minimizers are not isolated in our case~\citep{journee2010low}, experiments show a characteristically superlinear local convergence rate in practice~\citep{boumal2015staircase}.
+This means high accuracy solutions can be achieved, as demonstrated in Appendix~\ref{sec:XP}. %, contrary to what one would expect if using first-order methods for SDP's.
+
+Thus, under the conditions of Theorem~\ref{thm:masterthm}, generically in $C$, RTR converges to global optima. In practice, the algorithm returns after a finite number of steps, and only \emph{approximate} second-order criticality is guaranteed. Hence, it is interesting to bound the optimality gap in terms of the approximation quality. Unfortunately, we do not establish such a result for small $p$. Instead, we give an a posteriori computable optimality gap bound which holds for \emph{all} $p$ and for \emph{all} $C$.
+%For specific applications, it may be possible to control the bound a priori for smaller $p$ as well.
+In the following statement, the dependence of $\calM$ on $p$ is explicit, as $\calM_p$. The proof is in Appendix~\ref{sec:proofs}.
+
+%, but instead give a posteriori computable bounds on the optimality gap.
+
+%It is only ever possible to compute points which approximately satisfy optimality conditions. The result below quantifies the optimality gap for approximate second-order critical points which are also rank deficient. 
+%\TODO{If can't get rid of rank deficiency assumption, comment. In particular, for ortho-cut, we have better. But as such, this doesn't do much for us... --- Let's be realistic: we won't get rid of it; it would be a far finer result than the dimensionality counting argument, and we have no lead at this point. i'm not even sure this theorem should be here; the general result in S is more practical, and just honestly say that you can't use that a priori, only a posteriori.}
+%\begin{theorem} \TODO{delete}
+%	For any rank-deficient $Y\in\calM$, if $\|\grad f(Y)\| \leq \varepsilon_g$ and $\Hess f(Y) \succeq -\varepsilon_H \Id$, the optimality gap with respect to~\eqref{eq:SDP} is bounded as
+%	\begin{align}
+%		0 \leq 2(f(Y) - f^*) \leq \varepsilon_H R + \varepsilon_g \sqrt{R},
+%	\end{align}
+%	where $R$ is the maximal trace of any $X$ feasible for~\eqref{eq:SDP}. If all such $X$'s have the same trace, then the bound simplifies to
+%	\begin{align}
+%	0 \leq f(Y) - f^* \leq \frac{\varepsilon_H R}{2}.
+%	\end{align}
+%\end{theorem}
+\begin{theorem} \label{thm:approxtolerance} %\TODO{define $\calM_p$}
+	 % I decided to not phrase the theorem in terms of rank deficient $Y$, because numerically it will never be exact, and these theorems are all about approximations.
+	Let $R < \infty$ be the maximal trace of any $X$ feasible for~\eqref{eq:SDP}.
+	For any $p$ such that $\calM_p$ and $\calM_{p+1}$ are smooth manifolds (even if $\frac{p(p+1)}{2} \leq m$) and for any $Y\in\calM_p$, form $\tilde Y = \left[ Y | 0_{n\times 1} \right]$ in $\calM_{p+1}$. The optimality gap at $Y$ is bounded as
+	\begin{align}
+%		-\lambdamin(\Hess f(\tilde Y)) \geq \frac{2(f(Y)-f^*) - \sqrt{R}\|\grad f(Y)\|}{R}.
+		0 \leq 2(f(Y)-f^*) \leq \sqrt{R} \|\grad f(Y)\| - R \lambdamin(\Hess f(\tilde Y)).
+		\label{eq:lambdaminbound}
+	\end{align}
+	%
+	% If all feasible $X$'s have the same trace, then the bound simplifies to
+	If all feasible $X$ have the same trace $R$ and there exists a positive definite feasible $X$, then the bound simplifies to
+	\begin{align}
+		0 \leq 2(f(Y)-f^*) \leq - R \lambdamin(\Hess f(\tilde Y))
+	\end{align}
+	so that $\|\grad f(Y)\|$ needs not be controlled explicitly.
+%	These expressions also give a posteriori computable bounds on the optimality gap at approximately second-order critical points.
+	If $p>n$, the bounds hold with $\tilde Y = Y$.
+\end{theorem}
+In particular, for $p=n+1$, the bound can be controlled a priori: approximate second-order critical points are approximately optimal, for any $C$.\footnote{With $p=n+1$, problem~\eqref{eq:QCQP} is no longer lower dimensional than~\eqref{eq:SDP}, but retains the advantage of not involving a positive semidefiniteness constraint.}
+\begin{corollary}
+	Under the assumptions of Theorem~\ref{thm:approxtolerance}, if $p=n+1$ and $Y\in\calM$ satisfies both $\|\grad f(Y)\| \leq \varepsilon_g$ and $\Hess f(Y) \succeq -\varepsilon_H \Id$, then $Y$ is approximately optimal in the sense that
+	\begin{align*}
+	0 \leq 2(f(Y)-f^*) \leq \sqrt{R} \varepsilon_g + R \varepsilon_H.
+	\end{align*}
+	Under the same condition as in Theorem~\ref{thm:approxtolerance}, the bound can be simplified to $R \varepsilon_H$.
+\end{corollary}
+This works well with Proposition~\ref{prop:complexity}. For any $p$, equation~\eqref{eq:lambdaminbound} also implies the following:
+\begin{align*}
+	\lambdamin(\Hess f(\tilde Y)) \leq - \frac{2(f(Y)-f^*) - \sqrt{R}\|\grad f(Y)\|}{R}.
+\end{align*}
+That is,
+% if $Y$ is approximately critical but $YY\transpose$ is not approximately optimal for~\eqref{eq:SDP}, then the Hessian of $f$ at $\tilde Y$ has a strongly negative eigenvalue, allowing to escape the approximate saddle point.
+for any $p$ and any $C$, an approximate critical point $Y$ in $\calM_p$ which is far from optimal maps to a comfortably-escapable approximate saddle point $\tilde Y$ in $\calM_{p+1}$.
+
+This suggests an algorithm as follows. For a starting value of $p$ such that $\calM_p$ is a manifold, use RTR to compute an approximate second-order critical point $Y$. Then, form $\tilde Y$ in $\calM_{p+1}$ and test the left-most eigenvalue of $\Hess f(\tilde Y)$.\footnote{It may be more practical to test $\lambdamin(S)$~\eqref{eq:S} rather than $\lambdamin(\Hess f)$. Lemma~\ref{lem:fromHesstoS} relates the two. See~\citep[\S3.3]{journee2010low} to construct escape tangent vectors from $S$.} If it is close enough to zero, this provides a good bound on the optimality gap. If not, use an (approximate) eigenvector associated to $\lambdamin(\Hess f(\tilde Y))$ to escape the approximate saddle point and apply RTR from that new point in $\calM_{p+1}$; iterate. In the worst-case scenario, $p$ grows to $n+1$, at which point all approximate second-order critical points are approximate optima. Theorem~\ref{thm:masterthm} suggests $p = \left\lceil \sqrt{2m} \, \right\rceil$ should suffice for $C$ bounded away from a zero-measure set. Such an algorithm already features with less theory in~\citep{journee2010low} and~\citep{boumal2015staircase}; in the latter, it is called the \emph{Riemannian staircase}, for it lifts~\eqref{eq:QCQP} floor by floor.
+
+\subsection*{Related work}
+
+Low-rank approaches to solve SDPs have featured in a number of recent research papers. We highlight just two which illustrate different classes of SDPs of interest.
+
+% https://arxiv.org/pdf/1605.09527v2.pdf
+\citet{shah2016biconvex} tackle SDPs with linear cost and linear constraints (both equalities and inequalities) via low-rank factorizations, assuming the matrices appearing in the cost and constraints are positive semidefinite. They propose a non-trivial initial guess to partially overcome non-convexity with great empirical results, but do not provide optimality guarantees.
+
+% http://akyrillidis.github.io/pubs/Conferences/FGD.pdf
+\citet{bhojanapalli2016dropping} on the other hand consider the minimization of a convex cost function over positive semidefinite matrices, without constraints. Such problems could be obtained from generic SDPs by penalizing the constraints in a Lagrangian way. Here too, non-convexity is partially overcome via non-trivial initialization, with global optimality guarantees under some conditions.
+
+Also of interest are recent results about the harmlessness of non-convexity in low-rank matrix completion~\citep{ge2016matrix,bhojanapalli2016global}. Similarly to the present work, the authors there show there is no need for special initialization despite non-convexity.
+
+% This is an older one, but quite good
+%\citep{kulis2007fast} http://www.jmlr.org/proceedings/papers/v2/kulis07a/kulis07a.pdf
+
+
+% These are specifically for low-rank matrix completion
+%\citep{ge2016matrix} https://arxiv.org/abs/1605.07272
+%\citep{bhojanapalli2016global} https://arxiv.org/abs/1605.07221
+
+
+% These are not for SDP's but for generic low-rank problems (rectangular matrices)
+%\citep{mishra2011low}
+%\citep{mishra2012fixed}
+%\citep{uschmajew2015greedy}
+
+\section{Discussion of the assumptions}
+
+Our main result, Theorem~\ref{thm:masterthm}, comes with geometric assumptions on the search spaces of both~\eqref{eq:SDP} and~\eqref{eq:QCQP}
+%---each working with a side assumption---
+which we now discuss. Examples of SDPs which fit the assumptions of Theorem~\ref{thm:masterthm} are featured in the next section.
+
+The assumption that the search space of~\eqref{eq:SDP}, 
+\begin{align}
+	\calC = \{ X \in \Snn : \calA(X) = b, X \succeq 0 \},
+	\label{eq:C}
+\end{align}
+is \emph{compact} works in pair with the assumption $\frac{p(p+1)}{2} > m$ as follows. For~\eqref{eq:QCQP} to reveal the global optima of~\eqref{eq:SDP}, it is necessary that~\eqref{eq:SDP} admits a solution of rank at most~$p$. One way to ensure this is via the Pataki--Barvinok theorems~\citep{pataki1998rank,barvinok1995problems}, which state that all \emph{extreme points} of $\calC$ have rank $r$ bounded as $\frac{r(r+1)}{2} \leq m$. Extreme points are faces of dimension zero (such as vertices for a cube). When optimizing a linear cost function $\inner{C}{X}$ over a compact convex set $\calC$, at least one extreme point is a global optimum~\cite[Cor.\,32.3.2]{rockafellar1997convex}---this is not true in general if $\calC$ is not compact. Thus, under the assumptions of Theorem~\ref{thm:masterthm}, there is a point $Y\in\calM$ such that $X = YY\transpose$ is an optimal extreme point of~\eqref{eq:SDP}; then, of course, $Y$ itself is optimal for~\eqref{eq:QCQP}.
+
+In general, the Pataki--Barvinok bound is tight, in that there exist extreme points of rank up to that upper-bound (rounded down)---see for example~\citep{laurent1996facial} for the Max-Cut SDP and~\citep{boumal2015staircase} for the Orthogonal-Cut SDP. Let $C$ (the cost matrix) be the negative of such an extreme point. Then, the unique optimum of~\eqref{eq:SDP} is that extreme point, showing that $\frac{p(p+1)}{2} \geq m$ is necessary for~\eqref{eq:SDP} and~\eqref{eq:QCQP} to be equivalent for all $C$. We further require a strict inequality because our proof relies on properties of rank deficient $Y$'s in $\calM$.
+
+%Of course, compactness also ensures~\eqref{eq:SDP} attains its finite optimal value for all $C$.
+
+The assumption that $\calM$ (eq.~\eqref{eq:M}) is a \emph{regularly-defined smooth manifold} works in pair with the am\-bi\-tion that the result should hold for (almost) all cost matrices $C$. The starting point is that, for a given non-convex smooth optimization problem---even a quadratically constrained quadratic program---computing local optima is hard in general~\citep{vavasis1991nonlinear}. Thus, we wish to restrict our attention to efficiently computable points, such as points which satisfy first- and second-order KKT conditions for~\eqref{eq:QCQP}---see~\cite[\S2.2]{sdplr} and \cite[\S3]{ruszczynski2006nonlinear}. This only makes sense if global optima satisfy the latter, that is, if KKT conditions are necessary for optimality. A global optimum $Y$ necessarily satisfies KKT conditions if \emph{constraint qualifications} (CQs) hold at $Y$~\citep{ruszczynski2006nonlinear}. The standard CQs for equality constrained programs are Robinson's conditions or metric regularity (they are here equivalent). They read as follows, assuming $\calA(YY\transpose)_i = \inner{A_i}{YY\transpose}$ for some matrices $A_1, \ldots, A_m \in \Snn$:
+\begin{align}
+	\textrm{CQs hold at } Y \textrm{ if } A_1Y, \ldots, A_mY \textrm{ are linearly independent in } \Rnp.
+	\label{eq:CQ}
+\end{align}
+Considering almost all $C$, global optima could, a priori, be almost anywhere in $\calM$.
+%\footnote{\TODO{This is actually not that clear; $\calM$ is not convex, so some points may not ever be optimal; need to make the point that actually yes, any of them could be optimal: has to do with faces of SDP's being exposed. But it's delicate because we're only covering almost all $C$, so you have to make the statement for all $C$ really; anyway: it's delicate, it's not that important, keep the story simple.}}
+To simplify, we require CQs to hold at all $Y$'s in $\calM$ rather than only at the (unknown) global optima.
+Under this condition, the constraints are independent at each point and ensure $\calM$ is a smooth embedded submanifold of $\Rnp$ of codimension $m$~\citep[Prop.\,3.3.3]{AMS08}. Indeed, tangent vectors $\dot Y \in \T_Y\calM$~\eqref{eq:TYM} are exactly those vectors that satisfy $\innersmall{A_i Y}{\dot Y} = 0$: under CQs, the $A_iY$'s form a basis of the normal space to the manifold at $Y$. %See~\citep[Thm.~3.3]{andreani2010constantrank} for the reverse statement, namely, that if $\calM$ is a manifold, then second-order CQ's hold at all $Y$---this confirms that the theorems in this paper depend on the geometry of $\calM$, and not on the (partially arbitrary) choice of $A_i$'s to represent it.
+
+%Once it is decided that $\calM$ must be a manifold, we can step away from the specific representation of it via the matrices $A_1, \ldots, A_m$ and reason about optimality conditions on the manifold directly. Adding redundant constraints (for example, duplicating $A_1$) would break the CQs, but not the manifold structure. Hence, stating Theorem~\ref{thm:masterthm} in terms of manifolds better captures the role of $\calM$ than stating it in terms of CQ's. See also~\citep[Thm.~3.3]{andreani2010constantrank} for a proof that requiring $\calM$ to be a manifold around $Y$ is a type of CQ.
+
+Finally, we note that Theorem~\ref{thm:masterthm} only applies for \emph{almost} all $C$, rather than all $C$. To justify this restriction, if indeed it is justified, one should exhibit a matrix $C$ that leads to suboptimal second-order critical points while other assumptions are satisfied. We do not have such an example. We do observe that \eqref{eq:maxcutsdp} on cycles of certain even lengths
+%\footnote{\TODO{You guys know Michel: should we keep this? Or simply thank him for useful discussions in the acks?---We thank Michel Goemans for suggesting we study those graphs in this context.}}
+has a unique solution of rank 1, while the corresponding~\eqref{eq:maxcutBM} with $p=2$ has suboptimal local optima (strictly, if we quotient out symmetries). This at least suggests it is not enough, for generic $C$, to set $p$ just larger than the rank of the solutions of the SDP. (For those same examples, at $p=3$, we consistently observe convergence to global optima.)
+
+%\clearpage
+\section{Examples of smooth SDPs}\label{sec:examples}
+
+The canonical examples of SDPs which satisfy the assumptions in Theorem~\ref{thm:masterthm} are those where the diagonal blocks of $X$ or their traces are fixed. We note that the algorithms and the theory continue to hold for complex matrices, where the set of Hermitian matrices of size $n$ is treated as a real vector space of dimension $n^2$ (instead of $\frac{n(n+1)}{2}$ in the real case) with inner product $\inner{H_1}{H_2} = \Re\left\{ \Trace(H_1^*H_2^{}) \right\}$, so that occurrences of $\frac{p(p+1)}{2}$ are replaced by $p^2$.
+
+Certain concrete examples of SDPs include:
+\begin{align}
+	\min_X \inner{C}{X} & \textrm{ s.t. } \Trace(X) = 1, X\succeq 0; \tag{fixed trace} \\
+	\min_X \inner{C}{X} & \textrm{ s.t. } \diag(X) = \mathbf{1}, X\succeq 0; \tag{fixed diagonal} \\
+	\min_X \inner{C}{X} & \textrm{ s.t. } X_{ii} = I_d, X\succeq 0. \tag{fixed diagonal blocks}
+\end{align}
+Their rank-constrained counterparts read as follows (matrix norms are Frobenius norms):
+\begin{align}
+\min_{Y\colon n\times p} \inner{CY}{Y} & \textrm{ s.t. } \|Y\| = 1; \tag{sphere} \\
+\min_{Y\colon n\times p} \inner{CY}{Y} & \textrm{ s.t. } Y\transpose = \begin{bmatrix} y_1 & \cdots & y_n \end{bmatrix} \textrm{ and } \|y_i\| = 1 \textrm{ for all } i; \tag{product of spheres} \\
+\min_{Y\colon qd\times p} \inner{CY}{Y} & \textrm{ s.t. } Y\transpose = \begin{bmatrix} Y_1 & \cdots & Y_{q} \end{bmatrix} \textrm{ and } Y_i\transpose Y_i^{} = I_d \textrm{ for all } i. \tag{product of Stiefel}
+\end{align}
+
+The first example has only one constraint: the SDP always admits an optimal rank~1 solution, corresponding to an eigenvector associated to the left-most eigenvalue of $C$. This generalizes to the trust-region subproblem as well.
+
+For the second example, in the real case, $p=1$ forces $y_i = \pm 1$, allowing to capture combinatorial problems such as Max-Cut~\citep{goemans1995maxcut}, $\mathbb{Z}_2$-synchronization~\citep{javanmard2015phase} and community detection in the stochastic block model~\citep{abbe2014exact,bandeira2016lowrankmaxcut}. The same SDP is central in a formulation of robust PCA~\citep{mccoy2011robustpca} and is used to approximate the cut-norm of a matrix~\citep{alon2006cutnorm}. Theorem~\ref{thm:masterthm} states that for almost all $C$, $p =  \left\lceil \sqrt{2n}\, \right\rceil$ is sufficient.
+%(Graph coloring~\citep{charikar2002semidefinite} and sphere packing on the sphere admit the same constraints with a nonlinear cost. Our theorems do not apply for nonlinear costs, but the optimization algorithms can be run.)
+In the complex case, $p=1$ forces $|y_i| = 1$, allowing to capture problems where phases must be recovered; in particular, phase synchronization~\citep{bandeira2014tightness,singer2010angular} and phase retrieval via Phase-Cut~\citep{waldspurger2012phase}. For almost all $C$, it is then sufficient to set $p = \left\lfloor \sqrt{n}+1 \right\rfloor$.
+
+In the third example, $Y$ of size $n\times p$ is divided in $q$ slices of size $d\times p$, with $p \geq d$. Each slice has orthonormal rows. For $p=d$, the slices are orthogonal (or unitary) matrices, allowing to capture Orthogonal-Cut~\citep{bandeira2013approximating} and the related problems of synchronization of rotations~\citep{wang2012LUD} and permutations. Synchronization of rotations is an important step in simultaneous localization and mapping, for example.
+%~\citep{boumal2015staircase} (the former features both a linear and a nonsmooth cost; the nonsmooth cost can be smoothed~\citep{boumal2015staircase}).
+Here, it is sufficient for almost all $C$ to let $p = \left\lceil \sqrt{d(d+1)q} \, \right\rceil$.
+
+SDPs with constraints that are combinations of the above examples can also have the smoothness property;
+%\footnote{For example, the SDP relaxation of the trust-region subproblem $\min_{x\transpose x = \Delta^2} x\transpose Ax + 2b\transpose x + c$ is $\min_{Z\in{\mathbb{S}^{(n+1)\times (n+1)}}} \inner{Z}{\begin{bmatrix}
+%		A & b \\ b\transpose & c
+%		\end{bmatrix}} \textrm{ s.t. } \trace(Z_{1:n,1:n}) = \Delta^2, Z_{n+1,n+1} = 1, Z\succeq 0$: it has two valid constraints, thus always admits a solution of rank 1 and $p=2$ is sufficient (at least) for almost all $A,b,c$.}
+the right-hand sides $1$ and $I_d$ can be replaced by any positive definite right-hand sides by a change of variables. Another simple rule to check is if the constraint matrices $A_1, \ldots, A_m \in \Snn$ such that $\calA(X)_i = \inner{A_i}{X}$ satisfy $A_iA_j = 0$ for all $i \neq j$ (note that this is stronger than requiring $\inner{A_i}{A_j} = 0$), see~\citep{journee2010low}.
+
+%In the above applications, the problem of interest is~\eqref{eq:QCQP} with $p = q$ for some prescribed $q$, rather than~\eqref{eq:SDP} itself. For many
+%\TODO{all?}
+%of these, there is theory which guarantees that the SDP solution in $\calC$, after rounding to $\calM_q$, is reasonably good (possibly in a randomized sense). 
+%This suggests the following heuristic:
+%\begin{enumerate}
+%	\item Solve~\eqref{eq:QCQP} with $\frac{p(p+1)}{2} > m$ to get $Y_p \in \calM_p$, using RTR;
+%	\item Project $Y_p$ to $Y_q \in \calM_q$;
+%	\item Refine $Y_q$ by running RTR on $\calM_q$ starting at $Y_q$ (unless $\calM_q$ is discrete).
+%\end{enumerate}
+%This framework allows to both solve the convex relaxation and refine the relaxed solution using the same Riemannian optimization algorithms in low dimension (compared to~\eqref{eq:SDP}). Code for doing so is easy to write, for example using Manopt~\citep{manopt}. This strategy is scalable and returns high accuracy solutions for certain applications~\citep{boumal2015staircase}. %\TODO{TO CHECK OR REMOVE---It is particularly advantageous for applications where the SDP relaxation is not generally tight, such as for Phase-Cut for example. I have a hard time comparing with Waldspurger's code because their output $X$ does not have unit diagonal ... but Manopt is fairly slow itself (the problem looks pretty bad).}
+%
+%For the Max-Cut type SDP (second example), we here showed that for almost all~$C$, second-order critical points are optimal for $p \geq \sqrt{2n}$, and they are optimal for all~$C$ when $p > n$.
+%%\footnote{In fact, it is sufficient to set $p=n$~\citep{journee2010low}, but our $p=n+1$ result further states that approximate second-order critical points are also approximately optimal.}
+%A better deterministic result for all~$C$ is given in~\citep{boumal2016nonconvexphase}, where $p > n/2$ is required (the proof involves exploring the possible dimensions of faces of $\calC$; the result extends to the third example as well with $p > \frac{d+1}{d+3}n$). It was also shown recently that for certain sets of $C$'s, $p=2$ is sufficient, and the global optimizers always have rank 1, together with a proof that for $\mathbb{Z}_2$-synchronization and community detection in the stochastic block model, in a relevant noise regime, $C$ lies in those sets with high probability~\citep{bandeira2016lowrankmaxcut}. %\TODO{note the absence of numerics in the paper.}
+
+%\begin{itemize}
+%	\item unique constraint (for compactness, has to be fixed trace) ; $A_iA_j = 0$ : see \citep{journee2010low}.
+%	\item Do also complex version of the theorems and algos; give super simple Manopt code for the unit diagonal problem.  The typical thing to do is: opt with large p, round, re-opt with desired p (for complex, because for real this can't work with p=1). Have a graph to show the empirical difference. Should be on a problem where the SDP is not tight, but also where even though it is not tight, the statistical problem is not a lost cause; so can't be synchro or SBM; try phase retrieval Phase-Cut. Compare with their code (d'Aspremont, Waldspurger.. which is a type of block method or row by row).
+%	\item Graph coloring?
+%	\item Numerical Phase-Cut example? Large scale? The SDP is not tight, which makes it interesting.
+%	\item For maxcut/orthocut sdp, put in contrast the deterministic result from Staircase~\citep{boumal2015staircase}, the probabilistic result from COLT paper~\citep{bandeira2016lowrankmaxcut} which has strong condition on the cost matrix, and the semi result from BM~\citep{burer2005local} that says sqrt should be the right rank; and that we show that holds for almost all cost matrices, without structural assumptions.
+%	\item In paper by Montanari about Z2 and U1 synchro and graph clustering~\citep{javanmard2015phase}, there is an SDP with diag(X) = 1 and X1 = 0. Do these constraints satisfy the assumptions here?
+%\end{itemize}
+
+%\clearpage
+
+
+\section{Conclusions}
+
+
+
+%We considered a class of SDP's whose search spaces are compact and such that, when they are restricted to 
+
+
+%We have provided theoretical guarantees for efficiently optimizing a large class of SDPs via non-convex re-parametrization. Specifically,
+
+The Burer--Monteiro approach consists in replacing optimization of a linear function $\inner{C}{X}$ over the convex set $\{X\succeq 0 : \calA(X) = b\}$ with optimization of the quadratic function $\inner{CY}{Y}$ over the non-convex set $\{Y\in\Rnp : \calA(YY\transpose) = b\}$. It was previously known that, if the convex set is compact and $p$ satisfies $\frac{p(p+1)}{2} \geq m$ where $m$ is the number of constraints, then these two problems have the same global optimum. It was also known from~\citep{burer2005local} that spurious local optima $Y$, if they exist, must map to special faces of the compact convex set, but without statement as to the prevalence of such faces or the risk they pose for local optimization methods. In this paper we showed that, if the set of $X$'s is compact and the set of $Y$'s is a regularly-defined smooth manifold, and if $\frac{p(p+1)}{2} > m$, then for almost all $C$, the non-convexity of the problem in $Y$ is benign, in that all $Y$'s which satisfy second-order necessary optimality conditions are in fact globally optimal. %: if the SDP is ``smooth'', in general, there are no spurious local optima.
+%
+%We showed that applying the Burer--Monteiro heuristic to solve SDP's with underlying smoothness by exploring 
+%
+%is almost always warranted, provided the maximum rank $p$ considered satisfies $p(p+1)/2 < m$, where $m$ is the number of constraints. Here, almost always means that, for a given SDP covered by our assumptions, for almost any cost matrix, the rank-restricted non-convex problem has no spurious local optimizers or inescapable saddles.
+%of smooth SDPs yields non-convex optimization problems of a benign nature, in that
+%all the points in their domain satisfying second order optimality are in fact global optima and thus solve the original SDP.
+
+We further reference the Riemannian trust-region method~\citep{genrtr} to solve the problem in $Y$, as it was recently guaranteed to converge from any starting point to a point which satisfies second-order optimality conditions, with global convergence rates~\citep{boumal2016globalrates}. 
+%(rates are provided).
+In addition, for $p=n+1$, we guarantee that approximate satisfaction of second-order conditions implies approximate global optimality. We note that the $1/\varepsilon^3$ convergence rate in our results may be pessimistic. 
+%\TODO{Strengthen? If we have numerics, it's easy.---See for instance \citep{boumal2015staircase,bandeira2014tightness} for numerical experiments which show that the algorithm studied here is faster than interior point methods on certain problems which satisfy the assumptions of our theorems.}
+Indeed, the numerical experiments clearly show that high accuracy solutions can be computed fast using optimization on manifolds, at least for certain applications.
+%You can cite my staircase paper and the tightness paper with Afonso and Amit and say that in those papers there are numerical experiments using the algorithm we propose to solve sdp's that satisfy the assumptions of of our theorem. There are no comparisons in the tightness paper, but in the staircase paper there are comparisons with interior point methods and it works much better (on synchronization of rotations problems)
+
+Addressing a broader class of SDPs, such as those with inequality constraints or equality constraints that may violate our smoothness assumptions, could perhaps be handled by penalizing those constraints in the objective in an augmented Lagrangian fashion. We also note that, algorithmically, the Riemannian trust-region method we use applies just as well to nonlinear costs in the SDP.
+%This is observed to be effective in certain situations~\citep{boumal2015staircase}.
+We believe that extending the theory presented here to broader classes of problems is a good direction for future work.
+
+%\TODO{	Recently, it was shown that, when optimizing a twice continuously differentiable cost function $f$ over $\Rn$ with Lipschitz continuous gradient and such that second-order necessary optimality conditions are sufficient for local optimality, gradient descent with constant step size converges to a local optimum almost surely for random initialization~\url{http://www.jmlr.org/proceedings/papers/v49/lee16.pdf}. If such a result can be transposed to optimization over compact manifolds, then this would support the empirical observation that gradient descent on~\eqref{eq:QCQP} seems to converge to a global optimizer in practice. --- might need set of saddle points to be countable, which it isn't for us. Not sure.}
+
+%\begin{itemize}
+%	\item (Already in examples? if do Phase-Cut..) Complex versions ok: consider set of Hermitian matrices as real vector space of dimension $n^2$ instead of $n(n+1)/2$: everything adapts accordingly.
+%	\item Would be good to exhibit a family of bad $C$'s, that is, such that there exist suboptimal socp's. Mention the Goemans example and why it's not enough. %What about the SDP's for max-eig and trust-region-subproblem: can we design bad $C$'s for them? --- of course not! for those problems, only 1 or 2 constraints: we know that socp's are always optimal for them, regardless of C. (See also my projpower1.pdf notes.)
+	%\item Comment explicitly about the $1/\varepsilon^3$ complexity that, in practice, we hit the fast convergence rate and get high precision solutions, with high precision also on numerical accuracy. So the complexity bound so far is bad, but might be improved a lot (although perhaps not for almost all $A$: might be a notion of conditioning lurking behind.)
+	%\item Think about Tengyu Ma's idea: what can we conclude about socp's with bad $C$'s? Consider perturbation limit of SDP for almost all C: pick C. If it is fine, we are done. If not, there exists a direction C' such that for all $\epsilon > 0$ in an interval, C + eps*C' is fine (otherwise, there is a ball around C that is bad, which is a contradiction). But then, should be possible to argue that "strict" local opts cannot just disappear in an infinitesimally small perturbation, which means that for bad local opts, Hessian must have at least one zero eigenvalue on top of the indeterminacy ones. Can we turn that into something strong? --- won't be that strong, but there is something there.
+	%\item ``Shapiro - Extremal problems on the set of nonnegative definite matrices - 1985'' about SDP's but with weirdly different context: for fixed compact constraint space, suggests that if the optimal value function $F(C) = SDP(C)$ is differentiable at $C$, then the solution of SDP for that $C$ is unique; then show $F$ is locally Lipschitz (which it should be) and that this implies it is almost everywhere differentiable, hence, for almost all $C$, SDP has unique solution (and it's an extreme point, of course).
+	%\item Treating inequalities and extra constraints that would break the geometry: could try penalizing for those in an augmented Lagrangian way, sort of like a middle ground between this paper and BM's papers.
+	%\item mention that the algorithms handle nonlinear costs (in SDP) happily; just less theory: staircase paper has an example with smoothed LUD. ``For nonlinear costs in the SDP, the algorithms still run but the theory exposed here does not apply.''
+%\end{itemize}
+
+
+\section*{Acknowledgment}
+
+VV was partially supported by the Office of Naval Research. ASB was supported by NSF Grant DMS-1317308. Part
+of this work was done while ASB was with the Department of
+Mathematics at the Massachusetts Institute of Technology. We thank Wotao Yin and Michel Goemans for helpful discussions.
+
+%\TODO{Wotao Yin; Philippe's grant; everything else}
+
+
+
+
+
+
+% It is authorized to use small font for bibliography at NIPS 2016.
+{\small
+\bibliographystyle{plainnat}
+\bibliography{../../../boumal}
+}
+
+\clearpage
+
+\appendix
+
+\section{Proofs and additional lemmas} \label{sec:proofs}
+
+We start by working out explicit formulas for the Riemannian gradient and Hessian which appear in Definition~\ref{def:criticalpts}. Let $\Proj_Y \colon \Rnp \to \T_Y\calM$ be the orthogonal projector to the tangent space at $Y$ (eq.~\eqref{eq:TYM}), and let
+\begin{align}
+\nabla f(Y) & = 2CY, & \nabla^2 f(Y)[\dot Y] & = 2C\dot Y
+\end{align}
+be the (Euclidean) gradient and Hessian of the cost function~\eqref{eq:f}. The Riemannian gradient and Hessian of $f$ on $\calM$ are related to these as follows~\citep[see][eqs\,(3.37),~(5.15)]{AMS08}:
+\begin{align}
+\grad f(Y) & = \Proj_Y \nabla f(Y), \\ % = 2 \Proj_Y(CY), \label{eq:Riemanniangradient} \\
+\forall \dot Y \in \T_Y\calM, \quad \Hess f(Y)[\dot Y] & = \Proj_Y \D\left( Y \mapsto \grad f(Y) \right)(Y)[\dot Y].
+\label{eq:RiemannianHessian}
+\end{align}
+Let us focus on the gradient first. Since $\grad f(Y)$ is a tangent vector at $Y$~\eqref{eq:TYM},\footnote{For non-symmetric $B\in\Rnn$, note that $\calA(B) = \calA\big( \frac{B+B\transpose}{2} \big)$.}
+\begin{align}
+\calA(\grad f(Y)Y\transpose) & = 0,
+\end{align}
+and since it is the orthogonal projection of $\nabla f(Y)$ to the tangent space, there exists $\mu \in \Rm$ such that
+\begin{align}
+\grad f(Y) + 2 \calA^*(\mu)Y & = \nabla f(Y) = 2CY,
+\label{eq:gradRandE}
+\end{align}
+where $\calA^* \colon \Rm \to \Snn$ is the adjoint of $\calA$. Indeed, considering symmetric matrices $A_1, \ldots, A_m$ such that $\calA(X)_i = \inner{A_i}{X}$, matrices $\calA^*(\mu)Y = \mu_1 A_1Y + \cdots + \mu_m A_mY$ span the normal space to the manifold at $Y$. Right-multiply~\eqref{eq:gradRandE} with $Y\transpose$ and apply $\calA$ to obtain
+\begin{align}
+\calA\left(\calA^*(\mu)YY\transpose\right) & = \calA(CYY\transpose).
+\label{eq:AstarmuY}
+\end{align}
+Under the assumption that the $A_iY$'s are linearly independent, $\mu$ is the unique solution to this linear system---for KKT points, these are the Lagrange multipliers.
+%In general, $\mu$ may not be unique but $\calA^*(\mu)Y$ always is, since~\eqref{eq:AstarmuY} is the result of an orthogonal projection.
+Furthermore, contrary to classical KKT conditions, $\mu$ is defined for \emph{all} feasible $Y$ (not only for KKT points) and can be found by solving~\eqref{eq:AstarmuY}.\footnote{For the Max-Cut SDP for example, $\calA = \diag$ and $\mu = \diag(CYY\transpose)$.}
+%If $\mu$ is not unique, for ease of exposition, let $\mu = \mu(Y) = \mu(YY\transpose)$ be the smallest-norm acceptable $\mu$
+This $\mu$ is a well-defined, differentiable function of $Y$.\footnote{Eq.~\eqref{eq:AstarmuY} is equivalent to $G\mu = \calA(CYY\transpose)$, where $G_{ij} = \inner{A_iY}{A_jY}$. For all $Y\in\calM$, $G$
+%	has constant rank equal to the codimension of $\calM$.
+	is invertible since $A_1Y, \ldots, A_mY$ are linearly independent.
+	Hence, $\mu = G^{-1} \calA(CYY\transpose)$ is differentiable in $Y$ at $Y\in\calM$.}
+Using this definition of $\mu$, let
+\begin{align}
+	S & = S(Y) = S(YY\transpose) = C - \calA^*(\mu).
+\label{eq:S}
+\end{align}
+First-order critical points then satisfy (using~\eqref{eq:gradRandE}):
+\begin{align}
+\frac{1}{2}\grad f(Y) = SY = 0.
+\label{eq:firstorder}
+\end{align}
+We note in passing that $\mu(Y)$ is feasible for the dual of~\eqref{eq:SDP} exactly when $S(Y) \succeq 0$:
+\begin{align}
+d^* = \max_{\mu\in\Rm} b\transpose \mu \textrm{ subject to } C - \calA^*(\mu) \succeq 0,
+\tag{DSDP}
+\label{eq:DSDP}
+\end{align}
+which illustrates the importance of $S$ as a dual certificate for~\eqref{eq:SDP}.
+
+Now let us turn to the Hessian of $f$. Equation~\eqref{eq:RiemannianHessian} requires computation of the differential of $\grad f(Y)$, which is
+\begin{align*}
+\D\big( Y \mapsto \grad f(Y) \big)(Y)[\dot Y] & = \D\big( Y \mapsto 2SY \big)(Y)[\dot Y] = 2S \dot Y + 2\dot SY,
+\end{align*}
+where $\dot S \triangleq \D S(Y)[\dot Y]$ is a symmetric matrix. Because of eq.~\eqref{eq:S}, $\dot S = \calA^*(\nu)$ for some $\nu \in \Rm$. Hence, for any tangent vector $\dot Z\in\T_Y\calM$~\eqref{eq:TYM}, we have $\innersmall{\dot Z}{\dot S Y} = \innersmall{\dot Z Y\transpose}{\calA^*(\nu)} = \innersmall{\calA(\dot Z Y\transpose)}{\nu} = 0$: $\dot S Y$ is orthogonal to the tangent space at $Y$. Using~\eqref{eq:RiemannianHessian}, we find that
+\begin{align}
+\frac{1}{2}\Hess f(Y)[\dot Y] = \Proj_Y S\dot Y.
+\label{eq:secondorderfull}
+\end{align}
+The second-order condition for $Y$ is that $\Hess f(Y)$ be positive semidefinite on $\T_Y\calM$. Using that $\Proj_Y$ is a self-adjoint operator, it follows that this condition is equivalent to:
+\begin{align}
+\forall \dot Y \in \T_Y\calM, \quad \frac{1}{2} \innersmall{\dot Y}{\Hess f(Y)[\dot Y]}
+% = \innersmall{\dot Y}{S\dot Y + \dot SY}
+= \innersmall{\dot Y}{S\dot Y} \geq 0.
+\label{eq:secondorder}
+\end{align}
+%Indeed, $\dot S = \calA^*(\nu)$ for some $\nu \in \Rm$, hence, $\innersmall{\dot Y}{\dot S Y} = \innersmall{\dot Y Y\transpose}{\calA^*(\nu)} = \innersmall{\calA(\dot Y Y\transpose)}{\nu} = 0$, since $\dot Y \in \T_Y\calM$~\eqref{eq:TYM}.
+
+We now show that \emph{rank-deficient} second-order critical points are globally optimal. We obtain this result as a corollary to a more informative statement about optimality gap at approximately second-order critical points (assuming exact rank deficiency). The lemmas also show how $S$ can be used to control the optimality gap at approximate critical points without requiring rank deficiency.
+%\TODO{Algorithmic use for this lemma: reach approx crit point; it's not rank deficient (in general). Add a column of zeros: still feasible, still approx critical, now rank deficient; check out lambdamin of Hessian (not necessarily small) : if it's small, the lemma gives an optimality bound; if it's not, a certificate vector gives an escape direction to leave the approximate saddle. Forget about algorithms: think about the landscape: for any given $p$, an approx socp which is far from optimal must map to a comfortably escapable saddle in $p+1$.}
+%\TODO{For all results in this section, it is understood that $\calC$ is compact and $\calM$ is a manifold.}
+This is valid for any $p$ and any $C$.
+\begin{lemma} \label{lem:optimgap}
+	For any $Y$ on the manifold $\calM$, if $\|\grad f(Y)\| \leq \varepsilon_g$ and $S(Y) \succeq -\frac{\varepsilon_H}{2} I_n$, then the optimality gap at $Y$ with respect to~\eqref{eq:SDP} is bounded as
+	\begin{align}
+	0 \leq 2(f(Y) - f^*) \leq \varepsilon_H R + \varepsilon_g \sqrt{R},
+	\label{eq:lemoptimgap}
+	\end{align}
+	where $R = \max_{X\in\calC} \trace(X) < \infty$ measures the size of the compact set $\calC$~\eqref{eq:C}.
+	%	
+	If $I_n\in\im(\calA^*)$,
+	% It's equivalent, at least I think so if Slater's condition holds; see notes March 18, 2016.
+	the right hand side of~\eqref{eq:lemoptimgap} simplifies to $\varepsilon_H R$. This holds in particular if all $X\in\calC$ have same trace and $\calC$ has a relative interior point (Slater condition).
+\end{lemma}
+%\begin{proof}
+%See appendix in supplementary materials.
+%\end{proof}
+\begin{proof}
+	By assumption on $S(Y)$ (eq.~\eqref{eq:S}),
+	\begin{align*}
+	\forall \tilde X\in\calC, \quad -\frac{\varepsilon_H}{2} \trace(\tilde X) \leq \innersmall{S(Y)}{\tilde X} & = \innersmall{C}{\tilde X} - \innersmall{\calA^*(\mu(Y))}{\tilde X} = \innersmall{C}{\tilde X} - \innersmall{\mu(Y)}{b}.
+	\end{align*}
+	This holds in particular for $\tilde X$ optimal for~\eqref{eq:SDP}. Thus, we may set $\innersmall{C}{\tilde X} = f^*$; and certainly, $\trace(\tilde X) \leq R$. Furthermore,
+	\begin{align*}
+	\innersmall{\mu(Y)}{b} = \innersmall{\mu(Y)}{\calA(YY\transpose)} = \innersmall{C-S(Y)}{YY\transpose} = f(Y) - \innersmall{S(Y)Y}{Y}.
+	\end{align*}
+	Combining the typeset equations and using $\grad f(Y) = 2S(Y)Y$, we find
+	\begin{align}
+	0 \leq 2(f(Y) - f^*) \leq \varepsilon_H R + \innersmall{\grad f(Y)}{Y}.
+	\label{eq:optgappartial}
+	\end{align}
+	In general, we do not assume $I_n \in \im(\calA^*)$ and we get the result by Cauchy--Schwarz on~\eqref{eq:optgappartial} and $\|Y\| = \sqrt{\trace(YY\transpose)} \leq \sqrt{R}$:
+	\begin{align*}
+	0 \leq 2(f(Y)-f^*) \leq \varepsilon_H R + \varepsilon_g \sqrt{R}.
+	\end{align*}
+	But if $I_n \in \im(\calA^*)$, then we show that $Y$ is a normal vector at $Y$, so that it is orthogonal to $\grad f(Y)$. Formally: there exists $\nu \in \Rm$ such that $I_n = \calA^*(\nu)$, and
+	\begin{align*}
+	\innersmall{\grad f(Y)}{Y} & = \innersmall{\grad f(Y) Y\transpose}{I_n} = \innersmall{\calA(\grad f(Y) Y\transpose)}{\nu} = 0,
+	\end{align*}
+	since $\grad f(Y) \in \T_Y\calM$~\eqref{eq:TYM}. This indeed allows to simplify~\eqref{eq:optgappartial}.
+	
+	To conclude, we show that if $\calC$ has a relative interior point $X'$ (that is, $\calA(X') = b$ and $X' \succ 0$) and if $\Trace(X)$ is a constant for all $X$ in $\calC$, then $I_n \in \im(\calA^*)$. Indeed, $\Snn = \im(\calA^*) \oplus \ker\calA$, so there exist $\nu\in\Rm$ and $M \in \ker \calA$ such that $I_n = \calA^*(\nu) + M$. Thus, for all $X$ in $\calC$,
+	\begin{align*}
+	0 = \trace(X - X') = \inner{\calA^*(\nu)+M}{X-X'} = \inner{M}{X-X'}.
+	\end{align*}
+	This implies that $M$ is orthogonal to all $X-X'$. These span $\ker\calA$ since $X'$ is interior. Indeed, for any $H\in\ker\calA$, since $X'\succ 0$, there exists $\varepsilon > 0$ such that $X \triangleq X'+\varepsilon H \succeq 0$ and $\calA(X) = b$, so that $X \in \calC$.
+	%The other way around, it is clear that for all $X\in\calC$, $\calA(X-X') = 0$ so that $X-X' \in \ker \calA$. --- we don't need that part and it's trivial anyway.
+	Hence, $M \in \ker\calA$ is orthogonal to $\ker \calA$. Consequently, $M = 0$ and $I_n = \calA^*(\nu)$.
+\end{proof}
+\begin{lemma}\label{lem:fromHesstoS}
+	If $Y\in\calM$ is column rank deficient and $\Hess f(Y) \succeq -\varepsilon_H \Id$, then $S(Y) \succeq -\frac{\varepsilon_H}{2} I_n$.
+\end{lemma}
+\begin{proof}
+	%	If $Y$ is not full column rank and $\Hess f(Y) \succeq -\varepsilon_H \Id$, then the condition on $S$ holds. Indeed,
+	By assumption, there exists $z\in\Rp$, $\|z\| = 1$ such that $Yz = 0$. Thus, for any $x\in\Rn$, we can form $\dot Y = xz\transpose$: it is a tangent vector since $Y\dot Y\transpose = 0$~\eqref{eq:TYM}. Then, condition~\eqref{eq:secondorder} combined with the assumption on $\Hess f(Y)$ tells us
+	\begin{align*}
+	-\varepsilon_H \|x\|^2 \leq \innersmall{\dot Y}{\Hess f(Y)[\dot Y]} = 2\innersmall{\dot Y}{S\dot Y} = 2\innersmall{xz\transpose z x\transpose}{S} = 2 x\transpose S x.
+	\end{align*}
+	This holds for all $x\in\Rn$, hence $S \succeq -\frac{\varepsilon_H}{2} I_n$ as required.
+\end{proof}
+\begin{corollary} \label{cor:rankdefsocpopt}
+	If $Y\in\calM_p$ is a column rank-deficient second-order critical point for~\eqref{eq:QCQP}, then it is optimal for~\eqref{eq:QCQP} and $X = YY\transpose$ is optimal for~\eqref{eq:SDP}. In particular, for $p>n$, all second-order critical points are optimal.
+\end{corollary}
+The first part of this corollary also appears as~\cite[Prop.\,4]{sdplr}, where the statement is made about local optima rather than second-order critical points.
+
+At this point, we can already give a short proof of Theorem~\ref{thm:approxtolerance}.
+\begin{proof}[Proof of Theorem~\ref{thm:approxtolerance}]
+	%	\TODO{this is forward referencing things from section 5 ; move it there?}
+	Since $\tilde Y \tilde Y\transpose = YY\transpose$, $S(\tilde Y) = S(Y)$; in particular, $f(\tilde Y) = f(Y)$ and $\|\grad f(\tilde Y)\| = \|\grad f(Y)\|$. Since $\tilde Y$ has deficient column rank, apply Lemmas~\ref{lem:optimgap} and~\ref{lem:fromHesstoS}. For $p>n$, there is no need to form $\tilde Y$ as $Y$ necessarily has deficient column rank.
+\end{proof}
+
+Based on Corollary~\ref{cor:rankdefsocpopt}, to establish Theorem~\ref{thm:masterthm} it is sufficient to show that, for almost all $C$, all second-order critical points are rank deficient already for small $p$. We show that in fact this is true even for first-order critical points. The argument is by dimensionality counting on $\Snn$: the set of all possible cost matrices $C$.
+\begin{lemma} \label{lem:criticalptsrankdeficient}
+	Under the assumptions of Theorem~\ref{thm:masterthm}, for almost all $C$, all critical points of~\eqref{eq:QCQP} are rank deficient.
+\end{lemma}
+%\begin{proof}
+%See appendix in supplementary materials.
+%\end{proof}
+\begin{proof}
+	Let $Y$ be a critical point for~\eqref{eq:QCQP}. By the first-order condition $S(Y)Y=0$~\eqref{eq:firstorder} and the definition of $S(Y) = C - \calA^*(\mu(Y))$~\eqref{eq:S}, there exists $\mu\in\Rm$ such that
+	% http://math.stackexchange.com/a/259904/162453
+	\begin{align}
+	\rank Y \leq \nulll(C-\calA^*(\mu)) \leq \max_{\nu\in\Rm} \nulll(C-\calA^*(\nu)),
+	\label{eq:baseinequality}
+	\end{align}
+	where $\nulll$ denotes the nullity (dimension of the kernel). This first step in the proof is inspired by~\cite[Thm.\,3]{wen2013orthogonality}.
+	%\footnote{\TODO{Address why \cite[Thm.\,3]{wen2013orthogonality} is not satisfactory: as presented, limited to diagonal constraints ; no characterization of when the inf rank takes on a useful value ; even in the Max Cut case, if cost is rank 1 with 1's on diagonal, the theorem's conclusion is vacuous.
+	%Do check the reference they give: ``On the rank of a cograph'', but seems to yield nothing useful.
+	%}}
+	If the right hand side evaluates to $\ell$, then there exists $\nu$ such that $M = C-\calA^*(\nu)$ and $\nulll(M) = \ell$. Writing $C = M + \calA^*(\nu)$, we find that
+	\begin{align}
+	C & \in \calN_\ell + \im(\calA^*)
+	\end{align}
+	where the $+$ is a set-sum and $\calN_\ell$ denotes the set of symmetric matrices of size $n$ with nullity $\ell$. This set has dimension %\TODO{Explain?}
+	\begin{align}
+	\dim \calN_\ell = \frac{n(n+1)}{2} - \frac{\ell(\ell+1)}{2},
+	\end{align}
+	whereas $\dim \im(\calA^*) = \rank(\calA^*) \leq m$. Assume the right hand side of~\eqref{eq:baseinequality} evaluates to $p$ or more. Then, a fortiori,
+	\begin{align}
+	C \in \bigcup_{\ell = p,\ldots,n} \calN_\ell + \im(\calA^*).
+	\label{eq:CbelongsUnion}
+	\end{align}
+	The set on the right hand side contains all ``bad'' $C$'s, that is, those for which~\eqref{eq:baseinequality} offers no information about the rank of $Y$. The dimension of that set is bounded as follows, using that the dimension of a finite union is at most the maximal dimension, and the dimension of a finite sum of sets is at most the sum of the set dimensions:
+	%	\footnote{``If a subset of $\Rn$ has Hausdorff dimension less than $n$ then it is a null set with respect to $n$-dimensional Lebesgue measure.'' \url{https://en.wikipedia.org/wiki/Lebesgue\_measure\#Null\_sets} --- The Hausdorff dimension is bounded above by the upper box dimension, \url{https://en.wikipedia.org/wiki/Minkowski\%E2\%80\%93Bouligand\_dimension\#Relations\_to\_the\_Hausdorff\_dimension} --- and the upper box dimension has the properties we require \url{https://en.wikipedia.org/wiki/Minkowski\%E2\%80\%93Bouligand\_dimension\#Properties}. Then I assumed that the upper box dimension of a manifold is equal to its Hausdorff dimension... See also \url{https://mathoverflow.net/questions/44192/fourier-dimension-of-the-sum-of-sets}, where it says (without reference) that $dim_H(A+B) <= dim_H(A) + dim_B(B)$ ; Then, it's probably true that both dimensions on the rhs are equal to their usual dimensions, and that settles it. --- see \url{https://en.wikipedia.org/wiki/Dimension\_of\_an\_algebraic\_variety}}
+	\begin{align*}
+	\dim\left( \bigcup_{\ell = p,\ldots,n} \calN_\ell + \im(\calA^*) \right) \leq \dim\left( \calN_p + \im(\calA^*) \right) \leq \frac{n(n+1)}{2} - \frac{p(p+1)}{2} + m.
+	\end{align*}
+	Since $C\in\Snn$ lives in a space of dimension $\frac{n(n+1)}{2}$, almost no $C$ verifies~\eqref{eq:CbelongsUnion} if
+	\begin{align*}
+	\frac{n(n+1)}{2} - \frac{p(p+1)}{2} + m < \frac{n(n+1)}{2}.
+	\end{align*}
+	Hence, if $\frac{p(p+1)}{2} > m$, then, for almost all $C$, critical points verify $\rank(Y) < p$.
+\end{proof}
+Theorem~\ref{thm:masterthm} follows as a corollary of Corollary~\ref{cor:rankdefsocpopt} and Lemma~\ref{lem:criticalptsrankdeficient}.
+
+%\section{General semidefinite programs}
+%
+%Consider a generic semidefinite program with the standard inner product $\inner{A}{B} = \trace(A\transpose B)$:
+%\begin{align}
+%	f^* = \min_{X\in\Snn} \inner{C}{X} \textrm{ subject to } \calA(X) = b, X \succeq 0,
+%	\tag{SDP}
+%	\label{eq:SDP}
+%\end{align}
+%where $X$ is a real symmetric matrix of size $n$ and $\calA \colon \Snn \to \Rm$ is a linear operator capturing $m$ equality constraints. The dual of~\eqref{eq:SDP} is given by
+%\begin{align}
+%d^* = \max_{\lambda\in\Rm} b\transpose \lambda \textrm{ subject to } \calA^*(\lambda) \preceq C,
+%\tag{DSDP}
+%\label{eq:DSDP}
+%\end{align}
+%where $\calA^*$ is the adjoint of $\calA$. Weak duality always holds, that is, $f^* \geq d^*$.\footnote{This follows from $b\transpose \lambda = \inner{\calA(X)}{\lambda} = \inner{X}{\calA^*(\lambda)} \leq \inner{C}{X}$ for all $X, \lambda$ feasible.} The following assumption will be fulfilled in all situations of interest in this paper.
+%\begin{assumption}\label{assu:sdp}
+%	Strong duality holds for \eqref{eq:SDP} and \eqref{eq:DSDP}, and both attain their optimal value $f^* = d^*$.
+%\end{assumption}
+%\begin{proposition}[Slater's theorem]
+%	Assumption~\ref{assu:sdp} holds in particular if 
+%	both~\eqref{eq:SDP} and~\eqref{eq:DSDP} are strictly feasible (Slater's condition), that is, if there exists $X \succ 0$ such that $\calA(X)=b$ and there exists $\lambda$ such that $\calA^*(\lambda) \prec C$.
+%\end{proposition}
+%\begin{proof} See \cite[\S5.3.2]{boyd2004convex}.
+%	%\TODO{give a good reference for this. Quoting \url{http://www.eecs.berkeley.edu/~wainwrig/ee227a/SDP_Duality.pdf}, if the primal (resp.\ dual) problem is bounded below (resp.\ above), and strictly feasible, then $f^* = d^*$ and the dual (resp.\ primal) is attained. If both problems are strictly feasible, then $f^* = d^*$ and both problems are attained.}
+%\end{proof}
+%
+%While it is true that~\eqref{eq:SDP} can be solved in polynomial time using interior point methods~\cite{nesterov2004introductory}, said methods tend to be slow in practice on large problem instances because they involve full spectral factorizations of matrices of size $n$. Interestingly, it is well-known that all extreme points of the search space of~\eqref{eq:SDP} have rank $r$ bounded as $\frac{r(r+1)}{2} \leq m$~\cite{shapiro1982rank,barvinok1995problems,pataki1998rank}. Under somes conditions (for example, if the search space of~\eqref{eq:SDP} is bounded~\cite[Cor.\,32.3.2]{rockafellar1997convex}), one of the extreme points is optimal, meaning that restricting the search space of~\eqref{eq:SDP} to matrices of rank similarly bounded does not change its optimal value. This is interesting because such a rank restriction may significantly reduce the dimension of the search space. This has in particular motivated excellent work by~\citet{sdplr,burer2005local}.
+%
+%%Provided strong duality holds and both problems attain their optimal value \TODO{conditions here}\footnote{If the primal (resp. dual) problem is bounded above (resp. below), and strictly feasible, then p* = d* and the dual (resp. primal) is attained. If both problems are strictly feasible, then p* = d* and both problems are attained \url{http://www.eecs.berkeley.edu/~wainwrig/ee227a/SDP_Duality.pdf}}, there exists a primal-dual optimal pair $(X, \lambda)$ which satisfies complementary slackness, that is, $X$ is feasible for~\eqref{eq:SDP}, $\lambda$ is feasible for~\eqref{eq:DSDP}, and \TODO{see also, Prop.\ 1 in \cite{sdplr}}
+%%\begin{align*}
+%%	(C-\calA^*(\lambda))X = 0,
+%%\end{align*}
+%%which implies $b\transpose \lambda = \inner{C}{X}$.
+%
+%Restricting the search space of~\eqref{eq:SDP} to matrices of rank at most $p$ (and reparameterizing the search space by factorizing $X = YY\transpose$) yields a quadratically constrained quadratic program,
+%\begin{align}
+%	q^* = \min_{Y\in\Rnp} \inner{C}{YY\transpose} \textrm{ subject to } \calA(YY\transpose) = b.
+%	\tag{QCQP}
+%	\label{eq:QCQP}
+%\end{align}
+%Since~\eqref{eq:SDP} is a relaxation of~\eqref{eq:QCQP} (up to parameterization), $q^* \geq f^*$. In general, \eqref{eq:QCQP} is non-convex. For the previously described scenario where $q^* = f^*$, we are interested in solving~\eqref{eq:SDP} via the computation of candidate optimizers of~\eqref{eq:QCQP}, since the latter has a smaller dimensional search space when $p$ is small.
+%
+%%By~\cite[Theorem 2.1]{pataki1998rank}, and also~\cite{barvinok1995problems,shapiro1982rank}, we know that, if the search space of~\eqref{eq:SDP} has an extreme point, then there exists a solution $X$ such that $\frac{r(r+1)}{2} \leq m$ with $\rank(X) = r$. Thus, for $p$ such that $\frac{p(p+1)}{2} \geq m$, all three programs \eqref{eq:SDP}, \eqref{eq:DSDP} and \eqref{eq:QCQP} have the same optimal value.
+%
+%Under standard constraint qualification conditions on $\calA$ and $b$ (to be specified momentarily), candidate optimizers satisfy the Karush--Kuhn--Tucker (KKT) conditions. We now define points satisfying these conditions. See~\cite[\S2.2]{sdplr} and \cite[\S3]{ruszczynski2006nonlinear}.
+%\begin{definition}
+%	$Y\in\Rnp$ is a \emph{KKT point} for \eqref{eq:QCQP} if it is feasible and there exists $\mu\in\Rm$ such that
+%	\begin{align}
+%		(C - \calA^*(\mu))Y = 0.
+%		\label{eq:KKT}
+%	\end{align}
+%	Vector $\mu$ contains \emph{Lagrange multipliers} associated to $Y$.
+%\end{definition}
+%\begin{definition}
+%	$Y\in\Rnp$ is a \emph{second-order KKT point} for \eqref{eq:QCQP} if it is a KKT point and if
+%	\begin{align}
+%		\max_{\mu \colon (C-\calA^*(\mu))Y = 0} \inner{C - \calA^*(\mu)}{\dot Y \dot Y\transpose} \geq 0
+%		\label{eq:KKT2}
+%	\end{align}
+%	for all $\dot Y \in \Rnp$ such that
+%	\begin{align}
+%		\calA(Y \dot Y\transpose + \dot Y Y\transpose) = 0.
+%		\label{eq:tangent}
+%	\end{align}
+%	% Note: $\innersmall{CY}{\dot Y} = 0$ is automatically true for a KKT point, since $CY = \calA^*(\mu)$, then take adjoint of $\calA^*$ applied to symmetrized $Y\dot Y\transpose$, and that's already zero.
+%\end{definition}
+%
+%KKT points are interesting because they typically include all local optimizers. This is practically important because local optimality is hard to check in general (since it involves a neighborhood of a point)~\cite{vavasis1991nonlinear}, whereas KKT conditions are often easy to check (since they are pointwise requirements on finite-order derivatives). This means that, in many situations, KKT points can be computed in reasonable time, unlike local optimizers (let alone global optimizers)~\cite{cartis2012complexity,cartis2014complexityconstrained,cartis2015evaluationcomplexity}.
+%
+%We now specify the assumptions on~\eqref{eq:QCQP}.
+%\begin{assumption}\label{assu:metricregularityqcqp}
+%	\TODO{Cite Andreani paper, Theorem 3.3 and around to say it in the other direction?}
+%	We assume \emph{metric regularity} (equivalently, \emph{Robinson's condition}) at all
+%	% second-order KKT
+%	feasible
+%	points of~\eqref{eq:QCQP}. That is, for any such $Y$, we assume
+%	\begin{align}
+%		(A_1Y, \ldots, A_mY)
+%	\end{align}
+%	are linearly independent vectors of $\Rnp$, where $A_1, \ldots, A_m \in \Snn$ are the constraint matrices: $\calA(X) = (\inner{A_1}{X}, \ldots, \inner{A_m}{X})\transpose$. In particular, it is necessary that the $A_i$'s be linearly independent themselves, which implies $m \leq \dim \Snn = \frac{n(n+1)}{2}$.
+%\end{assumption}
+%Note that, under this assumption, $\mu$ in~\eqref{eq:KKT} is unique (if it exists), thus simplifying condition~\eqref{eq:KKT2} significantly. Indeed, all acceptable $\mu$'s satisfy $CY = \calA^*(\mu)Y = \sum_{i=1}^m \mu_i A_i Y$. By linear independence of the $A_iY$'s, there can only be zero or one such vector. When $\mu$ exists, it is a function of $Y$ as the unique solution of the linear system
+%\begin{align}
+%	\calA(A_iYY\transpose)\transpose \mu & = \calA(CYY\transpose)_i, \quad \textrm{ for } i = 1\ldots m.
+%\end{align}
+%This is seen by taking inner products of the identity $CY = \calA^*(\mu)Y$ with all $A_iY$'s.
+%\begin{proposition}
+%	Under Assumption~\ref{assu:metricregularityqcqp},
+%	%(which only has to hold at all local optimizers),
+%	the following inclusions hold:
+%	\begin{align*}
+%	\{ \textrm{global optimizers of \eqref{eq:QCQP}} \} & \subseteq \{ \textrm{local optimizers of \eqref{eq:QCQP}} \} \\ & \subseteq \{ \textrm{second-order KKT points of \eqref{eq:QCQP}} \} \\ & \subseteq \{ \textrm{KKT points of \eqref{eq:QCQP}} \}.
+%	\end{align*}
+%\end{proposition}
+%\begin{proof}
+%	See \cite[p.\,103 and Thm.\,3.25 and Thm.\,3.46]{ruszczynski2006nonlinear}. See also~\cite[Prop.\,2]{sdplr}.
+%	% From \cite{ruszczynski2006nonlinear} :
+%	% Page 102 : metric regularity is equivalent to Robinson's condition (Thm. A.10, eq. (3.6)
+%	% Page 103 : for equality constraints only, metric regularity is equivalent to linear independence of the gradients of the constraints (at the considered point)
+%	% Theorem 3.25 : If Robinson's condition (one possible choice of CQ) === metric regularity === lin. indep. constraint gradients holds at Y, then if Y is a local opt, it is a KKT point.
+%\end{proof}
+
+%In fact, metric regularity at all points implies that the search space of~\eqref{eq:QCQP} is a smooth manifold. This is an important observation as it makes all the theory and algorithms of the field of optimization on manifolds available for the task~\cite{AMS08}.
+%Then, KKT conditions merely express that the (Riemannian) gradient of \TODO{etc etc. have to specify the Riemannian metric to get the submanifold geometry etc. : keep this for later.}
+%\begin{proposition}
+%	Under Assumption~\ref{assu:metricregularityqcqp}, the search space of~\eqref{eq:QCQP},
+%	\begin{align}
+%		\calM & = \{ Y \in \Rnp : \calA(YY\transpose) = b \},
+%	\end{align}
+%	is a Riemannian submanifold of $\Rnp$ equipped with the inner product $\inner{\cdot}{\cdot}$. Problem~\eqref{eq:QCQP} is then equivalent to the Riemannian optimization problem
+%	\begin{align}
+%		\min_{Y\in\calM} f(Y) = \inner{CY}{Y}.
+%		\tag{R}
+%		\label{eq:R}
+%	\end{align}
+%	Equation~\eqref{eq:tangent} defines the tangent space to $\calM$ at $Y$, written $\T_Y\calM$. A point $Y\in\calM$ is a KKT point iff the Riemannian gradient of $f\colon\calM\to\reals$ vanishes. It is a second-order KKT point iff its Riemannian Hessian is also positive semidefinite.
+%\end{proposition}
+%\begin{proof}
+%	Apply \cite[Prop.\,3.3.3 and eqs.\,3.19, 3.37 and 5.15]{AMS08}.
+%\end{proof}
+
+%\begin{proposition}
+%	\TODO{see if we can argue that if strong duality holds for SDP and DSDP and they attain their values, then CQ's hold for QCQP .. I don't know if that's true.}
+% No, I don't think that's true: strong duality is a geometric concern (has to do with the actual sets), whereas metric regularity has to do with the representation of the set (which $A_i$'s we pick, knowing that more than one choice is possible, and not all of them are metrically regular).)
+%\end{proposition}
+
+%In other words, for all such $\dot Y$, vector $\mu$ obeys
+%\begin{align}
+%	\mu\transpose \calA(\dot Y \dot Y\transpose) \leq \inner{C}{\dot Y \dot Y\transpose}.
+%	\label{eq:KKT2mu}
+%\end{align}
+
+%Interestingly, all \emph{rank-deficient} second-order KKT points of~\eqref{eq:QCQP} are global optimizers. For completeness, we prove this result below, which appeared in~\cite[Prop.\,4]{sdplr}.
+%\begin{proposition}\label{prop:YrankdeficientKKT2}
+%	Under Assumption~\ref{assu:metricregularityqcqp},
+%	%(which only has to hold at all rank-deficient second-order KKT points),
+%	% need the assumption to have uniqueness of $\mu$, which is needed to pinpoint a dual feasible point.
+%	if $Y$ is a rank-deficient second-order KKT point for~\eqref{eq:QCQP}, then $Y$ is optimal for \eqref{eq:QCQP} and $YY\transpose$ is optimal for~\eqref{eq:SDP}.
+%	Furthermore, the (unique) vector of Lagrange multipliers $\mu$ for $Y$ is optimal for~\eqref{eq:DSDP}, and $f^* = d^* = q^*$.
+%\end{proposition}
+%\begin{proof}
+%	Let $z\in\Rp$ verify $z\transpose z = 1$ and $Yz = 0$. Such a $z$ exists since $Y$ is rank-deficient. For any $x\in\Rn$, the matrix $\dot Y = xz\transpose$ is such that $Y\dot Y\transpose + \dot Y Y\transpose = 0$. Thus, in particular, $\dot Y$ satisfies~\eqref{eq:tangent}. Then, since $Y$ is second-order KKT, it follows from~\eqref{eq:KKT2} that
+%	\begin{align*}
+%		\inner{C - \calA^*(\mu)}{xx\transpose} = x\transpose \left( C - \calA^*(\mu) \right) x \geq 0, \quad \forall x\in\Rn.
+%	\end{align*}
+%	Equivalently, $C \succeq \calA^*(\mu)$, that is, $\mu$ is feasible for~\eqref{eq:DSDP}.
+%	
+%	Using feasibility ($\calA(YY\transpose) = b$) and first-order conditions~\eqref{eq:KKT}, we further obtain
+%	\begin{align*}
+%		b\transpose \mu = \inner{\calA(YY\transpose)}{\mu} = \inner{YY\transpose}{\calA^*(\mu)} = \inner{Y}{\calA^*(\mu)Y} = \inner{Y}{CY} = \inner{C}{YY\transpose},
+%	\end{align*}
+%	meaning $f^* \leq d^*$. Combining with weak duality ($f^* \geq d^*$), and since \eqref{eq:QCQP} is a (reparameterized) restriction of \eqref{eq:SDP} ($q^* \geq f^*$), this implies that $YY\transpose, \mu$ and $Y$ are respectively optimal for \eqref{eq:SDP}, \eqref{eq:DSDP} and \eqref{eq:QCQP}.
+%\end{proof}
+%Note that, when Prop.~\ref{prop:YrankdeficientKKT2} applies, Assumption~\ref{assu:sdp} holds.
+%
+%Proposition~\ref{prop:YrankdeficientKKT2} mainly implies that, if $p$ is taken large enough so that all second-order KKT points are rank-deficient, then all such points (if they exist) are globally optimal. The natural question then, is: how large must $p$ be? We propose the following argument for \emph{generic} $C$.
+%\begin{theorem}\label{thm:genericC}
+%	Given $\calA \colon \Snn \to \Rm$ and $b\in\Rm$ such that Assumption~\ref{assu:metricregularityqcqp} holds for some $p$ verifying
+%	\begin{align}
+%	\frac{p(p+1)}{2} > m,
+%	\end{align}
+%	% This stronger version of the assumption is needed to avoid dependence on C ...
+%	for almost all $C\in\Snn$, all KKT points of~\eqref{eq:QCQP} are rank deficient. Consequently, for almost all $C$, all second-order KKT points are globally optimal. Given an optimal $Y$, the matrix $YY\transpose$ solves~\eqref{eq:SDP} and the vector of Lagrange multipliers $\mu$ solves~\eqref{eq:DSDP}.
+%	% For such $Y$, $YY\transpose$ is globally optimal for~\eqref{eq:SDP} and the vector of Lagrange multipliers $\mu$ is optimal for~\eqref{eq:DSDP}.
+%\end{theorem}
+%\begin{proof}
+%	Let $Y$ be any KKT point for~\eqref{eq:QCQP} and let $\mu$ be its vector of Lagrange multipliers such that~\eqref{eq:KKT} holds. Then,
+%	% http://math.stackexchange.com/a/259904/162453
+%	\begin{align}
+%		\rank Y \leq \nulll(C-\calA^*(\mu)) \leq \max_{\nu\in\Rm} \nulll(C-\calA^*(\nu)),
+%		\label{eq:baseinequality}
+%	\end{align}
+%	where $\nulll$ denotes the nullity. This first step in the proof is inspired by~\cite[Thm.\,3]{wen2013orthogonality}. If the right hand side evaluates to $p$, then there exists $\nu$ such that $M = C-\calA^*(\nu)$ and $\nulll(M) = p$. Thus, $C = M + \calA^*(\nu)$. In particular, $C \in \calN_p + \spann(\calA^*)$ (set sum), where $\calN_p$ denotes the set of symmetric matrices of size $n$ and nullity $p$. This set has dimension
+%	\begin{align}
+%		\dim \calN_p = \frac{n(n+1)}{2} - \frac{p(p+1)}{2},
+%	\end{align}
+%	whereas $\dim \spann(\calA^*) = \rank(\calA^*) \leq m$. Assume the right hand side of~\eqref{eq:baseinequality} evaluates to $p$ or more. Then, a fortiori,
+%	\begin{align}\label{eq:CbelongsUnion}
+%		C \in \bigcup_{\ell = p,\ldots,n} \calN_\ell + \spann(\calA^*).
+%	\end{align}
+%	The dimension of that set is bounded as follows, using that the dimension of a finite union is at most the maximal dimension, and the dimension of a finite sum of sets is at most the sum of the set dimensions:\footnote{``If a subset of $\Rn$ has Hausdorff dimension less than $n$ then it is a null set with respect to $n$-dimensional Lebesgue measure.'' \url{https://en.wikipedia.org/wiki/Lebesgue\_measure\#Null\_sets} --- The Hausdorff dimension is bounded above by the upper box dimension, \url{https://en.wikipedia.org/wiki/Minkowski\%E2\%80\%93Bouligand\_dimension\#Relations\_to\_the\_Hausdorff\_dimension} --- and the upper box dimension has the properties we require \url{https://en.wikipedia.org/wiki/Minkowski\%E2\%80\%93Bouligand\_dimension\#Properties}. Then I assumed that the upper box dimension of a manifold is equal to its Hausdorff dimension... See also \url{https://mathoverflow.net/questions/44192/fourier-dimension-of-the-sum-of-sets}, where it says (without reference) that $dim_H(A+B) <= dim_H(A) + dim_B(B)$ ; Then, it's probably true that both dimensions on the rhs are equal to their usual dimensions, and that settles it. --- see \url{https://en.wikipedia.org/wiki/Dimension\_of\_an\_algebraic\_variety}}
+%	\begin{align*}
+%		\dim\left( \bigcup_{\ell = p,\ldots,n} \calN_\ell + \spann(\calA^*) \right) \leq \dim\left( \calN_p + \spann(\calA^*) \right) \leq \frac{n(n+1)}{2} - \frac{p(p+1)}{2} + m.
+%	\end{align*}
+%	Since $C\in\Snn$ lives in a space of dimension $\frac{n(n+1)}{2}$, almost no $C$ verifies~\eqref{eq:CbelongsUnion} if
+%	\begin{align*}
+%		\frac{n(n+1)}{2} - \frac{p(p+1)}{2} + m < \frac{n(n+1)}{2}.
+%	\end{align*}
+%	Hence, if $\frac{p(p+1)}{2} > m$, then, for almost all $C$, KKT points verify $\rank(Y) < p$. Combine with Prop.~\ref{prop:YrankdeficientKKT2} to conclude.
+%\end{proof}
+%Note that, even though the theorem holds without conditions on $\calA$ and $b$, its statement is vacuous unless second-order KKT points exists. This does imply conditions on $\calA$ and $b$. \TODO{ref / specify} \TODO{The easiest condition to requires would be strict feasibility of SDP and DSDP (Slater on both primal and dual); see if that's also enough to ensure CQ's on QCQP. See if that's too strong / if we care.}
+
+%\TODO{For the case of $m$ large, also prove that $p=n$ is always enough. See \cite{sdplr}.}
+
+%\TODO{Give Pataki result to argue this is an optimal condition on $p$.}
+
+%\begin{remark}
+%	\TODO{In fact, we need two things: (a) local opt implies second-order KKT ; and (b) $\calA^*(\mu)$ must be uniquely defined for any KKT $Y$ (and any local opt $Y$). Say that this could replace Assumption~\ref{assu:metricregularityqcqp}. Then show that if $\calM$ is a manifold, this is the case. Metric regularity implies that $\calM$ is a manifold, but this remark makes for a more geometric viewpoint, and as such it is closer to the real deal: no dependence on how the constraints are defined (choice of $A_i$'s, which has some arbitrariness to it), and instead only dependence on the resulting search space, same as for Slater's condition which is independent of the representation, purely geometric.}
+%\end{remark}
+
+
+\section{Numerical experiments}\label{sec:XP}
+
+As an example, we run five different solvers on~\eqref{eq:maxcutsdp} with a collection of graphs used in~\citep{sdplr,burer2005local} known as the Gset.\footnote{Downloaded from: \url{http://web.stanford.edu/~yyye/yyye/Gset/} on June 6, 2016.} The solvers are as follows, all run in Matlab. The first three are based on a low-rank factorization while the last two are interior point methods (IPM).
+\begin{itemize}
+	\item[] \texttt{Manopt} runs the Riemannian Trust-Region method on~\eqref{eq:maxcutBM}, via the Manopt toolbox~\citep{manopt}, with $p = \left\lceil \frac{\sqrt{8n+1}}{2} \right\rceil$ and random initialization. The number of inner iterations allowed to solve the trust-region subproblem is 500. The solver returns when $\frac12 \|\grad f(Y)\| = \|SY\|\leq 10^{-6}$. Code is in Matlab.
+	\item[] \texttt{Manopt+} runs the same algorithm as above, but with $p$ increasing from $2$ to $\left\lceil \frac{\sqrt{8n+1}}{2} \right\rceil$ in 5 steps. The point $Y$ computed at a lower $p$ is appended with columns of i.i.d.\ random Gaussian variables with standard deviation $10^{-5}$ and mean 0, then rows are normalized to produce $Y_+$: the initial point for the next value of $p$. The randomization allows to escape near-saddle points (in practice). Code is in Matlab.
+	\item[] \texttt{SDPLR} runs the original Burer--Monteiro algorithm implemented by its authors~\citep{sdplr}. Code is in C interfaced through C-mex.
+	\item[] \texttt{HRVW} runs an IPM whose implementation is tailored to~\eqref{eq:maxcutsdp}, implemented by its authors~\citep{helmberg1996ipmsdp}. Code is in Matlab.
+	\item[] \texttt{CVX} runs SDPT3~\citep{sdpt3} on~\eqref{eq:maxcutsdp} via CVX~\citep{cvx}. Code is in C interfaced through C-mex.
+\end{itemize}
+After the solvers return, we project their answers to the feasible set. Manopt and SDPLR return a matrix $Y$: it is sufficient to normalize each row to ensure $X = YY\transpose$ is feasible for~\eqref{eq:maxcutsdp} (for Manopt, this step is not necessary). HRVW and CVX return a symmetric matrix $X$. We compute its Cholesky factorization $X = RR\transpose$---if $X$ is not positive semidefinite, we first project using an eigenvalue decomposition. Then, each row of $R$ is normalized so that $X = RR\transpose$ is feasible for~\eqref{eq:maxcutsdp}. Computation time required for these projections is not included in the timings.
+
+We report three metrics for each graph and each solver.
+\begin{itemize}
+	\item[] Cut bound: a bound on the maximal cut value (lower is better). If $C$ is the adjacency matrix of the graph and $D$ is the degree matrix, then $L = D-C$ is the Laplacian and $\max_{X} \frac{1}{4}\inner{L}{X}$ s.t.\ $\diag(X) = \1, X \succeq 0$ is a bound on the maximal cut. Using Lemma~\ref{lem:optimgap} applied to~\eqref{eq:maxcutsdp}, a candidate optimizer $X$ yields a bound $\frac{1}{4}\inner{L}{X} - \frac{n}{4}\lambdamin(S)$.
+	\item[] $\lambdamin(S)$: by Lemma~\ref{lem:optimgap}, this is a measure of optimality for $X$ (feasible), where $S = C - \diag(\diag(CX))$. It is nonpositive and must be as close to 0 as possible. We compute it using bisection and the Cholesky factorization to ensure accuracy.
+	\item[] Time: computation time in seconds for the solver to run\footnote{Matlab R2015a on $2 \times 6$ cores processors with hyperthreading, Intel(R) Xeon(R) CPU E5-2640 @ 2.50GHz, 256Gb RAM, Springdale Linux 6.} (this excludes time taken to project the solution to the feasible set and to compute the reported metrics.)
+\end{itemize}
+
+Based on the results reported in Table~\ref{tab:maxcutXPrudy}, we make the following main observations: (i) the Manopt approach (optimization on manifolds, also advocated in~\citep{journee2010low}) consistently reaches high accuracy solutions, being often orders of magnitude more accurate than other methods, as judged from $\lambdamin(S)$; (ii) incremental rank solvers (Manopt+ and SDPLR) are often the fastest solvers for large instances; and (iii) the tailored IPM HRVW is faster and typically more accurate than the IPM called by CVX (which is generic software). The latter point hints that one must be careful in dismissing IPMs based on experiments using generic software, although it remains clear from Table~\ref{tab:maxcutXPrudy} that IPMs scale poorly compared to the low-rank factorization methods tested here. In particular, CVX runs into memory trouble for the larger problem instances reported.\footnote{On Graph 77, running CVX leads to Matlab error ``Number of elements exceeds maximum flint $2^{53}-1$.''} To save time, we did not run CVX on the largest graphs.
+
+
+\section{Numerical experiments: results}
+
+
+%%\begin{table}[h]
+%	\centering
+%     \begin{adjustbox}{width=\textwidth,center}
+% \begin{adjustbox}{center}
+\begin{longtable}{lllllll}
+	
+	% Caption
+	\caption{Results of the experiments described in Section~\ref{sec:XP}.}
+	\label{tab:maxcutXPrudy} \\
+	% Header
+	\ttfamily Graph & \ttfamily Metric & \ttfamily Manopt & \ttfamily Manopt+ & \ttfamily SDPLR & \ttfamily HRVW & \ttfamily CVX \\ \hline
+	\endfirsthead
+	
+	% Header
+	\ttfamily Graph & \ttfamily Metric & \ttfamily Manopt & \ttfamily Manopt+ & \ttfamily SDPLR & \ttfamily HRVW & \ttfamily CVX \\ \hline
+	
+	\endhead
+	
+	% Data
+	\input{rudytable.tex}
+	
+	%        % Data
+	%        \multirow{3}{*}{Graph id, 1000 nodes, 19900 edges} & \multicolumn{1}{l}{Cost $\inner{C}{X}$} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} \\\cline{2-6}
+	%        & \multicolumn{1}{l}{$\lambdamin(S)$} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} \\\cline{2-6}
+	%        & \multicolumn{1}{l}{Time [s]} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} & \multicolumn{1}{l}{XXX} \\\cline{2-6}
+	%        \hline
+	%        
+\end{longtable}
+%     \end{adjustbox}
+%     \vspace{ - 05 mm}
+%	\caption{Caption here}
+%	\label{tab:XPmaxcutrudy}
+%\end{table}
+
+
+%\section{bits and pieces}
+
+%%\TODO{Need to reference Burer: RANK-TWO RELAXATION HEURISTICS FOR MAX-CUT AND OTHER BINARY QUADRATIC PROGRAMS}
+%
+%%\TODO{It's still not obvious from that theorem that, for $m=1,2$ constraints (in which case the SDP is always tight), and if the constraints define a manifold, then all socps at $p=1$ are globally optimal (Theorem~\ref{thm:masterthm} only says so for $p=2$, under some conditions); See my notes in the PPM project for the case $m=1$.}
+%
+%%\TODO{Give the results for the complex case (omit proofs, but do them on paper to be sure.)}
+%
+%%\TODO{Generic optimality gap bounds: see notes Nov.\ 26, 2015: not very clean in general ; perhaps only make the point for specific applications? But then it's already explicitly in~\cite{burer2005local} for Max-Cut for example (then again, that's where I got the idea.) Will be interesting to relate that to approximate second-order KKT points.}
+%
+%%\TODO{Explain why we had to make Assumption~\ref{assu:metricregularityqcqp} hold at /all/ points rather than just KKT pts and local opts : it's because we consider generic $C$, and so those points could be anywhere anyway. If we don't do that, then the genericity argument becomes much more intricate, perhaps even wrong. This justifies why the results we present are restricted to the situation where $\calM$ is a manifold.}
+%
+%
+%
+%
+
+
+
+
+
+%\TODO{See if proof from \citep{montanari2016grothendieck} that submatrices of size $p-1$ of $S$ are psd for max cut sdp generalizes to full setting.}
+
+
+
+
+
+%
+%%\TODO{Since in our paper we're going to say that people have claimed that without proof, and then show a result that works "for almost all C", it would be great if we could exhibit a C for which the property does /not hold/ (i.e., for which there would be a non-global local optimum). I tried (a bit) at some point but didn't manage to get it. It'd be interesting to know. See staircase paper to know some properties of such a counter-example.}
+%
+%%\TODO{Need to give proper credit to \cite{barvinok1995problems,sdplr,burer2005local,journee2010low,pataki1998rank,shapiro1982rank,wen2013orthogonality}}
+%
+%
+%
+%%\TODO{Ref \url{http://www2.isye.gatech.edu/people/faculty/Alex_Shapiro/EP85.pdf} section 5 : should contain a result about most SDP's having a unique solution. it's not quite the same thing, but it's related.}
+%
+%%\TODO{Explore intuition of Ma (Sanjeev's student): Consider perturbation limit of SDP for almost all C: pick C. If it is fine, we are done. If not, there exists a direction C' such that for all epsilon > 0 in an interval, C + eps*C' is fine (otherwise, there is a ball around C that is bad, which is a contradiction). But then, should be possible to argue that "strict" local opts cannot just disappear in an infinitesimally small perturbation, which means that for bad local opts, Hessian must have at least one zero eigenvalue on top of the indeterminacy ones. Can we turn that into something strong? --- won't be that strong, but there is something there.}
+%
+%%\TODO{Can we get a progressive version of the theorem, saying that approx critical pt is approx rank deficient? Then, can we turn that into an optimality gap for approx socp?}
+%
+%
+
+
+%\TODO{Cite last Montanari paper \citep{montanari2016grothendieck} saying that all local opts of phase synchro are pretty good? Feels a bit off key.}
+
+
+
+
+%\TODO{Afonso: you sent me an e-mail from a conference, saying you got a lot of resistance from the audience: do you remember what that was about?}
+
+
+
+\section{Regularity assumption} \label{apdx:regularity}
+
+
+Originally, Theorems~\ref{thm:masterthm} and~\ref{thm:approxtolerance} had the assumption that the search space of the factorized problem,
+\begin{align*}
+\calM & = \{ Y \in \Rnp : \calA(YY\transpose) = b \},
+\end{align*}
+is a manifold. From this assumption, we stated incorrectly that the tangent space at $Y$ of $\calM$, denoted by $\T_Y\calM$, is given by~\eqref{eq:TYM}:
+\begin{align*}
+\T_Y\calM & = \{ \dot Y \in \Rnp : \calA(\dot Y Y\transpose + Y \dot Y\transpose) = 0 \}.
+\end{align*}
+This identity is used in a number of places of the proofs. In general, $\calM$ being an embedded submanifold of $\Rnp$ only implies the left hand side is included in the right hand side.\footnote{If $\dot Y \in \T_Y\calM$, by definition, there exists a smooth curve $\gamma \colon \reals \to \calM$ such that $\gamma(0) = Y$ and $\gamma'(0) = \dot Y$. Since $\gamma(t) \in \calM$ for all $t$, we have $\calA(\gamma(t)\gamma(t)\transpose) = b$ for all $t$. Differentiating on both sides with respect to $t$ and evaluating at $0$ gives $\calA(\dot YY\transpose + Y\dot Y\transpose) = 0$.} Below, we give an example where $\calM$ is a manifold yet the two sets are not equal.
+
+In order to restore equality, we strengthened the assumption, requiring constraint qualifications to hold at all feasible points (see~\eqref{eq:CQ}):
+\begin{align*}
+\forall Y \in \calM, \quad A_1Y, \ldots, A_mY \textrm{ are linearly independent in } \Rnp,
+\end{align*}
+where $A_i$, $i = 1, \ldots, m$, are the symmetric constraint matrices such that $\calA(X)_i = \inner{A_i}{X}$. This ensures the map $\Phi(Y) = \calA(YY\transpose) - b$ is full rank on $\calM = \Phi^{-1}(0)$, from which it follows by a standard result in differential geometry (see for example~\citep[Cor.~5.14]{lee2012smoothmanifolds}) that $\calM$ is a smooth embedded submanifold of $\Rnp$ of dimension $np - m$. Then, the left hand side of~\eqref{eq:TYM} has dimension $np - m$, and it is included in the right hand side, which itself is a linear space of dimension $np - m$, so that they are equal.
+
+%Strengthening the assumption that $\calM$ is a manifold by assuming instead that~\eqref{eq:CQ} holds (which implies $\calM$ is a manifold) restores equality in~\eqref{eq:TYM}, allowing the proofs to go through. All examples of interest, and in particular all examples treated in the paper, satisfy this stronger assumption. Furthermore, the main message of the paper, namely the relevance of smoothness in low-rank factorizations of SDPs, remains valid.
+
+We now describe an SDP such that $\calM$ is indeed a manifold, yet~\eqref{eq:TYM} does not hold. Consider $n = 2, m = 2$, $b = (1, 1)\transpose$ and
+\begin{align*}
+A_1 & = \begin{pmatrix}
+1 & 0 \\ 0 & 1
+\end{pmatrix}, & A_2 & = \begin{pmatrix}
+1 & 0 \\ 0 & \frac{1}{4}
+\end{pmatrix}.
+\end{align*}
+The search space of the SDP,
+\begin{align*}
+\calC = \{X = X\transpose \in \reals^{n\times n} : \calA(X) = b, X \succeq 0\} = \left\{ \begin{pmatrix}
+1 & 0 \\ 0 & 0
+\end{pmatrix} \right\},
+\end{align*}
+is degenerate but it is compact. Furthermore, the set $\calM$ is a smooth manifold for $p = 1$:
+\begin{align*}
+\calM_{p=1} & = \left\{ Y = \begin{pmatrix}
+y_1 \\ y_2
+\end{pmatrix} \in \reals^2 : y_1^2 + y_2^2 = 1 \textrm{ and } y_1^2 + \frac{1}{4}y_2^2 = 1 \right\} = \{ (1, 0)\transpose, (-1, 0)\transpose \}.
+\end{align*}
+The dimension of the manifold is 0, so that $\T_Y\calM = \{0\}$ for all $Y\in\calM$. Consider now the right hand side of~\eqref{eq:TYM},
+\begin{align*}
+K_Y & = \{ \dot Y \in \Rnp : \calA(\dot Y Y\transpose + Y \dot Y\transpose) = 0 \} = \{ \dot Y \in \Rnp : \innersmall{A_1Y}{\dot Y} = \innersmall{A_2Y}{\dot Y} = 0 \}.
+\end{align*}
+These are the vectors orthogonal to $A_1Y, A_2Y$. For $Y = (\pm 1, 0)\transpose$, we get $A_1Y = A_2Y = (\pm 1, 0)\transpose$: they are colinear, so $K_Y$ has dimension 1 at all $Y \in \calM$: $\T_Y\calM \neq K_Y$.
+
+Similarly, at $p = 2$, the set $\calM$ becomes a circle embedded in $\reals^4$:
+\begin{align*}
+\calM_{p=2} & = \left\{ Y = \begin{pmatrix}
+y_1 & y_2 \\ y_3 & y_4
+\end{pmatrix} \in \reals^{2\times 2} : y_1^2 + y_2^2 + y_3^2 + y_4^2 = 1 \textrm{ and } y_1^2 + y_2^2 + \frac{1}{4}(y_3^2 + y_4^2) = 1 \right\} \\
+& = \left\{ Y = \begin{pmatrix}
+y_1 & y_2 \\ y_3 & y_4
+\end{pmatrix} \in \reals^{2\times 2} : y_1^2 + y_2^2 = 1 \textrm{ and } y_3 = y_4 = 0 \right\}.
+\end{align*}
+This manifold has dimension 1 (and so do all its tangent spaces). Yet, $K_Y$ has dimension 3 for all $Y \in \calM$. Indeed, we can parameterize $\calM_{p=2}$ as the matrices
+\begin{align*}
+\begin{pmatrix}
+\cos\theta & \sin\theta \\ 0 & 0
+\end{pmatrix}
+\end{align*}
+for all $\theta \in \reals$. It is easy to verify that $A_1Y = A_2Y \neq 0$ for all $Y\in\calM_{p=2}$, so that the codimension of $K_Y$ is 1, here too in disagreement with $\T_Y\calM$. Notice also that in this example we have $\frac{p(p+1)}{2} > m$.
+
+%As a side note, we remark that, in this example, for any cost matrix $C$, the cost function $f(Y) = \inner{C}{YY\transpose}$ is constant on $\calM$. In that sense, this is not a counter-example to Theorem 2 as stated: it is a counter-example to one step in the proof.
+
+
+\end{document}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%\clearpage
+%
+%\section{bits and pieces}
+%
+%Under some \TODO{constraint qualifications}, if $Y$ is a local optimizer, then it is a second-order KKT point. Thus, following the logic in~\cite[Theorem 3]{wen2013orthogonality}, all KKT points (which includes all candidate local optimizers) have rank bounded as follows (based on~\eqref{eq:KKT}):
+%\begin{align*}
+%\rank(Y) & \leq \nulll(C - \calA^*(\mu)) \\
+%& = n - \rank(C - \calA^*(\mu)) \\
+%& \leq n - \left[ \inf_{\mu \colon \eqref{eq:KKT} \textrm{ holds} }  \rank(C - \calA^*(\mu))\right].
+%\end{align*}
+%Similarly, all second-order KKT points have rank bounded as
+%\begin{align*}
+%\rank(Y) & \leq n - \left[ \inf_{\mu \colon \eqref{eq:KKT2} \textrm{ and } \eqref{eq:tangent} \textrm{ hold} } \rank(C - \calA^*(\mu))\right].
+%\end{align*}
+%
+%\section{Max-Cut}
+%
+%For the Max-Cut SDP, $\calA = \diag$, $b = \mathds{1}$ and $C$ is the adjacency matrix of a graph (note that we are minimizing in~\eqref{eq:SDP}). There is an explicit formula for $\mu$ as a function of $X$:
+%\begin{align}
+%\mu = \mu(X) = \diag(CX).
+%\end{align}
+%This is also the only candidate for $\lambda$, that is, $X$ feasible for~\eqref{eq:SDP} solves~\eqref{eq:SDP} if and only if $C - \calA^*\calA(CX) = C - \ddiag(CX) \succeq 0$, where $\ddiag$ sets all off-diagonal entries of a matrix to zero.
+%
+%$Y$ is a KKT point for~\eqref{eq:QCQP} if
+%\begin{align}
+%(C - \ddiag(CYY\transpose))Y = 0.
+%\end{align}
+%If it is also a second-order KKT point, then, in particular \TODO{and we are losing a lot of info here}, considering $\dot Y$ with only one nonzero row, it follows that
+%\begin{align}
+%(CYY\transpose)_{ii} \leq C_{ii}.
+%\end{align}
+%Hence, a bound on the rank of second-order KKT points of~\eqref{eq:QCQP} is as follows:
+%\begin{align}
+%\rank(Y) & \leq n - \left[ \inf_{\mu \leq \diag(C)} \rank(C - \diag(\mu))\right].
+%\end{align}
+%\TODO{and we also have $CY = \diag(\mu)Y$.}
+%

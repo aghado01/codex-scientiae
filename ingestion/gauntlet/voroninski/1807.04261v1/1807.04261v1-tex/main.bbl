@@ -1,0 +1,210 @@
+\begin{thebibliography}{10}
+
+\bibitem{GaussNets}
+Sanjeev Arora, Yingyu Liang, and Tengyu Ma.
+\newblock Why are deep nets reversible: A simple theory with implications for
+  training.
+\newblock {\em CoRR}, abs/1511.05653, 2015.
+
+\bibitem{Romberg2015}
+Sohail Bahmani and Justin Romberg.
+\newblock Efficient compressive phase retrieval with constrained sensing
+  vectors.
+\newblock {\em Advances in Neural Information Processing Systems (NIPS 2015)},
+  pages 523--531, 2015.
+
+\bibitem{Baraniuk_lemma}
+Richard Baraniuk, Mark Davenport, Ronald DeVore, and Michael Wakin.
+\newblock A simple proof of the restricted isometry property for random
+  matrices.
+\newblock {\em Constructive Approximation}, 28(3):253--263, 2008.
+
+\bibitem{Price2017}
+Ashish Bora, Alexandros~G. Dimakis, Ajil Jalal, and Eric Price.
+\newblock Compressed sensing using generative models.
+\newblock {\em arXiv preprint arXiv:1703.03208}, 2017.
+
+\bibitem{diffImaging}
+Oliver Bunk, Ana Diaz, Franz Pfeiffer, Christian David, Bernd Schmitt,
+  Dillip~K. Satapathy, and J.~Friso van~der Veen.
+\newblock Diffractive imaging for periodic samples: Retrieving one-dimensional
+  concentration profiles across microfluidic channels.
+\newblock {\em Acta Crystallographica Section A: Foundations of
+  Crystallography}, 63(4):306--314, 2007.
+
+\bibitem{Cai2016}
+Tony Cai, Xiaodong Li, and Zongming Ma.
+\newblock Optimal rates of convergence for noisy sparse phase retrieval via
+  thresholded wirtinger flow.
+\newblock {\em The Annals of Statistics}, 44(5):2221--2251, 2016.
+
+\bibitem{Candes2015}
+Emmanuel~J. Candes, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and applications.
+\newblock {\em IEEE Transactions on Information Theory}, 61(4):195--2007, 2017.
+
+\bibitem{CandStroh2013}
+Emmanuel~J. Candes, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Comm. Pure Applied Math}, 66(8):1241--1274, 2013.
+
+\bibitem{Wang2017}
+Yonina~C. Eldar, Georgios~B. Giannakis, and Gang Wang.
+\newblock Solving systems of random quadratic equations via truncated amplitude
+  flow.
+\newblock {\em IEEE Transactions on Information Theory}, 23(26):773--794, 2017.
+
+\bibitem{Fienup87}
+C.~Fienup and J.~Dainty.
+\newblock Phase retrieval and image reconstruction for astronomy.
+\newblock {\em Image Recovery: Theory and Application}, pages 231--275, 1987.
+
+\bibitem{FienupAlg}
+J.R. Fienup.
+\newblock Phase retrieval algorithms: A comparison.
+\newblock {\em Applied Optics}, 21:2758--2768, 1982.
+
+\bibitem{GerchSaxAlg}
+R.W. Gerchberg and W.O. Saxton.
+\newblock A practical algorithm for the determination of phase from image and
+  diffraction plane pictures.
+\newblock {\em Optik}, 35:237--246, 1972.
+
+\bibitem{Phasemax}
+Tom Goldstein and Christoph Struder.
+\newblock Phasemax: Convex phase retrieval via basis pursuit.
+\newblock {\em arXiv preprint arXiv: 1610.07531}, 2016.
+
+\bibitem{Rivenson2017}
+Harun G\"unaydin, Da~Tend, Yair Rivenson, Aydogan Ozcan, and Yibo Zhang.
+\newblock Phase recovery and holographic image reconstruction using deep
+  learning in neural networks.
+\newblock {\em arXiv preprint arXiv:1705.04286}, 2017.
+
+\bibitem{HV2016}
+Paul Hand and Vladislav Voroninski.
+\newblock Compressed sensing from phaseless gaussian measurements via linear
+  programming in the natural parameter space.
+\newblock {\em arXiv preprint arXiv:1611.05985}, 2016.
+
+\bibitem{Hand2017}
+Paul Hand and Vladislav Voroninski.
+\newblock Global guarantees for enforcing generative priors by empirical risk.
+\newblock {\em arXiv preprint arXiv:1705.07576}, 2017.
+
+\bibitem{Harrison93}
+Robert~W. Harrison.
+\newblock Phase problem in crystallography.
+\newblock {\em J. Opt. Soc. Am. A}, 10(5):1046--1055, 1993.
+
+\bibitem{SparsePRoverview}
+Kishore Jaganathan, Samet Oymak, and Babak Hassibi.
+\newblock Sparse phase retrieval: Convex algorithms and limitations.
+\newblock {\em Information Theory Proceedings (ISIT)}, 2013 IEEE International
+  Symposium on:1022--1026, 2013.
+
+\bibitem{Hedge2017}
+Gauri Jagatap and Chinmay Hegde.
+\newblock Sample-efficient algorithms for recovering structured signals from
+  magnitude-only measurements.
+\newblock {\em Neural Information Processing Systems (NIPS 2017)}, 2017.
+
+\bibitem{Jain2013}
+Prateek Jain, Praneeth Netrapalli, and Sujay Sanghavi.
+\newblock Phase retrieval using alternating minimization.
+\newblock {\em Neural Information Processing Systems (NIPS 2013)}, 2013.
+
+\bibitem{ADAM}
+Diederik Kingma and Jimmy~Ba. Adam.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint}, arXiv:1412.6980, 2014.
+
+\bibitem{MNIST}
+Yann LeCun, Leon Bottou, Yoshua Bengio, and Patrick Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, 1998.
+
+\bibitem{Lee2018}
+Jaehoon Lee, Yasaman Bahri, Roman Novak, Samuel~S. Schoenholz, Jeffrey
+  Pennington, and Jascha Sohl-Dickstein.
+\newblock Deep neural networks as gaussian processes.
+\newblock {\em International Conference on Learning Representations (ICLR
+  2018)}, 2018.
+
+\bibitem{Voroninski2013}
+Xiaodong Li and Vladislav Voroninski.
+\newblock Sparse signal recovery from quadratic measurements via convex
+  programming.
+\newblock {\em SIAM Journal on Mathematical Analysis}, 45(5):3019--3033, 2013.
+
+\bibitem{CelebA}
+Ziwei Liu, Ping Luo, Xiaogang Wang, and Xiaoou Tang.
+\newblock Deep learning face attributes in the wild.
+\newblock {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 3730--3738, 2015.
+
+\bibitem{MicroscopyPR}
+Jianwei Miao, Tetsuya Ishikawa, Qun Shen, and Thomas Earnest.
+\newblock Extending x-ray crystallography to allow the imaging of
+  noncrystalline materials, cells, and single protein complexes.
+\newblock {\em Annu. Rev. Phys. Chem.}, 59:387--410, 2008.
+
+\bibitem{Millane90}
+RP~Millane.
+\newblock Phase retrieval in crystallography and optics.
+\newblock {\em J. Opt. Soc. Am. A}, 7(3):394--411, 1990.
+
+\bibitem{Vershynin_hyperplane_thm}
+Yaniv Plan and Roman Vershynin.
+\newblock One-bit compressed sensing by linear programming.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  66(8):1275--1297, 2013.
+
+\bibitem{Wright2016}
+Ju~Sun, Qing Qu, and John Wright.
+\newblock A geometric analysis of phase retrieval.
+\newblock {\em Information Theory (ISIT), 2016 IEEE International Symposium},
+  pages 2379--2383, 2016.
+
+\bibitem{Vershynin_notes}
+Roman Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock {\em Compressed Sensing: Theory and Applications}, Cambridge
+  University Press, 2012.
+
+\bibitem{Phasecut}
+Ir\`{e}ne Waldspurger, Alexandre d'Aspremont, and St\'{e}phane Mallat.
+\newblock Phase recovery, maxcut and complex semidefinite programming.
+\newblock {\em Mathematical Programming}, 149(1-2):47--81, 2015.
+
+\bibitem{Walther1963}
+Adriaan Walther.
+\newblock The question of phase retrieval in optics.
+\newblock {\em Journal of Modern Optics}, 10(1):41--49, 1963.
+
+\bibitem{SPARTA}
+Gang Wang, Liang Zhang, Georgios~B. Giannakis, Mehmet Ak\c{c}akaya, and Jie
+  Chen.
+\newblock Sparse phase retrieval via truncated amplitude flow.
+\newblock {\em Signal Processing IEEE Transactions on}, 66:479--491, 2018.
+
+\bibitem{Wang2004}
+Zhou Wang, A.C. Bovik, H.R. Sheikh, and E.P. Simoncelli.
+\newblock Image quality assessment: from error visibility to structural
+  similarity.
+\newblock {\em IEEE transactions on image processing}, 13(4):600--612, 2004.
+
+\bibitem{sphere_covering}
+James~G. Wendel.
+\newblock A problem in geometric probability.
+\newblock {\em Math. Scand.}, 11:109--111, 1962.
+
+\bibitem{Yeh2015}
+Li-Hao Yeh, Jonathan Dong, Jingshan Zhong, Lei Tian, Michael Chen, Gongguo
+  Tang, Mahdi Soltanolkotabi, and Laura Waller.
+\newblock Experimental robustness of fourier ptychography phase retrieval
+  algorithms.
+\newblock {\em Optics Express}, PP(99):33214--33240, 2015.
+
+\end{thebibliography}

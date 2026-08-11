@@ -1,0 +1,28 @@
+\section{Background on Reeb and Mapper graphs}\label{sec:background}
+
+%\paragraph*{Reeb and Mapper graphs.} 
+\paragraph*{Reeb graphs.} Mapper graphs can be understood as numerical approximations of {\em Reeb graphs}, that we now define.
+Let $X$ be a topological space and let $f\,:\,X\rightarrow \mathbb{R}$ be a continuous %(sometimes Morse-type) 
+function called \emph{filter function}. Let $\sim_{f}$ be the equivalence relation between two elements $x$ and $y$ in $X$ defined by: $x\sim_{f} y$ if and only if $x$ and $y$ are in the same connected component of $f^{-1}(z)$ for some $z$ in $f(X)$. 
+%We then define the Reeb graph as:
+ The Reeb graph $\Reeb_f(X)$ of  $X$ %computed with a filter function $f$ 
+is then simply defined as the quotient space $X/\sim_{f}$.
+
+\paragraph*{Mapper graphs.} The Mapper was introduced in \cite{singh2007topological} as a discrete and computable version of the Reeb graph $\Reeb_f(\Xset)$. 
+%in the sense  that it is a discrete and computable approximation of the Reeb graph computed with some filter function. 
+%Indeed, it can be seen as a pixelized version of the Reeb graph. 
+Assume that we are given a point cloud 
+$\Xs_n= \{X_1,\dots,X_n\}\subseteq \Xset$ with known pairwise dissimilarities, as well as  
+a filter function $f$ %is chosen and can be 
+computed on each point of  $\Xs_n$. The Mapper graph can then be computed with the following
+generic version of the Mapper algorithm:
+% on $\Xs_n$ computed with the filter function $f$ can be summarized as follows:
+\begin{enumerate}
+\item Cover the range of values $\Ys_n = f(\Xs_n)$ with a set of consecutive intervals $\interv_1,\dots, \interv_r$  that overlap, i.e., one has $I_i\cap I_{i+1}\neq \varnothing$ for all $1\leq i \leq r-1$.
+\item Apply a clustering algorithm to each pre-image $f^{-1}(\interv_j)$, $j\in\{1,...,r\}$. This defines a {\em pullback cover}
+$\mathcal{C}=\{\mathcal{C}_{1,1},\dots,\mathcal{C}_{1,k_1},\dots,\mathcal C_{r,1},\dots,\mathcal{C}_{r,k_r}\}$ of %the point cloud 
+$\Xs_n$. 
+\item The Mapper graph is defined as the {\em nerve} of $\mathcal{C}$. Each node $v_{j,k}$ of the Mapper graph corresponds to an element $\mathcal{C}_{j,k}$ of $\mathcal C$, 
+and two nodes $v_{j,k}$ and $v_{j',k'}$ are connected by an edge if and only if  $\mathcal{C}_{j,k} \cap \mathcal{C}_{j',k'} \neq \varnothing$.
+\end{enumerate} 
+ 

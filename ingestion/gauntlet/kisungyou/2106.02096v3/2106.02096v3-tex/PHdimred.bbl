@@ -1,0 +1,292 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Aftab et~al.]{Aftab, Hartley \harvardand\
+  Trumpf}{2015}{aftab_generalized_2015}
+Aftab, K., Hartley, R. \harvardand\ Trumpf, J.  \harvardyearleft
+  2015\harvardyearright .
+\newblock Generalized {{Weiszfeld Algorithms}} for {{Lq Optimization}}, {\em
+  IEEE Transactions on Pattern Analysis and Machine Intelligence} {\bf
+  37}(4):~728--745.
+
+\harvarditem{Anderson}{1936}{anderson_species_1936}
+Anderson, E.  \harvardyearleft 1936\harvardyearright .
+\newblock The species problem in {{Iris}}, {\em Annals of the Missouri
+  Botanical Garden} {\bf 23}(3):~457--509.
+
+\harvarditem[Arya et~al.]{Arya, Boissonnat, Dutta \harvardand\
+  Lotz}{2020}{aryaetal}
+Arya, S., Boissonnat, J.-D., Dutta, K. \harvardand\ Lotz, M.  \harvardyearleft
+  2020\harvardyearright .
+\newblock {Dimensionality Reduction for k-Distance Applied to Persistent
+  Homology}, {\em in} S.~Cabello \harvardand\ D.~Z. Chen (eds), {\em 36th
+  International Symposium on Computational Geometry (SoCG 2020)}, Vol. 164 of
+  {\em Leibniz International Proceedings in Informatics (LIPIcs)}, Schloss
+  Dagstuhl--Leibniz-Zentrum f{\"u}r Informatik, Dagstuhl, Germany,
+  pp.~10:1--10:15.
+
+\harvarditem{Belkin \harvardand\ Niyogi}{2001}{belkin_laplacian_2001}
+Belkin, M. \harvardand\ Niyogi, P.  \harvardyearleft 2001\harvardyearright .
+\newblock Laplacian eigenmaps and spectral techniques for embedding and
+  clustering, {\em Proceedings of the 14th International Conference on Neural
+  Information Processing Systems: {{Natural}} and Synthetic}, {{NIPS}}'01, {MIT
+  Press}, {Cambridge, MA, USA}, pp.~585--591.
+
+\harvarditem[Bendokat et~al.]{Bendokat, Zimmermann \harvardand\
+  Absil}{2020}{bendokat_grassmann_2020}
+Bendokat, T., Zimmermann, R. \harvardand\ Absil, P.  \harvardyearleft
+  2020\harvardyearright .
+\newblock A grassmann manifold handbook: {{Basic}} geometry and computational
+  aspects.
+
+\harvarditem{Bhattacharya \harvardand\
+  Bhattacharya}{2015}{bhattacharya_nonparametric_2015-1}
+Bhattacharya, A. \harvardand\ Bhattacharya, R.~N.  \harvardyearleft
+  2015\harvardyearright .
+\newblock {\em Nonparametric Inference on Manifolds: With Applications to Shape
+  Spaces}.
+
+\harvarditem[Chen et~al.]{Chen, Georgiou \harvardand\
+  Tannenbaum}{2019}{chen_optimal_2019-1}
+Chen, Y., Georgiou, T.~T. \harvardand\ Tannenbaum, A.  \harvardyearleft
+  2019\harvardyearright .
+\newblock Optimal {{Transport}} for {{Gaussian Mixture Models}}, {\em IEEE
+  Access} {\bf 7}:~6269--6278.
+
+\harvarditem[Cohen-Steiner et~al.]{Cohen-Steiner, Edelsbrunner \harvardand\
+  Harer}{2007}{edelsbrunner}
+Cohen-Steiner, D., Edelsbrunner, H. \harvardand\ Harer, J.  \harvardyearleft
+  2007\harvardyearright .
+\newblock Stability of persistence diagrams, {\em Discrete Comput. Geom.} {\bf
+  37}(1):~103--120.
+
+\harvarditem{Cunningham \harvardand\ Ghahramani}{2015}{cunningham_linear_2015}
+Cunningham, J.~P. \harvardand\ Ghahramani, Z.  \harvardyearleft
+  2015\harvardyearright .
+\newblock Linear dimensionality reduction: {{Survey}}, insights, and
+  generalizations, {\em Journal of Machine Learning Research} {\bf
+  16}(89):~2859--2900.
+
+\harvarditem{Eckhardt}{1980}{eckhardt_webers_1980}
+Eckhardt, U.  \harvardyearleft 1980\harvardyearright .
+\newblock Weber's problem and weiszfeld's algorithm in general spaces, {\em
+  Mathematical Programming} {\bf 18}(1):~186--196.
+
+\harvarditem[Edelman et~al.]{Edelman, Arias \harvardand\
+  Smith}{1998}{edelman_geometry_1998}
+Edelman, A., Arias, T.~A. \harvardand\ Smith, S.~T.  \harvardyearleft
+  1998\harvardyearright .
+\newblock The {{Geometry}} of {{Algorithms}} with {{Orthogonality
+  Constraints}}, {\em SIAM Journal on Matrix Analysis and Applications} {\bf
+  20}(2):~303--353.
+
+\harvarditem{Edelsbrunner}{2014}{MR3328629}
+Edelsbrunner, H.  \harvardyearleft 2014\harvardyearright .
+\newblock {\em A short course in computational geometry and topology},
+  SpringerBriefs in Applied Sciences and Technology, Springer, Cham.
+
+\harvarditem{Edelsbrunner \harvardand\ Harer}{2010}{MR2572029}
+Edelsbrunner, H. \harvardand\ Harer, J.~L.  \harvardyearleft
+  2010\harvardyearright .
+\newblock {\em Computational topology}, American Mathematical Society,
+  Providence, RI.
+\newblock An introduction.
+
+\harvarditem[Engel et~al.]{Engel, H{\"u}ttenberger, Hamann \harvardand\
+  Herbstritt}{2012}{engel_survey_2012}
+Engel, D., H{\"u}ttenberger, L., Hamann, B. \harvardand\ Herbstritt, M.
+  \harvardyearleft 2012\harvardyearright .
+\newblock A {{Survey}} of {{Dimension Reduction Methods}} for
+  {{High}}-dimensional {{Data Analysis}} and {{Visualization}}, {\em Technical
+  report}, {Schloss Dagstuhl - Leibniz-Zentrum fuer Informatik GmbH,
+  Wadern/Saarbruecken, Germany}.
+
+\harvarditem{Faigle \harvardand\ Kern}{1991}{faigle_note_1991}
+Faigle, U. \harvardand\ Kern, W.  \harvardyearleft 1991\harvardyearright .
+\newblock Note on the {{Convergence}} of {{Simulated Annealing Algorithms}},
+  {\em SIAM Journal on Control and Optimization} {\bf 29}(1):~153--159.
+
+\harvarditem{Fisher}{1936}{fisher_use_1936-1}
+Fisher, R.~A.  \harvardyearleft 1936\harvardyearright .
+\newblock The {{Use}} of {{Multiple Measurements}} in {{Taxonomic Problems}},
+  {\em Annals of Eugenics} {\bf 7}(2):~179--188.
+
+\harvarditem[Fletcher et~al.]{Fletcher, Venkatasubramanian \harvardand\
+  Joshi}{2009}{fletcher_geometric_2009}
+Fletcher, P.~T., Venkatasubramanian, S. \harvardand\ Joshi, S.
+  \harvardyearleft 2009\harvardyearright .
+\newblock The geometric median on {{Riemannian}} manifolds with application to
+  robust atlas estimation, {\em NeuroImage} {\bf 45}(1):~S143--S152.
+
+\harvarditem{Hatcher}{2002}{hatcher}
+Hatcher, A.  \harvardyearleft 2002\harvardyearright .
+\newblock {\em Algebraic topology}, Cambridge University Press, Cambridge.
+
+\harvarditem{Hyv{\"a}rinen}{2013}{hyvarinen_independent_2013}
+Hyv{\"a}rinen, A.  \harvardyearleft 2013\harvardyearright .
+\newblock Independent component analysis: Recent advances, {\em Philosophical
+  Transactions of the Royal Society A: Mathematical, Physical and Engineering
+  Sciences} {\bf 371}(1984):~20110534.
+
+\harvarditem[Hyvarinen et~al.]{Hyvarinen, Karhunen \harvardand\
+  Oja}{2001}{hyvarinen_independent_2001-1}
+Hyvarinen, A., Karhunen, J. \harvardand\ Oja, E.  \harvardyearleft
+  2001\harvardyearright .
+\newblock {\em Independent Component Analysis}, {J. Wiley}, {New York}.
+
+\harvarditem{Johnson \harvardand\ Lindenstrauss}{1984}{beals_extensions_1984-1}
+Johnson, W.~B. \harvardand\ Lindenstrauss, J.  \harvardyearleft
+  1984\harvardyearright .
+\newblock Extensions of {{Lipschitz}} mappings into a {{Hilbert}} space, {\em
+  in} R.~Beals, A.~Beck, A.~Bellow \harvardand\ A.~Hajian (eds), {\em
+  Contemporary {{Mathematics}}}, Vol.~26, {American Mathematical Society},
+  {Providence, Rhode Island}, pp.~189--206.
+
+\harvarditem{Jolliffe}{1982}{jolliffe_note_1982-1}
+Jolliffe, I.~T.  \harvardyearleft 1982\harvardyearright .
+\newblock A {{Note}} on the {{Use}} of {{Principal Components}} in
+  {{Regression}}, {\em Applied Statistics} {\bf 31}(3):~300.
+
+\harvarditem{Kachan}{2020}{kachan_persistent_2020}
+Kachan, O.  \harvardyearleft 2020\harvardyearright .
+\newblock Persistent homology-based projection pursuit, {\em Proceedings of the
+  {{IEEE}}/{{CVF}} Conference on Computer Vision and Pattern Recognition
+  ({{CVPR}}) Workshops}.
+
+\harvarditem[Kirkpatrick et~al.]{Kirkpatrick, Gelatt \harvardand\
+  Vecchi}{1983}{kirkpatrick_optimization_1983-1}
+Kirkpatrick, S., Gelatt, C.~D. \harvardand\ Vecchi, M.~P.  \harvardyearleft
+  1983\harvardyearright .
+\newblock Optimization by {{Simulated Annealing}}, {\em Science} {\bf
+  220}(4598):~671--680.
+
+\harvarditem[Lin et~al.]{Lin, Lazar, Sarpabayeva \harvardand\
+  Dunson}{2020}{lin_robust_2020}
+Lin, L., Lazar, D., Sarpabayeva, B. \harvardand\ Dunson, D.~B.
+  \harvardyearleft 2020\harvardyearright .
+\newblock Robust {{Optimization}} and {{Inference}} on {{Manifolds}}, {\em
+  arXiv:2006.06843 [math, stat]} .
+
+\harvarditem{Locatelli}{2000}{locatelli_convergence_2000}
+Locatelli, M.  \harvardyearleft 2000\harvardyearright .
+\newblock Convergence of a {{Simulated Annealing Algorithm}} for {{Continuous
+  Global Optimization}}, {\em Journal of Global Optimization} {\bf
+  18}(3):~219--233.
+
+\harvarditem{Ma \harvardand\ Zhu}{2013}{ma_review_2013-2}
+Ma, Y. \harvardand\ Zhu, L.  \harvardyearleft 2013\harvardyearright .
+\newblock A {{Review}} on {{Dimension Reduction}}, {\em International
+  Statistical Review} {\bf 81}(1):~134--150.
+
+\harvarditem{McKeown}{2003}{mckeown_independent_2003-1}
+McKeown, M.  \harvardyearleft 2003\harvardyearright .
+\newblock Independent component analysis of functional {{MRI}}: What is signal
+  and what is noise?, {\em Current Opinion in Neurobiology} {\bf
+  13}(5):~620--629.
+
+\harvarditem{Munch}{2013}{munch}
+Munch, E.  \harvardyearleft 2013\harvardyearright .
+\newblock {\em Applications of persistent homology to time varying systems},
+  PhD thesis, Duke University.
+
+\harvarditem{Nanda}{2013}{perseus}
+Nanda, V.  \harvardyearleft 2013\harvardyearright .
+\newblock Perseus, the persistent homology software.
+\newline\harvardurl{http://www.sas.upenn.edu/~vnanda/perseus}
+
+\harvarditem{Park \harvardand\ Friston}{2013}{park_structural_2013-2}
+Park, H.-J. \harvardand\ Friston, K.  \harvardyearleft 2013\harvardyearright .
+\newblock Structural and {{Functional Brain Networks}}: {{From Connections}} to
+  {{Cognition}}, {\em Science} {\bf 342}(6158):~1238411--1238411.
+
+\harvarditem{Paul \harvardand\ Chalup}{2017}{PAUL2017160}
+Paul, R. \harvardand\ Chalup, S.~K.  \harvardyearleft 2017\harvardyearright .
+\newblock A study on validating non-linear dimensionality reduction using
+  persistent homology, {\em Pattern Recognition Letters} {\bf 100}:~160 -- 166.
+
+\harvarditem{Pearson}{1901}{pearson_liii._1901}
+Pearson, K.  \harvardyearleft 1901\harvardyearright .
+\newblock {{LIII}}. {{On}} lines and planes of closest fit to systems of points
+  in space, {\em Philosophical Magazine Series 6} {\bf 2}(11):~559--572.
+
+\harvarditem{Reynaud}{2003}{MR1954333}
+Reynaud, E.  \harvardyearleft 2003\harvardyearright .
+\newblock Algebraic fundamental group and simplicial complexes, {\em J. Pure
+  Appl. Algebra} {\bf 177}(2):~203--214.
+
+\harvarditem{Rieck \harvardand\ Leitte}{2015}{drevaluation}
+Rieck, B. \harvardand\ Leitte, H.  \harvardyearleft 2015\harvardyearright .
+\newblock Persistent homology for the evaluation of dimensionality reduction
+  schemes, {\em Computer Graphics Forum} {\bf 34}(3):~431--440.
+
+\harvarditem{Rieck \harvardand\ Leitte}{2017a}{MR3822886}
+Rieck, B. \harvardand\ Leitte, H.  \harvardyearleft 2017a\harvardyearright .
+\newblock Agreement analysis of quality measures for dimensionality reduction,
+  {\em Topological methods in data analysis and visualization. {IV}}, Math.
+  Vis., Springer, Cham, pp.~103--117.
+
+\harvarditem{Rieck \harvardand\ Leitte}{2017b}{Bastian17}
+Rieck, B. \harvardand\ Leitte, H.  \harvardyearleft 2017b\harvardyearright .
+\newblock Agreement analysis of quality measures for dimensionality reduction,
+  {\em in} H.~Carr, C.~Garth \harvardand\ T.~Weinkauf (eds), {\em Topological
+  Methods in Data Analysis and Visualization IV}, Springer International
+  Publishing, Cham, pp.~103--117.
+
+\harvarditem{Rotman}{1995}{MR1307623}
+Rotman, J.~J.  \harvardyearleft 1995\harvardyearright .
+\newblock {\em An introduction to the theory of groups}, Vol. 148 of {\em
+  Graduate Texts in Mathematics}, fourth edn, Springer-Verlag, New York.
+
+\harvarditem{Roweis \harvardand\ Saul}{2000}{roweis_nonlinear_2000}
+Roweis, S.~T. \harvardand\ Saul, L.~K.  \harvardyearleft 2000\harvardyearright
+  .
+\newblock Nonlinear {{Dimensionality Reduction}} by {{Locally Linear
+  Embedding}}, {\em Science} {\bf 290}(5500):~2323--2326.
+
+\harvarditem{Sheehy}{2014}{sheehy14persistent}
+Sheehy, D.~R.  \harvardyearleft 2014\harvardyearright .
+\newblock The persistent homology of distance functions under random
+  projection, {\em Proceedings of the 30th annual Symposium on Computational
+  Geometry}.
+
+\harvarditem{Tenenbaum}{2000}{tenenbaum_global_2000}
+Tenenbaum, J.~B.  \harvardyearleft 2000\harvardyearright .
+\newblock A {{Global Geometric Framework}} for {{Nonlinear Dimensionality
+  Reduction}}, {\em Science} {\bf 290}(5500):~2319--2323.
+
+\harvarditem{{The Sage Developers}}{2021}{sagemath}
+{The Sage Developers}  \harvardyearleft 2021\harvardyearright .
+\newblock {\em {S}ageMath, the {S}age {M}athematics {S}oftware {S}ystem
+  ({V}ersion 9.3.0)}.
+\newblock {\tt https://www.sagemath.org}.
+
+\harvarditem{Weiszfeld}{1937}{weiszfeld_sur_1937}
+Weiszfeld, E.  \harvardyearleft 1937\harvardyearright .
+\newblock Sur le point pour lequel la {{Somme}} des distances de n points
+  donn\'es est minimum, {\em Tohoku Mathematical Journal, First Series} {\bf
+  43}:~355--386.
+
+\harvarditem{Yang}{2000}{yang_convergence_2000}
+Yang, R.~L.  \harvardyearleft 2000\harvardyearright .
+\newblock Convergence of the {{Simulated Annealing Algorithm}} for {{Continuous
+  Global Optimization}}, {\em Journal of Optimization Theory and Applications}
+  {\bf 104}(3):~691--716.
+
+\harvarditem{You}{2020}{you_rdimtools_2020}
+You, K.  \harvardyearleft 2020\harvardyearright .
+\newblock Rdimtools: {{An R}} package for {{Dimension Reduction}} and
+  {{Intrinsic Dimension Estimation}}, {\em arXiv:2005.11107 [cs, stat]} .
+
+\harvarditem{Zimmermann}{2017}{zimmermann_matrix-algebraic_2017-1}
+Zimmermann, R.  \harvardyearleft 2017\harvardyearright .
+\newblock A {{Matrix}}-{{Algebraic Algorithm}} for the {{Riemannian Logarithm}}
+  on the {{Stiefel Manifold}} under the {{Canonical Metric}}, {\em SIAM Journal
+  on Matrix Analysis and Applications} {\bf 38}(2):~322--342.
+
+\harvarditem{Zomorodian}{2009}{MR2549932}
+Zomorodian, A.~J.  \harvardyearleft 2009\harvardyearright .
+\newblock {\em Topology for computing}, Vol.~16 of {\em Cambridge Monographs on
+  Applied and Computational Mathematics}, Cambridge University Press,
+  Cambridge.
+\newblock Reprint of the 2005 original [MR2111929].
+
+\end{thebibliography}

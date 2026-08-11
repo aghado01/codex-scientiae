@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1612.03547v1",
+  "initialized_utc": "2026-08-11T08:30:55.233316Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "Robust_Max.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Corruption Robust Phase Retrieval via Linear Programming",
+        "authors_tex": [
+          "Paul Hand\\footnote{Department of Computational and Applied Mathematics, Rice University, TX.} \\   and Vladislav Voroninski\\footnote{Helm.ai, CA}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1612.03547v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 16034,
+      "sha256": "627e2c28ae9aaf06311153e742ee060731d82b54bc98b05f29e664e3e30c797f",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1612.03547v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1612.03547v1.tar.gz",
+      "entrypoint": "Robust_Max.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 2,
+      "tex_files": 1,
+      "sha256": "34679c2434ebade38fd098d2b7aab62a5139afc6373ae1b1795358aeee0414eb"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1612.03547v1.pdf",
+      "format": "application/pdf",
+      "bytes": 152803,
+      "sha256": "52cae1738cda9a53e66170003d999611a79ae8af27dc1b39203457a28fd7a29e"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:55.233316Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 2
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 2
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "Robust_Max.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,178 @@
+\begin{thebibliography}{10}
+
+\bibitem{phasemaxJustin}
+Sohail Bahmani and Justin Romberg.
+\newblock Phase retrieval meets statistical learning theory: A flexible convex
+  relaxation.
+\newblock {\em arXiv preprint arXiv:1610.04210}, 2016.
+
+\bibitem{bandeira2014saving}
+Afonso~S Bandeira, Jameson Cahill, Dustin~G Mixon, and Aaron~A Nelson.
+\newblock Saving phase: Injectivity and stability for phase retrieval.
+\newblock {\em Applied and Computational Harmonic Analysis}, 37(1):106--125,
+  2014.
+
+\bibitem{DustinSparse}
+Afonso~S. Bandeira and Dustin~G. Mixon.
+\newblock Near-optimal phase retrieval of sparse vectors.
+\newblock {\em CoRR}, abs/1308.0143, 2013.
+
+\bibitem{barak2016nearly}
+Boaz Barak, Samuel~B Hopkins, Jonathan Kelner, Pravesh~K Kothari, Ankur Moitra,
+  and Aaron Potechin.
+\newblock A nearly tight sum-of-squares lower bound for the planted clique
+  problem.
+\newblock {\em arXiv preprint arXiv:1604.03084}, 2016.
+
+\bibitem{berthet2013optimal}
+Quentin Berthet, Philippe Rigollet, et~al.
+\newblock Optimal detection of sparse principal components in high dimension.
+\newblock {\em The Annals of Statistics}, 41(4):1780--1815, 2013.
+
+\bibitem{cai2015optimal}
+T~Tony Cai, Xiaodong Li, and Zongming Ma.
+\newblock Optimal rates of convergence for noisy sparse phase retrieval via
+  thresholded wirtinger flow.
+\newblock {\em arXiv preprint arXiv:1506.03382}, 2015.
+
+\bibitem{CESV2011}
+E.~Cand\`{e}s, Y.~Eldar, T.~Strohmer, and V.~Voroninski.
+\newblock Phase retrieval via matrix completion.
+\newblock {\em SIAM J. Imaging Sci.}, 6(1):199--225, 2013.
+
+\bibitem{wirtinger}
+Emmanuel~J Candes, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and algorithms.
+\newblock {\em Information Theory, IEEE Transactions on}, 61(4):1985--2007,
+  2015.
+
+\bibitem{CRT2005}
+Emmanuel~J. Cand\`{e}s, Justin~K. Romberg, and Terence Tao.
+\newblock Stable signal recovery from incomplete and inaccurate measurements.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  59(8):1207--1223, 2006.
+
+\bibitem{CSV2013}
+Emmanuel~J Cand\`{e}s, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Comm. Pure Appl. Math.}, 66(8):1241--1274, 2013.
+
+\bibitem{twf}
+Yuxin Chen and Emmanuel Candes.
+\newblock Solving random quadratic systems of equations is nearly as easy as
+  solving linear systems.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  739--747, 2015.
+
+\bibitem{Donoho}
+David Donoho.
+\newblock For most large underdetermined systems of linear equations the
+  minimal l1-norm solution is also the sparsest solution.
+\newblock {\em Communications on Pure and Applied Mathematics}, 59(6), 2006.
+
+\bibitem{donoho2001uncertainty}
+David~L Donoho and Xiaoming Huo.
+\newblock Uncertainty principles and ideal atomic decomposition.
+\newblock {\em IEEE Transactions on Information Theory}, 47(7):2845--2862,
+  2001.
+
+\bibitem{Yon}
+Yonina~C. Eldar and Shahar Mendelson.
+\newblock Phase retrieval: Stability and recovery guarantees.
+\newblock {\em CoRR}, abs/1211.0872, 2012.
+
+\bibitem{phasemax}
+Tom Goldstein and Christoph Studer.
+\newblock Phasemax: Convex phase retrieval via basis pursuit.
+\newblock {\em arXiv preprint arXiv:1610.07531}, 2016.
+
+\bibitem{phasemaxelementary}
+Paul Hand and Vladislav Voroninski.
+\newblock An elementary proof of convex phase retrieval in the natural
+  parameter space via the linear program phasemax.
+\newblock {\em arXiv preprint arXiv:1611.03935}, 2016.
+
+\bibitem{iwen2015robust}
+Mark Iwen, Aditya Viswanathan, and Yang Wang.
+\newblock Robust sparse phase retrieval made easy.
+\newblock {\em Applied and Computational Harmonic Analysis}, 2015.
+
+\bibitem{jaganathan2013sparse}
+Kishore Jaganathan, Samet Oymak, and Babak Hassibi.
+\newblock Sparse phase retrieval: Convex algorithms and limitations.
+\newblock In {\em Information Theory Proceedings (ISIT), 2013 IEEE
+  International Symposium on}, pages 1022--1026. IEEE, 2013.
+
+\bibitem{Babak}
+Kishore Jaganathan, Samet Oymak, and Babak Hassibi.
+\newblock Sparse phase retrieval: Convex algorithms and limitations.
+\newblock {\em CoRR}, abs/1303.4128, 2013.
+
+\bibitem{li2013sparse}
+Xiaodong Li and Vladislav Voroninski.
+\newblock Sparse signal recovery from quadratic measurements via convex
+  programming.
+\newblock {\em SIAM Journal on Mathematical Analysis}, 45(5):3019--3033, 2013.
+
+\bibitem{cpremprical}
+Matthew~L. Moravec, Justin~K. Romberg, and Richard~G. Baraniuk.
+\newblock Compressive phase retrieval.
+\newblock {\em Proc. SPIE}, 6701:670120--670120--11, 2007.
+
+\bibitem{altminphase}
+Praneeth Netrapalli, Prateek Jain, and Sujay Sanghavi.
+\newblock Phase retrieval using alternating minimization.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2796--2804, 2013.
+
+\bibitem{oymak2015simultaneously}
+Samet Oymak, Amin Jalali, Maryam Fazel, Yonina~C Eldar, and Babak Hassibi.
+\newblock Simultaneously structured models with application to sparse and
+  low-rank matrices.
+\newblock {\em IEEE Transactions on Information Theory}, 61(5):2886--2908,
+  2015.
+
+\bibitem{yaniv}
+Yaniv Plan and Roman Vershynin.
+\newblock One-bit compressed sensing by linear programming.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  66(8):1275--1297, 2013.
+
+\bibitem{GAMP}
+Philip Schniter and Sundeep Rangan.
+\newblock Compressive phase retrieval via generalized approximate message
+  passing.
+\newblock {\em CoRR}, abs/1405.5618, 2014.
+
+\bibitem{soltanolkotabi2017structured}
+Mahdi Soltanolkotabi.
+\newblock Structured signal recovery from quadratic measurements: Breaking
+  sample complexity barriers via nonconvex optimization.
+\newblock {\em arXiv preprint arXiv:1702.06175}, 2017.
+
+\bibitem{SQW2016}
+Ju~Sun, Qing Qu, and John Wright.
+\newblock A geometric analysis of phase retrieval.
+\newblock {\em arXiv preprint arXiv:1602.06664}, 2016.
+
+\bibitem{voroninski2016strong}
+Vladislav Voroninski and Zhiqiang Xu.
+\newblock A strong restricted isometry property, with an application to
+  phaseless compressed sensing.
+\newblock {\em Applied and Computational Harmonic Analysis}, 40(2):386--395,
+  2016.
+
+\bibitem{yoninaTAF}
+Gang Wang, Georgios~B Giannakis, and Yonina~C Eldar.
+\newblock Solving systems of random quadratic equations via truncated amplitude
+  flow.
+\newblock {\em arXiv preprint arXiv:1605.08285}, 2016.
+
+\bibitem{wang2016sparse}
+Gang Wang, Liang Zhang, Georgios~B Giannakis, Mehmet Ak{\c{c}}akaya, and Jie
+  Chen.
+\newblock Sparse phase retrieval via truncated amplitude flow.
+\newblock {\em arXiv preprint arXiv:1611.07641}, 2016.
+
+\end{thebibliography}

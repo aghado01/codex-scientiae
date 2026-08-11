@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2604.24895v1",
+  "initialized_utc": "2026-08-11T08:30:03.456739Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "manuscript.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Finite Mixture Modeling with Riemannian Gaussian Distributions on Hyperbolic Space",
+        "authors_tex": [
+          "Kisung You"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 382,
+        "sha256": "044988eaee454645279d4cebc69929a81f11510cb853d1f5fa95b538a7962d77"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2604.24895v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1376338,
+      "sha256": "2b0d039a06aebf6379928cd19277dda36de677cee958211c5f1d861dbb5887f4",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2604.24895v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2604.24895v1.tar.gz",
+      "entrypoint": "manuscript.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 26,
+      "tex_files": 8,
+      "sha256": "747bc52343295f7ab3fe82abde92d2983907fec4ea991260f8ccccd49701ea5a"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2604.24895v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1872388,
+      "sha256": "88566cac5691094d9950f5601862c3a4d791748661d50082d5279888b7200583"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:03.456739Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 29
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 26
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 8
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "manuscript.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

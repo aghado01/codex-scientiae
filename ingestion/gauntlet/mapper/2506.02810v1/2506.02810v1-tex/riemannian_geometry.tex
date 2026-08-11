@@ -1,0 +1,143 @@
+\subsection{Elements of Riemannian geometry}
+\label{sec:elemRiem}
+ 
+We introduce here some elements of Riemannian geometry that will be used throughout this work. Indeed, we will typically assume further in this article that we observe data sampled from a Riemannian manifold, as well as the values of a continuous filter function defined on the points. Although these are standard results, we recall some proof elements in Appendix~\ref{apdx:proofs} for the sake of completeness. A general presentation of the results provided in this section, and notably a proof of Theorem~\ref{thm:bishop_gromov}, can be found in~\cite{petersen2006riemannian}.
+
+We call Riemannian manifold every $C^{\infty}$-manifold $\man$ together with a Riemannian metric $\g$. The Riemannian metric consists of an Euclidean inner product $\g_p$ on each of the tangent spaces $\tangent_p\man$ of $\man$, which satisfies that $p\mapsto\g_p(X_p,Y_p)$ is smooth whenever $X$ and $Y$ are two smooth vector fields defined on $\man$. 
+
+Given some local coordinates $x(p)=(x_1,...,x_d)$ on an open set $U$ of $\man$, 
+they induce a basis of the tangent space $\tangent_p\man$. %for all $p\in U$. 
+%These are the coordinate vector fields $(\partial_i)_{i=1}^d$.
+We denote the associated {\it coordinate vector fields} as $(\partial_i)_{i=1}^d$, and their dual $1$-forms as $(dx_i)_{i=1}^d$.
+% so as to have:
+%$$dx_i(\partial_j)=
+%\begin{cases}
+%1, \text{ if } i=j\\
+%0, \text{ otherwise}
+%\end{cases}$$
+%as the vector fields defined by 
+%$$\partial_i=\frac{\partial}{\partial x_i}.$$
+Under these notations, we can write the Riemannian metric $\g$ as:
+$$\g=\sum_{i,j}\g(\partial_i,\partial_j)\cdot dx_i\cdot dx_j,$$
+where $dx_i\cdot dx_j$ is the bilinear form: $(v,w)\mapsto dx_i(v)\cdot dx_j(w).$
+As such, $\g$ can be represented in local coordinates as a symmetric positive-definite matrix $\G(p)$ with entries parametrized over $U$.
+
+We will denote
+$$\lambda(p)=\min\{\sqrt{\rho},\,\rho\in\mathrm{Sp}(\G(p))\},$$
+and
+$$\mu(p)=\max\{\sqrt{\rho},\,\rho\in\mathrm{Sp}(\G(p))\},$$
+where $\mathrm{Sp}(\G(p))$ is the spectrum of $\G(p)$. Notice that since the Riemannian metric is continuous, both $\lambda$ and $\mu$ are continuous as well.
+
+The following proposition states that the Riemannian metric is bi-Lipschitz equivalent to the Euclidean metric in local coordinates.
+
+\begin{proposition}\label{prop:g_equiv}
+Let $U$ be an open set in $\man$, on which we are given coordinates $x(p)=(x_1,...,x_d)$. 
+%
+For every $p\in\man$ and for every $v\in\tangent_p\man$:
+
+$$\lambda(p)\cdot \sqrt{\g_0(v,v)}\leq \sqrt{\g(v,v)}\leq \mu(p)\cdot \sqrt{\g_0(v,v)},$$
+
+where $\g_0=\sum_{i}dx_i\cdot dx_i$ is the Euclidean metric in the local coordinates.
+\end{proposition}
+
+Riemannian manifolds can be given a metric space structure as it is possible to measure the ``length" of piecewise smooth curves using the Riemannian metric. This allows to define the {\it geodesic} distance $\dis$ on $\man$. 
+The geodesic distance is locally bi-Lipschitz equivalent to the Euclidean distance in local coordinates.
+
+\begin{proposition}\label{prop:dis_equiv}Let $p\in\man$. For every small enough neighborhood $U$ of $p$, we have that for every $q\in U$:
+%\begin{equation}
+%\label{eq:gamma0}
+$$\lambda_0\cdot\dis_0(p,q)\leq \dis(p,q)\leq\mu_0\cdot\dis_0(p,q),$$
+%\end{equation}
+where $\dis_0(p,q)$ is the Euclidean distance between the representations of $p$ and $q$ in local coordinates and where
+$$\lambda_0=\inf_{r\in U}\lambda(r) \textrm{ and }
+\mu_0=\sup_{r\in U}\mu(r).$$
+In particular $\lambda_0$ tends to $ \lambda(p)$ and
+$\mu_0$  tends to  $\mu(p)$ as $\diam(U)$ tends to $0$.
+%Moreover, $$\frac{\dis(p,q)}{\dis_0(p,q)}\rightarrow 1\text{ as }q\rightarrow p.$$
+% \bert{ca grince un cette convergence de $\lambda_0, \mu_0$, je te propose plutot (a verifier et peut etre à positionner plutot en appendice ?) : Moreover, it is possible to choose $\lambda_0$ and $\mu_0$ continuously in the following sense: for any $r$ small enough  there exists $\lambda_0(r)$ and $\mu_0(r)$ satisfying \eqref{eq:gamma0} for any $q \in U \cap B_0(p,r)$, such that $\lambda_0(r)$ and $\mu_0(r)$ tends to $\lambda_0$ and $\mu_0$ as $r$ tends to zero.}
+\end{proposition}
+
+
+
+
+
+
+
+
+
+
+
+%The above result shows in particular that the manifold topology is equivalent to the metric topology induced by the geodesic distance.\\
+The Riemannian metric also induces a Borel measure $\vol$ called the {\it volume measure}. It can be first defined by specifying the expected value of a function $f\colon\man\rightarrow\mathbb{C}$ compactly supported on a single chart $\varphi\colon U\subseteq\man\rightarrow V\subseteq\mathbb{R}^d$:
+
+$$\int_{\man}f\,d\vol=\int_{V}\left(f\cdot\sqrt{\deter(\G)}\right)\circ\varphi^{-1}\,d\lambda,$$
+
+where \begin{align*}
+\G\colon U&\longrightarrow\mathbb{R}^{d\times d}\\
+p&\longmapsto(\g(\partial_{i_{|p}},\partial_{j_{|p}}))_{i,j}
+\end{align*}
+and $\lambda$ is the Lebesgue measure on $\mathbb{R}^d$.\\
+It can be checked, with the help of the substitution rule, that the above definition does not depend on the choice of the coordinate neighborhood.\\
+This definition can be extended to general compactly supported functions by using a partition of unity of a coordinate neighborhood cover of $\man$: we simply sum the expected values over the elements of the partition.\\
+Subsequently, as the expected value of compactly supported functions is well defined, the Riesz representation theorem allows to consider the unique associated positive Borel measure on $\man$: this is the volume measure $\vol$.\\\\
+ We have the following asymptotic equivalence result for the volume of small geodesic balls.
+\begin{proposition}{Volume of small geodesic balls.}\label{prop:geo_vol}\\
+Let $\ball(p,\eps)$ be the geodesic ball around $p\in\man$ of radius $\eps$. We have that:
+$$\vol\left(\ball(p,\eps)\right)\underset{\eps\rightarrow 0}{\sim} \alpha_d\cdot\eps^d,$$
+where $\alpha_d$ is the volume of the unit ball in $\R^d$.
+%In particular, there exists $\epsilon'>0$ and $\lambda_1,\mu_1>0$ such that for every $\epsilon\leq\epsilon'$:
+%
+%$$\lambda_1\cdot\epsilon^d\leq \vol\left(\ball(p,\epsilon)\right)\leq\mu_1\cdot\epsilon^d.$$
+\end{proposition}
+
+%For a power series expansion of the volume of small geodesic balls to higher orders, see~\cite{gray1974volume} under the assumption that the manifold is analytic, which is more restrictive than our case.\bert{on retire ce commentaire ?}\\
+For the following result we will assume a lower bound on the {\it Ricci curvature} of $\man$. The Ricci curvature $\ricci$ is a symmetric bilinear form on the tangent spaces and can be thought of as the Laplacian of the metric $\g$, see for instance Chapter 9 in~\cite{petersen2006riemannian}. We will adopt the convention that $\ricci\geq k$ means that all eigenvalues $\rho$ of $\ricci$ satisfy $\rho\geq k$. 
+
+The next theorem allows to compare the volume of geodesic balls in $\man$ to the volume of geodesic balls in certain model manifolds $\spaceform^d_k$ called {\it constant-curvature space forms}, $d$ being the dimension of both $\man$ and $\spaceform^d_k$ (see for example Subsection 9.1. in~\cite{petersen2006riemannian}).
+Denote $v(d,k,r)$ as the volume of a ball of radius $r$ in $\spaceform^d_k$. 
+
+\begin{theorem}{Bishop-Cheeger-Gromov Theorem, see for instance Lemma~36 in~\cite{petersen2006riemannian}.}\\
+\label{thm:bishop_gromov}
+Suppose that $\man$ is a $d$-dimensional complete Riemannian manifold such that $\ricci\geq(d-1)\cdot k$, for some $k \in \R$. Then  for any $p \in \man$, 
+$$\eps\longmapsto\frac{\vol\left(\ball(p,\eps)\right)}{v(d,k,\eps)} $$
+is a nonincreasing function whose limit is 1 as $\eps\rightarrow 0$. 
+\end{theorem}
+ 
+Note that in the above theorem, $v(d,k,\eps)$ is independent of the base point $p$. %of $\ball(p,r)$. 
+This is very convenient for providing bounds on the volume of geodesic balls in $\man$ that are uniform with respect to the choice of base points. Notice also that since $\spaceform^d_k$ is a $d-$dimensional Riemannian manifold, Proposition~\ref{prop:geo_vol} applies for $v(d,k,\eps)$, i.e.,
+$$v(d,k,\eps)\underset{\eps\rightarrow 0}{\sim} \alpha_d\cdot \eps^d.$$
+
+We now define the gradient of a smooth real valued function on a Riemannian manifold. 
+%Like mentioned above, 
+Let $x(p)=(x_1,...,x_d)$ be some local coordinates on an open set $U$ of $\man$
+%induce a basis of the tangent spaces $\tangent_p\man$ for all $p\in U$. These are the 
+with associated coordinate vector fields $(\partial_i)_{i=1}^d$.
+Let $f:\man\rightarrow\R$ be a smooth function. We can define its differential $df$ as the $1$-form that satisfies:
+$df(\partial_i)=\frac{\partial f}{\partial x_i}$, 
+%\mathieu{Shouldn't it be $\frac{\partial \hat f}{\partial x_i}$ where $\hat f = f\circ \varphi^{-1   }$ is the representative of $f$ in the local coodinates?}\ziy{Oui, la notation $\frac{\partial f}{\partial x_i}$ veut dire ce que tu as écrit. Je crois que vu qu'on note $x_i$ le choix de coordonnées n'est pas ambigu.} 
+for all $1\leq i \leq d.$
+The gradient $\nabla f$ of $f$ is then defined as the vector field satisfying:
+$\g(\nabla f,v)=df(v),$
+for all vector fields $v$. It can also be seen as the Riesz representative of $df$.
+Given our local coordinates, we can express the gradient vectors in their associated coordinate vector field bases.
+\begin{proposition}\label{prop:grad}
+In the local coordinates associated to the open set $U$, we have that:
+$$\nabla f=\sum_{i=1}^d a_i\cdot\partial_i,$$
+where:
+$$(a_1,...,a_d)=\left(\frac{\partial f}{\partial x_1},...,\frac{\partial f}{\partial x_d}\right)\cdot\left[\g(\partial_i,\partial_j)\right]_{i,j}^{-1}.$$
+In particular, we have:
+$$\frac{1}{\mu(p)}\cdot \sqrt{\sum_{i=1}^d\frac{\partial f(p)}{\partial x_i}^2}\leq \sqrt{\g\left(\nabla f(p),\nabla f(p)\right)}\leq \frac{1}{\lambda(p)}\cdot \sqrt{\sum_{i=1}^d\frac{\partial f(p)}{\partial x_i}^2}$$
+
+\end{proposition}
+
+
+
+
+
+
+
+
+
+
+
+

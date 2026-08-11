@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2604.02739v1",
+  "initialized_utc": "2026-08-11T08:30:02.394636Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "write-arxiv.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "\\bf Quotient-Based Posterior Analysis for Euclidean Latent Space Models",
+        "authors_tex": [
+          "Kisung You\\\\\n    Department of Mathematics, Baruch College, City University of New York\\\\\n\n  \n    and \\\\\n    Mauro Giuffr\\`{e}\\\\\n    Department of Biomedical Informatics \\& Data Science, Yale University\\\\\n    Department of Medicine, Surgery, and Health Sciences, University of Trieste\\\\"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 462,
+        "sha256": "1903c3fb83f713b4226e88cb8d5d72e255b2d9a6d4b9e2bb91089f2e5c9cac00"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2604.02739v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 3538610,
+      "sha256": "89a436d6bfd444cb9f9a5c5d81b4f92cae92b439e2ff1a39b568dffaee747881",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2604.02739v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2604.02739v1.tar.gz",
+      "entrypoint": "write-arxiv.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 12,
+      "tex_files": 1,
+      "sha256": "427b3265f09f2d03b7a3e47b946fab4cec5eca45c776207f58b03e97d77b1099"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2604.02739v1.pdf",
+      "format": "application/pdf",
+      "bytes": 3516990,
+      "sha256": "6ed3af8573d50d84360fc9a1374d171c7e7bb63191c6e57221efd1e98798a045"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:02.394636Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 13
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 12
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "write-arxiv.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

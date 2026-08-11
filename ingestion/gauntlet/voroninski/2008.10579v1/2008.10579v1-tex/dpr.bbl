@@ -1,0 +1,400 @@
+\begin{thebibliography}{10}
+
+\bibitem{GaussNets}
+Sanjeev Arora, Yingyu Liang, and Tengyu Ma.
+\newblock Why are deep nets reversible: A simple theory with implications for
+  training.
+\newblock {\em CoRR}, abs/1511.05653, 2015.
+
+\bibitem{SpikedGenPrior19}
+Benjamin Aubin, Bruno Loureiro, Antoine Maillard, Florent Krzakala, and Lenka
+  Zdeborov\'{a}.
+\newblock The spiked matrix model with generative priors.
+\newblock {\em arXiv preprint}, arXiv:1905.12385, 2013.
+
+\bibitem{Romberg2015}
+Sohail Bahmani and Justin Romberg.
+\newblock Efficient compressive phase retrieval with constrained sensing
+  vectors.
+\newblock {\em Advances in Neural Information Processing Systems (NIPS 2015)},
+  pages 523--531, 2015.
+
+\bibitem{BahmaniRomberg_LinProg}
+Sohail Bahmani and Justin Romberg.
+\newblock Phase retrieval meets statistical learning theory: A flexible convex
+  relaxation.
+\newblock {\em International Conference on Artificial Intelligence and
+  Statistics (AISTATS)}, 54:252--260, 2017.
+
+\bibitem{Bandeira_Mixon}
+Afonso~S. Bandeira and Dustin~G. Mixon.
+\newblock Near-optimal phase retrieval of sparse vectors.
+\newblock {\em arXiv preprint}, arXiv:1308.0143, 2013.
+
+\bibitem{SOS_planted_clique}
+Boaz Barak, Samuel~B Hopkins, Jonathan Kelner, Pravesh~K Kothari, Ankur Moitra,
+  and Aaron Potechin.
+\newblock A nearly tight sum-of-squares lower bound for the planted clique
+  problem.
+\newblock {\em arXiv preprint}, arXiv:1604.03084, 2016.
+
+\bibitem{Baraniuk_lemma}
+Richard Baraniuk, Mark Davenport, Ronald DeVore, and Michael Wakin.
+\newblock A simple proof of the restricted isometry property for random
+  matrices.
+\newblock {\em Constructive Approximation}, 28(3):253--263, 2008.
+
+\bibitem{BerthetRigollet13}
+Quentin Berthet and Philippe Rigollet.
+\newblock Computational lower bounds for sparse pca.
+\newblock {\em arXiv preprint}, arXiv:1304.0828, 2013.
+
+\bibitem{Price2017}
+Ashish Bora, Alexandros~G. Dimakis, Ajil Jalal, and Eric Price.
+\newblock Compressed sensing using generative models.
+\newblock {\em arXiv preprint arXiv:1703.03208}, 2017.
+
+\bibitem{Cai2016}
+Tony Cai, Xiaodong Li, and Zongming Ma.
+\newblock Optimal rates of convergence for noisy sparse phase retrieval via
+  thresholded wirtinger flow.
+\newblock {\em The Annals of Statistics}, 44(5):2221--2251, 2016.
+
+\bibitem{CandLi2014}
+Emmanuel~J. Cand\`{e}s and Xiaodong Li.
+\newblock Solving quadratic equations via phaselift when there are about as
+  many equations as unknowns.
+\newblock {\em Foundations of Computational Mathematics}, 14.5:1017--1026,
+  2014.
+
+\bibitem{Candes2015}
+Emmanuel~J. Cand\`{e}s, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and applications.
+\newblock {\em IEEE Transactions on Information Theory}, 61(4):195--2007, 2017.
+
+\bibitem{Tao2006}
+Emmanuel~J. Cand\`{e}s, Justin~K. Romberg, and Terence Tao.
+\newblock Stable signal recovery from incomplete and inaccurate measurements.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  59(8):1207--1223, 2006.
+
+\bibitem{CandStrohVoron2013}
+Emmanuel~J. Cand\`{e}s, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Comm. Pure Applied Math}, 66(8):1241--1274, 2013.
+
+\bibitem{Clason2017}
+Christian Clason.
+\newblock Nonsmooth analysis and optimization.
+\newblock {\em arXiv preprint arXiv:1708.04180}, 2017.
+
+\bibitem{CHV20}
+Jorio Cocola, Paul Hand, and Vladislav Voroninski.
+\newblock Nonasymptotic guarantees for low-rank matrix recovery with generative
+  priors.
+\newblock {\em arXiv preprint arXiv:2006.07953}, 2020.
+
+\bibitem{Daskalaskisetal2020}
+Constantinos Daskalakis, Dhruv Rohatgi, and Manolis Zampetakis.
+\newblock Constant-expansion suffices for compressed sensing with generative
+  priors.
+\newblock {\em arXiv preprint}, arXiv:2006.04237, 2020.
+
+\bibitem{Decelleetal11}
+Aurelien Decelle, Florent Krzakala, Cristopher Moore, , and Lenka
+  Zdeborov\'{a}.
+\newblock Asymptotic analysis of the stochastic block model for modular
+  networks and its algorithmic applications.
+\newblock {\em Physical Review E}, 84(6):066106, 2011.
+
+\bibitem{DeshpandeMontanari14}
+Yash Deshpande and Andrea Montanari.
+\newblock Sparse pca via covariance thresholding.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  pages 334--342, 2014.
+
+\bibitem{Donoho2006}
+David Donoho.
+\newblock For most large underdetermined systems of linear equations the
+  minimal l1-norm solution is also the sparsest solution.
+\newblock {\em Communications on Pure and Applied Mathematics}, 59(6), 2006.
+
+\bibitem{Dono2007}
+David Donoho, Michael Lustig, and John~M. Pauly.
+\newblock Sparse mri: The application of compressed sensing for rapid mr
+  imaging.
+\newblock {\em Magnetic Resonance in Medicine}, 58(6):1182--1195, 2007.
+
+\bibitem{Drury2001}
+S.~W. Drury.
+\newblock Honours analysis lecture notes, mcgill university.
+\newblock \url{http://www.math.mcgill.ca/drury/notes354.pdf}, 2001.
+
+\bibitem{Wang2017}
+Yonina~C. Eldar, Georgios~B. Giannakis, and Gang Wang.
+\newblock Solving systems of random quadratic equations via truncated amplitude
+  flow.
+\newblock {\em IEEE Transactions on Information Theory}, 23(26):773--794, 2017.
+
+\bibitem{Numerics_of_PR}
+Albert Fannjiang and Thomas Strohmer.
+\newblock The numerics of phase retrieval.
+\newblock {\em arXiv preprint arXiv:2004.05788}, 2020.
+
+\bibitem{FienupAlg}
+J.R. Fienup.
+\newblock Phase retrieval algorithms: A comparison.
+\newblock {\em Applied Optics}, 21:2758--2768, 1982.
+
+\bibitem{GerchSaxAlg}
+R.W. Gerchberg and W.O. Saxton.
+\newblock A practical algorithm for the determination of phase from image and
+  diffraction plane pictures.
+\newblock {\em Optik}, 35:237--246, 1972.
+
+\bibitem{Phasemax}
+Tom Goldstein and Christoph Struder.
+\newblock Phasemax: Convex phase retrieval via basis pursuit.
+\newblock {\em arXiv preprint arXiv: 1610.07531}, 2016.
+
+\bibitem{ADMMGenPrior}
+Fabian~Latorre G\'{o}mez, Armin Eftekhari, and Volkan Cevher.
+\newblock Fast and provable admm for learning with generative priors.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  2019.
+
+\bibitem{Goodfellow2014}
+Ian~J. Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David
+  Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio.
+\newblock Generative adversarial nets.
+\newblock {\em arXiv preprint arXiv:1406.2661}, 2014.
+
+\bibitem{JoshiHand19}
+Paul Hand and Babhru Joshi.
+\newblock Global guarantees for blind demodulation with generative priors.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  2019.
+
+\bibitem{HLV18}
+Paul Hand, Oscar Leong, and Vladislav Voroninski.
+\newblock Phase retrieval under a generative prior.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  2018.
+
+\bibitem{HV2016}
+Paul Hand and Vladislav Voroninski.
+\newblock Compressed sensing from phaseless gaussian measurements via linear
+  programming in the natural parameter space.
+\newblock {\em arXiv preprint arXiv:1611.05985}, 2016.
+
+\bibitem{HV2017}
+Paul Hand and Vladislav Voroninski.
+\newblock Global guarantees for enforcing deep generative priors by empirical
+  risk.
+\newblock {\em IEEE Transactions on Information Theory}, 66(1):401--418, 2019.
+
+\bibitem{Heckeletal2018}
+Reinhard Heckel, Wen Huang, Paul Hand, and Vladislav Voroninski.
+\newblock Rate-optimal denoising with deep neural networks.
+\newblock {\em Information and Inference: A Journal of the IMA}, 2020.
+
+\bibitem{Huangetal2018}
+Wen Huang, Paul Hand, Reinhard Heckel, and Vladislav Voroninski.
+\newblock A provably convergent scheme for compressive sensing under random
+  generative priors.
+\newblock {\em arXiv preprint}, arXiv:1812.04176, 2018.
+
+\bibitem{SparsePRoverview}
+Kishore Jaganathan, Samet Oymak, and Babak Hassibi.
+\newblock Sparse phase retrieval: Convex algorithms and limitations.
+\newblock {\em 2013 IEEE International Symposium on Information Theory
+  Proceedings (ISIT)}, pages 1022--1026, 2013.
+
+\bibitem{Hedge2017}
+Gauri Jagatap and Chinmay Hegde.
+\newblock Sample-efficient algorithms for recovering structured signals from
+  magnitude-only measurements.
+\newblock {\em Advances in Neural Information Processing Systems (NIPS 2017)},
+  2017.
+
+\bibitem{Jain2013}
+Prateek Jain, Praneeth Netrapalli, and Sujay Sanghavi.
+\newblock Phase retrieval using alternating minimization.
+\newblock {\em Advances in Neural Information Processing Systems (NIPS 2013)},
+  2013.
+
+\bibitem{Karras2019}
+Tero Karras, Samuli Laine, and Timo Aila.
+\newblock A style-based generator architecture for generative adversarial
+  networks.
+\newblock {\em IEEE CVPR}, 2019.
+
+\bibitem{ADAM}
+Diederik Kingma and Jimmy~Ba. Adam.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}, 2014.
+
+\bibitem{Kingma2014}
+Diederik~P. Kingma and Max Welling.
+\newblock Auo-encoding variational bayes.
+\newblock {\em ICLR}, 2014.
+
+\bibitem{Krauthgameretal15}
+Robert Krauthgamer, Boaz Nadler, Dan Vilenchik, and et~al.
+\newblock Do semidefinite relaxations solve sparse pca up to the information
+  limit?
+\newblock {\em The Annals of Statistics}, 43(3):1300–1322, 2015.
+
+\bibitem{MNIST}
+Yann LeCun, Leon Bottou, Yoshua Bengio, and Patrick Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, 1998.
+
+\bibitem{Voroninski2013}
+Xiaodong Li and Vladislav Voroninski.
+\newblock Sparse signal recovery from quadratic measurements via convex
+  programming.
+\newblock {\em SIAM Journal on Mathematical Analysis}, 45(5):3019--3033, 2013.
+
+\bibitem{Liuetal20}
+Zhaoqiang Liu, Selwyn Gomes, Avtansh Tiwari, and Jonathan Scarlett.
+\newblock Sample complexity bounds for 1-bit compressive sensing and binary
+  stable embeddings with generative priors.
+\newblock {\em Proceedings of the 37th International Conference on Machine
+  Learning (ICML)}, 2020.
+
+\bibitem{FingerGAN}
+Shervin Minaee and Amirali Abdolrashidi.
+\newblock Finger-gan: Generating realistic fingerprint images using
+  connectivity imposed gan.
+\newblock {\em arXiv preprint}, arXiv:1812.10482, 2018.
+
+\bibitem{NyquistShannonSampling}
+Harry Nyquist.
+\newblock Certain topics in telegraph transmission theory.
+\newblock {\em Trans. AIEE.}, 47(2):617--644, 1928.
+
+\bibitem{Cell_GAN}
+Anton Osokin, Anatole Chessel, Rafael E.~Carazo Salas, and Federico Vaggi.
+\newblock Gans for biological image synthesis.
+\newblock {\em arXiv preprint}, arXiv:1708.04692, 2017.
+
+\bibitem{Oymaketal15}
+Samet Oymak, Amin Jalali, Maryam Fazel, Yonina~C. Eldar, and Babak Hassibi.
+\newblock Simultaneously structured models with application to sparse and
+  low-rank matrices.
+\newblock {\em IEEE Transactions on Information Theory}, 61(5):2886--2908,
+  2015.
+
+\bibitem{Vershynin_hyperplane_thm}
+Yaniv Plan and Roman Vershynin.
+\newblock One-bit compressed sensing by linear programming.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  66(8):1275--1297, 2013.
+
+\bibitem{Qiuetal19}
+Shuang Qiu, Xiaohan Wei, and Zhuoran Yang.
+\newblock Robust one-bit recovery via relu generative networks: Improved
+  statistical rates and global landscape analysis.
+\newblock {\em arXiv preprint arXiv:1908.05368}, 2019.
+
+\bibitem{RichardMontanari14}
+Emile Richard and Andrea Montanari.
+\newblock A statistical model for tensor pca.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  pages 2897--2905, 2014.
+
+\bibitem{ShahDCS2018}
+Viraj Shah and Chinmay Hedge.
+\newblock Solving linear inverse problems using gan priors: An algorithm with
+  provable guarantees.
+\newblock {\em Proc. IEEE Int. Conf. Acoust., Speech, and Signal Processing
+  (ICASSP)}, 2018.
+
+\bibitem{Shamshad2018}
+Fahad Shamshad and Ali Ahmed.
+\newblock Robust compressive phase retrieval via deep generative priors.
+\newblock {\em arXiv preprint arXiv:1808.05854}, page~0, 2018.
+
+\bibitem{MRI_GAN}
+Hoo-Chang Shin, Neil~A. Tenenholtz, Jameson~K. Rogers, Christopher~G. Schwarz,
+  Matthew~L. Senjem, Jeffrey~L. Gunter, Katherine Andriole, and Mark Michalski.
+\newblock Medical image synthesis for data augmentation and anonymization using
+  generative adversarial networks.
+\newblock {\em arXiv preprint}, arXiv:1807.10225, 2018.
+
+\bibitem{Mahdi2019}
+Mahdi Soltanolkotabi.
+\newblock Structured signal recovery from quadratic measurements: Breaking
+  sample complexity barriers via nonconvex optimization.
+\newblock {\em IEEE Transactions on Information Theory}, 65(4):2374 -- 2400,
+  2019.
+
+\bibitem{Songetal19}
+Ganlin Song, Zhou Fan, and John Lafferty.
+\newblock Surfing: Iterative optimization over incrementally trained deep
+  networks.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  pages 15034--15043, 2019.
+
+\bibitem{Wright2016}
+Ju~Sun, Qing Qu, and John Wright.
+\newblock A geometric analysis of phase retrieval.
+\newblock {\em Information Theory (ISIT), 2016 IEEE International Symposium},
+  pages 2379--2383, 2016.
+
+\bibitem{TikReg}
+Andrey~Nikolayevich Tikhonov.
+\newblock On stability of inverse problems.
+\newblock {\em Dokl. Akad. Nauk SSSR}, 39(5):176--179, 1943.
+
+\bibitem{Vershynin_notes}
+Roman Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock {\em Compressed Sensing: Theory and Applications}, Cambridge
+  University Press, 2012.
+
+\bibitem{VladSRIP2014}
+Vladislav Voroninski and Zhiqiang Xu.
+\newblock A strong restricted isometry property with an application to
+  phaseless compressed sensing.
+\newblock {\em arXiv preprint}, arxiv:1404.3811, 2014.
+
+\bibitem{Waldspurger_Alt_Proj}
+Ir\`{e}ne Waldspurger.
+\newblock Phase retrieval with random gaussian sensing vectors by alternating
+  projections.
+\newblock {\em IEEE Transactions on Information Theory}, 64(5):3301--3312,
+  2018.
+
+\bibitem{Phasecut}
+Ir\`{e}ne Waldspurger, Alexandre d'Aspremont, and St\'{e}phane Mallat.
+\newblock Phase recovery, maxcut and complex semidefinite programming.
+\newblock {\em Mathematical Programming}, 149(1-2):47--81, 2015.
+
+\bibitem{SPARTA}
+Gang Wang, Liang Zhang, Georgios~B. Giannakis, Mehmet Ak\c{c}akaya, and Jie
+  Chen.
+\newblock Sparse phase retrieval via truncated amplitude flow.
+\newblock {\em IEEE Transactions on Signal Processing}, 66:479--491, 2018.
+
+\bibitem{Wang2004}
+Zhou Wang, A.C. Bovik, H.R. Sheikh, and E.P. Simoncelli.
+\newblock Image quality assessment: from error visibility to structural
+  similarity.
+\newblock {\em IEEE transactions on image processing}, 13(4):600--612, 2004.
+
+\bibitem{sphere_covering}
+James~G. Wendel.
+\newblock A problem in geometric probability.
+\newblock {\em Math. Scand.}, 11:109--111, 1962.
+
+\bibitem{AmpFlow}
+Huishuai Zhang, Yingbin Liang, and Yuejie Chi.
+\newblock A nonconvex approach for phase retrieval: Reshaped wirtinger flow and
+  incremental algorithms.
+\newblock {\em Journal of Machine Learning Research (JMLR)}, 18(141):1--35,
+  2017.
+
+\end{thebibliography}

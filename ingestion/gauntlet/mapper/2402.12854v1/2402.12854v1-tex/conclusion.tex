@@ -1,0 +1,11 @@
+\section{Discussion and future work} \label{sec:discussion}
+In this article, we have introduced Soft Mapper, a distributional and smoother version of the standard Mapper graph, with provable convergence guarantees using persistence-based losses and risks. Our case study in this article was finding an optimal filter function, among a parameterized family of functions, in order to construct regular Mapper graphs incorporating an optimized and maximal amount of topological information. 
+We then produced examples of such optimization processes on real 3D shape and single-cell RNA sequencing data, for which we were able to obtain structured Mapper representations in an unsupervised way.
+%To achieve this, we used persistent homology, to produce a topological loss, and a specific Soft Mapper that can be seen a smooth relaxation of the regular Mapper. We then used this method to produce data representations based on linear filters. 
+These representations, especially for the single cell RNA-sequencing data, are not meant to represent novel or state of the art data representations in their respective research domains, but as a proof of concept of the practical benefit of our method.
+Moreover, our construction is not limited to the choice of a linear family of filter functions or to the filter optimization setting as a whole. Possible future work includes optimizing non-linear filter functions, based on neural networks or kernel methods, and studying Soft Mappers based on different cover assignment schemes, like the Gaussian cover assignment scheme defined in Appendix \ref{apdx:gaussian}. 
+
+\section{Acknowledgments}
+
+The research was supported by three grants from Agence Nationale de la Recherche: GeoDSIC ANR-22-CE40-0007, ANR JCJC TopModel ANR-23-CE23-0014 and AI4scMed, France 2030 ANR-22-PESN-000. 
+

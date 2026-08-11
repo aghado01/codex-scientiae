@@ -1,0 +1,146 @@
+\begin{thebibliography}{10}
+
+\bibitem{alonsoDecompositionZeroDimensionalPersistence2024}
+{\'A}ngel~Javier Alonso and Michael Kerber.
+\newblock Decomposition of {{Zero-Dimensional Persistence Modules}} via {{Rooted Subsets}}.
+\newblock {\em Discrete \& Computational Geometry}, November 2024.
+\newblock \href {https://doi.org/10.1007/s00454-024-00700-7} {\path{doi:10.1007/s00454-024-00700-7}}.
+
+\bibitem{alonsoProbabilisticAnalysisMultiparameter2024a}
+{\'A}ngel~Javier Alonso, Michael Kerber, and Primoz Skraba.
+\newblock Probabilistic {{Analysis}} of {{Multiparameter Persistence Decompositions}} into {{Intervals}}.
+\newblock {\em LIPIcs, Volume 293, SoCG 2024}, 293:6:1--6:19, 2024.
+\newblock \href {https://doi.org/10.4230/LIPICS.SOCG.2024.6} {\path{doi:10.4230/LIPICS.SOCG.2024.6}}.
+
+\bibitem{aokiSummandinjectivityIntervalCovers2023}
+Toshitaka Aoki, Emerson~G. Escolar, and Shunsuke Tada.
+\newblock Summand-{I}njectivity of {I}nterval {C}overs and {M}onotonicity of {I}nterval {R}esolution {G}lobal {D}imensions, November 2023.
+\newblock \href {https://arxiv.org/abs/2308.14979} {\path{arXiv:2308.14979}}.
+
+\bibitem{aokiBipathPersistence2024}
+Toshitaka Aoki, Emerson~G. Escolar, and Shunsuke Tada.
+\newblock Bipath {P}ersistence.
+\newblock {\em Japan Journal of Industrial and Applied Mathematics}, December 2024.
+\newblock \href {https://doi.org/10.1007/s13160-024-00681-3} {\path{doi:10.1007/s13160-024-00681-3}}.
+
+\bibitem{asashibaIntervalDecomposability2D2022}
+Hideto Asashiba, Micka{\"e}l Buchet, Emerson~G. Escolar, Ken Nakashima, and Michio Yoshiwaki.
+\newblock On {I}nterval {D}ecomposability of {{2D}} {P}ersistence {M}odules.
+\newblock {\em Computational Geometry}, 105--106:101879, August 2022.
+\newblock \href {https://doi.org/10.1016/j.comgeo.2022.101879} {\path{doi:10.1016/j.comgeo.2022.101879}}.
+
+\bibitem{asashibaApproximationIntervaldecomposablesInterval2023}
+Hideto Asashiba, Emerson~G. Escolar, Ken Nakashima, and Michio Yoshiwaki.
+\newblock Approximation by {I}nterval-{D}ecomposables and {I}nterval {R}esolutions of {P}ersistence {M}odules.
+\newblock {\em Journal of Pure and Applied Algebra}, 227(10):107397, October 2023.
+\newblock \href {https://arxiv.org/abs/2207.03663} {\path{arXiv:2207.03663}}, \href {https://doi.org/10.1016/j.jpaa.2023.107397} {\path{doi:10.1016/j.jpaa.2023.107397}}.
+
+\bibitem{asashiba2024interval}
+Hideto Asashiba, Etienne Gauthier, and Enhao Liu.
+\newblock Interval {{Replacements}} of {{Persistence Modules}}, June 2024.
+\newblock \href {https://arxiv.org/abs/2403.08308} {\path{arXiv:2403.08308}}.
+
+\bibitem{asashibaIntervalMultiplicitiesPersistence2024}
+Hideto Asashiba and Enhao Liu.
+\newblock Interval {{Multiplicities}} of {{Persistence Modules}}, November 2024.
+\newblock \href {https://arxiv.org/abs/2411.11594} {\path{arXiv:2411.11594}}.
+
+\bibitem{bauerGenericMultiParameterPersistence2023}
+Ulrich Bauer and Luis Scoccola.
+\newblock Generic {{Multi-Parameter Persistence Modules}} are {{Nearly Indecomposable}}, October 2023.
+\newblock \href {https://arxiv.org/abs/2211.15306} {\path{arXiv:2211.15306}}.
+
+\bibitem{bjerkevikStabilityIntervalDecomposable2021}
+H{\aa}vard~Bakke Bjerkevik.
+\newblock On the {{Stability}} of {{Interval Decomposable Persistence Modules}}.
+\newblock {\em Discrete \& Computational Geometry}, 66(1):92--121, July 2021.
+\newblock \href {https://doi.org/10.1007/s00454-021-00298-0} {\path{doi:10.1007/s00454-021-00298-0}}.
+
+\bibitem{botnanAlgebraicStabilityZigzag2018}
+Magnus Botnan and Michael Lesnick.
+\newblock Algebraic {S}tability of {Z}igzag {P}ersistence {M}odules.
+\newblock {\em Algebraic \& Geometric Topology}, 18(6):3133--3204, October 2018.
+\newblock \href {https://doi.org/10.2140/agt.2018.18.3133} {\path{doi:10.2140/agt.2018.18.3133}}.
+
+\bibitem{botnanIntervalDecompositionInfinite2017}
+Magnus~Bakke Botnan.
+\newblock Interval {D}ecomposition of {I}nfinite {Z}igzag {P}ersistence {M}odules.
+\newblock {\em Proceedings of the American Mathematical Society}, 145(8):3571--3577, January 2017.
+\newblock \href {https://doi.org/10.1090/proc/13465} {\path{doi:10.1090/proc/13465}}.
+
+\bibitem{botnanSignedBarcodesMultiParameter2022}
+Magnus~Bakke Botnan, Steffen Oppermann, and Steve Oudot.
+\newblock Signed {{Barcodes}} for {{Multi-Parameter Persistence}} via {{Rank Decompositions}}.
+\newblock In {\em {{LIPIcs}}, {{Volume}} 224, {{SoCG}} 2022}, volume 224, pages 19:1--19:18. Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik, 2022.
+\newblock \href {https://doi.org/10.4230/LIPICS.SOCG.2022.19} {\path{doi:10.4230/LIPICS.SOCG.2022.19}}.
+
+\bibitem{botnanSignedBarcodesMultiparameter2024}
+Magnus~Bakke Botnan, Steffen Oppermann, and Steve Oudot.
+\newblock Signed {{Barcodes}} for {{Multi-parameter Persistence}} via {{Rank Decompositions}} and {{Rank-Exact Resolutions}}.
+\newblock {\em Foundations of Computational Mathematics}, September 2024.
+\newblock \href {https://doi.org/10.1007/s10208-024-09672-9} {\path{doi:10.1007/s10208-024-09672-9}}.
+
+\bibitem{burgheleaTopologicalPersistenceCircleValued2013}
+Dan Burghelea and Tamal~K. Dey.
+\newblock Topological {{Persistence}} for {{Circle-Valued Maps}}.
+\newblock {\em Discrete \& Computational Geometry}, 50(1):69--98, July 2013.
+\newblock \href {https://doi.org/10.1007/s00454-013-9497-x} {\path{doi:10.1007/s00454-013-9497-x}}.
+
+\bibitem{caiElderRuleStaircodesAugmentedMetric2021}
+Chen Cai, Woojin Kim, Facundo Memoli, and Yusu Wang.
+\newblock Elder-{{Rule-Staircodes}} for {{Augmented Metric Spaces}}.
+\newblock {\em SIAM Journal on Applied Algebra and Geometry}, 5(3):417--454, January 2021.
+\newblock \href {https://doi.org/10.1137/20M1353605} {\path{doi:10.1137/20M1353605}}.
+
+\bibitem{deyFastComputationZigzag2022a}
+Tamal~K. Dey and Tao Hou.
+\newblock Fast {{Computation}} of {{Zigzag Persistence}}.
+\newblock {\em LIPIcs, Volume 244, ESA 2022}, 244:43:1--43:15, 2022.
+\newblock \href {https://doi.org/10.4230/LIPICS.ESA.2022.43} {\path{doi:10.4230/LIPICS.ESA.2022.43}}.
+
+\bibitem{deyComputingGeneralizedRank2024}
+Tamal~K. Dey, Woojin Kim, and Facundo M{\'e}moli.
+\newblock Computing {{Generalized Rank Invariant}} for 2-{{Parameter Persistence Modules}} via {{Zigzag Persistence}} and {{Its Applications}}.
+\newblock {\em Discrete \& Computational Geometry}, 71(1):67--94, January 2024.
+\newblock \href {https://doi.org/10.1007/s00454-023-00584-z} {\path{doi:10.1007/s00454-023-00584-z}}.
+
+\bibitem{gaoIsometryTheoremContinuous2024}
+Xiaowen Gao and Minghui Zhao.
+\newblock Isometry {Theorem} for {Continuous} {Quiver} of {Type} $\tilde{A}$, December 2024.
+\newblock \href {https://arxiv.org/abs/2412.12462} {\path{arXiv:2412.12462}}, \href {https://doi.org/10.48550/arXiv.2412.12462} {\path{doi:10.48550/arXiv.2412.12462}}.
+
+\bibitem{hansonDecompositionPointwiseFinitedimensional2024}
+Eric~J. Hanson and Job~Daisie Rock.
+\newblock Decomposition of {P}ointwise {F}inite-{D}imensional {$\mathbb{S}^1$} {P}ersistence {M}odules.
+\newblock {\em Journal of Algebra and Its Applications}, 23(03):2450054, March 2024.
+\newblock \href {https://doi.org/10.1142/S0219498824500543} {\path{doi:10.1142/S0219498824500543}}.
+
+\bibitem{kimGeneralizedPersistenceDiagrams2021}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Generalized {P}ersistence {D}iagrams for {P}ersistence {M}odules over {P}osets.
+\newblock {\em Journal of Applied and Computational Topology}, 5(4):533--581, December 2021.
+\newblock \href {https://doi.org/10.1007/s41468-021-00075-1} {\path{doi:10.1007/s41468-021-00075-1}}.
+
+\bibitem{lesnickInteractiveVisualization2D2015}
+Michael Lesnick and Matthew Wright.
+\newblock Interactive {{Visualization}} of 2-{{D Persistence Modules}}, December 2015.
+\newblock \href {https://arxiv.org/abs/1512.00180} {\path{arXiv:1512.00180}}.
+
+\bibitem{salaFockSpaceRepresentation2021}
+Francesco Sala and Olivier Schiffmann.
+\newblock Fock {{Space Representation}} of the {{Circle Quantum Group}}.
+\newblock {\em International Mathematics Research Notices}, 2021(22):17025--17070, November 2021.
+\newblock \href {https://doi.org/10.1093/imrn/rnz268} {\path{doi:10.1093/imrn/rnz268}}.
+
+\bibitem{Tada2024APATG}
+Shunsuke Tada.
+\newblock A {C}omputation of {B}ipath {P}ersistent {H}omology and {B}ipath {P}ersistence {D}iagrams.
+\newblock Seminar presented at \emph{Asia Pacific Seminar on Applied Topology and Geometry}, September 2024.
+\newblock Slides available at \url{https://shunsuketada1357.github.io/documents/slide2024-09-20.pdf}. Recording movie available at \url{https://drive.google.com/drive/u/0/folders/1MB4wFxrQe6ph9hBde8CLGWiBSYZya6Pf}.
+
+\bibitem{vipondMultiparameterPersistenceLandscapes2020}
+Oliver Vipond.
+\newblock Multiparameter {{Persistence Landscapes}}.
+\newblock {\em Journal of Machine Learning Research}, 21(61):1--38, 2020.
+
+\end{thebibliography}

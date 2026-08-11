@@ -1,0 +1,293 @@
+\subsection{Proof of Theorem \ref{thm:dir_deriv}}\label{sec:proof_det}
+
+We define the set $\Sbeta$ outside which we can lower bound the gradient as:
+\[
+\Sbeta := \big\{ x \in \R^k |\;  \|h_x\| \leq \frac{\beta}{2^{2d}}  \max(\|x\|^2, \|\xstar\|^2) \|x\|  \big\}
+\]
+with:
+\begin{equation}\label{eq:beta_def}
+\beta = 5 \cdot \big(86 d^4 \sqrt{\eps} + 2^d \omega \|\xstar\|^{-2} \big)
+\end{equation}
+Outside the set $\Sbeta$ the gradient is bounded below and the landscape has
+favorable optimization geometry. 
+
+\noindent Due to the continuity and piecewise smoothness of the generator $G$ and in turn of the loss function $f$, for any $x,y \neq 0$ there exists a sequence of $\{x_n\} \to x$ such that $f$ is differentiable at each $x_n$ and $D_y f(x) = \lim_{n \to \infty} \nabla f(x_n) \cdot y$. It follows that:
+\[
+D_{- v_x} f(x) = - \lim_{n \to \infty} \vtilde_{x_n} \cdot \frac{v_x}{\|v_x\|}
+\]
+as $\nabla f(x_n) = \vtilde_{x_n}$.
+Regarding the right hand side of the above, observe that: 
+\[
+\begin{aligned}
+\vtilde_{x_n} \cdot v_x = \,&h_{x_n} \cdot h_x + (v_{x_n} - h_{x_n}) \cdot h_x 
++ h_{x_{n}} \cdot (v_x - h_x) + (\vtilde_{x_n} - h_{x_{n}}) \cdot (v_x - h_x)\\
+\geq \,&h_{x_n} \cdot h_{x} - \|\vtilde_{x_n} - h_{x_n}\| \|h_x\| - \|h_{x_n}\| \| v_x - h_x\|
+- \| \vtilde_{x_n} - h_{x_n}\| \| v_x - h_x\|,\\
+\geq \,&h_{x_n} \cdot h_x 
+- \frac{86 d^4 \sqrt{\eps}  + 2^d \omega \|\xstar\|^{-2}}{2^{2d}} \Big( \max(\|x_n\|^2, \|\xstar\|^2) \|x_n\| \|h_{x}\|
++ \max(\|x\|^2, \|\xstar\|^2) \|x\| \|h_{x_n}\| \Big)
+\\ \,&- \Big(\frac{86 d^4 \sqrt{\eps} + 2^d \omega \|\xstar\|^{-2}}{2^{2d}}\Big)^2 \max(\|x\|^2, \|\xstar\|^2) \max(\|x_n\|^2, \|\xstar\|^2) \| x_n\| \|x\|
+\end{aligned}	
+\]
+where the second inequality follows from Lemma \ref{lemma:conctr_grad2}. Moreover as $h_x$ is continuous in $x$ for all nonzero $x$:
+\[
+\begin{aligned}
+\lim_{n \to \infty} \vtilde_{x_n} \cdot v_x 
+\geq \,& \| h_x \|^2 
+- 2 \frac{86 d^4 \sqrt{\eps}  + 2^d \omega \|\xstar\|^{-2}}{2^{2d}}  \max(\|x\|^2, \|\xstar\|^2) \|x\| \|h_{x}\|  \\
+\;\;&- \Big(\frac{86 d^4 \sqrt{\eps} + 2^d \omega \|\xstar\|^{-2}}{2^{2d}}\Big)^2 \max(\|x\|^2, \|\xstar\|^2)^2  \|x\|^2 \\
+\geq \,& \frac{\|h_x\|}{2} \Big[ \|h_x\| - 4  \frac{86 d^4 \sqrt{\eps}  + 2^d \omega \|\xstar\|^{-2}}{2^{2d}}  \max(\|x\|^2, \|\xstar\|^2) \|x\|  \Big] \\
+\,&+ \frac{1}{2} \Big[ \|h_x\|^2 - 2 \Big(\frac{86 d^4 \sqrt{\eps} + 2^d \omega \|\xstar\|^{-2}}{2^{2d}}\Big)^2 \max(\|x\|^2, \|\xstar\|^2)^2  \|x\|^2  \Big]
+\end{aligned}
+\]
+By our choice of $\beta$ in \eqref{eq:beta_def} it follows that for 
+any  $x \in S_\beta^{c} \backslash \{0\}$ :
+\[
+\|h_x\| - 4  \frac{86 d^4 \sqrt{\eps}  + 2^d \omega \|\xstar\|^{-2}}{2^{2d}}  \max(\|x\|^2, \|\xstar\|^2) \|x\|  \geq \frac{\max(\|x\|^2, \|\xstar\|^2)}{2^{2d}} \|x\| \Big(  \beta- 4 \big(86 d^4 \sqrt{\eps} + 2^d \omega \|\xstar\|^{-2} \big)  \Big),
+\]
+so that:
+\[
+\lim_{n \to \infty} v_{x_n} \cdot v_x \geq \frac{\| h_x \|}{2} \frac{\max(\|x\|^2, \|\xstar\|^2)}{2^{2d}} 86 d^4 \sqrt{\eps} \|x \|  > 0.
+\]
+The latter equation allows to conclude $D_{-v_x} f(x) < 0$  for any nonzero $x \in S_\beta^{c}$ and any $v_x \in \pa f(x)$.
+Finally observe that the radii of the neighborhoods around $\xstar$ and $-\rho_d \xstar$ can be found  
+applying Lemma \ref{lemma:Sbeta_red} below with $\beta$ as given in \eqref{eq:beta_def}.
+
+Next for any nonzero $v \in \R^{k}$ and $\tau \in \R$ we have:
+\[
+f(\tau v ) - f(0) = \frac{\tau^4}{4} \|G(v)G(v)^\T\|^2_F - \frac{\tau^2}{2} \langle G(v)G(v)^\T, G(\xstar)G(\xstar)^\T + H \rangle_F,
+\] 
+which implies that $D_{v} f(0) = 0$ for any $v \in \mathcal{S}^{k-1}$.
+
+Finally notice that at a differentiable point $x \in \R^k$:
+\[
+\begin{aligned}
+\langle \vtilde_x, x \rangle &= \langle \Lambda_x^\T [\Lambda_x x x^\T \Lambda_x^\T - \Lambda_\xstar \xstar \xstar^\T \Lambda_\xstar^\T  ] \Lambda_x x, x \rangle  - \langle \Lambda_x H \Lambda_x , x\rangle \\
+&= \|G(x)\|^4 - \langle G(x), G(\xstar)\rangle^2 - \langle \Lambda_x H \Lambda_x , x\rangle \\
+&\leq \frac{\|x\|^2}{2^{2d}} \Big[ \Big(\frac{13}{12} \Big)^2 \|x\|^2 - 
+\Big(\frac{1}{16 \pi^2} - \frac{2^d \omega}{\|\xstar\|^2} \Big) \|\xstar\|^2 \Big]  \\
+&\leq \frac{\|x\|^2}{2^{2d}} \Big[ 2 \|x\|^2 - 
+\frac{1}{32 \pi^2} \|\xstar\|^2 \Big]
+\end{aligned}
+\]
+having used \eqref{eq:LxLy}, \eqref{eq:Lx_bound} and the assumption on the noise \eqref{eq:noise} in the first inequality and $2^d d^{12} w \leq K_2 \| \xstar \|^2$ with $d\geq 2$ in the last one. We conclude that if $f$ is differentiable at $x \in \mathcal{B}(0, \|\xstar\|/16 \pi)$ then $\langle x, \vtilde_x \rangle < 0$.
+
+If $f$ is not differentiable at a nonzero  $x \in \mathcal{B}(0, \|\xstar\|/16 \pi)$, then  by \eqref{eq:subdiff} for any $v_x \in \pa f(x)$:
+\[
+\begin{aligned}
+\langle v_x, x \rangle &=   \langle c_1 v_1 + c_2 v_2 + \dots + c_T v_T, x \rangle  \\
+&\leq (c_1 + c_2 \dots +c_T) \frac{\|x\|^2}{2^{2d}} \Big[ 2 \|x\|^2 -  \frac{1}{32 \pi^2} \|\xstar\|^2 \Big] < 0
+\end{aligned}
+\]
+
+\subsubsection{Control  of the zeros of $h_x$}
+
+In this section we show that $h_x$ is nonzero outside two 
+neighborhoods of $\xstar$ and $-\rho_d \xstar$.
+
+\begin{lemma}\label{lemma:Sbeta_red}
+	Suppose $8 \pi d^6 \sqrt{\beta} \leq 1$. Define:
+	\[
+	\rho_d := \sum_{i=0}^{d-1} \frac{\sin \check{\theta}_i }{\pi}   \big(\prod_{j=i+1}^{d-1} \frac{\pi - \check{\theta}_j}{\pi} \big)
+	\]
+	where $\check{\theta}_0 = \pi$ and $\check{\theta}_i = g(\check{\theta}_{i-1})$. If $x \in \Sbeta$, 
+	then we have either:
+	\[
+	|\bar{\theta}_0| \leq 32 d^4 \pi \beta \quad \text{and} \quad |\|x\|^2 - \|\xstar\|^2 | \leq 258 \pi  \beta d^6 \|\xstar\|
+	\]
+	or
+	\[
+	|\bar{\theta}_0 - \pi| \leq 8 \pi d^4 \sqrt{\beta} \quad \text{and} \quad |\|x\|^2 - \rho_d^2 \|\xstar\|^2 | \leq 281 \pi^2 \sqrt{\beta} d^{10} \|\xstar\|.
+	\]
+	%In particular, we have:
+	%\[
+	%	\Sbeta \subset \mathcal{B}(\xstar, 26300 \pi  \beta d^{10} \|\xstar\|) \cup  \mathcal{B}(-\rho_d \xstar, 11 600 \pi \sqrt{\beta} d^{10} \|\xstar\|) 
+	%\]
+	%where $\rho_d \to 1$ as $d \to \infty$.
+	In particular, we have:
+	\[
+	\Sbeta \subset \mathcal{B}(\xstar, R_1  \beta d^{10} \|\xstar\|) \cup  \mathcal{B}(-\rho_d \xstar, R_2 \sqrt{\beta} d^{10} \|\xstar\|) 
+	\]
+	where $R_1, R_2$ are numerical constants and $\rho_d \to 1$ as $d \to \infty$.
+\end{lemma}
+
+\begin{proof}
+	Without loss of generality, let $\xstar = e_1$ and $x = r \cos \thbar_0 \cdot e_1 + r \sin \thbar_0 \cdot e_2$, 
+	for some $\thbar_0 \in [0,\pi]$,  and $r \geq 0$. Recall that we call $\hat{x} = x/\|x\|$ and $\hat{x}_\star = \xstar/\|\xstar\|$.
+	We then introduce the following notation:
+	\begin{equation}\label{eq:zeta_xi_def}
+	\xi = \prod_{i=0}^{d-1} \frac{\pi - \thbar_i}{\pi}, \quad \zeta = \sum_{i=0}^{d-1} \frac{\sin \thbar_i}{\pi} \prod_{j=i+1}^{d-1} \frac{\pi - \thbar_j}{\pi}, \quad r = \|x\|,  \quad R = \max(r^2,1),
+	\end{equation}
+	where $\theta_i = g(\bar{\theta}_{i-1})$ with $g$ as in \eqref{eq:def_g}, and observe that $2^d \htilde_x =  (\xi \hat{x}_\star + \zeta \hat{x})$. 
+	Let $\alpha := 2^{d} \langle \htilde_x, \hat{x} \rangle$, then we can write:
+	\[
+	\begin{aligned}
+	h_x = \Big[ \frac{\langle x, x\rangle}{2^{2d}} x - \langle \htilde_x , x \rangle \htilde_x \Big] 
+	= \frac{r}{2^{2d}} \big[ r^2 \hat{x} - \alpha (\xi \hat{x}_\star + \zeta \hat{x})\big].
+	\end{aligned}
+	\]
+	Using the definition of $\hat{x}$ and $\hat{x}_\star$ we obtain:
+	\[
+	\frac{2^{2d} h_x}{r} = \big[ (r^2 - \alpha \, \zeta) \cos \thbar_0 - \alpha\, \xi \big] \cdot e_1 + [r^2 - \alpha \zeta] \sin \thbar_0 \cdot e_2,
+	\]
+	and conclude that since $x \in \Sbeta$, then:
+	\begin{align}
+	|(r^2 - \alpha \, \zeta) \cos \thbar_0 - \alpha\, \xi | &\leq \beta R  \label{eq:betaMcos}\\
+	|[r^2 - \alpha \zeta] \sin \thbar_0| \leq \beta R. \label{eq:betaMsin}
+	\end{align}
+	We now list some bounds that will be useful in the subsequent analysis. We have:
+	\begin{align}
+	\thbar_i &\leq \thbar_{i-1} \;\;\text{for}\;\; i \geq 1  \label{eq:th_ilessth_i-1}\\
+	\thbar_i &\leq \cos^{-1}(1/\pi) \;\;\text{for}\;\; i \geq 2  \label{eq:thibound}\\
+	|\xi| &\leq 1 \label{eq:xibound}\\
+	|\zeta| &\leq \frac{d}{\pi} \sin \thbar_0 \label{eq:zetabound}\\
+	\xi &\geq \frac{\pi - \thbar_0}{\pi} d^{-3} \label{eq:xilwrbound}\\
+	\check{\theta}_i &\leq \frac{3 \pi}{i + 3} \;\;\text{for}\;\; i \geq 0 \label{eq:checkthi1}\\
+	\check{\theta}_i &\geq \frac{\pi}{i + 1} \;\;\text{for}\;\; i \geq 0 \label{eq:checkthi2}\\
+	\thbar_0 &= \pi + O_1(\delta) \Rightarrow |\xi| \leq \frac{\delta}{\pi} \label{eq:xilrgtheta}\\
+	\thbar_0 &= \pi + O_1(\delta) \Rightarrow \zeta = \rho_d + O_1(3 d^3 \delta) \;\text{if}\; \frac{d^2 \delta}{\pi} \leq 1  \label{eq:zetalrgtheta}\\
+	1/\pi &\leq \alpha \leq 1 \label{eq:alphabound}.
+	\end{align}
+	The identities \eqref{eq:th_ilessth_i-1} through \eqref{eq:zetalrgtheta} can be found in Lemma  16 of \cite{HHHV18}, while the identity \eqref{eq:alphabound} follows by noticing that $\alpha = \xi \cos \thbar_0 + \zeta =\cos \theta_d$ and 
+	using \eqref{eq:thibound} together with $d\geq 2$.
+	\bigskip
+	
+	\noindent\textbf{Bound on $R$}. We now show that if $x \in \Sbeta$, then $r^2 \leq 4 d$ and therefore $R \leq 4d$.
+	
+	\noindent If $r^2 \leq 1$, then 
+	the claim is trivial. Take $r^2 > 1$, then note that either $|\sin \thbar_0| \geq 1/\sqrt{2}$ or $|\cos \thbar_0| \geq 1/\sqrt{2}$ must hold.
+	If $|\sin \thbar_0| \geq 1/\sqrt{2}$ then from \eqref{eq:betaMsin} it follows that $r^2 - \alpha \zeta \leq \sqrt{2} \beta R = \sqrt{2} \beta r^2$ which implies:
+	\begin{equation*}
+	r^2 \leq \frac{\alpha \,\zeta}{1 - \sqrt{2} \beta}  \leq \frac{1}{(1 - \sqrt{2} \beta)}\frac{d}{\pi} \leq \frac{d}{2}
+	\end{equation*}
+	using \eqref{eq:zetabound} and \eqref{eq:alphabound} in the second inequality and $\beta < 1/4$ in the third. 
+	Next take $|\cos \thbar_0| \geq 1/\sqrt{2}$, then \eqref{eq:betaMcos} implies $|r^2 - \alpha \zeta| \leq \sqrt{2}(\beta r^2 + \alpha \xi)$ which in turn results in:
+	\[
+	r^2 \leq \frac{\alpha (\zeta + \sqrt{2} \xi)}{1 - \sqrt{2} \beta} \leq 4 d
+	\]
+	using \eqref{eq:xibound}, \eqref{eq:zetabound}, \eqref{eq:alphabound} and $\beta < 1/4$.  In conclusion if $x \in \Sbeta $  then $r^2 \leq 4 d \Rightarrow R \leq 4 d$.
+	\bigskip
+	
+	
+	\noindent \textbf{Bounds on $\thbar_0$.} We now show we only have to analyze the small angle case $\thbar_0 \approx 0$ and the large angle case $\thbar_0 \approx \pi$.  
+	
+	\noindent At least one of the following three cases must hold:
+	\begin{enumerate}
+		\itemsep1em
+		\item ${\sin \thbar_0 \leq 16 \beta \pi d^4}$:  Then we have $\thbar = O_1(32 \pi \beta \pi d^4)$ or $\thbar = \pi + O_1(32 \pi \beta \pi d^4)$ as $32 \pi \beta \pi d^4 <~1$.
+		
+		\item ${|r^2 - \alpha \zeta| <  \sqrt{\beta}R}$: Then \eqref{eq:betaMcos}, \eqref{eq:alphabound} and $\beta < 1$ yield $|\xi| \leq 2 \sqrt{\beta} \pi R$. Using \eqref{eq:xilwrbound}, we then get \\$\thbar~=~\pi~+~O_1(2 \sqrt{\beta} \pi^2 d^3 R)$.
+		
+		\item ${\sin \thbar_0 > 16 \beta \pi d^4}$ and $|r^2 - \alpha \zeta| \geq \sqrt{\beta}R$: Then \eqref{eq:betaMsin} gives $|r^2 - \alpha \zeta| \leq \beta M/\sin \thbar_0$ which used with \eqref{eq:betaMcos} leads to:
+		\[
+		|\alpha \xi| \leq \beta R + |r^2 - \alpha \zeta| \leq  \beta R +  \frac{\beta R}{\sin \thbar_0}  \leq 2 \frac{\beta R}{\sin \thbar_0}.
+		\]
+		Then using \eqref{eq:alphabound}, the assumption on $\sin \thbar_0$ and $R \leq 4 d$ we obtain $\xi \leq d^{-3}/2$. The latter together with \eqref{eq:xilwrbound} leads to $\thbar_0 \geq \pi/2$. 
+		Finally as $|r^2 - \alpha \zeta| \geq \sqrt{\beta}R $ then \eqref{eq:betaMsin} leads to $|\sin \thbar_0| \leq \sqrt{\beta}$. Therefore as $\thbar_0 \geq \pi/2$ and $\beta < 1$, we can conclude that $\thbar_0 = \pi + O_1(2 \sqrt{\beta})$.
+	\end{enumerate}
+	\bigskip
+	
+	\noindent Inspecting the three cases, and recalling that $R \leq 4 d$, we can see that it suffices to analyze the small angle case $\thbar_0 = O_1(32 d^4 \pi \beta)$ and the large angle case $\thbar = \pi + O_1(8 \sqrt{\beta}  \pi^2 d^4)$.
+	
+	\medskip
+	\noindent\textbf{Small angle case.}
+	We assume $\thbar_0 = O_1(\delta)$ with $\delta = 32 d^4 \pi \beta$ and show that $\|x\|^2 \approx \|\xstar\|^2$.
+	
+	\noindent We begin collecting some bounds. 
+	Since $\thbar_i \leq \thbar_0 \leq \delta$, then $1 \geq \xi \geq (1 - \delta/\pi)^d \geq 1 + O_1(2 d \delta / \pi)$ assuming $\delta d/ \pi \leq 1/2$, which holds true since $64 d^5 \beta < 1$. Moreover from \eqref{eq:zetabound} we have $\zeta = O_1(d \delta/\pi)$.
+	Finally observe that $\cos \thbar_0 = 1 + O_1(\thbar_0^2/2) = 1 + O_1(\delta/2)$ for $\delta < 1$.
+	We then have $\alpha = 1 + O_1(2 d \delta)$
+	%\[
+	%	\begin{aligned}
+	%	\alpha &= \xi \cos \theta_0 + \zeta  \\
+	%	&= 1 + O_1\big(\frac{2 d \delta}{\pi} + \frac{\delta}{2} + \frac{d \delta^2}{\pi} + \frac{d\delta}{\pi} \big) \\
+	%	&= 1 + O_1(2 d \delta),
+	%	\end{aligned}
+	%\]
+	so that $\alpha \zeta = O_1(d^2 \delta)$  and $\alpha \xi = 1 + O_1(4 d^2 \delta)$. We can therefore 
+	rewrite \eqref{eq:betaMcos} as:
+	\[
+	(r^2 + O_1(d^2 \delta)) (1 + O_1({\delta}/{2})) - (1 + O_1(4 d^2 \delta)) = O_1(\beta R).
+	\]
+	Using the bound $r^2 \leq R \leq 4 d$ and the definition of $\delta$, we obtain:
+	\begin{equation}\label{eq:small_r2}
+	\begin{aligned}
+	r^2 - 1 &= O_1\Big(\frac{\delta r^2}{2} + d^2 \delta +  \frac{d^2 \delta^2}{2} + 4 d^2 \delta + 4  d \beta \Big) \\
+	&= O_1(8 d^2 \delta + 4 d \beta) \\
+	&= O_1(258 \pi d^6 \beta)
+	\end{aligned}
+	\end{equation}
+	\medskip
+	
+	\noindent\textbf{Large angle case.}	 
+	Here we assume $\thbar = \pi + O_1(\delta)$ with $\delta = 8 \sqrt{\beta} \pi^2 d^4$ and show 
+	that it must be $\| x \|^2 \approx \rho_d^2  \| \xstar \|^2$.
+	
+	\noindent 
+	From \eqref{eq:xilrgtheta} we know that $\xi = O_1(\delta/\pi)$, while from \eqref{eq:zetalrgtheta} we know that $\zeta = \rho_d +O_1(3 d^3 \delta)$ as long as $8 \sqrt{\beta} \pi d^6 \leq 1$. Moreover for large angles 
+	and $\delta < 1$, it holds $\cos \thbar_0 = -1 + O_1((\thbar_0 - \pi)^2/2) = -1 + O_1(\delta^2/2)$. These bounds lead to:
+	\[
+	\begin{aligned}
+	\alpha &= \xi \cos \thbar_0 + \zeta \\
+	%&= O_1({\delta}/{\pi}) ( 1 + O_1({\delta^2}/{2})) + \rho_d + O_1(3 d^3 \delta) \\
+	&= \rho_d + O_1\big( \frac{\delta}{\pi} + \frac{\delta^3}{2 \pi} + 3 d^3 \delta \big)\\
+	&= \rho_d + O_1(4 d^3 \delta),
+	\end{aligned}
+	\]
+	and using $\rho_d \leq d$:
+	\[
+	\begin{aligned}
+	\alpha \zeta &= \rho_d^2 + O_1(4 d^3 \delta \rho_d + 3 d^3 \delta \rho_d + 12 d^6 \delta) = \rho_d^2 + O_1(20 d^6 \delta),\\
+	\alpha \xi &= O_1(\frac{\delta}{\pi} \rho_d + 4 \frac{d^3 \delta^2}{\pi}) = O_1(2 d^3 \delta).
+	\end{aligned}
+	\] 
+	Then recall that \eqref{eq:betaMcos} is equivalent to $(r^2 - \alpha \zeta) \cos \thbar_0 - \alpha \xi = O_1(4 \beta d)$, that is:
+	\[
+	\big(r^2 - \rho_d^2 + O_1(20 d^6 \delta) \big) \big(1 + O_1({\delta^2}/{2}) \big) + O_1(2 d^3 \delta) = O_1(4 \beta d)
+	\]
+	and in particular:
+	\begin{equation}\label{eq:r2-rho2}
+	\begin{aligned}
+	r^2 -\rho_d^2 &= O_1 \Big( 20 d^6 \delta +10 d^6 \delta^3 + \frac{\rho_d \delta^2}{2} + \frac{r^2 \delta^2}{2}  +
+	2 d^3 \delta + 4 \beta d \Big) \\
+	&= O_1\big( 35 d^6 \delta + 4 \beta d\big) \\
+	&= O_1(281 \pi^2 \sqrt{\beta} d^{10})
+	\end{aligned}
+	\end{equation}
+	where we used $\rho_d \leq d$,  the definition of $\delta$ and $\delta < 1$.
+	
+	\medskip
+	\noindent \textbf{Controlling the distance.} We have shown that it is either $\thbar_0 \approx 0$ and $\|x\|^2 \approx \|\xstar\|^2$
+	or $\thbar_0 \approx \pi$ and $\|x\|^2 \approx \rho_d^2 \| \xstar \|^2$. We can therefore conclude that 
+	it must be either $x \approx \xstar$ or $x \approx -\rho_d \xstar$. 
+	
+	Observe that if a two dimensional point is known to have magnitude within $\Delta r$ of 
+	some $r$ and is known to be within an angle $\Delta \theta$ from 0, then its Euclidean distance to the point of coordinates $(r,0)$ is no more that $\Delta r + (r + \Delta r)\Delta \theta$. Similarly we can write:
+	\begin{equation}\label{eq:x1-x2}
+	\| x - x_\star \| \leq |\|x\| - \|x_\star \| | + (\|x_\star \| + |\|x\| - \|x_\star \||) \thbar_0.
+	\end{equation}
+	
+	In the small angle case, by \eqref{eq:small_r2}, \eqref{eq:x1-x2}, and $\|\xstar\|\, |\|x\| - \|x_\star \| | \leq |\|x\|^2 - \|x_\star \|^2 |$,   we have: 
+	\[
+	\|x - \xstar \| \leq  258 \pi d^6 \beta + (1 + 258 \pi d^6 \beta)\, 32 d^4 \pi \beta 
+	\leq 550\, \pi d^{10} \beta.
+	\]
+	
+	Next we notice that $\rho_2 = 1/\pi$ and $\rho_{d} \geq \rho_{d-1}$  
+	as follows from the definition and \eqref{eq:checkthi1}, \eqref{eq:checkthi2}. Then considering the large angle case and using 
+	\eqref{eq:r2-rho2} we have:
+	\[
+	|\|x\| - \rho_d | \leq \frac{281 \pi^2 \sqrt{\beta} d^{10}}{\|x\| + \rho_d} \leq 281 \pi^3 \sqrt{\beta} d^{10}.
+	\]
+	The latter, together with \eqref{eq:x1-x2}, yields:
+	\[
+	\begin{aligned}
+	\|x + \rho_d \xstar \| &\leq |\|x\| -  \rho_d | + (\rho_d+ |\|x\| - \rho_d|)(\pi- \thbar_0) \\
+	&\leq 281 \pi^3 \sqrt{\beta} d^{10} + (d + 281 \pi^3 \sqrt{\beta} d^{10}) 8 \sqrt{\beta} \pi^2 d^4 \\
+	&\leq 284 \pi^3 \sqrt{\beta} d^{10}
+	\end{aligned}
+	\]
+	where in the second inequality we have used $\rho_d \leq d$ and in the third $8 \sqrt{\beta} \pi d^6 \leq 1$.
+	
+	We conclude by noticing that $\rho_d \to 1$ as $d \to 1$ as shown in \citep[Lemma 16]{HHHV18}. 
+\end{proof}

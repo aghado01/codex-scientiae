@@ -1,0 +1,183 @@
+\begin{thebibliography}{}
+
+\bibitem[Daniels, 1999]{daniels1999prior}
+Daniels, M.~J. (1999).
+\newblock {A Prior for the Variance in Hierarchical Models}.
+\newblock {\em Canadian Journal of Statistics}, 27(3):567--578.
+
+\bibitem[Dempster et~al., 1977]{dempster1977maximum}
+Dempster, A.~P., Laird, N.~M., and Rubin, D.~B. (1977).
+\newblock {Maximum Likelihood from Incomplete Data via the EM Algorithm}.
+\newblock {\em Journal of the Royal Statistical Society.~Series B},
+  39(1):1--38.
+
+\bibitem[Efron and Morris, 1975]{efron1975data}
+Efron, B. and Morris, C.~N. (1975).
+\newblock {Data Analysis Using Stein's Estimator and its Generalizations}.
+\newblock {\em Journal of the American Statistical Association},
+  70(350):311--319.
+
+\bibitem[Everson and Bradlow, 2002]{everson2002betabin}
+Everson, P.~J. and Bradlow, E.~T. (2002).
+\newblock {Bayesian Inference for the Beta-Binomial Distribution via Polynomial
+  Expansions}.
+\newblock {\em Journal of Computational and Graphical Statistics},
+  11(1):202--207.
+
+\bibitem[Everson and Morris, 2000a]{everson2000inference}
+Everson, P.~J. and Morris, C.~N. (2000a).
+\newblock {Inference for Multivariate Normal Hierarchical Models}.
+\newblock {\em Journal of the Royal Statistical Society.~Series B},
+  62(2):399--412.
+
+\bibitem[Everson and Morris, 2000b]{everson2000simulation}
+Everson, P.~J. and Morris, C.~N. (2000b).
+\newblock {Simulation from Wishart Distributions with Eigenvalue Constraints}.
+\newblock {\em Journal of Computational and Graphical Statistics},
+  9(2):380--389.
+
+\bibitem[Gasparrini et~al., 2012]{gasparrini2012mlmm}
+Gasparrini, A., Armstrong, B., and Kenward, M.~G. (2012).
+\newblock {Multivariate Meta-Analysis for Non-Linear and Other Multi-Parameter
+  Associations}.
+\newblock {\em Statistics in Medicine}, 31(29):3821--3839.
+
+\bibitem[Gelman et~al., 2013]{gelman2013bayesian}
+Gelman, A., Carlin, J.~B., Stern, H.~S., Dunson, D.~B., Vehtari, A., and Rubin,
+  D.~B. (2013).
+\newblock {\em {Bayesian Data Analysis}}.
+\newblock CRC Press, Boca Raton, FL, USA.
+
+\bibitem[Geman and Geman, 1984]{geman1984stochastic}
+Geman, S. and Geman, D. (1984).
+\newblock {Stochastic Relaxation, Gibbs Distributions, and the Bayesian
+  Restoration of Images}.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  PAMI-6(6):721--741.
+
+\bibitem[Kass and Steffey, 1989]{kass1989approx}
+Kass, R.~E. and Steffey, D. (1989).
+\newblock {Approximate Bayesian Inference in Conditionally Independent
+  Hierarchical Models (Parametric Empirical Bayes Models)}.
+\newblock {\em Journal of the American Statistical Association},
+  84(407):717--726.
+
+\bibitem[Kelly, 2014]{kelly2014advances}
+Kelly, J. (2014).
+\newblock {\em {Advances in the Normal-Normal Hierarchical Model}}.
+\newblock PhD thesis, Harvard University.
+
+\bibitem[Liu et~al., 1998]{liu1998pxem}
+Liu, C., Rubin, D.~B., and Wu, Y.~N. (1998).
+\newblock {Parameter Expansion to Accelerate EM: The PX-EM Algorithm}.
+\newblock {\em Biometrika}, 85(4):755--770.
+
+\bibitem[Meng and van Dyk, 1997]{meng1997folksong}
+Meng, X.-L. and van Dyk, D.~A. (1997).
+\newblock {The EM Algorithm--An Old Folk-Song Sung to a Fast New Tune}.
+\newblock {\em Journal of the Royal Statistical Society.~Series B},
+  59(3):511--567.
+
+\bibitem[Meng and van Dyk, 1999]{meng1999seeking}
+Meng, X.-L. and van Dyk, D.~A. (1999).
+\newblock {Seeking Efficient Data Augmentation Schemes via Conditional and
+  Marginal Augmentation}.
+\newblock {\em Biometrika}, 86(2):301--320.
+
+\bibitem[Morris, 1987]{morris1987comment}
+Morris, C.~N. (1987).
+\newblock {The Calculation of Posterior Distributions by Data Augmentation:
+  Comment: Simulation in Hierarchical Models}.
+\newblock {\em Journal of the American Statistical Association},
+  82(398):542--543.
+
+\bibitem[Morris and Lysy, 2012]{morris2012shrinkage}
+Morris, C.~N. and Lysy, M. (2012).
+\newblock {Shrinkage Estimation in Multilevel Normal Models}.
+\newblock {\em Statistical Science}, 27(1):115--134.
+
+\bibitem[Papaspiliopoulos and Roberts, 2008]{papa2008repara}
+Papaspiliopoulos, O. and Roberts, G.~O. (2008).
+\newblock {Stability of the Gibbs Sampler for Bayesian Hierarchical Models}.
+\newblock {\em The Annals of Statistics}, 36(1):95--117.
+
+\bibitem[Papaspiliopoulos et~al., 2007]{papa2007repara}
+Papaspiliopoulos, O., Roberts, G.~O., and Sk\''old, M. (2007).
+\newblock {A General Framework for the Parametrization of Hierarchical Models}.
+\newblock {\em Statistical Science}, 22(1):59--73.
+
+\bibitem[{R Development Core Team}, 2019]{r2019}
+{R Development Core Team} (2019).
+\newblock {\em {R: A Language and Environment for Statistical Computing}}.
+\newblock R Foundation for Statistical Computing, Vienna, Austria.
+
+\bibitem[Skellam, 1948]{skellam1948}
+Skellam, J.~G. (1948).
+\newblock {A Probability Distribution Derived from the Binomial Distribution by
+  Regarding the Probability of Success as Variable Between the Sets of Trials}.
+\newblock {\em Journal of the Royal Statistical Society.~Series B},
+  10(2):257--261.
+
+\bibitem[Staudenmayer et~al., 2008]{staudenmayer2008density}
+Staudenmayer, J., Ruppert, D., and Buonaccorsi, J.~P. (2008).
+\newblock {Density Estimation in the Presence of Heteroscedastic Measurement
+  Error}.
+\newblock {\em Journal of the American Statistical Association},
+  103(482):726--736.
+
+\bibitem[Tak, 2017]{tak2017frequency}
+Tak, H. (2017).
+\newblock {Frequency Coverage Properties of a Uniform Shrinkage Prior
+  Distribution}.
+\newblock {\em Journal of Statistical Computation and Simulation},
+  87(15):2929--2939.
+
+\bibitem[Tak et~al., 2017]{tak2017rgbp}
+Tak, H., Kelly, J., and Morris, C.~N. (2017).
+\newblock {Rgbp: An R Package for Gaussian, Poisson, and Binomial Random
+  Effects Models, with Frequency Coverage Evaluations}.
+\newblock {\em Journal of Statistical Software}, 78(5):1--33.
+
+\bibitem[Tak and Morris, 2017]{tak2017propriety}
+Tak, H. and Morris, C.~N. (2017).
+\newblock {Data-Dependent Posterior Propriety of a Bayesian Beta-Binomial-Logit
+  Model}.
+\newblock {\em Bayesian Analysis}, 12(2):533--555.
+
+\bibitem[Tanner and Wong, 1987]{tanner1987calculation}
+Tanner, M.~A. and Wong, W.~H. (1987).
+\newblock {The Calculation of Posterior Distributions by Data Augmentation}.
+\newblock {\em Journal of the American Statistical Association},
+  82(398):528--540.
+
+\bibitem[van Dyk, 2000]{van2000mixed}
+van Dyk, D.~A. (2000).
+\newblock {Fitting Mixed-Effects Models Using Efficient EM-Type Algorithms}.
+\newblock {\em Journal of Computational and Graphical Statistics}, 9(1):78--98.
+
+\bibitem[van Dyk and Meng, 2001]{van2001art}
+van Dyk, D.~A. and Meng, X.-L. (2001).
+\newblock {The Art of Data Augmentation}.
+\newblock {\em Journal of Computational and Graphical Statistics}, 10(1):1--50.
+
+\bibitem[van Dyk and Meng, 2010]{vandyk2010fertilizing}
+van Dyk, D.~A. and Meng, X.-L. (2010).
+\newblock {Cross-Fertilizing Strategies for Better EM Mountain Climbing and DA
+  Field Exploration: A Graphical Guide Book}.
+\newblock {\em Statistical Science}, 25(4):429--449.
+
+\bibitem[Xie et~al., 2012]{xianchao2012sure}
+Xie, X., Kou, S.~C., and Brown, L.~D. (2012).
+\newblock {SURE Estimates for a Heteroscedastic Hierarchical Model}.
+\newblock {\em Journal of the American Statistical Association},
+  107(500):1465--1479.
+
+\bibitem[Yu and Meng, 2011]{yu2011}
+Yu, Y. and Meng, X.-L. (2011).
+\newblock {To Center or not to Center: That is not the Question? An
+  Ancillarity--Sufficiency Interweaving Strategy (ASIS) for Boosting MCMC
+  Efficiency}.
+\newblock {\em Journal of Computational and Graphical Statistics},
+  20(3):531--570.
+
+\end{thebibliography}

@@ -1,0 +1,67 @@
+\begin{thebibliography}{10}
+
+\bibitem{phasemaxJustin}
+Sohail Bahmani and Justin Romberg.
+\newblock Phase retrieval meets statistical learning theory: A flexible convex
+  relaxation.
+\newblock {\em arXiv preprint arXiv:1610.04210}, 2016.
+
+\bibitem{CESV2011}
+E.~Cand\`{e}s, Y.~Eldar, T.~Strohmer, and V.~Voroninski.
+\newblock Phase retrieval via matrix completion.
+\newblock {\em SIAM J. Imaging Sci.}, 6(1):199--225, 2013.
+
+\bibitem{CL2012}
+Emmanuel~J Cand\`{e}s and Xiaodong Li.
+\newblock Solving quadratic equations via phaselift when there are about as
+  many equations as unknowns.
+\newblock {\em Found. of Comput. Math.}, pages 1--10, 2012.
+
+\bibitem{wirtinger}
+Emmanuel~J Candes, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and algorithms.
+\newblock {\em Information Theory, IEEE Transactions on}, 61(4):1985--2007,
+  2015.
+
+\bibitem{CSV2013}
+Emmanuel~J Cand\`{e}s, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Comm. Pure Appl. Math.}, 66(8):1241--1274, 2013.
+
+\bibitem{twf}
+Yuxin Chen and Emmanuel Candes.
+\newblock Solving random quadratic systems of equations is nearly as easy as
+  solving linear systems.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  739--747, 2015.
+
+\bibitem{phasemax}
+Tom Goldstein and Christoph Studer.
+\newblock Phasemax: Convex phase retrieval via basis pursuit.
+\newblock {\em arXiv preprint arXiv:1610.07531}, 2016.
+
+\bibitem{altminphase}
+Praneeth Netrapalli, Prateek Jain, and Sujay Sanghavi.
+\newblock Phase retrieval using alternating minimization.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2796--2804, 2013.
+
+\bibitem{SQW2016}
+Ju~Sun, Qing Qu, and John Wright.
+\newblock A geometric analysis of phase retrieval.
+\newblock {\em arXiv preprint arXiv:1602.06664}, 2016.
+
+\bibitem{V2012}
+R.~Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.C. Eldar and G.~Kutyniok, editors, {\em Compressed Sensing:
+  Theory and Applications}. Cambridge University Press, 2012.
+
+\bibitem{yoninaTAF}
+Gang Wang, Georgios~B Giannakis, and Yonina~C Eldar.
+\newblock Solving systems of random quadratic equations via truncated amplitude
+  flow.
+\newblock {\em arXiv preprint arXiv:1605.08285}, 2016.
+
+\end{thebibliography}

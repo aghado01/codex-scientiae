@@ -1,0 +1,265 @@
+\begin{thebibliography}{37}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abbe et~al.(2016)Abbe, Bandeira, and Hall]{abbe2014exact}
+E.~Abbe, A.S. Bandeira, and G.~Hall.
+\newblock Exact recovery in the stochastic block model.
+\newblock \emph{Information Theory, IEEE Transactions on}, 62\penalty0
+  (1):\penalty0 471--487, 2016.
+
+\bibitem[Absil et~al.(2007)Absil, Baker, and Gallivan]{genrtr}
+P.-A. Absil, C.~G. Baker, and K.~A. Gallivan.
+\newblock Trust-region methods on {Riemannian} manifolds.
+\newblock \emph{Foundations of Computational Mathematics}, 7\penalty0
+  (3):\penalty0 303--330, 2007.
+\newblock \doi{10.1007/s10208-005-0179-9}.
+
+\bibitem[Absil et~al.(2008)Absil, Mahony, and Sepulchre]{AMS08}
+P.-A. Absil, R.~Mahony, and R.~Sepulchre.
+\newblock \emph{Optimization Algorithms on Matrix Manifolds}.
+\newblock Princeton University Press, Princeton, NJ, 2008.
+\newblock ISBN 978-0-691-13298-3.
+
+\bibitem[Alon and Naor(2006)]{alon2006cutnorm}
+N.~Alon and A.~Naor.
+\newblock Approximating the cut-norm via {G}rothendieck's inequality.
+\newblock \emph{SIAM Journal on Computing}, 35\penalty0 (4):\penalty0 787--803,
+  2006.
+\newblock \doi{10.1137/S0097539704441629}.
+
+\bibitem[Andreani et~al.(2010)Andreani, Echag{\"u}e, and
+  Schuverdt]{andreani2010constantrank}
+R.~Andreani, C.~E. Echag{\"u}e, and M.~L. Schuverdt.
+\newblock Constant-rank condition and second-order constraint qualification.
+\newblock \emph{Journal of Optimization Theory and Applications}, 146\penalty0
+  (2):\penalty0 255--266, 2010.
+\newblock \doi{10.1007/s10957-010-9671-8}.
+
+\bibitem[Bandeira et~al.(2016{\natexlab{a}})Bandeira, Boumal, and
+  Voroninski]{bandeira2016lowrankmaxcut}
+A.S. Bandeira, N.~Boumal, and V.~Voroninski.
+\newblock On the low-rank approach for semidefinite programs arising in
+  synchronization and community detection.
+\newblock In \emph{Proceedings of The 29th Conference on Learning Theory,
+  {COLT} 2016, New York, NY, June 23--26}, 2016{\natexlab{a}}.
+
+\bibitem[Bandeira et~al.(2016{\natexlab{b}})Bandeira, Kennedy, and
+  Singer]{bandeira2013approximating}
+A.S. Bandeira, C.~Kennedy, and A.~Singer.
+\newblock Approximating the little {G}rothendieck problem over the orthogonal
+  and unitary groups.
+\newblock \emph{Mathematical Programming}, pages 1--43, 2016{\natexlab{b}}.
+\newblock \doi{10.1007/s10107-016-0993-7}.
+
+\bibitem[Bandeira et~al.(2017)Bandeira, Boumal, and
+  Singer]{bandeira2014tightness}
+A.S. Bandeira, N.~Boumal, and A.~Singer.
+\newblock Tightness of the maximum likelihood semidefinite relaxation for
+  angular synchronization.
+\newblock \emph{Mathematical Programming}, 163\penalty0 (1):\penalty0 145--167,
+  2017.
+\newblock \doi{10.1007/s10107-016-1059-6}.
+
+\bibitem[Barvinok(1995)]{barvinok1995problems}
+A.I. Barvinok.
+\newblock Problems of distance geometry and convex properties of quadratic
+  maps.
+\newblock \emph{Discrete \& Computational Geometry}, 13\penalty0 (1):\penalty0
+  189--202, 1995.
+\newblock \doi{10.1007/BF02574037}.
+
+\bibitem[Bhojanapalli et~al.(2016{\natexlab{a}})Bhojanapalli, Kyrillidis, and
+  Sanghavi]{bhojanapalli2016dropping}
+S.~Bhojanapalli, A.~Kyrillidis, and S.~Sanghavi.
+\newblock Dropping convexity for faster semi-definite optimization.
+\newblock \emph{Conference on Learning Theory ({COLT})}, 2016{\natexlab{a}}.
+
+\bibitem[Bhojanapalli et~al.(2016{\natexlab{b}})Bhojanapalli, Neyshabur, and
+  Srebro]{bhojanapalli2016global}
+S.~Bhojanapalli, B.~Neyshabur, and N.~Srebro.
+\newblock Global optimality of local search for low rank matrix recovery.
+\newblock In D.~D. Lee, M.~Sugiyama, U.~V. Luxburg, I.~Guyon, and R.~Garnett,
+  editors, \emph{Advances in Neural Information Processing Systems 29}, pages
+  3873--3881. Curran Associates, Inc., 2016{\natexlab{b}}.
+
+\bibitem[Boumal(2015)]{boumal2015staircase}
+N.~Boumal.
+\newblock A {R}iemannian low-rank method for optimization over semidefinite
+  matrices with block-diagonal constraints.
+\newblock \emph{arXiv preprint arXiv:1506.00575}, 2015.
+
+\bibitem[Boumal et~al.(2014)Boumal, Mishra, Absil, and Sepulchre]{manopt}
+N.~Boumal, B.~Mishra, P.-A. Absil, and R.~Sepulchre.
+\newblock {M}anopt, a {M}atlab toolbox for optimization on manifolds.
+\newblock \emph{Journal of Machine Learning Research}, 15:\penalty0 1455--1459,
+  2014.
+\newblock URL \url{http://www.manopt.org}.
+
+\bibitem[Boumal et~al.(2016)Boumal, Absil, and Cartis]{boumal2016globalrates}
+N.~Boumal, P.-A. Absil, and C.~Cartis.
+\newblock Global rates of convergence for nonconvex optimization on manifolds.
+\newblock \emph{arXiv preprint arXiv:1605.08101}, 2016.
+
+\bibitem[Burer and Monteiro(2003)]{sdplr}
+S.~Burer and R.D.C. Monteiro.
+\newblock A nonlinear programming algorithm for solving semidefinite programs
+  via low-rank factorization.
+\newblock \emph{Mathematical Programming}, 95\penalty0 (2):\penalty0 329--357,
+  2003.
+\newblock \doi{10.1007/s10107-002-0352-8}.
+
+\bibitem[Burer and Monteiro(2005)]{burer2005local}
+S.~Burer and R.D.C. Monteiro.
+\newblock Local minima and convergence in low-rank semidefinite programming.
+\newblock \emph{Mathematical Programming}, 103\penalty0 (3):\penalty0 427--444,
+  2005.
+
+\bibitem[{CVX}(2012)]{cvx}
+{CVX}.
+\newblock {CVX}: {M}atlab software for disciplined convex programming.
+\newblock \url{http://cvxr.com/cvx}, August 2012.
+
+\bibitem[Ge et~al.(2016)Ge, Lee, and Ma]{ge2016matrix}
+R.~Ge, J.D. Lee, and T.~Ma.
+\newblock Matrix completion has no spurious local minimum.
+\newblock In D.~D. Lee, M.~Sugiyama, U.~V. Luxburg, I.~Guyon, and R.~Garnett,
+  editors, \emph{Advances in Neural Information Processing Systems 29}, pages
+  2973--2981. Curran Associates, Inc., 2016.
+
+\bibitem[Goemans and Williamson(1995)]{goemans1995maxcut}
+M.X. Goemans and D.P. Williamson.
+\newblock Improved approximation algorithms for maximum cut and satisfiability
+  problems using semidefinite programming.
+\newblock \emph{Journal of the ACM (JACM)}, 42\penalty0 (6):\penalty0
+  1115--1145, 1995.
+\newblock \doi{10.1145/227683.227684}.
+
+\bibitem[Helmberg et~al.(1996)Helmberg, Rendl, Vanderbei, and
+  Wolkowicz]{helmberg1996ipmsdp}
+C.~Helmberg, F.~Rendl, R.J. Vanderbei, and H.~Wolkowicz.
+\newblock An interior-point method for semidefinite programming.
+\newblock \emph{SIAM Journal on Optimization}, 6\penalty0 (2):\penalty0
+  342--361, 1996.
+\newblock \doi{10.1137/0806020}.
+
+\bibitem[Javanmard et~al.(2016)Javanmard, Montanari, and
+  Ricci-Tersenghi]{javanmard2015phase}
+A.~Javanmard, A.~Montanari, and F.~Ricci-Tersenghi.
+\newblock Phase transitions in semidefinite relaxations.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 113\penalty0
+  (16):\penalty0 E2218--E2223, 2016.
+
+\bibitem[Journ{\'e}e et~al.(2010)Journ{\'e}e, Bach, Absil, and
+  Sepulchre]{journee2010low}
+M.~Journ{\'e}e, F.~Bach, P.-A. Absil, and R.~Sepulchre.
+\newblock Low-rank optimization on the cone of positive semidefinite matrices.
+\newblock \emph{SIAM Journal on Optimization}, 20\penalty0 (5):\penalty0
+  2327--2351, 2010.
+\newblock \doi{10.1137/080731359}.
+
+\bibitem[Laurent and Poljak(1996)]{laurent1996facial}
+M.~Laurent and S.~Poljak.
+\newblock On the facial structure of the set of correlation matrices.
+\newblock \emph{SIAM Journal on Matrix Analysis and Applications}, 17\penalty0
+  (3):\penalty0 530--547, 1996.
+\newblock \doi{10.1137/0617031}.
+
+\bibitem[Lee(2012)]{lee2012smoothmanifolds}
+J.M. Lee.
+\newblock \emph{Introduction to Smooth Manifolds}, volume 218 of \emph{Graduate
+  Texts in Mathematics}.
+\newblock Springer-Verlag New York, 2 edition, 2012.
+\newblock ISBN 978-1-4419-9981-8.
+\newblock \doi{10.1007/978-1-4419-9982-5}.
+
+\bibitem[McCoy and Tropp(2011)]{mccoy2011robustpca}
+M.~McCoy and J.A. Tropp.
+\newblock Two proposals for robust {PCA} using semidefinite programming.
+\newblock \emph{Electronic Journal of Statistics}, 5:\penalty0 1123--1160,
+  2011.
+\newblock \doi{10.1214/11-EJS636}.
+
+\bibitem[Nesterov(2004)]{nesterov2004introductory}
+Y.~Nesterov.
+\newblock \emph{Introductory lectures on convex optimization: A basic course},
+  volume~87 of \emph{Applied optimization}.
+\newblock Springer, 2004.
+\newblock ISBN 978-1-4020-7553-7.
+
+\bibitem[Pataki(1998)]{pataki1998rank}
+G.~Pataki.
+\newblock On the rank of extreme matrices in semidefinite programs and the
+  multiplicity of optimal eigenvalues.
+\newblock \emph{Mathematics of operations research}, 23\penalty0 (2):\penalty0
+  339--358, 1998.
+\newblock \doi{10.1287/moor.23.2.339}.
+
+\bibitem[Rockafellar(1970)]{rockafellar1997convex}
+R.T. Rockafellar.
+\newblock \emph{Convex analysis}.
+\newblock Princeton University Press, Princeton, NJ, 1970.
+
+\bibitem[Ruszczy{\'n}ski(2006)]{ruszczynski2006nonlinear}
+A.P. Ruszczy{\'n}ski.
+\newblock \emph{Nonlinear optimization}.
+\newblock Princeton University Press, Princeton, NJ, 2006.
+
+\bibitem[Shah et~al.(2016)Shah, Kumar, Jacobs, Studer, and
+  Goldstein]{shah2016biconvex}
+S.~Shah, A.~Kumar, D.~Jacobs, C.~Studer, and T.~Goldstein.
+\newblock Biconvex relaxation for semidefinite programming in computer vision.
+\newblock \emph{arXiv preprint arXiv:1605.09527}, 2016.
+
+\bibitem[Singer(2011)]{singer2010angular}
+A.~Singer.
+\newblock Angular synchronization by eigenvectors and semidefinite programming.
+\newblock \emph{Applied and Computational Harmonic Analysis}, 30\penalty0
+  (1):\penalty0 20--36, 2011.
+\newblock \doi{10.1016/j.acha.2010.02.001}.
+
+\bibitem[Toh et~al.(1999)Toh, Todd, and T{\"u}t{\"u}nc{\"u}]{sdpt3}
+K.C. Toh, M.J. Todd, and R.H. T{\"u}t{\"u}nc{\"u}.
+\newblock {SDPT3}--a {MATLAB} software package for semidefinite programming.
+\newblock \emph{Optimization Methods and Software}, 11\penalty0
+  (1--4):\penalty0 545--581, 1999.
+\newblock \doi{10.1080/10556789908805762}.
+
+\bibitem[Vavasis(1991)]{vavasis1991nonlinear}
+S.A. Vavasis.
+\newblock \emph{Nonlinear optimization: complexity issues}.
+\newblock Oxford University Press, Inc., 1991.
+
+\bibitem[Waldspurger et~al.(2015)Waldspurger, d'Aspremont, and
+  Mallat]{waldspurger2012phase}
+I.~Waldspurger, A.~d'Aspremont, and S.~Mallat.
+\newblock Phase recovery, {MaxCut} and complex semidefinite programming.
+\newblock \emph{Mathematical Programming}, 149\penalty0 (1--2):\penalty0
+  47--81, 2015.
+\newblock \doi{10.1007/s10107-013-0738-9}.
+
+\bibitem[Wang and Singer(2013)]{wang2012LUD}
+L.~Wang and A.~Singer.
+\newblock Exact and stable recovery of rotations for robust synchronization.
+\newblock \emph{Information and Inference}, 2\penalty0 (2):\penalty0 145--193,
+  2013.
+\newblock \doi{10.1093/imaiai/iat005}.
+
+\bibitem[Wen and Yin(2013)]{wen2013orthogonality}
+Z.~Wen and W.~Yin.
+\newblock A feasible method for optimization with orthogonality constraints.
+\newblock \emph{Mathematical Programming}, 142\penalty0 (1--2):\penalty0
+  397--434, 2013.
+\newblock \doi{10.1007/s10107-012-0584-1}.
+
+\bibitem[Yang et~al.(2014)Yang, Zhang, and Song]{yang2012optimality}
+W.H. Yang, L.-H. Zhang, and R.~Song.
+\newblock Optimality conditions for the nonlinear programming problems on
+  {R}iemannian manifolds.
+\newblock \emph{Pacific Journal of Optimization}, 10\penalty0 (2):\penalty0
+  415--434, 2014.
+
+\end{thebibliography}

@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+
+\pdfoutput=1
+\usepackage[numbers]{natbib}
+
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage[letterpaper, margin=1in]{geometry}
+
+%opening
+\title{Nonasymptotic Guarantees for Spiked Matrix Recovery \\with Generative Priors}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{authblk}
+
+ 	
+\usepackage{natbib}
+\bibliographystyle{plain}
+
+\author[1]{Jorio ~Cocola}
+\author[1,2]{Paul ~Hand\thanks{Partially supported by NSF CAREER Grant DMS-1848087 and NSF Grant DMS-2022205.}}
+\author[3]{Vladislav ~Voroninski}
+\affil[1]{Department of Mathematics, Northeastern University}
+\affil[2]{Khoury College of Computer Sciences, Northeastern University}
+\affil[3]{Helm.ai}
+
+
+\input{preamble}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Many problems in statistics and machine learning require the reconstruction of a rank-one signal matrix from noisy data. Enforcing additional prior information on the rank-one component is often key to guaranteeing good recovery performance. One such prior on the low-rank component is sparsity, giving rise to the sparse principal component analysis problem. Unfortunately, there is strong evidence that this problem suffers from a computational-to-statistical gap, which may be fundamental. In this work, we study an alternative prior where the low-rank component is in the range of a trained generative network. We provide a non-asymptotic analysis with optimal sample complexity, up to logarithmic factors, for rank-one matrix recovery under an expansive-Gaussian network prior. Specifically, we establish a favorable global optimization landscape for a nonlinear least squares objective, provided the number of samples is on the order of the dimensionality of the input to the generative model. This result suggests that generative priors have no computational-to-statistical gap for structured rank-one matrix recovery in the finite data, nonasymptotic regime. We present this analysis in the case of both the Wishart and Wigner spiked matrix models.
+\end{abstract}
+
+\input{sections/intro.tex}
+\input{sections/related_work.tex}
+\input{sections/main_res.tex}
+\input{sections/subgrad.tex}
+\input{sections/num_expr.tex}
+
+%\section*{Acknowledgements}
+%PH is supported by NSF CAREER Grant DMS-1848087 and NSF Grant DMS-2022205.
+
+\bibliography{references}
+
+\newpage
+\appendix
+\input{sections/supplement1.tex}
+\input{sections/supplement2.tex}
+\input{sections/supplement21.tex}
+\input{sections/supplement3.tex}
+\input{sections/supplement4.tex}
+
+\end{document}

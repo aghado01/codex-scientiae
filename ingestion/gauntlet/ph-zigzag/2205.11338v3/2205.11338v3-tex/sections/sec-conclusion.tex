@@ -1,0 +1,32 @@
+%
+%
+%
+\section{Conclusion}
+\label{sec:conclusion}
+%
+In this work we investigated one method for applying zigzag persistence to temporal graphs and discussed interpretation in several settings. 
+We treated these graphs as inputs to create a metric space, and then studied the zigzag constructed by the changing graph over time for a fixed connectivity parameter. 
+Zigzag persistence provides a unique perspective when studying the evolving structure of a temporal graph by tracking the standard lower-dimensional features (e.g., connected components), but also higher-dimensional features (e.g., loops and voids) through a sequence of simplicial complexes.
+This allows for an understanding of the evolving topology of a temporal graph which can be used in addition to more standard techniques for their analysis.
+We showed interpretation for these tools on two examples: the Great Britain transportation network and temporal ordinal partition networks. 
+Our results showed that the informative zero and one-dimensional zigzag persistence provided insights into the structure of the temporal graph that were not easily gleaned from standard centrality and connectivity statistics. 
+
+It should be noted that the work here is essentially functioning as a more computationally tractable version of what we would like to do, namely two-parameter persistence. 
+Because multiparameter persistence presents mathematical barriers to simplified representations in the spirit of persistence diagrams \cite{Carlsson2009a}, many other workarounds have sprung up. 
+These include vineyards \cite{CohenSteiner2006}, where we study a one parameter family of persistence diagrams; or CROCKER plots \cite{Ulmer2019,Guezel2022}, where we can study a similarly evolving Betti curve. 
+\revision{ 
+There has been previous work investigating the use of zigzag persistence in graph based applications in the broader theoretical framework of \textit{formigrams} \cite{Kim2022,Kim2019} with additional results on stability \cite{Kim2020}.
+These include applications to dynamic metric spaces \cite{Kim2020a, Kim2021} and brain networks \cite{Chowdhury2018c}, although this setting is restricted to 0-dimensional persistence due to its tight connection to time-varying clustering.}
+\revisionRemove{Until recently, there has been limited involvement of zigzag persistence in these types of applications since e}Even though in theory the running time \revision{of zigzag persistence} should be similar to standard persistence \cite{Milosavljevic2011}, in practice it has not seen the flurry of optimizations available in the regular case \cite{Bauer2021,Otter2017}. 
+However, recent work \cite{Dey2021a,Dey2022,Dey2021b} promises substantial improvements in the potentially available code, which should further make the tools discussed in this paper more accessible to a wide array of data sets. 
+
+
+We believe zigzag persistence could also be leveraged to study other temporal graphs including flock behavior models (e.g., Viscsek model) and the emergence of coordinated motion, power grid dynamics with the topological characteristics of a cascade failures, and supplier-manufacture networks through the effects of trade failures on production and consumption.
+Future work could involve an analysis on deciding an optimal window size and overlap, a method to incorporate edge weight and directionality, and temporal information on both the nodes and edges. 
+It would also be worth investigating higher-dimensional features (e.g., voids through $H_2$), although more likely because of the 1-dimensional structure of the input data, it is less clear what sorts of behavior might arise in the form of interesting behavior in the zigzag diagrams.
+
+Additionally, the method presented here is by no means the only way to incorporate the input temporal graph in a form that could generate a zigzag complex. 
+We direct the interested reader to \cite{Aktas2019} for a large collection of possible 1-parameter filtrations that could be generated from a fixed graph. 
+Utilizing any of these for some fixed filtration parameter evolving over the temporal graph information could yield a zigzag diagram whose structure may be useful for additional interpretation in other applications. 
+
+

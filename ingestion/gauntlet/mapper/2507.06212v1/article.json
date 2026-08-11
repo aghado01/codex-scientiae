@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2507.06212v1",
+  "initialized_utc": "2026-08-11T08:30:21.083449Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "paper.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "$k$-means considered harmful:\\\\On arbitrary topological changes in Mapper complexes",
+        "authors_tex": [
+          "Mikael Vejdemo-Johansson \\\\ \\url{mvj@math.csi.cuny.edu}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 292,
+        "sha256": "013375e1ca87274a17ec91b099c6fdd1108dde11b5d1f6744b7bb22f344da838"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2507.06212v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 340241,
+      "sha256": "f7e8b3cc06979140d0c22d4c4b76043a74a294c607ddaf16c8b2c102392e061f",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2507.06212v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2507.06212v1.tar.gz",
+      "entrypoint": "paper.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 12,
+      "tex_files": 1,
+      "sha256": "979bf747b37212dbd83a4df9e4ad139e54c6c5d081240fa33d83ebad29e4dbd1"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2507.06212v1.pdf",
+      "format": "application/pdf",
+      "bytes": 791362,
+      "sha256": "8238c2bdd5720abfc7d76589cfe03de0708b325105f2d649fb43cf4696fc5ef8"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:21.083449Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 12
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 12
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "paper.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

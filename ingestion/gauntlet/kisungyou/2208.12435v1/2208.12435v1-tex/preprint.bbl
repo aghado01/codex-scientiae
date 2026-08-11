@@ -1,0 +1,396 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Agueh \harvardand\ Carlier}{2011}{agueh_barycenters_2011}
+Agueh, M. \harvardand\ Carlier, G.  \harvardyearleft 2011\harvardyearright .
+\newblock Barycenters in the {{Wasserstein Space}}, {\em SIAM Journal on
+  Mathematical Analysis} {\bf 43}(2):~904--924.
+
+\harvarditem{Barab{\'a}si \harvardand\ P{\'o}sfai}{2016}{barabasi_network_2016}
+Barab{\'a}si, A.-L. \harvardand\ P{\'o}sfai, M.  \harvardyearleft
+  2016\harvardyearright .
+\newblock {\em Network Science}, {Cambridge University Press}, {Cambridge,
+  United Kingdom}.
+
+\harvarditem[Betthauser et~al.]{Betthauser, Bubenik \harvardand\
+  Edwards}{2022}{betthauser_graded_2021}
+Betthauser, L., Bubenik, P. \harvardand\ Edwards, P.~B.  \harvardyearleft
+  2022\harvardyearright .
+\newblock Graded persistence diagrams and persistence landscapes, {\em Discrete
+  \& Computational Geometry} {\bf 67}(1):~203--230.
+
+\harvarditem{Bhattacharya \harvardand\
+  Bhattacharya}{2015}{bhattacharya_nonparametric_2015}
+Bhattacharya, A. \harvardand\ Bhattacharya, R.~N.  \harvardyearleft
+  2015\harvardyearright .
+\newblock {\em Nonparametric Inference on Manifolds: With Applications to Shape
+  Spaces}, Cambridge University Press.
+
+\harvarditem{Bubenik}{2015}{bubenik_statistical_2015}
+Bubenik, P.  \harvardyearleft 2015\harvardyearright .
+\newblock Statistical topological data analysis using persistence landscapes,
+  {\em Journal of Machine Learning Research} {\bf 16}(3):~77--102.
+
+\harvarditem{Bubenik}{2020}{baas_persistence_2020}
+Bubenik, P.  \harvardyearleft 2020\harvardyearright .
+\newblock The {{Persistence Landscape}} and {{Some}} of {{Its Properties}},
+  {\em in} N.~A. Baas, G.~E. Carlsson, G.~Quick, M.~Szymik \harvardand\
+  M.~Thaule (eds), {\em Topological {{Data Analysis}}}, Vol.~15, {Springer
+  International Publishing}, {Cham}, pp.~97--117.
+
+\harvarditem[Chen et~al.]{Chen, Lin \harvardand\ Zhou}{2020}{9233364}
+Chen, L., Lin, L. \harvardand\ Zhou, J.  \harvardyearleft 2020\harvardyearright
+  .
+\newblock A hypothesis testing for large weighted networks with applications to
+  functional neuroimaging data, {\em IEEE Access} {\bf 8}:~191815--191825.
+
+\harvarditem{Chung}{1997}{chung_spectral_1997-1}
+Chung, F. R.~K.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em Spectral Graph Theory}, number no. 92 in {\em Regional
+  Conference Series in Mathematics}, {Published for the Conference Board of the
+  mathematical sciences by the American Mathematical Society}, {Providence,
+  R.I}.
+
+\harvarditem[{Cohen-Steiner} et~al.]{{Cohen-Steiner}, Edelsbrunner \harvardand\
+  Harer}{2007}{cohen-steiner_stability_2007}
+{Cohen-Steiner}, D., Edelsbrunner, H. \harvardand\ Harer, J.  \harvardyearleft
+  2007\harvardyearright .
+\newblock Stability of {{Persistence Diagrams}}, {\em Discrete \& Computational
+  Geometry} {\bf 37}(1):~103--120.
+
+\harvarditem[Collins et~al.]{Collins, Zomorodian, Carlsson \harvardand\
+  Guibas}{2004}{collins_barcode_2004}
+Collins, A., Zomorodian, A., Carlsson, G. \harvardand\ Guibas, L.~J.
+  \harvardyearleft 2004\harvardyearright .
+\newblock A barcode shape descriptor for curve point cloud data, {\em Computers
+  \& Graphics} {\bf 28}(6):~881--894.
+
+\harvarditem{Conway}{1997}{conway_course_1997}
+Conway, J.~B.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em A Course in Functional Analysis}, number~96 in {\em Graduate
+  Texts in Mathematics}, 2nd ed edn, {Springer}, {New York}.
+
+\harvarditem{{de Silva} \harvardand\ Ghrist}{2007}{de_silva_coverage_2007}
+{de Silva}, V. \harvardand\ Ghrist, R.  \harvardyearleft 2007\harvardyearright
+  .
+\newblock Coverage in sensor networks via persistent homology, {\em Algebraic
+  \& Geometric Topology} {\bf 7}(1):~339--358.
+
+\harvarditem{Dryden \harvardand\ Mardia}{1998}{dryden_statistical_1998}
+Dryden, I.~L. \harvardand\ Mardia, K.~V.  \harvardyearleft
+  1998\harvardyearright .
+\newblock {\em Statistical Shape Analysis}, Wiley Series in Probability and
+  Statistics, {John Wiley \& Sons}, {Chichester ; New York}.
+
+\harvarditem{Edelsbrunner \harvardand\
+  Harer}{2010}{edelsbrunner_computational_2010}
+Edelsbrunner, H. \harvardand\ Harer, J.  \harvardyearleft 2010\harvardyearright
+  .
+\newblock {\em Computational Topology: An Introduction}, {American Mathematical
+  Society}, {Providence, R.I}.
+
+\harvarditem{Efron \harvardand\ Tibshirani}{1993}{efron_introduction_1993-1}
+Efron, B. \harvardand\ Tibshirani, R.  \harvardyearleft 1993\harvardyearright .
+\newblock {\em An Introduction to the Bootstrap}, number~57 in {\em Monographs
+  on Statistics and Applied Probability}, {Chapman \& Hall}, {New York}.
+
+\harvarditem{Erd{\"o}s \harvardand\ R{\'e}nyi}{1959}{erdos_random_1959-1}
+Erd{\"o}s, P. \harvardand\ R{\'e}nyi, A.  \harvardyearleft
+  1959\harvardyearright .
+\newblock On random graphs {{I}}, {\em Publicationes Mathematicae Debrecen}
+  {\bf 6}:~290.
+
+\harvarditem[Ginestet et~al.]{Ginestet, Li, Balachandran, Rosenberg
+  \harvardand\ Kolaczyk}{2017}{10.1214/16-AOAS1015}
+Ginestet, C.~E., Li, J., Balachandran, P., Rosenberg, S. \harvardand\ Kolaczyk,
+  E.~D.  \harvardyearleft 2017\harvardyearright .
+\newblock {Hypothesis testing for network data in functional neuroimaging},
+  {\em The Annals of Applied Statistics} {\bf 11}(2):~725 -- 750.
+\newline\harvardurl{https://doi.org/10.1214/16-AOAS1015}
+
+\harvarditem{Goldenberg}{2009}{goldenberg_survey_2009}
+Goldenberg, A.  \harvardyearleft 2009\harvardyearright .
+\newblock A {{Survey}} of {{Statistical Network Models}}, {\em Foundations and
+  Trends\textregistered{} in Machine Learning} {\bf 2}(2):~129--233.
+
+\harvarditem{Gu \harvardand\ Wang}{2009}{gu_improved_2009-1}
+Gu, R. \harvardand\ Wang, J.  \harvardyearleft 2009\harvardyearright .
+\newblock An {{Improved Spectral Clustering Algorithm Based}} on {{Neighbour
+  Adaptive Scale}}, {\em 2009 {{International Conference}} on {{Business
+  Intelligence}} and {{Financial Engineering}}}, {IEEE}, {Beijing, China},
+  pp.~233--236.
+
+\harvarditem{{Gyeonggi Provincial Office of Education}}{2012}{gyeonggi}
+{Gyeonggi Provincial Office of Education}  \harvardyearleft
+  2012\harvardyearright .
+\newblock Plan of innovation school management.
+
+\harvarditem{Hartigan \harvardand\ Wong}{1979}{hartigan_algorithm_1979}
+Hartigan, J.~A. \harvardand\ Wong, M.~A.  \harvardyearleft
+  1979\harvardyearright .
+\newblock Algorithm {{AS}} 136: {{A K}}-{{Means Clustering Algorithm}}, {\em
+  Applied Statistics} {\bf 28}(1):~100.
+
+\harvarditem[Hoff et~al.]{Hoff, Raftery \harvardand\
+  Handcock}{2002}{hoff_latent_2002-1}
+Hoff, P.~D., Raftery, A.~E. \harvardand\ Handcock, M.~S.  \harvardyearleft
+  2002\harvardyearright .
+\newblock Latent {{Space Approaches}} to {{Social Network Analysis}}, {\em
+  Journal of the American Statistical Association} {\bf 97}(460):~1090--1098.
+
+\harvarditem[Holland et~al.]{Holland, Laskey \harvardand\
+  Leinhardt}{1983}{holland_stochastic_1983-1}
+Holland, P.~W., Laskey, K.~B. \harvardand\ Leinhardt, S.  \harvardyearleft
+  1983\harvardyearright .
+\newblock Stochastic blockmodels: {{First}} steps, {\em Social Networks} {\bf
+  5}(2):~109--137.
+
+\harvarditem{Jin \harvardand\ Jeon}{2019}{jin_doubly_2019}
+Jin, I.~H. \harvardand\ Jeon, M.  \harvardyearleft 2019\harvardyearright .
+\newblock A {{Doubly Latent Space Joint Model}} for {{Local Item}} and {{Person
+  Dependence}} in the {{Analysis}} of {{Item Response Data}}, {\em
+  Psychometrika} {\bf 84}(1):~236--260.
+
+\harvarditem[Jin et~al.]{Jin, Jeon, Schweinberger \harvardand\
+  Lin}{2020}{jin_hierarchical_2020}
+Jin, I.~H., Jeon, M., Schweinberger, M. \harvardand\ Lin, L.  \harvardyearleft
+  2020\harvardyearright .
+\newblock Hierarchical {{Network Item Response Modeling}} for {{Discovering
+  Differences Between Innovation}} and {{Regular School Systems}} in {{Korea}},
+  {\em arXiv:1810.07876 [stat]} .
+
+\harvarditem{Kaufman \harvardand\ Rousseeuw}{1990}{kaufman_partitioning_1990}
+Kaufman, L. \harvardand\ Rousseeuw, P.~J.  \harvardyearleft
+  1990\harvardyearright .
+\newblock Partitioning {{Around Medoids}} ({{Program PAM}}), {\em Wiley
+  {{Series}} in {{Probability}} and {{Statistics}}}, {John Wiley \& Sons,
+  Inc.}, {Hoboken, NJ, USA}, pp.~68--125.
+
+\harvarditem{Klebanov \harvardand\ {Karlova
+  universita}}{2006}{klebanov_n-distances_2006}
+Klebanov, L.~B. \harvardand\ {Karlova universita}  \harvardyearleft
+  2006\harvardyearright .
+\newblock {\em N-Distances and Their Applications}, {Charles University in
+  Prague, the Karolinum Press}, {Prague}.
+
+\harvarditem{Li \harvardand\ Rizzo}{2017}{li_k-groups_2017}
+Li, S. \harvardand\ Rizzo, M.~L.  \harvardyearleft 2017\harvardyearright .
+\newblock K-groups: {{A Generalization}} of {{K}}-means {{Clustering}}, {\em
+  arXiv:1711.04359 [stat]} .
+
+\harvarditem{Li \harvardand\ Guo}{2012}{li_constructing_2012-1}
+Li, X.-Y. \harvardand\ Guo, L.-j.  \harvardyearleft 2012\harvardyearright .
+\newblock Constructing affinity matrix in spectral clustering based on neighbor
+  propagation, {\em Neurocomputing} {\bf 97}:~125--130.
+
+\harvarditem{Lyons}{2013}{lyons_distance_2013}
+Lyons, R.  \harvardyearleft 2013\harvardyearright .
+\newblock Distance covariance in metric spaces, {\em The Annals of Probability}
+  {\bf 41}(5):~3284--3305.
+
+\harvarditem{Macqueen}{1967}{macqueen_methods_1967-1}
+Macqueen, J.  \harvardyearleft 1967\harvardyearright .
+\newblock Some methods for classification and analysis of multivariate
+  observations, {\em In 5-Th Berkeley Symposium on Mathematical Statistics and
+  Probability}, pp.~281--297.
+
+\harvarditem[Mileyko et~al.]{Mileyko, Mukherjee \harvardand\
+  Harer}{2011}{mileyko_probability_2011}
+Mileyko, Y., Mukherjee, S. \harvardand\ Harer, J.  \harvardyearleft
+  2011\harvardyearright .
+\newblock Probability measures on the space of persistence diagrams, {\em
+  Inverse Problems} {\bf 27}(12):~124007.
+
+\harvarditem[Mukherjee et~al.]{Mukherjee, Sarkar \harvardand\
+  Lin}{2017}{10.5555/3295222.3295450}
+Mukherjee, S.~S., Sarkar, P. \harvardand\ Lin, L.  \harvardyearleft
+  2017\harvardyearright .
+\newblock On clustering network-valued data, {\em Proceedings of the 31st
+  International Conference on Neural Information Processing Systems}, NIPS'17,
+  Curran Associates Inc., Red Hook, NY, USA, p.~7074–7084.
+
+\harvarditem{Nelder \harvardand\ Wedderburn}{1972}{nelder_generalized_1972}
+Nelder, J.~A. \harvardand\ Wedderburn, R. W.~M.  \harvardyearleft
+  1972\harvardyearright .
+\newblock Generalized {{Linear Models}}, {\em Journal of the Royal Statistical
+  Society. Series A (General)} {\bf 135}(3):~370.
+
+\harvarditem{Newman}{2010}{newman_networks_2010}
+Newman, M. E.~J.  \harvardyearleft 2010\harvardyearright .
+\newblock {\em Networks: An Introduction}, {Oxford University Press}, {Oxford ;
+  New York}.
+
+\harvarditem[Newman et~al.]{Newman, Strogatz \harvardand\
+  Watts}{2001}{newman_random_2001}
+Newman, M. E.~J., Strogatz, S.~H. \harvardand\ Watts, D.~J.  \harvardyearleft
+  2001\harvardyearright .
+\newblock Random graphs with arbitrary degree distributions and their
+  applications, {\em Physical Review E} {\bf 64}(2):~026118.
+
+\harvarditem[Ng et~al.]{Ng, Jordan \harvardand\ Weiss}{2001}{ng_spectral_2001}
+Ng, A.~Y., Jordan, M.~I. \harvardand\ Weiss, Y.  \harvardyearleft
+  2001\harvardyearright .
+\newblock On spectral clustering: {{Analysis}} and an algorithm, {\em
+  Proceedings of the 14th International Conference on Neural Information
+  Processing Systems: {{Natural}} and Synthetic}, {{NIPS}}'01, {MIT Press},
+  {Cambridge, MA, USA}, pp.~849--856.
+
+\harvarditem{Park \harvardand\ Friston}{2013}{park_structural_2013-1}
+Park, H.-J. \harvardand\ Friston, K.  \harvardyearleft 2013\harvardyearright .
+\newblock Structural and {{Functional Brain Networks}}: {{From Connections}} to
+  {{Cognition}}, {\em Science} {\bf 342}(6158):~1238411--1238411.
+
+\harvarditem{Ramsay \harvardand\ Silverman}{2005}{ramsay_functional_2005}
+Ramsay, J.~O. \harvardand\ Silverman, B.~W.  \harvardyearleft
+  2005\harvardyearright .
+\newblock {\em Functional Data Analysis}, Springer Series in Statistics, 2nd ed
+  edn, {Springer}, {New York}.
+
+\harvarditem{Rand}{1971}{rand_objective_1971-1}
+Rand, W.~M.  \harvardyearleft 1971\harvardyearright .
+\newblock Objective {{Criteria}} for the {{Evaluation}} of {{Clustering
+  Methods}}, {\em Journal of the American Statistical Association} {\bf
+  66}(336):~846--850.
+
+\harvarditem[Relión et~al.]{Relión, Kessler, Levina \harvardand\
+  Taylor}{2019}{10.1214/19-AOAS1252}
+Relión, J. D.~A., Kessler, D., Levina, E. \harvardand\ Taylor, S.~F.
+  \harvardyearleft 2019\harvardyearright .
+\newblock {Network classification with applications to brain connectomics},
+  {\em The Annals of Applied Statistics} {\bf 13}(3):~1648 -- 1677.
+\newline\harvardurl{https://doi.org/10.1214/19-AOAS1252}
+
+\harvarditem{Rizzo \harvardand\ Sz{\'e}kely}{2010}{rizzo_disco_2010-1}
+Rizzo, M.~L. \harvardand\ Sz{\'e}kely, G.~J.  \harvardyearleft
+  2010\harvardyearright .
+\newblock {{DISCO}} analysis: {{A}} nonparametric extension of analysis of
+  variance, {\em The Annals of Applied Statistics} {\bf 4}(2).
+
+\harvarditem{Romano \harvardand\ Wolf}{2005}{romano2005exact}
+Romano, J.~P. \harvardand\ Wolf, M.  \harvardyearleft 2005\harvardyearright .
+\newblock Exact and approximate stepdown methods for multiple hypothesis
+  testing, {\em Journal of the American Statistical Association} {\bf
+  100}(469):~94--108.
+
+\harvarditem{Schubert \harvardand\ Rousseeuw}{2019}{amato_faster_2019}
+Schubert, E. \harvardand\ Rousseeuw, P.~J.  \harvardyearleft
+  2019\harvardyearright .
+\newblock Faster k-{{Medoids Clustering}}: {{Improving}} the {{PAM}},
+  {{CLARA}}, and {{CLARANS Algorithms}}, {\em in} G.~Amato, C.~Gennaro, V.~Oria
+  \harvardand\ M.~Radovanovi{\'c} (eds), {\em Similarity {{Search}} and
+  {{Applications}}}, Vol. 11807, {Springer International Publishing}, {Cham},
+  pp.~171--187.
+
+\harvarditem{Shi \harvardand\ Malik}{2000}{shi_normalized_2000-1}
+Shi, J. \harvardand\ Malik, J.  \harvardyearleft 2000\harvardyearright .
+\newblock Normalized cuts and image segmentation, {\em IEEE Transactions on
+  Pattern Analysis and Machine Intelligence} {\bf 22}(8):~888--905.
+
+\harvarditem[Smith et~al.]{Smith, Asta \harvardand\
+  Calder}{2019}{smith_geometry_2019}
+Smith, A.~L., Asta, D.~M. \harvardand\ Calder, C.~A.  \harvardyearleft
+  2019\harvardyearright .
+\newblock The {{Geometry}} of {{Continuous Latent Space Models}} for {{Network
+  Data}}, {\em Statistical Science} {\bf 34}(3).
+
+\harvarditem{Stein \harvardand\ Shakarchi}{2011}{stein_functional_2011}
+Stein, E.~M. \harvardand\ Shakarchi, R.  \harvardyearleft 2011\harvardyearright
+  .
+\newblock {\em Functional Analysis: Introduction to Further Topics in
+  Analysis}, number~4 in {\em Princeton Lectures in Analysis}, {Princeton
+  University Press}, {Princeton}.
+
+\harvarditem{Sz{\'e}kely}{2002}{szekely_e-statistics_2002}
+Sz{\'e}kely, G.  \harvardyearleft 2002\harvardyearright .
+\newblock E-statistics: {{The Energy}} of {{Statistical Samples}}.
+
+\harvarditem{Sz{\'e}kely \harvardand\ Rizzo}{2004}{szekely_testing_2004}
+Sz{\'e}kely, G.~J. \harvardand\ Rizzo, M.~L.  \harvardyearleft
+  2004\harvardyearright .
+\newblock Testing for equal distributions in high dimensions, {\em InterStat} .
+
+\harvarditem{Sz{\'e}kely \harvardand\ Rizzo}{2017}{szekely_energy_2017}
+Sz{\'e}kely, G.~J. \harvardand\ Rizzo, M.~L.  \harvardyearleft
+  2017\harvardyearright .
+\newblock The {{Energy}} of {{Data}}, {\em Annual Review of Statistics and Its
+  Application} {\bf 4}(1):~447--479.
+
+\harvarditem[Tantardini et~al.]{Tantardini, Ieva, Tajoli \harvardand\
+  Piccardi}{2019}{tantardini_comparing_2019}
+Tantardini, M., Ieva, F., Tajoli, L. \harvardand\ Piccardi, C.
+  \harvardyearleft 2019\harvardyearright .
+\newblock Comparing methods for comparing networks, {\em Scientific Reports}
+  {\bf 9}(1):~17557.
+
+\harvarditem[Turner et~al.]{Turner, Mileyko, Mukherjee \harvardand\
+  Harer}{2014}{turner_frechet_2014}
+Turner, K., Mileyko, Y., Mukherjee, S. \harvardand\ Harer, J.  \harvardyearleft
+  2014\harvardyearright .
+\newblock Fr\'echet {{Means}} for {{Distributions}} of {{Persistence
+  Diagrams}}, {\em Discrete \& Computational Geometry} {\bf 52}(1):~44--70.
+
+\harvarditem[{Van der Laan} et~al.]{{Van der Laan}, Pollard \harvardand\
+  Bryan}{2003}{van_der_laan_new_2003}
+{Van der Laan}, M., Pollard, K. \harvardand\ Bryan, J.  \harvardyearleft
+  2003\harvardyearright .
+\newblock A new partitioning around medoids algorithm, {\em Journal of
+  Statistical Computation and Simulation} {\bf 73}(8):~575--584.
+
+\harvarditem{Villani}{2009}{villani_optimal_2009}
+Villani, C.  \harvardyearleft 2009\harvardyearright .
+\newblock {\em Optimal {{Transport}}}, Vol. 338 of {\em Grundlehren Der
+  Mathematischen {{Wissenschaften}}}, {Springer Berlin Heidelberg}, {Berlin,
+  Heidelberg}.
+
+\harvarditem{{von Luxburg}}{2007}{von_luxburg_tutorial_2007-1}
+{von Luxburg}, U.  \harvardyearleft 2007\harvardyearright .
+\newblock A tutorial on spectral clustering, {\em Statistics and Computing}
+  {\bf 17}(4):~395--416.
+
+\harvarditem[Wang et~al.]{Wang, Chiou \harvardand\
+  M{\"u}ller}{2016}{wang_functional_2016}
+Wang, J.-L., Chiou, J.-M. \harvardand\ M{\"u}ller, H.-G.  \harvardyearleft
+  2016\harvardyearright .
+\newblock Functional {{Data Analysis}}, {\em Annual Review of Statistics and
+  Its Application} {\bf 3}(1):~257--295.
+
+\harvarditem{Wasserman}{2018}{Wasserman_2018}
+Wasserman, L.  \harvardyearleft 2018\harvardyearright .
+\newblock Topological data analysis, {\em Annual Review of Statistics and Its
+  Application} {\bf 5}(1):~501–532.
+\newline\harvardurl{https://www.annualreviews.org/doi/10.1146/annurev-statistics-031017-100045}
+
+\harvarditem{Willard}{1970}{willard_general_1970}
+Willard, S.  \harvardyearleft 1970\harvardyearright .
+\newblock {\em General Topology}, Addison-{{Wesley}} Series in Mathematics,
+  {Addison-Wesley}, {Reading/Mass.}
+
+\harvarditem[Yang et~al.]{Yang, Zhu \harvardand\
+  Huang}{2011}{yang_spectral_2011-1}
+Yang, P., Zhu, Q. \harvardand\ Huang, B.  \harvardyearleft
+  2011\harvardyearright .
+\newblock Spectral clustering with density sensitive similarity function, {\em
+  Knowledge-Based Systems} {\bf 24}(5):~621--628.
+
+\harvarditem{{Zelnik-Manor} \harvardand\
+  Perona}{2004}{zelnik-manor_self-tuning_2004}
+{Zelnik-Manor}, L. \harvardand\ Perona, P.  \harvardyearleft
+  2004\harvardyearright .
+\newblock Self-tuning spectral clustering, {\em Proceedings of the 17th
+  International Conference on Neural Information Processing Systems},
+  {{NIPS}}'04, {MIT Press}, {Cambridge, MA, USA}, pp.~1601--1608.
+
+\harvarditem[Zhang et~al.]{Zhang, Zhou \harvardand\
+  Fu}{2010}{zhang_spectral_2010-1}
+Zhang, Y., Zhou, J. \harvardand\ Fu, Y.  \harvardyearleft 2010\harvardyearright
+  .
+\newblock Spectral clustering algorithm based on adaptive neighbor distance
+  sort order, {\em The 3rd {{International Conference}} on {{Information
+  Sciences}} and {{Interaction Sciences}}}, {IEEE}, {Chengdu, China},
+  pp.~444--447.
+
+\harvarditem{Zomorodian}{2005}{Zomorodian_2005}
+Zomorodian, A.~J.  \harvardyearleft 2005\harvardyearright .
+\newblock {\em Topology for Computing}, 1 edn, Cambridge University Press.
+\newline\harvardurl{https://www.cambridge.org/core/product/identifier/9780511546945/type/book}
+
+\end{thebibliography}

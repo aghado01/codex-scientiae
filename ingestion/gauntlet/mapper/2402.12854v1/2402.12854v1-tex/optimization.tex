@@ -1,0 +1,141 @@
+ \section{Conditional risk optimization with respect to parameters}
+\label{sec:optim}
+
+Now that we have properly defined risks associated to Soft Mapper distributions, we study in this section the convergence properties of 
+filter optimization schemes minimizing such risks. 
+%We now consider the problem of filter optimization for Soft Mapper.
+ 
+\subsection{Problem setting}
+
+%a given filter function is used both for defining the persistence diagram of a Mapper graph (Section \ref{sec:MapPers}), but it can also be used for defining the cover assignments, as in Section~\ref{sec:examples}. 
+Let us introduce a parameterized family of functions $\{ f_\theta :   \Xs_n  \rightarrow \R , \, \theta  \in \R^s\}$. 
+In order to simplify notations, we assume in the following of the article that the function $F$ used to compute persistence diagrams and the filter function $f_\theta$ used to design cover assignments are the same, $F=f_\theta$. 
+Let $A$ be a cover assignment scheme whose joint distribution $\Prob_\theta$ depends on the filter function $f_\theta$; 
+%which we use to define the Soft Mapper. 
+%in contrast with Section~\ref{sec:CovAssign}, and as in Section~\ref{sec:Smooth}, here the %we have also introduced filters functions and the 
+that is the Bernoulli parameters $p_{i,j}$ may depend on the filter function values and the parameters $\theta$. %them (as for the smooth relaxation in Section~\ref{sec:Smooth}).
+%the way the Bernoulli parameters $p_{i,j}$ are defined may depend on the filter function (as for the smooth relaxation in Section~\ref{sec:Smooth}).
+Note that this dependency is not only true for marginals of the distribution of the cover assignment scheme,
+% may depend on $\theta$, 
+but also eventually for its dependency structure.
+
+Our goal is to find the optimal set of parameters $\bar \theta$ that minimizes the topological risk associated to  $\MapComp(A$), when $f_\theta$ is used to define the filtration values on the Mapper graphs. 
+In other words, if we denote:
+\begin{align}
+\text{L} \colon \ParSpace  &\longrightarrow \mathbb{R} \notag\\
+\theta &\longmapsto \mathbb{E_\theta}(\mathcal{L}(A,f_\theta) | \Xs_n) \label{eq:L},
+\end{align}
+our aim is to find a minimizer of $\text{L}$. Note that in the definition of $\text{L}$, the expectation depends on $\theta$ because the distribution of $A$ also depends on it.
+%cover assignment scheme does depend on it.
+
+In order to prove guarantees about minimizing $\text{L}$, we follow~\cite{carriere2021optimizing}, which uses the theoretical background introduced in~\cite{davis2020stochastic},
+in which the authors prove that stochastic gradient descent algorithms converge under certain conditions. 
+To use this framework, it suffices to prove two points (see Corollary 5.9. in \cite{davis2020stochastic} and Appendix \ref{apdx:o-minimal}):
+ 
+\begin{itemize}
+    \item L is definable in an o-minimal structure, %for elements of o-minimal geometry),
+    \item L is locally Lipschitz.
+\end{itemize}
+
+
+\begin{remark}
+When the cover assignment scheme is defined as the standard cover assignment scheme corresponding to the standard Mapper graph (see Section~\ref{sec:stdMapper}), %$f_\theta$ is the Mapper filter function, 
+this problem amounts to finding an optimal $f_\theta$ that can be used to compute Mapper graphs. We will see however that convergence of the optimization problem in this case is without guarantees, 
+which constitutes the main motivation for defining our smooth relaxation Soft Mapper (see Section~\ref{sec:Smooth}).
+\end{remark}
+ 
+
+
+
+\subsection{Theoretical guarantees on the convergence of a gradient descent scheme}
+
+Under regularity assumptions on the parameterized family of filter functions $\mathcal F=\{f_\theta\colon\Xs_n \longrightarrow\mathbb{R},\,\theta\in\ParSpace\}$, we now show that the risk $\text{L}$ in Equation~\eqref{eq:L} is definable and smooth.
+
+\begin{theorem}
+\label{thm1}
+    Suppose that there exists an o-minimal structure $\mathcal{S}$ such that: 
+    \begin{itemize}
+        \item for every $x\in\Xs_n$, the function $\theta\mapsto f_\theta(x)$ is definable in $\mathcal{S}$ and is locally Lipschitz,
+        \item for every $m\in\mathbb{N}$, the restriction of $\loss$ to the set of (extended) persistence diagrams of size $m$ 
+%(by isomorphy considered to be $\mathbb{R}^m$) 
+is definable in $\mathcal{S}$ and is locally Lipschitz,
+        \item for every $e\in{\{0,1\}}^{n\times r}$, the function $\theta\mapsto \mathbb{P}_\theta(A =e| \Xs_n)$ is definable in $\mathcal{S}$ and is locally Lipschitz.
+    \end{itemize}
+    Then $\textup{L}$ is definable in $\mathcal{S}$ and is locally Lipschitz.
+\end{theorem}
+
+
+
+
+\begin{remark}
+    Our proof of Theorem \ref{thm1} is given in Appendix \ref{apdx:proof} in the case where regular persistent homology is used, but it can be extended in a straightforward way to extended persistence diagrams, as extended persistent homology on a simplicial complex $K$ can be equivalently seen as regular persistent homology on the cone on $K$~(see chapter VII.3 in \cite{edelsbrunner2022computational}). Moreover, defining the filtration on the coned complex also extends naturally by using affine transformations.
+\end{remark}
+
+Under the assumptions of Theorem \ref{thm1}, it is then possible to give guarantees on the convergence of a stochastic gradient descent scheme to some critical points of $\text{L}$. This only requires additional, but mild and not very restrictive technical conditions regarding the stochastic gradient descent algorithm itself (see Appendix \ref{apdx:sgd}). 
+% Namely, if we write the iterates of the algorithm as: 
+% $$x_{k+1}=x_k-\alpha_k(y_k+\xi_k),$$
+% where 
+% $$y_k\in\text{Conv}\left\{\lim_{z\to x_k}\nabla\text{L}(z)\,:\,\text{L is differentiable at }z\right\},$$
+% the conditions are as follows~: 
+% \begin{enumerate}
+%     \item for any $k$, $\alpha_k\geq 0$, $\sum_{k=1}^\infty \alpha_k=+\infty$ and $\sum_{k=1}^\infty \alpha_k^2<+\infty$;
+%     \item $\sup_k\Vert x_k\Vert<+\infty$, almost surely;
+%     \item Conditionally on the past, $\xi_k$ must have zero mean and have a second moment that is bounded by a function $p\colon\ParSpace\longrightarrow\mathbb{R}$ which is bounded on bounded sets. 
+% \end{enumerate}
+% Note that the last condition is satisfied by taking a sequence of independent and centered variables with bounded variance, which are also independent of the past iterates $(x_k)_k$ and  $(y_k)_k$.
+
+
+% According to \cite{davis2020stochastic}, under these three conditions together with the conditions of Theorem~\ref{thm1}, then $(\text{L}(x_k))_k$ converges almost surely to a critical values and the limit points of $(x_k)_k$ are critical points of $L$. 
+
+
+\subsection{Discussing the assumptions of Theorem \ref{thm1}}
+In this section, we discuss the assumptions of Theorem \ref{thm1}, and provide usual cases in which they are satisfied. %, that are usual in practice.
+
+\paragraph*{Assumption 1.} The first assumption concerns the smoothness of the parameterized family of functions $\{f_\theta\colon\Xs_n \longrightarrow\mathbb{R},\,\theta\in\ParSpace\}$ and its regularity with respect to the set of parameters $\theta$. As mentioned before, following the result of \cite{wilkie1996model}, semi-algebraic functions (for example polynomial, rational, minimum and maximum functions), the exponential function and functions defined as compositions and usual operations between them are all definable in a same o-minimal structure. Furthermore, choosing continuously differentiable functions is sufficient to also have the local Lipschitz property.\\
+    As such, the family of linear functions $\{f_\theta\colon x\mapsto\langle x,\theta \rangle,\,\theta\in\mathbb{R}^s\}$ satisfies the assumption, as well as the family of parameterized fully-connected neural networks since they are defined by composition between matrix products (which are polynomial) and activation functions involving exponential, maximum and hyperbolic functions.
+
+\paragraph*{Assumption 2.} The second assumption concerns the persistence-based loss $\loss$, that is used to compute the topological risk. In \cite{carriere2021optimizing}, the authors list a number of possible functions for $\loss$ that satisfy our second assumption. For example, $\loss$ can be the \emph{total persistence}, which quantifies the information given by a persistence diagram, defined as:
+    %$$\{(u_i,v_i)\}_{1\leq i\leq n_f}\times\{t_j\}_{1\leq j\leq n_e}\longmapsto \sum_{i=1}^{n_f}\vert u_i-v_i\vert.$$
+    $$\{(u_i,v_i)\}_{1\leq i\leq n}\longmapsto \sum_{i=1}^{n}\vert u_i-v_i\vert.$$
+    It can also be computed from persistence landscapes~\cite{Bubenik2015} or from the bottleneck distance to a target persistence diagram~\cite{carriere2021optimizing}.
+
+\paragraph*{Assumption 3.} Finally, the third assumption concerns the cover assignment scheme $A$. More specifically, it requires the regularity and smoothness of the success probabilities that give the distribution of $A$.\\ 
+    Interestingly, this assumption does {\em not} hold for the standard cover assignment scheme. For example, consider the elementary example where $\Xs_n\subset\R$ and $A$ is the standard cover assignment scheme, which is degenerate at $e_\theta$, and which corresponds to the linear filter function $f_\theta\colon x\mapsto  \langle x,\theta\rangle$ and a cover $(\interv_j)$ of its image. Fix a non-zero positive point $x\in\Xs_n$ (a similar argument can be made if it is negative) and a left hand bound $a_j$ of one of the intervals. Denoting $\theta_0=\frac{a_j}{x}$, we have that $\theta\mapsto \mathbb{P}_\theta(A=e_{\theta_0} | \Xs_n)$ is discontinuous at $\theta_0$, since $\forall \epsilon>0\,:\,\langle x,\theta_0-\epsilon\rangle=x\cdot(\theta_0-\epsilon)<a_j,$ and therefore, $\mathbb{P}_{\theta_0-\epsilon}(A=e_{\theta_0} | \Xs_n)=0.$
+
+
+
+
+    
+    % Consider the case where $A_\theta^\ast$ is the classical cover assignment scheme associated to $f_\theta$, which is a function from the same parameterized family we considered above. $A_\theta^\ast$ is a Dirac distribution in $e_\theta^\ast$ such that it is defined above.\\ The third assumption is not automatically verified even though the family of functions is tame, in the sense that it verifies the first assumption. To see this, it suffices to consider a point $\theta_0$ where there exists a point in the dataset $x\in\Xs$ such that $f_{\theta_0}(x)$ is exactly on one of the bounds of the intervals used to cover $f_{\theta_0}(\Xs)$ (always possible for example with a linear function). \\
+    % $\theta\mapsto \mathbb{P}_\Xs(A_\theta=e_{\theta_0}^\ast)$ is not continuous (and therefore not locally Lipschitz) around $\theta_0$ because changing $\theta$ even slightly can eject $x$ from one of the intervals making $\mathbb{P}_\Xs(A_\theta=e_{\theta_0}^\ast)$ go from one to zero abruptly.\\
+    % \ziy{À retravailler}\\
+    This constitutes the main motivation for introducing our smooth cover assignment scheme because the functions $\theta\mapsto \mathbb{P}_\theta (A=e | \Xs_n)$ are in this case products of the functions $q_j$, which are smooth with respect to the parameters (if  our first assumption holds).
+
+\subsection{Computing the conditional risk in practice}
+
+\begin{algorithm}[H]
+\caption{Soft Mapper Optimization Algorithm}\label{alg1}
+\begin{algorithmic}
+\Require Initial parameter set $\theta_0$, Number of Monte Carlo random samples $\nbMC$, Learning rate sequence $(\alpha_i)_i$, Random noise sequence $(\xi_i)_i$, Number of epochs $N$.
+\For{$0\leq i \leq N-1$}
+\For{$1\leq m \leq \nbMC$}
+    \State $e \gets $ sample from $\mathbb{P}_{\theta_i}$ %the conditional distribution of $A$
+    \State $y_{i,m} \gets$ an element of the sub-differential in $\theta_i$ of $\mathcal{L}_e\colon\theta\mapsto \mathcal{L}(e,f_\theta)$
+\EndFor
+\State $y_i \gets \frac{1}{\nbMC}\sum_{m=1}^{\nbMC}y_{i,m}$
+\State $\theta_{i+1}\gets \theta_i -\alpha_i(y_i+\xi_i)$
+\EndFor
+\State {\bf return} $\theta_N$
+\end{algorithmic}
+\end{algorithm}
+
+
+Computing the conditional risk L$(\theta)$, for a fixed $\theta\in\ParSpace$, can be costly in practice since it requires computing the loss $\mathcal{L}(e,f_\theta)$ for every possible cover assignment $e\in\{0,1\}^{n\times r}$. As such, we estimate L$(\theta)$ with Monte Carlo methods. Note that this is possible here because the distribution $\mathbb{P}_\theta$  of the cover assignment scheme is indeed explicitly defined and known at each step of the gradient descent. If $\nbMC$ is a non-zero integer and $(e^{(m)})_{1\leq m\leq \nbMC}$ is a sequence of independent realizations of the cover assignment scheme $A$, then the Monte Carlo approximation of the conditional risk is:
+$$\Tilde{\text{L}}(\theta)=\frac{1}{\nbMC}\sum_{m=1}^{\nbMC}\mathcal{L}(e^{(m)},f_\theta).$$
+The law of large numbers gives: 
+$$\Tilde{\text{L}}(\theta)\xrightarrow[\nbMC \to \infty]{a.s}\text{L}(\theta).$$
+\noindent Moreover, the coordinates of $A$ follow a Bernoulli conditional distribution, making repeated random sampling straightforward, at least when the marginal distributions of $\mathbb{P}_\theta$ are assumed to be independent. 
+
+For a fixed point cloud $\Xs_n$, a chosen family of parameterized conditional probabilities $\theta \mapsto \mathbb{P}_\theta(\cdot |\Xs_n ) $ and a family of parameterized filters $\theta \mapsto f_\theta$, our corresponding optimization algorithm is detailed in Algorithm \ref{alg1}.
+
+ 

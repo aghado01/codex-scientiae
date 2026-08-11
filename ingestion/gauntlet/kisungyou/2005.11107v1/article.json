@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2005.11107v1",
+  "initialized_utc": "2026-08-11T08:29:43.419746Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Rdimtools: An R package for Dimension Reduction and Intrinsic Dimension Estimation",
+        "authors_tex": [
+          "\\name Kisung You \\email kyou@nd.edu \\\\\n\t\\addr Department of Applied and Computational Mathematics and Statistics \\\\ \n\tUniversity of Notre Dame \\\\\n\tNotre Dame, IN 46556, USA"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2005.11107v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 257272,
+      "sha256": "9755fb4cd4d6a82153b263148dcd71d99782b567ff45323151a25c591749df27",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2005.11107v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2005.11107v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 9,
+      "tex_files": 1,
+      "sha256": "8e5b84c87d70843860c2295583d8cae4ea3486ace68329984ac19524ce5d4f37"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2005.11107v1.pdf",
+      "format": "application/pdf",
+      "bytes": 428131,
+      "sha256": "c2725229cf13f964e17b30270bd0a01bc06ebb6c9bba46e13696e2a5fadf367f"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:29:43.419746Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 9
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 9
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "main.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+
+\section{Proof of Theorem \ref{thm1}}\label{apdx:proof}
+
+\begin{lemma}\label{lem1}
+Let $\mathcal{S}$ be an o-minimal structure on $\R$. Assume that the two following conditions are satisfied. 
+    \begin{itemize}
+        \item For every $x\in\Xs_n$, the function $\theta \in \ParSpace \mapsto f_\theta(x)$ is definable in $\mathcal{S}$ and is locally Lipschitz.
+        \item For every $m\in\mathbb{N}$, the restriction of the persistence specific loss $\loss$ to the set of persistent diagrams of size $m$ 
+%(by isomorphy considered to be $\mathbb{R}^m$) 
+is definable in $\mathcal{S}$ and is locally Lipschitz. 
+    \end{itemize}
+Then for every $e\in{\{0,1\}}^{n\times r}$, the function 
+$$\mathcal{L}_e\colon\theta \in \ParSpace \mapsto \mathcal{L}(e,f_\theta)$$
+is definable in $\mathcal{S}$ and is locally Lipschitz.
+\end{lemma}
+
+\begin{proof}  Let $e\in{\{0,1\}}^{n\times r}$. Let $K=\MapComp(e)$ with vertex set $V$.
+%, and thus $K$ is fixed for a given $e$. 
+Remember that each vertex $c \in V$ is actually a subset of $\Xs_n$. We now define three maps to decompose the function $\mathcal{L}_e$. First, let us introduce the function     
+\begin{align*}
+\VertexFilt \colon \ParSpace  &\longrightarrow \mathbb{R}^{\mid V\mid}\\
+\theta&\longmapsto \left(\frac{\sum_{x\in c} f_\theta(x) }{\text{card}(c)}\right)_{c\in V}.
+\end{align*}
+For each coordinate of the function $\VertexFilt$, that is for each $c \in V$, the function $\theta \longmapsto [\VertexFilt (\theta)]_c$  
+is a linear combination of the functions $\theta\mapsto f_\theta(x)$. We can therefore see that it is definable in $\mathcal{S}$ and locally Lipschitz, by our first assumption. 
+
+Then we introduce 
+\begin{align*}
+\SubFilt\colon \mathbb{R}^{\mid V\mid}  &\longrightarrow \mathbb{R}^{\mid K\mid}\\
+\Phi&\longmapsto (\max_{c\in\sigma}\Phi_c)_{\sigma\in K},
+\end{align*}
+and finally $\Persistence \colon \mathbb{R}^{\mid K\mid}   \longrightarrow \mathbb{R}^{\mid K\mid} $ that computes persistence for a filtration that acts on a fixed simplicial complex. The two functions $\SubFilt$ and $\Persistence$  are taken from \cite{carriere2021optimizing}, where they are both proven to be definable in every o-minimal structure and Lipschitz.
+
+Notice that:
+$$\mathcal{L}_{e}=\loss \circ\Persistence\circ\SubFilt\circ\VertexFilt.$$
+Since $e$, and thus $K$, are fixed, $\loss$ can be replaced by its restriction to persistence diagrams of size $\vert K\vert$.
+Hence, following our second assumption, $\mathcal{L}_{e}$ is definable in $\mathcal{S}$ and locally Lipschitz.
+\end{proof}
+
+Recall the assumptions in Theorem \ref{thm1}~:
+
+    Suppose that there exists an o-minimal structure $\mathcal{S}$ and we have that: 
+    \begin{itemize}
+        \item for every $x\in\Xs_n$, the function $\theta\mapsto f_\theta(x)$ is definable in $\mathcal{S}$ and is locally Lipschitz.
+        \item for every $m\in\mathbb{N}$, the restriction of $\loss$ to the set of persistent diagrams of size $m$ 
+%(by isomorphy considered to be $\mathbb{R}^m$) 
+is definable in $\mathcal{S}$ and is locally Lipschitz. 
+        \item for every $e\in{\{0,1\}}^{n\times r}$, the function $\theta\mapsto \mathbb{P}_\theta(A =e| \Xs_n)$ is definable in $\mathcal{S}$ and is locally Lipschitz.
+
+    \end{itemize}
+
+
+
+By Lemma \ref{lem1} and following the first two assumptions, we know that for every $e\in{\{0,1\}}^{n\times r}$, the function $\mathcal{L}_e\colon\theta\mapsto \mathcal{L}(e,f_\theta)$ is definable in $\mathcal{S}$ and is locally Lipschitz. Now, for every $\theta\in\ParSpace$:
+$$\text{L}(\theta)=\sum_{e\in {\{0,1\}}^{e\times r}}\mathcal{L}(e,f_\theta)\cdot\mathbb{P}_\theta(A=e | \Xs_n).$$
+As such, L is a sum of products between functions that are definable in $\mathcal{S}$ and locally Lipschitz. We conclude that L is itself definable in $\mathcal{S}$ and locally Lipschitz.
+
+Note that the local Lipschitz property is stable by product (as opposed to the global Lipschitz property). This is due to the fact that the product of two Lipschitz and bounded functions is Lipschitz, and the fact that we can always limit the neighborhoods of points in $\ParSpace$ to bounded ones.

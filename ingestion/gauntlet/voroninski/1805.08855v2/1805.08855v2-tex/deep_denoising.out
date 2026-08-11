@@ -1,0 +1,25 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background on denoising with classical and deep-learning based methods}{}% 2
+\BOOKMARK [1][-]{section.3}{Denoising with a neural network with an hourglass structure}{}% 3
+\BOOKMARK [1][-]{section.4}{Denoising via enforcing a generative model}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Enforcing a generative model}{section.4}% 5
+\BOOKMARK [1][-]{section.5}{Main results}{}% 6
+\BOOKMARK [2][-]{subsection.5.1}{ The Weight Distribution Condition \(WDC\)}{section.5}% 7
+\BOOKMARK [2][-]{subsection.5.2}{Sketch of proof of Theorem 2}{section.5}% 8
+\BOOKMARK [1][-]{section.6}{Applications to Compressed Sensing}{}% 9
+\BOOKMARK [1][-]{section.7}{Experimental results}{}% 10
+\BOOKMARK [2][-]{subsection.7.1}{Denoising with a synthetic prior}{section.7}% 11
+\BOOKMARK [2][-]{subsection.7.2}{Denoising with a learned prior}{section.7}% 12
+\BOOKMARK [1][-]{appendix.A}{Proof of Proposition 1}{}% 13
+\BOOKMARK [1][-]{appendix.B}{Proof of Theorem 2}{}% 14
+\BOOKMARK [2][-]{subsection.B.1}{Preliminaries}{appendix.B}% 15
+\BOOKMARK [2][-]{subsection.B.2}{Proof of Theorem 5A}{appendix.B}% 16
+\BOOKMARK [2][-]{subsection.B.3}{Proof of Theorem 5B}{appendix.B}% 17
+\BOOKMARK [2][-]{subsection.B.4}{Proof of Equation \(23\)}{appendix.B}% 18
+\BOOKMARK [2][-]{subsection.B.5}{Proof of Lemma 11}{appendix.B}% 19
+\BOOKMARK [2][-]{subsection.B.6}{Proof of Lemma 8}{appendix.B}% 20
+\BOOKMARK [2][-]{subsection.B.7}{Proof of Lemma 12 }{appendix.B}% 21
+\BOOKMARK [2][-]{subsection.B.8}{Proof of Lemma 13}{appendix.B}% 22
+\BOOKMARK [2][-]{subsection.B.9}{Proof of Lemma 17}{appendix.B}% 23
+\BOOKMARK [2][-]{subsection.B.10}{Proof of Lemma 15}{appendix.B}% 24
+\BOOKMARK [2][-]{subsection.B.11}{Proof of Lemma 14}{appendix.B}% 25

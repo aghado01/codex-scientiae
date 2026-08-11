@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1611.05985v3",
+  "initialized_utc": "2026-08-11T08:30:54.289080Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "Sparse_PhaseMax.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Compressed Sensing from Phaseless Gaussian Measurements via Linear Programming in the Natural Parameter Space",
+        "authors_tex": [
+          "Paul Hand\\footnote{Department of Computational and Applied Mathematics, Rice University,  Houston, TX.} \\   and Vladislav Voroninski\\footnote{Helm.ai, CA.}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1611.05985v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 14512,
+      "sha256": "fc2c6fc2ebd7c0cd7aff1161aa87cfb018de2086736984af233c9a51ee80b822",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1611.05985v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1611.05985v3.tar.gz",
+      "entrypoint": "Sparse_PhaseMax.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 2,
+      "tex_files": 1,
+      "sha256": "32eaa38b67710c5930b0cb1aeb66c479ab0ad8347384a52db0e0d1e7af1c7f0b"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1611.05985v3.pdf",
+      "format": "application/pdf",
+      "bytes": 118972,
+      "sha256": "3e3224d1fb12e22eb453b31348559049b0cb7d2f77ad73e5ce7b9472eb2e8b5e"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:54.289080Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 2
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 2
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "Sparse_PhaseMax.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

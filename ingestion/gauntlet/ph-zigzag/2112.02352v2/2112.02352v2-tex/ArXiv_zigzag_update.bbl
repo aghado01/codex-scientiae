@@ -1,0 +1,128 @@
+\begin{thebibliography}{10}
+
+\bibitem{agarwal2006extreme}
+Pankaj~K. Agarwal, Herbert Edelsbrunner, John Harer, and Yusu Wang.
+\newblock Extreme elevation on a 2-manifold.
+\newblock {\em Discrete \& Computational Geometry}, 36(4):553--572, 2006.
+
+\bibitem{carlsson2010zigzag}
+Gunnar Carlsson and Vin de~Silva.
+\newblock Zigzag persistence.
+\newblock {\em Foundations of Computational Mathematics}, 10(4):367--405, 2010.
+
+\bibitem{carlsson2019parametrized}
+Gunnar Carlsson, Vin de~Silva, Sara Kali{\v{s}}nik, and Dmitriy Morozov.
+\newblock Parametrized homology via zigzag persistence.
+\newblock {\em Algebraic \& Geometric Topology}, 19(2):657--700, 2019.
+
+\bibitem{carlsson2009zigzag-realvalue}
+Gunnar Carlsson, Vin de~Silva, and Dmitriy Morozov.
+\newblock Zigzag persistent homology and real-valued functions.
+\newblock In {\em Proceedings of the Twenty-Fifth Annual Symposium on
+  Computational Geometry}, pages 247--256, 2009.
+
+\bibitem{cohen2009extending}
+David Cohen-Steiner, Herbert Edelsbrunner, and John Harer.
+\newblock Extending persistence using {P}oincar{\'e} and {L}efschetz duality.
+\newblock {\em Foundations of Computational Mathematics}, 9(1):79--103, 2009.
+
+\bibitem{cohen2006vines}
+David Cohen-Steiner, Herbert Edelsbrunner, and Dmitriy Morozov.
+\newblock Vines and vineyards by updating persistence in linear time.
+\newblock In {\em Proceedings of the Twenty-Second Annual Symposium on
+  Computational Geometry}, pages 119--126, 2006.
+
+\bibitem{dey2021graph}
+Tamal~K. Dey and Tao Hou.
+\newblock Computing zigzag persistence on graphs in near-linear time.
+\newblock In {\em 37th International Symposium on Computational Geometry, SoCG
+  2021}, volume 189 of {\em LIPIcs}, pages 30:1--30:15. Schloss Dagstuhl -
+  Leibniz-Zentrum f{\"{u}}r Informatik, 2021.
+
+\bibitem{dey2022fast}
+Tamal~K. Dey and Tao Hou.
+\newblock Fast computation of zigzag persistence.
+\newblock {\em 30th Annual European Symposium on Algorithms (ESA 2022), {\rm to
+  appear}}, 2022.
+
+\bibitem{DKM21}
+Tamal~K. Dey, Woojin Kim, and Facundo M\'{e}moli.
+\newblock Computing generalized rank invariant for 2-parameter persistence
+  modules via zigzag persistence and its applications.
+\newblock {\em https://arXiv.org/abs/2111.15058}, 2021.
+
+\bibitem{edelsbrunner2012medusa}
+Herbert Edelsbrunner, Carl-Philipp Heisenberg, Michael Kerber, and Gabriel
+  Krens.
+\newblock The medusa of spatial sorting: Topological construction.
+\newblock {\em arXiv preprint arXiv:1207.6474}, 2012.
+
+\bibitem{edelsbrunner2000topological}
+Herbert Edelsbrunner, David Letscher, and Afra Zomorodian.
+\newblock Topological persistence and simplification.
+\newblock In {\em Proceedings 41st Annual Symposium on Foundations of Computer
+  Science}, pages 454--463. IEEE, 2000.
+
+\bibitem{Gabriel72}
+Peter Gabriel.
+\newblock {Unzerlegbare Darstellungen I}.
+\newblock {\em Manuscripta Mathematica}, 6(1):71--103, 1972.
+
+\bibitem{hatcher2002algebraic}
+Allen Hatcher.
+\newblock {\em Algebraic Topology}.
+\newblock Cambridge University Press, 2002.
+
+\bibitem{kim2020spatiotemporal}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Spatiotemporal persistent homology for dynamic metric spaces.
+\newblock {\em Discrete \& Computational Geometry}, pages 1--45, 2020.
+
+\bibitem{KM20}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Generalized persistence diagrams for persistence modules over posets.
+\newblock {\em Journal of Applied and Computational Topology}, 5(4):533--581,
+  2021.
+
+\bibitem{maria2014zigzag}
+Cl{\'e}ment Maria and Steve~Y. Oudot.
+\newblock Zigzag persistence via reflections and transpositions.
+\newblock In {\em Proceedings of the Twenty-Sixth Annual ACM-SIAM Symposium on
+  Discrete Algorithms}, pages 181--199. SIAM, 2014.
+
+\bibitem{maria2016computing}
+Cl{\'e}ment Maria and Steve~Y. Oudot.
+\newblock Computing zigzag persistent cohomology.
+\newblock {\em arXiv preprint arXiv:1608.06039}, 2016.
+
+\bibitem{maria2019discrete}
+Cl{\'e}ment Maria and Hannah Schreiber.
+\newblock Discrete morse theory for computing zigzag persistence.
+\newblock In {\em Workshop on Algorithms and Data Structures}, pages 538--552.
+  Springer, 2019.
+
+\bibitem{milosavljevic2011zigzag}
+Nikola Milosavljevi{\'c}, Dmitriy Morozov, and Primoz Skraba.
+\newblock Zigzag persistent homology in matrix multiplication time.
+\newblock In {\em Proceedings of the Twenty-Seventh Annual Symposium on
+  Computational Geometry}, pages 216--225, 2011.
+
+\bibitem{oudot2015zigzag}
+Steve~Y. Oudot and Donald~R. Sheehy.
+\newblock Zigzag zoology: Rips zigzags for homology inference.
+\newblock {\em Foundations of Computational Mathematics}, 15(5):1151--1186,
+  2015.
+
+\bibitem{Patel}
+Amit Patel.
+\newblock Generalized persistence diagrams.
+\newblock {\em Journal of Applied and Computational Topology}, 1(3):397--419,
+  2018.
+
+\bibitem{reynolds1987flocks}
+Craig~W. Reynolds.
+\newblock Flocks, herds and schools: A distributed behavioral model.
+\newblock In {\em Proceedings of the 14th Annual Conference on Computer
+  Graphics and Interactive Techniques}, pages 25--34, 1987.
+
+\end{thebibliography}

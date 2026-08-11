@@ -1,0 +1,528 @@
+\begin{thebibliography}{10}
+
+\bibitem{alvarado2025gmapper}
+Enrique Alvarado, Robin Belton, Emily Fischer, Kang-Ju Lee, Sourabh Palande,
+  Sarah Percival, and Emilie Purvine.
+\newblock {G-Mapper}: Learning a cover in the mapper construction.
+\newblock {\em SIAM Journal on Mathematics of Data Science}, 7(2):572--596,
+  2025.
+\newblock \href {https://doi.org/10.1137/24M1641312}
+  {\path{doi:10.1137/24M1641312}}.
+
+\bibitem{alvarado2024}
+Enrique~G Alvarado, Robin Belton, Kang-Ju Lee, Sourabh Palande, Sarah Percival,
+  Emilie Purvine, and Sarah Tymochko.
+\newblock Any graph is a mapper graph, 2024.
+\newblock URL: \url{https://arxiv.org/abs/2408.11180}, \href
+  {https://arxiv.org/abs/2408.11180} {\path{arXiv:2408.11180}}.
+
+\bibitem{Barmak2011}
+Jonathan~A. Barmak.
+\newblock {\em Algebraic Topology of Finite Topological Spaces and
+  Applications}.
+\newblock Springer, Berlin, Heidelberg, 2011.
+\newblock \href {https://doi.org/10.1007/978-3-642-22003-6}
+  {\path{doi:10.1007/978-3-642-22003-6}}.
+
+\bibitem{Bauer2022}
+Ulrich Bauer, H\r{a}vard~Bakke Bjerkevik, and Benedikt Fluhr.
+\newblock Quasi-universality of {R}eeb graph distances.
+\newblock In Xavier Goaoc and Michael Kerber, editors, {\em 38th International
+  Symposium on Computational Geometry (SoCG 2022)}, volume 224 of {\em Leibniz
+  International Proceedings in Informatics (LIPIcs)}, pages 14:1--14:18,
+  Dagstuhl, Germany, 2022. Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r
+  Informatik.
+\newblock \href {https://doi.org/10.4230/LIPIcs.SoCG.2022.14}
+  {\path{doi:10.4230/LIPIcs.SoCG.2022.14}}.
+
+\bibitem{Bauer2016}
+Ulrich Bauer, Barbara Di~Fabio, and Claudia Landi.
+\newblock An edit distance for {R}eeb graphs.
+\newblock In {\em Proceedings of the Eurographics 2016 Workshop on 3D Object
+  Retrieval}, 3DOR '16, pages 27--34, Goslar, DEU, 2016. Eurographics
+  Association.
+
+\bibitem{Bauer2013}
+Ulrich Bauer, Xiaoyin Ge, and Yusu Wang.
+\newblock Measuring distance between {R}eeb graphs.
+\newblock In {\em Proceedings of the Thirtieth Annual Symposium on
+  Computational Geometry}, SOCG'14, pages 464--473, New York, NY, USA, 2014.
+  Association for Computing Machinery.
+\newblock \href {https://doi.org/10.1145/2582112.2582169}
+  {\path{doi:10.1145/2582112.2582169}}.
+
+\bibitem{Bauer2020}
+Ulrich Bauer, Claudia Landi, and Facundo M{\'e}moli.
+\newblock The {R}eeb graph edit distance is universal.
+\newblock In Sergio Cabello and Danny~Z. Chen, editors, {\em 36th International
+  Symposium on Computational Geometry (SoCG 2020)}, volume 164 of {\em Leibniz
+  International Proceedings in Informatics (LIPIcs)}, pages 15:1--15:16,
+  Dagstuhl, Germany, 2020. Schloss Dagstuhl--Leibniz-Zentrum f{\"u}r
+  Informatik.
+\newblock \href {https://doi.org/10.4230/LIPIcs.SoCG.2020.15}
+  {\path{doi:10.4230/LIPIcs.SoCG.2020.15}}.
+
+\bibitem{Berkouk2021}
+Nicolas Berkouk and Fran\c{c}ois Petit.
+\newblock Ephemeral persistence modules and distance comparison.
+\newblock {\em Algebraic \& Geometric Topology}, 21(1):247--277, February 2021.
+\newblock \href {https://doi.org/10.2140/agt.2021.21.247}
+  {\path{doi:10.2140/agt.2021.21.247}}.
+
+\bibitem{Beurskens2023}
+Thijs Beurskens, Tim Ophelders, Bettina Speckmann, and Kevin Verbeek.
+\newblock Relating interleaving and {F}r\'echet distances via ordered merge
+  trees.
+\newblock In {\em Proceedings of the 2025 Annual ACM-SIAM Symposium on Discrete
+  Algorithms (SODA)}, pages 5027--5050, 2025.
+\newblock \href {https://doi.org/10.1137/1.9781611978322.170}
+  {\path{doi:10.1137/1.9781611978322.170}}.
+
+\bibitem{bjerkevik2020computing}
+H{\aa}vard~Bakke Bjerkevik, Magnus~Bakke Botnan, and Michael Kerber.
+\newblock Computing the interleaving distance is {NP}-hard.
+\newblock {\em Foundations of Computational Mathematics}, 20:1237--1271, 2020.
+\newblock \href {https://doi.org/10.1007/s10208-019-09442-y}
+  {\path{doi:10.1007/s10208-019-09442-y}}.
+
+\bibitem{bjerkevik2017computational}
+H\r{a}vard~Bakke Bjerkevik and Magnus~Bakke Botnan.
+\newblock Computational complexity of the interleaving distance.
+\newblock In Bettina Speckmann and Csaba~D. T\'{o}th, editors, {\em 34th
+  International Symposium on Computational Geometry (SoCG 2018)}, volume~99 of
+  {\em Leibniz International Proceedings in Informatics (LIPIcs)}, pages
+  13:1--13:15, Dagstuhl, Germany, 2018. Schloss Dagstuhl -- Leibniz-Zentrum
+  f{\"u}r Informatik.
+\newblock \href {https://doi.org/10.4230/LIPIcs.SoCG.2018.13}
+  {\path{doi:10.4230/LIPIcs.SoCG.2018.13}}.
+
+\bibitem{Blumberg2023}
+Andrew Blumberg and Michael Lesnick.
+\newblock Universality of the homotopy interleaving distance.
+\newblock {\em Transactions of the American Mathematical Society}, September
+  2023.
+\newblock \href {https://doi.org/10.1090/tran/8738}
+  {\path{doi:10.1090/tran/8738}}.
+
+\bibitem{Bollen2021}
+Brian Bollen, Erin Chambers, Joshua~A. Levine, and Elizabeth Munch.
+\newblock {R}eeb graph metrics from the ground up, 2022.
+\newblock \href {https://arxiv.org/abs/2110.05631} {\path{arXiv:2110.05631}}.
+
+\bibitem{borg2007modern}
+Ingwer Borg and Patrick~JF Groenen.
+\newblock {\em Modern multidimensional scaling: Theory and applications}.
+\newblock Springer Science \& Business Media, 2007.
+\newblock \href {https://doi.org/10.1007/978-1-4757-2711-1}
+  {\path{doi:10.1007/978-1-4757-2711-1}}.
+
+\bibitem{Botnan2020}
+Magnus~Bakke Botnan, Justin Curry, and Elizabeth Munch.
+\newblock A relative theory of interleavings, 2020.
+\newblock \href {https://arxiv.org/abs/2004.14286} {\path{arXiv:2004.14286}}.
+
+\bibitem{Brown2020}
+Adam Brown, Omer Bobrowski, Elizabeth Munch, and Bei Wang.
+\newblock Probabilistic convergence and stability of random mapper graphs.
+\newblock {\em Journal of Applied and Computational Topology}, 5(1):99--140,
+  December 2020.
+\newblock \href {https://doi.org/10.1007/s41468-020-00063-x}
+  {\path{doi:10.1007/s41468-020-00063-x}}.
+
+\bibitem{bubenik2015metrics}
+Peter Bubenik, Vin De~Silva, and Jonathan Scott.
+\newblock Metrics for generalized persistence modules.
+\newblock {\em Foundations of Computational Mathematics}, 15:1501--1531, 2015.
+\newblock \href {https://doi.org/10.1007/s10208-014-9229-5}
+  {\path{doi:10.1007/s10208-014-9229-5}}.
+
+\bibitem{Carriere2018}
+Mathieu Carri{\`e}re, Bertrand Michel, and Steve Oudot.
+\newblock Statistical analysis and parameter selection for mapper.
+\newblock {\em Journal of Machine Learning Research}, 19(12):1--39, 2018.
+\newblock URL: \url{http://jmlr.org/papers/v19/17-291.html}.
+
+\bibitem{Carriere2017}
+Mathieu Carri{\`e}re and Steve Oudot.
+\newblock Local equivalence and intrinsic metrics between {R}eeb graphs.
+\newblock In Boris Aronov and Matthew~J. Katz, editors, {\em 33rd International
+  Symposium on Computational Geometry (SoCG 2017)}, volume~77 of {\em Leibniz
+  International Proceedings in Informatics (LIPIcs)}, pages 25:1--25:15,
+  Dagstuhl, Germany, March 2017. Schloss Dagstuhl--Leibniz-Zentrum fuer
+  Informatik.
+\newblock \href {https://doi.org/10.4230/LIPIcs.SoCG.2017.25}
+  {\path{doi:10.4230/LIPIcs.SoCG.2017.25}}.
+
+\bibitem{Carriere2017b}
+Mathieu Carri{\`e}re and Steve Oudot.
+\newblock Structure and stability of the one-dimensional mapper.
+\newblock {\em Foundations of Computational Mathematics}, 18(6):1333--1396,
+  October 2017.
+\newblock \href {https://doi.org/10.1007/s10208-017-9370-z}
+  {\path{doi:10.1007/s10208-017-9370-z}}.
+
+\bibitem{chalapathi2021adaptive}
+Nithin Chalapathi, Youjia Zhou, and Bei Wang.
+\newblock Adaptive covers for mapper graphs using information criteria.
+\newblock In {\em 2021 IEEE International Conference on Big Data (Big Data)},
+  pages 3789--3800, 2021.
+\newblock \href {https://doi.org/10.1109/BigData52589.2021.9671324}
+  {\path{doi:10.1109/BigData52589.2021.9671324}}.
+
+\bibitem{Chambers2025}
+Erin~W. Chambers and Guangyu Meng.
+\newblock A stable and theoretically grounded gromov-wasserstein distance for
+  reeb graph comparison using persistence images.
+\newblock July 2025.
+\newblock \href {https://arxiv.org/abs/2507.01171} {\path{arXiv:2507.01171}},
+  \href {https://doi.org/10.48550/ARXIV.2507.01171}
+  {\path{doi:10.48550/ARXIV.2507.01171}}.
+
+\bibitem{Chambers2021}
+Erin~Wolf Chambers, Elizabeth Munch, and Tim Ophelders.
+\newblock A family of metrics from the truncated smoothing of {R}eeb graphs.
+\newblock In Kevin Buchin and \'{E}ric Colin~de Verdi\`{e}re, editors, {\em
+  37th International Symposium on Computational Geometry (SoCG 2021)}, volume
+  189 of {\em Leibniz International Proceedings in Informatics (LIPIcs)}, pages
+  22:1--22:17, Dagstuhl, Germany, 2021. Schloss Dagstuhl -- Leibniz-Zentrum
+  f{\"u}r Informatik.
+\newblock \href {https://doi.org/10.4230/LIPIcs.SoCG.2021.22}
+  {\path{doi:10.4230/LIPIcs.SoCG.2021.22}}.
+
+\bibitem{chambers2023bounding}
+Erin~Wolf Chambers, Elizabeth Munch, Sarah Percival, and Bei Wang.
+\newblock Bounding the interleaving distance for mapper graphs with a loss
+  function.
+\newblock {\em Journal of Applied and Computational Topology}, 9(3), July 2025.
+\newblock \href {https://doi.org/10.1007/s41468-025-00215-x}
+  {\path{doi:10.1007/s41468-025-00215-x}}.
+
+\bibitem{Chazal2009}
+Fr{\'e}d{\'e}ric Chazal, David Cohen-Steiner, Marc Glisse, Leonidas~J. Guibas,
+  and Steve~Y. Oudot.
+\newblock Proximity of persistence modules and their diagrams.
+\newblock In {\em Proceedings of the 25th annual symposium on Computational
+  geometry}, SoCG '09, pages 237--246, New York, NY, USA, 2009. ACM.
+\newblock \href {https://doi.org/10.1145/1542362.1542407}
+  {\path{doi:10.1145/1542362.1542407}}.
+
+\bibitem{cover1967nearest}
+Thomas Cover and Peter Hart.
+\newblock Nearest neighbor pattern classification.
+\newblock {\em IEEE transactions on information theory}, 13(1):21--27, 1967.
+\newblock \href {https://doi.org/10.1109/TIT.1967.1053964}
+  {\path{doi:10.1109/TIT.1967.1053964}}.
+
+\bibitem{Cruz2019}
+Joshua Cruz.
+\newblock Metric limits in categories with a flow, 2019.
+\newblock \href {https://arxiv.org/abs/1901.04828} {\path{arXiv:1901.04828}}.
+
+\bibitem{curry2013sheaves}
+Justin Curry.
+\newblock {\em Sheaves, Cosheaves and Applications}.
+\newblock PhD thesis, University of Pennsylvania, 2014.
+\newblock \href {https://arxiv.org/abs/1303.3255} {\path{arXiv:1303.3255}}.
+
+\bibitem{Curry2022}
+Justin Curry, Haibin Hang, Washington Mio, Tom Needham, and Osman~Berat Okutan.
+\newblock Decorated merge trees for persistent topology.
+\newblock {\em Journal of Applied and Computational Topology}, 6(3):371--428,
+  March 2022.
+\newblock \href {https://doi.org/10.1007/s41468-022-00089-3}
+  {\path{doi:10.1007/s41468-022-00089-3}}.
+
+\bibitem{deSilva2016}
+Vin de~Silva, Elizabeth Munch, and Amit Patel.
+\newblock Categorified {R}eeb graphs.
+\newblock {\em Discrete \& Computational Geometry}, pages 1--53, 2016.
+\newblock \href {https://doi.org/10.1007/s00454-016-9763-9}
+  {\path{doi:10.1007/s00454-016-9763-9}}.
+
+\bibitem{deSilva2018}
+Vin {de Silva}, Elizabeth Munch, and Anastasios Stefanou.
+\newblock Theory of interleavings on categories with a flow.
+\newblock {\em Theory and Applications of Categories}, 33(21):583--607, 2018.
+\newblock URL: \url{http://www.tac.mta.ca/tac/volumes/33/21/33-21.pdf}.
+
+\bibitem{FarahbakhshTouli2019}
+Elena {Farahbakhsh Touli} and Yusu Wang.
+\newblock {FPT}-algorithms for computing {G}romov-{H}ausdorff and interleaving
+  distances between trees.
+\newblock In Michael~A. Bender, Ola Svensson, and Grzegorz Herman, editors,
+  {\em 27th Annual European Symposium on Algorithms (ESA 2019)}, volume 144 of
+  {\em Leibniz International Proceedings in Informatics (LIPIcs)}, pages
+  83:1--83:14, Dagstuhl, Germany, 2019. Schloss Dagstuhl--Leibniz-Zentrum fuer
+  Informatik.
+\newblock \href {https://doi.org/10.4230/LIPIcs.ESA.2019.83}
+  {\path{doi:10.4230/LIPIcs.ESA.2019.83}}.
+
+\bibitem{glpk}
+GLPK GNU Project Free Software~Foundation (FSF).
+\newblock URL: \url{https://www.gnu.org/software/glpk/}.
+
+\bibitem{Gao2010}
+Xinbo Gao, Bing Xiao, Dacheng Tao, and Xuelong Li.
+\newblock A survey of graph edit distance.
+\newblock {\em Pattern Analysis and applications}, 13(1):113--129, 2010.
+\newblock \href {https://doi.org/10.1007/s10044-008-0141-y}
+  {\path{doi:10.1007/s10044-008-0141-y}}.
+
+\bibitem{Garey1979}
+Michael~R. Garey and David~S. Johnson.
+\newblock {\em Computers and Intractibility: A Guide to the Theory of
+  NP-Completeness}.
+\newblock W.H. Freeman and Co., 1979.
+
+\bibitem{Gasparovic2024}
+Ellen Gasparovic, Elizabeth Munch, Steve Oudot, Katharine Turner, Bei Wang, and
+  Yusu Wang.
+\newblock Intrinsic interleaving distance for merge trees.
+\newblock {\em La Matematica}, December 2024.
+\newblock \href {https://doi.org/10.1007/s44007-024-00143-9}
+  {\path{doi:10.1007/s44007-024-00143-9}}.
+
+\bibitem{losspapergithubexperiments}
+Ishika Ghosh.
+\newblock \url{https://github.com/ishikaghosh2201/Mapper-Loss-Computation/},
+  2026.
+
+\bibitem{gurobi}
+{Gurobi Optimization, LLC}.
+\newblock Gurobi optimizer reference manual, 2024.
+\newblock URL: \url{https://www.gurobi.com}.
+
+\bibitem{hart2009python}
+William~E Hart.
+\newblock Python optimization modeling objects ({P}yomo).
+\newblock In {\em Operations Research and Cyber-Infrastructure}, pages 3--19.
+  Springer, 2009.
+\newblock \href {https://doi.org/10.1007/978-0-387-88843-9_1}
+  {\path{doi:10.1007/978-0-387-88843-9_1}}.
+
+\bibitem{jeannin1999}
+Sylvie Jeannin and Miroslaw Bober.
+\newblock Description of core experiments for {MPEG}-7 motion/shape.
+\newblock {\em MPEG-7, ISO/IEC/JTC1/SC29/WG11/MPEG99 N}, 2690, 1999.
+
+\bibitem{Kim2023}
+Woojin Kim, Facundo M{\'e}moli, and Anastasios Stefanou.
+\newblock Interleaving by parts: Join decompositions of interleavings and
+  join-assemblage of geodesics.
+\newblock {\em Order}, 41(2):497--537, September 2023.
+\newblock \href {https://doi.org/10.1007/s11083-023-09643-9}
+  {\path{doi:10.1007/s11083-023-09643-9}}.
+
+\bibitem{Kim2023a}
+Woojin Kim and Facundo Mémoli.
+\newblock Extracting persistent clusters in dynamic data via möbius inversion.
+\newblock {\em Discrete \& Computational Geometry}, 71(4):1276--1342, October
+  2023.
+\newblock \href {https://arxiv.org/abs/1712.04064} {\path{arXiv:1712.04064}},
+  \href {https://doi.org/10.1007/s00454-023-00590-1}
+  {\path{doi:10.1007/s00454-023-00590-1}}.
+
+\bibitem{Lan2024}
+Fangfei Lan, Salman Parsa, and Bei Wang.
+\newblock Labeled interleaving distance for {R}eeb graphs.
+\newblock {\em Journal of Applied and Computational Topology}, 8(8):2367--2399,
+  2024.
+\newblock \href {https://doi.org/10.1007/s41468-024-00193-6}
+  {\path{doi:10.1007/s41468-024-00193-6}}.
+
+\bibitem{Lesnick2015}
+Michael Lesnick.
+\newblock The theory of the interleaving distance on multidimensional
+  persistence modules.
+\newblock {\em Foundations of Computational Mathematics}, 15(3):613--650, 2015.
+\newblock \href {https://doi.org/10.1007/s10208-015-9255-y}
+  {\path{doi:10.1007/s10208-015-9255-y}}.
+
+\bibitem{cbc}
+Robin Lougee-Heimer.
+\newblock The {C}ommon {O}ptimization {IN}terface for {O}perations {R}esearch:
+  Promoting open-source software in the operations research community.
+\newblock {\em IBM Journal of Research and Development}, 47(1):57--66, 2003.
+\newblock \href {https://doi.org/10.1147/rd.471.0057}
+  {\path{doi:10.1147/rd.471.0057}}.
+
+\bibitem{Meehan2017}
+Killian Meehan and David Meyer.
+\newblock Interleaving distance as a limit, 2017.
+\newblock \href {https://arxiv.org/abs/1710.11489} {\path{arXiv:1710.11489}}.
+
+\bibitem{mitchell2011pulp}
+Stuart Mitchell, Michael O'Sullivan, and Iain Dunning.
+\newblock {P}u{LP}: a linear programming toolkit for {P}ython.
+\newblock {\em The University of Auckland, Auckland, New Zealand}, 65:25, 2011.
+
+\bibitem{Morozov2013}
+Dmitriy Morozov, Kenes Beketayev, and Gunther Weber.
+\newblock Interleaving distance between merge trees.
+\newblock In {\em Proceedings of TopoInVis}, 2013.
+
+\bibitem{cereeberus}
+Elizabeth Munch, Danielle Barnes, Ishika Ghosh, and Elena~Xinyi Wang.
+\newblock {ceREEBerus}: Reeb graph computations in python.
+\newblock \url{https://munchlab.github.io/ceREEBerus/}, 2026.
+
+\bibitem{Munch2019}
+Elizabeth Munch and Anastasios Stefanou.
+\newblock The $\ell_\infty$-cophenetic metric for phylogenetic trees as an
+  interleaving distance.
+\newblock In {\em Association for Women in Mathematics Series}, pages 109--127.
+  Springer International Publishing, 2019.
+\newblock \href {https://doi.org/10.1007/978-3-030-11566-1_5}
+  {\path{doi:10.1007/978-3-030-11566-1_5}}.
+
+\bibitem{Munch2016}
+Elizabeth Munch and Bei Wang.
+\newblock Convergence between categorical representations of {R}eeb space and
+  {M}apper.
+\newblock In S{\'a}ndor Fekete and Anna Lubiw, editors, {\em 32nd International
+  Symposium on Computational Geometry (SoCG 2016)}, volume~51 of {\em Leibniz
+  International Proceedings in Informatics (LIPIcs)}, pages 53:1--53:16,
+  Dagstuhl, Germany, 2016. Schloss Dagstuhl--Leibniz-Zentrum fuer Informatik.
+\newblock \href {https://doi.org/http://dx.doi.org/10.4230/LIPIcs.SoCG.2016.53}
+  {\path{doi:http://dx.doi.org/10.4230/LIPIcs.SoCG.2016.53}}.
+
+\bibitem{nlab:unnatural_transformation}
+{nLab authors}.
+\newblock Unnatural transformation.
+\newblock \url{https://ncatlab.org/nlab/show/unnatural+transformation},
+  November 2023.
+\newblock
+  \href{https://ncatlab.org/nlab/revision/unnatural+transformation/1}{Revision
+  1}.
+
+\bibitem{Olave2026}
+Astrid~A. Olave and Elizabeth Munch.
+\newblock Bounding the interleaving distance on concrete categories using a
+  loss function, 2026.
+\newblock URL: \url{https://arxiv.org/abs/2601.09034}, \href
+  {https://arxiv.org/abs/2601.09034} {\path{arXiv:2601.09034}}.
+
+\bibitem{Oulhaj2025}
+Ziyad Oulhaj, Mathieu Carrière, and Bertrand Michel.
+\newblock Gromov-wasserstein bound between reeb and mapper graphs.
+\newblock June 2025.
+\newblock \href {https://arxiv.org/abs/2506.02810} {\path{arXiv:2506.02810}},
+  \href {https://doi.org/10.48550/ARXIV.2506.02810}
+  {\path{doi:10.48550/ARXIV.2506.02810}}.
+
+\bibitem{Pegoraro2021}
+Matteo Pegoraro.
+\newblock A graph-matching formulation of the interleaving distance between
+  merge trees.
+\newblock {\em AIMS Mathematics}, 10(6):13025--13081, 2025.
+\newblock \href {https://doi.org/10.3934/math.2025586}
+  {\path{doi:10.3934/math.2025586}}.
+
+\bibitem{Purvine2023}
+Emilie Purvine, Davis Brown, Brett Jefferson, Cliff Joslyn, Brenda Praggastis,
+  Archit Rathore, Madelyn Shapiro, Bei Wang, and Youjia Zhou.
+\newblock Experimental observations of the topology of convolutional neural
+  network activations.
+\newblock In {\em Proceedings of the Thirty-Seventh AAAI Conference on
+  Artificial Intelligence and Thirty-Fifth Conference on Innovative
+  Applications of Artificial Intelligence and Thirteenth Symposium on
+  Educational Advances in Artificial Intelligence}, AAAI'23/IAAI'23/EAAI'23.
+  AAAI Press, 2023.
+\newblock \href {https://doi.org/10.1609/aaai.v37i8.26134}
+  {\path{doi:10.1609/aaai.v37i8.26134}}.
+
+\bibitem{Rathore2023}
+Archit Rathore, Yichu Zhou, Vivek Srikumar, and Bei Wang.
+\newblock Topobert: Exploring the topology of fine-tuned word representations.
+\newblock {\em Information Visualization}, 22:147387162311686, 05 2023.
+\newblock \href {https://doi.org/10.1177/14738716231168671}
+  {\path{doi:10.1177/14738716231168671}}.
+
+\bibitem{Reeb}
+Georges Reeb.
+\newblock Sur les points singuliers d'une forme de {P}faff compl{\`e}tement
+  int{\'e}grable ou d'une fonction num{\'e}rique.
+\newblock {\em Comptes Rendus de l'Acad{\'e}mie des Sciences}, 222:847--849,
+  1946.
+
+\bibitem{riehl2017category}
+Emily Riehl.
+\newblock {\em Category theory in context}.
+\newblock Courier Dover Publications, 2017.
+
+\bibitem{Rizvi2017}
+Abbas~H Rizvi, Pablo~G Camara, Elena~K Kandror, Thomas~J Roberts, Ira Schieren,
+  Tom Maniatis, and Raul Rabadan.
+\newblock Single-cell topological {RNA}-seq analysis reveals insights into
+  cellular differentiation and development.
+\newblock {\em Nature Biotechnology}, 35(6):551--560, May 2017.
+\newblock \href {https://doi.org/10.1038/nbt.3854}
+  {\path{doi:10.1038/nbt.3854}}.
+
+\bibitem{Robinson2020}
+Michael Robinson.
+\newblock Assignments to sheaves of pseudometric spaces.
+\newblock {\em {Compositionality}}, 2, June 2020.
+\newblock \href {https://doi.org/10.32408/compositionality-2-2}
+  {\path{doi:10.32408/compositionality-2-2}}.
+
+\bibitem{Saggar2018}
+Manish Saggar, Olaf Sporns, Javier Gonzalez-Castillo, Peter~A. Bandettini,
+  Gunnar Carlsson, Gary Glover, and Allan~L. Reiss.
+\newblock Towards a new approach to reveal dynamical organization of the brain
+  using topological data analysis.
+\newblock {\em Nature Communications}, 9(1), April 2018.
+\newblock \href {https://doi.org/10.1038/s41467-018-03664-4}
+  {\path{doi:10.1038/s41467-018-03664-4}}.
+
+\bibitem{Scoccola2020}
+Luis Scoccola.
+\newblock {\em Locally persistent categories andmetric properties of
+  interleaving distances}.
+\newblock PhD thesis, Western University, 2020.
+
+\bibitem{Singh2007}
+Gurjeet Singh, Facundo M\'emoli, and Gunnar Carlsson.
+\newblock Topological methods for the analysis of high dimensional data sets
+  and {3D} object recognition.
+\newblock In {\em Eurographics Symposium on Point-Based Graphics}, 2007.
+\newblock \href {https://doi.org/10.2312/SPBG/SPBG07/091-100}
+  {\path{doi:10.2312/SPBG/SPBG07/091-100}}.
+
+\bibitem{van2019kepler}
+Hendrik~Jacob Van~Veen, Nathaniel Saul, David Eargle, and Sam~W Mangham.
+\newblock Kepler mapper: A flexible python implementation of the mapper
+  algorithm.
+\newblock {\em Journal of Open Source Software}, 4(42):1315, 2019.
+\newblock \href {https://doi.org/10.21105/joss.01315}
+  {\path{doi:10.21105/joss.01315}}.
+
+\bibitem{Yan2021a}
+Lin Yan, Talha~Bin Masood, Raghavendra Sridharamurthy, Farhan Rasheed, Vijay
+  Natarajan, Ingrid Hotz, and Bei Wang.
+\newblock Scalar field comparison with topological descriptors: Properties and
+  applications for scientific visualization.
+\newblock {\em Computer Graphics Forum}, 40(3):599--633, jun 2021.
+\newblock \href {https://doi.org/10.1111/cgf.14331}
+  {\path{doi:10.1111/cgf.14331}}.
+
+\bibitem{Yan2019}
+Lin Yan, Yusu Wang, Elizabeth Munch, Ellen Gasparovic, and Bei Wang.
+\newblock A structural average of labeled merge trees for uncertainty
+  visualization.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  26(1):832--842, 2020.
+\newblock \href {https://doi.org/10.1109/TVCG.2019.2934242}
+  {\path{doi:10.1109/TVCG.2019.2934242}}.
+
+\bibitem{zhou2023comparing}
+Youjia Zhou, Helen Jenne, Davis Brown, Madelyn Shapiro, Brett Jefferson, Cliff
+  Joslyn, Gregory Henselman-Petrusek, Brenda Praggastis, Emilie Purvine, and
+  Bei Wang.
+\newblock Comparing mapper graphs of artificial neuron activations.
+\newblock In {\em 2023 Topological Data Analysis and Visualization
+  (TopoInVis)}, pages 41--50, 2023.
+\newblock \href {https://doi.org/10.1109/TopoInVis60193.2023.00011}
+  {\path{doi:10.1109/TopoInVis60193.2023.00011}}.
+
+\end{thebibliography}

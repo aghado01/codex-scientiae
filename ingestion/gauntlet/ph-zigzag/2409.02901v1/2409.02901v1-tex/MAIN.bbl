@@ -1,0 +1,1038 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{124}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Abay et~al\mbox{.}(2019)]%
+        {abay2019chainnet}
+\bibfield{author}{\bibinfo{person}{Nazmiye~Ceren Abay}, \bibinfo{person}{Cuneyt~Gurcan Akcora}, \bibinfo{person}{Yulia~R. Gel}, \bibinfo{person}{Murat Kantarcioglu}, \bibinfo{person}{Umar~D. Islambekov}, \bibinfo{person}{Yahui Tian}, {and} \bibinfo{person}{Bhavani Thuraisingham}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{ChainNet: Learning on Blockchain Graphs with Topological Features}. In \bibinfo{booktitle}{\emph{2019 {IEEE} International Conference on Data Mining, {ICDM} 2019, Beijing, China, November 8-11, 2019}}, \bibfield{editor}{\bibinfo{person}{Jianyong Wang}, \bibinfo{person}{Kyuseok Shim}, {and} \bibinfo{person}{Xindong Wu}} (Eds.). \bibinfo{publisher}{{IEEE}}, \bibinfo{address}{NY, USA}, \bibinfo{pages}{946--951}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1109/ICDM.2019.00105}
+\showDOI{\tempurl}
+
+
+\bibitem[Adams et~al\mbox{.}(2017)]%
+        {adams2017persistence}
+\bibfield{author}{\bibinfo{person}{Henry Adams}, \bibinfo{person}{Tegan Emerson}, \bibinfo{person}{Michael Kirby}, \bibinfo{person}{Rachel Neville}, \bibinfo{person}{Chris Peterson}, \bibinfo{person}{Patrick Shipman}, \bibinfo{person}{Sofya Chepushtanova}, \bibinfo{person}{Eric Hanson}, \bibinfo{person}{Francis Motta}, {and} \bibinfo{person}{Lori Ziegelmeier}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Persistence images: A stable vector representation of persistent homology}.
+\newblock \bibinfo{journal}{\emph{JMLR}}  \bibinfo{volume}{18} (\bibinfo{year}{2017}).
+\newblock
+
+
+\bibitem[Akcora et~al\mbox{.}(2022)]%
+        {akcora2022reduction}
+\bibfield{author}{\bibinfo{person}{Cuneyt~G Akcora}, \bibinfo{person}{Murat Kantarcioglu}, \bibinfo{person}{Yulia Gel}, {and} \bibinfo{person}{Baris Coskunuzer}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Reduction algorithms for persistence diagrams of networks: CoralTDA and PrunIT}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing Systems}}  \bibinfo{volume}{35} (\bibinfo{year}{2022}), \bibinfo{pages}{25046--25059}.
+\newblock
+
+
+\bibitem[Akcora et~al\mbox{.}(2019)]%
+        {bitcoinheist2020}
+\bibfield{author}{\bibinfo{person}{Cuneyt~Gurcan Akcora}, \bibinfo{person}{Yitao Li}, \bibinfo{person}{Yulia~R. Gel}, {and} \bibinfo{person}{Murat Kantarcioglu}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{BitcoinHeist: Topological Data Analysis for Ransomware Detection on the Bitcoin Blockchain}.
+\newblock \bibinfo{journal}{\emph{CoRR}}  \bibinfo{volume}{abs/1906.07852} (\bibinfo{year}{2019}).
+\newblock
+\showeprint[arXiv]{1906.07852}
+\urldef\tempurl%
+\url{http://arxiv.org/abs/1906.07852}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Aktas et~al\mbox{.}(2019)]%
+        {aktas2019persistence}
+\bibfield{author}{\bibinfo{person}{Mehmet~E Aktas}, \bibinfo{person}{Esra Akbas}, {and} \bibinfo{person}{Ahmed El~Fatmaoui}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Persistence homology of networks: methods and applications}.
+\newblock \bibinfo{journal}{\emph{Applied Network Science}} \bibinfo{volume}{4}, \bibinfo{number}{1} (\bibinfo{year}{2019}), \bibinfo{pages}{1--28}.
+\newblock
+
+
+\bibitem[Ali et~al\mbox{.}(2023)]%
+        {ali2023survey}
+\bibfield{author}{\bibinfo{person}{Dashti Ali}, \bibinfo{person}{Aras Asaad}, \bibinfo{person}{Mar{\'{\i}}a~Jos{\'{e}} Jim{\'{e}}nez}, \bibinfo{person}{Vidit Nanda}, \bibinfo{person}{Eduardo Paluzo{-}Hidalgo}, {and} \bibinfo{person}{Manuel Soriano{-}Trigueros}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{A Survey of Vectorization Methods in Topological Data Analysis}.
+\newblock \bibinfo{journal}{\emph{{IEEE} Trans. Pattern Anal. Mach. Intell.}} \bibinfo{volume}{45}, \bibinfo{number}{12} (\bibinfo{year}{2023}), \bibinfo{pages}{14069--14080}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1109/TPAMI.2023.3308391}
+\showDOI{\tempurl}
+
+
+\bibitem[Ameneyro et~al\mbox{.}(2022)]%
+        {ameneyro2024quantum}
+\bibfield{author}{\bibinfo{person}{Bernardo Ameneyro}, \bibinfo{person}{George Siopsis}, {and} \bibinfo{person}{Vasileios Maroulas}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Quantum Persistent Homology for Time Series}. In \bibinfo{booktitle}{\emph{7th {IEEE/ACM} Symposium on Edge Computing, {SEC} 2022, Seattle, WA, USA, December 5-8, 2022}}. \bibinfo{publisher}{{IEEE}}, \bibinfo{pages}{387--392}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1109/SEC54971.2022.00057}
+\showDOI{\tempurl}
+
+
+\bibitem[Am{\'e}zquita et~al\mbox{.}(2023)]%
+        {amezquita2023genomics}
+\bibfield{author}{\bibinfo{person}{Erik~J Am{\'e}zquita}, \bibinfo{person}{Farzana Nasrin}, \bibinfo{person}{Kathleen~M Storey}, {and} \bibinfo{person}{Masato Yoshizawa}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Genomics data analysis via spectral shape and topology}.
+\newblock \bibinfo{journal}{\emph{Plos one}} \bibinfo{volume}{18}, \bibinfo{number}{4} (\bibinfo{year}{2023}), \bibinfo{pages}{e0284820}.
+\newblock
+
+
+\bibitem[Armstrong(2013)]%
+        {armstrong2013basic}
+\bibfield{author}{\bibinfo{person}{Mark~Anthony Armstrong}.} \bibinfo{year}{2013}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Basic topology}}.
+\newblock \bibinfo{publisher}{Springer Science \& Business Media}, \bibinfo{address}{NY, USA}.
+\newblock
+
+
+\bibitem[Bauer(2021)]%
+        {Bauer2021Ripser}
+\bibfield{author}{\bibinfo{person}{Ulrich Bauer}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Ripser: efficient computation of {V}ietoris-{R}ips persistence barcodes}.
+\newblock \bibinfo{journal}{\emph{J. Appl. Comput. Topol.}} \bibinfo{volume}{5}, \bibinfo{number}{3} (\bibinfo{year}{2021}), \bibinfo{pages}{391--423}.
+\newblock
+\showISSN{2367-1726}
+\urldef\tempurl%
+\url{https://doi.org/10.1007/s41468-021-00071-5}
+\showDOI{\tempurl}
+
+
+\bibitem[Bauer et~al\mbox{.}(2017)]%
+        {bauer2017phat}
+\bibfield{author}{\bibinfo{person}{Ulrich Bauer}, \bibinfo{person}{Michael Kerber}, \bibinfo{person}{Jan Reininghaus}, {and} \bibinfo{person}{Hubert Wagner}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Phat--persistent homology algorithms toolbox}.
+\newblock \bibinfo{journal}{\emph{Journal of symbolic computation}}  \bibinfo{volume}{78} (\bibinfo{year}{2017}), \bibinfo{pages}{76--90}.
+\newblock
+
+
+\bibitem[Bayir et~al\mbox{.}(2022)]%
+        {bayir2022topological}
+\bibfield{author}{\bibinfo{person}{Murat~Ali Bayir}, \bibinfo{person}{Kiarash Shamsi}, \bibinfo{person}{Huseyincan Kaynak}, {and} \bibinfo{person}{Cuneyt~Gurcan Akcora}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Topological Forest}.
+\newblock \bibinfo{journal}{\emph{IEEE Access}}  \bibinfo{volume}{10} (\bibinfo{year}{2022}), \bibinfo{pages}{131711--131721}.
+\newblock
+
+
+\bibitem[Bodnar et~al\mbox{.}(2021)]%
+        {bodnar2021deep}
+\bibfield{author}{\bibinfo{person}{Cristian Bodnar}, \bibinfo{person}{C{\u{a}}t{\u{a}}lina Cangea}, {and} \bibinfo{person}{Pietro Li{\`o}}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Deep graph mapper: Seeing graphs through the neural lens}.
+\newblock \bibinfo{journal}{\emph{Frontiers in big Data}}  \bibinfo{volume}{4} (\bibinfo{year}{2021}), \bibinfo{pages}{680535}.
+\newblock
+
+
+\bibitem[Botnan and Lesnick(2022)]%
+        {botnan2022introduction}
+\bibfield{author}{\bibinfo{person}{Magnus~Bakke Botnan} {and} \bibinfo{person}{Michael Lesnick}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{An Introduction to Multiparameter Persistence}.
+\newblock \bibinfo{journal}{\emph{CoRR}}  \bibinfo{volume}{abs/2203.14289} (\bibinfo{year}{2022}).
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.48550/ARXIV.2203.14289}
+\showDOI{\tempurl}
+\showeprint[arXiv]{2203.14289}
+
+
+\bibitem[Bubenik et~al\mbox{.}(2015)]%
+        {bubenik2015statistical}
+\bibfield{author}{\bibinfo{person}{Peter Bubenik} {et~al\mbox{.}}} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Statistical topological data analysis using persistence landscapes.}
+\newblock \bibinfo{journal}{\emph{J. Mach. Learn. Res.}} \bibinfo{volume}{16}, \bibinfo{number}{1} (\bibinfo{year}{2015}), \bibinfo{pages}{77--102}.
+\newblock
+
+
+\bibitem[Bunne(2023)]%
+        {bunne2023optimal}
+\bibfield{author}{\bibinfo{person}{Charlotte Bunne}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Optimal transport in learning, control, and dynamical systems}.
+\newblock \bibinfo{journal}{\emph{ICML Tutorial}} (\bibinfo{year}{2023}).
+\newblock
+
+
+\bibitem[Cai and Wang(2020)]%
+        {cai2020understanding}
+\bibfield{author}{\bibinfo{person}{Chen Cai} {and} \bibinfo{person}{Yusu Wang}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Understanding the power of persistence pairing via permutation test}.
+\newblock \bibinfo{journal}{\emph{arXiv:2001.06058}} (\bibinfo{year}{2020}).
+\newblock
+
+
+\bibitem[Carlsson(2009)]%
+        {Carlsson:2009}
+\bibfield{author}{\bibinfo{person}{G. Carlsson}.} \bibinfo{year}{2009}\natexlab{}.
+\newblock \showarticletitle{Topology and data}.
+\newblock \bibinfo{journal}{\emph{Bull. Amer. Math. Soc.}} \bibinfo{volume}{46}, \bibinfo{number}{2} (\bibinfo{year}{2009}).
+\newblock
+
+
+\bibitem[Carlsson et~al\mbox{.}(2009)]%
+        {carlsson2009computing}
+\bibfield{author}{\bibinfo{person}{Gunnar Carlsson}, \bibinfo{person}{Gurjeet Singh}, {and} \bibinfo{person}{Afra Zomorodian}.} \bibinfo{year}{2009}\natexlab{}.
+\newblock \showarticletitle{Computing multidimensional persistence}. In \bibinfo{booktitle}{\emph{Algorithms and Computation: 20th International Symposium, ISAAC 2009, Honolulu, Hawaii, USA, December 16-18, 2009. Proceedings 20}}. Springer, \bibinfo{pages}{730--739}.
+\newblock
+
+
+\bibitem[Carlsson and Zomorodian(2007)]%
+        {carlsson2007theory}
+\bibfield{author}{\bibinfo{person}{Gunnar Carlsson} {and} \bibinfo{person}{Afra Zomorodian}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{The theory of multidimensional persistence}. In \bibinfo{booktitle}{\emph{Proceedings of the twenty-third annual symposium on Computational geometry}}. \bibinfo{pages}{184--193}.
+\newblock
+
+
+\bibitem[Carlsson et~al\mbox{.}(2004)]%
+        {carlsson2004persistence}
+\bibfield{author}{\bibinfo{person}{Gunnar Carlsson}, \bibinfo{person}{Afra Zomorodian}, \bibinfo{person}{Anne Collins}, {and} \bibinfo{person}{Leonidas Guibas}.} \bibinfo{year}{2004}\natexlab{}.
+\newblock \showarticletitle{Persistence barcodes for shapes}. In \bibinfo{booktitle}{\emph{Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing}}. \bibinfo{pages}{124--135}.
+\newblock
+
+
+\bibitem[Carmody and Sowers(2021)]%
+        {carmody2021topological}
+\bibfield{author}{\bibinfo{person}{Daniel~R Carmody} {and} \bibinfo{person}{Richard~B Sowers}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Topological analysis of traffic pace via persistent homology}.
+\newblock \bibinfo{journal}{\emph{Journal of Physics: Complexity}} \bibinfo{volume}{2}, \bibinfo{number}{2} (\bibinfo{year}{2021}), \bibinfo{pages}{025007}.
+\newblock
+
+
+\bibitem[Carri{\`e}re and Blumberg(2020)]%
+        {carriere2020multiparameter}
+\bibfield{author}{\bibinfo{person}{Mathieu Carri{\`e}re} {and} \bibinfo{person}{Andrew Blumberg}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Multiparameter persistence image for topological machine learning}.
+\newblock \bibinfo{journal}{\emph{NeurIPS}}  \bibinfo{volume}{33} (\bibinfo{year}{2020}).
+\newblock
+
+
+\bibitem[Carri{\`e}re et~al\mbox{.}(2020)]%
+        {carriere2020perslay}
+\bibfield{author}{\bibinfo{person}{Mathieu Carri{\`e}re}, \bibinfo{person}{Fr{\'e}d{\'e}ric Chazal}, \bibinfo{person}{Yuichi Ike}, \bibinfo{person}{Th{\'e}o Lacombe}, \bibinfo{person}{Martin Royer}, {and} \bibinfo{person}{Yuhei Umeda}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Perslay: A neural network layer for persistence diagrams and new graph topological signatures}. In \bibinfo{booktitle}{\emph{AISTATS}}. \bibinfo{pages}{2786--2796}.
+\newblock
+
+
+\bibitem[Carriere et~al\mbox{.}(2017)]%
+        {carriere2017sliced}
+\bibfield{author}{\bibinfo{person}{Mathieu Carriere}, \bibinfo{person}{Marco Cuturi}, {and} \bibinfo{person}{Steve Oudot}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Sliced Wasserstein kernel for persistence diagrams}. In \bibinfo{booktitle}{\emph{International conference on machine learning}}. PMLR, \bibinfo{pages}{664--673}.
+\newblock
+
+
+\bibitem[Chazal et~al\mbox{.}(2015)]%
+        {chazal2015subsampling}
+\bibfield{author}{\bibinfo{person}{Fr{\'e}d{\'e}ric Chazal}, \bibinfo{person}{Brittany Fasy}, \bibinfo{person}{Fabrizio Lecci}, \bibinfo{person}{Bertrand Michel}, \bibinfo{person}{Alessandro Rinaldo}, {and} \bibinfo{person}{Larry Wasserman}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Subsampling methods for persistent homology}. In \bibinfo{booktitle}{\emph{International Conference on Machine Learning}}. PMLR, \bibinfo{pages}{2143--2151}.
+\newblock
+
+
+\bibitem[Chazal et~al\mbox{.}(2014)]%
+        {chazal2014stochastic}
+\bibfield{author}{\bibinfo{person}{Fr{\'e}d{\'e}ric Chazal}, \bibinfo{person}{Brittany~Terese Fasy}, \bibinfo{person}{Fabrizio Lecci}, \bibinfo{person}{Alessandro Rinaldo}, {and} \bibinfo{person}{Larry Wasserman}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Stochastic convergence of persistence landscapes and silhouettes}. In \bibinfo{booktitle}{\emph{Proceedings of the thirtieth annual symposium on Computational geometry}}. \bibinfo{pages}{474--483}.
+\newblock
+
+
+\bibitem[Chazal and Michel(2021)]%
+        {chazal2021introduction}
+\bibfield{author}{\bibinfo{person}{Fr{\'e}d{\'e}ric Chazal} {and} \bibinfo{person}{Bertrand Michel}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{An introduction to topological data analysis: fundamental and practical aspects for data scientists}.
+\newblock \bibinfo{journal}{\emph{Frontiers in Artificial Intelligence}}  \bibinfo{volume}{4} (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[Chen et~al\mbox{.}(2021)]%
+        {chen2021topological}
+\bibfield{author}{\bibinfo{person}{Yuzhou Chen}, \bibinfo{person}{Baris Coskunuzer}, {and} \bibinfo{person}{Yulia Gel}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Topological relational learning on graphs}.
+\newblock \bibinfo{journal}{\emph{NeurIPS}}  \bibinfo{volume}{34} (\bibinfo{year}{2021}), \bibinfo{pages}{27029--27042}.
+\newblock
+
+
+\bibitem[Chen et~al\mbox{.}(2024)]%
+        {chen2024emp}
+\bibfield{author}{\bibinfo{person}{Yuzhou Chen}, \bibinfo{person}{Ignacio Segovia-Dominguez}, \bibinfo{person}{Cuneyt~Gurcan Akcora}, \bibinfo{person}{Zhiwei Zhen}, \bibinfo{person}{Murat Kantarcioglu}, \bibinfo{person}{Yulia Gel}, {and} \bibinfo{person}{Baris Coskunuzer}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{EMP: Effective Multidimensional Persistence for Graph Representation Learning}. In \bibinfo{booktitle}{\emph{Learning on Graphs Conference}}. PMLR, \bibinfo{pages}{24--1}.
+\newblock
+
+
+\bibitem[Chung and Lawson(2019)]%
+        {chung2019persistence}
+\bibfield{author}{\bibinfo{person}{Yu-Min Chung} {and} \bibinfo{person}{Austin Lawson}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Persistence curves: A canonical framework for summarizing persistence diagrams}.
+\newblock \bibinfo{journal}{\emph{arXiv:1904.07768}} (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[Clough et~al\mbox{.}(2020)]%
+        {clough2020topological}
+\bibfield{author}{\bibinfo{person}{James~R Clough}, \bibinfo{person}{Nicholas Byrne}, \bibinfo{person}{Ilkay Oksuz}, \bibinfo{person}{Veronika~A Zimmer}, \bibinfo{person}{Julia~A Schnabel}, {and} \bibinfo{person}{Andrew~P King}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{A topological loss function for deep-learning based image segmentation using persistent homology}.
+\newblock \bibinfo{journal}{\emph{IEEE transactions on pattern analysis and machine intelligence}} \bibinfo{volume}{44}, \bibinfo{number}{12} (\bibinfo{year}{2020}), \bibinfo{pages}{8766--8778}.
+\newblock
+
+
+\bibitem[Cole et~al\mbox{.}(2021)]%
+        {cole2021quantitative}
+\bibfield{author}{\bibinfo{person}{Alex Cole}, \bibinfo{person}{Gregory~J Loges}, {and} \bibinfo{person}{Gary Shiu}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Quantitative and interpretable order parameters for phase transitions from persistent homology}.
+\newblock \bibinfo{journal}{\emph{Physical Review B}} \bibinfo{volume}{104}, \bibinfo{number}{10} (\bibinfo{year}{2021}), \bibinfo{pages}{104426}.
+\newblock
+
+
+\bibitem[Corcoran and Jones(2023)]%
+        {corcoran2023topological}
+\bibfield{author}{\bibinfo{person}{Padraig Corcoran} {and} \bibinfo{person}{Christopher~B Jones}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Topological data analysis for geographical information science using persistent homology}.
+\newblock \bibinfo{journal}{\emph{International Journal of Geographical Information Science}} \bibinfo{volume}{37}, \bibinfo{number}{3} (\bibinfo{year}{2023}), \bibinfo{pages}{712--745}.
+\newblock
+
+
+\bibitem[Coskunuzer et~al\mbox{.}(2024)]%
+        {coskunuzer2024time}
+\bibfield{author}{\bibinfo{person}{Baris Coskunuzer}, \bibinfo{person}{Ignacio Segovia-Dominguez}, \bibinfo{person}{Yuzhou Chen}, {and} \bibinfo{person}{Yulia~R Gel}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Time-Aware Knowledge Representations of Dynamic Objects with Multidimensional Persistence}. In \bibinfo{booktitle}{\emph{Proceedings of the AAAI Conference on Artificial Intelligence}}, Vol.~\bibinfo{volume}{38}. \bibinfo{pages}{11678--11686}.
+\newblock
+
+
+\bibitem[de~Surrel et~al\mbox{.}(2022)]%
+        {de2022ripsnet}
+\bibfield{author}{\bibinfo{person}{Thibault de Surrel}, \bibinfo{person}{Felix Hensel}, \bibinfo{person}{Mathieu Carri{\`e}re}, \bibinfo{person}{Th{\'e}o Lacombe}, \bibinfo{person}{Yuichi Ike}, \bibinfo{person}{Hiroaki Kurihara}, \bibinfo{person}{Marc Glisse}, {and} \bibinfo{person}{Fr{\'e}d{\'e}ric Chazal}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{RipsNet: a general architecture for fast and robust estimation of the persistent homology of point clouds}. In \bibinfo{booktitle}{\emph{Topological, Algebraic and Geometric Learning Workshops 2022}}. PMLR, \bibinfo{pages}{96--106}.
+\newblock
+
+
+\bibitem[Demir et~al\mbox{.}(2022)]%
+        {demir2022todd}
+\bibfield{author}{\bibinfo{person}{Andac Demir}, \bibinfo{person}{Baris Coskunuzer}, \bibinfo{person}{Yulia Gel}, \bibinfo{person}{Ignacio Segovia-Dominguez}, \bibinfo{person}{Yuzhou Chen}, {and} \bibinfo{person}{Bulent Kiziltan}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{ToDD: Topological compound fingerprinting in computer-aided drug discovery}.
+\newblock \bibinfo{journal}{\emph{Neur{IPS}}}  \bibinfo{volume}{35} (\bibinfo{year}{2022}), \bibinfo{pages}{27978--27993}.
+\newblock
+
+
+\bibitem[Dey and Wang(2022)]%
+        {dey2022computational}
+\bibfield{author}{\bibinfo{person}{Tamal~Krishna Dey} {and} \bibinfo{person}{Yusu Wang}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Computational Topology for Data Analysis}}.
+\newblock \bibinfo{publisher}{Cambridge University Press}.
+\newblock
+
+
+\bibitem[Edelsbrunner and Harer(2022)]%
+        {edelsbrunner2022computational}
+\bibfield{author}{\bibinfo{person}{Herbert Edelsbrunner} {and} \bibinfo{person}{John~L Harer}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Computational topology: an introduction}}.
+\newblock \bibinfo{publisher}{American Mathematical Society}.
+\newblock
+
+
+\bibitem[Edelsbrunner et~al\mbox{.}(2002)]%
+        {edelsbrunner2002topological}
+\bibfield{author}{\bibinfo{person}{Herbert Edelsbrunner}, \bibinfo{person}{David Letscher}, {and} \bibinfo{person}{Afra Zomorodian}.} \bibinfo{year}{2002}\natexlab{}.
+\newblock \showarticletitle{Topological Persistence and Simplification}.
+\newblock \bibinfo{journal}{\emph{Discrete Comput Geom}}  \bibinfo{volume}{28} (\bibinfo{year}{2002}), \bibinfo{pages}{511--533}.
+\newblock
+
+
+\bibitem[Fesser et~al\mbox{.}(2024)]%
+        {fesser2024augmentations}
+\bibfield{author}{\bibinfo{person}{Lukas Fesser}, \bibinfo{person}{Sergio~Serrano de Haro~Iv{\'a}nez}, \bibinfo{person}{Karel Devriendt}, \bibinfo{person}{Melanie Weber}, {and} \bibinfo{person}{Renaud Lambiotte}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Augmentations of Forman’s Ricci curvature and their applications in community detection}.
+\newblock \bibinfo{journal}{\emph{Journal of Physics: Complexity}} \bibinfo{volume}{5}, \bibinfo{number}{3} (\bibinfo{year}{2024}), \bibinfo{pages}{035010}.
+\newblock
+
+
+\bibitem[Gabrielsson and Carlsson(2019)]%
+        {gabrielsson2019exposition}
+\bibfield{author}{\bibinfo{person}{Rickard~Br{\"u}el Gabrielsson} {and} \bibinfo{person}{Gunnar Carlsson}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Exposition and interpretation of the topology of neural networks}. In \bibinfo{booktitle}{\emph{2019 18th ieee international conference on machine learning and applications (icmla)}}. IEEE, \bibinfo{pages}{1069--1076}.
+\newblock
+
+
+\bibitem[Garin and Tauzin(2019)]%
+        {garin2019topological}
+\bibfield{author}{\bibinfo{person}{Ad{\'e}lie Garin} {and} \bibinfo{person}{Guillaume Tauzin}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{A topological" reading" lesson: Classification of MNIST using TDA}. In \bibinfo{booktitle}{\emph{2019 18th IEEE International Conference On Machine Learning And Applications (ICMLA)}}. IEEE, \bibinfo{pages}{1551--1556}.
+\newblock
+
+
+\bibitem[Gonzalez-Lorenzo et~al\mbox{.}(2016)]%
+        {gonzalez2016fast}
+\bibfield{author}{\bibinfo{person}{Aldo Gonzalez-Lorenzo}, \bibinfo{person}{Mateusz Juda}, \bibinfo{person}{Alexandra Bac}, \bibinfo{person}{Jean-Luc Mari}, {and} \bibinfo{person}{Pedro Real}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Fast, simple and separable computation of Betti numbers on three-dimensional cubical complexes}. In \bibinfo{booktitle}{\emph{Computational Topology in Image Context: 6th International Workshop, CTIC 2016, Marseille, France, June 15-17, 2016, Proceedings 6}}. Springer, \bibinfo{pages}{130--139}.
+\newblock
+
+
+\bibitem[Goubault-Larrecq(2013)]%
+        {goubault2013non}
+\bibfield{author}{\bibinfo{person}{Jean Goubault-Larrecq}.} \bibinfo{year}{2013}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Non-Hausdorff topology and domain theory: Selected topics in point-set topology}}. Vol.~\bibinfo{volume}{22}.
+\newblock \bibinfo{publisher}{Cambridge University Press}.
+\newblock
+
+
+\bibitem[Guillou et~al\mbox{.}(2023)]%
+        {guillou2023discrete}
+\bibfield{author}{\bibinfo{person}{Pierre Guillou}, \bibinfo{person}{Jules Vidal}, {and} \bibinfo{person}{Julien Tierny}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Discrete morse sandwich: Fast computation of persistence diagrams for scalar data--an algorithm and a benchmark}.
+\newblock \bibinfo{journal}{\emph{IEEE Transactions on Visualization and Computer Graphics}} \bibinfo{volume}{30}, \bibinfo{number}{4} (\bibinfo{year}{2023}), \bibinfo{pages}{1897--1915}.
+\newblock
+
+
+\bibitem[Guo et~al\mbox{.}(2022)]%
+        {guo2022gld}
+\bibfield{author}{\bibinfo{person}{Wei Guo}, \bibinfo{person}{Han Qiu}, \bibinfo{person}{Zimian Liu}, \bibinfo{person}{Junhu Zhu}, {and} \bibinfo{person}{Qingxian Wang}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{GLD-Net: Deep Learning to Detect DDoS Attack via Topological and Traffic Feature Fusion}.
+\newblock \bibinfo{journal}{\emph{Computational Intelligence and Neuroscience}} \bibinfo{volume}{2022}, \bibinfo{number}{1} (\bibinfo{year}{2022}), \bibinfo{pages}{4611331}.
+\newblock
+
+
+\bibitem[Hajij et~al\mbox{.}(2018)]%
+        {hajij2018mog}
+\bibfield{author}{\bibinfo{person}{Mustafa Hajij}, \bibinfo{person}{Bei Wang}, {and} \bibinfo{person}{Paul Rosen}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{{MOG}: Mapper on graphs for relationship preserving clustering}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:1804.11242}} (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[Hajij et~al\mbox{.}(2022)]%
+        {hajij2022topological}
+\bibfield{author}{\bibinfo{person}{Mustafa Hajij}, \bibinfo{person}{Ghada Zamzmi}, \bibinfo{person}{Theodore Papamarkou}, \bibinfo{person}{Nina Miolane}, \bibinfo{person}{Aldo Guzm{\'a}n-S{\'a}enz}, \bibinfo{person}{Karthikeyan~Natesan Ramamurthy}, \bibinfo{person}{Tolga Birdal}, \bibinfo{person}{Tamal~K Dey}, \bibinfo{person}{Soham Mukherjee}, \bibinfo{person}{Shreyas~N Samaga}, {et~al\mbox{.}}} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Topological deep learning: Going beyond graph data}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2206.00606}} (\bibinfo{year}{2022}).
+\newblock
+
+
+\bibitem[Hamilton et~al\mbox{.}(2017)]%
+        {hamilton2017representation}
+\bibfield{author}{\bibinfo{person}{William~L Hamilton}, \bibinfo{person}{Rex Ying}, {and} \bibinfo{person}{Jure Leskovec}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Representation Learning on Graphs: Methods and Applications}.
+\newblock  (\bibinfo{year}{2017}).
+\newblock
+
+
+\bibitem[Hatcher(2002)]%
+        {hatcher2002algebraic}
+\bibfield{author}{\bibinfo{person}{Allen Hatcher}.} \bibinfo{year}{2002}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Algebraic Topology}}.
+\newblock \bibinfo{publisher}{Cambridge University Press}.
+\newblock
+
+
+\bibitem[Hayakawa(2022)]%
+        {hayakawa2022quantum}
+\bibfield{author}{\bibinfo{person}{Ryu Hayakawa}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Quantum algorithm for persistent betti numbers and topological data analysis}.
+\newblock \bibinfo{journal}{\emph{Quantum}}  \bibinfo{volume}{6} (\bibinfo{year}{2022}), \bibinfo{pages}{873}.
+\newblock
+
+
+\bibitem[Hensel et~al\mbox{.}(2021)]%
+        {hensel2021survey}
+\bibfield{author}{\bibinfo{person}{Felix Hensel}, \bibinfo{person}{Michael Moor}, {and} \bibinfo{person}{Bastian Rieck}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{A Survey of Topological Machine Learning Methods}.
+\newblock \bibinfo{journal}{\emph{Frontiers in Artificial Intelligence}}  \bibinfo{volume}{4} (\bibinfo{year}{2021}), \bibinfo{pages}{52}.
+\newblock
+
+
+\bibitem[Hinton and Roweis(2002)]%
+        {hinton2002stochastic}
+\bibfield{author}{\bibinfo{person}{Geoffrey~E Hinton} {and} \bibinfo{person}{Sam Roweis}.} \bibinfo{year}{2002}\natexlab{}.
+\newblock \showarticletitle{Stochastic neighbor embedding}.
+\newblock \bibinfo{journal}{\emph{Advances in neural information processing systems}}  \bibinfo{volume}{15} (\bibinfo{year}{2002}).
+\newblock
+
+
+\bibitem[Hofer et~al\mbox{.}(2020)]%
+        {hofer2020graph}
+\bibfield{author}{\bibinfo{person}{Christoph Hofer}, \bibinfo{person}{Florian Graf}, \bibinfo{person}{Bastian Rieck}, \bibinfo{person}{Marc Niethammer}, {and} \bibinfo{person}{Roland Kwitt}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Graph filtration learning}. In \bibinfo{booktitle}{\emph{ICML}}. \bibinfo{pages}{4314--4323}.
+\newblock
+
+
+\bibitem[Hofer et~al\mbox{.}(2019)]%
+        {hofer2019learning}
+\bibfield{author}{\bibinfo{person}{Christoph~D Hofer}, \bibinfo{person}{Roland Kwitt}, {and} \bibinfo{person}{Marc Niethammer}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Learning Representations of Persistence Barcodes.}
+\newblock \bibinfo{journal}{\emph{JMLR}} \bibinfo{volume}{20}, \bibinfo{number}{126} (\bibinfo{year}{2019}), \bibinfo{pages}{1--45}.
+\newblock
+
+
+\bibitem[Hu et~al\mbox{.}(2019)]%
+        {hu2019topology}
+\bibfield{author}{\bibinfo{person}{Xiaoling Hu}, \bibinfo{person}{Fuxin Li}, \bibinfo{person}{Dimitris Samaras}, {and} \bibinfo{person}{Chao Chen}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Topology-preserving deep image segmentation}.
+\newblock \bibinfo{journal}{\emph{Advances in neural information processing systems}}  \bibinfo{volume}{32} (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[Immonen et~al\mbox{.}(2024)]%
+        {immonen2024going}
+\bibfield{author}{\bibinfo{person}{Johanna Immonen}, \bibinfo{person}{Amauri Souza}, {and} \bibinfo{person}{Vikas Garg}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Going beyond persistent homology using persistent homology}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing Systems}}  \bibinfo{volume}{36} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Ismail et~al\mbox{.}(2022)]%
+        {ismail2022early}
+\bibfield{author}{\bibinfo{person}{Mohd~Sabri Ismail}, \bibinfo{person}{Mohd Salmi~Md Noorani}, \bibinfo{person}{Munira Ismail}, \bibinfo{person}{Fatimah~Abdul Razak}, {and} \bibinfo{person}{Mohd~Almie Alias}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Early warning signals of financial crises using persistent homology}.
+\newblock \bibinfo{journal}{\emph{Physica A: Statistical Mechanics and Its Applications}}  \bibinfo{volume}{586} (\bibinfo{year}{2022}), \bibinfo{pages}{126459}.
+\newblock
+
+
+\bibitem[Kaji et~al\mbox{.}(2020)]%
+        {kaji2020cubical}
+\bibfield{author}{\bibinfo{person}{Shizuo Kaji}, \bibinfo{person}{Takeki Sudo}, {and} \bibinfo{person}{Kazushi Ahara}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Cubical ripser: Software for computing persistent homology of image and volume data}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2005.12692}} (\bibinfo{year}{2020}).
+\newblock
+
+
+\bibitem[Kannan et~al\mbox{.}(2019)]%
+        {kannan2019persistent}
+\bibfield{author}{\bibinfo{person}{Harish Kannan}, \bibinfo{person}{Emil Saucan}, \bibinfo{person}{Indrava Roy}, {and} \bibinfo{person}{Areejit Samal}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Persistent homology of unweighted complex networks via discrete Morse theory}.
+\newblock \bibinfo{journal}{\emph{Scientific reports}} \bibinfo{volume}{9}, \bibinfo{number}{1} (\bibinfo{year}{2019}), \bibinfo{pages}{13817}.
+\newblock
+
+
+\bibitem[Krishnapriyan et~al\mbox{.}(2021)]%
+        {krishnapriyan2021machine}
+\bibfield{author}{\bibinfo{person}{Aditi~S Krishnapriyan}, \bibinfo{person}{Joseph Montoya}, \bibinfo{person}{Maciej Haranczyk}, \bibinfo{person}{Jens Hummelsh{\o}j}, {and} \bibinfo{person}{Dmitriy Morozov}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Machine learning with persistent homology and chemical word embeddings improves prediction accuracy and interpretability in metal-organic frameworks}.
+\newblock \bibinfo{journal}{\emph{Scientific reports}} \bibinfo{volume}{11}, \bibinfo{number}{1} (\bibinfo{year}{2021}), \bibinfo{pages}{8888}.
+\newblock
+
+
+\bibitem[Kusano et~al\mbox{.}(2016)]%
+        {kusano2016persistence}
+\bibfield{author}{\bibinfo{person}{Genki Kusano}, \bibinfo{person}{Yasuaki Hiraoka}, {and} \bibinfo{person}{Kenji Fukumizu}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Persistence weighted Gaussian kernel for topological data analysis}. In \bibinfo{booktitle}{\emph{ICML}}. \bibinfo{pages}{2004--2013}.
+\newblock
+
+
+\bibitem[Li et~al\mbox{.}(2015)]%
+        {li2015identification}
+\bibfield{author}{\bibinfo{person}{Li Li}, \bibinfo{person}{Wei-Yi Cheng}, \bibinfo{person}{Benjamin~S Glicksberg}, \bibinfo{person}{Omri Gottesman}, \bibinfo{person}{Ronald Tamler}, \bibinfo{person}{Rong Chen}, \bibinfo{person}{Erwin~P Bottinger}, {and} \bibinfo{person}{Joel~T Dudley}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Identification of type 2 diabetes subgroups through topological analysis of patient similarity}.
+\newblock \bibinfo{journal}{\emph{Science translational medicine}} \bibinfo{volume}{7}, \bibinfo{number}{311} (\bibinfo{year}{2015}), \bibinfo{pages}{311ra174--311ra174}.
+\newblock
+
+
+\bibitem[Li et~al\mbox{.}(2020)]%
+        {li2020dissecting}
+\bibfield{author}{\bibinfo{person}{Yitao Li}, \bibinfo{person}{Umar Islambekov}, \bibinfo{person}{Cuneyt Akcora}, \bibinfo{person}{Ekaterina Smirnova}, \bibinfo{person}{Yulia~R Gel}, {and} \bibinfo{person}{Murat Kantarcioglu}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Dissecting ethereum blockchain analytics: What we learn from topology and geometry of the ethereum graph?}. In \bibinfo{booktitle}{\emph{Proceedings of the 2020 SIAM international conference on data mining}}. SIAM, \bibinfo{pages}{523--531}.
+\newblock
+
+
+\bibitem[Loiseaux et~al\mbox{.}(2024a)]%
+        {loiseaux2024framework}
+\bibfield{author}{\bibinfo{person}{David Loiseaux}, \bibinfo{person}{Mathieu Carri{\`e}re}, {and} \bibinfo{person}{Andrew Blumberg}.} \bibinfo{year}{2024}\natexlab{a}.
+\newblock \showarticletitle{A framework for fast and stable representations of multiparameter persistent homology decompositions}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing Systems}}  \bibinfo{volume}{36} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Loiseaux et~al\mbox{.}(2024b)]%
+        {loiseaux2024stable}
+\bibfield{author}{\bibinfo{person}{David Loiseaux}, \bibinfo{person}{Luis Scoccola}, \bibinfo{person}{Mathieu Carri{\`e}re}, \bibinfo{person}{Magnus~Bakke Botnan}, {and} \bibinfo{person}{Steve Oudot}.} \bibinfo{year}{2024}\natexlab{b}.
+\newblock \showarticletitle{Stable vectorization of multiparameter persistent homology using signed barcodes as measures}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing Systems}}  \bibinfo{volume}{36} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[L{\'o}pez(2024)]%
+        {lopez2024point}
+\bibfield{author}{\bibinfo{person}{Rafael L{\'o}pez}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Point-set Topology: A Working Textbook}}.
+\newblock \bibinfo{publisher}{Springer Nature}.
+\newblock
+
+
+\bibitem[Luo et~al\mbox{.}(2024)]%
+        {luo2024improving}
+\bibfield{author}{\bibinfo{person}{Yuankai Luo}, \bibinfo{person}{Lei Shi}, {and} \bibinfo{person}{Veronika Thost}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Improving self-supervised molecular representation learning using persistent homology}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing Systems}}  \bibinfo{volume}{36} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Ma et~al\mbox{.}(2022)]%
+        {ma2022rethinking}
+\bibfield{author}{\bibinfo{person}{Xu Ma}, \bibinfo{person}{Can Qin}, \bibinfo{person}{Haoxuan You}, \bibinfo{person}{Haoxi Ran}, {and} \bibinfo{person}{Yun Fu}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Rethinking Network Design and Local Geometry in Point Cloud: A Simple Residual MLP Framework}. In \bibinfo{booktitle}{\emph{International Conference on Learning Representations}}.
+\newblock
+
+
+\bibitem[Malott et~al\mbox{.}(2020)]%
+        {malott2020topology}
+\bibfield{author}{\bibinfo{person}{Nicholas~O Malott}, \bibinfo{person}{Aaron~M Sens}, {and} \bibinfo{person}{Philip~A Wilsey}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Topology preserving data reduction for computing persistent homology}. In \bibinfo{booktitle}{\emph{2020 IEEE International Conference on Big Data (Big Data)}}. IEEE, \bibinfo{pages}{2681--2690}.
+\newblock
+
+
+\bibitem[Matsumoto(2002)]%
+        {matsumoto2002introduction}
+\bibfield{author}{\bibinfo{person}{Yukio Matsumoto}.} \bibinfo{year}{2002}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{An introduction to Morse theory}}. Vol.~\bibinfo{volume}{208}.
+\newblock \bibinfo{publisher}{American Mathematical Soc.}
+\newblock
+
+
+\bibitem[McInnes et~al\mbox{.}(2018)]%
+        {mcinnes2018umap}
+\bibfield{author}{\bibinfo{person}{Leland McInnes}, \bibinfo{person}{John Healy}, {and} \bibinfo{person}{James Melville}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Umap: Uniform manifold approximation and projection for dimension reduction}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:1802.03426}} (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[Milosavljevi{\'c} et~al\mbox{.}(2011)]%
+        {milosavljevic2011zigzag}
+\bibfield{author}{\bibinfo{person}{Nikola Milosavljevi{\'c}}, \bibinfo{person}{Dmitriy Morozov}, {and} \bibinfo{person}{Primoz Skraba}.} \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Zigzag persistent homology in matrix multiplication time}. In \bibinfo{booktitle}{\emph{{S}o{CG}}}. \bibinfo{pages}{216--225}.
+\newblock
+
+
+\bibitem[Morozov(2005)]%
+        {morozov2005persistence}
+\bibfield{author}{\bibinfo{person}{Dmitriy Morozov}.} \bibinfo{year}{2005}\natexlab{}.
+\newblock \showarticletitle{Persistence algorithm takes cubic time in worst case}.
+\newblock \bibinfo{journal}{\emph{BioGeometry News, Dept. Comput. Sci., Duke Univ}}  \bibinfo{volume}{2} (\bibinfo{year}{2005}).
+\newblock
+
+
+\bibitem[Mukherjee et~al\mbox{.}(2022)]%
+        {mukherjee2022determining}
+\bibfield{author}{\bibinfo{person}{Soham Mukherjee}, \bibinfo{person}{Darren Wethington}, \bibinfo{person}{Tamal~K Dey}, {and} \bibinfo{person}{Jayajit Das}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Determining clinically relevant features in cytometry data using persistent homology}.
+\newblock \bibinfo{journal}{\emph{PLoS Computational Biology}} \bibinfo{volume}{18}, \bibinfo{number}{3} (\bibinfo{year}{2022}), \bibinfo{pages}{e1009931}.
+\newblock
+
+
+\bibitem[Munkres(2018)]%
+        {munkres2018elements}
+\bibfield{author}{\bibinfo{person}{James~R Munkres}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Elements of algebraic topology}}.
+\newblock \bibinfo{publisher}{CRC press}.
+\newblock
+
+
+\bibitem[Nicolau et~al\mbox{.}(2011)]%
+        {nicolau2011topology}
+\bibfield{author}{\bibinfo{person}{Monica Nicolau}, \bibinfo{person}{Arnold~J Levine}, {and} \bibinfo{person}{Gunnar Carlsson}.} \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Topology based data analysis identifies a subgroup of breast cancers with a unique mutational profile and excellent survival}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the National Academy of Sciences}} \bibinfo{volume}{108}, \bibinfo{number}{17} (\bibinfo{year}{2011}), \bibinfo{pages}{7265--7270}.
+\newblock
+
+
+\bibitem[Obayashi et~al\mbox{.}(2022)]%
+        {obayashi2022persistent}
+\bibfield{author}{\bibinfo{person}{Ippei Obayashi}, \bibinfo{person}{Takenobu Nakamura}, {and} \bibinfo{person}{Yasuaki Hiraoka}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Persistent homology analysis for materials research and persistent homology software: HomCloud}.
+\newblock \bibinfo{journal}{\emph{journal of the physical society of japan}} \bibinfo{volume}{91}, \bibinfo{number}{9} (\bibinfo{year}{2022}), \bibinfo{pages}{091013}.
+\newblock
+
+
+\bibitem[Onus and Robins(2022)]%
+        {onus2022quantifying}
+\bibfield{author}{\bibinfo{person}{Adam Onus} {and} \bibinfo{person}{Vanessa Robins}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Quantifying the homology of periodic cell complexes}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2208.09223}} (\bibinfo{year}{2022}).
+\newblock
+
+
+\bibitem[Otter et~al\mbox{.}(2017)]%
+        {otter2017roadmap}
+\bibfield{author}{\bibinfo{person}{Nina Otter}, \bibinfo{person}{Mason~A Porter}, \bibinfo{person}{Ulrike Tillmann}, \bibinfo{person}{Peter Grindrod}, {and} \bibinfo{person}{Heather~A Harrington}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{A roadmap for the computation of persistent homology}.
+\newblock \bibinfo{journal}{\emph{EPJ Data Science}}  \bibinfo{volume}{6} (\bibinfo{year}{2017}), \bibinfo{pages}{1--38}.
+\newblock
+
+
+\bibitem[Papamarkou et~al\mbox{.}(2024)]%
+        {papamarkou2024position}
+\bibfield{author}{\bibinfo{person}{Theodore Papamarkou}, \bibinfo{person}{Tolga Birdal}, \bibinfo{person}{Michael Bronstein}, \bibinfo{person}{Gunnar Carlsson}, \bibinfo{person}{Justin Curry}, \bibinfo{person}{Yue Gao}, \bibinfo{person}{Mustafa Hajij}, \bibinfo{person}{Roland Kwitt}, \bibinfo{person}{Pietro Li{\`o}}, \bibinfo{person}{Paolo Di~Lorenzo}, {et~al\mbox{.}}} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Position paper: Challenges and opportunities in topological deep learning}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2402.08871}} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Papillon et~al\mbox{.}(2023)]%
+        {papillon2023architectures}
+\bibfield{author}{\bibinfo{person}{Mathilde Papillon}, \bibinfo{person}{Sophia Sanborn}, \bibinfo{person}{Mustafa Hajij}, {and} \bibinfo{person}{Nina Miolane}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Architectures of Topological Deep Learning: A Survey of Message-Passing Topological Neural Networks}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2304.10031}} (\bibinfo{year}{2023}).
+\newblock
+
+
+\bibitem[Peng et~al\mbox{.}(2024)]%
+        {peng2024phg}
+\bibfield{author}{\bibinfo{person}{Yaopeng Peng}, \bibinfo{person}{Hongxiao Wang}, \bibinfo{person}{Milan Sonka}, {and} \bibinfo{person}{Danny~Z Chen}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{PHG-Net: Persistent Homology Guided Medical Image Classification}. In \bibinfo{booktitle}{\emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}}. \bibinfo{pages}{7583--7592}.
+\newblock
+
+
+\bibitem[Project(2024)]%
+        {gudhiUrm}
+\bibfield{author}{\bibinfo{person}{The~GUDHI Project}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{GUDHI User and Reference Manual} (\bibinfo{edition}{3.10.1} ed.)}.
+\newblock \bibinfo{publisher}{GUDHI Editorial Board}.
+\newblock
+\urldef\tempurl%
+\url{https://gudhi.inria.fr/doc/3.10.1/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Pun et~al\mbox{.}(2022)]%
+        {pun2022persistent}
+\bibfield{author}{\bibinfo{person}{Chi~Seng Pun}, \bibinfo{person}{Si~Xian Lee}, {and} \bibinfo{person}{Kelin Xia}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Persistent-homology-based machine learning: a survey and a comparative study}.
+\newblock \bibinfo{journal}{\emph{Artificial Intelligence Review}} \bibinfo{volume}{55}, \bibinfo{number}{7} (\bibinfo{year}{2022}), \bibinfo{pages}{5169--5213}.
+\newblock
+
+
+\bibitem[Purvine et~al\mbox{.}(2023)]%
+        {purvine2023experimental}
+\bibfield{author}{\bibinfo{person}{Emilie Purvine}, \bibinfo{person}{Davis Brown}, \bibinfo{person}{Brett Jefferson}, \bibinfo{person}{Cliff Joslyn}, \bibinfo{person}{Brenda Praggastis}, \bibinfo{person}{Archit Rathore}, \bibinfo{person}{Madelyn Shapiro}, \bibinfo{person}{Bei Wang}, {and} \bibinfo{person}{Youjia Zhou}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Experimental observations of the topology of convolutional neural network activations}. In \bibinfo{booktitle}{\emph{Proceedings of the AAAI Conference on Artificial Intelligence}}, Vol.~\bibinfo{volume}{37}. \bibinfo{pages}{9470--9479}.
+\newblock
+
+
+\bibitem[Qi et~al\mbox{.}(2017)]%
+        {qi2017pointnet}
+\bibfield{author}{\bibinfo{person}{Charles~R Qi}, \bibinfo{person}{Hao Su}, \bibinfo{person}{Kaichun Mo}, {and} \bibinfo{person}{Leonidas~J Guibas}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Pointnet: Deep learning on point sets for 3d classification and segmentation}. In \bibinfo{booktitle}{\emph{Proceedings of the IEEE conference on computer vision and pattern recognition}}. \bibinfo{pages}{652--660}.
+\newblock
+
+
+\bibitem[Rabad{\'a}n and Blumberg(2019)]%
+        {rabadan2019topological}
+\bibfield{author}{\bibinfo{person}{Ra{\'u}l Rabad{\'a}n} {and} \bibinfo{person}{Andrew~J Blumberg}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Topological data analysis for genomics and evolution: topology in biology}}.
+\newblock \bibinfo{publisher}{Cambridge University Press}.
+\newblock
+
+
+\bibitem[Rabad{\'a}n et~al\mbox{.}(2020)]%
+        {rabadan2020identification}
+\bibfield{author}{\bibinfo{person}{Ra{\'u}l Rabad{\'a}n}, \bibinfo{person}{Yamina Mohamedi}, \bibinfo{person}{Udi Rubin}, \bibinfo{person}{Tim Chu}, \bibinfo{person}{Adam~N Alghalith}, \bibinfo{person}{Oliver Elliott}, \bibinfo{person}{Luis Arn{\'e}s}, \bibinfo{person}{Santiago Cal}, \bibinfo{person}{{\'A}lvaro~J Obaya}, \bibinfo{person}{Arnold~J Levine}, {et~al\mbox{.}}} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Identification of relevant genetic alterations in cancer using topological data analysis}.
+\newblock \bibinfo{journal}{\emph{Nature communications}} \bibinfo{volume}{11}, \bibinfo{number}{1} (\bibinfo{year}{2020}), \bibinfo{pages}{3808}.
+\newblock
+
+
+\bibitem[Rafique and Mir(2020)]%
+        {rafique2020topological}
+\bibfield{author}{\bibinfo{person}{Omar Rafique} {and} \bibinfo{person}{Ajaz~Hussain Mir}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{A topological approach for cancer subtyping from gene expression data}.
+\newblock \bibinfo{journal}{\emph{Journal of biomedical informatics}}  \bibinfo{volume}{102} (\bibinfo{year}{2020}), \bibinfo{pages}{103357}.
+\newblock
+
+
+\bibitem[Rather and Chachoo(2022)]%
+        {rather2022umap}
+\bibfield{author}{\bibinfo{person}{Arif~Ahmad Rather} {and} \bibinfo{person}{Manzoor~Ahmad Chachoo}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{UMAP guided topological analysis of transcriptomic data for cancer subtyping}.
+\newblock \bibinfo{journal}{\emph{International Journal of Information Technology}} \bibinfo{volume}{14}, \bibinfo{number}{6} (\bibinfo{year}{2022}), \bibinfo{pages}{2855--2865}.
+\newblock
+
+
+\bibitem[Rizvi et~al\mbox{.}(2017)]%
+        {rizvi2017single}
+\bibfield{author}{\bibinfo{person}{Abbas~H Rizvi}, \bibinfo{person}{Pablo~G Camara}, \bibinfo{person}{Elena~K Kandror}, \bibinfo{person}{Thomas~J Roberts}, \bibinfo{person}{Ira Schieren}, \bibinfo{person}{Tom Maniatis}, {and} \bibinfo{person}{Raul Rabadan}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Single-cell topological RNA-seq analysis reveals insights into cellular differentiation and development}.
+\newblock \bibinfo{journal}{\emph{Nature biotechnology}} \bibinfo{volume}{35}, \bibinfo{number}{6} (\bibinfo{year}{2017}), \bibinfo{pages}{551--560}.
+\newblock
+
+
+\bibitem[Robles et~al\mbox{.}(2017)]%
+        {robles2017shape}
+\bibfield{author}{\bibinfo{person}{Alejandro Robles}, \bibinfo{person}{Mustafa Hajij}, {and} \bibinfo{person}{Paul Rosen}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{The shape of an image: A study of mapper on images}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:1710.09008}} (\bibinfo{year}{2017}).
+\newblock
+
+
+\bibitem[Shamsi et~al\mbox{.}(2024)]%
+        {shamsi2024graphpulse}
+\bibfield{author}{\bibinfo{person}{Kiarash Shamsi}, \bibinfo{person}{Farimah Poursafaei}, \bibinfo{person}{Shenyang Huang}, \bibinfo{person}{Bao Tran~Gia Ngo}, \bibinfo{person}{Baris Coskunuzer}, {and} \bibinfo{person}{Cuneyt~Gurcan Akcora}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{GraphPulse: Topological representations for temporal graph property prediction}. In \bibinfo{booktitle}{\emph{The Twelfth International Conference on Learning Representations}}.
+\newblock
+
+
+\bibitem[Shlens(2014)]%
+        {pcatutorial}
+\bibfield{author}{\bibinfo{person}{Jonathon Shlens}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{A tutorial on principal component analysis}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:1404.1100}} (\bibinfo{year}{2014}).
+\newblock
+
+
+\bibitem[Simi(2024)]%
+        {simiMapper}
+\bibfield{author}{\bibinfo{person}{Luca Simi}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{{A Scalable Implementation of Mapper for Topological Data Analysis via Vantage Point Trees}}.
+\newblock
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.5281/zenodo.10659652}
+\showDOI{\tempurl}
+
+
+\bibitem[Singh et~al\mbox{.}(2007)]%
+        {singh2007topological}
+\bibfield{author}{\bibinfo{person}{Gurjeet Singh}, \bibinfo{person}{Facundo M{\'e}moli}, {and} \bibinfo{person}{Gunnar~E Carlsson}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{Topological methods for the analysis of high dimensional data sets and 3d object recognition.}. In \bibinfo{booktitle}{\emph{Eurographics Symposium on Point-Based Graphics}}. \bibinfo{pages}{91--100}.
+\newblock
+
+
+\bibitem[Singh et~al\mbox{.}(2023)]%
+        {singh2023topological}
+\bibfield{author}{\bibinfo{person}{Yashbir Singh}, \bibinfo{person}{Colleen~M Farrelly}, \bibinfo{person}{Quincy~A Hathaway}, \bibinfo{person}{Tim Leiner}, \bibinfo{person}{Jaidip Jagtap}, \bibinfo{person}{Gunnar~E Carlsson}, {and} \bibinfo{person}{Bradley~J Erickson}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Topological data analysis in medical imaging: current state of the art}.
+\newblock \bibinfo{journal}{\emph{Insights into Imaging}} \bibinfo{volume}{14}, \bibinfo{number}{1} (\bibinfo{year}{2023}), \bibinfo{pages}{58}.
+\newblock
+
+
+\bibitem[Skaf and Laubenbacher(2022)]%
+        {skaf2022topological}
+\bibfield{author}{\bibinfo{person}{Yara Skaf} {and} \bibinfo{person}{Reinhard Laubenbacher}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Topological data analysis in biomedicine: A review}.
+\newblock \bibinfo{journal}{\emph{Journal of Biomedical Informatics}}  \bibinfo{volume}{130} (\bibinfo{year}{2022}), \bibinfo{pages}{104082}.
+\newblock
+
+
+\bibitem[Somasundaram et~al\mbox{.}(2021)]%
+        {somasundaram2021benchmarking}
+\bibfield{author}{\bibinfo{person}{Eashwar~V Somasundaram}, \bibinfo{person}{Shael~E Brown}, \bibinfo{person}{Adam Litzler}, \bibinfo{person}{Jacob~G Scott}, {and} \bibinfo{person}{Raoul~R Wadhwa}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Benchmarking r packages for calculation of persistent homology}.
+\newblock \bibinfo{journal}{\emph{The R journal}} \bibinfo{volume}{13}, \bibinfo{number}{1} (\bibinfo{year}{2021}), \bibinfo{pages}{184}.
+\newblock
+
+
+\bibitem[Spannaus et~al\mbox{.}(2024)]%
+        {spannaus2024topological}
+\bibfield{author}{\bibinfo{person}{Adam Spannaus}, \bibinfo{person}{Heidi~A Hanson}, \bibinfo{person}{Georgia Tourassi}, {and} \bibinfo{person}{Lynne Penberthy}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Topological Interpretability for Deep Learning}. In \bibinfo{booktitle}{\emph{Proceedings of the Platform for Advanced Scientific Computing Conference}}. \bibinfo{pages}{1--11}.
+\newblock
+
+
+\bibitem[Tausz et~al\mbox{.}(2014)]%
+        {Javaplex}
+\bibfield{author}{\bibinfo{person}{Andrew Tausz}, \bibinfo{person}{Mikael Vejdemo-Johansson}, {and} \bibinfo{person}{Henry Adams}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Java{P}lex: {A} research software package for persistent (co)homology}. In \bibinfo{booktitle}{\emph{Proceedings of ICMS 2014}} \emph{(\bibinfo{series}{Lecture Notes in Computer Science 8592})}, \bibfield{editor}{\bibinfo{person}{Han Hong} {and} \bibinfo{person}{Chee Yap}} (Eds.). \bibinfo{pages}{129--136}.
+\newblock
+\newblock
+\shownote{Software available at \url{http://appliedtopology.github.io/javaplex/}}.
+
+
+\bibitem[Tauzin et~al\mbox{.}(2021)]%
+        {giottotda}
+\bibfield{author}{\bibinfo{person}{Guillaume Tauzin}, \bibinfo{person}{Umberto Lupo}, \bibinfo{person}{Lewis Tunstall}, \bibinfo{person}{Julian~Burella PÃ©rez}, \bibinfo{person}{Matteo Caorsi}, \bibinfo{person}{Anibal~M. Medina-Mardones}, \bibinfo{person}{Alberto Dassatti}, {and} \bibinfo{person}{Kathryn Hess}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{giotto-tda: : A Topological Data Analysis Toolkit for Machine Learning and Data Exploration}.
+\newblock \bibinfo{journal}{\emph{Journal of Machine Learning Research}} \bibinfo{volume}{22}, \bibinfo{number}{39} (\bibinfo{year}{2021}), \bibinfo{pages}{1--6}.
+\newblock
+\urldef\tempurl%
+\url{http://jmlr.org/papers/v22/20-325.html}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Tauzin et~al\mbox{.}(2020)]%
+        {tauzin2020giottotda}
+\bibfield{author}{\bibinfo{person}{Guillaume Tauzin}, \bibinfo{person}{Umberto Lupo}, \bibinfo{person}{Lewis Tunstall}, \bibinfo{person}{Julian~Burella Pérez}, \bibinfo{person}{Matteo Caorsi}, \bibinfo{person}{Anibal Medina-Mardones}, \bibinfo{person}{Alberto Dassatti}, {and} \bibinfo{person}{Kathryn Hess}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{title}{giotto-tda: A Topological Data Analysis Toolkit for Machine Learning and Data Exploration}.
+\newblock
+\newblock
+\showeprint[arxiv]{2004.02551}~[cs.LG]
+
+
+\bibitem[Tralie et~al\mbox{.}(2018)]%
+        {ctralie2018ripser}
+\bibfield{author}{\bibinfo{person}{Christopher Tralie}, \bibinfo{person}{Nathaniel Saul}, {and} \bibinfo{person}{Rann Bar-On}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{{Ripser.py}: A Lean Persistent Homology Library for Python}.
+\newblock \bibinfo{journal}{\emph{The Journal of Open Source Software}} \bibinfo{volume}{3}, \bibinfo{number}{29} (\bibinfo{date}{Sep} \bibinfo{year}{2018}), \bibinfo{pages}{925}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.21105/joss.00925}
+\showDOI{\tempurl}
+
+
+\bibitem[Turkes et~al\mbox{.}(2022)]%
+        {turkes2022effectiveness}
+\bibfield{author}{\bibinfo{person}{Renata Turkes}, \bibinfo{person}{Guido~F Montufar}, {and} \bibinfo{person}{Nina Otter}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{On the effectiveness of persistent homology}.
+\newblock \bibinfo{journal}{\emph{Advances in Neural Information Processing Systems}}  \bibinfo{volume}{35} (\bibinfo{year}{2022}), \bibinfo{pages}{35432--35448}.
+\newblock
+
+
+\bibitem[Van Der~Maaten(2014)]%
+        {van2014accelerating}
+\bibfield{author}{\bibinfo{person}{Laurens Van Der~Maaten}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Accelerating t-SNE using tree-based algorithms}.
+\newblock \bibinfo{journal}{\emph{The journal of machine learning research}} \bibinfo{volume}{15}, \bibinfo{number}{1} (\bibinfo{year}{2014}), \bibinfo{pages}{3221--3245}.
+\newblock
+
+
+\bibitem[van Veen et~al\mbox{.}(2019)]%
+        {KeplerMapper_JOSS}
+\bibfield{author}{\bibinfo{person}{Hendrik~Jacob van Veen}, \bibinfo{person}{Nathaniel Saul}, \bibinfo{person}{David Eargle}, {and} \bibinfo{person}{Sam~W. Mangham}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Kepler Mapper: A flexible Python implementation of the Mapper algorithm.}
+\newblock \bibinfo{journal}{\emph{Journal of Open Source Software}} \bibinfo{volume}{4}, \bibinfo{number}{42} (\bibinfo{year}{2019}), \bibinfo{pages}{1315}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.21105/joss.01315}
+\showDOI{\tempurl}
+
+
+\bibitem[Vipond(2020)]%
+        {vipond2020multiparameter}
+\bibfield{author}{\bibinfo{person}{Oliver Vipond}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Multiparameter Persistence Landscapes.}
+\newblock \bibinfo{journal}{\emph{J. Mach. Learn. Res.}}  \bibinfo{volume}{21} (\bibinfo{year}{2020}), \bibinfo{pages}{61--1}.
+\newblock
+
+
+\bibitem[Vipond et~al\mbox{.}(2021)]%
+        {vipond2021multiparameter}
+\bibfield{author}{\bibinfo{person}{Oliver Vipond}, \bibinfo{person}{Joshua~A Bull}, \bibinfo{person}{Philip~S Macklin}, \bibinfo{person}{Ulrike Tillmann}, \bibinfo{person}{Christopher~W Pugh}, \bibinfo{person}{Helen~M Byrne}, {and} \bibinfo{person}{Heather~A Harrington}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Multiparameter persistent homology landscapes identify immune cell spatial patterns in tumors}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the National Academy of Sciences}} \bibinfo{volume}{118}, \bibinfo{number}{41} (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[Wagner et~al\mbox{.}(2011)]%
+        {wagner2011efficient}
+\bibfield{author}{\bibinfo{person}{Hubert Wagner}, \bibinfo{person}{Chao Chen}, {and} \bibinfo{person}{Erald Vu{\c{c}}ini}.} \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Efficient computation of persistent homology for cubical data}.
+\newblock In \bibinfo{booktitle}{\emph{Topological methods in data analysis and visualization II: theory, algorithms, and applications}}. \bibinfo{publisher}{Springer}, \bibinfo{pages}{91--106}.
+\newblock
+
+
+\bibitem[Wang et~al\mbox{.}(2020)]%
+        {wang2020topogan}
+\bibfield{author}{\bibinfo{person}{Fan Wang}, \bibinfo{person}{Huidong Liu}, \bibinfo{person}{Dimitris Samaras}, {and} \bibinfo{person}{Chao Chen}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Topogan: A topology-aware generative adversarial network}. In \bibinfo{booktitle}{\emph{Computer Vision--ECCV 2020: 16th European Conference, Glasgow, UK, August 23--28, 2020, Proceedings, Part III 16}}. Springer, \bibinfo{pages}{118--136}.
+\newblock
+
+
+\bibitem[Wang et~al\mbox{.}(2018)]%
+        {wang2018topological}
+\bibfield{author}{\bibinfo{person}{Tongxin Wang}, \bibinfo{person}{Travis Johnson}, \bibinfo{person}{Jie Zhang}, {and} \bibinfo{person}{Kun Huang}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Topological methods for visualization and analysis of high dimensional single-cell RNA sequencing data}. In \bibinfo{booktitle}{\emph{BIOCOMPUTING 2019: Proceedings of the Pacific Symposium}}. World Scientific, \bibinfo{pages}{350--361}.
+\newblock
+
+
+\bibitem[Xin et~al\mbox{.}(2023)]%
+        {xin2023gril}
+\bibfield{author}{\bibinfo{person}{Cheng Xin}, \bibinfo{person}{Soham Mukherjee}, \bibinfo{person}{Shreyas~N Samaga}, {and} \bibinfo{person}{Tamal~K Dey}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{GRIL: A $2 $-parameter Persistence Based Vectorization for Machine Learning}. In \bibinfo{booktitle}{\emph{Topological, Algebraic and Geometric Learning Workshops 2023}}. PMLR, \bibinfo{pages}{313--333}.
+\newblock
+
+
+\bibitem[Yadav et~al\mbox{.}(2023)]%
+        {yadav2023histopathological}
+\bibfield{author}{\bibinfo{person}{Ankur Yadav}, \bibinfo{person}{Faisal Ahmed}, \bibinfo{person}{Ovidiu Daescu}, \bibinfo{person}{Reyhan Gedik}, {and} \bibinfo{person}{Baris Coskunuzer}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Histopathological Cancer Detection with Topological Signatures}. In \bibinfo{booktitle}{\emph{2023 IEEE International Conference on Bioinformatics and Biomedicine (BIBM)}}. IEEE, \bibinfo{pages}{1610--1619}.
+\newblock
+
+
+\bibitem[Yan et~al\mbox{.}(2022)]%
+        {yan2022neural}
+\bibfield{author}{\bibinfo{person}{Zuoyu Yan} {et~al\mbox{.}}} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Neural Approximation of Extended Persistent Homology on Graphs}. In \bibinfo{booktitle}{\emph{ICLR Workshop on Geometrical and Topological Representation Learning}}.
+\newblock
+
+
+\bibitem[Zaheer et~al\mbox{.}(2017)]%
+        {zaheer2017deep}
+\bibfield{author}{\bibinfo{person}{Manzil Zaheer}, \bibinfo{person}{Satwik Kottur}, \bibinfo{person}{Siamak Ravanbakhsh}, \bibinfo{person}{Barnabas Poczos}, \bibinfo{person}{Russ~R Salakhutdinov}, {and} \bibinfo{person}{Alexander~J Smola}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Deep sets}.
+\newblock \bibinfo{journal}{\emph{Advances in neural information processing systems}}  \bibinfo{volume}{30} (\bibinfo{year}{2017}).
+\newblock
+
+
+\bibitem[Zeng et~al\mbox{.}(2021)]%
+        {zeng2021topological}
+\bibfield{author}{\bibinfo{person}{Sebastian Zeng}, \bibinfo{person}{Florian Graf}, \bibinfo{person}{Christoph Hofer}, {and} \bibinfo{person}{Roland Kwitt}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Topological attention for time series forecasting}.
+\newblock \bibinfo{journal}{\emph{Advances in neural information processing systems}}  \bibinfo{volume}{34} (\bibinfo{year}{2021}), \bibinfo{pages}{24871--24882}.
+\newblock
+
+
+\bibitem[Zhang et~al\mbox{.}(2022)]%
+        {zhang2022gefl}
+\bibfield{author}{\bibinfo{person}{Simon Zhang}, \bibinfo{person}{Soham Mukherjee}, {and} \bibinfo{person}{Tamal~K Dey}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{GEFL: extended filtration learning for graph classification}. In \bibinfo{booktitle}{\emph{Learning on Graphs Conference}}. PMLR, \bibinfo{pages}{16--1}.
+\newblock
+
+
+\bibitem[Zhou et~al\mbox{.}(2022)]%
+        {zhou2022learning}
+\bibfield{author}{\bibinfo{person}{Chi Zhou}, \bibinfo{person}{Zhetong Dong}, {and} \bibinfo{person}{Hongwei Lin}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Learning persistent homology of 3D point clouds}.
+\newblock \bibinfo{journal}{\emph{Computers \& Graphics}}  \bibinfo{volume}{102} (\bibinfo{year}{2022}), \bibinfo{pages}{269--279}.
+\newblock
+
+
+\bibitem[Zhou et~al\mbox{.}(2021)]%
+        {zhou2021mapper}
+\bibfield{author}{\bibinfo{person}{Youjia Zhou}, \bibinfo{person}{Nithin Chalapathi}, \bibinfo{person}{Archit Rathore}, \bibinfo{person}{Yaodong Zhao}, {and} \bibinfo{person}{Bei Wang}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Mapper Interactive: A scalable, extendable, and interactive toolbox for the visual exploration of high-dimensional data}. In \bibinfo{booktitle}{\emph{2021 IEEE 14th Pacific Visualization Symposium (PacificVis)}}. IEEE, \bibinfo{pages}{101--110}.
+\newblock
+
+
+\bibitem[Zia et~al\mbox{.}(2024)]%
+        {zia2024topological}
+\bibfield{author}{\bibinfo{person}{Ali Zia}, \bibinfo{person}{Abdelwahed Khamis}, \bibinfo{person}{James Nichols}, \bibinfo{person}{Usman~Bashir Tayab}, \bibinfo{person}{Zeeshan Hayder}, \bibinfo{person}{Vivien Rolland}, \bibinfo{person}{Eric Stone}, {and} \bibinfo{person}{Lars Petersson}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Topological deep learning: a review of an emerging paradigm}.
+\newblock \bibinfo{journal}{\emph{Artificial Intelligence Review}} \bibinfo{volume}{57}, \bibinfo{number}{4} (\bibinfo{year}{2024}), \bibinfo{pages}{77}.
+\newblock
+
+
+\bibitem[Zomorodian and Carlsson(2004)]%
+        {zomorodian2004computing}
+\bibfield{author}{\bibinfo{person}{Afra Zomorodian} {and} \bibinfo{person}{Gunnar Carlsson}.} \bibinfo{year}{2004}\natexlab{}.
+\newblock \showarticletitle{Computing persistent homology}. In \bibinfo{booktitle}{\emph{Proceedings of the twentieth annual symposium on Computational geometry}}. \bibinfo{pages}{347--356}.
+\newblock
+
+
+\end{thebibliography}

@@ -1,0 +1,75 @@
+\begin{longtable}{lrrrr}
+\caption{Fowlkes-Mallows scores of AuToMATo vs. hierarchical clustering with single linkage}
+\label{table:aut_vs_linkage_single} \\
+\toprule
+Dataset & automato\_mean & linkage\_single\_max & linkage\_single\_min \\
+\midrule
+\endfirsthead
+\caption[]{Fowlkes-Mallows scores of AuToMATo vs. hierarchical clustering with single linkage} \\
+\toprule
+Dataset & automato\_mean & linkage\_single\_max & linkage\_single\_min \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{Continued on next page} \\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+sipu\_r15\_2 & 0.4867±0.0000 & \textbf{1.0000} & 0.5607 \\
+wut\_trajectories\_0 & 0.5038±0.0107 & \textbf{1.0000} & 0.4999 \\
+sipu\_r15\_1 & 0.5436±0.0000 & \textbf{0.8954} & 0.5021 \\
+fcps\_tetra\_0 & 0.6261±0.0000 & \textbf{0.9296} & 0.0829 \\
+sipu\_spiral\_0 & 0.7028±0.0000 & \textbf{1.0000} & 0.5756 \\
+wut\_isolation\_0 & 0.7256±0.0113 & \textbf{1.0000} & 0.5773 \\
+wut\_x3\_0 & 0.5153±0.0000 & \textbf{0.7347} & 0.4951 \\
+sipu\_jain\_0 & 0.7837±0.0000 & \textbf{0.9510} & 0.7837 \\
+fcps\_atom\_0 & 0.8694±0.0000 & \textbf{1.0000} & 0.7067 \\
+wut\_circles\_0 & 0.8857±0.0000 & \textbf{1.0000} & 0.4998 \\
+fcps\_chainlink\_0 & 0.8896±0.0000 & \textbf{1.0000} & 0.7068 \\
+wut\_mk4\_0 & 0.9072±0.0234 & \textbf{1.0000} & 0.5770 \\
+sipu\_compound\_0 & 0.8616±0.0000 & \textbf{0.9454} & 0.4972 \\
+sipu\_pathbased\_0 & 0.6517±0.0000 & \textbf{0.7337} & 0.5769 \\
+sipu\_pathbased\_1 & 0.7322±0.0000 & \textbf{0.8091} & 0.5170 \\
+graves\_dense\_0 & 0.8377±0.1396 & \textbf{0.9096} & 0.6882 \\
+wut\_mk2\_0 & 0.6356±0.0000 & \textbf{0.7068} & 0.6007 \\
+graves\_zigzag\_1 & 0.6720±0.0000 & \textbf{0.7344} & 0.4446 \\
+wut\_x2\_0 & 0.5846±0.0000 & \textbf{0.6437} & 0.5105 \\
+other\_iris5\_0 & 0.6712±0.0000 & \textbf{0.7042} & 0.0451 \\
+wut\_smile\_1 & 0.9701±0.0000 & \textbf{1.0000} & 0.5825 \\
+wut\_x1\_0 & 0.9741±0.0818 & \textbf{0.9920} & 0.5846 \\
+fcps\_target\_0 & 0.9850±0.0000 & \textbf{1.0000} & 0.6963 \\
+wut\_smile\_0 & 0.9681±0.0000 & \textbf{0.9748} & 0.5471 \\
+sipu\_unbalance\_0 & 0.9986±0.0008 & \textbf{1.0000} & 0.5339 \\
+fcps\_twodiamonds\_0 & \textbf{0.7067±0.0000} & \textbf{0.7067} & \textbf{0.7067} \\
+wut\_x3\_1 & \textbf{0.6546±0.0000} & \textbf{0.6546} & 0.6140 \\
+sipu\_aggregation\_0 & \textbf{0.8652±0.0000} & \textbf{0.8652} & 0.4653 \\
+wut\_stripes\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.7070 \\
+wut\_trapped\_lovers\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.6632 \\
+wut\_windows\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.6753 \\
+fcps\_hepta\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.3727 \\
+graves\_line\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.8238 \\
+graves\_ring\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.7068 \\
+graves\_ring\_outliers\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.6863 \\
+graves\_zigzag\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.5381 \\
+sipu\_flame\_0 & \textbf{0.7320±0.0000} & \textbf{0.7320} & 0.4598 \\
+other\_iris\_0 & \textbf{0.7715±0.0000} & \textbf{0.7715} & 0.1223 \\
+other\_square\_0 & \textbf{1.0000±0.0000} & 0.9990 & 0.7068 \\
+fcps\_lsun\_0 & \textbf{1.0000±0.0000} & 0.9983 & 0.6111 \\
+wut\_twosplashes\_0 & \textbf{1.0000±0.0000} & 0.9850 & 0.7062 \\
+sipu\_compound\_1 & \textbf{0.9786±0.0000} & 0.9180 & 0.5715 \\
+sipu\_compound\_4 & \textbf{0.9442±0.0000} & 0.8824 & 0.5523 \\
+wut\_mk1\_0 & \textbf{0.9866±0.0000} & 0.8866 & 0.5754 \\
+fcps\_wingnut\_0 & \textbf{0.9805±0.0000} & 0.8087 & 0.7068 \\
+graves\_parabolic\_1 & \textbf{0.6916±0.0000} & 0.5000 & 0.4979 \\
+wut\_mk3\_0 & \textbf{0.7720±0.0000} & 0.5764 & 0.5314 \\
+wut\_labirynth\_0 & \textbf{0.7884±0.0000} & 0.5221 & 0.5221 \\
+graves\_parabolic\_0 & \textbf{0.9802±0.0000} & 0.7068 & 0.7040 \\
+sipu\_d31\_0 & \textbf{0.6001±0.0085} & 0.1846 & 0.1787 \\
+sipu\_a1\_0 & \textbf{0.7499±0.0000} & 0.3269 & 0.2229 \\
+sipu\_r15\_0 & \textbf{0.9258±0.0000} & 0.4551 & 0.2552 \\
+sipu\_a2\_0 & \textbf{0.7555±0.0000} & 0.1685 & 0.1685 \\
+sipu\_a3\_0 & \textbf{0.7434±0.0000} & 0.1410 & 0.1410 \\
+sipu\_s1\_0 & \textbf{0.9888±0.0000} & 0.3695 & 0.2581 \\
+sipu\_s2\_0 & \textbf{0.9405±0.0000} & 0.2581 & 0.2579 \\
+\end{longtable}

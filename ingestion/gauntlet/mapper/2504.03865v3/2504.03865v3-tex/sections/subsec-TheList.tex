@@ -1,0 +1,154 @@
+\begin{table}[]
+    \centering
+\begin{tabular}{|r|p{1cm}|c|c|c|}
+\hline 
+&   \centering{\textbf{Loss Term}}   & \textbf{Diagram} & \textbf{Matrix Multiplication} & \textbf{Eval.}\\ \hline \hline
+\multirow{2}{*}{\rotatebox[origin=r]{90}{$\substack{\text{Edge-Vertex \hfill}\\\text{Parallelogram \hfill}}$}}
+& $\Lpl^{S_\tau, S_\sigma}$
+& 
+    $
+    \begin{tikzcd}[scale cd = .7]
+    F(S_\tau)  
+        \ar[r, "{F[\subseteq ]}"] 
+        \ar[dr, "\varphi_{S_\tau}"']
+    & F(S_\sigma)
+        \ar[dr, "\varphi_{ S_\sigma}"]
+    & \\
+    & G^n(S_\tau) 
+        \ar[r, "{G[\subseteq ]}"'] 
+    & G^n(S_\sigma)  
+    \end{tikzcd}
+    $
+&
+    \parbox{4.5cm}{
+\centering
+        $D_{G^n}^V \left(M_{\phi}^V \cdot B_F^{\uparrow} - B_{G^n}^{\uparrow} \cdot M_{\phi}^E\right)$\\
+        $D_{G^n}^V \left(M_{\phi}^V \cdot B_F^{\downarrow} - B_{G^n}^{\downarrow} \cdot M_{\phi}^E\right)$
+   }
+%
+& \multirow{4}{*}[-11.5ex]{$\max(A)$}
+\\
+\cline{2-4}
+& $\Lpr^{S_\tau, S_\sigma}$
+&
+    $
+    \begin{tikzcd}[scale cd = .7]
+    & F^n(S_\tau) 
+        \ar[r, "{F[\subseteq ]}"] 
+    & F^n(S_\sigma)  
+    \\
+    G(S_\tau)  
+        \ar[r, "{G[\subseteq ]}"'] 
+        \ar[ur, "\psi_{S_\tau}"]
+    & G(S_\sigma)
+        \ar[ur, "\psi_{ S_\sigma}"']
+    \end{tikzcd}
+    $
+&
+\parbox{4.5cm}{
+\centering
+    $D_{F^n}^V \left(M_{\psi}^V \cdot B_G^{\uparrow} - B_{F^n}^{\uparrow} \cdot M_{\psi}^E\right)$\\
+    $D_{F^n}^V \left(M_{\psi}^V \cdot B_G^{\downarrow} - B_{F^n}^{\downarrow} \cdot M_{\psi}^E\right)$
+}
+& 
+\\
+\cline{2-4}
+\multirow{2}{*}{\rotatebox[origin=r]{90}{$\substack{\text{Thickening \hfill}\\\text{Parallelogram \hfill}}$}}
+& $\Lpl^{S_\rho, S_\rho^n}$
+& 
+    $
+    \begin{tikzcd}[scale cd = .7]
+    F(S_\rho)  
+        \ar[r, "{F[\subseteq ]}"] 
+        \ar[dr, "\varphi_{S_\rho}"']
+    & F^n(S_\rho)
+        \ar[dr, "\varphi_{ S_\rho^n}"]
+    & \\
+    & G^n(S_\rho) 
+        \ar[r, "{G[\subseteq ]}"'] 
+    & G^{2n}(S_\rho)  
+    \end{tikzcd}
+    $
+&
+\parbox{4.5cm}{
+\centering
+    $D_{G^{2n}}^V \left(M_{\phi^n}^V \cdot I_F^V - I_{G^n}^V \cdot M_{\phi}^V\right)$\\
+    $D_{G^{2n}}^E \left(M_{\phi^n}^E \cdot I_F^E - I_{G^n}^E \cdot M_{\phi}^E\right)$
+}
+&
+\\
+\cline{2-4}
+& $\Lpr^{S_\rho, S_\rho^n}$
+&
+    $
+    \begin{tikzcd}[scale cd = .7]
+    & F^n(S_\rho) 
+        \ar[r, "{F[\subseteq ]}"] 
+    & F^{2n}(S_\rho)  
+    \\
+    G(S_\rho)  
+        \ar[r, "{G[\subseteq ]}"'] 
+        \ar[ur, "\psi_{S_\rho}"]
+    & G(S_\rho^n)
+        \ar[ur, "\psi_{ S_\rho^n}"']
+    \end{tikzcd}
+    $
+&
+\parbox{4.5cm}{
+\centering
+    $D_{F^{2n}}^V \left(M_{\psi^n}^V \cdot I_G^V - I_{F^n}^V \cdot M_{\psi}^V\right)$\\
+    $D_{F^{2n}}^E \left(M_{\psi^n}^E \cdot I_G^E - I_{F^n}^E \cdot M_{\psi}^E\right)$
+}
+& \parbox{3.5cm}{
+\centering}
+\\
+\hline
+\multirow{2}{*}[-0.4ex]{\rotatebox[origin=r]{90}{Triangle \hfill}}
+& $\Ltd^{S_\rho}$
+&
+    $
+    \begin{tikzcd}[scale cd = .7]
+        F(S_\rho) 
+            \ar[rr, "{F[ \subseteq ]}"]   
+            \ar[dr, "\phi_{S_\rho}"'] 
+            & & F^{2n}(S_\rho)
+        \\
+        & G^n(S_\rho)\ar[ur, "\psi_{S^n_\rho}"']  & 
+    \end{tikzcd}
+    $
+&
+    \parbox{4.5cm}{
+\centering
+    $D_{F^{2n}}^V \left(I_{F^n}^V \cdot I_F^V - M_{\psi^n}^V\cdot M_{\phi}^V \right)$\\
+    $D_{F^{2n}}^E \left(I_{F^n}^E \cdot I_F^E - M_{\psi^n}^E\cdot M_{\phi}^E \right)$
+    }
+    %
+    & \multirow{2}{*}[-3.5ex]{\vspace{\fill}$\left\lceil \tfrac{1}{2}\max(A)\right\rceil$}
+\\
+\cline{2-4}
+& $\Ltu^{S_\rho}$
+&
+    $
+    \begin{tikzcd}[scale cd = .7]
+        & F^n(S_\rho)\ar[dr, "\phi_{S^n_\rho}"]  & 
+        \\
+        G(S_\rho) 
+            \ar[rr, "{G[ \subseteq ]}"']   
+            \ar[ur, "\psi_{S_\rho}"] 
+            & & G^{2n}(S_\rho)
+    \end{tikzcd}
+    $
+&
+   \parbox{4.5cm}{
+\centering
+    $D_{G^{2n}}^V \left(I_{G^n}^V \cdot I_G^V - M_{\phi^n}^V\cdot M_{\psi}^V \right)$\\
+    $D_{G^{2n}}^E \left(I_{G^n}^E \cdot I_G^E - M_{\phi^n}^E\cdot M_{\psi}^E \right)$
+    }
+& 
+\\
+\hline
+\end{tabular}
+%
+\caption{The list of loss terms, relevant diagram, and matrix multiplications. The final column shows the result from the final matrix, where the multiplied matrix is denoted $A$: either the maximum entry in the multiplied matrix, or the ceiling of half the maximum.} 
+\label{tab:theList}
+\end{table}

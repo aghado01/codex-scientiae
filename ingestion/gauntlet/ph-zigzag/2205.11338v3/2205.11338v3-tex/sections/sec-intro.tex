@@ -1,0 +1,127 @@
+%
+%
+%
+%
+
+\section{Introduction} \label{sec:intro}
+
+%
+%
+
+%
+%
+
+Network data, that is, the encoding of connections between objects, is a natural form of information representation in many fields \cite{Porter2020}.
+While the analysis of static networks or graphs is already a broad field of research in itself, there is often much information ignored. 
+In particular, we are interested in the case of \textit{temporal networks} \cite{Holme2013,Holme2015}; that is, the case of a dynamical system represented by a network evolving over time. 
+These networks can arise in many different cases, such as 
+social networks~\cite{Skyrms2000}, 
+disease spread dynamics~\cite{Husein2019}, 
+manufacturer-supplier networks~\cite{Xu2019b}, 
+power grid network~\cite{Schaefer2018}, and
+transportation networks~\cite{DavidBoyce2012}. 
+%
+Many important characteristics of a dynamical network can be extracted from the data. These include source and rate of disease spread as well as predictions on future infections~\cite{Enright2018}, weak branches in supply chains and possible failures~\cite{Nuss2016, Xu2019b}, changes in infrastructure to avoid cascade failures in power grids~\cite{Soltan2014, Schaefer2018}, transportation network optimal routing (finding an optimal minimum time route between)~\cite{Bast2015}, fault analysis (detecting transportation disruptions) in transportation networks~\cite{Sugishita2020}, and flow pattern analysis (visualization)~\cite{Hackl2019}.
+
+
+Temporal graph data is commonly represented using attributed information on the edges for the time intervals or instances in which the edges are active~\cite{Chen2016a,Huang2015}. 
+Using this attributed information, we can represent the graph in several ways including edge labeling, snapshots, and static graph representations~\cite{Wang2019}. 
+In this work we will first represent the data in the standard attributed (labeled) temporal graph structure and then use the graph snapshots approach, where our input is a sequence of static graphs $G_0, G_1, \ldots, G_n$.
+
+
+The available tools for analyzing such data is often inspired by the tools from the static network community; for instance, 
+centrality or flow measures~\cite{Borgatti2005}; temporal clustering for event detection~\cite{Crawford2018, You2021, Moriano2019}; and connectedness~\cite{Kempe2002}. 
+However, these tools do not account for higher-dimensional structures (e.g., loops as a one-dimensional structure). 
+It may be important to account for evolving higher-dimensional structures in temporal networks to understand the changing structure better. For example, a highly connected network may only have one connected component with no clear clusters, but the number of loops within the network may detect the change.
+
+For this reason, we introduce a method for incorporating ideas from Topological Data Analysis (TDA) \cite{Dey2021,Munch2017} to encode more complex structure than can be seen in the standard graph tools. 
+The mainstay of TDA is persistent homology, colloquially referred to as persistence, which  encodes structure by analyzing the changing shape of a simplicial complex (a higher dimensional generalization of a network) over a filtration (a nested sequence of subcomplexes $K_1 \subseteq K_2 \subseteq \cdots \subseteq K_n$).
+This shape is measured via homology, a vector space encoding information about topological structure of the space. 
+Different dimensions of homology measure different things: 0-dimensional homology encodes information about connected components; 1-dimensional homology encodes loops; 2-dimensional homology encodes voids. 
+How these structures change over the filtration (e.g.~when a loop appears and then subsequently fills in) can be stored as a persistence diagram; that is, a collection of points in the upper half plane where a point at $(i,j)$ means that a structure appeared at $K_i$ but was lost at $K_j$. 
+
+
+However, a major limitation of standard persistence for the temporal network input data is the requirement that inclusions only go one way. 
+Over the evolution parameter, our temporal graphs might add or remove edges, and we would like to build a system that can account for this. 
+Thus, to study the evolving higher dimensional structures within a temporal network, we will leverage zigzag persistence~\cite{Carlsson2010}, which allows for insertions and deletions of simplices at every step.
+The same mathematical theorems that make it possible to represent the information of standard persistence in a persistence diagram or barcode can be used in the case of a zigzag filtration. 
+Zigzag persistence tracks the formation and disappearance of homological structures through a persistence diagram as a two-dimensional summary diagram. 
+
+The tools we employ will treat the graph input itself as a topological structure by using it to extract distance information between the vertices. 
+For the work discussed here, we will assume the input networks are unweighted graphs and thus use the shortest path distance between vertices. 
+However, this is by no means the only way to incorporate graph data for persistent homology; see \cite{Aktas2019} for a survey. 
+Further, because we generally treat our networks as a metric space, our intuition is that the tools developed here are most applicable to data where vertices have a geometric component (such as networks where nodes come from geo-spatial data) rather than only combinatorial data (such as human proximity networks, even if this has to do with physical proximity), but we look forward to being proven wrong.
+
+We thus apply our methods to two sample data sets. 
+The first is transportation data from Great Britain \cite{Gallotti2015}, where we can use the zigzag persistent homology for understanding higher order structures in the system, and see behavior such as daily periodicity represented automatically in the diagram output. 
+The second data comes from input data from time series analysis. 
+We have previously used zigzag persistence to detect Hopf bifurcations  by taking as input a point cloud approximation of the underlying attractor to the time series \cite{Tymochko2020}. 
+However, the computational limitations of zigzag persistence on large point clouds makes its use in this setting unwieldy. 
+Thus, we combine these ideas with recently available network representations of time series \cite{McCullough2015} to 
+%
+instead encode the structure of the time series in a graph.
+Previous work shows that measuring this structure using standard persistent homology can be used to differentiate between behaviors in the underlying dynamical system \cite{Myers2019,Myers2022}. 
+
+
+
+
+
+%
+%
+%
+%
+%
+%
+%
+%
+
+%
+%
+%
+%
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+%
+%
+
+%
+%
+%
+%
+%
+%
+%
+
+%
+%
+
+%
+%
+
+%
+%
+
+
+%
+
+
+\subsection{Organization}
+
+We will start in Section~\ref{sec:background} with an introductory background on persistent homology and zigzag persistence.
+Next, in Section~\ref{sec:method},  we overview the general pipeline for applying zigzag persistence to temporal graph data. We couple this explanation with a demonstrative toy example. 
+In Section~\ref{sec:results} we  introduce the two systems we will study. 
+The first is a dataset collected over a week of the Great Britain transportation system~\cite{Gallotti2015}. 
+The second is an intermittent Lorenz system simulation, where we generate a temporal network through complex networks of sliding windows. %
+Then we apply zigzag persistence to our two examples and show how the resulting persistence diagrams help visualize the underlying dynamics in comparison to standard temporal network analysis techniques.
+
+
+

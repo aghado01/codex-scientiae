@@ -1,0 +1,133 @@
+\begin{thebibliography}{10}
+
+\bibitem{berkouk22}
+Nicolas Berkouk and Luca Nyckees.
+\newblock One diamond to rule them all: Old and new topics about zigzag,
+  levelsets and extended persistence, 2022.
+\newblock URL: \url{https://arxiv.org/abs/2210.00916}, \href
+  {http://dx.doi.org/10.48550/ARXIV.2210.00916}
+  {\path{doi:10.48550/ARXIV.2210.00916}}.
+
+\bibitem{carlsson2010zigzag}
+Gunnar Carlsson and Vin de~Silva.
+\newblock Zigzag persistence.
+\newblock {\em Foundations of Computational Mathematics}, 10(4):367--405, 2010.
+
+\bibitem{carlsson2009zigzag-realvalue}
+Gunnar Carlsson, Vin de~Silva, and Dmitriy Morozov.
+\newblock Zigzag persistent homology and real-valued functions.
+\newblock In {\em Proceedings of the Twenty-Fifth Annual Symposium on
+  Computational Geometry}, pages 247--256, 2009.
+
+\bibitem{cohen2009extending}
+David Cohen-Steiner, Herbert Edelsbrunner, and John Harer.
+\newblock Extending persistence using {P}oincar{\'e} and {L}efschetz duality.
+\newblock {\em Foundations of Computational Mathematics}, 9(1):79--103, 2009.
+
+\bibitem{cohen2006vines}
+David Cohen-Steiner, Herbert Edelsbrunner, and Dmitriy Morozov.
+\newblock Vines and vineyards by updating persistence in linear time.
+\newblock In {\em Proceedings of the Twenty-Second Annual Symposium on
+  Computational Geometry}, pages 119--126, 2006.
+
+\bibitem{dey2021computing}
+Tamal~K. Dey and Tao Hou.
+\newblock Computing zigzag persistence on graphs in near-linear time.
+\newblock In {\em 37th International Symposium on Computational Geometry},
+  2021.
+
+\bibitem{dey2021updating}
+Tamal~K. Dey and Tao Hou.
+\newblock Updating barcodes and representatives for zigzag persistence.
+\newblock {\em arXiv preprint arXiv:2112.02352}, 2021.
+
+\bibitem{DBLP:conf/esa/DeyH22}
+Tamal~K. Dey and Tao Hou.
+\newblock Fast computation of zigzag persistence.
+\newblock In {\em 30th Annual European Symposium on Algorithms, {ESA} 2022,
+  September 5-9, 2022, Berlin/Potsdam, Germany}, volume 244 of {\em LIPIcs},
+  pages 43:1--43:15. Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik,
+  2022.
+
+\bibitem{DW22}
+Tamal~K. Dey and Yusu Wang.
+\newblock {\em Computational Topology for Data Analysis}.
+\newblock Cambridge University Press, 2022.
+
+\bibitem{edelsbrunner2010computational}
+Herbert Edelsbrunner and John Harer.
+\newblock {\em Computational topology: {A}n introduction}.
+\newblock American Mathematical Soc., 2010.
+
+\bibitem{edelsbrunner2000topological}
+Herbert Edelsbrunner, David Letscher, and Afra Zomorodian.
+\newblock Topological persistence and simplification.
+\newblock In {\em Proceedings 41st Annual Symposium on Foundations of Computer
+  Science}, pages 454--463. IEEE, 2000.
+
+\bibitem{farina2015dynamic}
+Gabriele Farina and Luigi Laura.
+\newblock Dynamic subtrees queries revisited: The depth first tour tree.
+\newblock In {\em International Workshop on Combinatorial Algorithms}, pages
+  148--160. Springer, 2015.
+
+\bibitem{Gabriel72}
+Peter Gabriel.
+\newblock {Unzerlegbare Darstellungen I}.
+\newblock {\em Manuscripta Mathematica}, 6(1):71--103, 1972.
+
+\bibitem{georgiadis2011data}
+Loukas Georgiadis, Haim Kaplan, Nira Shafrir, Robert~E. Tarjan, and Renato~F.
+  Werneck.
+\newblock Data structures for mergeable trees.
+\newblock {\em ACM Transactions on Algorithms (TALG)}, 7(2):1--30, 2011.
+
+\bibitem{hatcher2002algebraic}
+Allen Hatcher.
+\newblock {\em Algebraic Topology}.
+\newblock Cambridge University Press, 2002.
+
+\bibitem{holm2001poly}
+Jacob Holm, Kristian De~Lichtenberg, and Mikkel Thorup.
+\newblock Poly-logarithmic deterministic fully-dynamic algorithms for
+  connectivity, minimum spanning tree, 2-edge, and biconnectivity.
+\newblock {\em Journal of the ACM (JACM)}, 48(4):723--760, 2001.
+
+\bibitem{maria2014zigzag}
+Cl{\'e}ment Maria and Steve~Y. Oudot.
+\newblock Zigzag persistence via reflections and transpositions.
+\newblock In {\em Proceedings of the Twenty-Sixth Annual ACM-SIAM Symposium on
+  Discrete Algorithms}, pages 181--199. SIAM, 2014.
+
+\bibitem{milosavljevic2011zigzag}
+Nikola Milosavljevi{\'c}, Dmitriy Morozov, and Primoz Skraba.
+\newblock Zigzag persistent homology in matrix multiplication time.
+\newblock In {\em Proceedings of the Twenty-Seventh Annual Symposium on
+  Computational Geometry}, pages 216--225, 2011.
+
+\bibitem{Parsa13}
+Salman Parsa.
+\newblock A deterministic {$O(m\log m)$} time algorithm for the {Reeb} graph.
+\newblock {\em Discrete Comput. Geom.}, 49(4):864--878, Jun 2013.
+
+\bibitem{sleator1981data}
+Daniel~D. Sleator and Robert~Endre Tarjan.
+\newblock A data structure for dynamic trees.
+\newblock In {\em Proceedings of the Thirteenth Annual ACM Symposium on Theory
+  of Computing}, pages 114--122, 1981.
+
+\bibitem{yan2021link}
+Zuoyu Yan, Tengfei Ma, Liangcai Gao, Zhi Tang, and Chao Chen.
+\newblock Link prediction with persistent homology: An interactive view.
+\newblock In {\em International Conference on Machine Learning}, pages
+  11659--11669. PMLR, 2021.
+
+\bibitem{ZMD22}
+Simon Zhang, Soham Mukherjee, and Tamal~K. Dey.
+\newblock {GEFL:} {E}xtended filtration learning for graph classification.
+\newblock In Bastian Rieck and Razvan Pascanu, editors, {\em Learning on Graphs
+  Conference, LoG 2022}, volume 198 of {\em Proceedings of Machine Learning
+  Research}, page~16. {PMLR}, 2022.
+\newblock URL: \url{https://proceedings.mlr.press/v198/zhang22b.html}.
+
+\end{thebibliography}

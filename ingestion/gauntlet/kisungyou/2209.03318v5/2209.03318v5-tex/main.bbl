@@ -1,0 +1,513 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Afsari}{2011}{afsari_2011_RiemannianCenterMass}
+Afsari, B.  \harvardyearleft 2011\harvardyearright .
+\newblock Riemannian ${L}_p$ center of mass: {{Existence}}, uniqueness, and
+  convexity, {\em Proceedings of the American Mathematical Society} {\bf
+  139}(02):~655--655.
+
+\harvarditem{Agueh \harvardand\
+  Carlier}{2011}{agueh_2011_BarycentersWassersteinSpace}
+Agueh, M. \harvardand\ Carlier, G.  \harvardyearleft 2011\harvardyearright .
+\newblock Barycenters in the {{Wasserstein Space}}, {\em SIAM Journal on
+  Mathematical Analysis} {\bf 43}(2):~904--924.
+
+\harvarditem[Altschuler et~al.]{Altschuler, Chewi, Gerber \harvardand\
+  Stromme}{2021}{altschuler_2021_AveragingBuresWassersteinManifold}
+Altschuler, J., Chewi, S., Gerber, P.~R. \harvardand\ Stromme, A.
+  \harvardyearleft 2021\harvardyearright .
+\newblock Averaging on the {{Bures-Wasserstein}} manifold: Dimension-free
+  convergence of gradient descent, {\em in} M.~Ranzato, A.~Beygelzimer,
+  Y.~Dauphin, P.~Liang \harvardand\ J.~W. Vaughan (eds), {\em Advances in
+  Neural Information Processing Systems}, Vol.~34, {Curran Associates, Inc.},
+  pp.~22132--22145.
+
+\harvarditem[{\'A}lvarez-Esteban et~al.]{{\'A}lvarez-Esteban, {del Barrio},
+  {Cuesta-Albertos} \harvardand\
+  Matr{\'a}n}{2016}{alvarez-esteban_2016_FixedpointApproachBarycenters}
+{\'A}lvarez-Esteban, P.~C., {del Barrio}, E., {Cuesta-Albertos}, J.
+  \harvardand\ Matr{\'a}n, C.  \harvardyearleft 2016\harvardyearright .
+\newblock A fixed-point approach to barycenters in {{Wasserstein}} space, {\em
+  Journal of Mathematical Analysis and Applications} {\bf 441}(2):~744--762.
+
+\harvarditem[Ambrosio et~al.]{Ambrosio, Bru{\'e} \harvardand\
+  Semola}{2021}{ambrosio_2021_LecturesOptimalTransport}
+Ambrosio, L., Bru{\'e}, E. \harvardand\ Semola, D.  \harvardyearleft
+  2021\harvardyearright .
+\newblock {\em Lectures on Optimal Transport}, number volume 130 in {\em
+  Unitext - {{La}} Matematica per Il 3 + 2}, {Springer}, {Cham}.
+
+\harvarditem[Ambrosio et~al.]{Ambrosio, Caffarelli \harvardand\
+  Salsa}{2003}{ambrosio_2003_OptimalTransportationApplications}
+Ambrosio, L., Caffarelli, L.~A. \harvardand\ Salsa, S. (eds)  \harvardyearleft
+  2003\harvardyearright .
+\newblock {\em Optimal Transportation and Applications: Lectures given at the
+  {{C}}.{{I}}.{{M}}.{{E}}. Summer School Held in {{Martina Franca}}, {{Italy}},
+  {{September}} 2-8, 2001}, number 1813 in {\em Lecture Notes in Mathematics},
+  {Springer}, {Berlin ; New York}.
+
+\harvarditem[Ambrosio et~al.]{Ambrosio, Gigli \harvardand\
+  Savar{\'e}}{2005}{ambrosio_2005_GradientFlowsMetric}
+Ambrosio, L., Gigli, N. \harvardand\ Savar{\'e}, G.  \harvardyearleft
+  2005\harvardyearright .
+\newblock {\em Gradient Flows: In Metric Spaces and in the Space of Probability
+  Measures}, Lectures in Mathematics {{ETH Z\"urich}}, {Birkh\"auser},
+  {Boston}.
+
+\harvarditem[Arjovsky et~al.]{Arjovsky, Chintala \harvardand\
+  Bottou}{2017}{arjovsky_2017_WassersteinGenerativeAdversarial}
+Arjovsky, M., Chintala, S. \harvardand\ Bottou, L.  \harvardyearleft
+  2017\harvardyearright .
+\newblock Wasserstein generative adversarial networks, {\em in} D.~Precup
+  \harvardand\ Y.~W. Teh (eds), {\em Proceedings of the 34th International
+  Conference on Machine Learning}, Vol.~70 of {\em Proceedings of Machine
+  Learning Research}, {PMLR}, pp.~214--223.
+
+\harvarditem[Bernton et~al.]{Bernton, Jacob, Gerber \harvardand\
+  Robert}{2019a}{bernton_2019_ApproximateBayesianComputation}
+Bernton, E., Jacob, P.~E., Gerber, M. \harvardand\ Robert, C.~P.
+  \harvardyearleft 2019a\harvardyearright .
+\newblock Approximate {{Bayesian}} computation with the {{Wasserstein}}
+  distance, {\em Journal of the Royal Statistical Society: Series B
+  (Statistical Methodology)} {\bf 81}(2):~235--269.
+
+\harvarditem[Bernton et~al.]{Bernton, Jacob, Gerber \harvardand\
+  Robert}{2019b}{bernton_2019_ParameterEstimationWasserstein}
+Bernton, E., Jacob, P.~E., Gerber, M. \harvardand\ Robert, C.~P.
+  \harvardyearleft 2019b\harvardyearright .
+\newblock On parameter estimation with the {{Wasserstein}} distance, {\em
+  Information and Inference: A Journal of the IMA} {\bf 8}(4):~657--676.
+
+\harvarditem{Bhattacharya \harvardand\
+  Bhattacharya}{2012}{bhattacharya_2012_NonparametricInferenceManifolds}
+Bhattacharya, A. \harvardand\ Bhattacharya, R.  \harvardyearleft
+  2012\harvardyearright .
+\newblock {\em Nonparametric {{Inference}} on {{Manifolds}}: {{With
+  Applications}} to {{Shape Spaces}}}, {Cambridge University Press},
+  {Cambridge}.
+
+\harvarditem{Bickel \harvardand\
+  Levina}{2008}{bickel_2008_RegularizedEstimationLarge}
+Bickel, P.~J. \harvardand\ Levina, E.  \harvardyearleft 2008\harvardyearright .
+\newblock Regularized estimation of large covariance matrices, {\em The Annals
+  of Statistics} {\bf 36}(1).
+
+\harvarditem{Bigot \harvardand\
+  Klein}{2018}{bigot_2018_CharacterizationBarycentersWasserstein}
+Bigot, J. \harvardand\ Klein, T.  \harvardyearleft 2018\harvardyearright .
+\newblock Characterization of barycenters in the {{Wasserstein}} space by
+  averaging optimal transport maps, {\em ESAIM: Probability and Statistics}
+  {\bf 22}:~35--57.
+
+\harvarditem{Billingsley}{1999}{billingsley_1999_ConvergenceProbabilityMeasures}
+Billingsley, P.  \harvardyearleft 1999\harvardyearright .
+\newblock {\em Convergence of Probability Measures}, Wiley Series in
+  Probability and Statistics. {{Probability}} and Statistics Section, 2nd ed
+  edn, {Wiley}, {New York}.
+
+\harvarditem{Chartrand \harvardand\
+  Yin}{2008}{chartrand_2008_IterativelyReweightedAlgorithms}
+Chartrand, R. \harvardand\ Yin, W.  \harvardyearleft 2008\harvardyearright .
+\newblock Iteratively reweighted algorithms for compressive sensing, {\em 2008
+  {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal
+  Processing}}}, {IEEE}, {Las Vegas, NV, USA}, pp.~3869--3872.
+
+\harvarditem[Claici et~al.]{Claici, Chien \harvardand\
+  Solomon}{2018}{claici_2018_StochasticWassersteinBarycenters}
+Claici, S., Chien, E. \harvardand\ Solomon, J.  \harvardyearleft
+  2018\harvardyearright .
+\newblock Stochastic {{Wasserstein}} barycenters, {\em in} J.~Dy \harvardand\
+  A.~Krause (eds), {\em Proceedings of the 35th International Conference on
+  Machine Learning}, Vol.~80 of {\em Proceedings of Machine Learning Research},
+  {PMLR}, pp.~999--1008.
+
+\harvarditem{Courty, Flamary, Habrard \harvardand\
+  Rakotomamonjy}{2017}{courty_2017_JointDistributionOptimal}
+Courty, N., Flamary, R., Habrard, A. \harvardand\ Rakotomamonjy, A.
+  \harvardyearleft 2017\harvardyearright .
+\newblock Joint distribution optimal transportation for domain adaptation, {\em
+  in} I.~Guyon, U.~V. Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
+  S.~Vishwanathan \harvardand\ R.~Garnett (eds), {\em Advances in Neural
+  Information Processing Systems}, Vol.~30, {Curran Associates, Inc.}
+
+\harvarditem{Courty, Flamary, Tuia \harvardand\
+  Rakotomamonjy}{2017}{courty_2017_OptimalTransportDomain}
+Courty, N., Flamary, R., Tuia, D. \harvardand\ Rakotomamonjy, A.
+  \harvardyearleft 2017\harvardyearright .
+\newblock Optimal {{Transport}} for {{Domain Adaptation}}, {\em IEEE
+  Transactions on Pattern Analysis and Machine Intelligence} {\bf
+  39}(9):~1853--1865.
+
+\harvarditem{Cuturi}{2013}{cuturi_2013_SinkhornDistancesLightspeed}
+Cuturi, M.  \harvardyearleft 2013\harvardyearright .
+\newblock Sinkhorn distances: {{Lightspeed}} computation of optimal transport,
+  {\em in} C.~Burges, L.~Bottou, M.~Welling, Z.~Ghahramani \harvardand\
+  K.~Weinberger (eds), {\em Advances in Neural Information Processing Systems},
+  Vol.~26, {Curran Associates, Inc.}
+
+\harvarditem{Cuturi \harvardand\
+  Doucet}{2014}{cuturi_2014_FastComputationWasserstein}
+Cuturi, M. \harvardand\ Doucet, A.  \harvardyearleft 2014\harvardyearright .
+\newblock Fast computation of wasserstein barycenters, {\em in} E.~P. Xing
+  \harvardand\ T.~Jebara (eds), {\em Proceedings of the 31st International
+  Conference on Machine Learning}, Vol.~32 of {\em Proceedings of Machine
+  Learning Research}, {PMLR}, {Bejing, China}, pp.~685--693.
+
+\harvarditem[Daubechies et~al.]{Daubechies, DeVore, Fornasier \harvardand\
+  G{\"u}nt{\"u}rk}{2010}{daubechies_2010_IterativelyReweightedLeast}
+Daubechies, I., DeVore, R., Fornasier, M. \harvardand\ G{\"u}nt{\"u}rk, C.~S.
+  \harvardyearleft 2010\harvardyearright .
+\newblock Iteratively reweighted least squares minimization for sparse
+  recovery, {\em Communications on Pure and Applied Mathematics} {\bf
+  63}(1):~1--38.
+
+\harvarditem[{del Barrio} et~al.]{{del Barrio}, Gin{\'e} \harvardand\
+  Matr{\'a}n}{1999}{delbarrio_1999_CentralLimitTheorems}
+{del Barrio}, E., Gin{\'e}, E. \harvardand\ Matr{\'a}n, C.  \harvardyearleft
+  1999\harvardyearright .
+\newblock Central {{Limit Theorems}} for the {{Wasserstein Distance Between}}
+  the {{Empirical}} and the {{True Distributions}}, {\em The Annals of
+  Probability} {\bf 27}(2).
+
+\harvarditem{Dowson \harvardand\
+  Landau}{1982}{dowson_1982_FrechetDistanceMultivariate}
+Dowson, D. \harvardand\ Landau, B.  \harvardyearleft 1982\harvardyearright .
+\newblock The {{Fr\'echet}} distance between multivariate normal distributions,
+  {\em Journal of Multivariate Analysis} {\bf 12}(3):~450--455.
+
+\harvarditem[Dvurechenskii et~al.]{Dvurechenskii, Dvinskikh, Gasnikov, Uribe
+  \harvardand\ Nedich}{2018}{dvurechenskii_2018_DecentralizeRandomizeFaster}
+Dvurechenskii, P., Dvinskikh, D., Gasnikov, A., Uribe, C. \harvardand\ Nedich,
+  A.  \harvardyearleft 2018\harvardyearright .
+\newblock Decentralize and randomize: {{Faster}} algorithm for wasserstein
+  barycenters, {\em in} S.~Bengio, H.~Wallach, H.~Larochelle, K.~Grauman,
+  N.~{Cesa-Bianchi} \harvardand\ R.~Garnett (eds), {\em Advances in Neural
+  Information Processing Systems}, Vol.~31, {Curran Associates, Inc.}
+
+\harvarditem{El~Moselhy \harvardand\
+  Marzouk}{2012}{elmoselhy_2012_BayesianInferenceOptimal}
+El~Moselhy, T.~A. \harvardand\ Marzouk, Y.~M.  \harvardyearleft
+  2012\harvardyearright .
+\newblock Bayesian inference with optimal maps, {\em Journal of Computational
+  Physics} {\bf 231}(23):~7815--7850.
+
+\harvarditem[Fletcher et~al.]{Fletcher, Lu, Pizer \harvardand\
+  Joshi}{2004}{fletcher_2004_PrincipalGeodesicAnalysis}
+Fletcher, P., Lu, C., Pizer, S. \harvardand\ Joshi, S.  \harvardyearleft
+  2004\harvardyearright .
+\newblock Principal {{Geodesic Analysis}} for the {{Study}} of {{Nonlinear
+  Statistics}} of {{Shape}}, {\em IEEE Transactions on Medical Imaging} {\bf
+  23}(8):~995--1005.
+
+\harvarditem[Fletcher et~al.]{Fletcher, Venkatasubramanian \harvardand\
+  Joshi}{2009}{fletcher_2009_GeometricMedianRiemannian}
+Fletcher, P.~T., Venkatasubramanian, S. \harvardand\ Joshi, S.
+  \harvardyearleft 2009\harvardyearright .
+\newblock The geometric median on {{Riemannian}} manifolds with application to
+  robust atlas estimation, {\em NeuroImage} {\bf 45}(1):~S143--S152.
+
+\harvarditem{Fournier \harvardand\
+  Guillin}{2015}{fournier_2015_RateConvergenceWasserstein}
+Fournier, N. \harvardand\ Guillin, A.  \harvardyearleft 2015\harvardyearright .
+\newblock On the rate of convergence in {{Wasserstein}} distance of the
+  empirical measure, {\em Probability Theory and Related Fields} {\bf
+  162}(3-4):~707--738.
+
+\harvarditem{Givens \harvardand\
+  Shortt}{1984}{givens_1984_ClassWassersteinMetrics}
+Givens, C.~R. \harvardand\ Shortt, R.~M.  \harvardyearleft
+  1984\harvardyearright .
+\newblock A class of {{Wasserstein}} metrics for probability distributions.,
+  {\em Michigan Mathematical Journal} {\bf 31}(2).
+
+\harvarditem{Gorodnitsky \harvardand\
+  Rao}{1997}{gorodnitsky_1997_SparseSignalReconstruction}
+Gorodnitsky, I. \harvardand\ Rao, B.  \harvardyearleft 1997\harvardyearright .
+\newblock Sparse signal reconstruction from limited data using {{FOCUSS}}: A
+  re-weighted minimum norm algorithm, {\em IEEE Transactions on Signal
+  Processing} {\bf 45}(3):~600--616.
+
+\harvarditem{Hampel}{1971}{hampel_1971_GeneralQualitativeDefinition}
+Hampel, F.~R.  \harvardyearleft 1971\harvardyearright .
+\newblock A {{General Qualitative Definition}} of {{Robustness}}, {\em The
+  Annals of Mathematical Statistics} {\bf 42}(6):~1887--1896.
+
+\harvarditem{Huber}{1981}{huber_1981_RobustStatistics}
+Huber, P.~J.  \harvardyearleft 1981\harvardyearright .
+\newblock {\em Robust Statistics}, Wiley Series in Probability and Mathematical
+  Statistics, {Wiley}, {New York}.
+
+\harvarditem{H{\"u}tter \harvardand\
+  Rigollet}{2021}{hutter_2021_MinimaxEstimationSmooth}
+H{\"u}tter, J.-C. \harvardand\ Rigollet, P.  \harvardyearleft
+  2021\harvardyearright .
+\newblock Minimax estimation of smooth optimal transport maps, {\em The Annals
+  of Statistics} {\bf 49}(2).
+
+\harvarditem{Kantorovitch}{1958}{kantorovitch_1958_TranslocationMasses}
+Kantorovitch, L.  \harvardyearleft 1958\harvardyearright .
+\newblock On the {{Translocation}} of {{Masses}}, {\em Management Science} {\bf
+  5}(1):~1--4.
+
+\harvarditem{Kaufman \harvardand\
+  Rousseeuw}{1990}{kaufman_1990_PartitioningMedoidsProgram}
+Kaufman, L. \harvardand\ Rousseeuw, P.~J.  \harvardyearleft
+  1990\harvardyearright .
+\newblock Partitioning {{Around Medoids}} ({{Program PAM}}), {\em Wiley
+  {{Series}} in {{Probability}} and {{Statistics}}}, {John Wiley \& Sons,
+  Inc.}, {Hoboken, NJ, USA}, pp.~68--125.
+
+\harvarditem{Kendall}{1990}{kendall_1990_ProbabilityConvexityHarmonic}
+Kendall, W.~S.  \harvardyearleft 1990\harvardyearright .
+\newblock Probability, {{Convexity}}, and {{Harmonic Maps}} with {{Small Image
+  I}}: {{Uniqueness}} and {{Fine Existence}}, {\em Proceedings of the London
+  Mathematical Society} {\bf s3-61}(2):~371--406.
+
+\harvarditem{Knott \harvardand\
+  Smith}{1984}{knott_1984_OptimalMappingDistributions}
+Knott, M. \harvardand\ Smith, C.~S.  \harvardyearleft 1984\harvardyearright .
+\newblock On the optimal mapping of distributions, {\em Journal of Optimization
+  Theory and Applications} {\bf 43}(1):~39--49.
+
+\harvarditem[Kolouri et~al.]{Kolouri, Zou \harvardand\
+  Rohde}{2016}{kolouri_2016_SlicedWassersteinKernels}
+Kolouri, S., Zou, Y. \harvardand\ Rohde, G.~K.  \harvardyearleft
+  2016\harvardyearright .
+\newblock Sliced wasserstein kernels for probability distributions, {\em
+  Proceedings of the {{IEEE}} Conference on Computer Vision and Pattern
+  Recognition ({{CVPR}})}.
+
+\harvarditem[Korotin et~al.]{Korotin, Li, Solomon \harvardand\
+  Burnaev}{2021}{korotin_2021_ContinuousWasserstein2Barycenter}
+Korotin, A., Li, L., Solomon, J. \harvardand\ Burnaev, E.  \harvardyearleft
+  2021\harvardyearright .
+\newblock Continuous wasserstein-2 barycenter estimation without minimax
+  optimization, {\em International Conference on Learning Representations}.
+
+\harvarditem{Lawson}{1961}{lawson_1961_ContributionsTheoryLinear}
+Lawson, C.~L.  \harvardyearleft 1961\harvardyearright .
+\newblock {\em Contributions to the {{Theory}} of {{Linear Least Maximum
+  Approximation}}}, PhD thesis, University of California Los Angeles.
+
+\harvarditem{Le~Gouic \harvardand\
+  Loubes}{2017}{legouic_2017_ExistenceConsistencyWasserstein}
+Le~Gouic, T. \harvardand\ Loubes, J.-M.  \harvardyearleft 2017\harvardyearright
+  .
+\newblock Existence and consistency of {{Wasserstein}} barycenters, {\em
+  Probability Theory and Related Fields} {\bf 168}(3-4):~901--917.
+
+\harvarditem[LeCun et~al.]{LeCun, Cortes \harvardand\
+  Burges}{1998}{lecun_1998_MNISTDatabaseHandwritten}
+LeCun, Y., Cortes, C. \harvardand\ Burges, C.  \harvardyearleft
+  1998\harvardyearright .
+\newblock The {{MNIST Database}} of {{Handwritten Digits}},
+  http://yann.lecun.com/exdb/mnist/.
+
+\harvarditem[Li et~al.]{Li, Genevay, Yurochkin \harvardand\
+  Solomon}{2020}{li_2020_ContinuousRegularizedWasserstein}
+Li, L., Genevay, A., Yurochkin, M. \harvardand\ Solomon, J.~M.
+  \harvardyearleft 2020\harvardyearright .
+\newblock Continuous regularized wasserstein barycenters, {\em in}
+  H.~Larochelle, M.~Ranzato, R.~Hadsell, M.~Balcan \harvardand\ H.~Lin (eds),
+  {\em Advances in Neural Information Processing Systems}, Vol.~33, {Curran
+  Associates, Inc.}, pp.~17755--17765.
+
+\harvarditem{MacQueen}{1967}{macqueen_1967_MethodsClassificationAnalysis}
+MacQueen, J.~B.  \harvardyearleft 1967\harvardyearright .
+\newblock Some {{Methods}} for {{Classification}} and {{Analysis}} of
+  {{Multivariate Observations}}, {\em in} L.~M.~L. Cam \harvardand\ J.~Neyman
+  (eds), {\em Proc. of the Fifth Berkeley Symposium on Mathematical Statistics
+  and Probability}, Vol.~1, {University of California Press}, pp.~281--297.
+
+\harvarditem[Malag{\`o} et~al.]{Malag{\`o}, Montrucchio \harvardand\
+  Pistone}{2018}{malago_2018_WassersteinRiemannianGeometry}
+Malag{\`o}, L., Montrucchio, L. \harvardand\ Pistone, G.  \harvardyearleft
+  2018\harvardyearright .
+\newblock Wasserstein {{Riemannian}} geometry of {{Gaussian}} densities, {\em
+  Information Geometry} {\bf 1}(2):~137--179.
+
+\harvarditem[Manning et~al.]{Manning, Raghavan \harvardand\
+  Sch{\"u}tze}{2008}{manning_2008_IntroductionInformationRetrieval}
+Manning, C.~D., Raghavan, P. \harvardand\ Sch{\"u}tze, H.  \harvardyearleft
+  2008\harvardyearright .
+\newblock {\em Introduction to Information Retrieval}, {Cambridge University
+  Press}, {New York}.
+
+\harvarditem[Manole et~al.]{Manole, Balakrishnan, {Niles-Weed} \harvardand\
+  Wasserman}{2021}{manole_2021_PluginEstimationSmooth}
+Manole, T., Balakrishnan, S., {Niles-Weed}, J. \harvardand\ Wasserman, L.
+  \harvardyearleft 2021\harvardyearright .
+\newblock Plugin {{Estimation}} of {{Smooth Optimal Transport Maps}}.
+
+\harvarditem{McCann}{1997}{mccann_1997_ConvexityPrincipleInteracting}
+McCann, R.~J.  \harvardyearleft 1997\harvardyearright .
+\newblock A {{Convexity Principle}} for {{Interacting Gases}}, {\em Advances in
+  Mathematics} {\bf 128}(1):~153--179.
+
+\harvarditem{McCullagh \harvardand\
+  Nelder}{1998}{mccullagh_1998_GeneralizedLinearModels}
+McCullagh, P. \harvardand\ Nelder, J.~A.  \harvardyearleft
+  1998\harvardyearright .
+\newblock {\em Generalized Linear Models}, number~37 in {\em Monographs on
+  Statistics and Applied Probability}, 2nd ed edn, {Chapman \& Hall/CRC}, {Boca
+  Raton}.
+
+\harvarditem{Minsker}{2015}{minsker_2015_GeometricMedianRobust}
+Minsker, S.  \harvardyearleft 2015\harvardyearright .
+\newblock Geometric median and robust estimation in {{Banach}} spaces, {\em
+  Bernoulli} {\bf 21}(4).
+
+\harvarditem{Monge}{1781}{monge_1781_MemoireTheorieDeblais}
+Monge, G.  \harvardyearleft 1781\harvardyearright .
+\newblock {\em M\'emoire Sur La Th\'eorie Des D\'eblais et Des Remblais}, {De
+  l'Imprimerie Royale}.
+
+\harvarditem{Nelder \harvardand\
+  Wedderburn}{1972}{nelder_1972_GeneralizedLinearModels}
+Nelder, J.~A. \harvardand\ Wedderburn, R. W.~M.  \harvardyearleft
+  1972\harvardyearright .
+\newblock Generalized {{Linear Models}}, {\em Journal of the Royal Statistical
+  Society. Series A (General)} {\bf 135}(3):~370.
+
+\harvarditem{Newcomb}{1891}{newcomb_1891_MeasuresVelocityLight}
+Newcomb, S.  \harvardyearleft 1891\harvardyearright .
+\newblock {\em Measures of the {{Velocity}} of {{Light Made Under}} the
+  {{Direction}} of the {{Secretary}} of the {{Navy During}} the {{Years}}
+  1880-1882}, Vol.~2 of {\em Astronomical {{Papers}} of the {{United States
+  Naval Observatory}} 1882-1986}, {Bureau of Navigation, Navy Department},
+  {Washington, D.C.}
+
+\harvarditem{Olkin \harvardand\ Pukelsheim}{1982}{olkin_1982_DistanceTwoRandom}
+Olkin, I. \harvardand\ Pukelsheim, F.  \harvardyearleft 1982\harvardyearright .
+\newblock The distance between two random vectors with given dispersion
+  matrices, {\em Linear Algebra and its Applications} {\bf 48}:~257--263.
+
+\harvarditem{Osborne}{1985}{osborne_1985_FiniteAlgorithmsOptimization}
+Osborne, M.~R.  \harvardyearleft 1985\harvardyearright .
+\newblock {\em Finite Algorithms in Optimization and Data Analysis}, Wiley
+  Series in Probability and Mathematical Statistics, {Wiley}, {Chichester ; New
+  York}.
+
+\harvarditem{Otto}{2001}{otto_2001_GEOMETRYDISSIPATIVEEVOLUTION}
+Otto, F.  \harvardyearleft 2001\harvardyearright .
+\newblock {{The geometry of dissipative evolution equations}}: {{the porous
+  medium equation}}, {\em Communications in Partial Differential Equations}
+  {\bf 26}(1-2):~101--174.
+
+\harvarditem{Panaretos \harvardand\
+  Zemel}{2020}{panaretos_2020_InvitationStatisticsWasserstein}
+Panaretos, V.~M. \harvardand\ Zemel, Y.  \harvardyearleft 2020\harvardyearright
+  .
+\newblock {\em An {{Invitation}} to {{Statistics}} in {{Wasserstein Space}}},
+  {{SpringerBriefs}} in {{Probability}} and {{Mathematical Statistics}},
+  {Springer International Publishing}, {Cham}.
+
+\harvarditem{Pennec}{2006}{pennec_2006_IntrinsicStatisticsRiemannian}
+Pennec, X.  \harvardyearleft 2006\harvardyearright .
+\newblock Intrinsic {{Statistics}} on {{Riemannian Manifolds}}: {{Basic Tools}}
+  for {{Geometric Measurements}}, {\em Journal of Mathematical Imaging and
+  Vision} {\bf 25}(1):~127--154.
+
+\harvarditem{Peyr{\'e} \harvardand\
+  Cuturi}{2019}{peyre_2019_ComputationalOptimalTransport}
+Peyr{\'e}, G. \harvardand\ Cuturi, M.  \harvardyearleft 2019\harvardyearright .
+\newblock Computational {{Optimal Transport}}: {{With Applications}} to {{Data
+  Science}}, {\em Foundations and Trends\textregistered{} in Machine Learning}
+  {\bf 11}(5-6):~355--607.
+
+\harvarditem[Preston et~al.]{Preston, Heuveline \harvardand\
+  Guillot}{2009}{preston_2009_DemographyMeasuringModeling}
+Preston, S.~H., Heuveline, P. \harvardand\ Guillot, M.  \harvardyearleft
+  2009\harvardyearright .
+\newblock {\em Demography: Measuring and Modeling Population Processes},
+  nachdr. edn, {Blackwell}, {Oxford}.
+
+\harvarditem[Ramdas et~al.]{Ramdas, Trillos \harvardand\
+  Cuturi}{2017}{ramdas_2017_WassersteinTwoSampleTesting}
+Ramdas, A., Trillos, N. \harvardand\ Cuturi, M.  \harvardyearleft
+  2017\harvardyearright .
+\newblock On {{Wasserstein Two-Sample Testing}} and {{Related Families}} of
+  {{Nonparametric Tests}}, {\em Entropy} {\bf 19}(2):~47.
+
+\harvarditem{Rice}{1964}{rice_1964_ApproximationsFunctions}
+Rice, J.~R.  \harvardyearleft 1964\harvardyearright .
+\newblock {\em The {{Approximations}} of {{Functions}}}, Addison-{{Wesley
+  Series}} in {{Computer Science}} and {{Information Processing}},
+  {Addison-Wesley Pub. Co}, {Reading, Mass}.
+
+\harvarditem{Rousseeuw}{1987}{rousseeuw_1987_SilhouettesGraphicalAid}
+Rousseeuw, P.~J.  \harvardyearleft 1987\harvardyearright .
+\newblock Silhouettes: {{A}} graphical aid to the interpretation and validation
+  of cluster analysis, {\em Journal of Computational and Applied Mathematics}
+  {\bf 20}:~53--65.
+
+\harvarditem{Rousseeuw \harvardand\
+  Leroy}{1987}{rousseeuw_1987_RobustRegressionOutlier}
+Rousseeuw, P.~J. \harvardand\ Leroy, A.~M.  \harvardyearleft
+  1987\harvardyearright .
+\newblock {\em Robust Regression and Outlier Detection}, {Wiley}, {New York}.
+
+\harvarditem{R{\"u}schendorf \harvardand\
+  Uckelmann}{2002}{ruschendorf_2002_NCouplingProblem}
+R{\"u}schendorf, L. \harvardand\ Uckelmann, L.  \harvardyearleft
+  2002\harvardyearright .
+\newblock On the n-{{Coupling Problem}}, {\em Journal of Multivariate Analysis}
+  {\bf 81}(2):~242--258.
+
+\harvarditem{Sammut \harvardand\
+  Webb}{2011}{sammut_2011_EncyclopediaMachineLearning}
+Sammut, C. \harvardand\ Webb, G.~I.  \harvardyearleft 2011\harvardyearright .
+\newblock {\em Encyclopedia of Machine Learning}, Springer Reference,
+  {Springer}, {New York}.
+
+\harvarditem[Srivastava et~al.]{Srivastava, Li \harvardand\
+  Dunson}{2018}{srivastava_2018_ScalableBayesBarycenter}
+Srivastava, S., Li, C. \harvardand\ Dunson, D.~B.  \harvardyearleft
+  2018\harvardyearright .
+\newblock Scalable bayes via barycenter in wasserstein space, {\em Journal of
+  Machine Learning Research} {\bf 19}(1):~312--346.
+
+\harvarditem{Takatsu}{2011}{takatsu_2011_WassersteinGeometryGaussian}
+Takatsu, A.  \harvardyearleft 2011\harvardyearright .
+\newblock Wasserstein geometry of {{Gaussian}} measures, {\em Osaka Journal of
+  Mathematics} {\bf 48}(4):~1005--1026.
+
+\harvarditem{Vardi \harvardand\
+  Zhang}{2000}{vardi_2000_MultivariateL1medianAssociated}
+Vardi, Y. \harvardand\ Zhang, C.-H.  \harvardyearleft 2000\harvardyearright .
+\newblock The multivariate {{L1-median}} and associated data depth, {\em
+  Proceedings of the National Academy of Sciences} {\bf 97}(4):~1423--1426.
+
+\harvarditem{Villani}{2003}{villani_2003_TopicsOptimalTransportation}
+Villani, C.  \harvardyearleft 2003\harvardyearright .
+\newblock {\em Topics in {{Optimal Transportation}}}, Vol.~58 of {\em Graduate
+  {{Studies}} in {{Mathematics}}}, {American Mathematical Society}, {S.l.}
+
+\harvarditem{Villani}{2009}{villani_2009_OptimalTransportOld}
+Villani, C.  \harvardyearleft 2009\harvardyearright .
+\newblock {\em Optimal Transport: Old and New}, number 338 in {\em Grundlehren
+  Der Mathematischen {{Wissenschaften}}}, {Springer}, {Berlin}.
+
+\harvarditem{Weiszfeld}{1937}{weiszfeld_1937_PointPourLequel}
+Weiszfeld, E.  \harvardyearleft 1937\harvardyearright .
+\newblock Sur le point pour lequel la {{Somme}} des distances de n points
+  donnes est minimum, {\em Tohoku Mathematical Journal, First Series} {\bf
+  43}:~355--386.
+
+\harvarditem[Xie et~al.]{Xie, Wang, Wang \harvardand\
+  Zha}{2020}{xie_2020_FastProximalPoint}
+Xie, Y., Wang, X., Wang, R. \harvardand\ Zha, H.  \harvardyearleft
+  2020\harvardyearright .
+\newblock A fast proximal point method for computing exact wasserstein
+  distance, {\em in} R.~P. Adams \harvardand\ V.~Gogate (eds), {\em Proceedings
+  of the 35th Uncertainty in Artificial Intelligence Conference}, Vol. 115 of
+  {\em Proceedings of Machine Learning Research}, {PMLR}, pp.~433--453.
+
+\harvarditem{You \harvardand\
+  Suh}{2022}{you_2022_ParameterEstimationModelbased}
+You, K. \harvardand\ Suh, C.  \harvardyearleft 2022\harvardyearright .
+\newblock Parameter estimation and model-based clustering with spherical normal
+  distribution on the unit hypersphere, {\em Computational Statistics \& Data
+  Analysis} {\bf 171}:~107457.
+
+\end{thebibliography}

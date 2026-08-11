@@ -1,0 +1,178 @@
+\begin{thebibliography}{10}
+
+\bibitem{BahmRomConvPR}
+Sohail Bahmani and Justin Romberg.
+\newblock A flexible convex relaxation for phase retrieval.
+\newblock {\em Electronic Journal of Statistics}, 11(2):5254--5281, 2017.
+
+\bibitem{CandLi2014}
+Emmanuel~J. Cand\`{e}s and Xiaodong Li.
+\newblock Solving quadratic equations via phaselift when there are about as
+  many equations as unknowns.
+\newblock {\em Foundations of Computational Mathematics}, 14.5:1017--1026,
+  2014.
+
+\bibitem{CandesLiSoltan2015}
+Emmanuel~J. Cand\`{e}s, Xiaodong Li, and Mahdi Soltanolkotabi.
+\newblock Phase retrieval via wirtinger flow: Theory and applications.
+\newblock {\em IEEE Transactions on Information Theory}, 61(4):195--2007, 2017.
+
+\bibitem{CSV2013}
+Emmanuel~J. Cand\`{e}s, Thomas Strohmer, and Vladislav Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  66(8):1241--1274, 2013.
+
+\bibitem{ChenCandes2015}
+Yuxin Chen and Emmanuel Cand\`{e}s.
+\newblock Solving random quadratic systems of equations is nearly as easy as
+  solving linear systems.
+\newblock {\em Communications on Pure and Applied Mathematics}, 70(5):822--883,
+  2017.
+
+\bibitem{Chenetal19}
+Yuxin Chen, Yuejie Chi, Jianqing Fan, and Cong Ma.
+\newblock Gradient descent with random initialization: Fast global convergence
+  for nonconvex phase retrieval.
+\newblock {\em Mathematical Programming}, 176(1-2):5--37, 2019.
+
+\bibitem{Clason2017}
+Christian Clason.
+\newblock Nonsmooth analysis and optimization.
+\newblock {\em arXiv preprint arXiv:1708.04180}, 2017.
+
+\bibitem{CHV20}
+Jorio Cocola, Paul Hand, and Vladislav Voroninski.
+\newblock Nonasymptotic guarantees for low-rank matrix recovery with generative
+  priors.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  2020.
+
+\bibitem{Daskalaskisetal2020}
+Constantinos Daskalakis, Dhruv Rohatgi, and Manolis Zampetakis.
+\newblock Constant-expansion suffices for compressed sensing with generative
+  priors.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  2020.
+
+\bibitem{DemanetHand14}
+Laurent Demanet and Paul Hand.
+\newblock Stable optimizationless recovery from phaseless linear measurements.
+\newblock {\em Journal of Fourier Analysis and Applications}, 20(1):199--221,
+  2014.
+
+\bibitem{DuchiRuan2018}
+John Duchi and Feng Ruan.
+\newblock Solving (most) of a set of quadratic equalities: Composite
+  optimization for robust phase retrieval.
+\newblock {\em Information and Inference: a Journal of the IMA}, 8(3):471--529,
+  2019.
+
+\bibitem{Wang2018}
+Yonina~C. Eldar, Georgios~B. Giannakis, and Gang Wang.
+\newblock Solving systems of random quadratic equations via truncated amplitude
+  flow.
+\newblock {\em IEEE Transactions on Information Theory}, 64(2):773--794, 2018.
+
+\bibitem{Numerics_of_PR}
+Albert Fannjiang and Thomas Strohmer.
+\newblock The numerics of phase retrieval.
+\newblock {\em arXiv preprint arXiv:2004.05788}, 2020.
+
+\bibitem{Phasemax}
+Tom Goldstein and Christoph Struder.
+\newblock Phasemax: Convex phase retrieval via basis pursuit.
+\newblock {\em IEEE Transactions on Information Theory}, 64(4):2675–2689,
+  2018.
+
+\bibitem{Hand17}
+Paul Hand.
+\newblock Phaselift is robust to a constant fraction of arbitrary errors.
+\newblock {\em Applied and Computational Harmonic Analysis}, 42(3):550--562,
+  2017.
+
+\bibitem{JoshiHand19}
+Paul Hand and Babhru Joshi.
+\newblock Global guarantees for blind demodulation with generative priors.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  pages 11535--11545, 2019.
+
+\bibitem{HLV18}
+Paul Hand, Oscar Leong, and Vladislav Voroninski.
+\newblock Phase retrieval under a generative prior.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  pages 9136--9146, 2018.
+
+\bibitem{HLV20}
+Paul Hand, Oscar Leong, and Vladislav Voroninski.
+\newblock Compressive phase retrieval: Optimal sample complexity with deep
+  generative priors.
+\newblock {\em arXiv preprint arXiv:2008.10579}, 2020.
+
+\bibitem{HV16Elem}
+Paul Hand and Vladislav Voroninski.
+\newblock An elementary proof of convex phase retrieval in the natural
+  parameter space via the linear program phasemax.
+\newblock {\em Communications in Mathematical Sciences}, 16(7):2047--2051,
+  2018.
+
+\bibitem{HV2017}
+Paul Hand and Vladislav Voroninski.
+\newblock Global guarantees for enforcing deep generative priors by empirical
+  risk.
+\newblock {\em IEEE Transactions on Information Theory}, 66(1):401--418, 2019.
+
+\bibitem{Heckeletal2018}
+Reinhard Heckel, Wen Huang, Paul Hand, and Vladislav Voroninski.
+\newblock Rate-optimal denoising with deep neural networks.
+\newblock {\em Information and Inference: A Journal of the IMA}, 2020.
+
+\bibitem{Huangetal2018}
+Wen Huang, Paul Hand, Reinhard Heckel, and Vladislav Voroninski.
+\newblock A provably convergent scheme for compressive sensing under random
+  generative priors.
+\newblock {\em Journal of Fourier Analysis and Applications}, 2021.
+
+\bibitem{SmoothAmpFlow}
+Qi~Luo and Hongxia Wang.
+\newblock Phase retrieval via smoothed amplitude flow.
+\newblock {\em arXiv preprint arXiv:1909.10685}, 2019.
+
+\bibitem{Qiuetal19}
+Shuang Qiu, Xiaohan Wei, and Zhuoran Yang.
+\newblock Robust one-bit recovery via relu generative networks: Improved
+  statistical rates and global landscape analysis.
+\newblock {\em International Conference on Machine Learning (ICML)}, 2020.
+
+\bibitem{Wright2016}
+Ju~Sun, Qing Qu, and John Wright.
+\newblock A geometric analysis of phase retrieval.
+\newblock {\em Foundations of Computational Mathematics}, 18(5):1131--1198,
+  2018.
+
+\bibitem{TanVershynin19}
+Yan~Shuo Tan and Roman Vershynin.
+\newblock Online stochastic gradient descent with arbitrary initialization
+  solves non-smooth, non-convex phase retrieval.
+\newblock {\em arXiv preprint arXiv:1910.12837}, 2019.
+
+\bibitem{Vershynin_notes}
+Roman Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock {\em Compressed Sensing: Theory and Applications}, Cambridge
+  University Press, 2012.
+
+\bibitem{YonelYazici2020}
+Bariscan Yonel and Birsen Yazici.
+\newblock A deterministic theory for exact non-convex phase retrieval.
+\newblock {\em IEEE Transactions on Signal Processing}, 68:4612--4626, 2020.
+
+\bibitem{AmpFlow}
+Huishuai Zhang, Yingbin Liang, and Yuejie Chi.
+\newblock A nonconvex approach for phase retrieval: Reshaped wirtinger flow and
+  incremental algorithms.
+\newblock {\em Journal of Machine Learning Research (JMLR)}, 18(141):1--35,
+  2017.
+
+\end{thebibliography}

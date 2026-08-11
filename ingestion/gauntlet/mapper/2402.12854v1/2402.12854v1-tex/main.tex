@@ -1,0 +1,179 @@
+\documentclass{article}
+
+\usepackage[numbers]{natbib}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{arxiv}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+\usepackage{float}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Fil}{\mathsf{Fil}}
+\renewcommand{\Im}{\mathsf{Im}}
+\newcommand{\ord}{\mathsf{ord}}
+\newcommand{\grid}{\mathsf{grid}}
+\newcommand{\cell}{\mathsf{cell}}
+\newcommand{\reindex}{\mathsf{reindex}}
+\newcommand{\dsm}{\mathcal{DSM}}
+\newcommand{\aslist}{\mathsf{asList}}
+
+\newcommand{\Reeb}{{\mathrm R}}
+\newcommand{\Clus}{\text{Clus}}
+\newcommand{\Xset}{{\mathcal X}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Xs}{\mathbb{X}}
+\newcommand{\Ys}{\mathbb{Y}}
+\newcommand{\interv}{I}
+\newcommand{\Metrsp}{X}
+\newcommand{\loss}{\ell}
+\newcommand{\PD}{PD}
+\newcommand{\MapComp}{\text{MapComp}}
+\newcommand{\MapPers}{\text{MapPers}}
+\newcommand{\VertexFilt}{\text{VertexFilt}}
+\newcommand{\SubFilt}{\text{SubFilt}}
+\newcommand{\Persistence}{\text{Persistence}}
+\newcommand{\nbMC}{M}
+
+\newcommand{\muXs}{\mu}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ParSpace}{\R^s}
+
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}   
+\usepackage{hyperref}     
+\usepackage{url}            
+\usepackage{booktabs}       
+\usepackage{amsfonts}       
+\usepackage{nicefrac}      
+\usepackage{microtype}      
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{doi}
+
+
+
+\title{Differentiable Mapper for Topological Optimization of Data Representation}
+
+
+
+\author{ Ziyad Oulhaj\\
+    Nantes Universit\'e, Centrale Nantes \\
+    Laboratoire de Math\'ematiques Jean Leray, CNRS UMR 6629\\
+	Nantes, France\\
+	\texttt{ziyad.oulhaj@ec-nantes.fr} \\
+	%% examples of more authors
+	\And
+	Mathieu Carrière \\
+	DataShape\\
+	Centre Inria d'Université Côte d'Azur\\
+	Sophia Antipolis, France \\
+	\texttt{mathieu.carriere@inria.fr} \\
+    \And
+	Bertrand Michel \\
+    Nantes Universit\'e, Centrale Nantes \\
+Laboratoire de Math\'ematiques Jean Leray, CNRS UMR 6629\\
+	Nantes, France\\
+	\texttt{bertrand.michel@ec-nantes.fr} \\
+	%% \AND
+	%% Coauthor \\
+	%% Affiliation \\
+	%% Address \\
+	%% \texttt{email} \\
+	%% \And
+	%% Coauthor \\
+	%% Affiliation \\
+	%% Address \\
+	%% \texttt{email} \\
+	%% \And
+	%% Coauthor \\
+	%% Affiliation \\
+	%% Address \\
+	%% \texttt{email} \\
+}
+
+% Uncomment to remove the date
+\date{}
+
+
+\renewcommand{\shorttitle}{Mapper Optimization}
+
+%%% Add PDF metadata to help others organize their library
+%%% Once the PDF is generated, you can check the metadata with
+%%% $ pdfinfo template.pdf
+\hypersetup{
+pdftitle={Differentiable Mapper for Topological Optimization of Data Representation},
+pdfsubject={Machine Learning, TDA},
+pdfauthor={Ziyad Oulhaj, Mathieu Carrière, Bertrand Michel},
+pdfkeywords={ Mapper Graph, Data Visualization, Topological Data Analysis, Persistent Homology, Optimization},
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Unsupervised data representation and visualization using tools from topology is an active and growing field 
+%at the intersection 
+of Topological Data Analysis (TDA) 
+%, non-convex optimization 
+and data science.
+Its most prominent line of work is based on the so-called {\em Mapper graph},
+which is a combinatorial graph 
+%built from the data set, and 
+whose topological structures (connected components, branches, loops) are in correspondence with those of the data itself.
+While highly generic and applicable, its use has been hampered so far by the manual tuning of its many
+parameters---among these, a crucial
+%, which is often required in order to get relevant outputs.
+one is the so-called {\em filter}: it is a continuous function whose variations on the data set are the main
+ingredient for both building the Mapper representation and assessing the presence and sizes of its topological structures.
+However, while a few parameter tuning methods have already been investigated for the other Mapper parameters (i.e., resolution, gain, clustering), 
+there is currently no method for tuning the filter itself. In this work, we build on a recently proposed 
+optimization framework incorporating topology to provide the first filter optimization scheme for Mapper graphs.
+In order to achieve this, we propose a relaxed and more general version of the Mapper graph, whose convergence
+properties are investigated. Finally, we demonstrate the usefulness of our approach by optimizing Mapper 
+graph representations on several datasets, and showcasing the superiority of the optimized representation over arbitrary ones.
+\end{abstract}
+
+
+% keywords can be removed
+\keywords{ Mapper Graph, Data Visualization, Topological Data Analysis, Persistent Homology}
+
+\input{intro}
+\input{background}
+\input{soft-mapper-def}
+\input{assignment-models}
+\input{topo-risk}
+\input{optimization}
+\input{experiments}
+\input{conclusion}
+
+
+\newpage
+\bibliography{references}
+\bibliographystyle{unsrt}
+
+\newpage
+\appendix
+
+\input{gaussian_cover}
+\input{o-minimal_geometry}
+\input{theorem_proof}
+\input{sgd_conditions}
+\input{experiments_figures}
+\input{second_single_cell_dataset}
+
+\end{document}

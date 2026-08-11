@@ -1,0 +1,95 @@
+ \documentclass[11pt]{article}
+\setlength{\topmargin}{-.6in}
+\setlength{\oddsidemargin}{-0cm}
+\setlength{\evensidemargin}{-1cm}
+\setlength{\textwidth}{16.5cm}
+\setlength{\textheight}{23cm}
+
+\usepackage{latexsym,amssymb,amsmath,amsthm,graphics,graphicx,float,psfrag, epsfig, color, authblk}
+
+\usepackage{xcolor}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\magenta}[1]{\textcolor{magenta}{#1}}
+
+
+\newtheorem{definition}{Definition}
+\newtheorem{claim}{Claim}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{algorithm}{Algorithm}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[subsection]{Remark}
+\newtheorem{remarks}[subsection]{Remarks}
+\newtheorem{example}[subsection]{Example}
+
+
+\input{macros.tex}
+
+
+\title{ShapeFit: Exact location recovery from  corrupted pairwise directions}
+%\author[1]{Paul Hand\thanks{hand@rice.edu}}
+%\author[2]{Choongbum Lee\thanks{cb_lee@math.mit.edu}}
+%\author[2]{Vladislav Voroninski\thanks{vvlad@math.mit.edu}}
+%\affil[1]{Department of Computational and Applied Mathematics, Rice University}
+%\affil[2]{Department of Mathematics, Massachusetts Institute of Technology}
+
+%\author{Paul Hand\thanks{Department of Computational and Applied Mathematics, Rice University, Houston TX 77005}, Choongbum Lee\thanks{Department of Mathematics, Massachusetts Institute of Technology, Cambridge MA 02139}, Vladislav Voroninski\thanks{Department of Mathematics, Massachusetts Institute of Technology, Cambridge MA 02139}}
+
+\author{ Paul Hand*, Choongbum Lee and Vladislav Voroninski\\
+  Department of Mathematics, Massachusetts Institute of Technology\\
+  *Department of Computational and Applied Mathematics, Rice University
+}
+
+%\author{Paul Hand and Choongbum Lee and Vladislav Voroninski}
+\date{June 4, 2015.  Revised July 4, 2015}		% remove for today's date
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $t_1,\ldots,t_n \in \mathbb{R}^d$ and consider the location recovery problem: given a subset of pairwise direction observations $\{(t_i - t_j) / \|t_i - t_j\|_2\}_{i<j \in [n] \times [n]}$, where a constant fraction of these observations are arbitrarily corrupted, find $\{t_i\}_{i=1}^n$ up to a global translation and scale. We propose a novel algorithm for the location recovery problem, which consists of a simple convex program over $dn$ real variables. We prove that this program recovers a set of $n$ i.i.d. Gaussian locations exactly and with high probability if the observations are given by an \erdosrenyi graph, $d$ is large enough, and provided that at most a constant fraction of observations involving any particular location are adversarially corrupted.  We also prove that the program exactly recovers  Gaussian locations for $d=3$ if the fraction of corrupted observations at each location is, up to poly-logarithmic factors, at most a constant.  Both of these recovery theorems are based on a set of deterministic conditions that we prove are sufficient for exact recovery.
+
+
+%find a set of locations $t_1, \ldots, t_n \in \R^d$ from a subset of pairwise direction observations $\{(t_i - t_j) / \|t_i - t_j\|_2\}_{i,j \in [n] \times [n]}$, where a constant fraction of these observations are arbitrarily corrupted. We propose a novel algorithm for location recovery up to a global translation and scale. This algorithm is a simple convex program over $dn$ unknown real variables. We prove that this program recovers a set of n iid gaussian locations exactly and with high probability if the observations are given by an \erdosrenyi graph, and provided that each location is involved in at most a constant fraction of adversarially corrupted observations. 
+
+%\red{Old abstract: Consider the problem of location estimation from observations of the pairwise line measurements where some of the lines are arbitrarily corrupted. We have $n$ unknown locations $t_1^0,\ldots t_m^0 \in \mathbb{R}^d$ and a set of measurements $v_{ij}$, where $v_{ij} = \frac{t_{i}^0-t_{j}^0}{\|t_{i}^0-t_{j}^0\|_2}$ for $(i,j) \in E_G$ and where $v_{ij}$ are arbitrary otherwise. We propose a novel algorithm to recover the locations $t_{i}^0$ up to a global scale and translation via a simple convex program. We prove that under suitable assumptions, namely a random gaussian model on the locations, and an Erdos-Reyni graph of measurements and corruptions, that ShapeFit recovers the locations exactly with very high probability. }
+
+\end{abstract}
+
+\input{introduction.tex}
+\input{proofs.tex}
+\input{simulations.tex}
+
+%\section{Discussion and future work}
+%
+%We propose a simple convex program to recover location from corrupted relative directions. In d=3, this is an algorithm for   
+%
+%ShapeFit is an algorithm for finding a set of points from corrupted measurements of the directions between pairs of points.  It \emph{exactly} recovers a set of $\Omega(1)$-dimensional random points with high probability, if the fraction of corrupted measurements is below some number $f$, even if those corruptions are chosen \emph{adversarially}.  The ShapeFit program finds a shape that minimizes, in some sense, the total amount of rotation needed to align each of its pairs with the potentially corrupted observed directions.  
+%
+%Theorem \ref{thm-complete} guarantees high probability recovery, provided that the number of measurements is above a constant and is less than an exponential in $d$.   The exponential upper bound is a technical condition that ensures that the $n$ locations in $\R^d$ have comparable magnitude and that the angles between the locations is bounded away from $0$ and $\pi$.  The constant lower bound, $n \geq 16$ ensures a technical property holds with high probability.  This property is a triangle-like inequality concerning rotations.   The lower bound on $n$ is inconsequential because any $\fstar < \frac{1}{16}$ ensures that there are no corruptions when $n<16$.  In this uncorrupted case, ShapeFit recovers the locations exactly by the parallel rigidity argument in Section \ref{sec-prior-work}.  
+%
+%\cite{1dSfm_22,1dSfm_11,1dSfm_7,1dSfm_3,1dSfm_18,1dSfm_8,1dSfm_19,1dSfm_13,1dSfm_5,1dSfm_10,1dSfm_11,1dSfm_3,1dSfm_16,1dSfm_17, 1dSfm_8, 1dSfm_4,1dSfm_19,1dSfm_6,1dSfm_24,1dSfm_18,1dSfm_24, 1dSfm_15, 1dSfm_23,1dSfm_14}
+%
+%
+%\cite {AMIT_1, AMIT_6, AMIT_11, AMIT_16, AMIT_29, AMIT_30, AMIT_41,AMIT_2,AMIT_13,AMIT_14,AMIT_24,AMIT_25,AMIT_32,AMIT_2, AMIT_5, AMIT_12, AMIT_28, ÊAMIT_19, AMIT_27 , AMIT_13, AMIT_28,AMIT_25,AMIT_13,AMIT_27}
+%
+%\cite{Jiang_15}
+%
+%\cite{AMIT_14}
+
+\section*{Acknowledgements}
+VV acknowledges discussions with Tomasz Malisiewicz, Stefano Soatto, and Ram Sripracha. VV is partially supported by the Office of Naval Research.  CL is partially supported by the National Science Foundation Grant DMS-1362326. PH is partially supported by the National Science Foundation Grant DMS-1418971.
+\bibliographystyle{plain}
+\bibliography{references}
+
+
+\end{document}
+
+
+
+
+
+

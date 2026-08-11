@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2505.03022v2",
+  "initialized_utc": "2026-08-11T08:30:18.319063Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "tdabmpython.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "An Introduction to Topological Data Analysis Ball Mapper in Python",
+        "authors_tex": [
+          "Simon Rudkin \\thanks{Full Address: Department of Social Statistics, School of Social Sciences, University of Manchester, Oxford Road, Manchester, M13 9PL, United Kingdom. Email:simon.rudkin@manchester.ac.uk}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2505.03022v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 30460651,
+      "sha256": "254ecdcdfc5d3f76016110f1556f5f1b10934cd06a1e8403af9738e4d3e84543",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2505.03022v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2505.03022v2.tar.gz",
+      "entrypoint": "tdabmpython.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 68,
+      "tex_files": 1,
+      "sha256": "6bcd981e6865fefa5e793916fa808fb2691bd5f096c9a5b3fb73db4370590b0e"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2505.03022v2.pdf",
+      "format": "application/pdf",
+      "bytes": 15325580,
+      "sha256": "0f595e5d33c13e24937052417ba149716f7407745a26495ce3341789da1c0f49"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:18.319063Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 68
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 68
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "tdabmpython.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

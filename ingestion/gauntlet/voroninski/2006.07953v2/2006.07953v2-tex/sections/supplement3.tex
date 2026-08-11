@@ -1,0 +1,171 @@
+\subsection{Supplementary proofs}\label{sec:supp_proof}
+
+%\subsubsection{Proofs in subsection \ref{subsec:prelim}}
+
+Below we prove Lemma \ref{lemma:conctr_grad1} on the concentration of the gradient of $f$ at a differentiable point. 
+\begin{proof}[Proof of Lemma \ref{lemma:conctr_grad1}]
+	We begin by noticing that:
+		\[\vbar_x - h_x = \big[\langle p_x, x \rangle p_x - \langle x, x\rangle \frac{x}{2^{2d}} \big] + [ \langle \htilde_x , x \rangle x -  \langle q_x , x \rangle x ].\]
+		Below we show  that:
+		\begin{equation}\label{eq:px-x}
+		\| \langle p_x, x \rangle p_x - \langle x, x\rangle \frac{x}{2^{2d}}\| \leq \frac{50}{2^{2d}} d^3 \sqrt{\eps} \max\{\|x\|^2, \|\xstar\|^2\} \|x\|.
+		\end{equation}
+		and
+		\begin{equation}\label{eq:qx-htx}
+		\| \langle q_x, x \rangle p_x - \langle \htilde_x, x\rangle \htilde_x| \leq \frac{36}{2^{2d}} d^4 \sqrt{\eps} \max\{\|x\|^2, \|\xstar\|^2\} \|x\|.
+		\end{equation}
+		from which the thesis follows.
+		
+		
+		Regarding equation \eqref{eq:px-x} observe that:
+		\[
+			\begin{aligned}
+				\| \langle p_x, x \rangle p_x - \langle x, x\rangle \frac{x}{2^{2d}}\| &= \| \langle p_x ,x \rangle  \big[ p_x - \frac{x}{2^d} \big] +  \langle p_x - \frac{x}{2^d} , \frac{x}{2^d} \rangle x \| \\				
+				&\leq  \big( \|\Lambda_x x\|^2 + \frac{\|x\|^2}{2^{d}} \big) \|p_x - \frac{x}{2^d}\| \\
+				& \leq \frac{50}{2^{2d}} d^3 \sqrt{\eps} \|x\|^3
+			\end{aligned}
+		\]
+		where in the first inequality we used $\langle p_x, x\rangle = \|\Lambda_x x\|^2$ and in the second we used equations \eqref{eq:htilde_conctr} and \eqref{eq:Lx_bound} of Lemma \ref{lemma:conctrWDC}.
+		
+		Next note that:
+		\[
+			\begin{aligned}
+			\| \langle q_x, x \rangle q_x - \langle \htilde_x, x\rangle \htilde_x \| &= \| \langle q_x ,x \rangle  (q_x - \htilde_x) +  \langle q_x - \htilde_x , x \rangle \htilde_x \| \\				
+			&\leq  ( \|q_x\| + \|\htilde_x\| ) \| x\| \|q_x - \htilde_x\| \\
+			& \leq \big(\frac{13}{12} + 1 + \frac{d}{\pi}\big)  \frac{\|x\| \| \xstar\|}{2^d} \|q_x - \htilde_x\|\\
+			&\leq \frac{3}{2} d \frac{\|x\| \| \xstar\|}{2^d} \|q_x - \htilde_x\|
+			\end{aligned}
+		\]
+		where in the second inequality we have the bound
+		\eqref{eq:Lx_bound} and the definition of $\htilde_{x}$. Equation \eqref{eq:qx-htx} is then 
+		found by appealing to equation \eqref{eq:htilde_conctr} in Lemma \ref{lemma:conctrWDC}.
+\end{proof}
+
+The previous lemma is now used to control the concentration 
+of the subgradients $v_x$ of $f$ around $h_x$.
+
+\begin{proof}[Proof of Lemma \ref{lemma:conctr_grad2}]
+	
+	When $f$ is differentiable at $x$, $\nabla f(x) = \vtilde_x = \vbar_x + \eta_x$, so that by
+	Lemma \ref{lemma:conctr_grad1} and the assumption on the noise:
+	\begin{equation}\label{eq:gradwnoise}
+	\begin{aligned}
+		\| v_x - h_x \| &\leq \| \vbar_x
+		- h_x\| + \|\eta_x\| \\
+		&\leq 86 \frac{ d^4 \sqrt{\eps}}{2^{2d}} \max(\|\xstar\|^2, \| x\|^2) \|x\| +   \frac{\omega}{2^{d}} \,  \| x\|.
+	\end{aligned}
+	\end{equation}
+	Observe, now, that by \eqref{eq:subdiff}, for any $x \in \R^k$,  $v_x \in \pa f(x) = $conv$(v_1, \dots, v_t)$, and therefore $v_x = a_1 v_1 + \dots + a_T v_T$ for some $a_1, \dots, a_T  \geq 0$, $\sum_i a_i = 1$.
+	Moreover for each $v_i$ there exist a $w_i$ such that $v_i = \lim_{\delta \to 0^+} \vtilde_{x + \delta w_i} $. Therefore using equation \eqref{eq:gradwnoise}, the continuity of $h_x$ with respect to nonzero $x$ and $\sum_i a_i = 1$:
+	\[
+	\begin{aligned}
+	\| v_x - h_x \| &\leq \sum_{i=1}^T a_i \| v_i  - h_x\| \\
+	& \leq  \sum_{i=1}^T a_i \lim_{\delta \to 0} \|   \vtilde_{x + \delta w_i}  - h_{x + \delta w_i}\| \\
+	&\leq 86 \frac{ d^4 \sqrt{\eps}}{2^{2d}} \max(\|\xstar\|^2, \| x\|^2) \|x\| + \frac{\omega}{2^{d}}  \,  \| x\|.
+	\end{aligned}
+	\]
+\end{proof}
+
+We now prove Lemma \ref{lemma:f0_conctr} on the concentration of 
+the noiseless objective function.
+
+\begin{proof}[Proof of Lemma \ref{lemma:f0_conctr}]
+	Observe that:
+	\[
+	\begin{aligned}
+	|f_0(x) - f_E(x)| &\leq \frac{1}{4} |\|G(x)\|^4 - \frac{1}{2^{2d}} \|x\|^4 | \\ 
+	&+\frac{1}{4}  |\|G(\xstar)\|^4 - \frac{1}{2^{2d}} \|\xstar\|^4 | \\ 
+	&+ \frac{1}{2} |\langle G(x),G(\xstar) \rangle^2 - \langle x, \htilde_x \rangle |.
+	\end{aligned}
+	\]
+	We analyze each term separately. 
+	The first term can be bounded as:
+	\begin{equation*}
+	\begin{aligned}
+	\frac{1}{4} |\|G(x)\|^4 - \frac{1}{2^{2d}} \|x\|^4 | &=  \frac{1}{4} |\|G(x)\|^2 + \frac{1}{2^d} \|x\|^2 | \;\:  | \|G(x)\|^2 - \frac{1}{2^d} \|x\|^2 | \\ 
+	&\leq  \frac{1}{4}  \frac{1}{2^d} \big( \frac{13}{12} + 1 \big) \|x\|^2  \;\:  | \|G(x)\|^2 - \frac{1}{2^d} \|x\|^2 | \\
+	&\leq  \frac{1}{4}  \frac{1}{2^d} \Big( \frac{13}{12} + 1 \Big) \|x\|^2  \; \: 24 \frac{d^3 \sqrt{\eps}}{2^d} \|x\|^2  \\	
+	&\leq \frac{1}{2^{2d}} 13 d^3\, \sqrt{\eps} \|x\|^4	
+	\end{aligned}
+	\end{equation*}
+	where in the first inequality we used $\eqref{eq:Lx_bound}$ and in the second inequality \eqref{eq:htilde_conctr} . 
+	Similarly we can bound the second term:
+	\[
+	\frac{1}{4} |\|G(\xstar)\|^4 - \frac{1}{2^{2d}} \|\xstar\|^4 |  \leq \frac{1}{2^{2d}} 13 d^3\, \sqrt{\eps} \|\xstar\|^4.
+	\] 
+	
+	We next note that $\|\htilde_x \| \leq 2^{-d} (1 + d/\pi) \|\xstar\|$ and therefore
+	from \eqref{eq:Lx_bound} and $d\geq 2$ we obtain:
+	\[
+	|\|G(x)\| \|G(\xstar)\| + \|x\| \|\htilde_x\| | \leq \frac{1}{2^d}	\big(\frac{13}{12} + 1 + \frac{d}{\pi}	\big) \|x\| \|\xstar\| \leq \frac{1}{2^d} \frac{3}{2} d \|x\| \|\xstar\|	
+	\]
+	We can then conclude that:
+	\[
+	\begin{aligned}
+	\frac{1}{2} |\langle G(x),G(\xstar) \rangle^2 - \langle x, \htilde_x \rangle^2 | 
+	&\leq	\frac{1}{2}  |\langle x, \Lambda_x^T \Lambda_\xstar \xstar - \htilde_x \rangle| \: \; |\|G(x)\| \|G(\xstar)\| + \|x\| \|\htilde_x\| | \\
+	&\leq 	\frac{1}{2} \|x\| 24 \frac{d^3 \sqrt{\eps}}{2^d} \|\xstar\| \: \;
+	\frac{1}{2^d} \frac{3}{2} d \; \|x\| \|\xstar\|	\\ 
+	&\leq \frac{9}{2^{2d}} d^4 \sqrt{\eps}  (\|\xstar\|^4 + \|x\|^4) 
+	\end{aligned}.
+	\]
+\end{proof}
+
+Below we prove lower and upper bound on the loss $f_E$ as in Lemma \ref{lemma:UPandLOW}.
+
+\begin{proof}[Proof of Lemma \ref{lemma:UPandLOW}]
+	Let $x \in \mathcal{B}(\phi_d \xstar, a \|\xstar\|)$ then observe that $0 \leq \thbar_i \leq \thbar_0 \leq \pi a / 2 \phi_d$ and $(\phi_d - a) \|\xstar\| \leq  \|x \| \leq (a + \phi_d) \|\xstar\|$. 
+	Then observe that:
+	\[
+	\begin{aligned}
+	\langle x, \htilde_d \rangle &= \frac{1}{2^d}  \big(\prod_{i=0}^{d-1} \frac{\pi - \thbar_i}{\pi}\big) \|\xstar\| \| x\| \cos \thbar_0  + \frac{1}{2^d} \sum_{i=0}^{d-1} \frac{\sin \thbar_i}{\pi} \prod_{j=i+1}^{d-1} \frac{\pi - \thbar_j}{\pi} \:  \|\xstar\| \| x\| \\
+	%\leq  \frac{1}{2^d}  \big(\prod_{i=0}^{d-1} \frac{\pi - \thbar_i}{\pi}\big) \:   \|x\|  \| \xstar \| \cos \thbar_0 \\
+	&\geq \frac{1}{2^d}  \big(\prod_{i=0}^{d-1} \frac{\pi -\frac{ \pi a}{2 \phi_d}}{\pi} \big) \:  (\phi_d - a)   \| \xstar \|^2   \big( 1 - \frac{\pi^2 a^2}{8 \phi_d^2}\big) \\
+	&\geq \frac{1}{2^d}  \big( 1- \frac{d a}{\phi_d} \big)  (\phi_d - a)  \big( 1 - \frac{\pi^2 a^2}{8 \phi_d^2}\big) \| \xstar \|^2.
+	\end{aligned}
+	\] 
+	using  $\cos \theta \geq 1 - \theta^2/2$ and $(1 - x)^d \geq (1 - 2 d x)$ as long as $0 \leq x \leq 1$. We can therefore write:
+	\[
+	\begin{aligned}
+	f_E(x) - \frac{\|\xstar\|^4}{2^{2d+2}} &\leq \frac{1}{2^{2d+2}} \|x\|^4 - 
+	\frac{1}{2^{2d+1}}  \big( 1- \frac{d a}{\phi_d} \big)^{2}  (\phi_d - a)^{2}  \big( 1 - \frac{\pi^2 a^2}{8 \phi_d^2}\big)^{2} \| \xstar \|^4 \\
+	&\leq \frac{1}{2^{2d+2}} \Big[  (\phi_d + a)^4 - 2  \big( 1- 2 \frac{d a}{\phi_d} \big)  (\phi_d - a)^{2}  \big( 1 - \frac{\pi^2 a^2}{4 \phi_d^2}\big) \Big]  \| \xstar \|^4
+	\end{aligned}
+	\]
+	where in the second inequality we used $(1 - x)^2 \geq 1 - 2x\;$ for all $x \in \R$. We then observe that:
+	\[
+	\begin{aligned}
+		\big( 1- 2 \frac{d a}{\phi_d} \big)  (\phi_d - a)^{2}  \big( 1 - \frac{\pi^2 a^2}{4 \phi_d^2}\big) &\geq \big( 1 -\frac{\pi ^2 a^2}{4 \phi_d ^2}-\frac{2 a d}{\phi_d }\big) \phi_d^2 + a (a - 2 \phi_d)	\big( 1- 2 \frac{d a}{\phi_d} \big)   \big( 1 - \frac{\pi^2 a^2}{4 \phi_d^2}\big) \\
+		&\geq \phi_d^2 -  a \big( \frac{1}{2 \pi d^3} +  {2 d \phi_d} \big) + a (a - 2 \phi_d) \big( 1- 2 \frac{d a}{\phi_d} \big)   \big( 1 - \frac{\pi^2 a^2}{4 \phi_d^2}\big)  \\
+		&\geq \phi_d^2 -  a \big( \frac{1}{2 \pi d^3} +  {2 d \phi_d} + 2 \phi_d  \big) \\
+		&\geq \phi_d^2 - \pi d a,
+	\end{aligned}
+	\]
+	where in the second inequality we have used $\pi^3 d^3 a \leq 2$ and in the last  one $d \geq 2$ and $\phi_d \leq 1$.
+	We can then conclude that:
+	\[
+	%\begin{aligned}
+	f_E(x) - \frac{\|\xstar\|^4}{2^{2d+2}}  \leq \frac{1}{2^{2d+2}} \big[ (\phi_d + a)^4 - 2  (\phi_d^2 - \pi d a) \big]\|\xstar\|^4 %\\
+	%&\leq \frac{1}{2^{2d+2}} \big( 1 + 16 d a - 2 {\phi_d^2} \big) \|\xstar\|^4
+	%\end{aligned}
+	\]
+	
+	We next take $x \in \mathcal{B}(- \phi_d \xstar, a \|\xstar\|)$ which implies $0 \leq \pi - \thbar_0 \leq \pi^2 a /2 =: \delta $ and $\|x\| \leq (a + \phi_d) \|\xstar\|$. We then note that for 
+	$\xi$ and $\zeta$ as defined in \eqref{eq:zeta_xi_def} we have:
+	\[
+	\begin{aligned}
+	|2^d x^\T \htilde_x|^2 &\leq (|\xi| + |\zeta|)^2 (a + \phi_d)^2 \|\xstar\|^4 \\
+	&\leq \big(\frac{\delta}{\pi} + 3 d^3 \delta + \rho_d \big)^2 (a + \phi_d)^2 \|\xstar\|^4 \\ 
+	%&\leq  \big( \pi d^3 \delta + \rho_d \big)^2 (a + \phi_d)^2 \|\xstar\|^4 \\
+	&\leq \big( \frac{\pi^3 d^3}{2} a+ \rho_d \big)^2 (a + \phi)^2 \|\xstar\|^4 \\
+	&\leq ( 2 \pi^3 d^3 a + \rho_d^2 ) (a + \phi_d)^2 \|\xstar\|^4 \\
+	%&= [  ( 2 \pi^3 d^3 a + \rho_d^2 ) (a + 2 \phi_d) + 2 \pi^3 d^3 \phi_d^2 ] a + \rho_d^2 \phi_d^2\\
+	&\leq 20 \pi d^3 a + \rho_d^2 \phi_d^2		
+	\end{aligned}
+	\]
+	where the second inequality is due to \eqref{eq:xilrgtheta} and \eqref{eq:zetalrgtheta}, the rest  from $d \geq 2$, $ \rho_d \leq \phi_d \leq 1$ and  $2 \pi^3 d^3 a \leq 1$.
+	Finally using $(\phi_d - a) \|\xstar\|\leq \|x\|$, we can then conclude that:
+	\[
+	f_E(x) - \frac{\|\xstar\|^4}{2^{2d+2}}  \geq \frac{1}{2^{2d+2}} \big[ (\phi_d - a)^4 - 2 (20 \pi d^3 a + \rho_d^2 \phi_d^2) \big] \|\xstar\|^4.
+	\]  
+\end{proof}

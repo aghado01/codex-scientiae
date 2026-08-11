@@ -1,0 +1,16 @@
+\section{Gaussian cover assignment scheme}\label{apdx:gaussian}
+In this section, it is assumed that  $\Xs_n$ is a point cloud in $\R^p$. Additionally, we consider $r$ centers $\{c_1,...,c_r\}\subseteq\R^p$ and $r$ symmetric, semi-definite and positive matrices $\{\Sigma_1,...,\Sigma_r\}\subseteq\mathbb{R}^{p\times p}$. For each $j\in\{1,...,r\}$, consider the function:
+\begin{align*}
+q_j\colon \mathbb{R}^p  &\longrightarrow [0,1]\\
+x &\longmapsto \exp \left(-(x-c_j)^T  \Sigma_j^{-1} (x-c_j)\right).
+\end{align*}
+\noindent
+Define $A=(A_{i,j})_{\substack{1\leq i\leq n \\ 1\leq j\leq r}}$ to be a random variable in $\{0,1\}^{n\times r}$ such that for every $(i,j)\in\{1,...,n\}\times\{1,...,r\}$~:
+$$ A_{i,j}\mid \Xs_n\sim \mathcal{B}(q_j(x_i)),$$
+and  as before we take the $ A_{i,j}$'s to be jointly conditionally independent.
+
+This cover assignment scheme is similar to Gaussian mixture models, in that its realizations can be seen as a "one-hot encoding" of the latent variables in a mixture model. However, we can see that a realization of $A$ can have more than one non-zero entry per line as opposed to a mixture model. Furthermore, mean and variance parameters can be inferred with an EM algorithm, and estimated proportions can be also involved in the definition  of the $q_j$'s. 
+
+Note that this strategy of defining a cover assignment scheme does not use a filter function or an overlapping cover entirely.
+
+ 

@@ -1,0 +1,113 @@
+\section{Related work}
+
+\subsubsection*{Sparse PCA and other computational-to-statistical  gaps.}
+
+Given a large number of samples data  $\{y_i\}^{N}_{i=1} \in \R^n$
+the important statistical task of finding 
+the directions that explain most of the variance (principal components)
+is classically solved by PCA.  Insights on the statistical performance of this algorithm 
+can be gained by studying spiked covariance models \citep{johnstone2001distribution}.
+Under this model it is assumed that the data are of the form: 
+\begin{equation}\label{eq:spiked_samples}
+y_{i} = u_{i} \ystar + \sigma z_{i}
+\end{equation}
+where $\sigma > 0$,  $u_i \sim \mathcal{N}(0,1)$ and $z_{i} \sim \mathcal{N}(0, I_n)$ 
+are independent and identically distributed, and $\ystar$ is the unit norm planted spike. Note that a matrix $Y \in \R^{N \times n}$ with rows $\{y_{i}\}_i$ can be written as \eqref{eq:wishart_Y}, and the $y_{i}$s are i.i.d. samples of $\mathcal{N}(0, \Sigma)$ 
+where the population covariance matrix is $\Sigma = \ystar \ystar^\T + \sigma^2 I_n$.
+Principal Component Analysis, then, estimates $\ystar$ via the leading eigenvector $\hat{y}$ 
+of the empirical covariance matrix
+$\Sigma_{N} = \frac{1}{N}\sum_{i=1}^N y_{i} y_{i}^\T.$
+Standard techniques of high dimensional probability then show that as long as\footnote{We write $f(n) \gtrsim g(n)$ if $f(n) \geq C n$ for 
+	some constant $C > 0$ that might depend $\sigma$ and $\|\ystar\|^2$. Similarly for $f(n) \lesssim g(n)$.} $N \gtrsim n$, with overwhelming probability:
+\begin{equation}\label{eq:PCA_est}
+\min_{\eps = \pm} \| \eps \hat{y} - \ystar \|_2 \lesssim \sqrt{\frac{n}{N}}.
+\end{equation}
+
+However, in the modern high dimensional data regime, it is not uncommon
+to consider cases where the ambient dimension of the data $n$ 
+is larger, or of the order, of the number of samples $N$. In this case,
+bounds of the form \eqref{eq:PCA_est} become meaningless. Even worse,
+in the asymptotic regime $ n/N \to c > 0$ and for $\sigma^2$ large enough, the spike $\ystar$ and the estimate $\hat{y}$ become orthogonal \citep{johnstone2009}. Moreover, minimax techniques 
+can be used to show that in this regime	 no other estimators can achieve better overlap with $\ystar$ \citep{wainwright2019high}.
+
+These negative results motivated the use of additional 
+structural prior on the spike $\ystar$, aimed at reducing
+the sample complexity of the problem. In recent years 
+various priors has been studied such as
+positivity \citep{montanari2015non}, cone constraints \citep{deshpande2014cone} 
+and in particular sparsity \citep{johnstone2009}, \citep{zou2006sparse}. 
+In the latter case $\ystar$
+is assumed to be  $s$-sparse,
+and it can be shown that for $N \gtrsim s \log n$
+and $n \gtrsim s$,
+then the $s$-sparse largest eigenvector $\hat{y}_s$ of $\Sigma_N$:
+\[
+\hat{y}_s = \argmax_{y \in \mathcal{S}_2^{n-1}, \|y\|_0 \leq s} y^\T \Sigma_N y
+\]
+satisfies the condition:
+\[
+\min_{\eps = \pm} \|\eps \hat{y}_s - \ystar \|_2 \lesssim \sqrt{\frac{s \log n}{N}}.
+\]
+In particular the number of samples must scale linearly 
+with the intrinsic dimension $s$ of the signal. 
+These rates are also minimax optimal, see for example 
+\citep{vu2012minimax} for the mean squared error 
+and \citep{amini2008high} for the support recovery.
+Despite these encouraging results no known 
+polynomial time algorithm is known that 
+achieves such performances and for example 
+the covariance thresholding algorithm of \cite{krauthgamer2015semidefinite}
+requires $N \gtrsim s^2$ samples 
+in order to obtain exact support recovery or estimation rate:
+\[
+\min_{\eps = \pm} \|\eps \hat{y}_s - \ystar \|_2 \lesssim \sqrt{\frac{s^2 \log n}{N}},	
+\]
+as shown in  \cite{deshpande2014sparse}. 
+In summary, only computationally intractable algorithms 
+are known to reach  the statistical limit $N =  \Omega(s)$ for Sparse PCA, 
+while polynomial time methods are only sub-optimal requiring $N = \Omega(s^2)$. 
+The study of this computational-to-statistical  gap was initiated by \cite{berthet2013computational} who investigated the detection problem via a reduction to the planted clique problem
+which is conjectured to be computationally hard.
+
+The hardness of sparse PCA has been further suggested 
+in a series of recent works \citep{cai2013sparse,ma2015sum,lesieur2015phase,brennan2019optimal}. 
+These works fit in the growing and important body of literature on computational-to-statistical gaps, which have also been found and studied in a variety of other contexts such 
+as tensor principal component analysis \citep{richard2014statistical}, community detection \citep{decelle2011asymptotic} and synchronization over groups \citep{perry2018message}.
+Many of these problems can be phrased as recovery a spike vector from a spiked random matrix models, and the hardness can then be viewed as arising from imposing 
+simultaneously  low-rankness and additional prior information on the signal (sparsity in case of Sparse PCA).
+This difficulty can be found in sparse phase retrieval as well, where \cite{li2013sparse}
+has shown that for an $s$-sparse signal of dimension $n$ lifted to a rank-one matrix, 
+$m = \bigO(s \log n)$ number of quadratic measurements are enough to ensure well-posedness, while $m \geq \bigO(s^2/\log^2 n)$ measurements are necessary 
+for the success of natural convex relaxations of the problem.
+Similarly \cite{oymak2015simultaneously}  studies the 
+recovery of simultaneously low-rank and sparse matrices,
+and show the existence of a gap between what can be achieved with convex and tractable relaxations and nonconvex and intractable methods.
+
+\subsubsection*{Recovery with a generative network prior}
+
+
+Recently, in the wake of successes of deep learning , deep generative networks have 
+gained popularity as a novel approach for encoding  and 
+enforcing priors. They have been
+successfully used as a  prior for various statistical estimation problems 
+such as compressed sensing \citep{bora2017compressed},
+blind deconvolution \citep{asim2018solving}, inpainting \citep{yeh2016semantic},
+and many more \citep{sonderby2016amortised,yang2017dagan,qiu2019robust,xue2018segan}, etc. 
+
+Parallel to these empirical successes, a recent line of  works have investigated
+theoretical guarantees for 
+various statistical estimation tasks with generative network priors. 
+Following the work of \cite{bora2017compressed},
+\cite{hand2017global} have given global guarantees for compressed sensing,
+followed then by many others for various inverse problems
+\citep{shah2018solving,mixon2018sunlayer,hand2019global,aubin2019exact,qiu2019robust}. In particular \cite{hand2018phase} have shown 
+that  $m = \Omega(k \log n)$ number of measurements
+are sufficient to recover a signal from random phaseless observations, assuming 
+that the signal is the output of a trained generative network with latent space of dimension $k$. 
+Note that, contrary to the sparse phase retrieval problem, generative priors for phase retrieval allow optimal sample complexity, up to logarithmic factors, with respect to the intrinsic dimension of the signal. Further, when modeled by generative priors, that dimensionality could be much smaller than the sparsity level $s$ under a sparsity prior and an appropriate basis. 
+
+Recently \cite{aubin2019spiked} has shown that when $\ystar$ is in the range of an expansive-Gaussian generative network with Relu activation functions,
+then low-rank matrix recovery does not have a computational-to-statistical gap,
+in the asymptotic limit $k,n,N \to \infty$ with $n/k = \bigO(1)$ 
+and  $N/n = \bigO(1)$. They also provide a spectral algorithm and demonstrate that it is able to match asymptotically the information-theoretical optimal. These methods were then extended to the phase-retrieval problem in \cite{aubin2019exact}.
+

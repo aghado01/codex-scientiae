@@ -1,0 +1,107 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2112.02580v1",
+  "initialized_utc": "2026-08-11T08:32:20.822178Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "two-sample-tests.tex",
+      "selection": "explicit",
+      "declarations": {
+        "title_tex": "Bayesian Optimal Two-sample Tests in High-dimension",
+        "authors_tex": [
+          "Kyoungjae Lee",
+          "Kisung You",
+          "Lizhen Lin"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2112.02580v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 4753316,
+      "sha256": "f198cc689ea041623ff798856514b4cef099fb8c07d97907400ec3ccbf9c2f2b",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2112.02580v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2112.02580v1.tar.gz",
+      "entrypoint": "two-sample-tests.tex",
+      "entrypoint_selection": "explicit",
+      "files": 44,
+      "tex_files": 2,
+      "sha256": "14fc2fdd38d8d38bffdfb84d6c8afd3d4faf4a362dca1dca9100c0c4d2906a78"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2112.02580v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1783585,
+      "sha256": "483df032dfd064649bff6abe804e3b3c40094c57ffa631caadc2c43ee59a422c"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:32:20.822178Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 45
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 44
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "not-applicable",
+        "entrypoint": "two-sample-tests.tex",
+        "reason": "entrypoint named explicitly; the ambiguity scan did not run",
+        "selection": "explicit"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,359 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Abramowitz \harvardand\
+  Stegun}{1972}{abramowitz_1972_HandbookMathematicalFunctions}
+Abramowitz, M. \harvardand\ Stegun, I.~A.  \harvardyearleft
+  1972\harvardyearright .
+\newblock {\em Handbook of {{Mathematical Functions}}: With {{Formulas}},
+  {{Graphs}}, and {{Mathematical Tables}}}, Dover Books on Advanced
+  Mathematics, unabridged, unaltered and corr. republ. of the 1964 ed edn,
+  Dover publ, New York.
+
+\harvarditem[Absil et~al.]{Absil, Mahony \harvardand\
+  Sepulchre}{2008}{absil_2008_OptimizationAlgorithmsMatrix}
+Absil, P.-A., Mahony, R. \harvardand\ Sepulchre, R.  \harvardyearleft
+  2008\harvardyearright .
+\newblock {\em Optimization Algorithms on Matrix Manifolds}, Princeton
+  University Press, Princeton, N.J. ; Woodstock.
+
+\harvarditem{Afsari}{2011}{afsari_2011_Riemannian$L_p$Center}
+Afsari, B.  \harvardyearleft 2011\harvardyearright .
+\newblock Riemannian \$\{\vphantom\}{{L}}\vphantom\{\}\_p\$ center of mass:
+  {{Existence}}, uniqueness, and convexity, {\em Proceedings of the American
+  Mathematical Society} {\bf 139}(02):~655--655.
+
+\harvarditem{Agueh \harvardand\
+  Carlier}{2011}{agueh_2011_BarycentersWassersteinSpace}
+Agueh, M. \harvardand\ Carlier, G.  \harvardyearleft 2011\harvardyearright .
+\newblock Barycenters in the {{Wasserstein Space}}, {\em SIAM Journal on
+  Mathematical Analysis} {\bf 43}(2):~904--924.
+
+\harvarditem{Bhattacharya \harvardand\
+  Bhattacharya}{2012}{bhattacharya_2012_NonparametricInferenceManifolds}
+Bhattacharya, A. \harvardand\ Bhattacharya, R.  \harvardyearleft
+  2012\harvardyearright .
+\newblock {\em Nonparametric {{Inference}} on {{Manifolds}}: {{With
+  Applications}} to {{Shape Spaces}}}, Cambridge University Press, Cambridge.
+
+\harvarditem{Boumal}{2023}{boumal_2023_IntroductionOptimizationSmooth}
+Boumal, N.  \harvardyearleft 2023\harvardyearright .
+\newblock {\em An {{Introduction}} to {{Optimization}} on {{Smooth
+  Manifolds}}}, 1 edn, Cambridge University Press.
+
+\harvarditem[Carlsson et~al.]{Carlsson, Zomorodian, Collins \harvardand\
+  Guibas}{2004}{carlsson_2004_PersistenceBarcodesShapes}
+Carlsson, G., Zomorodian, A., Collins, A. \harvardand\ Guibas, L.
+  \harvardyearleft 2004\harvardyearright .
+\newblock Persistence {{Barcodes}} for {{Shapes}}, {\em Symposium on Geometry
+  Processing} p.~12 pages.
+
+\harvarditem{Chazal \harvardand\
+  Michel}{2021}{chazal_2021_IntroductionTopologicalData}
+Chazal, F. \harvardand\ Michel, B.  \harvardyearleft 2021\harvardyearright .
+\newblock An {{Introduction}} to {{Topological Data Analysis}}: {{Fundamental}}
+  and {{Practical Aspects}} for {{Data Scientists}}, {\em Frontiers in
+  Artificial Intelligence} {\bf 4}:~667963.
+
+\harvarditem{Chen \harvardand\ Guestrin}{2016}{chen_2016_XGBoostScalableTree}
+Chen, T. \harvardand\ Guestrin, C.  \harvardyearleft 2016\harvardyearright .
+\newblock {{XGBoost}}: {{A Scalable Tree Boosting System}}, {\em Proceedings of
+  the 22nd {{ACM SIGKDD International Conference}} on {{Knowledge Discovery}}
+  and {{Data Mining}}}, ACM, San Francisco California USA, pp.~785--794.
+
+\harvarditem{Csisz{\'a}r}{1963}{csiszar_1963_InformationstheoretischeUngleichungUnd}
+Csisz{\'a}r, I.  \harvardyearleft 1963\harvardyearright .
+\newblock Eine informationstheoretische {{Ungleichung}} und ihre {{Anwendung}}
+  auf den beweis der ergodizitat von markoffschen ketten,  {\bf 8}:~85.
+
+\harvarditem[Davidson et~al.]{Davidson, Falorsi, Cao, Kipf \harvardand\
+  Tomczak}{2022}{davidson_2022_HypersphericalVariationalAutoEncoders}
+Davidson, T.~R., Falorsi, L., Cao, N.~D., Kipf, T. \harvardand\ Tomczak, J.~M.
+  \harvardyearleft 2022\harvardyearright .
+\newblock Hyperspherical {{Variational Auto-Encoders}}.
+
+\harvarditem{Dhillon \harvardand\
+  Modha}{2001}{dhillon_2001_ConceptDecompositionsLarge}
+Dhillon, I.~S. \harvardand\ Modha, D.~S.  \harvardyearleft
+  2001\harvardyearright .
+\newblock Concept {{Decompositions}} for {{Large Sparse Text Data Using
+  Clustering}}, {\em Machine Learning} {\bf 42}(1/2):~143--175.
+
+\harvarditem{Diethe}{2015}{diethe_2015_NoteKullbackLeiblerDivergence}
+Diethe, T.  \harvardyearleft 2015\harvardyearright .
+\newblock A {{Note}} on the {{Kullback-Leibler Divergence}} for the von
+  {{Mises-Fisher}} distribution.
+
+\harvarditem[Dosovitskiy et~al.]{Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit \harvardand\
+  Houlsby}{2021}{dosovitskiy_2021_ImageWorth16x16}
+Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X.,
+  Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S.,
+  Uszkoreit, J. \harvardand\ Houlsby, N.  \harvardyearleft
+  2021\harvardyearright .
+\newblock An {{Image}} is {{Worth}} 16x16 {{Words}}: {{Transformers}} for
+  {{Image Recognition}} at {{Scale}}.
+
+\harvarditem{Fisher}{1953}{fisher_1953_DispersionSphere}
+Fisher, R.  \harvardyearleft 1953\harvardyearright .
+\newblock Dispersion on a {{Sphere}}, {\em Proceedings of the Royal Society A:
+  Mathematical, Physical and Engineering Sciences} {\bf 217}(1130):~295--305.
+
+\harvarditem{Gopal \harvardand\
+  Yang}{2014}{gopal_2014_MisesfisherClusteringModels}
+Gopal, S. \harvardand\ Yang, Y.  \harvardyearleft 2014\harvardyearright .
+\newblock Von mises-fisher clustering models, {\em in} E.~P. Xing \harvardand\
+  T.~Jebara (eds), {\em Proceedings of the 31st International Conference on
+  Machine Learning}, Vol.~32 of {\em Proceedings of Machine Learning Research},
+  PMLR, Bejing, China, pp.~154--162.
+
+\harvarditem{Gower \harvardand\ Ross}{1969}{gower_1969_MinimumSpanningTrees}
+Gower, J.~C. \harvardand\ Ross, G. J.~S.  \harvardyearleft
+  1969\harvardyearright .
+\newblock Minimum {{Spanning Trees}} and {{Single Linkage Cluster Analysis}},
+  {\em Applied Statistics} {\bf 18}(1):~54.
+
+\harvarditem{Harris}{1954}{harris_1954_DistributionalStructure}
+Harris, Z.~S.  \harvardyearleft 1954\harvardyearright .
+\newblock Distributional {{Structure}}, {\em \emph{WORD}} {\bf
+  10}(2-3):~146--162.
+
+\harvarditem{Hauberg}{2018}{hauberg_2018_DirectionalStatisticsSpherical}
+Hauberg, S.  \harvardyearleft 2018\harvardyearright .
+\newblock Directional {{Statistics}} with the {{Spherical Normal
+  Distribution}}, {\em 2018 21st {{International Conference}} on {{Information
+  Fusion}} ({{FUSION}})}, IEEE, Cambridge, United Kingdom, pp.~704--711.
+
+\harvarditem{Huber}{1981}{huber_1981_RobustStatistics}
+Huber, P.~J.  \harvardyearleft 1981\harvardyearright .
+\newblock {\em Robust Statistics}, Wiley Series in Probability and Mathematical
+  Statistics, Wiley, New York.
+
+\harvarditem{Johnson}{1967}{johnson_1967_HierarchicalClusteringSchemes}
+Johnson, S.~C.  \harvardyearleft 1967\harvardyearright .
+\newblock Hierarchical {{Clustering Schemes}}, {\em Psychometrika} {\bf
+  32}(3):~241--254.
+
+\harvarditem{Kaufman \harvardand\
+  Rousseeuw}{1990}{kaufman_1990_PartitioningMedoidsProgram}
+Kaufman, L. \harvardand\ Rousseeuw, P.~J.  \harvardyearleft
+  1990\harvardyearright .
+\newblock Partitioning {{Around Medoids}} ({{Program PAM}}), {\em Wiley
+  {{Series}} in {{Probability}} and {{Statistics}}}, John Wiley \& Sons, Inc.,
+  Hoboken, NJ, USA, pp.~68--125.
+
+\harvarditem{Kendall}{1990}{kendall_1990_ProbabilityConvexityHarmonic}
+Kendall, W.~S.  \harvardyearleft 1990\harvardyearright .
+\newblock Probability, {{Convexity}}, and {{Harmonic Maps}} with {{Small Image
+  I}}: {{Uniqueness}} and {{Fine Existence}}, {\em Proceedings of the London
+  Mathematical Society} {\bf s3-61}(2):~371--406.
+
+\harvarditem{Kitagawa \harvardand\
+  Rowley}{2022}{kitagawa_2022_MisesFisherDistributionsTheir}
+Kitagawa, T. \harvardand\ Rowley, J.  \harvardyearleft 2022\harvardyearright .
+\newblock Von {{Mises-Fisher}} distributions and their statistical divergence.
+
+\harvarditem{Koopman}{1936}{koopman_1936_DistributionsAdmittingSufficient}
+Koopman, B.~O.  \harvardyearleft 1936\harvardyearright .
+\newblock On distributions admitting a sufficient statistic, {\em Transactions
+  of the American Mathematical Society} {\bf 39}(3):~399--409.
+
+\harvarditem{Krizhevsky \harvardand\
+  Hinton}{2009}{krizhevsky_2009_LearningMultipleLayers}
+Krizhevsky, A. \harvardand\ Hinton, G.  \harvardyearleft 2009\harvardyearright
+  .
+\newblock Learning multiple layers of features from tiny images, {\em Technical
+  {{Report}}}, University of Toronto.
+
+\harvarditem{Kullback \harvardand\
+  Leibler}{1951}{kullback_1951_InformationSufficiency}
+Kullback, S. \harvardand\ Leibler, R.~A.  \harvardyearleft
+  1951\harvardyearright .
+\newblock On {{Information}} and {{Sufficiency}}, {\em The Annals of
+  Mathematical Statistics} {\bf 22}(1):~79--86.
+
+\harvarditem{Le \harvardand\
+  Mikolov}{2014}{le_2014_DistributedRepresentationsSentences}
+Le, Q. \harvardand\ Mikolov, T.  \harvardyearleft 2014\harvardyearright .
+\newblock Distributed {{Representations}} of {{Sentences}} and {{Documents}},
+  {\em in} E.~P. Xing \harvardand\ T.~Jebara (eds), {\em Proceedings of the
+  31st {{International Conference}} on {{Machine Learning}}}, Vol.~32 of {\em
+  Proceedings of {{Machine Learning Research}}}, PMLR, Bejing, China,
+  pp.~1188--1196.
+
+\harvarditem{Lee}{1997}{lee_1997_RiemannianManifoldsIntroduction}
+Lee, J.~M.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em Riemannian Manifolds: An Introduction to Curvature}, number 176
+  in {\em Graduate Texts in Mathematics}, Springer, New York.
+
+\harvarditem{Ley \harvardand\
+  Verdebout}{2017}{ley_2017_ModernDirectionalStatistics}
+Ley, C. \harvardand\ Verdebout, T.  \harvardyearleft 2017\harvardyearright .
+\newblock {\em Modern {{Directional Statistics}}}, 1 edn, {Chapman and
+  Hall/CRC}.
+
+\harvarditem{MacQueen}{1967}{macqueen_1967_MethodsClassificationAnalysis}
+MacQueen, J.~B.  \harvardyearleft 1967\harvardyearright .
+\newblock Some {{Methods}} for {{Classification}} and {{Analysis}} of
+  {{Multivariate Observations}}, {\em in} L.~M.~L. Cam \harvardand\ J.~Neyman
+  (eds), {\em Proc. of the Fifth Berkeley Symposium on Mathematical Statistics
+  and Probability}, Vol.~1, University of California Press, pp.~281--297.
+
+\harvarditem{Mardia \harvardand\ Jupp}{2000}{mardia_2000_DirectionalStatistics}
+Mardia, K.~V. \harvardand\ Jupp, P.~E.  \harvardyearleft 2000\harvardyearright
+  .
+\newblock {\em Directional Statistics}, Wiley Series in Probability and
+  Statistics, J. Wiley, Chichester ; New York.
+
+\harvarditem[McInnes et~al.]{McInnes, Healy \harvardand\
+  Melville}{2020}{mcinnes_2020_UMAPUniformManifold}
+McInnes, L., Healy, J. \harvardand\ Melville, J.  \harvardyearleft
+  2020\harvardyearright .
+\newblock {{UMAP}}: {{Uniform Manifold Approximation}} and {{Projection}} for
+  {{Dimension Reduction}}.
+
+\harvarditem{Metropolis \harvardand\
+  Ulam}{1949}{metropolis_1949_MonteCarloMethod}
+Metropolis, N. \harvardand\ Ulam, S.  \harvardyearleft 1949\harvardyearright .
+\newblock The {{Monte Carlo Method}}, {\em Journal of the American Statistical
+  Association} {\bf 44}(247):~335--341.
+
+\harvarditem[Mikolov et~al.]{Mikolov, Chen, Corrado \harvardand\
+  Dean}{2013}{mikolov_2013_EfficientEstimationWord}
+Mikolov, T., Chen, K., Corrado, G. \harvardand\ Dean, J.  \harvardyearleft
+  2013\harvardyearright .
+\newblock Efficient {{Estimation}} of {{Word Representations}} in {{Vector
+  Space}}.
+
+\harvarditem{Panaretos \harvardand\
+  Zemel}{2020}{panaretos_2020_InvitationStatisticsWasserstein}
+Panaretos, V.~M. \harvardand\ Zemel, Y.  \harvardyearleft 2020\harvardyearright
+  .
+\newblock {\em An {{Invitation}} to {{Statistics}} in {{Wasserstein Space}}},
+  {{SpringerBriefs}} in {{Probability}} and {{Mathematical Statistics}},
+  Springer International Publishing, Cham.
+
+\harvarditem[Patil et~al.]{Patil, Boit, Gudivada \harvardand\
+  Nandigam}{2023}{patil_2023_SurveyTextRepresentation}
+Patil, R., Boit, S., Gudivada, V. \harvardand\ Nandigam, J.  \harvardyearleft
+  2023\harvardyearright .
+\newblock A {{Survey}} of {{Text Representation}} and {{Embedding Techniques}}
+  in {{NLP}}, {\em IEEE Access} {\bf 11}:~36120--36146.
+
+\harvarditem{Pitman}{1937}{pitman_1937_SignificanceTestsWhich}
+Pitman, E. J.~G.  \harvardyearleft 1937\harvardyearright .
+\newblock Significance {{Tests Which May}} be {{Applied}} to {{Samples From}}
+  any {{Populations}}, {\em Supplement to the Journal of the Royal Statistical
+  Society} {\bf 4}(1):~119.
+
+\harvarditem{Reimers \harvardand\
+  Gurevych}{2019}{reimers_2019_SentenceBERTSentenceEmbeddings}
+Reimers, N. \harvardand\ Gurevych, I.  \harvardyearleft 2019\harvardyearright .
+\newblock Sentence-{{BERT}}: {{Sentence Embeddings}} using {{Siamese
+  BERT-Networks}}, {\em in} K.~Inui, J.~Jiang, V.~Ng \harvardand\ X.~Wan (eds),
+  {\em Proceedings of the 2019 {{Conference}} on {{Empirical Methods}} in
+  {{Natural Language Processing}} and the 9th {{International Joint
+  Conference}} on {{Natural Language Processing}} ({{EMNLP-IJCNLP}})},
+  Association for Computational Linguistics, Hong Kong, China, pp.~3982--3992.
+
+\harvarditem{Rousseeuw}{1987}{rousseeuw_1987_SilhouettesGraphicalAid}
+Rousseeuw, P.~J.  \harvardyearleft 1987\harvardyearright .
+\newblock Silhouettes: {{A}} graphical aid to the interpretation and validation
+  of cluster analysis, {\em Journal of Computational and Applied Mathematics}
+  {\bf 20}:~53--65.
+
+\harvarditem[Schopf et~al.]{Schopf, Braun \harvardand\
+  Matthes}{2022}{schopf_2022_EvaluatingUnsupervisedText}
+Schopf, T., Braun, D. \harvardand\ Matthes, F.  \harvardyearleft
+  2022\harvardyearright .
+\newblock Evaluating {{Unsupervised Text Classification}}: {{Zero-shot}} and
+  {{Similarity-based Approaches}}, {\em Proceedings of the 2022 6th
+  {{International Conference}} on {{Natural Language Processing}} and
+  {{Information Retrieval}}}, ACM, Bangkok Thailand, pp.~6--15.
+
+\harvarditem{Schwarz}{1978}{schwarz_1978_EstimatingDimensionModel}
+Schwarz, G.  \harvardyearleft 1978\harvardyearright .
+\newblock Estimating the {{Dimension}} of a {{Model}}, {\em The Annals of
+  Statistics} {\bf 6}(2).
+
+\harvarditem[Selivanov et~al.]{Selivanov, Bickel \harvardand\
+  Wang}{2023}{selivanov_2023_Text2vecModernText}
+Selivanov, D., Bickel, M. \harvardand\ Wang, Q.  \harvardyearleft
+  2023\harvardyearright .
+\newblock {\em Text2vec: {{Modern Text Mining Framework}} for {{R}}}.
+
+\harvarditem[Song et~al.]{Song, Tan, Qin, Lu \harvardand\
+  Liu}{2020}{song_2020_MPNetMaskedPermuted}
+Song, K., Tan, X., Qin, T., Lu, J. \harvardand\ Liu, T.-Y.  \harvardyearleft
+  2020\harvardyearright .
+\newblock {{MPNet}}: Masked and permuted pre-training for language
+  understanding, {\em Proceedings of the 34th {{International Conference}} on
+  {{Neural Information Processing Systems}}}, {{NIPS}} '20, Curran Associates
+  Inc., Red Hook, NY, USA.
+
+\harvarditem{Takatsu}{2011}{takatsu_2011_WassersteinGeometryGaussian}
+Takatsu, A.  \harvardyearleft 2011\harvardyearright .
+\newblock Wasserstein geometry of {{Gaussian}} measures, {\em Osaka Journal of
+  Mathematics} {\bf 48}(4):~1005--1026.
+
+\harvarditem{Torgerson}{1952}{torgerson_1952_MultidimensionalScalingTheory}
+Torgerson, W.~S.  \harvardyearleft 1952\harvardyearright .
+\newblock Multidimensional scaling: {{I}}. {{Theory}} and method, {\em
+  Psychometrika} {\bf 17}(4):~401--419.
+
+\harvarditem{{van der Maaten} \harvardand\
+  Hinton}{2008}{vandermaaten_2008_VisualizingDataUsing}
+{van der Maaten}, L. \harvardand\ Hinton, G.  \harvardyearleft
+  2008\harvardyearright .
+\newblock Visualizing data using t-{{SNE}}, {\em Journal of Machine Learning
+  Research} {\bf 9}(86):~2579--2605.
+
+\harvarditem{Villani}{2003}{villani_2003_TopicsOptimalTransportation}
+Villani, C.  \harvardyearleft 2003\harvardyearright .
+\newblock {\em Topics in {{Optimal Transportation}}}, Vol.~58 of {\em Graduate
+  {{Studies}} in {{Mathematics}}}, American Mathematical Society, S.l.
+
+\harvarditem{Villani}{2009}{villani_2009_OptimalTransportOld}
+Villani, C.  \harvardyearleft 2009\harvardyearright .
+\newblock {\em Optimal Transport: Old and New}, number 338 in {\em Grundlehren
+  Der Mathematischen {{Wissenschaften}}}, Springer, Berlin.
+
+\harvarditem{Wainwright}{2019}{wainwright_2019_HighDimensionalStatisticsNonAsymptotic}
+Wainwright, M.~J.  \harvardyearleft 2019\harvardyearright .
+\newblock {\em High-{{Dimensional Statistics}}: {{A Non-Asymptotic
+  Viewpoint}}}, 1 edn, Cambridge University Press.
+
+\harvarditem{Watamori}{1996}{watamori_1996_StatisticalInferenceLangevin}
+Watamori, Y.  \harvardyearleft 1996\harvardyearright .
+\newblock Statistical inference of {{Langevin}} distribution for directional
+  data, {\em Hiroshima Mathematical Journal} {\bf 26}(1):~25--74.
+
+\harvarditem{Watson}{1984}{watson_1984_TheoryConcentratedLangevin}
+Watson, G.~S.  \harvardyearleft 1984\harvardyearright .
+\newblock The theory of concentrated {{Langevin}} distributions, {\em Journal
+  of Multivariate Analysis} {\bf 14}(1):~74--82.
+
+\harvarditem{Wijffels \harvardand\
+  Watanabe}{2023}{wijffels_2023_Word2vecDistributedRepresentations}
+Wijffels, J. \harvardand\ Watanabe, K.  \harvardyearleft 2023\harvardyearright
+  .
+\newblock {\em Word2vec: {{Distributed Representations}} of {{Words}}}.
+
+\harvarditem{Xu \harvardand\ Durrett}{2018}{xu_2018_SphericalLatentSpaces}
+Xu, J. \harvardand\ Durrett, G.  \harvardyearleft 2018\harvardyearright .
+\newblock Spherical {{Latent Spaces}} for {{Stable Variational Autoencoders}}.
+
+\harvarditem[You et~al.]{You, Shung \harvardand\
+  Giuffr{\`e}}{2024}{you_2024_WassersteinMedianProbability}
+You, K., Shung, D. \harvardand\ Giuffr{\`e}, M.  \harvardyearleft
+  2024\harvardyearright .
+\newblock On the {{Wasserstein Median}} of {{Probability Measures}}, {\em
+  Journal of Computational and Graphical Statistics} pp.~1--25.
+
+\harvarditem{You \harvardand\
+  Suh}{2022}{you_2022_ParameterEstimationModelbased}
+You, K. \harvardand\ Suh, C.  \harvardyearleft 2022\harvardyearright .
+\newblock Parameter estimation and model-based clustering with spherical normal
+  distribution on the unit hypersphere, {\em Computational Statistics \& Data
+  Analysis} {\bf 171}:~107457.
+
+\end{thebibliography}

@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1812.04176v1",
+  "initialized_utc": "2026-08-11T09:05:48.864400Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "CSDL_PH10_TechRep.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "A Provably Convergent Scheme  for Compressive Sensing under Random Generative Priors",
+        "authors_tex": [
+          "Wen Huang \\footnotemark[2] \\footnotemark[6] \\and\n        Paul Hand \\footnotemark[3]  \\and\n        Reinhard Heckel \\footnotemark[4]\\and\n        Vladislav Voroninski  \\footnotemark[5]"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1812.04176v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 74519,
+      "sha256": "1b99a0a8bf556f4ea84b1e49ca080dd0f29f4e8a8bdaaa52dfa33d84ad3d2d23",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1812.04176v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1812.04176v1.tar.gz",
+      "entrypoint": "CSDL_PH10_TechRep.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 8,
+      "tex_files": 1,
+      "sha256": "565190d19726612b0c211d8176c031ba9d5deb915ad6a2c90f136c93db6998d2"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1812.04176v1.pdf",
+      "format": "application/pdf",
+      "bytes": 279900,
+      "sha256": "1f8d01fdf33f4a093ae0cf60d79bebe188ce958e7b42a2b2ec62cb07ac7610c1"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T09:05:48.864400Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 8
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 8
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "CSDL_PH10_TechRep.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

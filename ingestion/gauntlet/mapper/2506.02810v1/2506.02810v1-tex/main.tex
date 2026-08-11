@@ -1,0 +1,136 @@
+\documentclass{article}
+
+
+\usepackage{packages}
+
+%\usepackage{ulem}
+\newcommand{\spa}{X}
+\newcommand{\reeb}{\mathrm{R}}
+\newcommand{\man}{\mathrm{M}}
+\newcommand{\sample}{\mathrm{X}}
+\newcommand{\cluster}{\mathcal{C}}
+\newcommand{\mes}{\mathrm{m}}
+\newcommand{\dis}{\mathrm{d}}
+\newcommand{\supp}{\mathrm{supp}}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\wasser}{\mathrm{W}}
+\newcommand{\gromov}{\mathrm{GW}}
+\newcommand{\Reeb}{{\mathrm R}}
+\newcommand{\critic}{{\mathrm {Crit}}}
+\newcommand{\comp}{{\mathrm {C}}}
+\newcommand{\appr}{{\mathrm {A}}}
+\newcommand{\estim}{{\mathrm {E}}}
+\newcommand{\haus}{{\mathrm {d_H}}}
+\newcommand{\ball}{{\mathrm {B}}}
+\newcommand{\converge}{\underset{n\rightarrow\infty}{\longrightarrow}}
+\newcommand{\Ys}{Y}
+\newcommand{\interv}{{\mathrm {I}}}
+\newcommand{\mapper}{{\mathbb{M}_n}}
+\newcommand{\simp}{\Delta}
+\newcommand{\DD}{\Delta\!\!\!\!\Delta}
+\newcommand{\dirac}{\delta}
+\newcommand{\diracn}{\mathrm{m}_n}
+\newcommand{\diam}{\mathrm{Diam}}
+\newcommand{\partition}{\mathbb{V}}
+\newcommand{\covn}{\mathcal{N}}
+\newcommand{\vol}{\mathrm{Vol}}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\coar}{\mathcal{C}}
+\newcommand{\coverwidth}{\mathcal{W}(r)}
+\newcommand{\g}{\mathrm{g}}
+\newcommand{\G}{\mathrm{G}}
+\newcommand{\deter}{\mathrm{det}}
+\newcommand{\tangent}{\mathrm{T}}
+\newcommand{\ricci}{\mathrm{Ric}}
+\newcommand{\spaceform}{\mathrm{S}}
+\newcommand{\inj}{\mathrm{inj}}
+\newcommand{\Xn}{\mathcal{X}_n}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\length}{\mathrm{length}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\preim}[2]{#1^{-1}(#2)}
+\newcommand{\torus}{\mathbb{T}^2}
+\newcommand{\embd}{h}
+
+
+
+\newtheorem{hypothesis}{Assumption}
+
+ 
+
+ 
+
+
+\newcommand{\bert}[1]{\noindent \textcolor{blue}{\textsf{[B: #1]}}}
+
+\newcommand{\ziy}[1]{\noindent \textcolor{red}{\textsf{[Z: #1]}}}
+
+\newcommand{\mathieu}[1]{\noindent \textcolor{green}{\textsf{[M: #1]}}}
+
+\title{Gromov-Wasserstein Bound between Reeb and Mapper Graphs}
+%\author{Ziyad Oulhaj, Mathieu Carrière, Bertrand Michel}
+\author[1]{Ziyad Oulhaj}
+\author[2]{Mathieu Carrière}
+\author[1]{Bertrand Michel}
+\affil[1]{Nantes Université, École Centrale Nantes, Laboratoire de Mathématiques Jean Leray, CNRS UMR 6629, Nantes, France}
+\affil[2]{DataShape,
+Centre Inria d’Université Côte d’Azur, Sophia Antipolis, France}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Since its introduction as a computable approximation of the Reeb graph, the Mapper graph has become one of the most popular tools from topological data analysis for performing data visualization and inference. However, finding an appropriate metric (that is, a tractable metric with theoretical guarantees) for comparing Reeb and Mapper graphs, in order to, e.g., quantify the rate of convergence of the Mapper graph to the Reeb graph, is a difficult problem. While several metrics have been proposed in the literature, none is able to incorporate measure information, when data points are sampled according to an underlying probability measure. The resulting Reeb and Mapper graphs are therefore purely deterministic and combinatorial, and substantial effort is thus required to ensure their statistical validity.
+
+In this article, we handle this issue by treating Reeb and Mapper graphs as metric measure spaces. This allows us to use Gromov-Wasserstein metrics to compare these graphs directly in order to better incorporate the probability measures that data points are sampled from. Then, we describe the geometry that arises from this perspective, and we derive rates of convergence of the Mapper graph to the Reeb graph in this context. Finally, we showcase the usefulness of such metrics for Reeb and Mapper graphs in a few numerical experiments. 
+\end{abstract}
+
+
+
+
+%\bert{Proposition de petites modifications de notations : $\mathcal X_n $ pour l'échantillon et $\mathbb M_n$ pour Mapper (avec indice n en plus) ? Le fait que l'on note avce des symbole proches $M$ et $\mathbb M$ le manifold et Mapper ne permet pas de se reccrocher facilement aux notations.}
+
+ 
+
+%\bert{Lisser la bibio}
+
+
+ 
+
+\input{introduction}
+\section{Background}\label{sec:background}
+\input{reeb_mapper}
+\input{riemannian_geometry}
+\input{morse_theory}
+\input{mm_space_geometry} \label{sec:mm_space_geometry}
+\input{reeb_geom} \label{sec:reeb_geom}
+%\input{bounds}
+\input{mapper}\label{sec:rates}
+\input{numerical_experiments} \label{sec:expe}
+
+
+\section{Acknowledgements. }
+
+
+%The authors are grateful to Gilles Caron and Stéphane Guillermou for helpful discussions. 
+
+%\bert{remercier Gilles Caron ? ANR ...}
+The authors would like to thank Gilles Carron and Stéphane Guillermou for their helpful insight and valuable discussions.\\
+The research was supported by two grants from Agence Nationale de la Recherche: ANR JCJC TopModel ANR-23-CE23-0014 and ANR GeoDSIC ANR-22-CE40-0007.
+%AI4scMed, France 2030 ANR-22-PESN-000.
+M.C. was also supported by the French government, through the 3IA Cote d’Azur Investments in the project
+managed by the National Research Agency (ANR) with the reference number ANR-23-IACL-0001.
+
+\newpage
+\appendix
+\input{background_proofs}
+%\input{proofs}
+
+ 
+
+
+
+\printbibliography
+\end{document}

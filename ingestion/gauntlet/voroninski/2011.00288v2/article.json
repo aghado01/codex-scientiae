@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2011.00288v2",
+  "initialized_utc": "2026-08-11T08:31:03.177571Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "dense_pr.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Optimal Sample Complexity of Subgradient Descent for Amplitude Flow via Non-Lipschitz Matrix Concentration",
+        "authors_tex": [
+          "Paul Hand\\thanks{Department of Mathematics and College of Computer and Information Science, Northeastern University, Boston, MA}, Oscar Leong\\thanks{Department of Computational and Applied Mathematics, Rice University, Houston, TX}, and Vladislav Voroninski\\thanks{Helm.ai, Menlo Park, CA}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2011.00288v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 19259,
+      "sha256": "eb534a077212251755f2cf8058ff11f65c7624b7b61760c343ce406fd1783027",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2011.00288v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2011.00288v2.tar.gz",
+      "entrypoint": "dense_pr.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 3,
+      "tex_files": 1,
+      "sha256": "cec998f2a80207b3e336675cee2f988f5274197234c15ffe7fb726d0a178f86a"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2011.00288v2.pdf",
+      "format": "application/pdf",
+      "bytes": 260244,
+      "sha256": "a386b135c05452b402befd6446b17a9a3233a2cb8f08a1ea6009f5a072c4ecc3"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:31:03.177571Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 3
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 3
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "dense_pr.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

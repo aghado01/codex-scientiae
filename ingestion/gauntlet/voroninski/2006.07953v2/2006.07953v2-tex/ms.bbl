@@ -1,0 +1,401 @@
+\begin{thebibliography}{10}
+
+\bibitem{abbe2014decoding}
+Emmanuel Abbe, Afonso~S Bandeira, Annina Bracher, and Amit Singer.
+\newblock Decoding binary node labels from censored edge measurements: Phase
+  transition and efficient recovery.
+\newblock {\em IEEE Transactions on Network Science and Engineering},
+  1(1):10--22, 2014.
+
+\bibitem{amini2008high}
+Arash~A Amini and Martin~J Wainwright.
+\newblock High-dimensional analysis of semidefinite relaxations for sparse
+  principal components.
+\newblock In {\em 2008 IEEE International Symposium on Information Theory},
+  pages 2454--2458. IEEE, 2008.
+
+\bibitem{arora2014provable}
+Sanjeev Arora, Aditya Bhaskara, Rong Ge, and Tengyu Ma.
+\newblock Provable bounds for learning some deep representations.
+\newblock In {\em International Conference on Machine Learning}, pages
+  584--592, 2014.
+
+\bibitem{arora2015deep}
+Sanjeev Arora, Yingyu Liang, and Tengyu Ma.
+\newblock Why are deep nets reversible: A simple theory, with implications for
+  training.
+\newblock {\em arXiv preprint arXiv:1511.05653}, 2015.
+
+\bibitem{asim2018solving}
+Muhammad Asim, Fahad Shamshad, and Ali Ahmed.
+\newblock Solving bilinear inverse problems using deep generative priors.
+\newblock {\em CoRR, abs/1802.04073}, 3(4):8, 2018.
+
+\bibitem{aubin2019exact}
+Benjamin Aubin, Bruno Loureiro, Antoine Baker, Florent Krzakala, and Lenka
+  Zdeborov{\'a}.
+\newblock Exact asymptotics for phase retrieval and compressed sensing with
+  random generative priors.
+\newblock {\em arXiv preprint arXiv:1912.02008}, 2019.
+
+\bibitem{aubin2019spiked}
+Benjamin Aubin, Bruno Loureiro, Antoine Maillard, Florent Krzakala, and Lenka
+  Zdeborov{\'a}.
+\newblock The spiked matrix model with generative priors.
+\newblock {\em arXiv preprint arXiv:1905.12385}, 2019.
+
+\bibitem{bandeira2015non}
+Afonso~S Bandeira, Yutong Chen, and Amit Singer.
+\newblock Non-unique games over compact groups and orientation estimation in
+  cryo-em.
+\newblock {\em arXiv preprint arXiv:1505.03840}, 2015.
+
+\bibitem{bandeira2018notes}
+Afonso~S Bandeira, Amelia Perry, and Alexander~S Wein.
+\newblock Notes on computational-to-statistical gaps: predictions using
+  statistical physics.
+\newblock {\em arXiv preprint arXiv:1803.11132}, 2018.
+
+\bibitem{barbier2019optimal}
+Jean Barbier, Florent Krzakala, Nicolas Macris, L{\'e}o Miolane, and Lenka
+  Zdeborov{\'a}.
+\newblock Optimal errors and phase transitions in high-dimensional generalized
+  linear models.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  116(12):5451--5460, 2019.
+
+\bibitem{berthet2013computational}
+Quentin Berthet and Philippe Rigollet.
+\newblock Computational lower bounds for sparse pca.
+\newblock {\em arXiv preprint arXiv:1304.0828}, 2013.
+
+\bibitem{bhojanapalli2016global}
+Srinadh Bhojanapalli, Behnam Neyshabur, and Nati Srebro.
+\newblock Global optimality of local search for low rank matrix recovery.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  3873--3881, 2016.
+
+\bibitem{bora2017compressed}
+Ashish Bora, Ajil Jalal, Eric Price, and Alexandros~G Dimakis.
+\newblock Compressed sensing using generative models.
+\newblock In {\em Proceedings of the 34th International Conference on Machine
+  Learning-Volume 70}, pages 537--546. JMLR. org, 2017.
+
+\bibitem{brennan2019optimal}
+Matthew Brennan and Guy Bresler.
+\newblock Optimal average-case reductions to sparse pca: From weak assumptions
+  to strong hardness.
+\newblock {\em arXiv preprint arXiv:1902.07380}, 2019.
+
+\bibitem{cai2016optimal}
+Tony Cai, Xiaodong Li, Zongming Ma, et~al.
+\newblock Optimal rates of convergence for noisy sparse phase retrieval via
+  thresholded wirtinger flow.
+\newblock {\em The Annals of Statistics}, 44(5):2221--2251, 2016.
+
+\bibitem{cai2013sparse}
+Tony Cai, Zongming Ma, Yihong Wu, et~al.
+\newblock Sparse pca: Optimal rates and adaptive estimation.
+\newblock {\em The Annals of Statistics}, 41(6):3074--3110, 2013.
+
+\bibitem{chizat2019lazy}
+Lenaic Chizat, Edouard Oyallon, and Francis Bach.
+\newblock On lazy training in differentiable programming.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2933--2943, 2019.
+
+\bibitem{clason2017nonsmooth}
+Christian Clason.
+\newblock Nonsmooth analysis and optimization.
+\newblock {\em arXiv preprint arXiv:1708.04180}, 2017.
+
+\bibitem{decelle2011asymptotic}
+Aurelien Decelle, Florent Krzakala, Cristopher Moore, and Lenka Zdeborov{\'a}.
+\newblock Asymptotic analysis of the stochastic block model for modular
+  networks and its algorithmic applications.
+\newblock {\em Physical Review E}, 84(6):066106, 2011.
+
+\bibitem{deshpande2016asymptotic}
+Yash Deshpande, Emmanuel Abbe, and Andrea Montanari.
+\newblock Asymptotic mutual information for the binary stochastic block model.
+\newblock In {\em 2016 IEEE International Symposium on Information Theory
+  (ISIT)}, pages 185--189. IEEE, 2016.
+
+\bibitem{deshpande2014sparse}
+Yash Deshpande and Andrea Montanari.
+\newblock Sparse pca via covariance thresholding.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  334--342, 2014.
+
+\bibitem{deshpande2014cone}
+Yash Deshpande, Andrea Montanari, and Emile Richard.
+\newblock Cone-constrained principal component analysis.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2717--2725, 2014.
+
+\bibitem{du2018gradient}
+Simon~S Du, Jason~D Lee, Haochuan Li, Liwei Wang, and Xiyu Zhai.
+\newblock Gradient descent finds global minima of deep neural networks.
+\newblock {\em arXiv preprint arXiv:1811.03804}, 2018.
+
+\bibitem{giryes2016deep}
+Raja Giryes, Guillermo Sapiro, and Alex~M Bronstein.
+\newblock Deep neural networks with random gaussian weights: A universal
+  classification strategy?
+\newblock {\em IEEE Transactions on Signal Processing}, 64(13):3444--3457,
+  2016.
+
+\bibitem{hand2019global}
+Paul Hand and Babhru Joshi.
+\newblock Global guarantees for blind demodulation with generative priors.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  11531--11541, 2019.
+
+\bibitem{oscar2018phase}
+Paul Hand, Oscar Leong, and Vlad Voroninski.
+\newblock Phase retrieval under a generative prior.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  9136--9146, 2018.
+
+\bibitem{hand2018phase}
+Paul Hand, Oscar Leong, and Vlad Voroninski.
+\newblock Phase retrieval under a generative prior.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  9136--9146, 2018.
+
+\bibitem{hand2016compressed}
+Paul Hand and Vladislav Voroninski.
+\newblock Compressed sensing from phaseless gaussian measurements via linear
+  programming in the natural parameter space.
+\newblock {\em arXiv preprint arXiv:1611.05985}, 2016.
+
+\bibitem{HV17}
+Paul Hand and Vladislav Voroninski.
+\newblock Global guarantees for enforcing deep generative priors by empirical
+  risk, 2017.
+
+\bibitem{hand2017global}
+Paul Hand and Vladislav Voroninski.
+\newblock Global guarantees for enforcing deep generative priors by empirical
+  risk.
+\newblock {\em arXiv preprint arXiv:1705.07576}, 2017.
+
+\bibitem{HHHV18}
+Reinhard Heckel, Wen Huang, Paul Hand, and Vladislav Voroninski.
+\newblock Rate-optimal denoising with deep neural networks, 2018.
+
+\bibitem{jacot2018neural}
+Arthur Jacot, Franck Gabriel, and Cl{\'e}ment Hongler.
+\newblock Neural tangent kernel: Convergence and generalization in neural
+  networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  8571--8580, 2018.
+
+\bibitem{javanmard2016phase}
+Adel Javanmard, Andrea Montanari, and Federico Ricci-Tersenghi.
+\newblock Phase transitions in semidefinite relaxations.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  113(16):E2218--E2223, 2016.
+
+\bibitem{johnstone2001distribution}
+Iain~M Johnstone.
+\newblock On the distribution of the largest eigenvalue in principal components
+  analysis.
+\newblock {\em Annals of statistics}, pages 295--327, 2001.
+
+\bibitem{johnstone2009}
+Iain~M Johnstone and Arthur~Yu Lu.
+\newblock On consistency and sparsity for principal components analysis in high
+  dimensions.
+\newblock {\em Journal of the American Statistical Association},
+  104(486):682--693, 2009.
+
+\bibitem{krauthgamer2015semidefinite}
+Robert Krauthgamer, Boaz Nadler, Dan Vilenchik, et~al.
+\newblock Do semidefinite relaxations solve sparse pca up to the information
+  limit?
+\newblock {\em The Annals of Statistics}, 43(3):1300--1322, 2015.
+
+\bibitem{kunisky2019notes}
+Dmitriy Kunisky, Alexander~S Wein, and Afonso~S Bandeira.
+\newblock Notes on computational hardness of hypothesis testing: Predictions
+  using the low-degree likelihood ratio.
+\newblock {\em arXiv preprint arXiv:1907.11636}, 2019.
+
+\bibitem{lesieur2015phase}
+Thibault Lesieur, Florent Krzakala, and Lenka Zdeborov{\'a}.
+\newblock Phase transitions in sparse pca.
+\newblock In {\em 2015 IEEE International Symposium on Information Theory
+  (ISIT)}, pages 1635--1639. IEEE, 2015.
+
+\bibitem{li2013sparse}
+Xiaodong Li and Vladislav Voroninski.
+\newblock Sparse signal recovery from quadratic measurements via convex
+  programming.
+\newblock {\em SIAM Journal on Mathematical Analysis}, 45(5):3019--3033, 2013.
+
+\bibitem{li2018learning}
+Yuanzhi Li and Yingyu Liang.
+\newblock Learning overparameterized neural networks via stochastic gradient
+  descent on structured data.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  8157--8166, 2018.
+
+\bibitem{ma2018invertibility}
+Fangchang Ma, Ulas Ayaz, and Sertac Karaman.
+\newblock Invertibility of convolutional generative networks from partial
+  measurements.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  9628--9637, 2018.
+
+\bibitem{ma2015sum}
+Tengyu Ma and Avi Wigderson.
+\newblock Sum-of-squares lower bounds for sparse pca.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  1612--1620, 2015.
+
+\bibitem{mcsherry2001spectral}
+Frank McSherry.
+\newblock Spectral partitioning of random graphs.
+\newblock In {\em Proceedings 42nd IEEE Symposium on Foundations of Computer
+  Science}, pages 529--537. IEEE, 2001.
+
+\bibitem{mei2019generalization}
+Song Mei and Andrea Montanari.
+\newblock The generalization error of random features regression: Precise
+  asymptotics and double descent curve.
+\newblock {\em arXiv preprint arXiv:1908.05355}, 2019.
+
+\bibitem{mixon2018sunlayer}
+Dustin~G Mixon and Soledad Villar.
+\newblock Sunlayer: Stable denoising with generative networks.
+\newblock {\em arXiv preprint arXiv:1803.09319}, 2018.
+
+\bibitem{montanari2015non}
+Andrea Montanari and Emile Richard.
+\newblock Non-negative principal component analysis: Message passing algorithms
+  and sharp asymptotics.
+\newblock {\em IEEE Transactions on Information Theory}, 62(3):1458--1484,
+  2015.
+
+\bibitem{moore2017computer}
+Cristopher Moore.
+\newblock The computer science and physics of community detection: Landscapes,
+  phase transitions, and hardness.
+\newblock {\em arXiv preprint arXiv:1702.00467}, 2017.
+
+\bibitem{ohlsson2011compressive}
+Henrik Ohlsson, Allen~Y Yang, Roy Dong, and S~Shankar Sastry.
+\newblock Compressive phase retrieval from squared output measurements via
+  semidefinite programming.
+\newblock {\em arXiv preprint arXiv:1111.6323}, pages 1--27, 2011.
+
+\bibitem{oymak2015simultaneously}
+Samet Oymak, Amin Jalali, Maryam Fazel, Yonina~C Eldar, and Babak Hassibi.
+\newblock Simultaneously structured models with application to sparse and
+  low-rank matrices.
+\newblock {\em IEEE Transactions on Information Theory}, 61(5):2886--2908,
+  2015.
+
+\bibitem{oymak2019towards}
+Samet Oymak and Mahdi Soltanolkotabi.
+\newblock Towards moderate overparameterization: global convergence guarantees
+  for training shallow neural networks.
+\newblock {\em arXiv preprint arXiv:1902.04674}, 2019.
+
+\bibitem{perry2018message}
+Amelia Perry, Alexander~S Wein, Afonso~S Bandeira, and Ankur Moitra.
+\newblock Message-passing algorithms for synchronization problems over compact
+  groups.
+\newblock {\em Communications on Pure and Applied Mathematics},
+  71(11):2275--2322, 2018.
+
+\bibitem{qiu2019robust}
+Shuang Qiu, Xiaohan Wei, and Zhuoran Yang.
+\newblock Robust one-bit recovery via relu generative networks: Improved
+  statistical rates and global landscape analysis.
+\newblock {\em arXiv preprint arXiv:1908.05368}, 2019.
+
+\bibitem{richard2014statistical}
+Emile Richard and Andrea Montanari.
+\newblock A statistical model for tensor pca.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2897--2905, 2014.
+
+\bibitem{shah2018solving}
+Viraj Shah and Chinmay Hegde.
+\newblock Solving linear inverse problems using gan priors: An algorithm with
+  provable guarantees.
+\newblock In {\em 2018 IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 4609--4613. IEEE, 2018.
+
+\bibitem{sonderby2016amortised}
+Casper~Kaae S{\o}nderby, Jose Caballero, Lucas Theis, Wenzhe Shi, and Ferenc
+  Husz{\'a}r.
+\newblock Amortised map inference for image super-resolution.
+\newblock {\em arXiv preprint arXiv:1610.04490}, 2016.
+
+\bibitem{song2019surfing}
+Ganlin Song, Zhou Fan, and John Lafferty.
+\newblock Surfing: Iterative optimization over incrementally trained deep
+  networks.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  15008--15017, 2019.
+
+\bibitem{vu2012minimax}
+Vincent Vu and Jing Lei.
+\newblock Minimax rates of estimation for sparse pca in high dimensions.
+\newblock In {\em Artificial intelligence and statistics}, pages 1278--1286,
+  2012.
+
+\bibitem{wainwright2019high}
+Martin~J Wainwright.
+\newblock {\em High-dimensional statistics: A non-asymptotic viewpoint},
+  volume~48.
+\newblock Cambridge University Press, 2019.
+
+\bibitem{wang2017sparse}
+Gang Wang, Liang Zhang, Georgios~B Giannakis, Mehmet Ak{\c{c}}akaya, and Jie
+  Chen.
+\newblock Sparse phase retrieval via truncated amplitude flow.
+\newblock {\em IEEE Transactions on Signal Processing}, 66(2):479--491, 2017.
+
+\bibitem{xue2018segan}
+Yuan Xue, Tao Xu, Han Zhang, L~Rodney Long, and Xiaolei Huang.
+\newblock Segan: Adversarial network with multi-scale l 1 loss for medical
+  image segmentation.
+\newblock {\em Neuroinformatics}, 16(3-4):383--392, 2018.
+
+\bibitem{yang2017dagan}
+Guang Yang, Simiao Yu, Hao Dong, Greg Slabaugh, Pier~Luigi Dragotti, Xujiong
+  Ye, Fangde Liu, Simon Arridge, Jennifer Keegan, Yike Guo, et~al.
+\newblock Dagan: Deep de-aliasing generative adversarial networks for fast
+  compressed sensing mri reconstruction.
+\newblock {\em IEEE transactions on medical imaging}, 37(6):1310--1321, 2017.
+
+\bibitem{yeh2016semantic}
+Raymond~A Yeh, Chen Chen, Teck~Yian Lim, Alexander~G Schwing, Mark
+  Hasegawa-Johnson, and Minh~N Do.
+\newblock Semantic image inpainting with deep generative models. arxiv e-prints
+  (2016).
+\newblock {\em arXiv preprint arXiv:1607.07539}, 2016.
+
+\bibitem{yuan2019phase}
+Ziyang Yuan, Hongxia Wang, and Qi~Wang.
+\newblock Phase retrieval via sparse wirtinger flow.
+\newblock {\em Journal of Computational and Applied Mathematics}, 355:162--173,
+  2019.
+
+\bibitem{zhang2018much}
+Richard Zhang, C{\'e}dric Josz, Somayeh Sojoudi, and Javad Lavaei.
+\newblock How much restricted isometry is needed in nonconvex matrix recovery?
+\newblock In {\em Advances in neural information processing systems}, pages
+  5586--5597, 2018.
+
+\bibitem{zou2006sparse}
+Hui Zou, Trevor Hastie, and Robert Tibshirani.
+\newblock Sparse principal component analysis.
+\newblock {\em Journal of computational and graphical statistics},
+  15(2):265--286, 2006.
+
+\end{thebibliography}

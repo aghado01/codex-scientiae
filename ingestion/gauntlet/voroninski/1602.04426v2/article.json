@@ -1,0 +1,102 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1602.04426v2",
+  "initialized_utc": "2026-08-11T08:30:50.736709Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "Bandeira16.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "On the low-rank approach for semidefinite programs arising in synchronization and community detection",
+        "authors_tex": [],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1602.04426v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 40639,
+      "sha256": "4d97070167536a54c09a649404f6876a3effb7bb71e750c2ef0dd33142270336",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1602.04426v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1602.04426v2.tar.gz",
+      "entrypoint": "Bandeira16.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 4,
+      "tex_files": 1,
+      "sha256": "b92f1a5ad6abf4caccba8f7c47be401c15c6afb6ebebbb9358508c510a775c72"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1602.04426v2.pdf",
+      "format": "application/pdf",
+      "bytes": 246771,
+      "sha256": "217cce09a6ef6a7aea9cf9bc49b12fbbc766eccc993365c139d31c2ad44a9eb6"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:50.736709Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 4
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 4
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "Bandeira16.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

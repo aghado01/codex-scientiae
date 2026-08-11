@@ -1,0 +1,31 @@
+\section{A subgradient method and numerical experiments}\label{subsec:algo}
+
+Informed by the analysis in the previous sections, we propose a gradient method for the solution of \eqref{eq:minM} and verify empirically its optimal properties. 
+
+Recall that the main properties of the landscape of the minimization problem 
+\eqref{eq:minM} were the global minimum in a neighborhood of the true latent vector $\xstar$ and a flat region in correspondence of $-\rho_d \xstar$. Moreover 
+the latter region has larger loss function values than those in the vicinity of $\xstar$.  In order to overcome the non-convexity and avoid this bad region we run gradient descent from a random non-zero initialization and its negation. We then pick the iterate which has smaller final loss value.
+
+\begin{algorithm}[H]
+	\caption{Gradient method for the minizimization problem \eqref{eq:minM}}\label{alg:subgrad}
+	\begin{algorithmic}[1]
+		\State {\bfseries Input:} Weights $W_i$, observation matrix $M$, step size $\alpha > 0$, number of iterations $T$
+		\State Choose $\hat{x}_0 \in \R^k \backslash \{0\}$ arbitrary
+		\State Let $x_{0}^{(1)} = \hat{x}_0$ and $x_{0}^{(2)} = -\hat{x}_0$
+		\For{i = 1, 2}
+		\For{$j = 0, 1, \ldots, T-1$}
+		\State Compute $v_{{x}_{j}}^{(i)} \in \pa f({x}_{j}^{(i)})$
+		\State ${x}_{j+1}^{(i)} \gets {x}_{j}^{(i)} - \alpha v_{{x}_{j}}^{(i)}$;
+		\EndFor
+		\EndFor
+		\If{$f({x}_{T}^{(1)}) < f({x}_{T}^{(2)})$}
+		\State {Return:} {$x_{T}^{(1)}, G(x_{T}^{(1)})$}
+		\Else
+		\State {Return:} {$x_{T}^{(2)}, G(x_{T}^{(2)})$}
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+
+Note that it will be highly unlikely that the iterates will be at a non-differentiable point, therefore 
+in practice we can consider Algorithm \ref{alg:subgrad} with descent direction $v_{x} = \nabla f(x)$.

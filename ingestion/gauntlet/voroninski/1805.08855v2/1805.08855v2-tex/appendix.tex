@@ -1,0 +1,434 @@
+
+%%%%%%%%%%%%%
+
+\subsection{Proof of Lemma~\ref{lem:noisesmall}}
+
+Let $\Lambda_x = \PiWd$. 
+We have that
+\[
+\norm{\qbarx}^2
+=
+\norm{ \Lambda_x^t \eta}^2
+\leq
+\norm{\Lambda_x}^2
+\norm{ P_{\Lambda_x} \eta}^2,
+\]
+where $P_{\Lambda_x}$ is a projector onto the span of $\Lambda_x$. 
+As a consequence, $\norm{ P_{\Lambda_x} \eta}^2$ is $\chi^2$-distributed random variable with $k$-degrees of freedom scaled by $\sigma/n$. A standard tail bound (see~\cite[p.~43]{boucheron_concentration_2013}) yields that, for any $\beta \geq k$, 
+\[
+\PR{\norm{ P_{\Lambda_x} \eta}^2 \geq 4 \beta}
+\leq 
+2e^{-\beta}.
+\]
+Next, we note that by applying Lemmas 13-14 from \cite[Proof of Lem.~15]{hand_global_2017})\footnote{The proof in that argument only uses the assumption of independence of subsets of rows of the weight matrices.}, with probability one, that the number of different matrices $\Lambda_x$ can be bounded as
+\[
+|\left\{
+\Lambda_x | x \neq 0
+\right\}|
+=
+|\left\{
+\PiWd | x \neq 0
+\right\}|
+\leq
+10^{d^2}(n_1^d n_2^{d-1}\ldots n_d)^k
+\leq 
+(n_1^d n_2^{d-1}\ldots n_d)^{2k},
+\]
+where the second inequality holds for 
+$\log(10) \leq k/4 \log(n_1)$.
+To see this, note that
+$(n_1^d n_2^{d-1}\ldots n_d)^{k} \geq 10^{d^2}$
+is implied by
+$k( d\log(n_1)+ (d-1) \log(n_2) + \ldots \log(n_d))
+\geq k d^2/4 \log(n_1) \geq d^2 \log(10)$. 
+%\red{$\log(10) \leq k/2 \log(n_1)$ (I DONT FOLLOW ... where did $d$ go from the $10^{d^2}$ term?) RH: added explanation}. 
+Thus, by the union bound, 
+\[
+\PR{\norm{ P_{\Lambda_x} \eta}^2 
+\leq
+16k\log(n_1^d n_2^{d-1}\ldots n_d),
+\text{ for all $x$}
+}
+\geq 
+1 - 2e^{- 2 k\log (n)},
+\]
+where $n = n_d$.
+Recall from~\eqref{eq:boundGammax} that $\norm{\Lambda_x} \leq \frac{13}{12}$. 
+Combining this inequality with 
+$\norm{\qbarx}^2
+\leq
+\norm{\Lambda_x}^2
+\norm{ P_{\Lambda_x} \eta}^2$ concludes the proof.
+
+
+%%%%%%%%%%%%%%
+
+\subsection{Proof of Lemma \ref{lemma:Sepsst} } \label{sec:zeros-hxxo}
+
+We now show that $\hx$ is away from zero outside of a neighborhood of $\xo$ and $-\rho_d \xo$.  We prove Lemma \ref{lemma:Sepsst} by establishing the following:
+
+\begin{lemma} \label{lemma:Seps}
+Suppose $64 d^6 \sqrt{\beta} \leq 1$. 
+Define
+\[
+\zetacheck_d := \sum_{i=0}^{d-1} \frac{\sin \thetacheck_{i}}{\pi} \left( \prod_{j=i+1}^{d-1} \frac{\pi - \thetacheck_{j} }{\pi} \right),
+\]
+where $\thetacheck_0= \pi$ and $\thetacheck_i = g(\thetacheck_{i-1})$.  If $x \in \setS_\beta$, then we have that either
+\[
+|\thetabar_0| \leq 32 d^4 \beta \quad \text{and} \quad |\|x\|_2 - \|\xo\|_2| \leq  132 d^6 \beta \|\xo\|_2
+\]
+or
+\[
+|\thetabar_0 - \pi| 
+\leq 
+8\pi d^4 \sqrt{\beta}  \quad \text{and} \quad  \left| \|x\|_2 - \|\xo\|_2 \zetacheck_d \right | \leq 200 d^7 \sqrt{\epsilon} \|\xo\|_2.
+\]
+In particular, we have
+\begin{align}
+\setS_\beta \subset \mathcal{B}(\xo, 5000 d^6 \beta \|\xo\|_2  ) \cup  \mathcal{B}( -\zetacheck_d \xo, 500 d^{11} \sqrt{\beta} \|\xo\|_2).
+ \label{Seps-estimate-balls}
+\end{align}
+Additionally, $\rho_d \to 1$ as $d \to \infty$.
+\end{lemma}
+
+
+\begin{proof}
+%\textcolor{red}{Amend accordingly} Note that for $x \in S_{\beta}$ we have that if $\|x\|_2 \geq \|\xo\|_2$, then $\frac{1}{4}\|x\|_2 \leq \frac{1}{4}\|\xo\|_2 + \frac{1}{2\pi} + \beta \|x\|_2$, which implies that $\|x\|_2 \leq \frac{\|\xo\|_2 + \frac{2}{\pi}}{1-4\beta} \leq \max (4\|\xo\|_2, \frac{8}{\pi} ) :=M$ when $\beta < \frac{1}{8}$. Thus $\|x\|_2 \leq M$. \\
+Without loss of generality, let $\norm{\xo}
+ =1$, $\xo = e_1$ and $\xhat = r \cos \thetabar_0 \cdot e_1 + r \sin \thetabar_0 \cdot e_2$ for $\thetabar_0 \in [0, \pi]$.  Let $x \in \setS_\beta$. 
+
+First we introduce some notation for convenience.  Let
+\[
+\xi = \Pipithetapii, \quad \zeta = \zetaterm, \quad r = \|x\|_2, \quad M = \max(r, 1).
+\]
+Thus, $\hx = - \frac{1}{2^d}\xi  \xohat + \frac{1}{2^d} (r- \zeta) \xhat$. 
+By inspecting the components of $\hx$, we have that $x\in \setS_\beta$ implies
+\begin{align}
+|-\xi + \cos \thetabar_0 ( r - \zeta)| \leq \beta M \label{Seps-e1term}\\
+|\sin \thetabar_0 (r - \zeta)| \leq \beta M \label{Seps-e2term}
+\end{align}
+
+Now, we record several properties.  We have:
+\begin{align}
+\thetabar_{i} &\in [0, \pi/2] \text{ for } i \geq 1 \notag \\
+\thetabar_{i} &\leq \thetabar_{i-1} \text{ for } i \geq 1 \notag\\
+ |\xi| &\leq 1 \label{bound-c-one}\\
+| \zeta| &\leq \frac{d}{\pi} \sin \theta_0 \label{zeta-bound-d-sin-theta} \\
+\thetacheck_i &\leq \frac{3\pi}{i+3} \text{ for $i \geq 0$} \label{upper-bound-thetai}\\
+\thetacheck_i &\geq \frac{\pi}{i+1} \text{ for $i \geq 0$} \label{lower-bound-thetai}\\
+\xi = \prod_{i=0}^{d-1} \frac{\pi - \thetabar_i}{\pi} &\geq \frac{\pi - \thetabar_0}{\pi } d^{-3} \label{pi-theta-pi-d-cubed}\\
+\thetabar_0 = \pi + O_1(\delta) &\Rightarrow \thetabar_i = \thetacheck_i + O_1(i \delta) \label{thetabar-thetacheck-bound}\\
+\thetabar_0 = \pi + O_1(\delta) &\Rightarrow |\xi| \leq \frac{\delta}{\pi} \label{c-one-bound-thetabarzero}\\
+\thetabar_0 = \pi + O_1(\delta) &\Rightarrow \zeta = \zetacheck_d + O_1(3 d^3 \delta) \text{ if } \frac{d^2 \delta}{\pi} \leq 1 \label{high-theta-zeta-zetabar-control}
+\end{align}
+We now establish \eqref{upper-bound-thetai}.  Observe $0< g(\theta) \leq \bigl( \frac{1}{3 \pi} + \frac{1}{\theta} \bigr)^{-1} =: \gtilde(\theta)$ for $\theta \in (0, \pi]$.  As $g$ and $\gtilde$ are monotonic increasing, we have $\thetacheck_i = g^{\circ i}(\thetacheck_0) = g^{\circ i}(\pi) \leq \gtilde^{\circ i}(\pi) = \bigl( \frac{i}{3 \pi} + \frac{1}{\pi} \bigr)^{-1} = \frac{3\pi}{i + 3}$.  Similarly, $g(\theta) \geq (\frac{1}{\pi} + \frac{1}{\theta})^{-1}$ implies that $\thetacheck_i \geq \frac{\pi}{i+1}$, establishing \eqref{lower-bound-thetai}. 
+
+We now establish \eqref{pi-theta-pi-d-cubed}.  Using \eqref{upper-bound-thetai} and $\thetabar_i \leq \thetacheck_i$, we have
+\begin{align*}
+\prod_{i=1}^{d-1} \Bigl(1 - \frac{\thetabar_i}{\pi} \Bigr) &\geq \prod_{i=1}^{d-1} \Bigl(1 - \frac{3}{i+3}  \Bigr)
+\geq d^{-3},
+%= \exp \sum_{i=1}^{d-1} \log(1 - \frac{3}{i+3}) \geq \exp \Bigl(-3 \sum_{i=1}^{d-1} \frac{1}{i+3}\Bigr)
+%\\&\geq \exp \Bigl( -3 \int_{s=3}^{d+2} \frac{1}{s} ds  \Bigr)  \geq \exp \Bigl( -3 \log d   \Bigr) \geq  d^{-3}.
+\end{align*}
+where the last inequality can be established by showing that the ratio of consecutive terms with respect to $d$ is greater for the product in the middle expression than for $d^{-3}$.
+
+We establish \eqref{thetabar-thetacheck-bound} by using the fact that $|g'(\theta)| \leq 1$ for all $\theta \in [0, \pi]$ and using the same logic as for~\cite[Eq.~17]{hand_global_2017}.
+
+We now establish \eqref{high-theta-zeta-zetabar-control}.  As $\thetabar_0 = \pi + O_1(\delta)$, we have $\thetabar_i = \thetacheck_i + O_1(i \delta)$.  Thus, if $\frac{d^2 \delta}{\pi}\leq 1$,
+\[
+\prod_{j=i+1}^{d-1} \frac{\pi - \thetabar_j}{\pi} = \prod_{j=i+1}^{d-1} \Bigl( \frac{\pi - \thetacheck_j}{\pi} + O_1(\frac{i \delta}{2 \pi} ) \Bigr) = \Bigl(\prod_{j=i+1}^{d-1}  \frac{\pi - \thetacheck_j}{\pi} \Bigr)  + O_1(d^2 \delta )
+\]
+So
+\begin{align}
+\zeta &= \sum_{i=0}^{d-1} \Bigl( \frac{\sin \thetacheck_i}{\pi} + O_1(\frac{i \delta}{\pi}) \Bigr)  \Bigl[ \Bigl(\prod_{j=i+1}^{d-1} \frac{\pi - \thetacheck_j}{\pi} \Bigr) +O_1(d^2 \delta)  \Bigr] \\
+&= \zetacheck_d + O_1 \Bigl( d^2\delta / \pi + d^3 \delta /\pi + d^4 \delta^2/\pi   \Bigr) \\
+&= \zetacheck_d + O_1( 3 d^3 \delta).
+\end{align}
+Thus \eqref{high-theta-zeta-zetabar-control} holds.
+
+Next, we establish that $x \in \setS_\beta \Rightarrow r \leq 4d$, and thus $M \leq 4d$.  Suppose $r > 1$.  At least one of the following holds: $|\sin\thetabar_0| \geq 1/\sqrt{2}$ or $|\cos \thetabar_0| \geq 1/\sqrt{2}$. If $|\sin \thetabar_0| \geq 1/\sqrt{2}$ then  \eqref{Seps-e2term} implies that $|r - \zeta| \leq \sqrt{2} \beta r$.  Using \eqref{zeta-bound-d-sin-theta}, we get $ r \leq \frac{d/\pi}{1 - \sqrt{2} \beta} \leq d/2$ if $\beta < 1/4$.  If $| \cos \thetabar_0| \geq 1/\sqrt{2}$, then \eqref{Seps-e1term} implies that 
+$|r - \zeta| \leq \sqrt{2} (\beta r + |\xi|)$.   Using \eqref{bound-c-one}, \eqref{zeta-bound-d-sin-theta}, and $\beta<1/4$, we get $r \leq \frac{\sqrt{2} |\xi| +  \zeta}{1 - \sqrt{2}{\beta}} \leq \frac{d + \sqrt{2}}{1 - \sqrt{2} \beta} \leq 4 d$. Thus, we have $x \in S_\beta \Rightarrow r \leq 4d \Rightarrow M \leq 4d$. 
+
+Next, we establish that we only need to consider the small angle case ($\thetabar_0 \approx 0$) and the large angle case ($\thetabar_0 \approx \pi$), by considering the following three cases:
+\begin{enumerate}
+\item[] (Case I) $\sin \thetabar_0 \leq 16 d^4 \beta$: We have $\thetabar_0 = O_1(32 d^4 \beta)$ or $\thetabar_0 = \pi + O_1(32 d^4 \beta)$, as $32 d^4 \beta < 1$.  
+
+\item[] (Case II) $|r -\zeta| < \sqrt{\beta} M$: Applying case II to inequality~\eqref{Seps-e1term} yields $|\xi| \leq 2 \sqrt{\beta} M$.  Using \eqref{pi-theta-pi-d-cubed}, we get $\thetabar_0 = \pi + O_1(2 \pi d^3 \sqrt{\beta} M)$. 
+  
+\item[] (Case III) $\sin \thetabar_0 > 16 d^4 \beta$ and $|r - \zeta| \geq \sqrt{\beta} M$: 
+   Finally, consider Case III.  By \eqref{Seps-e2term}, we have $|r - \zeta| \leq \frac{\beta M}{\sin\thetabar_0}$. 
+Using this inequality in~\eqref{Seps-e1term}, we have $|\xi| \leq \beta M + \frac{\beta M}{\sin \thetabar_0} \leq \frac{2 \beta M}{\sin \thetabar_0} \leq \frac{1}{8} d^{-4} M \leq \frac{1}{2} d^{-3}$, where the second to last inequality uses $\sin \thetabar_0 > 16 d^4 \beta$ and the last inequality uses $M \leq 4 d$.  By \eqref{pi-theta-pi-d-cubed},  we have $\frac{\pi - \thetabar_0}{\pi} d^{-3} \leq \xi \leq \frac{1}{2} d^{-3}$, which implies that $\thetabar_0 \geq \pi/2$.  Now, as $|r - \zeta| \geq \sqrt{\beta}M$, then by \eqref{Seps-e2term}, we have $|\sin\thetabar_0| \leq \sqrt{\beta}$.  Hence,  $\thetabar_0 = \pi + O_1(2 \sqrt{\beta})$, as $\thetabar_0 \geq \pi/2$ and as $\beta < 1$.  
+\end{enumerate}
+At least one of the Cases I,II, or III hold. Thus, we see that it suffices to consider the small angle case $\thetabar_0 = O_1(32 d^4 \beta)$ or the large angle case $\thetabar_0 = \pi + O_1(8 \pi d^4 \sqrt{\beta})$. 
+
+%Exactly one of the following holds: $|r - \zeta| \geq \sqrt{\beta} M$ or $|r -\zeta| < \sqrt{\beta} M$.    If $|r - \zeta| \geq \sqrt{\beta}M$, then by \eqref{Seps-e2term}, we have $|\sin\thetabar_0| \leq \sqrt{\beta}$.  Hence $\thetabar_0 = O_1(2 \sqrt{\beta})$ or $\thetabar_0 = \pi + O_1(2 \sqrt{\beta})$, as $\beta < 1$. If $|r - \zeta| \leq \sqrt{\beta} M$, then by \eqref{Seps-e1term} we have $|\xi| \leq 2 \sqrt{\beta} M$.  Using \eqref{pi-theta-pi-d-cubed}, we get $\thetabar_0 = \pi + O_1(2 \pi d^3 \sqrt{\beta} M)$.  Thus, we only need to consider the small angle case, $\thetabar_0 =O_1(2 \sqrt{\beta})$ and the large angle case $\thetabar_0 = \pi + O_1(8 \pi d^4 \sqrt{\beta})$, where we have used $M \leq 4 d$.
+
+\textbf{Small Angle Case}.  Assume $\thetabar_0 = O_1(\delta)$ with $\delta = 32 d^4 \beta$.  As $\thetabar_i \leq \thetabar_0 \leq \delta$ for all $i$, we have $1 \geq \xi \geq (1 - \frac{\delta}{\pi})^d = 1 + O_1(\frac{2 \delta d}{\pi})$ provided $\delta d/\pi \leq 1/2$ (which holds by our choice $\delta = 32 d^4 \beta$ by assumption $64 d^6 \sqrt{\beta} \leq 1$).   By \eqref{zeta-bound-d-sin-theta}, we also have $\zeta = O_1( \frac{d}{\pi} \delta)$.  By \eqref{Seps-e1term},  we have
+\[
+|-\xi + \cos \thetabar_0 ( r - \zeta)| \leq \beta M.
+\]
+Thus, as $\cos \thetabar_0 = 1 + O_1(\thetabar_0^2/2) = 1 + O_1(\delta^2/2)$,
+\[
+-\Bigl( 1 + O_1(\frac{2 \delta d}{\pi}) \Bigr) + (1 + O_1(\frac{2 \delta d}{\pi}) )(r + O_1(\frac{\delta d}{\pi})) = O_1(4 d \beta),
+\]
+and $r \leq M\leq 4 d$ (shown above) provides,
+\begin{align}
+r-1 &= O_1(4d \beta + \frac{2 \delta d}{\pi} + \frac{\delta d}{\pi} + \frac{2 \delta d}{\pi}4d + \frac{2 \delta^2 d^2}{\pi^2} )\\
+&= O_1(4 \beta d + 4 \delta d^2).
+\end{align}
+By plugging in that $\delta = 32 d^4 \beta$, we have that $r-1 = O_1(132 d^6 \beta)$, where we have used that $\frac{32 d^5 \beta}{\pi} \leq 1/2$.
+
+\textbf{Large Angle Case}.  Assume $\theta_0 = \pi + O_1(\delta)$ where $\delta = 8 \pi d^4 \sqrt{\beta}$.  By \eqref{c-one-bound-thetabarzero} and \eqref{high-theta-zeta-zetabar-control}, we have $\xi = O_1(\delta/\pi)$, and we have $\zeta = \zetacheck_d + O_1(3 d^3 \delta)$ if $8 d^6 \sqrt{\beta} \leq 1$.
+By \eqref{Seps-e1term}, we have 
+\[
+|-\xi +  \cos \theta_0 (r - \zeta) | \leq \beta M,
+\]
+so, as $\cos \theta_0 = 1 - O_1(\theta_0^2/2)$,
+\[
+O_1(\delta/\pi) + (1 + O_1(\delta^2/2))(r - \zetacheck_d + O_1(3 d^3 \delta)) = O_1(\beta M),
+\]
+and thus, using $r \leq 4 d$, $\zetacheck_d \leq d$, and $\delta = 8 \pi d^4 \sqrt{\beta} \leq 1$,
+\begin{align}
+r - \zetacheck_d &= O_1(\beta M + \delta/\pi + 3 d^3 \delta + \frac{5}{2} \delta^2 d + \frac{3}{2} d^3 \delta^3) \\
+&= O_1 \Bigl(4 \beta d + \delta ( \frac{1}{\pi} + 3 d^3 + \frac{5}{2} d + \frac{3}{2} d^3) \Bigr) \\
+&= O_1(200 d^7 \sqrt{\beta})
+\end{align}
+
+To conclude the proof of \eqref{Seps-estimate-balls}, we use the fact that
+\[
+\|x - \xo\|_2 \leq  \bigl| \|x\|_2 - \|\xo\|_2   \bigr| + ( \|\xo\|_2 +  \bigl| \|x\|_2 - \|\xo\|_2   \bigr| ) \thetabar_0.
+\]
+This fact simply says that if a 2d point is known to have magnitude within $\Delta r$ of some $r$ and is known to be within angle $\Delta \theta$ from $0$, then its Euclidean distance to the point of polar coordinates $(r,0)$ is no more than $\Delta r + (r +  \Delta r) \Delta \theta$.
+
+
+Finally, we establish that $\rho_d\to 1$ as $d \to \infty$.  Note that $\rho_{d+1} = (1 - \frac{\thetacheck_d}{\pi}) \rho_d + \frac{\sin \thetacheck_d}{\pi}$  and $\rho_0 = 0$.  It suffices to show $\rhotilde_d \to 0$, where $\rhotilde_d := 1 - \rho_d$.  The following recurrence relation holds: $\rhotilde_d = (1 - \frac{\thetacheck_{d-1}}{\pi}) \rhotilde_{d-1} + \frac{\thetacheck_{d-1} - \sin \thetacheck_{d-1}}{\pi}$, with $\rhotilde_0=1$.  Using the recurrence formula \cite[Eq.~(15)]{hand_global_2017}  and the fact that $\thetacheck_0=\pi$, we get that 
+\begin{align}
+\rhotilde_d =  \sum_{i=1}^d \frac{\thetacheck_{i-1} - \sin \thetacheck_{i-1}}{\pi} \prod_{j=i+1}^d \bigl(1 - \frac{\thetacheck_{j-1}}{\pi} \bigr)
+\end{align}
+using \eqref{lower-bound-thetai}, we have that
+\begin{align*}
+\prod_{j=i+1}^d \Bigl(1 - \frac{\thetacheck_{j-1}}{\pi} \Bigr) &\leq \prod_{j=i+1}^d \Bigl(1 - \frac{1}{j} \Bigr)
+= \exp \Bigl( -\sum_{j = i+1}^d \frac{1}{j}  \Bigr) \leq \exp \Bigl( - \int_{i+1}^{d+1} \frac{1}{s} ds  \Bigr) = \frac{i+1}{d+1}
+\end{align*}
+Using \eqref{upper-bound-thetai} and the fact that $\thetacheck_{i-1} - \sin \thetacheck_{i-1} \leq \thetacheck_{i-1}^3 / 6$, we have that $\rhotilde_d \leq \sum_{i=1}^d \frac{\thetacheck_{i-1}^3}{6\pi}\cdot  \frac{i+1}{d+1} \to 0$ as $d \to \infty$. 
+
+
+\end{proof}
+
+
+
+
+
+\subsection{Proof of 
+%the negation 
+Lemma \ref{GA:le14}}
+
+%\begin{proof}
+Consider the function
+\[
+\feta(x) = \fzero(x) - \langle G(x) - G(\xo), \eta \rangle,
+\]
+and note that $f(x) = \feta(x) - \norm{\eta}^2$. 
+Consider $x \in \mathcal{B}(\phi_d x_*, \varphi  \|x_*\|)$, for a $\varphi$ that will be specified later. 
+Note that
+\begin{align*}
+\left|\innerprod{G(x) - G(x_\ast)}{\eta}\right|
+&\leq
+|\innerprod{\PiWd x}{\eta}|
++
+|\innerprod{\PiWdo \xo}{\eta}| \\
+&=
+|\innerprod{x}{(\PiWd)^t\eta}|
++
+|\innerprod{\xo}{(\PiWdo)^t\eta}| \\
+&\leq (\norm{x} + \norm{\xo}) \frac{\omega}{2^{d/2}}\\
+&\leq (\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}},
+\end{align*}
+where the second inequality holds on the event $\eventnoisesmall$, by Lemma~\ref{lem:noisesmall}, and the last inequality holds by our assumption on $x$.
+Thus, for $x \in \mathcal{B}(\phi_d x_*, \varphi  \|x_*\|)$
+\begin{align}
+\feta(x) 
+\leq& 
+\mathbb{E}\fzero(x) + |\fzero(x) - \mathbb{E}\fzero(x)| + 
+\left|\innerprod{G(x) - G(x_\ast)}{\eta}\right|
+\nonumber \\
+%
+\leq& 
+\frac{1}{2^{d+1}} \left( \phi_d^2 - 2 \phi_d + \frac{10}{K_2^3} d \varphi \right) \|x_*\|^2 + \frac{1}{2^{d+1}} \|x_*\|^2 \nonumber \\
+&+ 
+\frac{\epsilon (1 + 4 \epsilon d)}{2^d} \|x\|^2 + \frac{\epsilon(1 + 4 \epsilon d) + 48 d^3 \sqrt{\epsilon}}{2^{d+1}} \|x\| \|x_*\| + \frac{\epsilon (1 + 4 \epsilon d)}{2^d} \|x_*\|^2 \nonumber \\
+&+ (\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}} \nonumber \\
+%
+\leq& 
+\frac{1}{2^{d+1}} \left( \phi_d^2 - 2 \phi_d + \frac{10}{K_2^3} d \varphi \right) \|x_*\|^2 + \frac{1}{2^{d+1}} \|x_*\|^2 \nonumber \\
+&+
+\frac{\epsilon (1 + 4 \epsilon d)}{2^d} (\phi_d + \varphi)^2 \|x_*\|^2 + \frac{\epsilon(1 + 4 \epsilon d) + 48 d^3 \sqrt{\epsilon}}{2^{d+1}} (\phi_d + \varphi)\|x_*\|^2 + \frac{\epsilon (1 + 4 \epsilon d)}{2^d} \|x_*\|^2  \nonumber \\
+&+ 
+(\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}} \nonumber \\%\label{GA:e42}
+%
+\leq& 
+\frac{ \norm{x_*}^2 }{2^{d+1}} 
+%\left( 
+%1+
+%\phi_d^2 - 2 \phi_d + \frac{10}{K_2^3} d \varphi 
+%+
+%\epsilon 4  (\phi_d + \varphi)^2
+%+ 48 d^3 \sqrt{\epsilon} (\phi_d + \varphi)+
+%\epsilon 4
+%\right)
+%\left( 
+%1+
+%\phi_d^2 - 2 \phi_d + \frac{10}{K_2^3} d \epsilon
+%+
+%\epsilon 4  (\phi_d + \varphi)^2
+%+ 48 d^3 \sqrt{\epsilon} (\phi_d + \epsilon) +
+%\epsilon 4
+%\right)
+%\nonumber \\
+\left( 
+1+
+\phi_d^2 - 2 \phi_d + \frac{10}{K_2^3} d \epsilon
++
+68 d^2 \sqrt{\epsilon}
+\right)
+%\nonumber \\
++ 
+(\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}} \label{GA:e42}
+\end{align}
+where the last inequality follows from $\epsilon < \sqrt{\epsilon}$, $\rho_d \leq 1$, $4 \epsilon d < 1$, $\varphi < 1$ and assuming $\varphi = \epsilon$. 
+
+Similarly, we have that for any $y \in \mathcal{B}(- \phi_d x_*, \varphi  \|x_*\|)$
+\begin{align}
+f_\eta(y) \geq& \mathbb{E}[f(y)] - |f(y) - \mathbb{E}[f(y)]| 
+- 
+\left|\innerprod{G(x) - G(x_\ast)}{\eta}\right|
+  \nonumber \\
+\geq& \frac{1}{2^{d+1}} \left(\phi_d^2 - 2 \phi_d \rho_d - 10 d^3 \varphi \right) \|x_*\|^2 + \frac{1}{2^{d+1}} \|x_*\|^2 \nonumber \\
+&- \left( \frac{\epsilon (1 + 4 \epsilon d)}{2^d} \|y\|^2 + \frac{\epsilon(1 + 4 \epsilon d) + 48 d^3 \sqrt{\epsilon}}{2^{d+1}} \|y\| \|x_*\| + \frac{\epsilon (1 + 4 \epsilon d)}{2^d} \|x_*\|^2 \right) \nonumber \\
+&- (\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}} \nonumber \\
+\geq& 
+\frac{\|x_*\|^2}{2^{d+1}} \left(1 + \phi_d^2 - 2 \phi_d \rho_d - 10 d^3 \varphi 
+- 68 d^2 \sqrt{\epsilon}
+\right) -(\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}}
+%\nonumber \\
+%%
+%&- \left( \frac{\epsilon (1 + 4 \epsilon d)}{2^d} (\phi_d + \varphi)^2 \|x_*\|^2 + \frac{\epsilon(1 + 4 \epsilon d) + 48 d^3 \sqrt{\epsilon}}{2^{d+1}} (\phi_d + \varphi)\|x_*\|^2 + \frac{\epsilon (1 + 4 \epsilon d)}{2^d} \|x_*\|^2 \right) \nonumber\\
+%&
+%-\red{(\varphi + \norm{\xo}) \frac{\omega}{2^{d/2}}} 
+\label{GA:e43}
+\end{align}
+Using $\epsilon < \sqrt{\epsilon}$, $\rho_d \leq 1$, $4 \epsilon d < 1$, $\varphi < 1$ and assuming $\varphi = \epsilon$, the right side of~\eqref{GA:e42} is smaller than the right side of~\eqref{GA:e43} if
+\begin{equation} \label{GA:e44}
+\varphi = \epsilon \leq \left(\frac{\phi_d - \rho_d \phi_d  - 13 \|\etabar\|_2}{\left( 125 + \frac{5}{K_2^3} \right) d^3} \right)^2.
+\end{equation}
+We can establish that:
+\begin{lemma}\label{lemma:rho-d}
+For all $d\geq 2$, that
+\[
+1/\left(K_1(d + 2)^2\right) \leq 1 - \rho_d \leq 250/(d + 1).
+\]
+\end{lemma}
+Thus, it suffices to have $\varphi = \epsilon = \frac{K_3}{d^{10}}$ and $13 \|\etabar\|_2 \leq \frac{K_9}{d^2} \leq \frac{1}{2} \frac{K_2}{K_1 (d+2)^2}$ for an appropriate universal constant $K_9$, and for an appropriate universal constant $K_3$.  %$ = \left( \frac{K_2^4}{40 K_1 (11 K_2^3 + 1)} \right)^2$.
+%\end{proof}
+
+\subsection{Proof of Lemma \ref{lemma:rho-d}}
+It holds that
+\begin{align}
+&\|x - y\| \geq 2 \sin (\theta_{x, y} / 2) \min(\|x\|, \|y\|), &\forall x, y \label{GA:e4} \\
+&\sin(\theta / 2) \geq \theta / 4, &\forall \theta \in [0, \pi] \label{GA:e5} \\
+&\frac{d}{d \theta} g(\theta) \in [0, 1] &\forall \theta \in [0, \pi] \label{GA:e13} \\
+&\log(1+x) \leq x &\forall x \in [-0.5, 1] \label{GA:e47} \\
+&\log(1-x) \geq -2 x &\forall x \in [0, 0.75] \label{GA:e48}
+\end{align}
+where $\theta_{x, y} = \angle(x, y)$.
+We recall the results (36), (37), and (50) in \cite{hand_global_2017}:
+\begin{align*}
+&\check{\theta}_i \leq \frac{3 \pi}{i + 3}\;\;\;\;\;  \;\;\; \hbox{ and }\;\;\;\;\;  \;\;\; \check{\theta}_i \geq \frac{\pi}{i + 1}\;\;\;\;\; \forall i \geq 0 \\
+&1 - \rho_d = \prod_{i = 1}^{d - 1} \left( 1 - \frac{\check{\theta}_{i}}{\pi} \right) + \sum_{i = 1}^{d-1} \frac{\check{\theta}_{i} - \sin \check{\theta}_{i}}{\pi} \prod_{j = i+1}^{d-1} \left( 1 - \frac{\check{\theta}_{j}}{\pi} \right).
+\end{align*}
+Therefore, we have for all $0 \leq i \leq d - 2$,
+\begin{align*}
+&\prod_{j = i+1}^{d-1} \left( 1 - \frac{\check{\theta}_{j}}{\pi} \right) 
+\leq \prod_{j = i+1}^{d-1} \left( 1 - \frac{1}{j + 1} \right) = e^{\sum_{j = i + 1}^{d - 1} \log\left(1 - \frac{1}{j + 1}\right)} 
+\leq e^{- \sum_{j = i + 1}^{d - 1}  \frac{1}{j + 1}} \leq e^{- \int_{i + 1}^d \frac{1}{s + 1} d s} = \frac{i + 2}{d + 1}, \\
+%
+&\prod_{j = i+1}^{d-1} \left( 1 - \frac{\check{\theta}_{j}}{\pi} \right) 
+\geq
+\prod_{j = i+1}^{d-1} \left( 1 - \frac{3}{j + 3} \right) = e^{\sum_{j = i + 1}^{d - 1} \log\left(1 - \frac{3}{j + 3}\right)} 
+\geq e^{- \sum_{j = i + 1}^{d - 1}  \frac{6}{j + 3}} \geq e^{- \int_{i}^{d - 1} \frac{6}{s + 3} d s} = \left(\frac{i + 3}{d + 2}\right)^6,
+\end{align*}
+where the second and the fifth inequalities follow from~\eqref{GA:e47} and~\eqref{GA:e48} respectively.
+Since $\pi^3 / (12 (i + 1)^3) \leq \check{\theta}_{i}^3 / 12 \leq \check{\theta}_{i} - \sin \check{\theta}_{i} \leq \check{\theta}_{i}^3 / 6 \leq 27 \pi^3 / (6 (i + 3)^3)$, we have that for all $d \geq 3$
+\begin{align*}
+1 - \rho_d \leq& \frac{2}{d + 1} + \sum_{i = 1}^{d - 1} \frac{27 \pi^3}{6 (i + 3)^3} \frac{i + 2}{d + 1} \leq \frac{2}{d + 1} + \frac{3 \pi^5}{4 (d + 1)} \leq \frac{250}{d + 1}
+\end{align*}
+and
+\begin{align*}
+1 - \rho_d \geq& \left(\frac{3}{(d+2)}\right)^6 + \sum_{i = 1}^{d - 1} \frac{\pi^3}{12 (i + 3)^3} \left( \frac{i + 3}{d + 2} \right)^6 \geq \frac{1}{K_1 (d + 2)^2},
+\end{align*}
+where we use $\sum_{i = 4}^\infty \frac{1}{i^2} \leq \frac{\pi^2}{6}$ and $\sum_{i = 1}^n i^3 = O(n^4)$.
+%Since $\rho_d \geq 1 - 250 / (d+1)$ and $\rho_d > 0$  for all $d \geq 2$, we have $\min_{d \geq 2} \rho_d > 0$.
+
+
+
+
+\subsection{\label{sec:prooflemma:h-lipschitz}Proof of Lemma~\ref{lemma:h-lipschitz}}
+To establish Lemma \ref{lemma:h-lipschitz}, we prove the following:
+
+\begin{lemma} 
+\label{GA:le4}
+For all $x, y \neq 0$, 
+\begin{equation*}
+\|h_{x} - h_{y}\| \leq \left(\frac{1}{2^d} + \frac{6 d + 4 d^2}{\pi 2^d} \max\left( \frac{1}{\|x\|}, \frac{1}{\|y\|} \right) \|x_*\|\right) \|x - y\|
+\end{equation*}
+\end{lemma}
+%
+Lemma~\ref{lemma:h-lipschitz} follows by noting that if $x, y \notin \mathcal{B}(0, r \|x_*\|)$, then $\|h_{x} - h_{y}\| \leq \left(\frac{1}{2^d} + \frac{6 d + 4 d^2}{\pi r 2^d}\right) \|x - y\|$.
+
+\begin{proof}[Proof of Lemma~\ref{GA:le4}]
+For brevity of notation, let $\zeta_{j, z} = \prod_{i = j}^{d - 1} \frac{\pi - \bar{\theta}_{i, z}}{\pi}$.
+Combining \eqref{GA:e4} and~\eqref{GA:e5} gives $|\bar{\theta}_{0, x} - \bar{\theta}_{0, y}| \leq 4 \max\left( \frac{1}{\|x\|}, \frac{1}{\|y\|} \right) \|x - y\|$.
+Inequality~\eqref{GA:e13} implies 
+$|\bar{\theta}_{i, x} - \bar{\theta}_{i, y}| \leq |\bar{\theta}_{j, x} - \bar{\theta}_{j, y}|$ for all $i \geq j$.
+It follows that
+\begin{align}
+\|h_{x} - h_{y}\| \leq& \frac{1}{2^d}\|x - y\| + \frac{1}{2^d} \underbrace{\left| \zeta_{0, x} - \zeta_{0, y} \right|}_{T_1} \|x_*\| \nonumber \\
++& \frac{1}{2^d} \underbrace{ \left| \sum_{i = 0}^{d - 1} \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, x} \hat{x} - \sum_{i = 0}^{d - 1} \frac{\sin \bar{\theta}_{i, y}}{\pi} \zeta_{i + 1, y} \hat{y} \right| }_{T_2} \|x_*\|. \label{GA:e50}
+\end{align}
+By Lemma~\ref{GA:le17}, we have
+\begin{align} \label{GA:e53}
+T_1 \leq \frac{d}{\pi} |\bar{\theta}_{0, x} - \bar{\theta}_{0, y}| \leq \frac{4 d}{\pi}\max\left( \frac{1}{\|x\|}, \frac{1}{\|y\|} \right) \|x - y\|.
+\end{align}
+Additionally, it holds that
+\begin{align}
+T_2 =& \left| \sum_{i = 0}^{d - 1} \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, x} \hat{x} - \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, x} \hat{y} + \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, x} \hat{y} - \sum_{i = 0}^{d - 1} \frac{\sin \bar{\theta}_{i, y}}{\pi} \zeta_{i + 1, y} \hat{y} \right| \nonumber \\
+\leq& \frac{d}{\pi} \|\hat{x} - \hat{y}\| + \underbrace{ \left| \sum_{i = 0}^{d - 1} \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, x} - \sum_{i = 0}^{d - 1} \frac{\sin \bar{\theta}_{i, y}}{\pi} \zeta_{i + 1, y} \right|}_{T_3} . \label{GA:e51}
+\end{align}
+We have
+\begin{align}
+T_3 \leq& \sum_{i = 0}^{d - 1} \left[ \left| \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, x} -\frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, y} \right|\right. + \left.\left| \frac{\sin \bar{\theta}_{i, x}}{\pi} \zeta_{i + 1, y} - \frac{\sin \bar{\theta}_{i, y}}{\pi} \zeta_{i + 1, y} \right| \right] \nonumber \\
+\leq& \sum_{i = 0}^{d - 1} \left[ \frac{1}{\pi} \left( \frac{d - i  - 1}{\pi} \left|\bar{\theta}_{i-1, x} - \bar{\theta}_{i-1, y}\right| \right) + \frac{1}{\pi} |\sin \bar{\theta}_{i, x} - \sin \bar{\theta}_{i, y}|  \right] \nonumber \\
+\leq& \frac{d^2}{\pi} |\bar{\theta}_{0, x} - \bar{\theta}_{0, y}| \leq \frac{4 d^2}{\pi} \max\left(\frac{1}{\|x\|}, \frac{1}{\|y\|}\right) \|x - y\|. \label{GA:e52}
+\end{align}
+Using~\eqref{GA:e4} and~\eqref{GA:e5} and noting $\|\hat{x} - \hat{y}\| \leq \theta_{x, y}$ yield
+\begin{equation} \label{GA:e15}
+\|\hat{x} - \hat{y}\| \leq \theta_{x, y} \leq 2 \max\left( \frac{1}{\|x\|}, \frac{1}{\|y\|} \right) \|x - y\|.
+\end{equation}
+Finally, combining~\eqref{GA:e50}, \eqref{GA:e53}, \eqref{GA:e51}, \eqref{GA:e52} and~\eqref{GA:e15} yields the result.
+\end{proof}
+
+\begin{lemma} \label{GA:le17}
+Suppose $a_i, b_i \in [0, \pi]$ for $i = 1, \ldots, k$, and $|a_i - b_i| \leq |a_j - b_j|, \forall i \geq j$. Then it holds that
+\begin{equation*}
+\left|\prod_{i = 1}^k \frac{\pi - a_i}{\pi} - \prod_{i = 1}^k \frac{\pi - b_i}{\pi}\right| \leq \frac{k}{\pi} |a_1 - b_1|.
+\end{equation*}
+\end{lemma}
+\begin{proof}
+Prove by induction. It is easy to verify that the inequality holds if $k = 1$.
+Suppose the inequality holds with $k = t - 1$. Then
+\begin{align*}
+\left|\prod_{i = 1}^{t} \frac{\pi - a_i}{\pi} - \prod_{i = 1}^t \frac{\pi - b_i}{\pi}\right| \leq& \left|\prod_{i = 1}^{t} \frac{\pi - a_i}{\pi} - \frac{\pi - a_t}{\pi} \prod_{i = 1}^{t-1} \frac{\pi - b_i}{\pi}\right| \\
+&+ \left|\frac{\pi - a_t}{\pi} \prod_{i = 1}^{t-1} \frac{\pi - b_i}{\pi} - \prod_{i = 1}^t \frac{\pi - b_i}{\pi}\right| \\
+\leq& \frac{t-1}{\pi} |a_1 - b_1| + \frac{1}{\pi} |a_t - b_t| \leq \frac{t}{\pi} |a_1 - b_1|.
+\end{align*}
+\end{proof}

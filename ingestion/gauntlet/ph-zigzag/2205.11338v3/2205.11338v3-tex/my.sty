@@ -1,0 +1,59 @@
+\usepackage[margin=1in]{geometry}
+\usepackage{lipsum}% http://ctan.org/pkg/lipsum
+\usepackage{multirow}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}  % replaces mathptmx
+\usepackage{mathtools}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\usepackage{cite}
+\usepackage{amsmath}
+% \usepackage{amssymb}
+\usepackage{authblk}
+\usepackage{xcolor}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{hyperref}
+% \usepackage[pagewise]{lineno}
+% \linenumbers
+% \usepackage{caption}
+% \usepackage{subcaption}
+
+%\usepackage{amsthm}
+%\newtheorem{theorem}{Theorem}
+
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Rbar}{\overline{\R}}
+\newcommand{\dgm}[1]{\mathcal{D}(#1)}
+
+% ... for easy referencing:
+\newcommand{\appref}[1]{Appendix~\ref{app:#1}}
+\newcommand{\eqreftwo}[2]{Equations~(\ref{eq:#1}) and~(\ref{eq:#2})}
+\newcommand{\eqreffour}[4]{Equations~(\ref{eq:#1}),~(\ref{eq:#2}),~(\ref{eq:#3}), and~(\ref{eq:#4})}
+\newcommand{\figref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\secref}[1]{Section~\ref{sec:#1}}
+\newcommand{\ssecref}[1]{Section~\ref{ssec:#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{thm:#1}}
+
+%-TODOS---
+\usepackage{color}
+\newcommand{\payAttention}[3]{{\color{#1}[[\textbf{#2}: {#3}]]}}
+\newcommand{\xSays}[3]{\payAttention{#1}{#2 says}{#3}}
+% \renewcommand{\payAttention}[3]{}
+\newcommand{\todo}[1]{\payAttention{red}{TODO}{#1}}
+\newcommand{\firas}[1]{\xSays{blue}{Firas}{#1}}
+\newcommand{\audun}[1]{\xSays{red}{Audun}{#1}}
+\newcommand{\liz}[1]{\xSays{violet}{Liz}{#1}}
+
+
+\graphicspath{{./../Figures/}{./Figures/}}
+%--------------------------------------------------%
+
+

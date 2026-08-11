@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Motivation}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Brief Introduction to Topological Data Analysis}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Learning with multiple latent space embeddings}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Hypothesis testing}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Clustering}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Experiment}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{Simulation examples}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{Real data analysis}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Conclusion}{}% 11
+\BOOKMARK [1][-]{appendix.a.A}{Validity of permutation p-values}{}% 12
+\BOOKMARK [1][-]{appendix.a.B}{Additional tables and figures}{}% 13

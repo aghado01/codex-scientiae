@@ -1,0 +1,157 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Camastra and Staiano(2016)]{camastra_intrinsic_2016a}
+Francesco Camastra and Antonino Staiano.
+\newblock Intrinsic dimension estimation: {{Advances}} and open problems.
+\newblock \emph{Information Sciences}, 328:\penalty0 26--41, January 2016.
+\newblock ISSN 00200255.
+\newblock \doi{10.1016/j.ins.2015.08.029}.
+
+\bibitem[Cannoodt and Saelens(2020)]{cannoodt_dyndimred_2020}
+Robrecht Cannoodt and Wouter Saelens.
+\newblock \emph{Dyndimred: {{Dimensionality}} Reduction Methods in a Common
+  Format}.
+\newblock 2020.
+
+\bibitem[Eddelbuettel(2013)]{eddelbuettel_seamless_2013}
+Dirk Eddelbuettel.
+\newblock \emph{Seamless {{R}} and {{C}}++ Integration with {{Rcpp}}}.
+\newblock Number~64 in Use {{R}}! {Springer}, {New York}, 2013.
+\newblock ISBN 978-1-4614-6867-7 978-1-4614-6868-4.
+
+\bibitem[Eddelbuettel(2018)]{eddelbuettel_rcppde_2018}
+Dirk Eddelbuettel.
+\newblock \emph{{{RcppDE}}: {{Global}} Optimization by Differential Evolution
+  in {{C}}++}.
+\newblock 2018.
+
+\bibitem[Eddelbuettel and Fran{\c c}ois(2011)]{eddelbuettel_rcpp_2011}
+Dirk Eddelbuettel and Romain Fran{\c c}ois.
+\newblock {\textbf{Rcpp}} : {{Seamless}} {{{\emph{R}}}} and
+  {{{\emph{C}}}}{\emph{++}} {{Integration}}.
+\newblock \emph{Journal of Statistical Software}, 40\penalty0 (8), 2011.
+\newblock ISSN 1548-7660.
+\newblock \doi{10.18637/jss.v040.i08}.
+
+\bibitem[Eddelbuettel and Sanderson(2014)]{eddelbuettel_rcpparmadillo_2014a}
+Dirk Eddelbuettel and Conrad Sanderson.
+\newblock {{RcppArmadillo}}: {{Accelerating R}} with high-performance {{C}}++
+  linear algebra.
+\newblock \emph{Computational Statistics \& Data Analysis}, 71:\penalty0
+  1054--1063, March 2014.
+\newblock ISSN 01679473.
+\newblock \doi{10.1016/j.csda.2013.02.005}.
+
+\bibitem[Engel et~al.(2012)Engel, H{\"u}ttenberger, and
+  Hamann]{engel_survey_2012a}
+Daniel Engel, Lars H{\"u}ttenberger, and Bernd Hamann.
+\newblock A {{Survey}} of {{Dimension Reduction Methods}} for
+  {{High}}-dimensional {{Data Analysis}} and {{Visualization}}.
+\newblock page 15 pages, 2012.
+\newblock \doi{10.4230/OASICS.VLUDS.2011.135}.
+
+\bibitem[Floyd(1962)]{floyd_algorithm_1962a}
+Robert~W. Floyd.
+\newblock Algorithm 97: {{Shortest}} path.
+\newblock \emph{Communications of the ACM}, 5\penalty0 (6):\penalty0 345, June
+  1962.
+\newblock ISSN 00010782.
+\newblock \doi{10.1145/367766.368168}.
+
+\bibitem[Fu et~al.(2018)Fu, Narasimhan, and Boyd]{fu_cvxr_2018}
+Anqi Fu, Balasubramanian Narasimhan, and Stephen Boyd.
+\newblock {{CVXR}}: {{An R Package}} for {{Disciplined Convex Optimization}}.
+\newblock \emph{arXiv:1711.07582 [stat]}, October 2018.
+
+\bibitem[Hofmann et~al.(2008)Hofmann, Sch{\"o}lkopf, and
+  Smola]{hofmann_kernel_2008}
+Thomas Hofmann, Bernhard Sch{\"o}lkopf, and Alexander~J. Smola.
+\newblock Kernel methods in machine learning.
+\newblock \emph{The Annals of Statistics}, 36\penalty0 (3):\penalty0
+  1171--1220, June 2008.
+\newblock ISSN 0090-5364.
+\newblock \doi{10.1214/009053607000000677}.
+
+\bibitem[Johnsson(2016)]{johnsson_structures_2016}
+Kerstin Johnsson.
+\newblock \emph{Structures in High-Dimensional Data: {{Intrinsic}} Dimension
+  and Cluster Analysis}.
+\newblock PhD thesis, Centre for Mathematical Sciences, Lund University /
+  Faculty of Engineering, LTH, August 2016.
+
+\bibitem[Jolliffe(1982)]{jolliffe_note_1982}
+Ian~T. Jolliffe.
+\newblock A {{Note}} on the {{Use}} of {{Principal Components}} in
+  {{Regression}}.
+\newblock \emph{Applied Statistics}, 31\penalty0 (3):\penalty0 300, 1982.
+\newblock ISSN 00359254.
+\newblock \doi{10.2307/2348005}.
+
+\bibitem[Kraemer et~al.(2018)Kraemer, Reichstein, and D.]{kraemer_dimred_2018}
+Guido Kraemer, Markus Reichstein, and Miguel~Mahecha D.
+\newblock {{dimRed}} and {{coRanking}}\textemdash{{Unifying}} dimensionality
+  reduction in r.
+\newblock \emph{The R Journal}, 10\penalty0 (1):\penalty0 342--358, 2018.
+
+\bibitem[Lisitsyn et~al.(2013)Lisitsyn, Widmer, and
+  Garcia]{lisitsyn_tapkee_2013}
+Sergey Lisitsyn, Christian Widmer, and Fernando J.~Iglesias Garcia.
+\newblock Tapkee: {{An}} efficient dimension reduction library.
+\newblock \emph{Journal of Machine Learning Research}, 14:\penalty0 2355--2359,
+  2013.
+
+\bibitem[Ma and Zhu(2013)]{ma_review_2013a}
+Yanyuan Ma and Liping Zhu.
+\newblock A {{Review}} on {{Dimension Reduction}}.
+\newblock \emph{International Statistical Review}, 81\penalty0 (1):\penalty0
+  134--150, April 2013.
+\newblock ISSN 03067734.
+\newblock \doi{10.1111/j.1751-5823.2012.00182.x}.
+
+\bibitem[McKeown et~al.(2003)McKeown, Hansen, and
+  Sejnowsk]{mckeown_independent_2003}
+Martin~J. McKeown, Lars~Kai Hansen, and Terrence~J. Sejnowsk.
+\newblock Independent component analysis of functional {{MRI}}: What is signal
+  and what is noise?
+\newblock \emph{Current Opinion in Neurobiology}, 13\penalty0 (5):\penalty0
+  620--629, October 2003.
+\newblock ISSN 0959-4388.
+\newblock \doi{10.1016/j.conb.2003.09.012}.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion,
+  Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
+  Cournapeau, Brucher, Perrot, and Duchesnay]{pedregosa_scikitlearn_2011}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay.
+\newblock Scikit-learn: {{Machine}} learning in {{Python}}.
+\newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830,
+  2011.
+
+\bibitem[Qiu and Mei(2019)]{qiu_rspectra_2019}
+Yixuan Qiu and Jiali Mei.
+\newblock \emph{{{RSpectra}}: {{Solvers}} for Large-Scale Eigenvalue and
+  {{SVD}} Problems}.
+\newblock 2019.
+
+\bibitem[Sanderson and Curtin(2016)]{sanderson_armadillo_2016a}
+Conrad Sanderson and Ryan Curtin.
+\newblock Armadillo: A template-based {{C}}++ library for linear algebra.
+\newblock \emph{The Journal of Open Source Software}, 1\penalty0 (2):\penalty0
+  26, June 2016.
+\newblock ISSN 2475-9066.
+\newblock \doi{10.21105/joss.00026}.
+
+\bibitem[{van der Maaten} et~al.(2009){van der Maaten}, Postma, and {van den
+  Herik}]{vandermaaten_dimensionality_2009a}
+Laurens {van der Maaten}, Eric Postma, and Jaap {van den Herik}.
+\newblock Dimensionality reduction: A comparative review.
+\newblock \emph{Journal of Machine Learning Research}, 10:\penalty0 66--71,
+  2009.
+
+\end{thebibliography}

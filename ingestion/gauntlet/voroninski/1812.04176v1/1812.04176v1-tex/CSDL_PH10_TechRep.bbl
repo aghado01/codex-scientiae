@@ -1,0 +1,147 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{GPAM{\etalchar{+}}14}
+
+\bibitem[ALM15]{ALM2015}
+Sanjeev Arora, Yingyu Liang, and Tengyu Ma.
+\newblock Why are deep nets reversible: {A} simple theory, with implications
+  for training.
+\newblock {\em CoRR}, abs/1511.05653, 2015.
+
+\bibitem[BJPD17]{BJPD2017}
+A.~{Bora}, A.~{Jalal}, E.~{Price}, and A.~G. {Dimakis}.
+\newblock {Compressed Sensing using Generative Models}.
+\newblock {\em ArXiv e-prints}, March 2017.
+
+\bibitem[Cla17]{Clason2017}
+Christian Clason.
+\newblock Nonsmooth analysis and optimization.
+\newblock 2017.
+
+\bibitem[GPAM{\etalchar{+}}14]{GAN}
+Ian~J. Goodfellow, Jean Pouget-Abadie, Bing Mirza, Mehdi;~Xu, David
+  Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio.
+\newblock Generative adversarial networks.
+\newblock {\em arXiv:1406.2661}, 2014.
+
+\bibitem[HH18]{heckel2018deep}
+Reinhard Heckel and Paul Hand.
+\newblock Deep decoder: Concise image representations from untrained
+  non-convolutional networks.
+\newblock {\em arXiv preprint arXiv:1810.03982}, 2018.
+
+\bibitem[HHHV18]{HHHV2018}
+Reinhard Heckel, Wen Huang, Paul Hand, and Vladislav Voroninski.
+\newblock Deep denoising: Rate-optimal recovery of structured signals with a
+  deep prior.
+\newblock 2018.
+
+\bibitem[HLV18]{hand2018phase}
+Paul Hand, Oscar Leong, and Vladislav Voroninski.
+\newblock Phase retrieval under a generative prior.
+\newblock {\em arXiv preprint arXiv:1807.04261}, 2018.
+
+\bibitem[HV17]{HV17}
+Paul Hand and Vladislav Voroninski.
+\newblock Global guarantees for enforcing deep generative priors by empirical
+  risk.
+\newblock {\em CoRR}, abs/1705.07576, 2017.
+
+\bibitem[JAFF16]{johnson2016perceptual}
+Justin Johnson, Alexandre Alahi, and Li~Fei-Fei.
+\newblock Perceptual losses for real-time style transfer and super-resolution.
+\newblock In {\em European Conference on Computer Vision}, pages 694--711.
+  Springer, 2016.
+
+\bibitem[KALL17]{karras2017progressive}
+Tero Karras, Timo Aila, Samuli Laine, and Jaakko Lehtinen.
+\newblock Progressive growing of gans for improved quality, stability, and
+  variation.
+\newblock {\em arXiv preprint arXiv:1710.10196}, 2017.
+
+\bibitem[KD18]{kingma2018glow}
+Diederik~P Kingma and Prafulla Dhariwal.
+\newblock Glow: Generative flow with invertible 1x1 convolutions.
+\newblock {\em arXiv preprint arXiv:1807.03039}, 2018.
+
+\bibitem[LTH{\etalchar{+}}16]{ledig2016photo}
+Christian Ledig, Lucas Theis, Ferenc Husz{\'a}r, Jose Caballero, Andrew
+  Cunningham, Alejandro Acosta, Andrew Aitken, Alykhan Tejani, Johannes Totz,
+  Zehan Wang, et~al.
+\newblock Photo-realistic single image super-resolution using a generative
+  adversarial network.
+\newblock {\em arXiv preprint}, 2016.
+
+\bibitem[MB17]{mousavi2017learning}
+Ali Mousavi and Richard~G Baraniuk.
+\newblock Learning to invert: Signal recovery via deep convolutional networks.
+\newblock In {\em Acoustics, Speech and Signal Processing (ICASSP), 2017 IEEE
+  International Conference on}, pages 2272--2276. IEEE, 2017.
+
+\bibitem[MGC{\etalchar{+}}17]{mardani2017deep}
+Morteza Mardani, Enhao Gong, Joseph~Y Cheng, Shreyas Vasanawala, Greg
+  Zaharchuk, Marcus Alley, Neil Thakur, Song Han, William Dally, John~M Pauly,
+  et~al.
+\newblock Deep generative adversarial networks for compressed sensing automates
+  mri.
+\newblock {\em arXiv preprint arXiv:1706.00051}, 2017.
+
+\bibitem[MMP{\etalchar{+}}17]{mardani2017recurrent}
+Morteza Mardani, Hatef Monajemi, Vardan Papyan, Shreyas Vasanawala, David
+  Donoho, and John Pauly.
+\newblock Recurrent generative adversarial networks for proximal learning and
+  automated compressive image recovery.
+\newblock {\em arXiv preprint arXiv:1711.10046}, 2017.
+
+\bibitem[MPB15]{mousavi2015deep}
+Ali Mousavi, Ankit~B Patel, and Richard~G Baraniuk.
+\newblock A deep learning approach to structured signal recovery.
+\newblock In {\em Communication, Control, and Computing (Allerton), 2015 53rd
+  Annual Allerton Conference on}, pages 1336--1343. IEEE, 2015.
+
+\bibitem[MSY16]{mao2016image}
+Xiao-Jiao Mao, Chunhua Shen, and Yu-Bin Yang.
+\newblock Image restoration using convolutional auto-encoders with symmetric
+  skip connections. arxiv preprint.
+\newblock {\em arXiv preprint arXiv:1606.08921}, 2, 2016.
+
+\bibitem[NW06]{NocWri2006}
+J.~Nocedal and S.~J. Wright.
+\newblock {\em {Numerical Optimization}}.
+\newblock Springer, second edition, 2006.
+
+\bibitem[OKK16]{oord2016pixel}
+Aaron van~den Oord, Nal Kalchbrenner, and Koray Kavukcuoglu.
+\newblock Pixel recurrent neural networks.
+\newblock {\em arXiv preprint arXiv:1601.06759}, 2016.
+
+\bibitem[RB17]{rippel2017real}
+Oren Rippel and Lubomir Bourdev.
+\newblock Real-time adaptive image compression.
+\newblock {\em arXiv preprint arXiv:1705.05823}, 2017.
+
+\bibitem[SCT{\etalchar{+}}16]{sonderby2016amortised}
+Casper~Kaae S{\o}nderby, Jose Caballero, Lucas Theis, Wenzhe Shi, and Ferenc
+  Husz{\'a}r.
+\newblock Amortised map inference for image super-resolution.
+\newblock {\em arXiv preprint arXiv:1610.04490}, 2016.
+
+\bibitem[UVL18]{ulyanov2017deep}
+Dmitry Ulyanov, Andrea Vedaldi, and Victor Lempitsky.
+\newblock Deep image prior.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, 2018.
+
+\bibitem[YCL{\etalchar{+}}17]{yeh2017semantic}
+Raymond~A Yeh, Chen Chen, Teck~Yian Lim, Alexander~G Schwing, Mark
+  Hasegawa-Johnson, and Minh~N Do.
+\newblock Semantic image inpainting with deep generative models.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 5485--5493, 2017.
+
+\bibitem[ZKSE16]{zhu2016generative}
+Jun-Yan Zhu, Philipp Kr{\"a}henb{\"u}hl, Eli Shechtman, and Alexei~A Efros.
+\newblock Generative visual manipulation on the natural image manifold.
+\newblock In {\em European Conference on Computer Vision}, pages 597--613.
+  Springer, 2016.
+
+\end{thebibliography}

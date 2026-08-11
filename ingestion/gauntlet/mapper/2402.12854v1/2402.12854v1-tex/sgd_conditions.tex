@@ -1,0 +1,15 @@
+\section{Technical conditions for Stochastic Gradient Descent}\label{apdx:sgd}
+We are in the setting where we use stochastic gradient descent to minimize a function L.
+If we write the iterates of the algorithm as: 
+$$x_{k+1}=x_k-\alpha_k(y_k+\xi_k),$$
+where 
+$$y_k\in\text{Conv}\left\{\lim_{z\to x_k}\nabla\text{L}(z)\,:\,\text{L is differentiable at }z\right\},$$
+consider the following three conditions: 
+\begin{enumerate}
+    \item for any $k$, $\alpha_k\geq 0$, $\sum_{k=1}^\infty \alpha_k=+\infty$ and $\sum_{k=1}^\infty \alpha_k^2<+\infty$;
+    \item $\sup_k\Vert x_k\Vert<+\infty$, almost surely;
+    \item Conditionally on the past, $\xi_k$ must have zero mean and have a second moment that is bounded by a function $p\colon\ParSpace\longrightarrow\mathbb{R}$ which is bounded on bounded sets. 
+\end{enumerate}
+Note that the last condition is satisfied by taking a sequence of independent and centered variables with bounded variance, which are also independent of the past iterates $(x_k)_k$ and  $(y_k)_k$.
+
+According to \cite{davis2020stochastic}, under these three conditions together with the condition that L is definable in an o-minimal structure and locally Lipschitz, then $(\text{L}(x_k))_k$ converges almost surely to a critical values and the limit points of $(x_k)_k$ are critical points of L.

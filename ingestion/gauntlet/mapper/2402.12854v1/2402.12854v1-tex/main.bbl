@@ -1,0 +1,148 @@
+\begin{thebibliography}{10}
+
+\bibitem{singh2007topological}
+Gurjeet Singh, Facundo M{\'e}moli, Gunnar~E Carlsson, et~al.
+\newblock Topological methods for the analysis of high dimensional data sets and 3d object recognition.
+\newblock {\em PBG@ Eurographics}, 2:091--100, 2007.
+
+\bibitem{wang2018topological}
+Tongxin Wang, Travis Johnson, Jie Zhang, and Kun Huang.
+\newblock Topological methods for visualization and analysis of high dimensional single-cell rna sequencing data.
+\newblock In {\em BIOCOMPUTING 2019: Proceedings of the Pacific Symposium}, pages 350--361. World Scientific, 2018.
+
+\bibitem{zechel2014topographical}
+Sabrina Zechel, Pawel Zajac, Peter L{\"o}nnerberg, Carlos~F Ib{\'a}{\~n}ez, and Sten Linnarsson.
+\newblock Topographical transcriptome mapping of the mouse medial ganglionic eminence by spatially resolved rna-seq.
+\newblock {\em Genome biology}, 15:1--12, 2014.
+
+\bibitem{9605336}
+Satanik Mitra and Kameshwar Rao~JV.
+\newblock Experiments on fraud detection use case with qml and tda mapper.
+\newblock In {\em 2021 IEEE International Conference on Quantum Computing and Engineering (QCE)}, pages 471--472, 2021.
+
+\bibitem{joseph2021topological}
+Brian~B Joseph, Trami Pham, and Christopher Hastings.
+\newblock Topological data analysis in conjunction with traditional machine learning techniques to predict future mdap pm ratings.
+\newblock Acquisition Research Program, 2021.
+
+\bibitem{wang2020exploration}
+Ziqi Wang.
+\newblock Exploration of topological data analysis in 3d printing.
+\newblock In {\em 2020 International Conference on Information Science, Parallel and Distributed Systems (ISPDS)}, pages 150--153. IEEE, 2020.
+
+\bibitem{rosen2018inferring}
+Paul Rosen, Mustafa Hajij, Junyi Tu, Tanvirul Arafin, and Les Piegl.
+\newblock Inferring quality in point cloud-based 3d printed objects using topological data analysis.
+\newblock {\em arXiv preprint arXiv:1807.02921}, 2018.
+
+\bibitem{Rizvi2017}
+Abbas Rizvi, Pablo C{\'{a}}mara, Elena Kandror, Thomas Roberts, Ira Schieren, Tom Maniatis, and Ra{\'{u}}l Rabad{\'{a}}n.
+\newblock {Single-cell topological RNA-seq analysis reveals insights into cellular differentiation and development}.
+\newblock {\em Nature Biotechnology}, 35:551--560, 2017.
+
+\bibitem{belchi2020numerical}
+Francisco Belch{\'\i}, Jacek Brodzki, Matthew Burfitt, and Mahesan Niranjan.
+\newblock A numerical measure of the instability of mapper-type algorithms.
+\newblock {\em The Journal of Machine Learning Research}, 21(1):8347--8391, 2020.
+
+\bibitem{Brown2021}
+Adam Brown, Omer Bobrowski, Elizabeth Munch, and Bei Wang.
+\newblock {Probabilistic convergence and stability of random Mapper graphs}.
+\newblock {\em Journal of Applied and Computational Topology}, 5:99--140, 2021.
+
+\bibitem{carriere2018statistical}
+Mathieu Carriere, Bertrand Michel, and Steve Oudot.
+\newblock Statistical analysis and parameter selection for mapper.
+\newblock {\em The Journal of Machine Learning Research}, 19(1):478--516, 2018.
+
+\bibitem{kang2021ensemble}
+Sung~Jin Kang and Yaeji Lim.
+\newblock Ensemble mapper.
+\newblock {\em Stat}, 10(1):e405, 2021.
+
+\bibitem{fitzpatrick2023ensemble}
+Padraig Fitzpatrick, Anna Jurek-Loughrey, Pawe{\l} D{\l}otko, and Jesus~Martinez Del~Rincon.
+\newblock Ensemble learning for mapper parameter optimization.
+\newblock In {\em 2023 IEEE 35th International Conference on Tools with Artificial Intelligence (ICTAI)}, pages 129--134. IEEE, 2023.
+
+\bibitem{bui2020f}
+Quang-Thinh Bui, Bay Vo, Hoang-Anh~Nguyen Do, Nguyen Quoc~Viet Hung, and Vaclav Snasel.
+\newblock F-mapper: A fuzzy mapper clustering algorithm.
+\newblock {\em Knowledge-Based Systems}, 189:105107, 2020.
+
+\bibitem{carriere2022statistical}
+Mathieu Carri{\`e}re and Bertrand Michel.
+\newblock Statistical analysis of mapper for stochastic and multivariate filters.
+\newblock {\em Journal of Applied and Computational Topology}, 6(3):331--369, 2022.
+
+\bibitem{edelsbrunner2022computational}
+Herbert Edelsbrunner and John Harer.
+\newblock {\em {Computational topology: an introduction}}.
+\newblock American Mathematical Society, 2010.
+
+\bibitem{chazal2021introduction}
+Fr{\'e}d{\'e}ric Chazal and Bertrand Michel.
+\newblock An introduction to topological data analysis: fundamental and practical aspects for data scientists.
+\newblock {\em Frontiers in artificial intelligence}, 4:108, 2021.
+
+\bibitem{carriere2020perslay}
+Mathieu Carri{\`e}re, Fr{\'e}d{\'e}ric Chazal, Yuichi Ike, Th{\'e}o Lacombe, Martin Royer, and Yuhei Umeda.
+\newblock Perslay: A neural network layer for persistence diagrams and new graph topological signatures.
+\newblock In {\em International Conference on Artificial Intelligence and Statistics}, pages 2786--2796. PMLR, 2020.
+
+\bibitem{cohen2009extending}
+David Cohen-Steiner, Herbert Edelsbrunner, and John Harer.
+\newblock Extending persistence using poincar{\'e} and lefschetz duality.
+\newblock {\em Foundations of Computational Mathematics}, 9(1):79--103, 2009.
+
+\bibitem{carriere2021optimizing}
+Mathieu Carriere, Fr{\'e}d{\'e}ric Chazal, Marc Glisse, Yuichi Ike, Hariprasad Kannan, and Yuhei Umeda.
+\newblock Optimizing persistent homology based functions.
+\newblock In {\em International conference on machine learning}, pages 1294--1303. PMLR, 2021.
+
+\bibitem{davis2020stochastic}
+Damek Davis, Dmitriy Drusvyatskiy, Sham Kakade, and Jason~D Lee.
+\newblock Stochastic subgradient method converges on tame functions.
+\newblock {\em Foundations of computational mathematics}, 20(1):119--154, 2020.
+
+\bibitem{wilkie1996model}
+Alex Wilkie.
+\newblock Model completeness results for expansions of the ordered field of real numbers by restricted pfaffian functions and the exponential function.
+\newblock {\em Journal of the American Mathematical Society}, 9(4):1051--1094, 1996.
+
+\bibitem{Bubenik2015}
+Peter Bubenik.
+\newblock {Statistical topological data analysis using persistence landscapes}.
+\newblock {\em Journal of Machine Learning Research}, 16(3):77--102, 2015.
+
+\bibitem{github}
+Ziyad Oulhaj.
+\newblock Mapper filter optimization.
+\newblock \url{https://github.com/ZiyadOulhaj/Mapper-Optimization}, 2024.
+
+\bibitem{petropoulos2016single}
+Sophie Petropoulos, Daniel Edsg{\"a}rd, Bj{\"o}rn Reinius, Qiaolin Deng, Sarita~Pauliina Panula, Simone Codeluppi, Alvaro~Plaza Reyes, Sten Linnarsson, Rickard Sandberg, and Fredrik Lanner.
+\newblock Single-cell rna-seq reveals lineage and x chromosome dynamics in human preimplantation embryos.
+\newblock {\em Cell}, 165(4):1012--1026, 2016.
+
+\bibitem{sctda}
+sctda.
+\newblock \url{https://github.com/CamaraLab/scTDA}.
+\newblock Accessed: 2024-01-23.
+
+\bibitem{rizvi2017single}
+Abbas~H Rizvi, Pablo~G Camara, Elena~K Kandror, Thomas~J Roberts, Ira Schieren, Tom Maniatis, and Raul Rabadan.
+\newblock Single-cell topological rna-seq analysis reveals insights into cellular differentiation and development.
+\newblock {\em Nature biotechnology}, 35(6):551--560, 2017.
+
+\bibitem{coste2000introduction}
+Michel Coste.
+\newblock {\em An introduction to o-minimal geometry}.
+\newblock Istituti editoriali e poligrafici internazionali Pisa, 2000.
+
+\bibitem{schiebinger2019optimal}
+Geoffrey Schiebinger, Jian Shu, Marcin Tabaka, Brian Cleary, Vidya Subramanian, Aryeh Solomon, Joshua Gould, Siyan Liu, Stacie Lin, Peter Berube, et~al.
+\newblock Optimal-transport analysis of single-cell gene expression identifies developmental trajectories in reprogramming.
+\newblock {\em Cell}, 176(4):928--943, 2019.
+
+\end{thebibliography}

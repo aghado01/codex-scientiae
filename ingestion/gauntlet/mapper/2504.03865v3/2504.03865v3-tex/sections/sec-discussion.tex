@@ -1,0 +1,25 @@
+\section{Discussion}
+\label{sec:discussion}
+
+In this paper, we present the \emph{first} algorithm for computing a bound on the interleaving distance for mapper graphs and, to our knowledge, the \emph{first} implementation for exploring interleavings on mapper graphs. 
+We do this by providing a detailed matrix formulation of interleavings, and including all code in the open source Python package \texttt{cereeberus} \cite{cereeberus}.
+We deliberately avoid claiming that our method “computes’’ the interleaving distance, as our only theoretical guarantee is that the algorithm returns an upper bound. 
+Nevertheless, we demonstrate that in several small examples where the true interleaving distance is known, our computed bound matches the exact value. 
+We further provide a proof of concept showing that our implementation can be used to compare input images from the MPEG-7 dataset and noisy samples of letters.
+
+This work represents an initial step toward the practical use of the interleaving distance in applications. 
+There are many opportunities for optimization and speed improvements in our implementation. 
+The most obvious target is the computation of the distance matrix $D$ (\cref{ssec:DistanceMatrices}). 
+We observe in \cref{ssec: p2_p3_benchmark} that the loss optimization problem \cref{prob:LossComputation} takes much longer to compute and the difference in time with binary decision problem \cref{prob:BinaryDecision} only increases as the mappers get bigger.
+However, the actual ILP optimization time for \cref{prob:LossComputation} is faster than \cref{prob:BinaryDecision}, giving us hope that by improving the computation of $D$, we can use the \cref{prob:LossComputation} for experiments in the future. 
+Our current implementation performs a breadth-first search with a union–find data structure to compute distances independently at each level; we suspect that variants of all-pairs shortest paths algorithms could potentially compute these distances in a single sweep rather than level by level.
+
+
+In future work, we hope that this code and any subsequent improvements will enable new insights and optimizations for mapper constructions. For example, the interleaving distance could serve as a measure of parameter quality by quantifying how close a computed mapper graph is to a ground truth. 
+It would also be valuable to benchmark classifier performance using the interleaving distance against that of existing graph distances. 
+Once computation times are reduced, a larger-scale experiment on the MPEG-7 dataset, as outlined in \cref{ssec:ClassificationMPEG7}, would be especially compelling.
+
+Finally, because the loss function underlying our formulation is fundamentally categorical, it has the potential to translate to interleaving distances for other topological descriptors, such as merge trees and multiparameter persistence modules; some theoretical steps in this direction have already begun \cite{Olave2026}. 
+We conjecture that this ILP-based viewpoint may open the door to practical computation of interleaving distances in settings where prior work has been largely theoretical.
+
+

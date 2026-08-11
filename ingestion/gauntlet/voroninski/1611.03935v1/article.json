@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1611.03935v1",
+  "initialized_utc": "2026-08-11T08:30:53.374804Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "PhaseMaxElementary.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "An Elementary Proof of Convex Phase Retrieval in the Natural Parameter Space via the Linear Program PhaseMax",
+        "authors_tex": [
+          "Paul Hand\\footnote{Department of Computational and Applied Mathematics, Rice University, TX.}  \\ and Vladislav Voroninski\\footnote{Helm.ai, CA}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "1611.03935v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 10528,
+      "sha256": "f932cf7fc8567c5bdb5b6b2ec253646ec1988fb71cae3fa56981c9ef34bec0bc",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1611.03935v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "1611.03935v1.tar.gz",
+      "entrypoint": "PhaseMaxElementary.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 2,
+      "tex_files": 1,
+      "sha256": "760da9040ac6939caa2a66e6c146ab64ba096ff620930080a7aaf7b19f1a6d30"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1611.03935v1.pdf",
+      "format": "application/pdf",
+      "bytes": 100454,
+      "sha256": "70184ba3a5096c018def71fca569f4966b7a3d1bde187fc42dd067b987469e2b"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:53.374804Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 2
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 2
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "PhaseMaxElementary.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

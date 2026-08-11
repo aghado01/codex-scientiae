@@ -1,0 +1,166 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Absil et~al.]{Absil, Mahony \harvardand\
+  Sepulchre}{2008}{absil_2008_OptimizationAlgorithmsMatrix}
+Absil, P.-A., Mahony, R. \harvardand\ Sepulchre, R.  \harvardyearleft
+  2008\harvardyearright .
+\newblock {\em Optimization algorithms on matrix manifolds}, Princeton
+  University Press, Princeton, NJ.
+
+\harvarditem{Afsari}{2011}{afsari_2011_Riemannian$L_p$Center}
+Afsari, B.  \harvardyearleft 2011\harvardyearright .
+\newblock Riemannian \$\{{L}\}\_p\$ center of mass: {Existence}, uniqueness,
+  and convexity, {\em Proceedings of the American Mathematical Society} {\bf
+  139}(02):~655--655.
+
+\harvarditem{Beck \harvardand\ Sabach}{2015}{beck_2015_WeiszfeldsMethodOld}
+Beck, A. \harvardand\ Sabach, S.  \harvardyearleft 2015\harvardyearright .
+\newblock Weiszfeld’s {Method}: {Old} and {New} {Results}, {\em Journal of
+  Optimization Theory and Applications} {\bf 164}(1):~1--40.
+
+\harvarditem{Bhattacharya \harvardand\
+  Bhattacharya}{2012}{bhattacharya_2012_NonparametricInferenceManifolds}
+Bhattacharya, A. \harvardand\ Bhattacharya, R.  \harvardyearleft
+  2012\harvardyearright .
+\newblock {\em Nonparametric {Inference} on {Manifolds}: {With} {Applications}
+  to {Shape} {Spaces}}, Cambridge University Press, Cambridge.
+
+\harvarditem{Bickel \harvardand\
+  Levina}{2008}{bickel_2008_RegularizedEstimationLarge}
+Bickel, P.~J. \harvardand\ Levina, E.  \harvardyearleft 2008\harvardyearright .
+\newblock Regularized estimation of large covariance matrices, {\em The Annals
+  of Statistics} {\bf 36}(1).
+
+\harvarditem{Cheeger \harvardand\
+  Ebin}{2008}{cheeger_2008_ComparisonTheoremsRiemannian}
+Cheeger, J. \harvardand\ Ebin, D.~G.  \harvardyearleft 2008\harvardyearright .
+\newblock {\em Comparison {Theorems} in {Riemannian} {Geometry}}, {AMS}
+  {Chelsea} {Publishing}, AMS Chelsea Publishing, Providence, R.I.
+
+\harvarditem{do~Carmo}{1992}{docarmo_1992_RiemannianGeometry}
+do~Carmo, M.~P.  \harvardyearleft 1992\harvardyearright .
+\newblock {\em Riemannian {Geometry}}, Mathematics. {Theory} \& {Applications},
+  Birkhäuser, Boston.
+
+\harvarditem[Dryden et~al.]{Dryden, Koloydenko \harvardand\
+  Zhou}{2009}{dryden_2009_NonEuclideanStatisticsCovariance}
+Dryden, I.~L., Koloydenko, A. \harvardand\ Zhou, D.  \harvardyearleft
+  2009\harvardyearright .
+\newblock Non-{Euclidean} statistics for covariance matrices, with applications
+  to diffusion tensor imaging, {\em The Annals of Applied Statistics} {\bf
+  3}(3).
+
+\harvarditem{Ferreira \harvardand\
+  Oliveira}{1998}{ferreira_1998_SubgradientAlgorithmRiemannian}
+Ferreira, O.~P. \harvardand\ Oliveira, P.~R.  \harvardyearleft
+  1998\harvardyearright .
+\newblock Subgradient {Algorithm} on {Riemannian} {Manifolds}, {\em Journal of
+  Optimization Theory and Applications} {\bf 97}(1):~93--104.
+
+\harvarditem[Fletcher et~al.]{Fletcher, Venkatasubramanian \harvardand\
+  Joshi}{2009}{fletcher_2009_GeometricMedianRiemannian}
+Fletcher, P.~T., Venkatasubramanian, S. \harvardand\ Joshi, S.
+  \harvardyearleft 2009\harvardyearright .
+\newblock The geometric median on {Riemannian} manifolds with application to
+  robust atlas estimation, {\em NeuroImage} {\bf 45}(1):~S143--S152.
+
+\harvarditem{Fréchet}{1948}{frechet_1948_ElementsAleatoiresNature}
+Fréchet, M.~R.  \harvardyearleft 1948\harvardyearright .
+\newblock Les éléments aléatoires de nature quelconque dans un espace
+  distancié, {\em Annales de l'institut Henri Poincaré} {\bf
+  10}(4):~215--310.
+
+\harvarditem{Huber}{1981}{huber_1981_RobustStatistics}
+Huber, P.~J.  \harvardyearleft 1981\harvardyearright .
+\newblock {\em Robust {Statistics}}, Wiley {Series} in {Probability} and
+  {Statistics}, Wiley, New York.
+
+\harvarditem{Lee}{1997}{lee_1997_RiemannianManifoldsIntroduction}
+Lee, J.~M.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em Riemannian {Manifolds}: {An} {Introduction} to {Curvature}},
+  Vol. 176 of {\em Graduate {Texts} in {Mathematics}}, Springer, New York.
+
+\harvarditem{Lee}{2012}{lee_2012_IntroductionSmoothManifolds}
+Lee, J.~M.  \harvardyearleft 2012\harvardyearright .
+\newblock {\em Introduction to {Smooth} {Manifolds}}, Vol. 218 of {\em Graduate
+  {Texts} in {Mathematics}}, Springer New York, New York, NY.
+
+\harvarditem{Lee}{2018}{lee_2018_IntroductionRiemannianManifolds}
+Lee, J.~M.  \harvardyearleft 2018\harvardyearright .
+\newblock {\em Introduction to {Riemannian} {Manifolds}}, Vol. 176 of {\em
+  Graduate {Texts} in {Mathematics}}, 2nd ed. 2018 edn, Springer International
+  Publishing : Imprint: Springer, Cham.
+
+\harvarditem{Mardia \harvardand\ Jupp}{2000}{mardia_2000_DirectionalStatistics}
+Mardia, K.~V. \harvardand\ Jupp, P.~E.  \harvardyearleft 2000\harvardyearright
+  .
+\newblock {\em Directional statistics}, Wiley series in probability and
+  statistics, J. Wiley, Chichester; New York.
+
+\harvarditem{Patrangenaru \harvardand\
+  Ellingson}{2016}{patrangenaru_2016_NonparametricStatisticsManifolds}
+Patrangenaru, V. \harvardand\ Ellingson, L.  \harvardyearleft
+  2016\harvardyearright .
+\newblock {\em Nonparametric {Statistics} on {Manifolds} and {Their}
+  {Applications} to {Object} {Data} {Analysis}}, CRC Press, Taylor \& Francis
+  Group, Boca Raton.
+
+\harvarditem[Pennec et~al.]{Pennec, Sommer \harvardand\
+  Fletcher}{2020}{pennec_2020_RiemannianGeometricStatistics}
+Pennec, X., Sommer, S. \harvardand\ Fletcher, T.  \harvardyearleft
+  2020\harvardyearright .
+\newblock {\em Riemannian {Geometric} {Statistics} in {Medical} {Image}
+  {Analysis}}, Academic Press, San Diego.
+
+\harvarditem{Petersen}{2006}{petersen_2006_RiemannianGeometry}
+Petersen, P.  \harvardyearleft 2006\harvardyearright .
+\newblock {\em Riemannian {Geometry}}, Vol. 171 of {\em Graduate {Texts} in
+  {Mathematics}}, Springer New York.
+
+\harvarditem{Rockafellar}{1997}{rockafellar_1997_ConvexAnalysis}
+Rockafellar, R.~T.  \harvardyearleft 1997\harvardyearright .
+\newblock {\em Convex {Analysis}}, Princeton {Landmarks} in {Mathematics} and
+  {Physics}, 10. print. and 1. paperb. print edn, Princeton Univ. Press,
+  Princeton, NJ.
+
+\harvarditem{Selig}{2005}{selig_2005_LieGroupsLie}
+Selig, J.~M.  \harvardyearleft 2005\harvardyearright .
+\newblock Lie {Groups} and {Lie} {Algebras} in {Robotics}, {\em in} J.~Byrnes
+  (ed.), {\em Computational {Noncommutative} {Algebra} and {Applications}},
+  Vol. 136, Kluwer Academic Publishers, Dordrecht, pp.~101--125.
+
+\harvarditem{Takatsu}{2011}{takatsu_2011_WassersteinGeometryGaussian}
+Takatsu, A.  \harvardyearleft 2011\harvardyearright .
+\newblock Wasserstein geometry of {Gaussian} measures, {\em Osaka Journal of
+  Mathematics} {\bf 48}(4):~1005 -- 1026.
+
+\harvarditem{Vardi \harvardand\
+  Zhang}{2000}{vardi_2000_MultivariateL1medianAssociated}
+Vardi, Y. \harvardand\ Zhang, C.-H.  \harvardyearleft 2000\harvardyearright .
+\newblock The multivariate {L1}-median and associated data depth, {\em
+  Proceedings of the National Academy of Sciences} {\bf 97}(4):~1423--1426.
+
+\harvarditem{You \harvardand\
+  Park}{2021}{you_2021_RevisitingRiemannianGeometry}
+You, K. \harvardand\ Park, H.-J.  \harvardyearleft 2021\harvardyearright .
+\newblock Re-visiting {Riemannian} geometry of symmetric positive definite
+  matrices for the analysis of functional connectivity, {\em NeuroImage} {\bf
+  225}:~117464.
+
+\harvarditem[You et~al.]{You, Shung \harvardand\
+  Giuffrè}{2025}{you_2025_WassersteinMedianProbability}
+You, K., Shung, D. \harvardand\ Giuffrè, M.  \harvardyearleft
+  2025\harvardyearright .
+\newblock On the {Wasserstein} {Median} of {Probability} {Measures}, {\em
+  Journal of Computational and Graphical Statistics} {\bf 34}(1):~253--266.
+
+\harvarditem{Zhang \harvardand\
+  Sra}{2016}{zhang_2016_FirstorderMethodsGeodesically}
+Zhang, H. \harvardand\ Sra, S.  \harvardyearleft 2016\harvardyearright .
+\newblock First-order {Methods} for {Geodesically} {Convex} {Optimization},
+  {\em in} V.~Feldman, A.~Rakhlin \harvardand\ O.~Shamir (eds), {\em 29th
+  {Annual} {Conference} on {Learning} {Theory}}, Vol.~49 of {\em Proceedings of
+  {Machine} {Learning} {Research}}, PMLR, Columbia University, New York, New
+  York, USA, pp.~1617--1638.
+
+\end{thebibliography}

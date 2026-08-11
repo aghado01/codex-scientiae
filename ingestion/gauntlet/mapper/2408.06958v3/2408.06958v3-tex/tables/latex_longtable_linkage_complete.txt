@@ -1,0 +1,75 @@
+\begin{longtable}{lrrrr}
+\caption{Fowlkes-Mallows scores of AuToMATo vs. hierarchical clustering with complete linkage}
+\label{table:aut_vs_linkage_complete} \\
+\toprule
+Dataset & automato\_mean & linkage\_complete\_max & linkage\_complete\_min \\
+\midrule
+\endfirsthead
+\caption[]{Fowlkes-Mallows scores of AuToMATo vs. hierarchical clustering with complete linkage} \\
+\toprule
+Dataset & automato\_mean & linkage\_complete\_max & linkage\_complete\_min \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{Continued on next page} \\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+sipu\_r15\_2 & 0.4867±0.0000 & \textbf{1.0000} & 0.2256 \\
+wut\_trajectories\_0 & 0.5038±0.0107 & \textbf{1.0000} & 0.1706 \\
+sipu\_r15\_1 & 0.5436±0.0000 & \textbf{0.8954} & 0.2516 \\
+wut\_x3\_1 & 0.6546±0.0000 & \textbf{0.9740} & 0.2004 \\
+fcps\_tetra\_0 & 0.6261±0.0000 & \textbf{0.9356} & 0.0651 \\
+sipu\_d31\_0 & 0.6001±0.0085 & \textbf{0.8733} & 0.2717 \\
+wut\_x3\_0 & 0.5153±0.0000 & \textbf{0.7842} & 0.2477 \\
+sipu\_a3\_0 & 0.7434±0.0000 & \textbf{0.8979} & 0.2294 \\
+wut\_mk3\_0 & 0.7720±0.0000 & \textbf{0.9207} & 0.0711 \\
+wut\_x2\_0 & 0.5846±0.0000 & \textbf{0.7298} & 0.1964 \\
+sipu\_a2\_0 & 0.7555±0.0000 & \textbf{0.8992} & 0.2642 \\
+sipu\_jain\_0 & 0.7837±0.0000 & \textbf{0.9116} & 0.1288 \\
+wut\_circles\_0 & 0.8857±0.0000 & \textbf{1.0000} & 0.1761 \\
+sipu\_r15\_0 & 0.9258±0.0000 & \textbf{0.9799} & 0.3372 \\
+sipu\_a1\_0 & 0.7499±0.0000 & \textbf{0.8040} & 0.3092 \\
+graves\_zigzag\_1 & 0.6720±0.0000 & \textbf{0.7119} & 0.3039 \\
+sipu\_aggregation\_0 & 0.8652±0.0000 & \textbf{0.9030} & 0.1246 \\
+other\_iris\_0 & 0.7715±0.0000 & \textbf{0.8064} & 0.0680 \\
+wut\_x1\_0 & 0.9741±0.0818 & \textbf{1.0000} & 0.2326 \\
+sipu\_unbalance\_0 & 0.9986±0.0008 & \textbf{0.9988} & 0.5774 \\
+fcps\_hepta\_0 & \textbf{1.0000±0.0000} & \textbf{1.0000} & 0.4321 \\
+fcps\_twodiamonds\_0 & \textbf{0.7067±0.0000} & 0.7060 & 0.0916 \\
+sipu\_flame\_0 & \textbf{0.7320±0.0000} & 0.7276 & 0.0834 \\
+sipu\_compound\_0 & \textbf{0.8616±0.0000} & 0.8472 & 0.1567 \\
+sipu\_s1\_0 & \textbf{0.9888±0.0000} & 0.9563 & 0.3672 \\
+sipu\_pathbased\_0 & \textbf{0.6517±0.0000} & 0.6022 & 0.1384 \\
+sipu\_pathbased\_1 & \textbf{0.7322±0.0000} & 0.6709 & 0.1539 \\
+graves\_parabolic\_1 & \textbf{0.6916±0.0000} & 0.6168 & 0.1482 \\
+sipu\_compound\_1 & \textbf{0.9786±0.0000} & 0.9023 & 0.1366 \\
+sipu\_compound\_4 & \textbf{0.9442±0.0000} & 0.8652 & 0.1408 \\
+graves\_dense\_0 & \textbf{0.8377±0.1396} & 0.7584 & 0.3538 \\
+wut\_mk1\_0 & \textbf{0.9866±0.0000} & 0.8950 & 0.1591 \\
+wut\_smile\_1 & \textbf{0.9701±0.0000} & 0.8697 & 0.3562 \\
+graves\_parabolic\_0 & \textbf{0.9802±0.0000} & 0.8610 & 0.1088 \\
+wut\_mk2\_0 & \textbf{0.6356±0.0000} & 0.5032 & 0.1096 \\
+other\_iris5\_0 & \textbf{0.6712±0.0000} & 0.5305 & 0.0451 \\
+fcps\_atom\_0 & \textbf{0.8694±0.0000} & 0.7278 & 0.1364 \\
+wut\_smile\_0 & \textbf{0.9681±0.0000} & 0.8206 & 0.3793 \\
+sipu\_s2\_0 & \textbf{0.9405±0.0000} & 0.7642 & 0.3114 \\
+wut\_mk4\_0 & \textbf{0.9072±0.0234} & 0.7282 & 0.1297 \\
+fcps\_target\_0 & \textbf{0.9850±0.0000} & 0.7881 & 0.1934 \\
+fcps\_lsun\_0 & \textbf{1.0000±0.0000} & 0.7668 & 0.1377 \\
+fcps\_wingnut\_0 & \textbf{0.9805±0.0000} & 0.7406 & 0.0816 \\
+graves\_ring\_0 & \textbf{1.0000±0.0000} & 0.7589 & 0.1849 \\
+graves\_ring\_outliers\_0 & \textbf{1.0000±0.0000} & 0.7528 & 0.1995 \\
+wut\_labirynth\_0 & \textbf{0.7884±0.0000} & 0.4893 & 0.1426 \\
+fcps\_chainlink\_0 & \textbf{0.8896±0.0000} & 0.5889 & 0.0919 \\
+sipu\_spiral\_0 & \textbf{0.7028±0.0000} & 0.3512 & 0.1424 \\
+wut\_isolation\_0 & \textbf{0.7256±0.0113} & 0.3397 & 0.1153 \\
+graves\_line\_0 & \textbf{1.0000±0.0000} & 0.5972 & 0.1909 \\
+other\_square\_0 & \textbf{1.0000±0.0000} & 0.5846 & 0.1142 \\
+graves\_zigzag\_0 & \textbf{1.0000±0.0000} & 0.5505 & 0.2042 \\
+wut\_twosplashes\_0 & \textbf{1.0000±0.0000} & 0.5310 & 0.2771 \\
+wut\_stripes\_0 & \textbf{1.0000±0.0000} & 0.5136 & 0.0706 \\
+wut\_trapped\_lovers\_0 & \textbf{1.0000±0.0000} & 0.4790 & 0.0579 \\
+wut\_windows\_0 & \textbf{1.0000±0.0000} & 0.4349 & 0.0781 \\
+\end{longtable}

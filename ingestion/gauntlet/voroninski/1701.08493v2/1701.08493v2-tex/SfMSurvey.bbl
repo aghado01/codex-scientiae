@@ -1,0 +1,525 @@
+\begin{thebibliography}{10}
+
+\bibitem{SnavelyBALarge}
+S.~Agarwal, N.~Snavely, S.~M. Seitz, and R.~Szeliski.
+\newblock Bundle adjustment in the large.
+\newblock In {\em Proceedings of the 11th European Conference on Computer
+  Vision: Part II}, ECCV'10, pages 29--42, 2010.
+
+\bibitem{SnavelyRome}
+S.~Agarwal, N.~Snavely, I.~Simon, S.~M. Seitz, and R.~Szeliski.
+\newblock Building {Rome} in a day.
+\newblock In {\em ICCV}, 2009.
+
+\bibitem{OmniExtra3}
+D.~G. Aliaga.
+\newblock Accurate catadioptric calibration for real-time pose estimation of
+  room-size environments.
+\newblock In {\em {ICCV}}, pages 127--134, 2001.
+
+\bibitem{MicaAmitSfM}
+M.~Arie-Nachimson, S.~Kovalsky, I.~Kemelmacher-Shlizerman, A.~Singer, and
+  R.~Basri.
+\newblock Global motion estimation from point matches.
+\newblock In {\em 3DimPVT}, ETH Zurich, Switzerland, October 2012.
+
+\bibitem{ArrigoniSyncSfM}
+F.~Arrigoni, A.~Fusiello, and B.~Rossi.
+\newblock Camera motion from group synchronization.
+\newblock In {\em 3D Vision (3DV), 2016 International Conference on}, Oct 2016.
+
+\bibitem{SLAMSurvey1}
+J.~Aulinas, Y.~Petillot, J.~Salvi, and X.~Llad\'{o}.
+\newblock The {SLAM} problem: A survey.
+\newblock In {\em Proceedings of the 2008 Conference on Artificial Intelligence
+  Research and Development: Proceedings of the 11th International Conference of
+  the Catalan Association for Artificial Intelligence}, pages 363--371. IOS
+  Press, 2008.
+
+\bibitem{LineBased2}
+A.~Bartoli and P.~Sturm.
+\newblock Structure-from-motion using lines: Representation, triangulation, and
+  bundle adjustment.
+\newblock {\em Computer Vision and Image Understanding}, 100(3):416 -- 441,
+  2005.
+
+\bibitem{SURF}
+H.~Bay, T.~Tuytelaars, and L.~Van~Gool.
+\newblock Surf: Speeded up robust features.
+\newblock In {\em ECCV 2006}, pages 404--417, 2006.
+
+\bibitem{ransac}
+R.~C. Bolles and M.~A. Fischler.
+\newblock A {RANSAC}-based approach to model fitting and its application to
+  finding cylinders in range data.
+\newblock In {\em IJCAI}, pages 637--643, 1981.
+
+\bibitem{BATL2}
+M.~Brand, M.~Antone, and S.~Teller.
+\newblock Spectral solution of large-scale extrinsic camera calibration as a
+  graph embedding problem.
+\newblock In {\em ECCV}, 2004.
+
+\bibitem{OmniSfM}
+P.~Chang and M.~Hebert.
+\newblock Omni-directional structure from motion.
+\newblock In {\em Omnidirectional Vision, 2000. Proceedings. IEEE Workshop on},
+  pages 127--133, 2000.
+
+\bibitem{GovinduRot}
+A.~Chatterjee and V.~Govindu.
+\newblock Efficient and robust large-scale rotation averaging.
+\newblock In {\em Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, pages 521--528, Dec 2013.
+
+\bibitem{ChiusoSoattoOptimal}
+A.~Chiuso, R.~Brockett, and S.~Soatto.
+\newblock Optimal structure from motion: Local ambiguities and global
+  estimates.
+\newblock {\em Int. J. Comput. Vision}, 39(3):195--228, Sept. 2000.
+
+\bibitem{CohenSymmetries}
+A.~Cohen, C.~Zach, S.~N. Sinha, and M.~Pollefeys.
+\newblock Discovering and exploiting {3D} symmetries in structure from motion.
+\newblock In {\em CVPR 2012}, pages 1514--1521, June 2012.
+
+\bibitem{SnavelyDISCO}
+D.~Crandall, A.~Owens, N.~Snavely, and D.~P. Huttenlocher.
+\newblock Discrete-continuous optimization for large-scale structure from
+  motion.
+\newblock In {\em CVPR}, 2011.
+
+\bibitem{Mihai3DASAP}
+M.~Cucuringu, A.~Singer, and D.~Cowburn.
+\newblock Eigenvector synchronization, graph rigidity and the molecule problem.
+\newblock {\em Information and Inference: A Journal of the IMA}, 1(1):27--67,
+  2012.
+
+\bibitem{LSDSLAM}
+J.~Engel, T.~Sch\"{o}ps, and D.~Cremers.
+\newblock {LSD-SLAM}: Large-scale direct monocular {SLAM}.
+\newblock In {\em European Conference on Computer Vision (ECCV)}, September
+  2014.
+
+\bibitem{SLAMSurvey2}
+J.~Fuentes-Pacheco, J.~Ruiz-Ascencio, and J.~M. Rend{\'o}n-Mancha.
+\newblock Visual simultaneous localization and mapping: a survey.
+\newblock {\em Artificial Intelligence Review}, 43(1):55--81, 2015.
+
+\bibitem{CMVS}
+Y.~Furukawa, B.~Curless, S.~M. Seitz, and R.~Szeliski.
+\newblock {CMVS}.
+\newblock \url{http://www.di.ens.fr/cmvs/}, 2010.
+
+\bibitem{FurukawaPartial}
+Y.~Furukawa, B.~Curless, S.~M. Seitz, and R.~Szeliski.
+\newblock Towards {Internet-scale} multi-view stereo.
+\newblock In {\em CVPR}, 2010.
+
+\bibitem{Dense3D}
+Y.~Furukawa and J.~Ponce.
+\newblock Accurate, dense, and robust multiview stereopsis.
+\newblock {\em PAMI}, 32(8):1362--1376, 2010.
+
+\bibitem{PMVS}
+Y.~Furukawa and J.~Ponce.
+\newblock {PMVS}.
+\newblock \url{http://www.di.ens.fr/pmvs/}, 2010.
+
+\bibitem{DescSurvey2}
+S.~Gauglitz, T.~H\"{o}llerer, and M.~Turk.
+\newblock Evaluation of interest point detectors and feature descriptors for
+  visual tracking.
+\newblock {\em Int. J. Comput. Vision}, 94(3):335--360, Sept. 2011.
+
+\bibitem{OmniExtra1}
+J.~Gluckman and S.~K. Nayar.
+\newblock Ego-motion and omnidirectional cameras.
+\newblock In {\em Sixth International Conference on Computer Vision (IEEE Cat.
+  No.98CH36271)}, pages 999--1005, Jan 1998.
+
+\bibitem{ShapeKick}
+T.~Goldstein, P.~Hand, C.~Lee, V.~Voroninski, and S.~Soatto.
+\newblock {ShapeFit} and {ShapeKick} for robust, scalable structure from
+  motion.
+\newblock {\em Lecture Notes in Computer Science, Computer Vision, ECCV}, 9911,
+  2016.
+
+\bibitem{GovinduEarlyL2}
+V.~M. Govindu.
+\newblock Combining two-view constraints for motion estimation.
+\newblock In {\em CVPR}, 2001.
+
+\bibitem{GovinduLieAlg}
+V.~M. Govindu.
+\newblock Lie-algebraic averaging for globally consistent motion estimation.
+\newblock In {\em CVPR}, 2004.
+
+\bibitem{ShapeFitJoint}
+P.~Hand, C.~Lee, and V.~Voroninski.
+\newblock Exact simultaneous recovery of locations and structure from known
+  orientations and corrupted point correspondences, 2015.
+\newblock Arxiv preprint, available at \url{http://arxiv.org/abs/1509.05064}.
+
+\bibitem{ShapeFit}
+P.~Hand, C.~Lee, and V.~Voroninski.
+\newblock {ShapeFit}: Exact location recovery from corrupted pairwise
+  directions.
+\newblock {\em Communications in Pure and Applied Mathematics}, 2017.
+
+\bibitem{HartleyBook}
+R.~Hartley and A.~Zisserman.
+\newblock {\em Multiple View Geometry in Computer Vision}.
+\newblock Cambridge Univ. Press, Cambridge, U.K., 2000.
+
+\bibitem{HartleyEightPnt}
+R.~I. Hartley.
+\newblock In defense of the eight-point algorithm.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  19(6):580--593, Jun 1997.
+
+\bibitem{HavlenaGroups}
+M.~Havlena, A.~Torii, J.~Knopp, and T.~Pajdla.
+\newblock Randomized structure from motion based on atomic {$3$D} models from
+  camera triplets.
+\newblock In {\em CVPR}, 2009.
+
+\bibitem{HavlenaGraphOptim}
+M.~Havlena, A.~Torii, and T.~Pajdla.
+\newblock Efficient structure from motion by graph optimization.
+\newblock In {\em ECCV 2010}, pages 100--113, 2010.
+
+\bibitem{Tsotsos1}
+J.~Hernandez, K.~Tsotsos, and S.~Soatto.
+\newblock Observability, identifiability and sensitivity of vision-aided
+  inertial navigation.
+\newblock In {\em 2015 {IEEE} International Conference on Robotics and
+  Automation {(ICRA)}}, pages 2319--2325, May 2015.
+
+\bibitem{JiangTriLin}
+N.~Jiang, Z.~Cui, and P.~Tan.
+\newblock A global linear method for camera pose registration.
+\newblock In {\em Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, pages 481--488, Dec 2013.
+
+\bibitem{SeeingDouble}
+N.~Jiang, P.~Tan, and L.~F. Cheong.
+\newblock Seeing double without confusion: Structure-from-motion in highly
+  ambiguous scenes.
+\newblock In {\em CVPR 2012}, pages 1458--1465, June 2012.
+
+\bibitem{KanadeFactorization}
+T.~Kanade and D.~Morris.
+\newblock Factorization methods for structure from motion.
+\newblock {\em Philosophical Transactions of the Royal Society of London},
+  pages 1153--1173, 1998.
+
+\bibitem{GenericExtra1}
+J.~Kannala and S.~S. Brandt.
+\newblock A generic camera model and calibration method for conventional,
+  wide-angle, and fish-eye lenses.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  28(8):1335--1340, Aug 2006.
+
+\bibitem{PCASIFT}
+Y.~Ke and R.~Sukthankar.
+\newblock {PCA-SIFT}: a more distinctive representation for local image
+  descriptors.
+\newblock In {\em Proceedings of the 2004 IEEE Computer Society Conference on
+  Computer Vision and Pattern Recognition, 2004. CVPR 2004.}, volume~2, pages
+  II--506--II--513 Vol.2, June 2004.
+
+\bibitem{LonguetHiggins}
+H.~C. Longuet-Higgins.
+\newblock A computer algorithm for reconstructing a scene from two projections.
+\newblock {\em Nature}, 293:133--135, 1981.
+
+\bibitem{SBA}
+M.~I.~A. Lourakis and A.~A. Argyros.
+\newblock {SBA}: A software package for generic sparse bundle adjustment.
+\newblock {\em ACM Trans. Math. Softw.}, 36(1):2:1--2:30, Mar. 2009.
+
+\bibitem{SIFT}
+D.~Lowe.
+\newblock Distinctive image features from scale-invariant keypoints.
+\newblock {\em IJCV}, 60(2):91--110, 2004.
+
+\bibitem{SIFT2}
+D.~G. Lowe.
+\newblock Object recognition from local scale-invariant features.
+\newblock In {\em Proc. of the International Conference on Computer Vision
+  {ICCV}, Corfu}, 1999.
+
+\bibitem{MaThy}
+Y.~Ma, J.~Ko{\v{s}}eck{\'a}, and S.~Sastry.
+\newblock Optimization criteria and geometric algorithms for motion and
+  structure estimation.
+\newblock {\em International Journal of Computer Vision}, 44(3):219--249, 2001.
+
+\bibitem{MartinecRotations}
+D.~Martinec and T.~Pajdla.
+\newblock Robust rotation and translation estimation in multiview
+  reconstruction.
+\newblock In {\em CVPR}, 2007.
+
+\bibitem{LineBasedFactor1}
+D.~Matinec and T.~Pajdla.
+\newblock Line reconstruction from many perspective images by factorization.
+\newblock In {\em 2003 IEEE Computer Society Conference on Computer Vision and
+  Pattern Recognition, 2003. Proceedings.}, volume~1, pages I--497--I--502
+  vol.1, June 2003.
+
+\bibitem{MicusikWideCam}
+B.~Micusik and T.~Pajdla.
+\newblock Structure from motion with wide circular field of view cameras.
+\newblock {\em IEEE Trans. Pattern Anal. Mach. Intell.}, 28(7):1135--1149, July
+  2006.
+
+\bibitem{GLOH}
+K.~Mikolajczyk and C.~Schmid.
+\newblock A performance evaluation of local descriptors.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  27(10):1615--1630, Oct 2005.
+
+\bibitem{MoulonLinfty}
+P.~Moulon, P.~Monasse, and R.~Marlet.
+\newblock Global fusion of relative motions for robust, accurate and scalable
+  structure from motion.
+\newblock In {\em Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, pages 3248--3255, Dec 2013.
+
+\bibitem{MouragnonGeneric}
+E.~Mouragnon, M.~Lhuillier, M.~Dhome, F.~Dekeyser, and P.~Sayd.
+\newblock Generic and real-time structure from motion using local bundle
+  adjustment.
+\newblock {\em Image and Vision Computing}, 27(8):1178 -- 1193, 2009.
+
+\bibitem{Urban3DSurvey}
+P.~Musialski, P.~Wonka, D.~G. Aliaga, M.~Wimmer, L.~Gool, and W.~Purgathofer.
+\newblock A survey of urban reconstruction.
+\newblock {\em Computer Graphics Forum}, 2013.
+
+\bibitem{OliensisCritique}
+J.~Oliensis.
+\newblock A critique of structure-from-motion algorithms.
+\newblock {\em Comput. Vis. Image Underst.}, 80(2):172--214, Nov. 2000.
+
+\bibitem{LUD}
+O.~\"{O}zye\c{s}il and A.~Singer.
+\newblock Robust camera location estimation by convex programming.
+\newblock In {\em The IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, June 2015.
+
+\bibitem{CvXSfM}
+O.~\"{O}zye\c{s}il, A.~Singer, and R.~Basri.
+\newblock Stable camera motion estimation using convex programming.
+\newblock {\em SIAM Journal on Imaging Sciences}, 8:1220--1262, 2015.
+
+\bibitem{PDM}
+D.~Pachauri, R.~Kondor, G.~Sargur, and V.~Singh.
+\newblock Permutation diffusion maps {(PDM)} with application to the image
+  association problem in computer vision.
+\newblock In Z.~Ghahramani, M.~Welling, C.~Cortes, N.~D. Lawrence, and K.~Q.
+  Weinberger, editors, {\em Advances in Neural Information Processing Systems
+  27}, pages 541--549. Curran Associates, Inc., 2014.
+
+\bibitem{LinesFromVideo}
+M.~Pollefeys, D.~Nist{\'e}r, J.-M. Frahm, A.~Akbarzadeh, P.~Mordohai, B.~Clipp,
+  C.~Engels, D.~Gallup, S.-J. Kim, P.~Merrell, C.~Salmi, S.~Sinha, B.~Talton,
+  L.~Wang, Q.~Yang, H.~Stew{\'e}nius, R.~Yang, G.~Welch, and H.~Towles.
+\newblock Detailed real-time urban 3d reconstruction from video.
+\newblock {\em International Journal of Computer Vision}, 78(2):143--167, 2008.
+
+\bibitem{LineBasedFactor2}
+L.~Quan and T.~Kanade.
+\newblock Affine structure from line correspondences with uncalibrated affine
+  cameras.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  19(8):834--845, Aug 1997.
+
+\bibitem{GenericExtra2}
+S.~Ramalingam, S.~K. Lodha, and P.~Sturm.
+\newblock A generic structure-from-motion framework.
+\newblock {\em Comput. Vis. Image Underst.}, 103(3):218--228, Sept. 2006.
+
+\bibitem{RobertsDuplicates}
+R.~Roberts, S.~Sinha, R.~Szeliski, D.~Steedly, and R.~Szeliski.
+\newblock Structure from motion for scenes with large duplicate structures.
+\newblock In {\em CVPR}, June 2011.
+
+\bibitem{SchaffalitzkyDisambig}
+F.~Schaffalitzky and A.~Zisserman.
+\newblock Multi-view matching for unordered image sets, or ``how do i organize
+  my holiday snaps?''.
+\newblock In {\em Proceedings of the 7th European Conference on Computer
+  Vision, Copenhagen, Denmark}, volume~1, pages 414--431, 2002.
+
+\bibitem{LineBased1}
+G.~Schindler, P.~Krishnamurthy, and F.~Dellaert.
+\newblock Line-based structure from motion for urban environments.
+\newblock In {\em 3D Data Processing, Visualization, and Transmission, Third
+  International Symposium on}, pages 846--853, June 2006.
+
+\bibitem{OmniExtra2}
+O.~Shakernia, R.~Vidal, and S.~Sastry.
+\newblock Omnidirectional egomotion estimation from back-projection flow.
+\newblock In {\em 2003 Conference on Computer Vision and Pattern Recognition
+  Workshop}, volume~7, pages 82--82, June 2003.
+
+\bibitem{AmitAngSync}
+A.~Singer.
+\newblock Angular synchronization by eigenvectors and semidefinite programming.
+\newblock {\em Applied and Computational Harmonic Analysis}, 30(1):20--36,
+  2011.
+
+\bibitem{MultiLinear}
+S.~N. Sinha, D.~Steedly, and R.~Szeliski.
+\newblock A multi-stage linear approach to structure from motion.
+\newblock In {\em RMLE}, 2010.
+
+\bibitem{SnavelyData}
+N.~Snavely, S.~M. Seitz, and R.~Szeliski.
+\newblock Photo tourism: exploring photo collections in {3D}.
+\newblock In {\em SIGGRAPH}, 2006.
+
+\bibitem{SnavelyModel}
+N.~Snavely, S.~M. Seitz, and R.~Szeliski.
+\newblock Modeling the world from internet photo collections.
+\newblock {\em International Journal of Computer Vision}, 80(2):189--210, 2008.
+
+\bibitem{SnavelySkeletal}
+N.~Snavely, S.~M. Seitz, and R.~Szeliski.
+\newblock Skeletal graphs for efficient structure from motion.
+\newblock In {\em CVPR}, 2008.
+
+\bibitem{SoattoVisualMotion}
+S.~Soatto.
+\newblock {3-D} structure from visual motion: modeling, representation and
+  observability.
+\newblock {\em Automatica}, 33(7):1287--1312, 1997.
+
+\bibitem{FountainData}
+C.~Strecha, W.~V. Hansen, L.~V. Gool, P.~Fua, and U.~Thoennessen.
+\newblock On benchmarking camera calibration and multi-view stereo for high
+  resolution imagery.
+\newblock In {\em CVPR~'08}, 2008.
+
+\bibitem{SturmFactorization}
+P.~F. Sturm and B.~Triggs.
+\newblock A factorization based algorithm for multi-image projective structure
+  and motion.
+\newblock In {\em Proceedings of the 4th European Conference on Computer
+  Vision-Volume II}, ECCV '96, pages 709--720, 1996.
+
+\bibitem{Theia}
+C.~Sweeney.
+\newblock Theia multiview geometry library: Tutorial \& reference.
+\newblock \url{http://theia-sfm.org}.
+
+\bibitem{LineBased3}
+C.~J. Taylor and D.~J. Kriegman.
+\newblock Structure and motion from line segments in multiple images.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  17(11):1021--1032, Nov. 1995.
+
+\bibitem{TomasiKanadeFactor}
+C.~Tomasi and T.~Kanade.
+\newblock Shape and motion from image streams under orthography: A
+  factorization method.
+\newblock {\em Int. J. Comput. Vision}, 9(2):137--154, Nov. 1992.
+
+\bibitem{TriggsFactorization}
+B.~Triggs.
+\newblock Factorization methods for projective structure and motion.
+\newblock In {\em CVPR}, June 1996.
+
+\bibitem{BundleAdjustment}
+B.~Triggs, P.~Mclauchlan, R.~Hartley, and A.~Fitzgibbon.
+\newblock Bundle adjustment - a modern synthesis.
+\newblock In {\em Vision Algorithms: Theory and Practice, LNCS}, pages
+  298--375. Springer Verlag, 2000.
+
+\bibitem{TronVidalJournal}
+R.~Tron and R.~Vidal.
+\newblock Distributed {$3$-D} localization of camera sensor networks from
+  {$2$-D} image measurements.
+\newblock {\em Automatic Control, IEEE Transactions on}, 59(12):3325--3340, Dec
+  2014.
+
+\bibitem{TronSurvey}
+R.~Tron, X.~Zhou, and K.~Daniilidis.
+\newblock A survey on rotation optimization in structure from motion.
+\newblock In {\em The IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR) Workshops}, June 2016.
+
+\bibitem{Tsotsos2}
+K.~Tsotsos, A.~Chiuso, and S.~Soatto.
+\newblock Robust inference for visual-inertial sensor fusion.
+\newblock In {\em 2015 {IEEE} International Conference on Robotics and
+  Automation {(ICRA)}}, pages 5203--5210, May 2015.
+
+\bibitem{FeatDetSurvey}
+T.~Tuytelaars and K.~Mikolajczyk.
+\newblock Local invariant feature detectors: A survey.
+\newblock {\em Foundations and Trends in Computer Graphics and Vision},
+  3(3):177--280, 2008.
+
+\bibitem{VGSoattoMovingForward}
+A.~Vedaldi, G.~Guidi, and S.~Soatto.
+\newblock Moving forward in structure from motion.
+\newblock In {\em 2007 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 1--7, June 2007.
+
+\bibitem{LanhuiSync}
+L.~Wang and A.~Singer.
+\newblock Exact and stable recovery of rotations for robust synchronization.
+\newblock {\em Information and Inference: A Journal of the IMA}, 2(2):145--193,
+  2013.
+
+\bibitem{WilsonSnavelyDisambig}
+K.~Wilson and N.~Snavely.
+\newblock Network principles for sfm: Disambiguating repeated structures with
+  local context.
+\newblock In {\em Proceedings of the International Conference on Computer
+  Vision ({ICCV})}, 2013.
+
+\bibitem{Snavely1D}
+K.~Wilson and N.~Snavely.
+\newblock Robust global translations with {1DSfM}.
+\newblock In {\em Computer Vision - {ECCV} 2014 - 13th European Conference,
+  Zurich, Switzerland, September 6-12, 2014, Proceedings, Part {III}}, pages
+  61--75, 2014.
+
+\bibitem{SiftGPU}
+C.~Wu.
+\newblock {SiftGPU}: A {GPU} implementation of scale invaraint feature
+  transform ({SIFT}).
+\newblock \url{http://cs.unc.edu/~ccwu/siftgpu/}, 2007.
+
+\bibitem{VisualSfM}
+C.~Wu.
+\newblock {VisualSFM}: A visual structure from motion system.
+\newblock \url{http://homes.cs.washington.edu/~ccwu/vsfm/}, 2011.
+
+\bibitem{PBA}
+C.~Wu, S.~Agarwal, B.~Curless, and S.~M. Seitz.
+\newblock Multicore bundle adjustment.
+\newblock In {\em CVPR}, 2011.
+
+\bibitem{SLAMSurvey3}
+G.~Younes, D.~C. Asmar, and E.~A. Shammas.
+\newblock A survey on non-filter-based monocular visual {SLAM} systems, 2016.
+\newblock Arxiv preprint, available at \url{http://arxiv.org/abs/1607.00470}.
+
+\bibitem{ZachDisambig}
+C.~Zach, M.~Klopschitz, and M.~Pollefeys.
+\newblock Disambiguating visual relations using loop constraints.
+\newblock In {\em Computer Vision and Pattern Recognition (CVPR), 2010 IEEE
+  Conference on}, pages 1426--1433, June 2010.
+
+\bibitem{EpipolarReview}
+Z.~Zhang.
+\newblock Determining the epipolar geometry and its uncertainty: A review.
+\newblock {\em International Journal of Computer Vision}, 27(2):161--195, 1998.
+
+\end{thebibliography}

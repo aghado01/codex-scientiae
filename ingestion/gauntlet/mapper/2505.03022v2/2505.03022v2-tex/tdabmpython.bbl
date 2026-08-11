@@ -1,0 +1,86 @@
+\begin{thebibliography}{}
+
+\bibitem[Anscombe, 1973]{anscombe1973graphs}
+Anscombe, F.~J. (1973).
+\newblock Graphs in statistical analysis.
+\newblock {\em The American Statistician}, 27(1):17--21.
+
+\bibitem[Charmpi et~al., 2023]{charmpi2023topological}
+Charmpi, M., Giannouli, P., and Xanthopoulos, S. (2023).
+\newblock A topological approach to credit scoring.
+\newblock {\em Available at SSRN 4629581}.
+
+\bibitem[D{\l}otko, 2019]{dlotko2019ball}
+D{\l}otko, P. (2019).
+\newblock {Ball mapper: A shape summary for topological data analysis}.
+\newblock {\em arXiv preprint arXiv:1901.07410}.
+
+\bibitem[Dlotko et~al., 2022]{dlotko2022topological}
+Dlotko, P., Qiu, W., and Rudkin, S. (2022).
+\newblock Topological data analysis ball mapper for finance.
+\newblock {\em arXiv preprint arXiv:2206.03622}.
+
+\bibitem[D{\l}otko et~al., 2024]{dlotko2021financial}
+D{\l}otko, P., Qiu, W., and Rudkin, S. (2024).
+\newblock Financial ratios and stock returns reappraised through a topological
+  data analysis lens.
+\newblock {\em The European Journal of Finance}, pages 1--25.
+
+\bibitem[Matejka and Fitzmaurice, 2017]{matejka2017same}
+Matejka, J. and Fitzmaurice, G. (2017).
+\newblock Same stats, different graphs: generating datasets with varied
+  appearance and identical statistics through simulated annealing.
+\newblock In {\em Proceedings of the 2017 CHI conference on human factors in
+  computing systems}, pages 1290--1294.
+
+\bibitem[Otway and Rudkin, 2024]{otway2024shape}
+Otway, A. and Rudkin, S. (2024).
+\newblock The shape of left-behindedness: The 2019 uk general election and
+  britain's changing electoral geography.
+\newblock {\em Available at SSRN 4877434}.
+
+\bibitem[Qiu et~al., 2020]{qiu2020refining}
+Qiu, W., Rudkin, S., and D{\l}otko, P. (2020).
+\newblock Refining understanding of corporate failure through a topological
+  data analysis mapping of altman’s z-score model.
+\newblock {\em Expert Systems with Applications}, page 113475.
+
+\bibitem[Rudkin et~al., 2024a]{rudkin2023economic}
+Rudkin, S., Barros, L., D{\l}otko, P., and Qiu, W. (2024a).
+\newblock An economic topology of the brexit vote.
+\newblock {\em Regional Studies}, 58(3):601--618.
+
+\bibitem[Rudkin and Dlotko, 2024]{rudkin2024topology}
+Rudkin, S. and Dlotko, P. (2024).
+\newblock A topology of inclusion: European regions and the digital divide.
+\newblock In {\em 2024 Fourth International Conference on Digital Data
+  Processing (DDP)}, pages 123--128. IEEE.
+
+\bibitem[Rudkin et~al., 2024b]{rudkin2024return}
+Rudkin, S., Rudkin, W., and D{\l}otko, P. (2024b).
+\newblock Return trajectory and the forecastability of bitcoin returns.
+\newblock {\em Financial Review}.
+
+\bibitem[Rudkin and Webber, 2023]{rudkin2023regional}
+Rudkin, S. and Webber, D.~J. (2023).
+\newblock Regional growth paths and regional resilience.
+\newblock {\em Available at SSRN 4333276}.
+
+\bibitem[Shultz, 2023]{shultz2023applications}
+Shultz, C. (2023).
+\newblock Applications of topological data analysis in economics.
+\newblock {\em Available at SSRN 4378151}.
+
+\bibitem[Singh et~al., 2007]{singh2007topological}
+Singh, G., M{\'e}moli, F., and Carlsson, G.~E. (2007).
+\newblock Topological methods for the analysis of high dimensional data sets
+  and 3d object recognition.
+\newblock {\em SPBG}, 91:100.
+
+\bibitem[Tubadji and Rudkin, 2025]{tubadji2025cultural}
+Tubadji, A. and Rudkin, S. (2025).
+\newblock Cultural gravity and redistribution of growth through migration:
+  Cohesion lessons from spatial econometrics and topological data analysis.
+\newblock {\em Papers in Regional Science}, 104(1):100064.
+
+\end{thebibliography}

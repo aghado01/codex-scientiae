@@ -1,0 +1,104 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2402.12854v1",
+  "initialized_utc": "2026-08-11T08:30:12.556714Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Differentiable Mapper for Topological Optimization of Data Representation",
+        "authors_tex": [
+          "Ziyad Oulhaj\\\\\n    Nantes Universit\\'e, Centrale Nantes \\\\\n    Laboratoire de Math\\'ematiques Jean Leray, CNRS UMR 6629\\\\\n\tNantes, France\\\\\n\t\\texttt{ziyad.oulhaj@ec-nantes.fr} \\\\\n\t\n\t\\And\n\tMathieu Carrière \\\\\n\tDataShape\\\\\n\tCentre Inria d'Université Côte d'Azur\\\\\n\tSophia Antipolis, France \\\\\n\t\\texttt{mathieu.carriere@inria.fr} \\\\\n    \\And\n\tBertrand Michel \\\\\n    Nantes Universit\\'e, Centrale Nantes \\\\\nLaboratoire de Math\\'ematiques Jean Leray, CNRS UMR 6629\\\\\n\tNantes, France\\\\\n\t\\texttt{bertrand.michel@ec-nantes.fr} \\\\"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2402.12854v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 2713391,
+      "sha256": "4df75b836961b43fddc2e50f42a781bb932a699ac16fc3a06bf16f8391eacd18",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2402.12854v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2402.12854v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 41,
+      "tex_files": 15,
+      "sha256": "52b5dcd93bea6b43cb5fd9ff7b461c7a48e894751e46447d1f889977f1515aa7"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2402.12854v1.pdf",
+      "format": "application/pdf",
+      "bytes": 2373087,
+      "sha256": "4daef63ee07b7ff29f1e18169457a4d685d584eca4f5ba39fea6c71b96b24d40"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:12.556714Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 41
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 41
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 15
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "main.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1005 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{bauer2021structure}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=dd6f1eb5275595e21a2cc15c3abf0f44}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Ulrich},
+           giveni={U\bibinitperiod}}}%
+        {{hash=864f6a35c5349fc201711baf19b45c90}{%
+           family={Botnan},
+           familyi={B\bibinitperiod},
+           given={Magnus\bibnamedelima Bakke},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=bb992553d814772e379c11145dba0496}{%
+           family={Fluhr},
+           familyi={F\bibinitperiod},
+           given={Benedikt},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{fullhash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{bibnamehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{authorbibnamehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{authornamehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{authorfullhash}{96892fe82e06b5a67ca51016feb76b34}
+      \field{extraname}{1}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{math.AT}
+      \field{eprinttype}{arXiv}
+      \field{title}{Structure and Interleavings of Relative Interlevel Set Cohomology}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2108.09298
+      \endverb
+    \endentry
+    \entry{bauer2020universality}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=dd6f1eb5275595e21a2cc15c3abf0f44}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Ulrich},
+           giveni={U\bibinitperiod}}}%
+        {{hash=864f6a35c5349fc201711baf19b45c90}{%
+           family={Botnan},
+           familyi={B\bibinitperiod},
+           given={Magnus\bibnamedelima Bakke},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=bb992553d814772e379c11145dba0496}{%
+           family={Fluhr},
+           familyi={F\bibinitperiod},
+           given={Benedikt},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{fullhash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{bibnamehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{authorbibnamehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{authornamehash}{96892fe82e06b5a67ca51016feb76b34}
+      \strng{authorfullhash}{96892fe82e06b5a67ca51016feb76b34}
+      \field{extraname}{2}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{math.AT}
+      \field{eprinttype}{arXiv}
+      \field{title}{Universality of the Bottleneck Distance for Extended Persistence Diagrams}
+      \field{year}{2020}
+      \verb{eprint}
+      \verb 2007.01834
+      \endverb
+    \endentry
+    \entry{BG18}{article}{}
+      \name{author}{2}{}{%
+        {{hash=e97f3d34c39a174a97730655c1e86fad}{%
+           family={Berkouk},
+           familyi={B\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=d181bb6b835d47490b1a656c7aa92a43}{%
+           family={Ginot},
+           familyi={G\bibinitperiod},
+           given={Grégory},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{4f5844d7f58ca29b83f80b2d9889f882}
+      \strng{fullhash}{4f5844d7f58ca29b83f80b2d9889f882}
+      \strng{bibnamehash}{4f5844d7f58ca29b83f80b2d9889f882}
+      \strng{authorbibnamehash}{4f5844d7f58ca29b83f80b2d9889f882}
+      \strng{authornamehash}{4f5844d7f58ca29b83f80b2d9889f882}
+      \strng{authorfullhash}{4f5844d7f58ca29b83f80b2d9889f882}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Persistent homology has been recently studied with the tools of sheaf theory in the derived setting by Kashiwara and Schapira [18] after J. Curry has made the first link between persistent homology and sheaves. We prove the isometry theorem in this derived setting, thus expressing the convolution distance of sheaves as a matching distance between combinatorial objects associated to them that we call graded barcodes. This allows to consider sheaf-theoretical constructions as combinatorial, stable topological descriptors of data, and generalizes the situation of persistence with one parameter. To achieve so, we explicitly compute all morphisms in DRcb(kR), which enables us to compute distances between indecomposable objects. Then we adapt Bjerkevik's stability proof to this derived setting. As a byproduct of our isometry theorem, we prove that the convolution distance is closed, give a precise description of connected components of DRcb(kR) and provide some explicit examples of computation of the convolution distance.}
+      \field{issn}{0001-8708}
+      \field{journaltitle}{Advances in Mathematics}
+      \field{title}{A derived isometry theorem for sheaves}
+      \field{volume}{394}
+      \field{year}{2022}
+      \field{pages}{108033}
+      \range{pages}{1}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.aim.2021.108033
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0001870821004722
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0001870821004722
+      \endverb
+      \keyw{Barcodes,Sheaves,Convolution distance,Isometry theorem,Persistent homology,Topological data analysis}
+    \endentry
+    \entry{BGO19}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=e97f3d34c39a174a97730655c1e86fad}{%
+           family={Berkouk},
+           familyi={B\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=d181bb6b835d47490b1a656c7aa92a43}{%
+           family={Ginot},
+           familyi={G\bibinitperiod},
+           given={Grégory},
+           giveni={G\bibinitperiod}}}%
+        {{hash=f0013896254c7da2273202eb956740a2}{%
+           family={Oudot},
+           familyi={O\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{13e6539e93f986ac2214dbbf99caa346}
+      \strng{fullhash}{13e6539e93f986ac2214dbbf99caa346}
+      \strng{bibnamehash}{13e6539e93f986ac2214dbbf99caa346}
+      \strng{authorbibnamehash}{13e6539e93f986ac2214dbbf99caa346}
+      \strng{authornamehash}{13e6539e93f986ac2214dbbf99caa346}
+      \strng{authorfullhash}{13e6539e93f986ac2214dbbf99caa346}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Available at \url{https://arxiv.org/abs/1907.09759}}
+      \field{title}{Level-sets persistence and sheaf theory}
+      \field{year}{2019}
+      \verb{doi}
+      \verb 10.48550/ARXIV.1907.09759
+      \endverb
+      \keyw{Algebraic Topology (math.AT),Computational Geometry (cs.CG),FOS: Mathematics,FOS: Mathematics,FOS: Computer and information sciences,FOS: Computer and information sciences}
+    \endentry
+    \entry{BP22}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=e97f3d34c39a174a97730655c1e86fad}{%
+           family={Berkouk},
+           familyi={B\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=6d7f897bb184c6a35aa58538ac5dae92}{%
+           family={Petit},
+           familyi={P\bibinitperiod},
+           given={Francois},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{ec00dc86036cd3ee7dcf639b66428e5f}
+      \strng{fullhash}{ec00dc86036cd3ee7dcf639b66428e5f}
+      \strng{bibnamehash}{ec00dc86036cd3ee7dcf639b66428e5f}
+      \strng{authorbibnamehash}{ec00dc86036cd3ee7dcf639b66428e5f}
+      \strng{authornamehash}{ec00dc86036cd3ee7dcf639b66428e5f}
+      \strng{authorfullhash}{ec00dc86036cd3ee7dcf639b66428e5f}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Projected distances for multi-parameter persistence modules}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.48550/ARXIV.2206.08818
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2206.08818
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2206.08818
+      \endverb
+      \keyw{Algebraic Topology (math.AT),Computational Geometry (cs.CG),FOS: Mathematics,FOS: Mathematics,FOS: Computer and information sciences,FOS: Computer and information sciences}
+    \endentry
+    \entry{Bjer16}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=fe13869a46a3fbae6eb56273c48a4c95}{%
+           family={Bjerkevik},
+           familyi={B\bibinitperiod},
+           given={Håvard\bibnamedelima Bakke},
+           giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{fe13869a46a3fbae6eb56273c48a4c95}
+      \strng{fullhash}{fe13869a46a3fbae6eb56273c48a4c95}
+      \strng{bibnamehash}{fe13869a46a3fbae6eb56273c48a4c95}
+      \strng{authorbibnamehash}{fe13869a46a3fbae6eb56273c48a4c95}
+      \strng{authornamehash}{fe13869a46a3fbae6eb56273c48a4c95}
+      \strng{authorfullhash}{fe13869a46a3fbae6eb56273c48a4c95}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Stability of higher-dimensional interval decomposable persistence modules}
+      \field{year}{2016}
+      \verb{doi}
+      \verb 10.48550/ARXIV.1609.02086
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1609.02086
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1609.02086
+      \endverb
+      \keyw{Algebraic Topology (math.AT),Computational Geometry (cs.CG),Combinatorics (math.CO),FOS: Mathematics,FOS: Mathematics,FOS: Computer and information sciences,FOS: Computer and information sciences}
+    \endentry
+    \entry{2018}{article}{}
+      \name{author}{2}{}{%
+        {{hash=29965aa600b3ddfc4bfb4c9da959979a}{%
+           family={Botnan},
+           familyi={B\bibinitperiod},
+           given={Magnus},
+           giveni={M\bibinitperiod}}}%
+        {{hash=14544c90506aa2f3148e195c2237b5b6}{%
+           family={Lesnick},
+           familyi={L\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Mathematical Sciences Publishers}%
+      }
+      \strng{namehash}{83d1d26f677d6e68b3a3cb14b671b231}
+      \strng{fullhash}{83d1d26f677d6e68b3a3cb14b671b231}
+      \strng{bibnamehash}{83d1d26f677d6e68b3a3cb14b671b231}
+      \strng{authorbibnamehash}{83d1d26f677d6e68b3a3cb14b671b231}
+      \strng{authornamehash}{83d1d26f677d6e68b3a3cb14b671b231}
+      \strng{authorfullhash}{83d1d26f677d6e68b3a3cb14b671b231}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1472-2747}
+      \field{journaltitle}{Algebraic \& Geometric Topology}
+      \field{month}{10}
+      \field{number}{6}
+      \field{title}{Algebraic stability of zigzag persistence modules}
+      \field{volume}{18}
+      \field{year}{2018}
+      \field{pages}{3133\bibrangedash 3204}
+      \range{pages}{72}
+      \verb{doi}
+      \verb 10.2140/agt.2018.18.3133
+      \endverb
+      \verb{urlraw}
+      \verb http://dx.doi.org/10.2140/agt.2018.18.3133
+      \endverb
+      \verb{url}
+      \verb http://dx.doi.org/10.2140/agt.2018.18.3133
+      \endverb
+    \endentry
+    \entry{BotCraw18}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=864f6a35c5349fc201711baf19b45c90}{%
+           family={Botnan},
+           familyi={B\bibinitperiod},
+           given={Magnus\bibnamedelima Bakke},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=ee3c0ecdee75a34a1be977e9970a8e0c}{%
+           family={Crawley-Boevey},
+           familyi={C\bibinithyphendelim B\bibinitperiod},
+           given={William},
+           giveni={W\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{4b27228b766b45e8d8b5bc1f15a356f4}
+      \strng{fullhash}{4b27228b766b45e8d8b5bc1f15a356f4}
+      \strng{bibnamehash}{4b27228b766b45e8d8b5bc1f15a356f4}
+      \strng{authorbibnamehash}{4b27228b766b45e8d8b5bc1f15a356f4}
+      \strng{authornamehash}{4b27228b766b45e8d8b5bc1f15a356f4}
+      \strng{authorfullhash}{4b27228b766b45e8d8b5bc1f15a356f4}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Decomposition of persistence modules}
+      \field{year}{2018}
+      \verb{doi}
+      \verb 10.48550/ARXIV.1811.08946
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1811.08946
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1811.08946
+      \endverb
+      \keyw{Representation Theory (math.RT),Algebraic Topology (math.AT),FOS: Mathematics,FOS: Mathematics}
+    \endentry
+    \entry{Brown21}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=d58935697175c4b95e2de871203943d8}{%
+           family={Brown},
+           familyi={B\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=5ecb3ce9b055be0885967180f9d6fd95}{%
+           family={Draganov},
+           familyi={D\bibinitperiod},
+           given={Ondrej},
+           giveni={O\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{227d6d710964ee8a518f5c2726994911}
+      \strng{fullhash}{227d6d710964ee8a518f5c2726994911}
+      \strng{bibnamehash}{227d6d710964ee8a518f5c2726994911}
+      \strng{authorbibnamehash}{227d6d710964ee8a518f5c2726994911}
+      \strng{authornamehash}{227d6d710964ee8a518f5c2726994911}
+      \strng{authorfullhash}{227d6d710964ee8a518f5c2726994911}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Computing Minimal Injective Resolutions of Sheaves on Finite Posets}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.48550/ARXIV.2112.02609
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2112.02609
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2112.02609
+      \endverb
+      \keyw{Algebraic Topology (math.AT),Computational Geometry (cs.CG),FOS: Mathematics,FOS: Mathematics,FOS: Computer and information sciences,FOS: Computer and information sciences}
+    \endentry
+    \entry{carlsson2008zigzag}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=86916713a3861f9e4e6fa5e0ce4c7b44}{%
+           family={Carlsson},
+           familyi={C\bibinitperiod},
+           given={Gunnar},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8914ed3ba6a5221539f9df16b4db08ac}{%
+           family={Silva},
+           familyi={S\bibinitperiod},
+           given={Vin},
+           giveni={V\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+      }
+      \strng{namehash}{919c95c5a363727687c1be4e5e0eefb5}
+      \strng{fullhash}{919c95c5a363727687c1be4e5e0eefb5}
+      \strng{bibnamehash}{919c95c5a363727687c1be4e5e0eefb5}
+      \strng{authorbibnamehash}{919c95c5a363727687c1be4e5e0eefb5}
+      \strng{authornamehash}{919c95c5a363727687c1be4e5e0eefb5}
+      \strng{authorfullhash}{919c95c5a363727687c1be4e5e0eefb5}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CG}
+      \field{eprinttype}{arXiv}
+      \field{title}{Zigzag Persistence}
+      \field{year}{2008}
+      \verb{eprint}
+      \verb 0812.0197
+      \endverb
+    \endentry
+    \entry{10.1145/1542362.1542408}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=86916713a3861f9e4e6fa5e0ce4c7b44}{%
+           family={Carlsson},
+           familyi={C\bibinitperiod},
+           given={Gunnar},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8914ed3ba6a5221539f9df16b4db08ac}{%
+           family={Silva},
+           familyi={S\bibinitperiod},
+           given={Vin},
+           giveni={V\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+        {{hash=c5974ad004055b15c70e7bf9bb8cd655}{%
+           family={Morozov},
+           familyi={M\bibinitperiod},
+           given={Dmitriy},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Aarhus, Denmark}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{58a77f776f171e0cc47edb3935437c98}
+      \strng{fullhash}{58a77f776f171e0cc47edb3935437c98}
+      \strng{bibnamehash}{58a77f776f171e0cc47edb3935437c98}
+      \strng{authorbibnamehash}{58a77f776f171e0cc47edb3935437c98}
+      \strng{authornamehash}{58a77f776f171e0cc47edb3935437c98}
+      \strng{authorfullhash}{58a77f776f171e0cc47edb3935437c98}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We study the problem of computing zigzag persistence of a sequence of homology groups and study a particular sequence derived from the levelsets of a real-valued function on a topological space. The result is a local, symmetric interval descriptor of the function. Our structural results establish a connection between the zigzag pairs in this sequence and extended persistence, and in the process resolve an open question associated with the latter. Our algorithmic results not only provide a way to compute zigzag persistence for any sequence of homology groups, but combined with our structural results give a novel algorithm for computing extended persistence. This algorithm is easily parallelizable and uses (asymptotically) less memory.}
+      \field{booktitle}{Proceedings of the Twenty-Fifth Annual Symposium on Computational Geometry}
+      \field{isbn}{9781605585017}
+      \field{series}{SCG '09}
+      \field{title}{Zigzag Persistent Homology and Real-Valued Functions}
+      \field{year}{2009}
+      \field{pages}{247\bibrangedash 256}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1145/1542362.1542408
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/1542362.1542408
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/1542362.1542408
+      \endverb
+      \keyw{extended persistence,algorithms,zigzag persistent homology,levelset zigzag,Mayer-Vietoris pyramid}
+    \endentry
+    \entry{Cochoy16}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=11c2a6c7165faca6cdce2718f2d2e767}{%
+           family={Cochoy},
+           familyi={C\bibinitperiod},
+           given={Jérémy},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f0013896254c7da2273202eb956740a2}{%
+           family={Oudot},
+           familyi={O\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{b6735415a112c5ed0495f5d276dbd3d2}
+      \strng{fullhash}{b6735415a112c5ed0495f5d276dbd3d2}
+      \strng{bibnamehash}{b6735415a112c5ed0495f5d276dbd3d2}
+      \strng{authorbibnamehash}{b6735415a112c5ed0495f5d276dbd3d2}
+      \strng{authornamehash}{b6735415a112c5ed0495f5d276dbd3d2}
+      \strng{authorfullhash}{b6735415a112c5ed0495f5d276dbd3d2}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Decomposition of exact pfd persistence bimodules}
+      \field{year}{2016}
+      \verb{doi}
+      \verb 10.48550/ARXIV.1605.09726
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1605.09726
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1605.09726
+      \endverb
+      \keyw{Representation Theory (math.RT),Algebraic Topology (math.AT),FOS: Mathematics,FOS: Mathematics}
+    \endentry
+    \entry{article}{article}{}
+      \name{author}{3}{}{%
+        {{hash=4412c7eaa756bb325544230d2ba79440}{%
+           family={Cohen-Steiner},
+           familyi={C\bibinithyphendelim S\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=a32d61ef7947b60c5805e6dd35fa4fa7}{%
+           family={Edelsbrunner},
+           familyi={E\bibinitperiod},
+           given={Herbert},
+           giveni={H\bibinitperiod}}}%
+        {{hash=f7016154766fb29a7cbdae6dad5d1220}{%
+           family={Harer},
+           familyi={H\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{4d157d8265982633273d08f7124d0520}
+      \strng{fullhash}{4d157d8265982633273d08f7124d0520}
+      \strng{bibnamehash}{4d157d8265982633273d08f7124d0520}
+      \strng{authorbibnamehash}{4d157d8265982633273d08f7124d0520}
+      \strng{authornamehash}{4d157d8265982633273d08f7124d0520}
+      \strng{authorfullhash}{4d157d8265982633273d08f7124d0520}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Foundations of Computational Mathematics}
+      \field{month}{02}
+      \field{title}{Extending Persistence Using Poincaré and Lefschetz Duality}
+      \field{volume}{9}
+      \field{year}{2009}
+      \field{pages}{79\bibrangedash 103}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.1007/s10208-008-9027-z
+      \endverb
+    \endentry
+    \entry{dey2022computational}{book}{}
+      \name{author}{2}{}{%
+        {{hash=16119264ef1bc4f0c79ce236ba5dadf0}{%
+           family={Dey},
+           familyi={D\bibinitperiod},
+           given={T.K.},
+           giveni={T\bibinitperiod}}}%
+        {{hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{664dfae582418cbdf51ec43f4f2e36e0}
+      \strng{fullhash}{664dfae582418cbdf51ec43f4f2e36e0}
+      \strng{bibnamehash}{664dfae582418cbdf51ec43f4f2e36e0}
+      \strng{authorbibnamehash}{664dfae582418cbdf51ec43f4f2e36e0}
+      \strng{authornamehash}{664dfae582418cbdf51ec43f4f2e36e0}
+      \strng{authorfullhash}{664dfae582418cbdf51ec43f4f2e36e0}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9781009098168}
+      \field{title}{Computational Topology for Data Analysis}
+      \field{year}{2022}
+      \verb{urlraw}
+      \verb https://books.google.fr/books?id=AqubzgEACAAJ
+      \endverb
+      \verb{url}
+      \verb https://books.google.fr/books?id=AqubzgEACAAJ
+      \endverb
+    \endentry
+    \entry{dey2021computing}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=ba42a701b2de180d0d456c232d19f008}{%
+           family={Dey},
+           familyi={D\bibinitperiod},
+           given={Tamal\bibnamedelima K.},
+           giveni={T\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=f09bc5500e8145b95fa5a0f417aa17b9}{%
+           family={Hou},
+           familyi={H\bibinitperiod},
+           given={Tao},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{fullhash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{bibnamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authorbibnamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authornamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authorfullhash}{58452bced9a09cda05db4d3828814ddf}
+      \field{extraname}{1}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CG}
+      \field{eprinttype}{arXiv}
+      \field{title}{Computing Optimal Persistent Cycles for Levelset Zigzag on Manifold-like Complexes}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2105.00518
+      \endverb
+    \endentry
+    \entry{dey2021computing_}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=ba42a701b2de180d0d456c232d19f008}{%
+           family={Dey},
+           familyi={D\bibinitperiod},
+           given={Tamal\bibnamedelima K.},
+           giveni={T\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=f09bc5500e8145b95fa5a0f417aa17b9}{%
+           family={Hou},
+           familyi={H\bibinitperiod},
+           given={Tao},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{fullhash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{bibnamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authorbibnamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authornamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authorfullhash}{58452bced9a09cda05db4d3828814ddf}
+      \field{extraname}{2}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CG}
+      \field{eprinttype}{arXiv}
+      \field{title}{Computing Zigzag Persistence on Graphs in Near-Linear Time}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2103.07353
+      \endverb
+    \endentry
+    \entry{Dey22}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=ba42a701b2de180d0d456c232d19f008}{%
+           family={Dey},
+           familyi={D\bibinitperiod},
+           given={Tamal\bibnamedelima K.},
+           giveni={T\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=f09bc5500e8145b95fa5a0f417aa17b9}{%
+           family={Hou},
+           familyi={H\bibinitperiod},
+           given={Tao},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{fullhash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{bibnamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authorbibnamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authornamehash}{58452bced9a09cda05db4d3828814ddf}
+      \strng{authorfullhash}{58452bced9a09cda05db4d3828814ddf}
+      \field{extraname}{3}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Fast Computation of Zigzag Persistence}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.48550/ARXIV.2204.11080
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2204.11080
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2204.11080
+      \endverb
+      \keyw{Computational Geometry (cs.CG),Algebraic Topology (math.AT),FOS: Computer and information sciences,FOS: Computer and information sciences,FOS: Mathematics,FOS: Mathematics}
+    \endentry
+    \entry{Kim21}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=ba42a701b2de180d0d456c232d19f008}{%
+           family={Dey},
+           familyi={D\bibinitperiod},
+           given={Tamal\bibnamedelima K.},
+           giveni={T\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=d69419ed89125eda9c59938ca47a76f7}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Woojin},
+           giveni={W\bibinitperiod}}}%
+        {{hash=2fd11e676a24c6aabdc0a0823f559d23}{%
+           family={Mémoli},
+           familyi={M\bibinitperiod},
+           given={Facundo},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{54c1db9d402586f8e98ee682b95d0574}
+      \strng{fullhash}{54c1db9d402586f8e98ee682b95d0574}
+      \strng{bibnamehash}{54c1db9d402586f8e98ee682b95d0574}
+      \strng{authorbibnamehash}{54c1db9d402586f8e98ee682b95d0574}
+      \strng{authornamehash}{54c1db9d402586f8e98ee682b95d0574}
+      \strng{authorfullhash}{54c1db9d402586f8e98ee682b95d0574}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Computing Generalized Rank Invariant for 2-Parameter Persistence Modules via Zigzag Persistence and its Applications}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.48550/ARXIV.2111.15058
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2111.15058
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2111.15058
+      \endverb
+      \keyw{Algebraic Topology (math.AT),Computational Geometry (cs.CG),FOS: Mathematics,FOS: Mathematics,FOS: Computer and information sciences,FOS: Computer and information sciences}
+    \endentry
+    \entry{Hatcher:478079}{book}{}
+      \name{author}{1}{}{%
+        {{hash=0a94eadf86d8b878d4c37bc5640e53e3}{%
+           family={Hatcher},
+           familyi={H\bibinitperiod},
+           given={Allen},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cambridge}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge Univ. Press}%
+      }
+      \strng{namehash}{0a94eadf86d8b878d4c37bc5640e53e3}
+      \strng{fullhash}{0a94eadf86d8b878d4c37bc5640e53e3}
+      \strng{bibnamehash}{0a94eadf86d8b878d4c37bc5640e53e3}
+      \strng{authorbibnamehash}{0a94eadf86d8b878d4c37bc5640e53e3}
+      \strng{authornamehash}{0a94eadf86d8b878d4c37bc5640e53e3}
+      \strng{authorfullhash}{0a94eadf86d8b878d4c37bc5640e53e3}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{Algebraic topology}}
+      \field{year}{2000}
+      \verb{urlraw}
+      \verb https://cds.cern.ch/record/478079
+      \endverb
+      \verb{url}
+      \verb https://cds.cern.ch/record/478079
+      \endverb
+    \endentry
+    \entry{KS90}{book}{}
+      \name{author}{2}{}{%
+        {{hash=7728566dd6f1cf6ad017febed2559c69}{%
+           family={Kashiwara},
+           familyi={K\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=46a60abcb8d78aa153ee76ad5ce5d91c}{%
+           family={Schapira},
+           familyi={S\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag}%
+      }
+      \strng{namehash}{3f4898f157de1655a5ca27ee961d21a1}
+      \strng{fullhash}{3f4898f157de1655a5ca27ee961d21a1}
+      \strng{bibnamehash}{3f4898f157de1655a5ca27ee961d21a1}
+      \strng{authorbibnamehash}{3f4898f157de1655a5ca27ee961d21a1}
+      \strng{authornamehash}{3f4898f157de1655a5ca27ee961d21a1}
+      \strng{authorfullhash}{3f4898f157de1655a5ca27ee961d21a1}
+      \field{extraname}{1}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{3-540-51861-4}
+      \field{note}{With a chapter in French by Christian Houzel}
+      \field{series}{Grundlehren der Mathematischen Wissenschaften}
+      \field{title}{Sheaves on manifolds}
+      \field{volume}{292}
+      \field{year}{1990}
+      \field{pages}{x+512}
+      \range{pages}{-1}
+    \endentry
+    \entry{KS18}{article}{}
+      \name{author}{2}{}{%
+        {{hash=b7bb8fb56d75656703f28621f0b6f412}{%
+           family={Kashiwara},
+           familyi={K\bibinitperiod},
+           given={Masaki},
+           giveni={M\bibinitperiod}}}%
+        {{hash=293299db3b6075e5092ae25eeea861ae}{%
+           family={Schapira},
+           familyi={S\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{635bcffc280fb5c48749bcb90f36612a}
+      \strng{fullhash}{635bcffc280fb5c48749bcb90f36612a}
+      \strng{bibnamehash}{635bcffc280fb5c48749bcb90f36612a}
+      \strng{authorbibnamehash}{635bcffc280fb5c48749bcb90f36612a}
+      \strng{authornamehash}{635bcffc280fb5c48749bcb90f36612a}
+      \strng{authorfullhash}{635bcffc280fb5c48749bcb90f36612a}
+      \field{extraname}{2}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{J. Appl. Comput. Topol.}
+      \field{number}{1-2}
+      \field{title}{Persistent homology and microlocal sheaf theory}
+      \field{volume}{2}
+      \field{year}{2018}
+      \field{pages}{83\bibrangedash 113}
+      \range{pages}{31}
+      \verb{doi}
+      \verb 10.1007/s41468-018-0019-z
+      \endverb
+    \endentry
+    \entry{Dionysus}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=c5974ad004055b15c70e7bf9bb8cd655}{%
+           family={Morozov},
+           familyi={M\bibinitperiod},
+           given={Dmitriy},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{c5974ad004055b15c70e7bf9bb8cd655}
+      \strng{fullhash}{c5974ad004055b15c70e7bf9bb8cd655}
+      \strng{bibnamehash}{c5974ad004055b15c70e7bf9bb8cd655}
+      \strng{authorbibnamehash}{c5974ad004055b15c70e7bf9bb8cd655}
+      \strng{authornamehash}{c5974ad004055b15c70e7bf9bb8cd655}
+      \strng{authorfullhash}{c5974ad004055b15c70e7bf9bb8cd655}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{available at \url{https://www.mrzv.org/software/dionysus2/}}
+      \field{title}{Dionysus 2 : a software to compute persistent homology}
+    \endentry
+    \entry{oudot:hal-01247501}{book}{}
+      \name{author}{1}{}{%
+        {{hash=b29baae604ac6888d88812ba52629add}{%
+           family={Oudot},
+           familyi={O\bibinitperiod},
+           given={Steve\bibnamedelima Y.},
+           giveni={S\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Mathematical Society}%
+      }
+      \strng{namehash}{b29baae604ac6888d88812ba52629add}
+      \strng{fullhash}{b29baae604ac6888d88812ba52629add}
+      \strng{bibnamehash}{b29baae604ac6888d88812ba52629add}
+      \strng{authorbibnamehash}{b29baae604ac6888d88812ba52629add}
+      \strng{authornamehash}{b29baae604ac6888d88812ba52629add}
+      \strng{authorfullhash}{b29baae604ac6888d88812ba52629add}
+      \field{sortinit}{O}
+      \field{sortinithash}{ff8d4eeb5101e3cf3809959b3592d942}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{209}
+      \field{series}{Mathematical Surveys and Monographs}
+      \field{title}{{Persistence Theory: From Quiver Representations to Data Analysis}}
+      \field{year}{2015}
+      \field{pages}{218}
+      \range{pages}{1}
+      \verb{urlraw}
+      \verb https://hal.inria.fr/hal-01247501
+      \endverb
+      \verb{url}
+      \verb https://hal.inria.fr/hal-01247501
+      \endverb
+    \endentry
+    \entry{gudhi:urm}{book}{}
+      \name{author}{1}{}{%
+        {{hash=7703a7722911ce08f9e2f3319257465c}{%
+           family={{The GUDHI Project}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {GUDHI Editorial Board}%
+      }
+      \strng{namehash}{7703a7722911ce08f9e2f3319257465c}
+      \strng{fullhash}{7703a7722911ce08f9e2f3319257465c}
+      \strng{bibnamehash}{7703a7722911ce08f9e2f3319257465c}
+      \strng{authorbibnamehash}{7703a7722911ce08f9e2f3319257465c}
+      \strng{authornamehash}{7703a7722911ce08f9e2f3319257465c}
+      \strng{authorfullhash}{7703a7722911ce08f9e2f3319257465c}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{{3.5.0}}
+      \field{title}{{GUDHI} User and Reference Manual}
+      \field{year}{2022}
+      \verb{urlraw}
+      \verb https://gudhi.inria.fr/doc/3.5.0/
+      \endverb
+      \verb{url}
+      \verb https://gudhi.inria.fr/doc/3.5.0/
+      \endverb
+    \endentry
+    \entry{Tur13}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=a882bd4b16bda6eab3bc499934e2c86b}{%
+           family={Turner},
+           familyi={T\bibinitperiod},
+           given={Katharine},
+           giveni={K\bibinitperiod}}}%
+        {{hash=49a355d0c2a2e9b223f90f3e0088cb29}{%
+           family={Mukherjee},
+           familyi={M\bibinitperiod},
+           given={Sayan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=aa3d908b01bf79929a7eb6e9b5009339}{%
+           family={Boyer},
+           familyi={B\bibinitperiod},
+           given={Doug\bibnamedelima M},
+           giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{48d2cf68f0e5e287bcbda4eb8c74da6f}
+      \strng{fullhash}{48d2cf68f0e5e287bcbda4eb8c74da6f}
+      \strng{bibnamehash}{48d2cf68f0e5e287bcbda4eb8c74da6f}
+      \strng{authorbibnamehash}{48d2cf68f0e5e287bcbda4eb8c74da6f}
+      \strng{authornamehash}{48d2cf68f0e5e287bcbda4eb8c74da6f}
+      \strng{authorfullhash}{48d2cf68f0e5e287bcbda4eb8c74da6f}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Persistent Homology Transform for Modeling Shapes and Surfaces}
+      \field{year}{2013}
+      \verb{doi}
+      \verb 10.48550/ARXIV.1310.1030
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1310.1030
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1310.1030
+      \endverb
+      \keyw{Statistics Theory (math.ST),FOS: Mathematics,FOS: Mathematics}
+    \endentry
+    \entry{Tur22}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=a882bd4b16bda6eab3bc499934e2c86b}{%
+           family={Turner},
+           familyi={T\bibinitperiod},
+           given={Katharine},
+           giveni={K\bibinitperiod}}}%
+        {{hash=ee60117a5064f88b4f9c2ff0adc22a12}{%
+           family={Robins},
+           familyi={R\bibinitperiod},
+           given={Vanessa},
+           giveni={V\bibinitperiod}}}%
+        {{hash=da3ba8eebf09d75a3bedd1169f2af0a5}{%
+           family={Morgan},
+           familyi={M\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{b61a73eee67e7061d9942c2eadc4eb02}
+      \strng{fullhash}{b61a73eee67e7061d9942c2eadc4eb02}
+      \strng{bibnamehash}{b61a73eee67e7061d9942c2eadc4eb02}
+      \strng{authorbibnamehash}{b61a73eee67e7061d9942c2eadc4eb02}
+      \strng{authornamehash}{b61a73eee67e7061d9942c2eadc4eb02}
+      \strng{authorfullhash}{b61a73eee67e7061d9942c2eadc4eb02}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{The Extended Persistent Homology Transform of manifolds with boundary}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.48550/ARXIV.2208.14583
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2208.14583
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2208.14583
+      \endverb
+      \keyw{Algebraic Topology (math.AT),FOS: Mathematics,FOS: Mathematics,55N31}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

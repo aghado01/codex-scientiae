@@ -1,0 +1,110 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2605.00363v1",
+  "initialized_utc": "2026-08-11T08:30:04.525247Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "manuscript.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Profile Likelihood Inference for Anisotropic Hyperbolic Wrapped Normal Models on Hyperbolic Space",
+        "authors_tex": [
+          "Kisung You"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 219,
+        "sha256": "617532b3e6913e02fae667c6759390dfa4031514d63891614b45a74f061bb96b"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2605.00363v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 379645,
+      "sha256": "68679b56188676aa397d552e2aa7a33761ae53186225528acc82fee91b1b416b",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2605.00363v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2605.00363v1.tar.gz",
+      "entrypoint": "manuscript.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 7,
+      "tex_files": 2,
+      "sha256": "3b5c84c5d9f4c67fd6cf3b5929075e645906f351e878b2bd469f67b6cc8c04ee"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2605.00363v1.pdf",
+      "format": "application/pdf",
+      "bytes": 600474,
+      "sha256": "bbe96bce1b624d773904f7aabe2685a41517311d081cbb7dc31e40fa9aab9f80"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T08:30:04.525247Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 8
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 7
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "manuscript.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

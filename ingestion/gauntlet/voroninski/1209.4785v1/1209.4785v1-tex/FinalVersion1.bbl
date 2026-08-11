@@ -1,0 +1,53 @@
+\begin{thebibliography}{1}
+
+\bibitem{Edidin}
+R.~Balan, P.G. Casazza, and D.~Edidin.
+\newblock On signal reconstruction without noisy phase.
+\newblock {\em Appl.\ Comp.\ Harm.\ Anal.}, 20:345--356, 2006.
+
+\bibitem{Boyd}
+S.~Boyd and L.~Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Cambridge University Press, 2004.
+
+\bibitem{CRT06}
+E.~Cand{\`e}s, J.~Romberg, and T.~Tao.
+\newblock Robust uncertainty principles: exact signal reconstruction from
+  highly incomplete frequency information.
+\newblock {\em IEEE Trans. Inform. Theory}, 52(2):489--509, 2006.
+
+\bibitem{ImprovedPhaseLift}
+E.~J. Cand{\`e}s. and X.~Li.
+\newblock Solving quadratic equations via phaselift when there are about as
+  many equations as unknowns.
+\newblock {\em ArXiv e-prints}, August 2012.
+
+\bibitem{PhaseLift2}
+E.~J. Cand{\`e}s, T.~Strohmer, and V.~Voroninski.
+\newblock Phaselift: Exact and stable signal recovery from magnitude
+  measurements via convex programming.
+\newblock To appear in {\em Comm. Pure Appl. Math.}, 2011.
+
+\bibitem{Donoho06}
+D.~Donoho.
+\newblock Compressed sensing.
+\newblock {\em IEEE Trans. Inform. Theory}, 52(4):1289 -- 1306, 2006.
+
+\bibitem{Gross09}
+D.~Gross.
+\newblock Recovering low-rank matrices from few coefficients in any basis.
+\newblock {\em IEEE Trans. on Information Theory}, 57(3):1548--1566, 2011.
+
+\bibitem{CPR}
+H.~Ohlsson, A.~Y. Yang, R.~Dong, and S.~S. Sastry.
+\newblock Compressive phase retrieval from squared output measurements via
+  semidefinite programming.
+\newblock {\em ArXiv e-prints}, Mar 2012.
+
+\bibitem{VershyninRMT}
+R.~Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.~C. Eldar and G.~Kutyniok, editors, {\em Compressed Sensing:
+  Theory and Applications}, pages 210--268. Cambridge University Press, 2012.
+
+\end{thebibliography}

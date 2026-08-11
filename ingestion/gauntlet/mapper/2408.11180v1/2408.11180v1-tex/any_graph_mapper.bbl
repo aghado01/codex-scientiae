@@ -1,0 +1,138 @@
+\begin{thebibliography}{10}
+
+\bibitem{alexandroff37}
+Pavel Alexandrov.
+\newblock Diskrete raume.
+\newblock {\em Matematicheskii Sbornik}, 2:501--519, 1937.
+
+\bibitem{alvarado2023g}
+Enrique Alvarado, Robin Belton, Emily Fischer, Kang-Ju Lee, Sourabh Palande, Sarah Percival, and Emilie Purvine.
+\newblock {$G$}-mapper: Learning a cover in the mapper construction.
+\newblock {\em arXiv preprint arXiv:2309.06634}, 2023.
+
+\bibitem{Bauer_2023}
+Ulrich Bauer, Michael Kerber, Fabian Roll, and Alexander Rolle.
+\newblock A unified view on the functorial nerve theorem and its variations.
+\newblock {\em Expositiones Mathematicae}, 41(4):125503, December 2023.
+
+\bibitem{bui2020f}
+Quang-Thinh Bui, Bay Vo, Hoang-Anh~Nguyen Do, Nguyen Quoc~Viet Hung, and Vaclav Snasel.
+\newblock F-mapper: A fuzzy mapper clustering algorithm.
+\newblock {\em Knowledge-Based Systems}, 189:105107, 2020.
+
+\bibitem{carlsson2009topology}
+Gunnar Carlsson.
+\newblock Topology and data.
+\newblock {\em Bulletin of the American Mathematical Society}, 46(2):255--308, 2009.
+
+\bibitem{carlsson2021topological}
+Gunnar Carlsson and Mikael Vejdemo-Johansson.
+\newblock {\em Topological data analysis with applications}.
+\newblock Cambridge University Press, 2021.
+
+\bibitem{chalapathi2021adaptive}
+Nithin Chalapathi, Youjia Zhou, and Bei Wang.
+\newblock Adaptive covers for mapper graphs using information criteria.
+\newblock In {\em 2021 IEEE International Conference on Big Data (Big Data)}, pages 3789--3800. IEEE, 2021.
+
+\bibitem{evans2018measure}
+Lawrence~Craig Evans.
+\newblock {\em Measure theory and fine properties of functions}.
+\newblock Routledge, 2018.
+
+\bibitem{federer2014geometric}
+Herbert Federer.
+\newblock {\em Geometric measure theory}.
+\newblock Springer, 2014.
+
+\bibitem{fefferman2009whitney}
+Charles Fefferman.
+\newblock Whitney’s extension problems and interpolation of data.
+\newblock {\em Bulletin of the American Mathematical Society}, 46(2):207--220, 2009.
+
+\bibitem{fefferman2020fitting}
+Charles Fefferman and Arie Israel.
+\newblock {\em Fitting smooth functions to data}, volume 135.
+\newblock American Mathematical Soc., 2020.
+
+\bibitem{flores1933n}
+Antonio Flores.
+\newblock {\"U}ber n-dimensionale komplexe, die im r2n+ 1 absolut selbstverschlungen sind.
+\newblock In {\em Ergeb. Math. Kolloq}, volume~34, pages 4--6, 1933.
+
+\bibitem{leray1946l}
+Jean Leray.
+\newblock L'anneau d'homologie d'une repr\'{e}sentation.
+\newblock {\em Les Comptes rendus de l'Acad`{e}mie des sciences}, 222:1366--1368, 1946.
+
+\bibitem{li2015identification}
+Li~Li, Wei-Yi Cheng, Benjamin~S Glicksberg, Omri Gottesman, Ronald Tamler, Rong Chen, Erwin~P Bottinger, and Joel~T Dudley.
+\newblock Identification of type 2 diabetes subgroups through topological analysis of patient similarity.
+\newblock {\em Science translational medicine}, 7(311):311ra174--311ra174, 2015.
+
+\bibitem{matouvsek2003using}
+Ji{\v{r}}{\'\i} Matou{\v{s}}ek, Anders Bj{\"o}rner, G{\"u}nter~M Ziegler, et~al.
+\newblock {\em Using the Borsuk-Ulam theorem: lectures on topological methods in combinatorics and geometry}, volume 2003.
+\newblock Springer, 2003.
+
+\bibitem{MunkresTopology00}
+James~R. Munkres.
+\newblock {\em Topology: Second Edition}.
+\newblock Upper Saddle River: Prentice Hall, 2000.
+
+\bibitem{nicolau2011topology}
+Monica Nicolau, Arnold~J Levine, and Gunnar Carlsson.
+\newblock Topology based data analysis identifies a subgroup of breast cancers with a unique mutational profile and excellent survival.
+\newblock {\em Proceedings of the National Academy of Sciences}, 108(17):7265--7270, 2011.
+
+\bibitem{oulhaj2024differentiable}
+Ziyad Oulhaj, Mathieu Carri{\`e}re, and Bertrand Michel.
+\newblock Differentiable mapper for topological optimization of data representation.
+\newblock {\em arXiv preprint arXiv:2402.12854}, 2024.
+
+\bibitem{oulhaj2024deep}
+Ziyad Oulhaj, Yoshiyuki Ishii, Kento Ohga, Kimihiro Yamazaki, Mutsuyo Wada, Yuhei Umeda, Takashi Kato, Yuichiro Wada, and Hiroaki Kurihara.
+\newblock Deep mapper graph and its application to visualize plausible pathways on high-dimensional distribution with small time-complexity.
+\newblock {\em arXiv preprint arXiv:2402.19177}, 2024.
+
+\bibitem{percival2024topological}
+Sarah Percival, Joyce~G Onyenedum, Daniel~H Chitwood, and Aman~Y Husbands.
+\newblock Topological data analysis reveals core heteroblastic and ontogenetic programs embedded in leaves of grapevine ({V}itaceae) and maracuy{\'a} ({P}assifloraceae).
+\newblock {\em PLOS Computational Biology}, 20(2):e1011845, 2024.
+
+\bibitem{perelman85realization}
+G.~Ya Perel'man.
+\newblock Realization of abstract $k$-skeletons of intersections of convex polyhedra in $\mathbb{R}^{2k-1}$.
+\newblock {\em Geometric Questions in the Theory of Functions and Sets}, pages 129--131, 1985.
+
+\bibitem{singh2007topological}
+Gurjeet Singh, Facundo M{\'e}moli, and Gunnar~E Carlsson.
+\newblock Topological methods for the analysis of high dimensional data sets and {3D} object recognition.
+\newblock {\em PBG@ Eurographics}, 2, 2007.
+
+\bibitem{tancer2011representability}
+Martin Tancer.
+\newblock d-representability of simplicial complexes of fixed dimension.
+\newblock {\em Journal of Computational Geometry}, 2:183--188, 2011.
+
+\bibitem{tancer13intersection}
+Martin Tancer.
+\newblock {\em Intersection Patterns of Convex Sets via Simplicial Complexes: A Survey.}, pages 521--540.
+\newblock Springer New York, 2013.
+
+\bibitem{van1933komplexe}
+Egbert~R Van~Kampen.
+\newblock Komplexe in euklidischen r{\"a}umen.
+\newblock In {\em Abhandlungen aus dem Mathematischen Seminar der Universit{\"a}t Hamburg}, volume~9, pages 72--78. Springer, 1933.
+
+\bibitem{johanssonCertified20}
+Mikael Vejdemo-Johansson and Alisa Leshchenko.
+\newblock Certified mapper: Repeated testing for acyclicity and obstructions to the nerve lemma.
+\newblock In {\em Topological Data Analysis}, pages 491--515, Cham, 2020. Springer International Publishing.
+
+\bibitem{wegner1967eigenschaften}
+G~Wegner.
+\newblock Eigenschaften der nerven homologisch-einfacher familien in $\mathbb{R}^n$.
+\newblock {\em Ph.D. thesis, GeorgAugust-Universit\"{a}t G\"{o}ttingen}, 1967.
+
+\end{thebibliography}

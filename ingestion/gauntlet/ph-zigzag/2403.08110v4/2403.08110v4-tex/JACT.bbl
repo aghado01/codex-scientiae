@@ -1,0 +1,215 @@
+\begin{thebibliography}{10}
+
+\bibitem{azumaya1950corrections}
+Gor{\^o} Azumaya.
+\newblock Corrections and supplementaries to my paper concerning
+  {K}rull-{R}emak-{S}chmidt’s theorem.
+\newblock {\em Nagoya Mathematical Journal}, 1:117--124, 1950.
+
+\bibitem{BL21}
+H{\aa}vard~Bakke Bjerkevik and Michael Lesnick.
+\newblock {$\ell$}\({}^{\mbox{p}}\)-distances on multiparameter persistence
+  modules.
+\newblock {\em CoRR}, abs/2106.13589, 2021.
+\newblock URL: \url{https://arxiv.org/abs/2106.13589}, \href
+  {http://arxiv.org/abs/2106.13589} {\path{arXiv:2106.13589}}.
+
+\bibitem{botnan2021signed}
+Magnus Botnan, Steffen Oppermann, and Steve Oudot.
+\newblock Signed barcodes for multi-parameter persistence via rank
+  decompositions and rank-exact resolutions.
+\newblock {\em arXiv preprint arXiv:2107.06800}, 2021.
+
+\bibitem{BC20}
+Magnus~Bakke Botnan and William Crawley-Boevey.
+\newblock Decomposition of persistence modules.
+\newblock {\em Proc. American Mathematical Society (AMS)}, 148(5):4581--4596,
+  2020.
+
+\bibitem{BL23}
+Magnus~Bakke Botnan and Michael Lesnick.
+\newblock An introduction to multiparameter persistence, 2023.
+\newblock \href {http://arxiv.org/abs/2203.14289} {\path{arXiv:2203.14289}}.
+
+\bibitem{BS14}
+Peter Bubenik and Jonathan~A. Scott.
+\newblock Categorification of persistent homology.
+\newblock {\em Discret. Comput. Geom.}, 51(3):600--627, 2014.
+
+\bibitem{BCCDW12}
+Oleksiy Busaryev, Sergio Cabello, Chao Chen, Tamal~K. Dey, and Yusu Wang.
+\newblock Annotating simplices with a homology basis and its applications.
+\newblock In {\em Algorithm Theory - {SWAT} 2012 - 13th Scandinavian Symposium
+  and Workshops}, volume 7357 of {\em Lecture Notes in Computer Science}, pages
+  189--200. Springer, 2012.
+
+\bibitem{carlsson2009zigzag}
+Gunnar Carlsson, Vin de~Silva, and Dmitriy Morozov.
+\newblock Zigzag persistent homology and real-valued functions.
+\newblock In {\em Proceedings of the twenty-fifth annual symposium on
+  Computational geometry}, pages 247--256, 2009.
+
+\bibitem{carlsson2009theory}
+Gunnar Carlsson and Afra Zomorodian.
+\newblock The theory of multidimensional persistence.
+\newblock {\em Discrete \& Computational Geometry}, 42(1):71--93, 2009.
+
+\bibitem{Cerri}
+A.~Cerri, B.~Di Fabio, M.~Ferri, P.~Frosini, and C.~Landi.
+\newblock Betti numbers in multidimensional persistent homology are stable
+  functions.
+\newblock {\em Mathematical Methods in the Applied Sciences},
+  36(12):1543--1557, 2013.
+
+\bibitem{chambers2018persistent}
+Erin Chambers and David Letscher.
+\newblock Persistent homology over directed acyclic graphs.
+\newblock In {\em Research in Computational Topology}, pages 11--32. Springer,
+  2018.
+
+\bibitem{CKM24}
+N.~Clause, W. Kim, and F. M\'{e}moli.
+\newblock The Generalized Rank Invariant: Möbius invertibility, Discriminating Power, and Connection to Other Invariants.
+\newblock {CoRR} (2024).
+\newblock \href  {https://arxiv.org/abs/2207.11591}.
+
+\bibitem{CraBoe94}
+William Crawley-Boevey.
+\newblock Locally finitely presented additive categories.
+\newblock {\em Communications in Algebra}, 22(5):1641--1674, 1994.
+\newblock \href
+  {http://arxiv.org/abs/https://doi.org/10.1080/00927879408824927}
+  {\path{arXiv:https://doi.org/10.1080/00927879408824927}}, \href
+  {https://doi.org/10.1080/00927879408824927}
+  {\path{doi:10.1080/00927879408824927}}.
+
+\bibitem{DH22}
+Tamal~K. Dey and Tao Hou.
+\newblock Fast computation of zigzag persistence.
+\newblock In {\em 30th European Symposium on Algorithms (ESA 2022)}, 2022.
+
+\bibitem{DHM25}
+Tamal~K. Dey, Tao Hou, and D. Morozov.
+\newblock A fast algorithm for computing zigzag representatives.
+\newblock In {\em 2025 Annual ACM-SIAM Symposium on Discrete Algorithms (SODA 2025)}, pages 3530--3546, 2025. 
+
+\bibitem{DKM22}
+Tamal~K. Dey, Woojin Kim, and Facundo M{\'{e}}moli.
+\newblock Computing generalized rank invariant for 2-parameter persistence
+  modules via zigzag persistence and its applications.
+\newblock In {\em 38th International Symposium on Computational Geometry, SoCG
+  2022}, volume 224 of {\em LIPIcs}, pages 34:1--34:17, 2022.
+
+\bibitem{DW22}
+Tamal~K. Dey and Yusu Wang.
+\newblock {\em Computational Topology for Data Analysis}.
+\newblock Cambridge University Press, 2022.
+
+\bibitem{DX22}
+Tamal~K Dey and Cheng Xin.
+\newblock Generalized persistence algorithm for decomposing multiparameter
+  persistence modules.
+\newblock {\em Journal of Applied and Computational Topology}, pages 1--52,
+  2022.
+
+\bibitem{EH2010}
+Herbert Edelsbrunner and John Harer.
+\newblock {\em Computational Topology: An Introduction}.
+\newblock American Mathematical Society, Jan 2010.
+
+\bibitem{escolar2016persistence}
+Emerson~G Escolar and Yasuaki Hiraoka.
+\newblock Persistence modules on commutative ladders of finite type.
+\newblock {\em Discrete \& Computational Geometry}, 55(1):100--157, 2016.
+
+\bibitem{Gabriel72}
+Peter Gabriel.
+\newblock {Unzerlegbare Darstellungen I}.
+\newblock {\em Manuscripta Mathematica}, 6(1):71--103, 1972.
+\newblock \href {https://doi.org/10.1007/BF01298413}
+  {\path{doi:10.1007/BF01298413}}.
+
+\bibitem{JPS13}
+Claude{-}Pierre Jeannerod, Cl{\'{e}}ment Pernet, and Arne Storjohann.
+\newblock Rank-profile revealing gaussian elimination and the {CUP} matrix
+  decomposition.
+\newblock {\em J. Symb. Comput.}, 56:46--68, 2013.
+\newblock URL: \url{https://doi.org/10.1016/j.jsc.2013.04.004}.
+
+\bibitem{KLO20}
+Michael Kerber, Michael Lesnick, and Steve Oudot.
+\newblock Exact computation of the matching distance on 2-parameter persistence
+  modules.
+\newblock {\em J. Comput. Geom.}, 11(2):4--25, 2020.
+
+\bibitem{KR21}
+Michael Kerber and Alexander Rolle.
+\newblock Fast minimal presentations of bi-graded persistence modules.
+\newblock In {\em Proceedings of the Symposium on Algorithm Engineering and
+  Experiments, {ALENEX} 2021, Virtual Conference, January 10-11, 2021}, pages
+  207--220. {SIAM}, 2021.
+
+\bibitem{kim2018generalized}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Generalized persistence diagrams for persistence modules over posets.
+\newblock {\em Journal of Applied and Computational Topology}, 5(4):533--581,
+  2021.
+
+\bibitem{Kirilov}
+Alexander Kirillov~Jr.
+\newblock {\em Quiver representations and quiver varieties}, volume 174 of
+  Graduate Studies.
+\newblock American Mathematical Society, 2016.
+
+\bibitem{lesnick2015theory}
+Michael Lesnick.
+\newblock The theory of the interleaving distance on multidimensional
+  persistence modules.
+\newblock {\em Foundations of Computational Mathematics}, 15(3):613--650, 2015.
+
+\bibitem{LW22}
+Michael Lesnick and Matthew Wright.
+\newblock Computing minimal presentations and bigraded betti numbers of
+  2-parameter persistent homology.
+\newblock {\em {SIAM} J. Appl. Algebra Geom.}, 6(2):267--298, 2022.
+
+\bibitem{mac2013categories}
+Saunders Mac~Lane.
+\newblock {\em Categories for the working mathematician}, volume~5.
+\newblock Springer Science \& Business Media, 2013.
+
+\bibitem{maria2014zigzag}
+Cl{\'e}ment Maria and Steve~Y Oudot.
+\newblock Zigzag persistence via reflections and transpositions.
+\newblock In {\em Proceedings of the Twenty-Sixth Annual ACM-SIAM Symposium on
+  Discrete Algorithms}, pages 181--199. SIAM, 2014.
+
+\bibitem{miller2019modules}
+Ezra Miller.
+\newblock Modules over posets: commutative and homological algebra.
+\newblock {\em arXiv preprint arXiv:1908.09750}, 2019.
+
+\bibitem{milosavljevic2011zigzag}
+Nikola Milosavljevi{\'c}, Dmitriy Morozov, and Primoz Skraba.
+\newblock Zigzag persistent homology in matrix multiplication time.
+\newblock In {\em Proceedings of the twenty-seventh Annual Symposium on
+  Computational Geometry}, pages 216--225, 2011.
+
+\bibitem{Oudot15}
+Steve Oudot.
+\newblock {\em Persistence Theory: From Quiver Representations to Data
+  Analysis}, volume 209.
+\newblock AMS Mathematical Surveys and Monographs, 2015.
+
+\bibitem{patel2018generalized}
+Amit Patel.
+\newblock Generalized persistence diagrams.
+\newblock {\em Journal of Applied and Computational Topology}, 1(3):397--419,
+  2018.
+
+\bibitem{SHN23}
+Anna Seigal, Heather~A. Harrington, and Vidit Nanda.
+\newblock Principal components along quiver representations.
+\newblock {\em Found. Comput. Math.}, 23(4):1129--1165, 2023.
+
+\end{thebibliography}

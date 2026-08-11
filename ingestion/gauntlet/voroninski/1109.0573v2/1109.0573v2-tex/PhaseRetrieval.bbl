@@ -1,0 +1,376 @@
+\begin{thebibliography}{10}
+
+\bibitem{BBC09}
+R.~Balan, B.~Bodmann, P.G. Casazza, and D.~Edidin.
+\newblock Painless reconstruction from magnitudes of frame coefficients.
+\newblock {\em J.\ Four.\ Anal.\ Appl.}, 15:488--501, 2009.
+
+\bibitem{BCE06}
+R.~Balan, P.G. Casazza, and D.~Edidin.
+\newblock On signal reconstruction without noisy phase.
+\newblock {\em Appl.\ Comp.\ Harm.\ Anal.}, 20:345--356, 2006.
+
+\bibitem{BCL02}
+H.H. Bauschke, P.L. Combettes, and D.R. Luke.
+\newblock Phase retrieval, error reduction algorithm, and {Fienup} variants: a
+  view from convex optimization.
+\newblock {\em J. Opt. Soc. Am. A}, 19(7):1334--1345, 2002.
+
+\bibitem{FISTA}
+A.~Beck and M.~Teboulle.
+\newblock A fast iterative shrinkage-thresholding algorithm for linear inverse
+  problems.
+\newblock {\em SIAM Journal on Imaging Sciences}, 2(1):183--202, 2009.
+
+\bibitem{Beck98}
+C.~Beck and R.~D'Andrea.
+\newblock Computational study and comparisons of {LFT} reducibility methods.
+\newblock In {\em Proceedings of the American Control Conference}, pages
+  1013--1017, 1998.
+
+\bibitem{BCG10}
+S.~Becker, E.J. Cand{\`e}s, and M.~Grant.
+\newblock Templates for convex cone problems with applications to sparse signal
+  recovery.
+\newblock Technical report, Department of Statistics, Stanford University,
+  2010.
+\newblock Preprint available at http://tfocs.stanford.edu/tfocs/paper.shtml.
+
+\bibitem{BenTalNem}
+A.~Ben-Tal and A.~S. Nemirovski.
+\newblock {\em Lectures on modern convex optimization: analysis, algorithms,
+  and engineering applications}.
+\newblock MPS-SIAM series on optimization. Society for Industrial and Applied
+  Mathematics, 2001.
+
+\bibitem{BSV02}
+G.~Bianchi, F.~Segala, and A.~Volcic.
+\newblock The solution of the covariogram problem for plane {${\mathcal
+  C}^2_+$} convex bodies.
+\newblock {\em J.~Differential Geometry}, 60:177--198, 2002.
+
+\bibitem{Bog08}
+M.J. Bogan and et~al.
+\newblock Single particle {X-ray} diffractive imaging.
+\newblock {\em Nano Lett.}, 8(1):310--316, 2008.
+
+\bibitem{Bre65}
+L.M. Br{\`e}gman.
+\newblock The method of successive projection for finding a common point of
+  convex sets.
+\newblock {\em Soviet Math. Dokl.}, 6:688--692, 1965.
+
+\bibitem{BS79}
+Y.M. Bruck and L.G. Sodin.
+\newblock On the ambiguity of the image reconstruction problem.
+\newblock {\em Opt. Comm.}, 30:304--308, 1979.
+
+\bibitem{Bun07}
+O.~Bunk~et al.
+\newblock Diffractive imaging for periodic samples: retrieving one-dimensional
+  concentration profiles across microfluidic channels.
+\newblock {\em Acta Cryst., Section A: Foundations of Crystallography},
+  63:306--314, 2007.
+
+\bibitem{CR08}
+E.J. Cand{\`e}s and B.~Recht.
+\newblock {Exact matrix completion via convex optimization}.
+\newblock {\em Foundations of Computational Mathematics}, 9(6):717--772, 2009.
+
+\bibitem{CT09}
+E.J. Cand\`es and T.~Tao.
+\newblock {The Power of Convex Relaxation: Near-Optimal Matrix Completion}.
+\newblock {\em IEEE Trans. Inform. Theory}, 56(5):2053--2080, 2010.
+
+\bibitem{CWB07}
+E.J. Cand{\`e}s, M.B. Wakin, and S.P. Boyd.
+\newblock Enhancing sparsity by reweighted $l_1$ minimization.
+\newblock {\em J.\ Four.\ Anal.\ Appl.}, 14:877--905, 2008.
+
+\bibitem{CM97}
+A.~Carballar and M.A. Muriel.
+\newblock Phase reconstruction from reflectivity in fiber {B}ragg gratings.
+\newblock {\em J. Ligthwave Technol.}, 15(8):1314--1322, 1997.
+
+\bibitem{CMP10}
+A.~Chai, M.~Moscoso, and G.~Papanicolaou.
+\newblock Array imaging using intensity-only measurements.
+\newblock Technical report, Stanford University, 2010.
+
+\bibitem{CMW07}
+C.C. Chen, J.~Miao, C.W. Wang, and T.K. Lee.
+\newblock Application of the optimization technique to noncrystalline {X-Ray}
+  diffraction microscopy: guided hybrid input-output method ({GHIO}).
+\newblock {\em Phys. Rev. B.}, 76:064113, 2007.
+
+\bibitem{Cor06}
+J.V. Corbett.
+\newblock The {P}auli problem, state reconstruction and quantum-real numbers.
+\newblock {\em Rep. Math. Phys.}, 57:53--68, 2006.
+
+\bibitem{DF87}
+J.C. Dainty and J.R. Fienup.
+\newblock Phase retrieval and image reconstruction for astronomy.
+\newblock In H.~Stark, editor, {\em Image Recovery: Theory and Application}.
+  Academic Press, New York, 1987.
+
+\bibitem{Die10}
+M.~Dierolf and et~al.
+\newblock Ptychographic x-ray computed tomography at the nanoscale.
+\newblock {\em Nature}, 467:436--440, 2010.
+
+\bibitem{Dua11}
+H.~Duadi~et. al.
+\newblock Digital holography and phase retrieval.
+\newblock In J.~Rosen, editor, {\em Source: Holography, Research and
+  Technologies}. InTech, 2011.
+
+\bibitem{FHP10}
+A.~Faridian, D.~Hopp, G.~Pedrini, U.~Eigenthaler, Hirscher M., and W.~Osten.
+\newblock Nanoscale imaging using deep ultraviolet digital holographic
+  microscopy.
+\newblock {\em Optics Express}, 18(13):14159--14164, 2010.
+
+\bibitem{Faz02}
+M.~Fazel.
+\newblock {\em Matrix Rank Minimization with Applications}.
+\newblock PhD thesis, Stanford University, 2002.
+
+\bibitem{FHB03}
+M.~Fazel, H.~Hindi, and S.~Boyd.
+\newblock Log-det heuristic for matrix rank minimization with applications to
+  {H}ankel and {E}uclidean distance matrices.
+\newblock In {\em Proc. Am. Control Conf.}, pages 2156--2162, 2003.
+
+\bibitem{Fie78}
+J.R. Fienup.
+\newblock Reconstruction of an object from the modulus of its {F}ourier
+  transform.
+\newblock {\em Optics Letters}, 3:27--29, 1978.
+
+\bibitem{Fie82}
+J.R. Fienup.
+\newblock Phase retrieval algorithms: A comparison.
+\newblock {\em Applied Optics}, 21(15):2758--2768, 1982.
+
+\bibitem{Fin04}
+J.~Finkelstein.
+\newblock Pure-state informationally complete and {``really''} complete
+  measurements.
+\newblock {\em Phys. Rev. A}, 70:052107, 2004.
+
+\bibitem{GS72}
+R.W. Gerchberg and W.O. Saxton.
+\newblock A practical algorithm for the determination of phase from image and
+  diffraction plane pictures.
+\newblock {\em Optik}, 35:237--246, 1972.
+
+\bibitem{GoemansWilliamson}
+M.~X. Goemans and D.~P. Williamson.
+\newblock Improved approximation algorithms for maximum cut and satisfiability
+  problems using semidefinite programming.
+\newblock {\em J. ACM}, 42:1115--1145, November 1995.
+
+\bibitem{GPR67}
+L.~Gubin, B.~Polyak, and E.~Raik.
+\newblock The method of projections for finding the common point of convex
+  sets.
+\newblock {\em USTSR Comput. Math. and Math. Phys.}, 7:1--24, 1967.
+
+\bibitem{Har93}
+R.W. Harrison.
+\newblock Phase problem in crystallography.
+\newblock {\em J. Opt. Soc. Am. A}, 10(5):1045--1055, 1993.
+
+\bibitem{Hau86}
+H.~Hauptman.
+\newblock The direct methods of {X-ray} crystallography.
+\newblock {\em Science}, 233(4760):178--183, 1986.
+
+\bibitem{Hay82}
+M.~Hayes.
+\newblock The reconstruction of a multidimensional sequence from the phase or
+  magnitude of its {Fourier} transform.
+\newblock {\em IEEE Trans. Acoust., Speech, Signal Proc.}, 30:140--154, 1982.
+
+\bibitem{Hur89}
+N.~Hurt.
+\newblock {\em Phase Retrieval and Zero Crossings}.
+\newblock Kluwer Academic Publishers, Norwell, MA, 1989.
+
+\bibitem{ILB08}
+E.~Ip, A.P.T. Lau, D.J.F. Barros, and J.M. Kahn.
+\newblock Coherent detection in optical fiber systems.
+\newblock {\em Optics Express}, 16(2):753--791, 2008.
+
+\bibitem{YM99}
+Y.~Ivankovski and D.~Mendlovic.
+\newblock High-rate long-distance fiber-optic communication based on advanced
+  modulation techniques.
+\newblock {\em Applied Optics}, 38(26):5533--5540, 1999.
+
+\bibitem{Pfeiffer}
+I.~Johnson, K.~Jefimovs, O.~Bunk, C.~David, M.~Dierolf, J.~Gray, D.~Renker, and
+  F.~Pfeiffer.
+\newblock Coherent diffractive imaging using phase front modifications.
+\newblock {\em Phys. Rev. Lett.}, 100(15):155503, Apr 2008.
+
+\bibitem{Kie53}
+J.~Kiefer.
+\newblock Sequential minimax search for a maximum.
+\newblock {\em Proceedings of the American Mathematical Society},
+  4(3):502--506, 1953.
+
+\bibitem{KST95}
+M.V. Klibanov, P.E. Sacks, and A.V. Tikhonravov.
+\newblock The phase retrieval problem.
+\newblock {\em Inverse problems}, 11:1995, 1--28.
+
+\bibitem{LH87}
+A.~Levi and H.~Stark.
+\newblock Restoration from phase and magnitude by generalized projections.
+\newblock In H.~Stark, editor, {\em Image Recovery: Theory and application},
+  pages 277--320. Acad. Press, 1987.
+
+\bibitem{Liu08}
+Y.J Liu and et~al.
+\newblock Phase retrieval in x-ray imaging based on using structured
+  illumination.
+\newblock {\em Phys. Rev. A}, 78:023817, 2008.
+
+\bibitem{LP97}
+E.G. Loewen and E.~Popov.
+\newblock {\em Diffraction Gratings and Applications}.
+\newblock Marcel Dekker, 1997.
+
+\bibitem{LBL02}
+D.R. Luke, J.V. Burke, and R.G. Lyon.
+\newblock Optical wavefront reconstruction: {T}heory and numerical methods.
+\newblock {\em SIAM Rev.}, 44(2):169--224, 2002.
+
+\bibitem{Mar08}
+S.~Marchesini.
+\newblock Ab initio compressive phase retrieval.
+\newblock Preprint, [arxiv:0809.2006], 2008.
+
+\bibitem{Mar07a}
+S.~Marchesini.
+\newblock Phase retrieval and saddle-point optimization.
+\newblock {\em J. Opt. Soc. Am. A}, 24:3289--3296, 2007.
+
+\bibitem{Mar07}
+S.~Marchesini.
+\newblock A unified evaluation of iterative projection algorithms for phase
+  retrieval.
+\newblock {\em Rev. Sci. Inst.}, 78:011301 11--10, 2007.
+
+\bibitem{Mesbahi97}
+M.~Mesbahi and G.~P. Papavassilopoulos.
+\newblock On the rank minimization problem over a positive semidefinite linear
+  matrix inequality.
+\newblock {\em IEEE Transactions on Automatic Control}, 42(2):239--243, 1997.
+
+\bibitem{MIS08}
+J.~Miao, T.~Ishikawa, Q.~Shen, and T.~Earnest.
+\newblock Extending {X-Ray} crystallography to allow the imaging of
+  noncrystalline materials, cells and single protein complexes.
+\newblock {\em Annu.\ Rev.\ Phys.\ Chem.}, 59:387--410, 2008.
+
+\bibitem{MKS00}
+J.~Miao, J.~Kirz, and D.~Sayre.
+\newblock The oversampling phasing method.
+\newblock {\em Acta Cryst.}, 56:D13:12--15, 2000.
+
+\bibitem{MSC98}
+J.~Miao, D.~Sayre, and H.N. Chapman.
+\newblock Phase retrieval from the magnitude of the {Fourier} transforms of
+  nonperiodic objects.
+\newblock {\em J. Opt. Soc. Am. A}, 15(6):1662--1669, 1998.
+
+\bibitem{Mil90}
+R.P. Millane.
+\newblock Phase retrieval in crystallography and optics.
+\newblock {\em J. Opt. Soc. Am. A.}, 7:394–--411, 1990.
+
+\bibitem{Mil06}
+R.P. Millane.
+\newblock Recent advances in phase retrieval.
+\newblock In P.J. Bones, M.A. Fiddy, and R.P. Millane, editors, {\em Image
+  Reconstruction from Incomplete Data IV}, volume 6316 of {\em Proc. SPIE},
+  pages 63160E/1--11, 2006.
+
+\bibitem{Mis73}
+D.L. Misell.
+\newblock A method for the solution of the phase problem in electron
+  microscopy.
+\newblock {\em J. Phys. D: App. Phy.}, 6(1):L6--L9, 1973.
+
+\bibitem{NesterovBook}
+Y.~Nesterov.
+\newblock {\em Introductory Lectures on Convex Optimization: A Basic Course},
+  volume~87 of {\em Applied Optimization}.
+\newblock Kluwer, Boston, 2004.
+
+\bibitem{NPC03}
+K.A. Nugent, A.G. Peele, H.N. Chapman, and A.P. Manusco.
+\newblock Unique phase recovery for nonperiodic objects.
+\newblock {\em Phys. Rev. Lett.}, 91:203902, 2003.
+
+\bibitem{RJ93}
+L.~Rabiner and B.H. Juang.
+\newblock {\em Fundamentals of speech recognition}.
+\newblock Signal Processing Series. Prentice Hall, 1993.
+
+\bibitem{Recht07}
+B.~Recht, M.~Fazel, and P.~Parrilo.
+\newblock Guaranteed minimum rank solutions of matrix equations via nuclear
+  norm minimization.
+\newblock {\em SIAM Review}, to appear.
+
+\bibitem{Rei44}
+H.~Reichenbach.
+\newblock {\em Philosophic Foundations of Quantum Mechanics}.
+\newblock University of California Press, Berkeley, 1944.
+
+\bibitem{Rod08}
+J.M. Rodenburg.
+\newblock Ptychography and related diffractive imaging methods.
+\newblock {\em Advances in Imaging and Electron Physics, vol. 150},
+  150:87--184, 2008.
+
+\bibitem{San85}
+J.L.C. Sanz.
+\newblock Mathematical considerations for the problem of {Fourier} transform
+  phase retrieval frommagnitude.
+\newblock {\em SIAM Journal on Applied Mathematics}, 45(4):651--664, 1985.
+
+\bibitem{Sca06}
+G.~Scapin.
+\newblock Structural biology and drug discovery.
+\newblock {\em Current Pharmaceutical Design}, 12:2087--2097, 2006.
+
+\bibitem{TDB09}
+P.~Thibault, M.~Dierolf, O.~Bunk, A.~Menzel, and F.~Pfeiffer.
+\newblock Probe retrieval in ptychographic coherent diffractive imaging.
+\newblock {\em Ultramicroscopy}, 109:338--343, 2009.
+
+\bibitem{Vogt78}
+A.~Vogt.
+\newblock Position and momentum distributions do not determine the quantum
+  mechanical state.
+\newblock In A.R. Marlow, editor, {\em Mathematical Foundations of Quantum
+  Theory}. Academic Press, New York, 1978.
+
+\bibitem{Wal63}
+A.~Walther.
+\newblock The question of phase retrieval in optics.
+\newblock {\em Opt. Acta}, 10:41--49, 1963.
+
+\bibitem{You87}
+D.C. Youla.
+\newblock Mathematical theory of image restoration by the method of convex
+  projections.
+\newblock In H.~Stark, editor, {\em Image Recovery: Theory and application},
+  pages 29--77. Acad. Press, 1987.
+
+\end{thebibliography}

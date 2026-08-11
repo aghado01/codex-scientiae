@@ -1,0 +1,633 @@
+\documentclass[12pt]{article}
+\RequirePackage[colorlinks,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{url}
+
+
+\usepackage[ansinew]{inputenc}
+
+
+\usepackage{doi}
+
+% Number only equations which are referenced in the text
+% The command \eqref needs to be "robustified" in order for
+% the numbering to work OK when \eqref is used in moving
+% places, such as figure captions. As an alternative, you
+% may also prepend eqref with a \protect command, as follows:
+% \caption{ ... \protect\eqref{eq:tag} ... }
+% No {} around the \eqref command though.
+% I actually use the alternative, because the \MakeRobust
+% command doens't seem to work.
+\usepackage{amsmath}
+%\usepackage{fixltx2e,amsmath}
+%\MakeRobust{\eqref}
+%\usepackage{mathtools}
+%\mathtoolsset{showonlyrefs}
+
+% For the jury : number lines -- doesn't work very well though ...
+%\usepackage{xcolor}
+%\usepackage[displaymath]{lineno}
+%% Running line numbers:
+%% Same, but that reset on every page:
+%\pagewiselinenumbers
+%\switchlinenumbers
+%% Number only every 5:th line:
+%\modulolinenumbers[5]
+%\setlength\linenumbersep{5pt}
+%\renewcommand\linenumberfont{\normalfont\tiny\sffamily\color{gray}}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floorr}{\lfloor}{\rfloor}
+
+
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\usepackage{color}
+%\usepackage{url}
+\usepackage{bm} % bold math fonts with \bm{math expr}
+\usepackage{dsfont} % blackboard bold ones
+
+\usepackage{graphicx}
+\usepackage[lmargin=2.5cm,rmargin=2.5cm,bottom=3cm,top=3cm]{geometry}
+
+
+
+\usepackage{tikz}
+\definecolor{mycolor1}{rgb}{0.105882,0.619608,0.466667}
+\definecolor{mycolor2}{rgb}{0.85098,0.372549,0.00784314}
+\definecolor{mycolor3}{rgb}{0.458824,0.439216,0.701961}
+\definecolor{mycolor4}{rgb}{0.905882,0.160784,0.541176}
+\definecolor{mycolor5}{rgb}{0.4,0.65098,0.117647}
+\definecolor{mycolor6}{rgb}{0.65098,0.462745,0.113725}
+\definecolor{mycolor7}{rgb}{0.901961,0.670588,0.00784314}
+\definecolor{mycolor8}{rgb}{0.4,0.4,0.4}
+\definecolor{mycolor9}{rgb}{0.301961,0,0.294118}
+\definecolor{mycolor10}{rgb}{0.0313725,0.25098,0.505882}
+
+
+\usetikzlibrary{calc}        
+
+\makeatletter
+\newif\ifmygrid@coordinates
+\tikzset{/mygrid/step line/.style={line width=0.80pt,draw=gray!80},
+         /mygrid/steplet line/.style={line width=0.25pt,draw=gray!80}}
+\pgfkeys{/mygrid/.cd,
+         step/.store in=\mygrid@step,
+         steplet/.store in=\mygrid@steplet,
+         coordinates/.is if=mygrid@coordinates}
+\def\mygrid@def@coordinates(#1,#2)(#3,#4){%
+    \def\mygrid@xlo{#1}%
+    \def\mygrid@xhi{#3}%
+    \def\mygrid@ylo{#2}%
+    \def\mygrid@yhi{#4}%
+}
+\newcommand\DrawGrid[3][]{%
+    \pgfkeys{/mygrid/.cd,coordinates=true,step=1,steplet=0.2,#1}%
+    \draw[/mygrid/steplet line] #2 grid[step=\mygrid@steplet] #3;
+    \draw[/mygrid/step line] #2 grid[step=\mygrid@step] #3;
+    \mygrid@def@coordinates#2#3%
+    \ifmygrid@coordinates%
+        \draw[/mygrid/step line]
+        \foreach \xpos in {\mygrid@xlo,...,\mygrid@xhi} {%
+          (\xpos,\mygrid@ylo) -- ++(0,-3pt)
+                              node[anchor=north] {$\xpos$}
+        }
+        \foreach \ypos in {\mygrid@ylo,...,\mygrid@yhi} {%
+          (\mygrid@xlo,\ypos) -- ++(-3pt,0)
+                              node[anchor=east] {$\ypos$}
+        };
+    \fi%
+}
+\makeatother
+
+
+
+
+% use in a table cell to authorize linebreaks with \\ %
+% http://tex.stackexchange.com/questions/2441/how-to-add-a-forced-line-break-inside-a-table-cell
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}#1@{}}#2\end{tabular}}
+
+% for sidewaystable : tables in landscape mode
+%\usepackage{rotating}
+
+\usepackage{psfrag}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+% Do-While construct
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+
+% section numbering in margin
+%\usepackage{sectsty}
+%\makeatletter\def\@seccntformat#1{\protect\makebox[0pt][r]{\csname the#1\endcsname\hspace{12pt}}}\makeatother
+
+\usepackage{mathrsfs} % for \mathscr{ABC} style (curly calligraphy)
+
+
+%\usepackage[colorlinks=true,bookmarks=false]{hyperref}
+
+%\usepackage[round,compress]{natbib}
+
+\usepackage[square,numbers,compress]{natbib}
+
+%%%%% Activate these in track change mode:
+%\newcommand{\add}[1]{{\color{blue}{#1}}}
+%\newcommand{\remove}[1]{{\footnote{\color{red}{[removed: #1]}}}}
+%\newcommand{\removesafe}[1]{{\scriptsize{\color{red}{[removed: #1]}}}}
+%\newcommand{\change}[2]{\remove{#1}\add{#2}}
+%\newcommand{\changesafe}[2]{\removesafe{#1}\add{#2}}
+%%%%% Activate these in release mode:
+\newcommand{\add}[1]{{#1}}
+\newcommand{\remove}[1]{}
+\newcommand{\removesafe}[1]{}
+\newcommand{\change}[2]{{#2}}
+\newcommand{\changesafe}[2]{{#2}}
+
+\usepackage{subfigure}
+
+
+% show labels in the margin (for debugging)
+% \usepackage[right]{showlabels}
+
+
+
+\newcommand{\ER}{{Erd\H{o}s-R\'enyi }}
+\newcommand{\argmin}[1]{\underset{#1}{\operatorname{argmin}}}
+\newcommand{\argmax}[1]{\underset{#1}{\operatorname{argmax}}}
+\newcommand{\transpose}{^\top\! }
+\newcommand{\eig}{{\mathrm{eig}}}
+\newcommand{\mle}{{\mathrm{MLE}}}
+\newcommand{\mlez}{{\mathrm{MLE0}}}
+\newcommand{\inner}[2]{\left\langle{#1},{#2}\right\rangle}
+\newcommand{\innersmall}[2]{\langle{#1},{#2}\rangle}
+\newcommand{\innerbig}[2]{\big\langle{#1},{#2}\big\rangle}
+\newcommand{\MSE}{\mathrm{MSE}}
+\newcommand{\Egood}{E_\textrm{good}}
+\newcommand{\Ebad}{E_\textrm{bad}}
+\newcommand{\trace}{\mathrm{Tr}}
+\newcommand{\Trace}{\mathrm{Tr}}
+\newcommand{\spann}{\mathrm{span}}
+%\newcommand{\skeww}[1]{\left\lceil #1 \right\rfloor}
+\newcommand{\skeww}[1]{\operatorname{skew}\!\left( #1 \right)}
+\newcommand{\symmop}{\operatorname{sym}}
+\newcommand{\symm}[1]{\symmop\!\left( #1 \right)}
+\newcommand{\symmsmall}[1]{\symmop( #1 )}
+%\newcommand{\vecc}{\mathrm{vec}}
+\newcommand{\veccc}[1]{\vecc\left({#1}\right)}
+\newcommand{\sbdop}{\operatorname{symblockdiag}}
+\newcommand{\sbd}[1]{\sbdop\!\left({#1}\right)}
+\newcommand{\sbdsmall}[1]{\sbdop({#1})}
+\newcommand{\RMSE}{\mathrm{RMSE}}
+\newcommand{\Stdpm}{\St(d, p)^m}
+\newcommand{\Proj}{\mathrm{Proj}}
+\newcommand{\ProjH}{\mathrm{Proj}^h}
+\newcommand{\ProjV}{\mathrm{Proj}^v}
+\newcommand{\Exp}{\mathrm{Exp}}
+\newcommand{\Log}{\mathrm{Log}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\expectt}[1]{\mathbb{E}\left\{{#1}\right\}}
+%\newcommand{\R}{\mathrm{R}}
+\newcommand{\Retr}{\mathrm{Retraction}}
+\newcommand{\Trans}{\mathrm{Transport}}
+\newcommand{\Transbis}[2]{\mathrm{Transport}_{{#1}}({#2})}
+\newcommand{\polar}{\mathrm{polar}}
+\newcommand{\qf}{\mathrm{qf}}
+\newcommand{\Gr}{\mathrm{Gr}}
+\newcommand{\St}{\mathrm{St}}
+\newcommand{\GLr}{{\mathbb{R}^{r\times r}_*}}
+\newcommand{\Precon}{\mathrm{Precon}}
+\newcommand{\T}{\mathrm{T}}
+\newcommand{\HH}{\mathrm{H}}
+\newcommand{\VV}{\mathrm{V}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\barM}{\overline{\mathcal{M}}}
+\newcommand{\barnabla}{\overline{\nabla}}
+\newcommand{\barf}{{\overline{f}}}
+\newcommand{\barx}{{\overline{x}}}
+\newcommand{\bary}{{\overline{y}}}
+\newcommand{\barX}{{\overline{X}}}
+\newcommand{\barY}{{\overline{Y}}}
+\newcommand{\barg}{{\overline{g}}}
+\newcommand{\barxi}{{\overline{\xi}}}
+\newcommand{\bareta}{{\overline{\eta}}}
+\newcommand{\p}{\mathcal{P}}
+\newcommand{\SOn}{{\mathrm{SO}(n)}}
+\newcommand{\On}{{\mathrm{O}(n)}}
+\newcommand{\Od}{{\mathrm{O}(d)}}
+\newcommand{\Op}{{\mathrm{O}(p)}}
+\newcommand{\son}{{\mathfrak{so}(n)}}
+\newcommand{\SOt}{{\mathrm{SO}(3)}}
+\newcommand{\sot}{{\mathfrak{so}(3)}}
+\newcommand{\SOtwo}{{\mathrm{SO}(2)}}
+\newcommand{\sotwo}{{\mathfrak{so}(2)}}
+\newcommand{\So}{{\mathbb{S}^{1}}}
+\newcommand{\Stwo}{{\mathbb{S}^{2}}}
+\newcommand{\Sp}{{\mathbb{S}^{2}}}
+\newcommand{\Rtt}{{\mathbb{R}^{3\times 3}}}
+\newcommand{\Snn}{{\mathbb{S}^{n\times n}}}
+\newcommand{\Smm}{{\mathbb{S}^{m\times m}}}
+\newcommand{\Smdmd}{{\mathbb{S}^{md\times md}}}
+\newcommand{\Spp}{{\mathbb{S}^{p\times p}}}
+\newcommand{\Sdd}{{\mathbb{S}^{d\times d}}}
+\newcommand{\Srr}{{\mathbb{S}^{r\times r}}}
+\newcommand{\Rnn}{{\mathbb{R}^{n\times n}}}
+\newcommand{\Rnp}{{\mathbb{R}^{n\times p}}}
+\newcommand{\Rdp}{{\mathbb{R}^{d\times p}}}
+\newcommand{\Rmn}{{\mathbb{R}^{m\times n}}}
+\newcommand{\Rnm}{\mathbb{R}^{n\times m}}
+\newcommand{\Rnr}{\mathbb{R}^{n\times r}}
+\newcommand{\Rrr}{\mathbb{R}^{r\times r}}
+\newcommand{\Rpp}{\mathbb{R}^{p\times p}}
+\newcommand{\Rmm}{{\mathbb{R}^{m\times m}}}
+\newcommand{\Rmr}{\mathbb{R}^{m\times r}}
+\newcommand{\Rrn}{{\mathbb{R}^{r\times n}}}
+\newcommand{\Rd}{{\mathbb{R}^{d}}}
+\newcommand{\Rp}{{\mathbb{R}^{p}}}
+\newcommand{\Rk}{{\mathbb{R}^{k}}}
+\newcommand{\Rdd}{{\mathbb{R}^{d\times d}}}
+\newcommand{\RNN}{{\mathbb{R}^{N\times N}}}
+\newcommand{\reals}{{\mathbb{R}}}
+\newcommand{\complex}{{\mathbb{C}}}
+\newcommand{\Rn}{{\mathbb{R}^n}}
+\newcommand{\Rm}{{\mathbb{R}^m}}
+\newcommand{\CN}{{\mathbb{C}^{\,N}}}
+\newcommand{\CNN}{{\mathbb{C}^{\ N\times N}}}
+\newcommand{\CnotR}{{\mathbb{C}\ \backslash\mathbb{R}}}
+\newcommand{\grad}{\mathrm{grad}}
+\newcommand{\Hess}{\mathrm{Hess}}
+\newcommand{\vecc}{\mathrm{vec}}
+%\newcommand{\sign}{\mathrm{sign}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\dt}{\mathrm{d}t}
+\newcommand{\ds}{\mathrm{d}s}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\Id}{\operatorname{Id}} % need to be distinguishable from identity matrix
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nulll}{\operatorname{null}}
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\Kmax}{K_{\mathrm{max}}}
+\newcommand{\1}{\mathbf{1}}
+
+\newcommand{\frobnormbig}[1]{\big\|{#1}\big\|_\mathrm{F}}
+%\newcommand{\frobnorm}[1]{\left\|{#1}\right\|_\mathrm{F}}
+\newcommand{\opnormsmall}[1]{\|{#1}\|_\mathrm{op}}
+\newcommand{\frobnormsmall}[1]{\|{#1}\|_\mathrm{F}}
+\newcommand{\smallfrobnorm}[1]{\|{#1}\|_\mathrm{F}}
+\newcommand{\norm}[1]{\left\|{#1}\right\|}
+\newcommand{\sqnorm}[1]{\left\|{#1}\right\|^2}
+%\newcommand{\sqfrobnorm}[1]{\frobnorm{#1}^2}
+\newcommand{\sqfrobnormsmall}[1]{\frobnormsmall{#1}^2}
+\newcommand{\sqfrobnormbig}[1]{\frobnormbig{#1}^2}
+
+\newcommand{\frobnorm}[2][F]{\left\|{#2}\right\|_\mathrm{#1}}
+\newcommand{\sqfrobnorm}[2][F]{\frobnorm[#1]{#2}^2}
+
+\newcommand{\dd}[1]{\frac{\mathrm{d}}{\mathrm{d}#1}}
+\newcommand{\dmu}{\mathrm{d}\mu}
+\newcommand{\pdd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\TODO}[1]{{\color{red}{[#1]}}}
+%\newcommand{\TODO}[1]{}
+\newcommand{\dblquote}[1]{``#1''}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\uniform}{\mathrm{Uni}}
+\newcommand{\langevin}{\mathrm{Lang}}
+\newcommand{\langout}{\mathrm{LangUni}}
+\newcommand{\Zeq}{{Z_\mathrm{eq}}}
+\newcommand{\feq}{{f_\mathrm{eq}}}
+\newcommand{\XM}{\mathfrak{X}(\M)}
+\newcommand{\FM}{\mathfrak{F}(\M)}
+\newcommand{\length}{\operatorname{length}}
+\newcommand{\bfR}{\mathbf{R}}
+\newcommand{\bfxi}{{\bm{\xi}}}
+\newcommand{\bfX}{{\mathbf{X}}}
+\newcommand{\bfY}{{\mathbf{Y}}}
+\newcommand{\bfeta}{{\bm{\eta}}}
+\newcommand{\bfF}{\mathbf{F}}
+\newcommand{\bfOmega}{\boldsymbol{\Omega}}
+\newcommand{\bftheta}{{\bm{\theta}}}
+\newcommand{\lambdamax}{\lambda_\mathrm{max}}
+\newcommand{\lambdamin}{\lambda_\mathrm{min}}
+
+
+\newcommand{\ddiag}{\mathrm{ddiag}}
+\newcommand{\dist}{\mathrm{dist}}
+\newcommand{\embdist}{\mathrm{embdist}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\Cov}{\mathbf{C}}
+\newcommand{\Covm}{C}
+\newcommand{\FIM}{\mathbf{F}}
+\newcommand{\FIMm}{F}
+\newcommand{\Rmle}{{\hat\bfR_\mle}}
+%\newcommand{\diag}{\mathbf{\mathrm{diag}}}
+\newcommand{\Rmoptensor}{\mathbf{{R_\mathrm{m}}}}
+\newcommand{\barRmoptensor}{\mathbf{{\bar{R}_\mathrm{m}}}}
+\newcommand{\Rmop}{R_\mathrm{m}}
+\newcommand{\barRmop}{\bar{R}_\mathrm{m}}
+\newcommand{\Rcurv}{\mathcal{R}}
+\newcommand{\barRcurv}{\bar{\mathcal{R}}}
+
+\newcommand{\ith}{$i$th }
+\newcommand{\jth}{$j$th }
+\newcommand{\kth}{$k$th }
+\newcommand{\ellth}{$\ell$th }
+
+\newcommand{\expp}[1]{{\exp\!\big({#1}\big)}}
+
+\newcommand{\homegac}{h_{\Omega^c}}
+\newcommand{\homega}{h_{\Omega}}
+\DeclareMathOperator*{\sign}{\text{sgn}}
+\newcommand{\xo}{x_0}
+\newcommand{\phixop}{\phi_{x_0^\perp}}
+\newcommand{\hxop}{h_{x_0^\perp}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\xomega}{x_\Omega}
+\newcommand{\xoomega}{x_0}
+\newcommand{\xhat}{\hat{x}}
+\newcommand{\ctilde}{\tilde{c}}
+\newcommand{\Ctilde}{\tilde{C}}
+%\definecolor{darkgreen}{rgb}{0,.5,0}
+
+\newtheorem{theorem}{Theorem} %[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{assumption}{Assumption} %[section]
+\newtheorem{example}{Example} %[section]
+\newtheorem{definition}{Definition} %[section]
+\newtheorem{remark}{Remark}
+
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{example}[1][Example]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{remark}[1][Remark]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%      \ifdim\lastskip<1.5em \hskip-\lastskip
+%      \hskip1.5em plus0em minus0.5em \fi \nobreak
+%      \vrule height0.75em width0.5em depth0.25em\fi}
+
+
+\title{Compressed Sensing from Phaseless Gaussian Measurements via Linear Programming in the Natural Parameter Space }
+%\title{Phaseless Compressed Sensing in the Natural Parameter Space via Linear Programming}
+\author{
+Paul Hand\footnote{Department of Computational and Applied Mathematics, Rice University,  Houston, TX.} \   and Vladislav Voroninski\footnote{Helm.ai, CA.}}
+
+
+\begin{document}
+
+\maketitle
+\abstract{We consider faithfully combining phase retrieval with classical compressed sensing. Inspired by the recent novel formulation for phase retrieval called PhaseMax, we present and analyze SparsePhaseMax, a linear program for phaseless compressed sensing in the natural parameter space. We establish that when provided with an initialization that correlates with an arbitrary $k$-sparse $n$-vector, SparsePhaseMax recovers this vector up to global sign with high probability from $O(k \log \frac{n}{k})$ magnitude measurements against i.i.d. Gaussian random vectors. Our proof of this fact exploits a curious newfound connection between phaseless and 1-bit compressed sensing. This is the first result to establish bootstrapped compressed sensing from phaseless Gaussian measurements under optimal sample complexity.}
+
+\section{Introduction}
+
+Since the foundational compressed sensing results of Candes, Tao, and Donoho over 10 years ago, it is now common in the physical sciences to exploit the sparse structure of natural signals to enable signal recovery from fewer measurements \cite{CRT2005, donoho2001uncertainty}. While sample-optimal compressed sensing from linear measurements is well-developed both mathematically and empirically, enabling compressed sensing in non-linear measurement scenarios has proven to be a substantial challenge. In particular, we consider here phaseless compressed sensing, wherein a sparse vector is to be recovered from magnitude observations only.    In recent years, the phase retrieval problem has garnered significant attention in the applied mathematics community since the development of the PhaseLift algorithm \cite{CESV2011, CSV2013}, which is a convex program that operates in a lifted space of matrices. The PhaseLift methodology has also been applied to recovering sparse vectors from phaseless measurements but was proven to necessarily operate at suboptimal sample complexity in this regime  \cite{li2013sparse}. Due to the computational intractability of working in lifted spaces and the suboptimal sample complexity of PhaseLift in the sparse setting, much work has focused on alternative formulations to phase retrieval, including a recent trend of several non-convex approaches \cite{altminphase, wirtinger, twf, SQW2016, yoninaTAF}.
+
+Concretely, compressed sensing is as follows.  Let $x_0 \in \mathbb{R}^n$ be $k$-sparse and consider a set of known measurement vectors $a_i \in \mathbb{R}^n, i = 1\ldots m$. We consider here the standard idealized setting where $a_i$ are i.i.d Gaussian. It was shown in \cite{CRT2005} and \cite{Donoho}, that $x_0$ can be recovered with high probability via linear programming from $m = O(k \log n)$ linear measurements $\langle a_i, x_0 \rangle, i=1\ldots m$, yielding an order-optimal sample complexity in $k$. 
+
+In this paper, we consider performing compressed sensing and phase retrieval simultaneously. That is, we aim to recover $x_0$ up to a global sign in polynomial time from the magnitude-only observations $|\langle a_i, x_0 \rangle |, i =1\ldots m$.  Naturally, we seek to minimize the number of observations required.  Given an initialization vector $\phi \in \R^n$ that correlates with the signal $x_0$, we consider the following linear program, called SparsePhaseMax:
+
+\begin{equation}\label{PhaseMax}
+\begin{array}{ll}
+\max & \phantom{-|}\langle \phi, x \rangle - \lambda \|x\|_1 \\[.5em]
+\text{s.t.} & -|\langle a_i, x_0 \rangle | \leq \langle a_i, x \rangle \leq |\langle a_i, x_0 \rangle |, \quad  i = 1\ldots  m, \quad x \in \mathbb{R}^n.\\ 
+
+%\max & \qquad \quad \quad \langle \phi, x \rangle - \lambda \|x\|_1 \\
+%\vspace{15 pt}
+%\text{s.t.} & -|\langle a_i, x_0 \rangle | \leq \langle a_i, x \rangle \leq |\langle a_i, x_0 \rangle |, \quad  i = 1\ldots  m. \quad x \in \mathbb{R}^n\\ 
+\end{array}
+\end{equation}
+
+
+%\[
+%\text{maximize} \quad \langle \phi, x \rangle - \lambda \|x\|_1, \quad \text{subject to} \quad -|\langle a_i, x_0 \rangle | \leq \langle a_i, x \rangle \leq |\langle a_i, x_0 \rangle |
+%\]
+We prove that if the  initialization vector (also known as an anchor vector) $\phi$  correlates with $\xo$, then SparsePhaseMax with an appropriate choice of $\lambda$ recovers $\xo$ exactly with high probability from $m = O(k \log n/k)$ phaseless Gaussian measurements, provided that $x_0$ is sufficiently sparse. 
+%and if $ \lambda = \Theta(\frac{\alpha}{\sqrt{k}})$, where $\alpha = \langle \phi, \frac{\xo}{\|\xo\|_2} \rangle>0$ and $\|\phi\|_2=1$. 
+We do not make any structural assumptions on $\xo$ beyond sparsity.  In a prior version of the present paper, we proved our main result under the assumption that the magnitude of the nonzero entries of $\xo$ were constant.  For the theorem and proof below, a simple modification removed this assumption. Our main results are as follows:
+
+
+
+\begin{theorem} \label{thm:sparsephasemax-smallalpha}
+Let $\xo \in \R^n$ be a $k$-sparse vector. Let $a_i \sim \mathcal{N}(0, I_{n \times n})$ be independent for $i = 1 \ldots m$ and assume that $|\langle a_i, x_0 \rangle |, i = 1\ldots m$ have been observed. Let $\phi$ be a unit vector such that $\left \langle \phi, \frac{\xo}{\| \xo \|_2} \right \rangle =: \alpha >0$.  Let $\lambda$  be such that $\frac{1}{2} \frac{\alpha}{\sqrt{k}} < \lambda < \frac{3}{4}  \frac{\alpha}{\sqrt{k}}$, and take ${k < \frac{1}{49} \alpha^2 n}$. Then, provided that $m > \frac{C_1}{\alpha^7} k \log \frac{n}{k}$, $\xo$ is the unique maximizer of SparsePhaseMax \eqref{PhaseMax} with probability at least $1 - C_2 e^{-c \alpha^{-2/5} m^{4/5} k^{1/5} }$.  Here, $C_1, C_2, c$ are positive universal constants. 
+\end{theorem}
+
+If the correlation is bounded below by a fixed constant, we have the following.
+
+\begin{corollary} \label{cor:sparsephasemax-smallalpha}
+Fix $\gamma\in \R$ such that $0 < \gamma \leq 1$.  Let $\xo \in \R^n$ be a $k$-sparse vector. Let $a_i \sim \mathcal{N}(0, I_{n \times n})$ be independent for $i = 1 \ldots m$. and assume that $|\langle a_i, x_0 \rangle |, i = 1 \ldots m$ have been observed.  Let $\phi$ be a unit vector such that $\left \langle \phi, \frac{\xo}{\| \xo \|_2} \right \rangle=: \alpha > \gamma$, and take $k < \frac{1}{49}\alpha^2 n$.  Let $\lambda$ be such that $\frac{1}{2} \frac{\alpha}{\sqrt{k}} < \lambda < \frac{3}{4}  \frac{\alpha}{\sqrt{k}}$. Then $\xo$ is the unique maximizer of SparsePhaseMax \eqref{PhaseMax} with probability at least $1 - C_2 e^{-c  k}$, for $m = O(k \log \frac{n}{k})$.  Here, $C_1, C_2, c$ are positive universal constants. 
+\end{corollary}
+%\begin{corollary} \label{cor:sparsephasemax-smallalpha}
+%Fix $\gamma\in \R$ such that $0 < \gamma \leq 1$.  Let $\xo \in \R^n$ be a $k$-sparse vector for $k< \frac{1}{16} \gamma^2 n$, whose nonzero entries are equal in magnitude. Let $a_1,a_2,\ldots, a_m \in \mathbb{R}^n$ be i.i.d. Gaussian vectors and assume that $|\langle a_i, x_0 \rangle |, i = 1,2,\ldots m$ have been observed.  Let $\phi$ be a unit vector such that $\left \langle \phi, \frac{\xo}{\| \xo \|_2} \right \rangle=: \alpha > \gamma$.  Let $\lambda$ in \eqref{PhaseMax} be such that $\frac{1}{2} \frac{\alpha}{\sqrt{k}} < \lambda < \frac{3}{4}  \frac{\alpha}{\sqrt{k}}$. Then $\xo$ is the unique maximizer of SparsePhaseMax \eqref{PhaseMax} with probability at least $1 - C_2 e^{-c  k}$, for $m = O(k \log \frac{n}{k})$.  Here, $C_1, C_2, c$ are positive universal constants. 
+%\end{corollary}
+
+Thus, pre-initialized phaseless compressed sensing with random Gaussian measurement vectors is possible under optimal sample complexity.
+
+\section{Comparison to prior work}
+
+There has been much previous work on the phaseless compressed sensing problem.  See \cite{cpremprical} for an empirical exploration.  In terms of theory, \cite{li2013sparse} established that $x_0$ can be recovered modulo sign via an L1-enhanced PhaseLift formulation when $m = O(k^2 \log n)$. Simultaneously, \cite{li2013sparse} established that this result is sharp. Thus, there is a substantial gap between optimal sample complexity achievable with PhaseLift in the sparse setting and the information theoretic lower bound of $O(k)$ measurements required for injectivity over $k$-sparse vectors of Gaussian magnitude measurements \cite{voroninski2016strong}.
+
+Much subsequent work on the sparse phase retrieval problem has followed but has been unable to break through the algorithmic barrier described above \cite{oymak2015simultaneously, GAMP, Yon}. There are also related papers which consider measurement vectors that have a specific algebraic structure \cite{DustinSparse, iwen2015robust, jaganathan2013sparse} or very sparse measurement vectors \cite{Babak}. In these settings, it is possible to achieve optimal sample complexity. In fact, if we allow ourselves arbitrary choice of sensing vectors, optimal sample complexity follows simply by choosing the measurement matrix as a factorized product of Gaussian matrices of appropriate dimensions and applying PhaseLift followed by standard basis pursuit. The issue with these approaches is that it is not realistic to expect such flexibility in measurement vector design in applied science scenarios, and moreover the assumed algebraic measurement structure avoids the central difficulty of sparse phase retrieval.  Meanwhile, the generic Gaussian model is much closer to modeling the physical reality of Fourier diffraction measurements in X-ray crystallography and other areas of diffraction imaging. That is, once the Gaussian setting is understood, extensions to the Fourier setting are very likely to follow via similar methods. %Meanwhile, proofs of sparse phase retrieval with algebraically convenient measurement vectors do not inform the more challenging Gaussian or Fourier settings.
+% Such structural assumptions allow for methods that do not grapple with the central difficulty of sparse phase retrieval.    A Gaussian model 
+%We note that sparse phase retrieval is very easy in such specially-tailored measurement vector scenarios, since by choosing all but two entries in measurement vectors to be non-zero, one decouples the problem into many simpler sub-problems. 
+% , and the Gaussian model is much closer  That is, once the Gaussian setting is understood, extensions to the Fourier setting are very likely to follow via similar methods. 
+%Meanwhile, proofs of sparse phase retrieval with very sparse measurements vectors do not inform the much more challenging Gaussian or Fourier settings (more clarity here). 
+
+A paper by Li et al. on Truncated Wirtinger Flow (TWF) \cite{cai2015optimal} examines the case of unstructured Gaussian measurement vectors for sparse phase retrieval in the noisy setting. The authors of \cite{cai2015optimal} combine initialization using $O(k^2 \log n)$ Gaussian magnitude measurements with a non convex optimization scheme in the natural parameter space, establishing theoretical guarantees for the latter which also require $O(k^2 \log n)$ measurements. Our approach also relies on an initialization, which we utilize as an anchor vector, but differs in several important aspects. Firstly, unlike TWF, which consists of a non-convex objective minimization, we utilize \emph{convex} programming in the natural parameter space. In fact our approach consists of a linear program closely related to the recent PhaseMax program for regular phase retrieval \cite{phasemaxJustin, phasemax, phasemaxelementary}. Secondly, while theoretical guarantees for TWF require $O(k^2 \log n)$ measurements for non-convex optimization after initialization, we show that our approach succeeds post-initializion at the optimal sample complexity of $O(k \log \frac{n}{k})$. Thirdly, our theoretical arguments are far simpler than those employed in non-convex approaches to phase retrieval and our algorithmic formulation has only one parameter, for which a range of values is admissible. To the best of our knowledge, our main result is the first of its kind with respect to any of the three prior points in the Gaussian phaseless compressed sensing setting.
+
+%the subsequent linear program SparsePhaseMax in the natural parameter space requires only $O(k \log \frac{n}{k})$ Gaussian magnitude measurements to succeed in finding $x_0$ up to sign. Our main theorem is the first result of its kind in the challenging Gaussian measurement vector setting for phaseless compressed sensing.
+
+There is some conflicting evidence regarding the optimal sample complexity of phaseless compressed sensing. For instance, while PhaseLift is suboptimal in the sparse setting, the authors of \cite{voroninski2016strong} showed that minimizing the L1 norm over Gaussian magnitude measurements, if it were possible in polynomial time, would achieve sample-optimal phaseless compressed sensing. At the same time, Sparse PCA \cite{berthet2013optimal} and Planted Clique \cite{barak2016nearly}, which may be intimately related to phaseless compressed sensing, have resisted attempts to break past barriers analogous to the $O(k^2 \log n)$ Gaussian phaseless measurement regime. Our work here meanwhile indicates that it is possible to recover in polynomial time a sparse vector from $O(k \log \frac{n}{k})$ Gaussian magnitude measurements, provided that we start with an initialization that sufficiently correlates with the true solution. Subsequent to the release of this work, \cite{wang2016sparse} showed that a Truncated Amplitude Flow can also recover a sparse vector from $O(k)$ phaseless Gaussian measurements, provided an appropriate initialization is known.  Similarly, \cite{soltanolkotabi2017structured} showed similar results for the Projected Wirtinger Flow for signals with a variety of structural assumptions, including sparsity.  We note that the best known initialization scheme for sparse phase retrieval is only known to provide meaningful initializations at the sample complexity of $\Omega(k^2 \log n)$ Gaussian measurements \cite{cai2015optimal}. It is a very interesting open problem to either come up with a sample-optimal initialization scheme for sparse phase retrieval, which by appealing to our main theorem is equivalent to sample-optimal sparse phase retrieval, or to prove that there are fundamental algorithmic limitations that prevent such schemes, which may very well be the case in light of recent trends in theoretical computer science \cite{barak2016nearly}. In either case, in practice there are often many problem-specific structural assumptions to be made about a signal, and thus initialization for sparse signals may be obtained via other means that may not require $O(k^2 \log n)$ magnitude measurements. 
+
+Lastly, the proof of our main theorem illustrates an intriguing connection between phaseless compressed sensing and 1-bit compressed sensing. In fact we rely on a crucial theorem in \cite{yaniv} to analyze the optimality conditions of SparsePhaseMax. A duality between phaseless and phase-only measurements has been observed before in a different setting, by the authors of \cite{bandeira2014saving}, in their analysis of injectivity of phase retrieval. Specifically, they established that measurement vectors lead to injective measurements modulo phase if and only if they lead to injective measurements modulo magnitude. 
+
+\section{Proof}
+
+In the course of proving our main theorem, we establish a connection between phaseless and 1-bit compressed sensing. Specifically, the optimality conditions of SparsePhaseMax involve the signs of the quantities $\langle a_i,x_0 \rangle$ and $\langle a_i,h \rangle$ where $h$ is a perturbation about $\xo$, and we use a key theorem from \cite{yaniv} to control the set of admissible ascent directions. This theorem states that if two approximately $s$-sparse vectors in $\R^n$ are on the same side of $O(s \log(2n/s))$ random hyperplanes, then these two vectors are approximately equal with high probability.  We state it here in full for convenience:
+
+%The proof of our main theorem \ref{thm:sparsephasemax} establishes an intriguing connection between phaseless compressed sensing and 1-bit compressed sensing.  Specifically, we will apply the following theorem from  \cite{yaniv} when analyzing the optimality conditions for SparsePhaseMax.  
+
+\begin{theorem}[Theorem 2.1 in \cite{yaniv}] \label{thm:yaniv}
+Let $n,m,s > 0$ and set $\delta = \Ctilde_1\left( \frac{s}{m} \log(2n/s) \right)^{1/5}.$  Let $a_i \sim \mathcal{N}(0, I_{n \times n})$ be independent for $i = 1 \ldots m$.  Then with probability at least $1 - \Ctilde_2 \exp(-\ctilde \delta m)$, the following
+%\footnote{As a matter of convention, the $\sign$ of a vector is computed entrywise, and we understand $\sign b = \sign c$ to be true for real valued $b,c$ if $b=0$ or $c=0$.} 
+holds uniformly for all $x, \xhat \in \R^n$ that satisfy $\|x\|_2 = \|\xhat\|_2 = 1$, $\|x\|_1 \leq \sqrt{s}$, and $\|\xhat\|_1 \leq \sqrt{s}$, for $s \leq n$ :
+\[
+\langle a_i, \xhat \rangle \langle a_i, x \rangle \geq 0 ,  \ \  i=1\ldots m  \quad \implies \quad  \| \xhat - x \|_2 \leq \delta.
+\]
+Here, $\Ctilde_1, \Ctilde_2, \ctilde$ are positive universal constants. 
+\end{theorem}
+
+We now proceed to establish our main result:
+
+\begin{proof}[Proof of Theorem \ref{thm:sparsephasemax-smallalpha}]
+Without loss of generality, let $\|\xo\|_2 = 1$, and let $\Omega$ be the support of $x_0$.   To establish that $x_0$ is the unique global maximizer,  consider a feasible $\xo+h$ such that $\langle \phi, \xo + h \rangle - \lambda \| \xo + h \|_1 \geq \langle \phi, \xo\rangle - \lambda \| \xo \|_1$.  We will show that $h = 0$.  Write $h = \homega + \homegac$, where these terms have support in $\Omega$ and $\Omega^c$, respectively. Because $\xo +h$ is feasible, we have
+\begin{align}
+\langle a_i, \xo \rangle \langle a_i, h \rangle \leq 0, \ \ i =1 \ldots m. \label{optimality-conditions}
+\end{align}
+
+
+Because $\sign(\xoomega) + \sign(\homegac)$ is a subgradient of $\|\cdot\|_1$ at $\xo$, we have
+\begin{align*}
+\langle \phi, h \rangle &- \lambda \|x_0\|_1 - \lambda \langle \sign(\xoomega) + \sign(\homegac), h \rangle \geq - \lambda \| x_0\|_1.
+\intertext{Thus, }
+\langle \phi, h\rangle  &\geq \lambda \langle \sign(\xoomega), \homega \rangle + \lambda \langle \sign \homegac,  \homegac \rangle\\
+ & = \lambda \langle \sign(\xoomega), \homega \rangle + \lambda \| \homegac\|_1.
+\end{align*}
+By writing $h = \langle \xo, h \rangle \xo + \hxop$, where $\hxop$ is the projection of $h$ onto the orthogonal complement of span$(\{\xo\})$, we have
+\begin{align}
+\|\homegac\|_1 &\leq  - \langle \sign(\xoomega), \homega \rangle + \frac{1}{\lambda} \langle \phi, \xo \rangle \langle \xo, h \rangle + \frac{1}{\lambda} \langle \phi, \hxop \rangle \notag\\
+&= - \langle \sign(\xoomega), \homega \rangle + \frac{\alpha}{\lambda} \langle \xo, \homega\rangle +  \frac{1}{\lambda} \langle \phi, \hxop \rangle \notag\\
+&\leq \sqrt{k} \| \homega\|_2 + \frac{\alpha}{\lambda} \langle \xo, \homega\rangle + \frac{1}{\lambda} \| \hxop\|_2 \label{lowerbound-homegac} \\
+&\leq \sqrt{k} \| \homega\|_2 + \frac{\alpha}{\lambda} \|\homega\|_2 +  \frac{1}{\lambda} \| \hxop\|_2 \notag \\
+&\leq \Bigl(1 + \frac{\alpha}{\xi} + \frac{1}{\xi} \Bigr) \sqrt{k} \|h\|_2 \notag \\
+&\leq \Bigl(\frac{\xi}{\xi} + \frac{1}{\xi}  + \frac{1}{\xi}\Bigr) \sqrt{k} \|h\|_2 \notag\\
+&\leq \frac{11/4}{\xi} \sqrt{k} \| h\|_2, \label{lowerbound-homegac-preyaniv}
+\end{align}
+where the second line follows by definition of $\alpha$ and because $\xo$ is supported on $\Omega$; the third line follows by Cauchy-Schwarz, the assumption that $|\Omega|=k$, and the assumption that $\|\phi\|_2=1$; the fourth line follows because $\|\xo\|_2=1$, the fifth line follows by definition of $\xi := \lambda \sqrt{k}$, the sixth line follows by $\alpha \leq 1$, and the last line follows by the assumption that $\xi < \frac{3}{4} \alpha \leq \frac{3}{4}$. 
+We now compute
+\begin{align*}
+\|h\|_1 &= \| \homegac\|_1 + \|\homega\|_1\\
+&\leq \frac{11/4}{\xi} \sqrt{k} \| h\|_2 + \sqrt{k} \| \homega\|_2 \\
+&\leq \Bigl( \frac{11/4}{\xi} + 1 \Bigr) \sqrt{k} \|h\|_2\\
+&\leq  \frac{3.5}{\xi} \sqrt{k} \|h\|_2,
+\end{align*}
+where the second line follows by \eqref{lowerbound-homegac-preyaniv} and $|\Omega|=k$,  and the last line follows by $\xi < \frac{3}{4} \alpha \leq \frac{3}{4}$.
+Assuming $h \neq 0$, 
+we arrive at 
+\[
+\frac{\|h\|_1}{\|h\|_2} \leq \frac{3.5}{\xi} \sqrt{k}.
+\]
+
+Now, if $m > \frac{3.5^2\cdot \Ctilde_1^5}{(\alpha/20)^5 \xi^2} k \log \frac{2 n \xi^2}{3.5^2 k}$ then  $\delta := \Ctilde_1(\frac{s}{m} \log \frac{2n}{s})^{1/5}<\frac{\alpha}{20}$, where $s = \frac{3.5^2}{\xi^2} k$.  Further, as $k <  \frac{1}{49} \alpha^2 n $ and $\xi > \frac{\alpha}{2}$, we have that $s < n$ and that there exists a universal constant $C_1$ such that $m > \frac{C_1}{\alpha^7} k \log \frac{n}{k}$  implies  $m > \frac{3.5^2\cdot \Ctilde_1^5}{(\alpha/20)^5 \xi^2} k \log \frac{2 n \xi^2}{3.5^2 k}$ and thus $\delta < \frac{\alpha}{20}$. 
+By Theorem~\ref{thm:yaniv},  the feasibility conditions \eqref{optimality-conditions} imply that there exists an event $E$ with probability 
+\begin{align}
+\mathbb{P}(E) \geq 1 - \Ctilde_2 e^{-\ctilde \delta m} &= 
+1 - \Ctilde_2 \exp \left[-\frac{3.5^{2/5} \ctilde \Ctilde_1}{\xi^{2/5}} m^{4/5} k^{1/5} \log^{1/5} \Bigl(\frac{8 n \xi^2}{49 k} \Bigr) \right] \notag\\
+&\geq 
+1 - \Ctilde_2 \exp \left[-\frac{3.5^{2/5} \ctilde \Ctilde_1}{(3/4)^{2/5}} \alpha^{-2/5} m^{4/5} k^{1/5} \log^{1/5} \Bigl(\frac{ 2 n\alpha^2}{ 49 k} \Bigr) \right] \notag\\
+&\geq 
+1 - \Ctilde_2 \exp \left[-\frac{3.5^{2/5} \ctilde \Ctilde_1}{(3/4)^{2/5}} \alpha^{-2/5} m^{4/5} k^{1/5} (\log 2)^{1/5} \right], \notag
+\end{align}
+on which $\left\| \xo + \frac{h}{\|h\|_2} \right\|_2 \leq \delta$.  To get the inequalities above, we use $\xi < \frac{3}{4} \alpha$, $\xi > \frac{1}{2} \alpha$, and the assumption that $\frac{n \alpha^2}{k} > 49$.  Hence, on $E$,
+\begin{align}
+\langle\xo,  h \rangle &\leq -(1-\delta) \|h\|_2  \text{ and  }\| \hxop\|_2 \leq \delta \|h\|_2. \label{boundsonE}
+\intertext{By \eqref{lowerbound-homegac}, }
+\| \homegac\|_1 &\leq  \sqrt{k} \| \homega\|_2 + \frac{\alpha}{\lambda} \langle \xo, \homega\rangle + \frac{1}{\lambda} \| \hxop \|_2 \notag\\
+&\leq \sqrt{k} \| \homega\|_2 - \frac{\alpha}{\lambda} (1-\delta) \| h \|_2 + \frac{\delta}{\lambda} \| h \|_2 \notag\\
+&\leq \Bigl( 1 - \frac{\alpha}{\xi} (1-\delta) + \frac{\delta}{\xi} \Bigr) \sqrt{k} \| h\|_2 \notag \\
+&\leq \Bigl( 1 - \frac{4}{3} (1-\delta) + \frac{\alpha}{20 \xi}  \Bigr) \sqrt{k} \|h\|_2 \notag \\
+&\leq \Bigl( -\frac{1}{3} + \frac{4}{3}\cdot \frac{1}{20} + \frac{1}{10}  \Bigr)  \sqrt{k} \| h\|_2 \notag \\
+&\leq -0.16 \sqrt{k} \|h\|_2, \notag
+\end{align}
+where the second line follows from \eqref{boundsonE}, the third line follows from the definition of $\xi$, the fourth line follows from $\xi < \frac{3}{4} \alpha$ and $\delta < \frac{\alpha}{20}$, the fifth line follows from $\delta < \frac{1}{20}$ and $\xi > \frac{1}{2} \alpha$.   Hence, $\|\homegac\|_1=0$, from which we also conclude $\|h\|_2 = 0$. 
+
+
+
+\end{proof}
+
+Corollary \ref{cor:sparsephasemax-smallalpha} follows immediately from Theorem \ref{thm:sparsephasemax-smallalpha} by the probability bound $1 - C_2 e^{-c \alpha^{-2/5} m^{4/5} k^{1/5} }  \geq 1 - C_2 e^{-c k}$, where we use  $\alpha \leq 1$ and $m \geq k$.
+
+
+
+%\section{Notes}
+%
+%Let $x_0 \in \mathbb{R}^n$ with $\langle x_0, e_i \rangle \in \{0,1/\sqrt{k}\}$ and such that $x_i$ has exactly $k$ non-zero entries. Thus $\|x_0\|_2=1, \|x_0\|_1 = \sqrt{k}$. Let $a_i, i = 1,2,\ldots m$ be iid Gaussian measurement vectors. Consider solving
+%\[
+%\text{max} \quad \langle \phi, x\rangle \quad \text{s.t.} \quad -|\langle x_0, a_i \rangle| \leq \langle a_i, x \rangle \leq |\langle a_i, x_0 \rangle|
+%\]
+%
+%The optimality conditions for $x_0$ to be the global maximum of this linear program are that for $h\in\mathbb{R}^n$ and $h \neq 0$
+%\[
+%\text{sgn}(\langle a_i, x_0 \rangle) = -\text{sgn}(\langle a_i, h \rangle), i = 1,2,\ldots m \quad \text{and} \quad h_\Omega \geq -x_0, h_{\Omega^\perp} \geq 0 \quad \implies \langle \phi, h \rangle < 0
+%\]
+%
+%Consider the ideal case of $\phi = x_0 - \lambda 1$ where $1$ is the all ones vector, with $\lambda$ TBD. Then unrolling the RHS we get
+%\[
+%\langle x_0, h \rangle < \lambda \left( \langle h_\Omega, 1\rangle + \|h_{\Omega^\perp}\|_1 \right)
+%\]
+%
+%Taking $h = -x_0$ this becomes
+%\[
+%-\|x_0\|_2 < -\lambda \|x_0\|_1 = -\lambda \sqrt{k}
+%\]
+%Thus we must have $\lambda < \frac{1}{\sqrt{k}}$. More generally when $\phi = \phi - \lambda 1$ for some anchor vector $\phi$ which correlates positively with $x_0$ we'd have
+%\[
+%\lambda < \frac{\langle x_0, \phi \rangle}{\sqrt{k}}
+%\]
+%
+%Under the structural assumptions made on $x_0$ we have that $\langle x_0, h \rangle = \frac{1}{\sqrt{k}} \langle h_\Omega, 1 \rangle$. To establish the optimality conditions, assume that the desired implication is false, thus we'd have
+%\[
+%\langle x_0, h \rangle = \frac{1}{\sqrt{k}} \langle h_\Omega, 1 \rangle \geq \lambda \left( \langle h_\Omega, 1\rangle + \|h_{\Omega^\perp}\|_1 \right)
+%\]
+%which gives
+%\[
+% \langle h_\Omega, 1 \rangle \left( \frac{1}{\lambda\sqrt{k}} -1 \right)  \geq \| h_{\Omega^\perp}\|_1
+%\]
+%
+%Taking $\lambda << \frac{1}{\sqrt{k}}$ we get 
+%\[
+%\| h_{\Omega^\perp}\|_1 << \langle h_\Omega ,1 \rangle \leq \|h_\Omega\|_1
+%\]
+%
+%Notice that we also get $\langle h_\Omega, 1 \rangle <0 \implies \|h_{\Omega^\perp}\|_1 = 0$. Now, The previous inequality implies that
+%\[
+%\|h\|_1 \approx \|h_\Omega\|_1 \approx \sqrt{1}{k}
+%\]
+%provided that $\|h\|_2 = 1$. Now using Yaniv's lemma we get that $h \approx -x_0$, which contradicts the inequality previously established. 
+%
+%\section{Full argument}
+%
+%In the general case consider some anchor vector $\phi$ such that $\|\phi\|_2 = 1$ and $\langle \phi, x_0 \rangle \geq 1-\epsilon$. Then we have
+%\[
+%\langle \phi, h \rangle = \langle \phi, \langle h,x_0\rangle x_0 + h_{x_0^\perp} \rangle \geq \lambda \left( \langle h_{\Omega} ,1 \rangle + \|h_{\Omega^\perp} \|_1 \right) 
+%\]
+%Using that $ \langle x_0, h \rangle = \frac{1}{\sqrt{k}} \langle 1, h_\Omega \rangle$ we get
+%\[
+%\lambda \|h_{\Omega^c}\|_1 \leq \left( \frac{\langle \phi, x_0 \rangle}{\sqrt{k}} -\lambda \right) \langle 1, h_\Omega \rangle + \langle \phi, h_{x_0^\perp} \rangle
+%\]
+%Now 
+%\[
+%\langle \phi, h_{x_0^\perp} \rangle = \langle \phi_{x_0^\perp},h \rangle \leq \|\phi_{x_0^\perp}\|_2 \|h\|_2 = \sqrt{1-\langle\phi,x_0\rangle^2} \|h\|_2
+%\]
+%
+%Thus,
+%\[
+%\|h_{\Omega^c}\|_1 \leq \left( \frac{\langle \phi, x_0 \rangle}{\lambda\sqrt{k}} -1 \right) \langle 1, h_\Omega \rangle +  \frac{1}{\lambda}\sqrt{1-\langle\phi,x_0\rangle^2} \|h\|_2
+%\]
+%
+
+
+
+\subsection*{Acknowledgements}
+PH and VV  thank Thang Huynh for discussions and improvements to the proof.  PH acknowledges funding by the grant NSF DMS-1464525. 
+\bibliographystyle{plain}
+\bibliography{refs}
+
+
+
+\end{document}
+
+
+
+
+
+
+

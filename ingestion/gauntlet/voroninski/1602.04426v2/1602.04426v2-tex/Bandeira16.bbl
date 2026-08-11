@@ -1,0 +1,265 @@
+\begin{thebibliography}{39}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abbe et~al.(2014)Abbe, Bandeira, Bracher, and
+  Singer]{abbe2014decoding}
+E.~Abbe, A.~S. Bandeira, A.~Bracher, and A.~Singer.
+\newblock Decoding binary node labels from censored edge measurements: Phase
+  transition and efficient recovery.
+\newblock \emph{Network Science and Engineering, IEEE Transactions on},
+  1\penalty0 (1):\penalty0 10--22, 2014.
+
+\bibitem[Abbe et~al.(2016)Abbe, Bandeira, and Hall]{abbe2014exact}
+E.~Abbe, A.S. Bandeira, and G.~Hall.
+\newblock Exact recovery in the stochastic block model.
+\newblock \emph{Information Theory, IEEE Transactions on}, 62\penalty0
+  (1):\penalty0 471--487, 2016.
+
+\bibitem[Absil et~al.(2008)Absil, Mahony, and Sepulchre]{AMS08}
+P.-A. Absil, R.~Mahony, and R.~Sepulchre.
+\newblock \emph{Optimization Algorithms on Matrix Manifolds}.
+\newblock Princeton University Press, Princeton, NJ, 2008.
+\newblock ISBN 978-0-691-13298-3.
+
+\bibitem[Baik et~al.(2005)Baik, Ben-Arous, and P\'ech\'e]{BBP_MC_BBP_2005}
+J.~Baik, G.~Ben-Arous, and S.~P\'ech\'e.
+\newblock Phase transition of the largest eigenvalue for nonnull complex sample
+  covariance matrices.
+\newblock \emph{The Annals of Probability}, 33\penalty0 (5):\penalty0
+  1643--1697, 2005.
+
+\bibitem[Bandeira and v.~Handel(2015)]{Bandeira_NARandomMatrixBound}
+A.~S. Bandeira and R.~v.~Handel.
+\newblock Sharp nonasymptotic bounds on the norm of random matrices with
+  independent entries.
+\newblock \emph{Annals of Probability, to appear}, 2015.
+
+\bibitem[Bandeira et~al.(2014{\natexlab{a}})Bandeira, Charikar, Singer, and
+  Zhu]{Bandeira_Charikar_Singer_Zhu_Alignment}
+A.~S. Bandeira, M.~Charikar, A.~Singer, and A.~Zhu.
+\newblock Multireference alignment using semidefinite programming.
+\newblock \emph{5th Innovations in Theoretical Computer Science (ITCS 2014)},
+  2014{\natexlab{a}}.
+
+\bibitem[Bandeira(2015{\natexlab{a}})]{Bandeira_PCC}
+A.S. Bandeira.
+\newblock A note on probably certifiably correct algorithms.
+\newblock \emph{Available at arXiv:1509.00824 [math.OC]}, 2015{\natexlab{a}}.
+
+\bibitem[Bandeira(2015{\natexlab{b}})]{bandeira2015laplacian}
+A.S. Bandeira.
+\newblock Random {L}aplacian matrices and convex relaxations.
+\newblock \emph{arXiv preprint arXiv:1504.03987}, 2015{\natexlab{b}}.
+
+\bibitem[Bandeira et~al.(2013)Bandeira, Kennedy, and
+  Singer]{bandeira2013approximating}
+A.S. Bandeira, C.~Kennedy, and A.~Singer.
+\newblock Approximating the little {G}rothendieck problem over the orthogonal
+  and unitary groups.
+\newblock \emph{arXiv preprint arXiv:1308.5207}, 2013.
+
+\bibitem[Bandeira et~al.(2014{\natexlab{b}})Bandeira, Boumal, and
+  Singer]{bandeira2014tightness}
+A.S. Bandeira, N.~Boumal, and A.~Singer.
+\newblock Tightness of the maximum likelihood semidefinite relaxation for
+  angular synchronization.
+\newblock \emph{arXiv preprint arXiv:1411.3272}, 2014{\natexlab{b}}.
+
+\bibitem[Bandeira et~al.(2015)Bandeira, Chen, and
+  Singer]{bandeira2015nonuniquegames}
+A.S. Bandeira, Y.~Chen, and A.~Singer.
+\newblock Non-unique games over compact groups and orientation estimation in
+  cryo-{EM}.
+\newblock \emph{arXiv preprint arXiv:1505.03840}, 2015.
+
+\bibitem[Barvinok(1995)]{barvinok1995problems}
+A.I. Barvinok.
+\newblock Problems of distance geometry and convex properties of quadratic
+  maps.
+\newblock \emph{Discrete \& Computational Geometry}, 13\penalty0 (1):\penalty0
+  189--202, 1995.
+\newblock \doi{10.1007/BF02574037}.
+
+\bibitem[Boumal(2015)]{boumal2015staircase}
+N.~Boumal.
+\newblock A {R}iemannian low-rank method for optimization over semidefinite
+  matrices with block-diagonal constraints.
+\newblock \emph{arXiv preprint arXiv:1506.00575}, 2015.
+
+\bibitem[Boumal(2016)]{boumal2016nonconvexphase}
+N.~Boumal.
+\newblock Nonconvex phase synchronization.
+\newblock \emph{arXiv preprint arXiv:1601.06114}, 2016.
+
+\bibitem[Boumal et~al.(2016)Boumal, Absil, and Cartis]{boumal2016complexity}
+N.~Boumal, P.-A. Absil, and C.~Cartis.
+\newblock Global rates of convergence for nonconvex optimization on manifolds.
+\newblock \emph{arXiv preprint arXiv:1605.08101}, 2016.
+
+\bibitem[Bri{\"e}t et~al.(2014)Bri{\"e}t, de~Oliveira~Filho, and
+  Vallentin]{briet2014grothendieck}
+J.~Bri{\"e}t, F.M. de~Oliveira~Filho, and F.~Vallentin.
+\newblock Grothendieck inequalities for semidefinite programs with rank
+  constraint.
+\newblock \emph{Theory of Computing}, 10\penalty0 (4):\penalty0 77--105, 2014.
+\newblock \doi{10.4086/toc.2014.v010a004}.
+
+\bibitem[Burer and Monteiro(2003)]{sdplr}
+S.~Burer and R.D.C. Monteiro.
+\newblock A nonlinear programming algorithm for solving semidefinite programs
+  via low-rank factorization.
+\newblock \emph{Mathematical Programming}, 95\penalty0 (2):\penalty0 329--357,
+  2003.
+\newblock \doi{10.1007/s10107-002-0352-8}.
+
+\bibitem[Burer and Monteiro(2005)]{burer2005local}
+S.~Burer and R.D.C. Monteiro.
+\newblock Local minima and convergence in low-rank semidefinite programming.
+\newblock \emph{Mathematical Programming}, 103\penalty0 (3):\penalty0 427--444,
+  2005.
+
+\bibitem[Burer et~al.(2002)Burer, Monteiro, and Zhang]{burer2002rank}
+S.~Burer, R.D.C. Monteiro, and Y.~Zhang.
+\newblock Rank-two relaxation heuristics for {Max-Cut} and other binary
+  quadratic programs.
+\newblock \emph{SIAM Journal on Optimization}, 12\penalty0 (2):\penalty0
+  503--521, 2002.
+
+\bibitem[Decelle et~al.(2011)Decelle, Krzakala, Moore, and
+  Zdeborov\'a]{Decelle_SBM}
+A.~Decelle, F.~Krzakala, C.~Moore, and L.~Zdeborov\'a.
+\newblock Asymptotic analysis of the stochastic block model for modular
+  networks and its algorithmic applications.
+\newblock \emph{Phys. Rev. E}, 84, December 2011.
+
+\bibitem[Feige and Kilian(2001)]{Feige_Kilian_bisection_01}
+U.~Feige and J.~Kilian.
+\newblock Heuristics for semirandom graph problems.
+\newblock \emph{Journal of Computer and System Sciences}, 63\penalty0
+  (4):\penalty0 639 -- 671, 2001.
+
+\bibitem[F\'eral and P\'ech\'e(2006)]{Feral_Peche_BBPWigner}
+D.~F\'eral and S.~P\'ech\'e.
+\newblock The largest eigenvalue of rank one deformation of large wigner
+  matrices.
+\newblock \emph{Communications in Mathematical Physics}, 272\penalty0
+  (1):\penalty0 185--228, 2006.
+
+\bibitem[Goemans and Williamson(1995)]{goemans1995maxcut}
+M.X. Goemans and D.P. Williamson.
+\newblock Improved approximation algorithms for maximum cut and satisfiability
+  problems using semidefinite programming.
+\newblock \emph{Journal of the ACM (JACM)}, 42\penalty0 (6):\penalty0
+  1115--1145, 1995.
+\newblock \doi{10.1145/227683.227684}.
+
+\bibitem[Guedon and Vershynin(2014)]{Guedon_SBMgrothendieck}
+O.~Guedon and R.~Vershynin.
+\newblock Community detection in sparse networks via {G}rothendieck's
+  inequality.
+\newblock \emph{Available online at arXiv:1411.4686 [math.ST]}, 2014.
+
+\bibitem[Hajek et~al.(2014)Hajek, Wu, and Xu]{Hajek_et_al_SBM_SDP}
+B.~Hajek, Y.~Wu, and J.~Xu.
+\newblock Achieving exact cluster recovery threshold via semidefinite
+  programming.
+\newblock \emph{Available online at arXiv:1412.6156}, 2014.
+
+\bibitem[Javanmard et~al.(2015)Javanmard, Montanari, and
+  Ricci-Tersenghi]{javanmard2015phase}
+A.~Javanmard, A.~Montanari, and F.~Ricci-Tersenghi.
+\newblock Phase transitions in semidefinite relaxations.
+\newblock \emph{arXiv preprint arXiv:1511.08769}, 2015.
+
+\bibitem[Journ{\'e}e et~al.(2010)Journ{\'e}e, Bach, Absil, and
+  Sepulchre]{journee2010low}
+M.~Journ{\'e}e, F.~Bach, P.-A. Absil, and R.~Sepulchre.
+\newblock Low-rank optimization on the cone of positive semidefinite matrices.
+\newblock \emph{SIAM Journal on Optimization}, 20\penalty0 (5):\penalty0
+  2327--2351, 2010.
+\newblock \doi{10.1137/080731359}.
+
+\bibitem[Krivelevich and Sudakov(2003)]{Krivelevich_Sudakov_ER}
+M.~Krivelevich and B.~Sudakov.
+\newblock The largest eigenvalue of sparse random graphs.
+\newblock \emph{Combinatorics, Probability and Computing}, 12:\penalty0 61--72,
+  2003.
+
+\bibitem[Massouli{\'e}(2014)]{Massoulie_SBM}
+L.~Massouli{\'e}.
+\newblock Community detection thresholds and the weak ramanujan property.
+\newblock In \emph{Proceedings of the 46th Annual ACM Symposium on Theory of
+  Computing}, STOC '14, pages 694--703, New York, NY, USA, 2014. ACM.
+\newblock ISBN 978-1-4503-2710-7.
+\newblock \doi{10.1145/2591796.2591857}.
+\newblock URL \url{http://doi.acm.org/10.1145/2591796.2591857}.
+
+\bibitem[Moitra et~al.(2015)Moitra, Perry, and Wein]{Moitra_SBMadversary}
+A.~Moitra, W.~Perry, and A.~S. Wein.
+\newblock How robust are reconstruction thresholds for community detection?
+\newblock \emph{Available online at arXiv:1511.01473 [cs.DS]}, 2015.
+
+\bibitem[Montanari and Sen(2015)]{Montanari_SDPdetectionSBM}
+A.~Montanari and S.~Sen.
+\newblock Semidefinite programs on sparse random graphs.
+\newblock \emph{Available online at arXiv:1504.05910 [cs.DM]}, 2015.
+
+\bibitem[Mossel et~al.(2014{\natexlab{a}})Mossel, Neeman, and Sly]{Mossel_SBM1}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock Stochastic block models and reconstruction.
+\newblock \emph{Probability Theory and Related Fields (to appear)},
+  2014{\natexlab{a}}.
+
+\bibitem[Mossel et~al.(2014{\natexlab{b}})Mossel, Neeman, and Sly]{Mossel_SBM2}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock A proof of the block model threshold conjecture.
+\newblock \emph{Available online at arXiv:1311.4115 [math.PR]}, January
+  2014{\natexlab{b}}.
+
+\bibitem[Mossel et~al.(2014{\natexlab{c}})Mossel, Neeman, and
+  Sly]{Mossel_SBM3_exact}
+E.~Mossel, J.~Neeman, and A.~Sly.
+\newblock Consistency thresholds for the planted bisection model.
+\newblock \emph{Available online at arXiv:1407.1591v2 [math.PR]}, July
+  2014{\natexlab{c}}.
+
+\bibitem[Nesterov(2004)]{nesterov2004introductory}
+Y.~Nesterov.
+\newblock \emph{Introductory lectures on convex optimization: A basic course},
+  volume~87 of \emph{Applied optimization}.
+\newblock Springer, 2004.
+\newblock ISBN 978-1-4020-7553-7.
+
+\bibitem[Pataki(1998)]{pataki1998rank}
+G.~Pataki.
+\newblock On the rank of extreme matrices in semidefinite programs and the
+  multiplicity of optimal eigenvalues.
+\newblock \emph{Mathematics of operations research}, 23\penalty0 (2):\penalty0
+  339--358, 1998.
+\newblock \doi{10.1287/moor.23.2.339}.
+
+\bibitem[Shapiro(1982)]{shapiro1982rank}
+A.~Shapiro.
+\newblock Rank-reducibility of a symmetric matrix and sampling theory of
+  minimum trace factor analysis.
+\newblock \emph{Psychometrika}, 47\penalty0 (2):\penalty0 187--199, 1982.
+
+\bibitem[Singer(2011)]{singer2010angular}
+A.~Singer.
+\newblock Angular synchronization by eigenvectors and semidefinite programming.
+\newblock \emph{Applied and Computational Harmonic Analysis}, 30\penalty0
+  (1):\penalty0 20--36, 2011.
+\newblock \doi{10.1016/j.acha.2010.02.001}.
+
+\bibitem[Wen and Yin(2013)]{wen2013orthogonality}
+Z.~Wen and W.~Yin.
+\newblock A feasible method for optimization with orthogonality constraints.
+\newblock \emph{Mathematical Programming}, 142\penalty0 (1--2):\penalty0
+  397--434, 2013.
+\newblock \doi{10.1007/s10107-012-0584-1}.
+
+\end{thebibliography}

@@ -1,0 +1,1826 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global}
+    \entry{aamari2019estimating}{article}{}
+      \name{author}{6}{}{%
+        {{hash=50a2a1b544175322e168ca245d17b4aa}{%
+           family={Aamari},
+           familyi={A\bibinitperiod},
+           given={Eddie},
+           giveni={E\bibinitperiod}}}%
+        {{hash=97754dd28af8d4052cfee247f858104a}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Jisu},
+           giveni={J\bibinitperiod}}}%
+        {{hash=ca557f44ca0b022489547f8e894669b6}{%
+           family={Chazal},
+           familyi={C\bibinitperiod},
+           given={Frédéric},
+           giveni={F\bibinitperiod}}}%
+        {{hash=1b0eb5461c46c8cbc77c0494dd16f94b}{%
+           family={Michel},
+           familyi={M\bibinitperiod},
+           given={Bertrand},
+           giveni={B\bibinitperiod}}}%
+        {{hash=7512f80d6f525f9a779b62c4fe599e9d}{%
+           family={Rinaldo},
+           familyi={R\bibinitperiod},
+           given={Alessandro},
+           giveni={A\bibinitperiod}}}%
+        {{hash=6b27f4592197d058b81cb25b0b285942}{%
+           family={Wasserman},
+           familyi={W\bibinitperiod},
+           given={Larry},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{50d11db6e6d890fdc0cd270ed84bcc70}
+      \strng{fullhash}{cf14ac8504639c1a10f0fdf181968660}
+      \strng{bibnamehash}{50d11db6e6d890fdc0cd270ed84bcc70}
+      \strng{authorbibnamehash}{50d11db6e6d890fdc0cd270ed84bcc70}
+      \strng{authornamehash}{50d11db6e6d890fdc0cd270ed84bcc70}
+      \strng{authorfullhash}{cf14ac8504639c1a10f0fdf181968660}
+      \field{labelalpha}{Aam+19}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Electronic Journal of Statistics}
+      \field{title}{Estimating the Reach of a Manifold}
+      \field{year}{2019}
+    \endentry
+    \entry{arias2011spectral}{article}{}
+      \name{author}{3}{}{%
+        {{hash=38b1e2de92876de0c7972c29a070f9a5}{%
+           family={Arias-Castro},
+           familyi={A\bibinithyphendelim C\bibinitperiod},
+           given={Ery},
+           giveni={E\bibinitperiod}}}%
+        {{hash=bad25967c4645ca976477880b0693cde}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Guangliang},
+           giveni={G\bibinitperiod}}}%
+        {{hash=5a986de76dd43fd2483f6c40bfbb8c77}{%
+           family={Lerman},
+           familyi={L\bibinitperiod},
+           given={Gilad},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Institute of Mathematical Statistics}%
+      }
+      \strng{namehash}{3adfaa489d46909271d7ff638ff9974b}
+      \strng{fullhash}{6f50833f3486b83632f0a7630c30f898}
+      \strng{bibnamehash}{6f50833f3486b83632f0a7630c30f898}
+      \strng{authorbibnamehash}{6f50833f3486b83632f0a7630c30f898}
+      \strng{authornamehash}{3adfaa489d46909271d7ff638ff9974b}
+      \strng{authorfullhash}{6f50833f3486b83632f0a7630c30f898}
+      \field{labelalpha}{ACL11}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Electronic Journal of Statistics}
+      \field{title}{Spectral clustering based on local linear approximations}
+      \field{volume}{5}
+      \field{year}{2011}
+      \field{pages}{1537\bibrangedash 1587}
+      \range{pages}{51}
+    \endentry
+    \entry{Bruel-Gabrielsson2018}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=71f048b4224cdd6775af0fbaea0512a8}{%
+           family={Brüel-Gabrielsson},
+           familyi={B\bibinithyphendelim G\bibinitperiod},
+           given={Rickard},
+           giveni={R\bibinitperiod}}}%
+        {{hash=86916713a3861f9e4e6fa5e0ce4c7b44}{%
+           family={Carlsson},
+           familyi={C\bibinitperiod},
+           given={Gunnar},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv:1810.03234}%
+      }
+      \strng{namehash}{7759c7a3032145da6c628272d2f55436}
+      \strng{fullhash}{7759c7a3032145da6c628272d2f55436}
+      \strng{bibnamehash}{7759c7a3032145da6c628272d2f55436}
+      \strng{authorbibnamehash}{7759c7a3032145da6c628272d2f55436}
+      \strng{authornamehash}{7759c7a3032145da6c628272d2f55436}
+      \strng{authorfullhash}{7759c7a3032145da6c628272d2f55436}
+      \field{labelalpha}{BC18}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{CoRR}
+      \field{title}{{Exposition and interpretation of the topology of neural networks}}
+      \field{year}{2018}
+    \endentry
+    \entry{burgisser2018computing}{article}{}
+      \name{author}{3}{}{%
+        {{hash=db24e25ecb58722cbf1fcc3eb766e5e1}{%
+           family={Bürgisser},
+           familyi={B\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=0af19d6725b2b802000cc6b4fb959660}{%
+           family={Cucker},
+           familyi={C\bibinitperiod},
+           given={Felipe},
+           giveni={F\bibinitperiod}}}%
+        {{hash=889334e9c6ed7d966553bcfc72b5da00}{%
+           family={Lairez},
+           familyi={L\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM New York, NY, USA}%
+      }
+      \strng{namehash}{1b3c6d72d80d76361d8a3b4f8856692b}
+      \strng{fullhash}{ee1ade89e6483c14c8c11b82be623a99}
+      \strng{bibnamehash}{ee1ade89e6483c14c8c11b82be623a99}
+      \strng{authorbibnamehash}{ee1ade89e6483c14c8c11b82be623a99}
+      \strng{authornamehash}{1b3c6d72d80d76361d8a3b4f8856692b}
+      \strng{authorfullhash}{ee1ade89e6483c14c8c11b82be623a99}
+      \field{labelalpha}{BCL18}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the ACM (JACM)}
+      \field{number}{1}
+      \field{title}{Computing the homology of basic semialgebraic sets in weak exponential time}
+      \field{volume}{66}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 30}
+      \range{pages}{30}
+    \endentry
+    \entry{bauer_edit_2016}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=dd6f1eb5275595e21a2cc15c3abf0f44}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Ulrich},
+           giveni={U\bibinitperiod}}}%
+        {{hash=7aee8a4acbf7785529d3a25614683b10}{%
+           family={Fabio},
+           familyi={F\bibinitperiod},
+           given={Barbara\bibnamedelima Di},
+           giveni={B\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=18900c0425a7bd53a0e3cae23f8a82e1}{%
+           family={Landi},
+           familyi={L\bibinitperiod},
+           given={Claudia},
+           giveni={C\bibinitperiod}}}%
+      }
+      \name{editor}{3}{}{%
+        {{hash=736b24999c48a2462e47eb16386ea4b5}{%
+           family={Ferreira},
+           familyi={F\bibinitperiod},
+           given={Alfredo},
+           giveni={A\bibinitperiod}}}%
+        {{hash=80273d06b3415ed6c848dc69ffd2cc52}{%
+           family={Giachetti},
+           familyi={G\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+        {{hash=38be645fdd4f23c0e843a277674c716c}{%
+           family={Giorgi},
+           familyi={G\bibinitperiod},
+           given={Daniela},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The Eurographics Association}%
+      }
+      \strng{namehash}{4544e5932570812b531a830ac42c05f4}
+      \strng{fullhash}{07686d4accb0877b55681afc151a6273}
+      \strng{bibnamehash}{07686d4accb0877b55681afc151a6273}
+      \strng{authorbibnamehash}{07686d4accb0877b55681afc151a6273}
+      \strng{authornamehash}{4544e5932570812b531a830ac42c05f4}
+      \strng{authorfullhash}{07686d4accb0877b55681afc151a6273}
+      \strng{editorbibnamehash}{2efacdbb7816c60af8b13bf8c13c4ff2}
+      \strng{editornamehash}{3c741abe91f67a088c56a96b51072ab3}
+      \strng{editorfullhash}{2efacdbb7816c60af8b13bf8c13c4ff2}
+      \field{extraname}{1}
+      \field{labelalpha}{BFL16}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Eurographics {Workshop} on {3D} {Object} {Retrieval} ({3DOR} 2016)}
+      \field{isbn}{978-3-03868-004-8}
+      \field{note}{ISSN: 1997-0471}
+      \field{title}{An {Edit} {Distance} for {Reeb} {Graphs}}
+      \field{year}{2016}
+      \verb{doi}
+      \verb 10.2312/3dor.20161084
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.2312/3dor.20161084
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.2312/3dor.20161084
+      \endverb
+    \endentry
+    \entry{BoissardLeGouic2014}{article}{}
+      \name{author}{2}{}{%
+        {{hash=5653f2719a3615cc712a110289b4ae38}{%
+           family={Boissard},
+           familyi={B\bibinitperiod},
+           given={Emmanuel},
+           giveni={E\bibinitperiod}}}%
+        {{hash=234426170c6eb5675a98071701cfbd01}{%
+           family={Gouic},
+           familyi={G\bibinitperiod},
+           given={Thibaut\bibnamedelima Le},
+           giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Institut Henri Poincaré}%
+      }
+      \strng{namehash}{a80afa3032dafeb5199a320fdd69c4e2}
+      \strng{fullhash}{a80afa3032dafeb5199a320fdd69c4e2}
+      \strng{bibnamehash}{a80afa3032dafeb5199a320fdd69c4e2}
+      \strng{authorbibnamehash}{a80afa3032dafeb5199a320fdd69c4e2}
+      \strng{authornamehash}{a80afa3032dafeb5199a320fdd69c4e2}
+      \strng{authorfullhash}{a80afa3032dafeb5199a320fdd69c4e2}
+      \field{labelalpha}{BG14}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annales de l'Institut Henri Poincaré, Probabilités et Statistiques}
+      \field{number}{2}
+      \field{title}{{On the mean speed of convergence of empirical and occupation measures in Wasserstein distance}}
+      \field{volume}{50}
+      \field{year}{2014}
+      \field{pages}{539\bibrangedash 563}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.1214/12-AIHP517
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1214/12-AIHP517
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1214/12-AIHP517
+      \endverb
+      \keyw{Functional quantization,Markov chains,measure theory,Optimal transportation,Transportation inequalities,Wasserstein metrics}
+    \endentry
+    \entry{bauer_measuring_2014}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=dd6f1eb5275595e21a2cc15c3abf0f44}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Ulrich},
+           giveni={U\bibinitperiod}}}%
+        {{hash=b64db741c9f61e7ede697b0ac62debed}{%
+           family={Ge},
+           familyi={G\bibinitperiod},
+           given={Xiaoyin},
+           giveni={X\bibinitperiod}}}%
+        {{hash=fed5f88670059b51be0c9cbe3b404b5e}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Yusu},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{4544e5932570812b531a830ac42c05f4}
+      \strng{fullhash}{dcc74a5b54666560e21ba3cfbe634297}
+      \strng{bibnamehash}{dcc74a5b54666560e21ba3cfbe634297}
+      \strng{authorbibnamehash}{dcc74a5b54666560e21ba3cfbe634297}
+      \strng{authornamehash}{4544e5932570812b531a830ac42c05f4}
+      \strng{authorfullhash}{dcc74a5b54666560e21ba3cfbe634297}
+      \field{extraname}{2}
+      \field{labelalpha}{BGW14}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 30th {Annual} {Symposium} on {Computational} {Geometry} ({SoCG} 2014)}
+      \field{isbn}{978-1-4503-2594-3}
+      \field{title}{Measuring {Distance} between {Reeb} {Graphs}}
+      \field{year}{2014}
+      \field{pages}{464\bibrangedash 473}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1145/2582112.2582169
+      \endverb
+    \endentry
+    \entry{bauer_reeb_2021}{article}{}
+      \name{author}{3}{}{%
+        {{hash=dd6f1eb5275595e21a2cc15c3abf0f44}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Ulrich},
+           giveni={U\bibinitperiod}}}%
+        {{hash=18900c0425a7bd53a0e3cae23f8a82e1}{%
+           family={Landi},
+           familyi={L\bibinitperiod},
+           given={Claudia},
+           giveni={C\bibinitperiod}}}%
+        {{hash=2fd11e676a24c6aabdc0a0823f559d23}{%
+           family={Mémoli},
+           familyi={M\bibinitperiod},
+           given={Facundo},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{4544e5932570812b531a830ac42c05f4}
+      \strng{fullhash}{57365d1bd15df1d6e7b2bb3f2c15dcb7}
+      \strng{bibnamehash}{57365d1bd15df1d6e7b2bb3f2c15dcb7}
+      \strng{authorbibnamehash}{57365d1bd15df1d6e7b2bb3f2c15dcb7}
+      \strng{authornamehash}{4544e5932570812b531a830ac42c05f4}
+      \strng{authorfullhash}{57365d1bd15df1d6e7b2bb3f2c15dcb7}
+      \field{extraname}{3}
+      \field{labelalpha}{BLM21}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1615-3383}
+      \field{journaltitle}{Foundations of Computational Mathematics (FoCM)}
+      \field{number}{5}
+      \field{title}{The {Reeb} {Graph} {Edit} {Distance} is {Universal}}
+      \field{volume}{21}
+      \field{year}{2021}
+      \field{pages}{1441\bibrangedash 1464}
+      \range{pages}{24}
+      \verb{doi}
+      \verb 10.1007/s10208-020-09488-3
+      \endverb
+    \endentry
+    \entry{boothby1986introduction}{book}{}
+      \name{author}{1}{}{%
+        {{hash=9b12f79e614e88ff6c34b2a0f614a42d}{%
+           family={Boothby},
+           familyi={B\bibinitperiod},
+           given={William\bibnamedelima M},
+           giveni={W\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Academic press}%
+      }
+      \strng{namehash}{9b12f79e614e88ff6c34b2a0f614a42d}
+      \strng{fullhash}{9b12f79e614e88ff6c34b2a0f614a42d}
+      \strng{bibnamehash}{9b12f79e614e88ff6c34b2a0f614a42d}
+      \strng{authorbibnamehash}{9b12f79e614e88ff6c34b2a0f614a42d}
+      \strng{authornamehash}{9b12f79e614e88ff6c34b2a0f614a42d}
+      \strng{authorfullhash}{9b12f79e614e88ff6c34b2a0f614a42d}
+      \field{labelalpha}{Boo86}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{An introduction to differentiable manifolds and Riemannian geometry}
+      \field{year}{1986}
+    \endentry
+    \entry{brown2021probabilistic}{article}{}
+      \name{author}{4}{}{%
+        {{hash=d58935697175c4b95e2de871203943d8}{%
+           family={Brown},
+           familyi={B\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=18ff53a2f8435659dc2f821efce5488d}{%
+           family={Bobrowski},
+           familyi={B\bibinitperiod},
+           given={Omer},
+           giveni={O\bibinitperiod}}}%
+        {{hash=1143e075958229d01e7209637868a093}{%
+           family={Munch},
+           familyi={M\bibinitperiod},
+           given={Elizabeth},
+           giveni={E\bibinitperiod}}}%
+        {{hash=407fb2d87a30a0f07251c55153f3c5ba}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Bei},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{42a2731c33e114f8c8fced3bb2e26f6b}
+      \strng{fullhash}{54777731942b8ed107b732b2c453ca3d}
+      \strng{bibnamehash}{42a2731c33e114f8c8fced3bb2e26f6b}
+      \strng{authorbibnamehash}{42a2731c33e114f8c8fced3bb2e26f6b}
+      \strng{authornamehash}{42a2731c33e114f8c8fced3bb2e26f6b}
+      \strng{authorfullhash}{54777731942b8ed107b732b2c453ca3d}
+      \field{labelalpha}{Bro+21}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Applied and Computational Topology}
+      \field{number}{1}
+      \field{title}{Probabilistic convergence and stability of random mapper graphs}
+      \field{volume}{5}
+      \field{year}{2021}
+      \field{pages}{99\bibrangedash 140}
+      \range{pages}{42}
+    \endentry
+    \entry{chazal2014convergence}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=ca557f44ca0b022489547f8e894669b6}{%
+           family={Chazal},
+           familyi={C\bibinitperiod},
+           given={Frédéric},
+           giveni={F\bibinitperiod}}}%
+        {{hash=96334d7a2de6b77c3db8016a1867d2b2}{%
+           family={Glisse},
+           familyi={G\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod}}}%
+        {{hash=936dd47259093eb3bed64085ae614a01}{%
+           family={Labruère},
+           familyi={L\bibinitperiod},
+           given={Catherine},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1b0eb5461c46c8cbc77c0494dd16f94b}{%
+           family={Michel},
+           familyi={M\bibinitperiod},
+           given={Bertrand},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{131398f96b849d78ed263128bf5ecb5c}
+      \strng{fullhash}{45051861797652f78698066cf8dc5658}
+      \strng{bibnamehash}{131398f96b849d78ed263128bf5ecb5c}
+      \strng{authorbibnamehash}{131398f96b849d78ed263128bf5ecb5c}
+      \strng{authornamehash}{131398f96b849d78ed263128bf5ecb5c}
+      \strng{authorfullhash}{45051861797652f78698066cf8dc5658}
+      \field{labelalpha}{Cha+14}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Machine Learning}
+      \field{title}{Convergence rates for persistence diagram estimation in topological data analysis}
+      \field{year}{2014}
+      \field{pages}{163\bibrangedash 171}
+      \range{pages}{9}
+    \endentry
+    \entry{carriere2022statistical}{article}{}
+      \name{author}{2}{}{%
+        {{hash=27bf75c737539b128e626096e1359528}{%
+           family={Carrière},
+           familyi={C\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1b0eb5461c46c8cbc77c0494dd16f94b}{%
+           family={Michel},
+           familyi={M\bibinitperiod},
+           given={Bertrand},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{57ad5119ac165a109d4f0d48afaf385c}
+      \strng{fullhash}{57ad5119ac165a109d4f0d48afaf385c}
+      \strng{bibnamehash}{57ad5119ac165a109d4f0d48afaf385c}
+      \strng{authorbibnamehash}{57ad5119ac165a109d4f0d48afaf385c}
+      \strng{authornamehash}{57ad5119ac165a109d4f0d48afaf385c}
+      \strng{authorfullhash}{57ad5119ac165a109d4f0d48afaf385c}
+      \field{labelalpha}{CM22}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Applied and Computational Topology}
+      \field{number}{3}
+      \field{title}{Statistical analysis of Mapper for stochastic and multivariate filters}
+      \field{volume}{6}
+      \field{year}{2022}
+      \field{pages}{331\bibrangedash 369}
+      \range{pages}{39}
+    \endentry
+    \entry{carriere2018statistical}{article}{}
+      \name{author}{3}{}{%
+        {{hash=79962822ea35f068a8a5aec7e93ccedc}{%
+           family={Carriere},
+           familyi={C\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1b0eb5461c46c8cbc77c0494dd16f94b}{%
+           family={Michel},
+           familyi={M\bibinitperiod},
+           given={Bertrand},
+           giveni={B\bibinitperiod}}}%
+        {{hash=f0013896254c7da2273202eb956740a2}{%
+           family={Oudot},
+           familyi={O\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{156d6f35875a0bee6e9e73e47faef96c}
+      \strng{fullhash}{59ccc28a3c02f5ba3973ed5d266a6554}
+      \strng{bibnamehash}{59ccc28a3c02f5ba3973ed5d266a6554}
+      \strng{authorbibnamehash}{59ccc28a3c02f5ba3973ed5d266a6554}
+      \strng{authornamehash}{156d6f35875a0bee6e9e73e47faef96c}
+      \strng{authorfullhash}{59ccc28a3c02f5ba3973ed5d266a6554}
+      \field{labelalpha}{CMO18}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{number}{12}
+      \field{title}{Statistical analysis and parameter selection for mapper}
+      \field{volume}{19}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 39}
+      \range{pages}{39}
+    \endentry
+    \entry{carriere2018structure}{article}{}
+      \name{author}{2}{}{%
+        {{hash=79962822ea35f068a8a5aec7e93ccedc}{%
+           family={Carriere},
+           familyi={C\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod}}}%
+        {{hash=f0013896254c7da2273202eb956740a2}{%
+           family={Oudot},
+           familyi={O\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{8a7382add420cf943467918451c62f2a}
+      \strng{fullhash}{8a7382add420cf943467918451c62f2a}
+      \strng{bibnamehash}{8a7382add420cf943467918451c62f2a}
+      \strng{authorbibnamehash}{8a7382add420cf943467918451c62f2a}
+      \strng{authornamehash}{8a7382add420cf943467918451c62f2a}
+      \strng{authorfullhash}{8a7382add420cf943467918451c62f2a}
+      \field{labelalpha}{CO18}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Foundations of Computational Mathematics}
+      \field{title}{Structure and stability of the one-dimensional mapper}
+      \field{volume}{18}
+      \field{year}{2018}
+      \field{pages}{1333\bibrangedash 1396}
+      \range{pages}{64}
+    \endentry
+    \entry{cuevas2009set}{article}{}
+      \name{author}{1}{}{%
+        {{hash=62c3c639a426827fb7a474dc5da71cd1}{%
+           family={Cuevas},
+           familyi={C\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{62c3c639a426827fb7a474dc5da71cd1}
+      \strng{fullhash}{62c3c639a426827fb7a474dc5da71cd1}
+      \strng{bibnamehash}{62c3c639a426827fb7a474dc5da71cd1}
+      \strng{authorbibnamehash}{62c3c639a426827fb7a474dc5da71cd1}
+      \strng{authornamehash}{62c3c639a426827fb7a474dc5da71cd1}
+      \strng{authorfullhash}{62c3c639a426827fb7a474dc5da71cd1}
+      \field{labelalpha}{Cue09}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bol. Estad. Investig. Oper}
+      \field{number}{2}
+      \field{title}{Set estimation: Another bridge between statistics and geometry}
+      \field{volume}{25}
+      \field{year}{2009}
+      \field{pages}{71\bibrangedash 85}
+      \range{pages}{15}
+    \endentry
+    \entry{de2016categorified}{article}{}
+      \name{author}{3}{}{%
+        {{hash=fd53f8be79363340b5102abff442d11e}{%
+           family={De\bibnamedelima Silva},
+           familyi={D\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Vin},
+           giveni={V\bibinitperiod}}}%
+        {{hash=1143e075958229d01e7209637868a093}{%
+           family={Munch},
+           familyi={M\bibinitperiod},
+           given={Elizabeth},
+           giveni={E\bibinitperiod}}}%
+        {{hash=2adb1d4817a483d140c701274c361fa5}{%
+           family={Patel},
+           familyi={P\bibinitperiod},
+           given={Amit},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{013c5c26e000b277c4f28b66fef6f567}
+      \strng{fullhash}{012f180d3823a4d1012a83316334e7b3}
+      \strng{bibnamehash}{012f180d3823a4d1012a83316334e7b3}
+      \strng{authorbibnamehash}{012f180d3823a4d1012a83316334e7b3}
+      \strng{authornamehash}{013c5c26e000b277c4f28b66fef6f567}
+      \strng{authorfullhash}{012f180d3823a4d1012a83316334e7b3}
+      \field{labelalpha}{DMP16}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Discrete \& Computational Geometry}
+      \field{number}{4}
+      \field{title}{Categorified reeb graphs}
+      \field{volume}{55}
+      \field{year}{2016}
+      \field{pages}{854\bibrangedash 906}
+      \range{pages}{53}
+    \endentry
+    \entry{flamary2021pot}{article}{}
+      \name{author}{22}{}{%
+        {{hash=b10fa2e29995598ae81df7c518ad5786}{%
+           family={Flamary},
+           familyi={F\bibinitperiod},
+           given={Rémi},
+           giveni={R\bibinitperiod}}}%
+        {{hash=b5231a6c7af3f041f02b5945fb649993}{%
+           family={Courty},
+           familyi={C\bibinitperiod},
+           given={Nicolas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=12ebe424e1c87de156c57e8fa7683f46}{%
+           family={Gramfort},
+           familyi={G\bibinitperiod},
+           given={Alexandre},
+           giveni={A\bibinitperiod}}}%
+        {{hash=7a2a5e121bb4488cb2b4cb13b5f3a778}{%
+           family={Alaya},
+           familyi={A\bibinitperiod},
+           given={Mokhtar\bibnamedelima Z.},
+           giveni={M\bibinitperiod\bibinitdelim Z\bibinitperiod}}}%
+        {{hash=4d8fafd33302a0f755ca64eb9ff12313}{%
+           family={Boisbunon},
+           familyi={B\bibinitperiod},
+           given={Aurélie},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b8fdb3d70846c54c1c9a99a13921eb3e}{%
+           family={Chambon},
+           familyi={C\bibinitperiod},
+           given={Stanislas},
+           giveni={S\bibinitperiod}}}%
+        {{hash=98a9d0646c3af4a7d5b8ee33af753719}{%
+           family={Chapel},
+           familyi={C\bibinitperiod},
+           given={Laetitia},
+           giveni={L\bibinitperiod}}}%
+        {{hash=500462c41dd886082f1f8861030c76c6}{%
+           family={Corenflos},
+           familyi={C\bibinitperiod},
+           given={Adrien},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e7dc38aa6da6e801d5f0a22078726b16}{%
+           family={Fatras},
+           familyi={F\bibinitperiod},
+           given={Kilian},
+           giveni={K\bibinitperiod}}}%
+        {{hash=5cf6232f35f85c4b1809c04ec395049e}{%
+           family={Fournier},
+           familyi={F\bibinitperiod},
+           given={Nemo},
+           giveni={N\bibinitperiod}}}%
+        {{hash=2684baab260963210145072288aad234}{%
+           family={Gautheron},
+           familyi={G\bibinitperiod},
+           given={Léo},
+           giveni={L\bibinitperiod}}}%
+        {{hash=334f01517d9ff852edb4dccc604092f0}{%
+           family={Gayraud},
+           familyi={G\bibinitperiod},
+           given={Nathalie\bibnamedelima T.H.},
+           giveni={N\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=65c52e7bf43127dd6a5c2f874680656f}{%
+           family={Janati},
+           familyi={J\bibinitperiod},
+           given={Hicham},
+           giveni={H\bibinitperiod}}}%
+        {{hash=3648fa225ee2d24112d704656de2279e}{%
+           family={Rakotomamonjy},
+           familyi={R\bibinitperiod},
+           given={Alain},
+           giveni={A\bibinitperiod}}}%
+        {{hash=7398fa85cd6c5fbbc0ab4cf7f0685b46}{%
+           family={Redko},
+           familyi={R\bibinitperiod},
+           given={Ievgen},
+           giveni={I\bibinitperiod}}}%
+        {{hash=9469b2a8c7821be7e0b2447ddc4095d1}{%
+           family={Rolet},
+           familyi={R\bibinitperiod},
+           given={Antoine},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9a79b21bc185cf44c4f2b1df612c1691}{%
+           family={Schutz},
+           familyi={S\bibinitperiod},
+           given={Antony},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a66430a63f4dc9ff0f4867a2ebd97450}{%
+           family={Seguy},
+           familyi={S\bibinitperiod},
+           given={Vivien},
+           giveni={V\bibinitperiod}}}%
+        {{hash=c968e2c7c73afaa0dc0b2a67f5d35df8}{%
+           family={Sutherland},
+           familyi={S\bibinitperiod},
+           given={Danica\bibnamedelima J.},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=3d8260acdd72b376866455e65a3b46f6}{%
+           family={Tavenard},
+           familyi={T\bibinitperiod},
+           given={Romain},
+           giveni={R\bibinitperiod}}}%
+        {{hash=73be8b02aa5062df519d5d7d1f28dd36}{%
+           family={Tong},
+           familyi={T\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+        {{hash=f08745879b776243cc044bafc7bef4c4}{%
+           family={Vayer},
+           familyi={V\bibinitperiod},
+           given={Titouan},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{60084016adee691fbc75400b4437d0bf}
+      \strng{fullhash}{4ca6c64e56ca9c98e87c29e80b55b878}
+      \strng{bibnamehash}{60084016adee691fbc75400b4437d0bf}
+      \strng{authorbibnamehash}{60084016adee691fbc75400b4437d0bf}
+      \strng{authornamehash}{60084016adee691fbc75400b4437d0bf}
+      \strng{authorfullhash}{4ca6c64e56ca9c98e87c29e80b55b878}
+      \field{labelalpha}{Fla+21}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{number}{78}
+      \field{title}{POT: Python Optimal Transport}
+      \field{volume}{22}
+      \field{year}{2021}
+      \field{pages}{1\bibrangedash 8}
+      \range{pages}{8}
+      \verb{urlraw}
+      \verb http://jmlr.org/papers/v22/20-451.html
+      \endverb
+      \verb{url}
+      \verb http://jmlr.org/papers/v22/20-451.html
+      \endverb
+    \endentry
+    \entry{henrikson1999completeness}{article}{}
+      \name{author}{1}{}{%
+        {{hash=a7a1337ebcae2264a22cf79ea519d9e4}{%
+           family={Henrikson},
+           familyi={H\bibinitperiod},
+           given={Jeff},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Citeseer}%
+      }
+      \strng{namehash}{a7a1337ebcae2264a22cf79ea519d9e4}
+      \strng{fullhash}{a7a1337ebcae2264a22cf79ea519d9e4}
+      \strng{bibnamehash}{a7a1337ebcae2264a22cf79ea519d9e4}
+      \strng{authorbibnamehash}{a7a1337ebcae2264a22cf79ea519d9e4}
+      \strng{authornamehash}{a7a1337ebcae2264a22cf79ea519d9e4}
+      \strng{authorfullhash}{a7a1337ebcae2264a22cf79ea519d9e4}
+      \field{labelalpha}{Hen99}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{MIT Undergraduate Journal of Mathematics}
+      \field{number}{69-80}
+      \field{title}{Completeness and total boundedness of the Hausdorff metric}
+      \field{volume}{1}
+      \field{year}{1999}
+      \field{pages}{10}
+      \range{pages}{1}
+    \endentry
+    \entry{han2023covariance}{article}{}
+      \name{author}{3}{}{%
+        {{hash=96a1977f2ea74db16d8c5b2fd3081826}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Yanjun},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=0aada1e0dbe5dcee29325403816a4e60}{%
+           family={Rigollet},
+           familyi={R\bibinitperiod},
+           given={Philippe},
+           giveni={P\bibinitperiod}}}%
+        {{hash=cb5fc62deff0efc68f5fcd16bbe4e330}{%
+           family={Stepaniants},
+           familyi={S\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{aec757ab623bd9fcdedc54c912febff4}
+      \strng{fullhash}{b9f1a0275104ae87869f94caff5f366e}
+      \strng{bibnamehash}{b9f1a0275104ae87869f94caff5f366e}
+      \strng{authorbibnamehash}{b9f1a0275104ae87869f94caff5f366e}
+      \strng{authornamehash}{aec757ab623bd9fcdedc54c912febff4}
+      \strng{authorfullhash}{b9f1a0275104ae87869f94caff5f366e}
+      \field{labelalpha}{HRS23}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2311.13595}
+      \field{title}{Covariance alignment: from maximum likelihood estimation to Gromov-Wasserstein}
+      \field{year}{2023}
+    \endentry
+    \entry{joseph2021topological}{incollection}{}
+      \name{author}{3}{}{%
+        {{hash=21f3d9b227449da74fc20d47c1bb72b0}{%
+           family={Joseph},
+           familyi={J\bibinitperiod},
+           given={Brian\bibnamedelima B},
+           giveni={B\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=02c3e11c8c8c5927bf4d563643bd396e}{%
+           family={Pham},
+           familyi={P\bibinitperiod},
+           given={Trami},
+           giveni={T\bibinitperiod}}}%
+        {{hash=0623e207860b3a3da4f330687e3f5031}{%
+           family={Hastings},
+           familyi={H\bibinitperiod},
+           given={Christopher},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Acquisition Research Program}%
+      }
+      \strng{namehash}{e9bec992f3a5e9f4635471254876d1c6}
+      \strng{fullhash}{7b5019051ca501ab51676fc5937c883b}
+      \strng{bibnamehash}{7b5019051ca501ab51676fc5937c883b}
+      \strng{authorbibnamehash}{7b5019051ca501ab51676fc5937c883b}
+      \strng{authornamehash}{e9bec992f3a5e9f4635471254876d1c6}
+      \strng{authorfullhash}{7b5019051ca501ab51676fc5937c883b}
+      \field{labelalpha}{JPH21}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Topological Data Analysis in Conjunction with Traditional Machine Learning Techniques to Predict Future MDAP PM Ratings}
+      \field{year}{2021}
+    \endentry
+    \entry{koehl2023computing}{article}{}
+      \name{author}{3}{}{%
+        {{hash=ba04faa0554931dd6696a212e2793498}{%
+           family={Koehl},
+           familyi={K\bibinitperiod},
+           given={Patrice},
+           giveni={P\bibinitperiod}}}%
+        {{hash=8ca12c034a4c69a365b8c82d8dcc6aaf}{%
+           family={Delarue},
+           familyi={D\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1c127ffa082dd1495c5e2e5dfc708916}{%
+           family={Orland},
+           familyi={O\bibinitperiod},
+           given={Henri},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {MDPI}%
+      }
+      \strng{namehash}{b109af40cdb69e6f525ba5442f5e27cb}
+      \strng{fullhash}{a27e52968bd8a5947092c841c2a95bcc}
+      \strng{bibnamehash}{a27e52968bd8a5947092c841c2a95bcc}
+      \strng{authorbibnamehash}{a27e52968bd8a5947092c841c2a95bcc}
+      \strng{authornamehash}{b109af40cdb69e6f525ba5442f5e27cb}
+      \strng{authorfullhash}{a27e52968bd8a5947092c841c2a95bcc}
+      \field{labelalpha}{KDO23}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Algorithms}
+      \field{number}{3}
+      \field{title}{Computing the Gromov-Wasserstein distance between two surface meshes using optimal transport}
+      \field{volume}{16}
+      \field{year}{2023}
+      \field{pages}{131}
+      \range{pages}{1}
+    \endentry
+    \entry{memoli2009spectral}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=2fd11e676a24c6aabdc0a0823f559d23}{%
+           family={Mémoli},
+           familyi={M\bibinitperiod},
+           given={Facundo},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{fullhash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{bibnamehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{authorbibnamehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{authornamehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{authorfullhash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \field{extraname}{1}
+      \field{labelalpha}{Mém09}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2009 IEEE 12th International Conference on Computer Vision Workshops, ICCV Workshops}
+      \field{title}{Spectral Gromov-Wasserstein distances for shape matching}
+      \field{year}{2009}
+      \field{pages}{256\bibrangedash 263}
+      \range{pages}{8}
+    \endentry
+    \entry{memoli2011gromov}{article}{}
+      \name{author}{1}{}{%
+        {{hash=2fd11e676a24c6aabdc0a0823f559d23}{%
+           family={Mémoli},
+           familyi={M\bibinitperiod},
+           given={Facundo},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{fullhash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{bibnamehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{authorbibnamehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{authornamehash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \strng{authorfullhash}{2fd11e676a24c6aabdc0a0823f559d23}
+      \field{extraname}{2}
+      \field{labelalpha}{Mém11}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Foundations of computational mathematics}
+      \field{title}{Gromov--Wasserstein distances and the metric approach to object matching}
+      \field{volume}{11}
+      \field{year}{2011}
+      \field{pages}{417\bibrangedash 487}
+      \range{pages}{71}
+    \endentry
+    \entry{milnor1963morse}{book}{}
+      \name{author}{1}{}{%
+        {{hash=07278458e44588e00bb54aa76f2a71a5}{%
+           family={Milnor},
+           familyi={M\bibinitperiod},
+           given={John\bibnamedelima Willard},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Princeton university press}%
+      }
+      \strng{namehash}{07278458e44588e00bb54aa76f2a71a5}
+      \strng{fullhash}{07278458e44588e00bb54aa76f2a71a5}
+      \strng{bibnamehash}{07278458e44588e00bb54aa76f2a71a5}
+      \strng{authorbibnamehash}{07278458e44588e00bb54aa76f2a71a5}
+      \strng{authornamehash}{07278458e44588e00bb54aa76f2a71a5}
+      \strng{authorfullhash}{07278458e44588e00bb54aa76f2a71a5}
+      \field{labelalpha}{Mil63}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{51}
+      \field{title}{Morse theory}
+      \field{year}{1963}
+    \endentry
+    \entry{Mitra21}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=06814a50ce5b57928fa989b22774ad3f}{%
+           family={Mitra},
+           familyi={M\bibinitperiod},
+           given={Satanik},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d07d8a0183a37b3a6c436f4af9589a79}{%
+           family={Rao\bibnamedelima JV},
+           familyi={R\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Kameshwar},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{bfefbf307d54d93107fbc5ef47d53d3c}
+      \strng{fullhash}{bfefbf307d54d93107fbc5ef47d53d3c}
+      \strng{bibnamehash}{bfefbf307d54d93107fbc5ef47d53d3c}
+      \strng{authorbibnamehash}{bfefbf307d54d93107fbc5ef47d53d3c}
+      \strng{authornamehash}{bfefbf307d54d93107fbc5ef47d53d3c}
+      \strng{authorfullhash}{bfefbf307d54d93107fbc5ef47d53d3c}
+      \field{labelalpha}{MR21}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2021 IEEE International Conference on Quantum Computing and Engineering (QCE)}
+      \field{title}{Experiments on Fraud Detection use case with QML and TDA Mapper}
+      \field{year}{2021}
+      \field{pages}{471\bibrangedash 472}
+      \range{pages}{2}
+      \verb{doi}
+      \verb 10.1109/QCE52317.2021.00083
+      \endverb
+      \keyw{Quantum computing;Data analysis;Computational modeling;Image processing;Neural networks;Noise reduction;Data visualization;QML;QNN;TDA Mapper;StrawberryFields;Fraud Detection;Classification}
+    \endentry
+    \entry{munch_convergence_2016}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=1143e075958229d01e7209637868a093}{%
+           family={Munch},
+           familyi={M\bibinitperiod},
+           given={Elizabeth},
+           giveni={E\bibinitperiod}}}%
+        {{hash=407fb2d87a30a0f07251c55153f3c5ba}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Bei},
+           giveni={B\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=1ddfea07bc9394a3d28023b184ee009f}{%
+           family={Fekete},
+           familyi={F\bibinitperiod},
+           given={Sándor},
+           giveni={S\bibinitperiod}}}%
+        {{hash=73aee614481d4bc018f38ffa4d43a239}{%
+           family={Lubiw},
+           familyi={L\bibinitperiod},
+           given={Anna},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Schloss Dagstuhl – Leibniz-Zentrum für Informatik}%
+      }
+      \strng{namehash}{0e967020f820698fd228b516f1054497}
+      \strng{fullhash}{0e967020f820698fd228b516f1054497}
+      \strng{bibnamehash}{0e967020f820698fd228b516f1054497}
+      \strng{authorbibnamehash}{0e967020f820698fd228b516f1054497}
+      \strng{authornamehash}{0e967020f820698fd228b516f1054497}
+      \strng{authorfullhash}{0e967020f820698fd228b516f1054497}
+      \strng{editorbibnamehash}{ec2c07e91ea36f85bfe0a4e666246efb}
+      \strng{editornamehash}{ec2c07e91ea36f85bfe0a4e666246efb}
+      \strng{editorfullhash}{ec2c07e91ea36f85bfe0a4e666246efb}
+      \field{labelalpha}{MW16}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{32nd {International} {Symposium} on {Computational} {Geometry} ({SoCG} 2016)}
+      \field{isbn}{978-3-95977-009-5}
+      \field{series}{Leibniz {International} {Proceedings} in {Informatics} ({LIPIcs})}
+      \field{title}{Convergence between {Categorical} {Representations} of {Reeb} {Space} and {Mapper}}
+      \field{volume}{51}
+      \field{year}{2016}
+      \field{pages}{53:1\bibrangedash 53:16}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.4230/LIPIcs.SoCG.2016.53
+      \endverb
+    \endentry
+    \entry{Naitzat2018}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=ed3680ec5ffd05138215d8d6202ba790}{%
+           family={Naitzat},
+           familyi={N\bibinitperiod},
+           given={Gregory},
+           giveni={G\bibinitperiod}}}%
+        {{hash=144820f45b1be0cb956d712d4efbcc35}{%
+           family={Lokare},
+           familyi={L\bibinitperiod},
+           given={Namita},
+           giveni={N\bibinitperiod}}}%
+        {{hash=99e4a808df8afdf7c3e6f60590ddbb9b}{%
+           family={Silva},
+           familyi={S\bibinitperiod},
+           given={Jorge},
+           giveni={J\bibinitperiod}}}%
+        {{hash=80e5193f3f154c2427350a0af546c4bd}{%
+           family={Kaynar-Kabul},
+           familyi={K\bibinithyphendelim K\bibinitperiod},
+           given={Ilknur},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{b5b264b45279e641db38193b9e6caa3e}
+      \strng{fullhash}{0946f20023fbad1ff45ec3380ccdaf96}
+      \strng{bibnamehash}{b5b264b45279e641db38193b9e6caa3e}
+      \strng{authorbibnamehash}{b5b264b45279e641db38193b9e6caa3e}
+      \strng{authornamehash}{b5b264b45279e641db38193b9e6caa3e}
+      \strng{authorfullhash}{0946f20023fbad1ff45ec3380ccdaf96}
+      \field{labelalpha}{Nai+18}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{KDD Workshop on Interactive Data Exploration and Analytics}
+      \field{title}{{M-Boost: profiling and refining deep neural networks with topological data analysis}}
+      \field{year}{2018}
+    \endentry
+    \entry{niyogi2008finding}{article}{}
+      \name{author}{3}{}{%
+        {{hash=156804623cd62fb419db269c507e26ce}{%
+           family={Niyogi},
+           familyi={N\bibinitperiod},
+           given={Partha},
+           giveni={P\bibinitperiod}}}%
+        {{hash=394b6b61c0209947040512295d62d07d}{%
+           family={Smale},
+           familyi={S\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d3d183559eb6c429a433efa1b2989e09}{%
+           family={Weinberger},
+           familyi={W\bibinitperiod},
+           given={Shmuel},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5ce151996feb354f8df8a17c9ec1e48c}
+      \strng{fullhash}{c1b5b2cf24f3b6ca6d1dd7391c6a08e5}
+      \strng{bibnamehash}{c1b5b2cf24f3b6ca6d1dd7391c6a08e5}
+      \strng{authorbibnamehash}{c1b5b2cf24f3b6ca6d1dd7391c6a08e5}
+      \strng{authornamehash}{5ce151996feb354f8df8a17c9ec1e48c}
+      \strng{authorfullhash}{c1b5b2cf24f3b6ca6d1dd7391c6a08e5}
+      \field{labelalpha}{NSW08}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Discrete \& Computational Geometry}
+      \field{title}{Finding the homology of submanifolds with high confidence from random samples}
+      \field{volume}{39}
+      \field{year}{2008}
+      \field{pages}{419\bibrangedash 441}
+      \range{pages}{23}
+    \endentry
+    \entry{Oulhaj_Mapper_Gromov-Wasserstein_distance}{software}{}
+      \name{author}{1}{}{%
+        {{hash=cdcc356193e9b580c43e1f231360c3e3}{%
+           family={Oulhaj},
+           familyi={O\bibinitperiod},
+           given={Ziyad},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{cdcc356193e9b580c43e1f231360c3e3}
+      \strng{fullhash}{cdcc356193e9b580c43e1f231360c3e3}
+      \strng{bibnamehash}{cdcc356193e9b580c43e1f231360c3e3}
+      \strng{authorbibnamehash}{cdcc356193e9b580c43e1f231360c3e3}
+      \strng{authornamehash}{cdcc356193e9b580c43e1f231360c3e3}
+      \strng{authorfullhash}{cdcc356193e9b580c43e1f231360c3e3}
+      \field{labelalpha}{Oul}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{Mapper Gromov-Wasserstein distance examples}}
+      \verb{urlraw}
+      \verb https://github.com/ZiyadOulhaj/Mapper-MMS
+      \endverb
+      \verb{url}
+      \verb https://github.com/ZiyadOulhaj/Mapper-MMS
+      \endverb
+    \endentry
+    \entry{petersen2006riemannian}{article}{}
+      \name{author}{1}{}{%
+        {{hash=dd746f7318e405c4adaf25a1b0af4675}{%
+           family={Petersen},
+           familyi={P\bibinitperiod},
+           given={P},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{dd746f7318e405c4adaf25a1b0af4675}
+      \strng{fullhash}{dd746f7318e405c4adaf25a1b0af4675}
+      \strng{bibnamehash}{dd746f7318e405c4adaf25a1b0af4675}
+      \strng{authorbibnamehash}{dd746f7318e405c4adaf25a1b0af4675}
+      \strng{authornamehash}{dd746f7318e405c4adaf25a1b0af4675}
+      \strng{authorfullhash}{dd746f7318e405c4adaf25a1b0af4675}
+      \field{labelalpha}{Pet06}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Graduate Texts in Mathematics/Springer-Verlarg}
+      \field{title}{Riemannian geometry}
+      \field{year}{2006}
+    \endentry
+    \entry{rioux2024limit}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f296ed5283b4a8af019370358e2e37c7}{%
+           family={Rioux},
+           familyi={R\bibinitperiod},
+           given={Gabriel},
+           giveni={G\bibinitperiod}}}%
+        {{hash=ad434070039488cca3669175e0eea0b2}{%
+           family={Goldfeld},
+           familyi={G\bibinitperiod},
+           given={Ziv},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=14b456424727553f557ab47ed30cc84f}{%
+           family={Kato},
+           familyi={K\bibinitperiod},
+           given={Kengo},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{7c9ca6dff287c646069b3c85228cc6f7}
+      \strng{fullhash}{166dfbcb3238771907b6f22a32156dfd}
+      \strng{bibnamehash}{166dfbcb3238771907b6f22a32156dfd}
+      \strng{authorbibnamehash}{166dfbcb3238771907b6f22a32156dfd}
+      \strng{authornamehash}{7c9ca6dff287c646069b3c85228cc6f7}
+      \strng{authorfullhash}{166dfbcb3238771907b6f22a32156dfd}
+      \field{labelalpha}{RGK24}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2410.18006}
+      \field{title}{Limit Laws for Gromov-Wasserstein Alignment with Applications to Testing Graph Isomorphisms}
+      \field{year}{2024}
+    \endentry
+    \entry{ruscitti2024improving}{article}{}
+      \name{author}{2}{}{%
+        {{hash=54aef8b39db99a4b6a6f16db5814a986}{%
+           family={Ruscitti},
+           familyi={R\bibinitperiod},
+           given={Kaleb\bibnamedelima D},
+           giveni={K\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=f3edd0ee6ca72eca5c532b9c1fcee621}{%
+           family={McInnes},
+           familyi={M\bibinitperiod},
+           given={Leland},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{959b4f3ce1fdca5001775c586cdf634a}
+      \strng{fullhash}{959b4f3ce1fdca5001775c586cdf634a}
+      \strng{bibnamehash}{959b4f3ce1fdca5001775c586cdf634a}
+      \strng{authorbibnamehash}{959b4f3ce1fdca5001775c586cdf634a}
+      \strng{authornamehash}{959b4f3ce1fdca5001775c586cdf634a}
+      \strng{authorfullhash}{959b4f3ce1fdca5001775c586cdf634a}
+      \field{labelalpha}{RM24}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2410.03862}
+      \field{title}{Improving Mapper's Robustness by Varying Resolution According to Lens-Space Density}
+      \field{year}{2024}
+    \endentry
+    \entry{rosen2018inferring}{article}{}
+      \name{author}{5}{}{%
+        {{hash=fee709c81bcd440221077f64c95f3267}{%
+           family={Rosen},
+           familyi={R\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=f7128a10382be54f74c9369c4eb118f4}{%
+           family={Hajij},
+           familyi={H\bibinitperiod},
+           given={Mustafa},
+           giveni={M\bibinitperiod}}}%
+        {{hash=fbc77be3f0471bac59d5dfcf690565e5}{%
+           family={Tu},
+           familyi={T\bibinitperiod},
+           given={Junyi},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f7f78e258d8371ab3d6a0e23b13c5a71}{%
+           family={Arafin},
+           familyi={A\bibinitperiod},
+           given={Tanvirul},
+           giveni={T\bibinitperiod}}}%
+        {{hash=3eaf67b9798d8cccc04b5a4802005b5b}{%
+           family={Piegl},
+           familyi={P\bibinitperiod},
+           given={Les},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{7cba7990b5a87e8e9e9067072019bebc}
+      \strng{fullhash}{d3382980500df1ca5fd8ee4deaef1c49}
+      \strng{bibnamehash}{7cba7990b5a87e8e9e9067072019bebc}
+      \strng{authorbibnamehash}{7cba7990b5a87e8e9e9067072019bebc}
+      \strng{authornamehash}{7cba7990b5a87e8e9e9067072019bebc}
+      \strng{authorfullhash}{d3382980500df1ca5fd8ee4deaef1c49}
+      \field{labelalpha}{Ros+18}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1807.02921}
+      \field{title}{Inferring quality in point cloud-based 3D printed objects using topological data analysis}
+      \field{year}{2018}
+    \endentry
+    \entry{sakai1996riemannian}{book}{}
+      \name{author}{1}{}{%
+        {{hash=ecc9755ed3cf6fadb87f35ffcaf992ce}{%
+           family={Sakai},
+           familyi={S\bibinitperiod},
+           given={Takashi},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Mathematical Soc.}%
+      }
+      \strng{namehash}{ecc9755ed3cf6fadb87f35ffcaf992ce}
+      \strng{fullhash}{ecc9755ed3cf6fadb87f35ffcaf992ce}
+      \strng{bibnamehash}{ecc9755ed3cf6fadb87f35ffcaf992ce}
+      \strng{authorbibnamehash}{ecc9755ed3cf6fadb87f35ffcaf992ce}
+      \strng{authornamehash}{ecc9755ed3cf6fadb87f35ffcaf992ce}
+      \strng{authorfullhash}{ecc9755ed3cf6fadb87f35ffcaf992ce}
+      \field{labelalpha}{Sak96}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Riemannian geometry}
+      \field{volume}{149}
+      \field{year}{1996}
+    \endentry
+    \entry{singh2007topological}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{hash=8e192c311aece21b90815dc7c4fa4d95}{%
+           family={Singh},
+           familyi={S\bibinitperiod},
+           given={Gurjeet},
+           giveni={G\bibinitperiod}}}%
+        {{hash=2fd11e676a24c6aabdc0a0823f559d23}{%
+           family={Mémoli},
+           familyi={M\bibinitperiod},
+           given={Facundo},
+           giveni={F\bibinitperiod}}}%
+        {{hash=b1d9e773b2e6fc33d6f6c6fbab2b8aca}{%
+           family={Carlsson},
+           familyi={C\bibinitperiod},
+           given={Gunnar\bibnamedelima E},
+           giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{34c0d17e199be0eebbb57297927d1b2e}
+      \strng{fullhash}{91c143a24def6d3c5f50aeefe141b2ac}
+      \strng{bibnamehash}{91c143a24def6d3c5f50aeefe141b2ac}
+      \strng{authorbibnamehash}{91c143a24def6d3c5f50aeefe141b2ac}
+      \strng{authornamehash}{34c0d17e199be0eebbb57297927d1b2e}
+      \strng{authorfullhash}{91c143a24def6d3c5f50aeefe141b2ac}
+      \field{labelalpha}{SMC+07}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PBG@ Eurographics}
+      \field{title}{Topological methods for the analysis of high dimensional data sets and 3d object recognition.}
+      \field{volume}{2}
+      \field{year}{2007}
+      \field{pages}{091\bibrangedash 100}
+      \range{pages}{10}
+    \endentry
+    \entry{sturm2006geometry}{article}{}
+      \name{author}{1}{}{%
+        {{hash=8503710b33565a18a8dbe471bd945177}{%
+           family={Sturm},
+           familyi={S\bibinitperiod},
+           given={Karl-Theodor},
+           giveni={K\bibinithyphendelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {International Press of Boston}%
+      }
+      \strng{namehash}{8503710b33565a18a8dbe471bd945177}
+      \strng{fullhash}{8503710b33565a18a8dbe471bd945177}
+      \strng{bibnamehash}{8503710b33565a18a8dbe471bd945177}
+      \strng{authorbibnamehash}{8503710b33565a18a8dbe471bd945177}
+      \strng{authornamehash}{8503710b33565a18a8dbe471bd945177}
+      \strng{authorfullhash}{8503710b33565a18a8dbe471bd945177}
+      \field{labelalpha}{Stu06}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Acta Mathematica}
+      \field{number}{1}
+      \field{title}{On the geometry of metric measure spaces}
+      \field{volume}{196}
+      \field{year}{2006}
+      \field{pages}{65\bibrangedash 131}
+      \range{pages}{67}
+    \endentry
+    \entry{wang2018topological}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=96f4d0319de45becbcdfdb8905455a9b}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Tongxin},
+           giveni={T\bibinitperiod}}}%
+        {{hash=149a461e864b6e63dec5b7b6149b45b6}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Travis},
+           giveni={T\bibinitperiod}}}%
+        {{hash=2f4cc163c8766d4437008ea260208de8}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Jie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d00246b1153ed058a9db188c365474ca}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Kun},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {World Scientific}%
+      }
+      \strng{namehash}{d545adfc3ed0495ed74e232b0e9696ca}
+      \strng{fullhash}{d1cf9c3133651d67d4cd4d53023ba59a}
+      \strng{bibnamehash}{d545adfc3ed0495ed74e232b0e9696ca}
+      \strng{authorbibnamehash}{d545adfc3ed0495ed74e232b0e9696ca}
+      \strng{authornamehash}{d545adfc3ed0495ed74e232b0e9696ca}
+      \strng{authorfullhash}{d1cf9c3133651d67d4cd4d53023ba59a}
+      \field{extraname}{1}
+      \field{labelalpha}{Wan+18}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{BIOCOMPUTING 2019: Proceedings of the Pacific Symposium}
+      \field{title}{Topological methods for visualization and analysis of high dimensional single-cell RNA sequencing data}
+      \field{year}{2018}
+      \field{pages}{350\bibrangedash 361}
+      \range{pages}{12}
+    \endentry
+    \entry{wangMeasureTheoreticReebGraphs2024}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=dd1fbcad86a725f322ab0b4fb9f614bf}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Qingsong},
+           giveni={Q\bibinitperiod}}}%
+        {{hash=72f42b45afc1bcd62207def176fbf3e2}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Guanqun},
+           giveni={G\bibinitperiod}}}%
+        {{hash=2ee1fc78fd12ff6f503348a0a5c68c81}{%
+           family={Sridharamurthy},
+           familyi={S\bibinitperiod},
+           given={Raghavendra},
+           giveni={R\bibinitperiod}}}%
+        {{hash=407fb2d87a30a0f07251c55153f3c5ba}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Bei},
+           giveni={B\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=e68cee08a8fdc9a346cc1788f8566748}{%
+           family={Mulzer},
+           familyi={M\bibinitperiod},
+           given={Wolfgang},
+           giveni={W\bibinitperiod}}}%
+        {{hash=30ac6ee2ff5bd697f524bb1f920a51e1}{%
+           family={Phillips},
+           familyi={P\bibinitperiod},
+           given={Jeff\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Schloss Dagstuhl -- Leibniz-Zentrum für Informatik}%
+      }
+      \strng{namehash}{55f5a8b5029335d20c97cf859127f763}
+      \strng{fullhash}{6fdea2f3895c9369cc7d8f9994e98958}
+      \strng{bibnamehash}{55f5a8b5029335d20c97cf859127f763}
+      \strng{authorbibnamehash}{55f5a8b5029335d20c97cf859127f763}
+      \strng{authornamehash}{55f5a8b5029335d20c97cf859127f763}
+      \strng{authorfullhash}{6fdea2f3895c9369cc7d8f9994e98958}
+      \strng{editorbibnamehash}{a656ce9841ec61a49e4b49ade9d3c058}
+      \strng{editornamehash}{a656ce9841ec61a49e4b49ade9d3c058}
+      \strng{editorfullhash}{a656ce9841ec61a49e4b49ade9d3c058}
+      \field{extraname}{2}
+      \field{labelalpha}{Wan+24}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{40th {{International Symposium}} on {{Computational Geometry}} ({{SoCG}} 2024)}
+      \field{isbn}{978-3-95977-316-4}
+      \field{issn}{1868-8969}
+      \field{title}{Measure-{{Theoretic Reeb Graphs}} and {{Reeb Spaces}}}
+      \field{volume}{293}
+      \field{year}{2024}
+      \field{pages}{80:1\bibrangedash 80:18}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.4230/LIPIcs.SoCG.2024.80
+      \endverb
+    \endentry
+    \entry{wang2020exploration}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=4f65dcdb28d6cbdb06bcdf017961b3ac}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Ziqi},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{4f65dcdb28d6cbdb06bcdf017961b3ac}
+      \strng{fullhash}{4f65dcdb28d6cbdb06bcdf017961b3ac}
+      \strng{bibnamehash}{4f65dcdb28d6cbdb06bcdf017961b3ac}
+      \strng{authorbibnamehash}{4f65dcdb28d6cbdb06bcdf017961b3ac}
+      \strng{authornamehash}{4f65dcdb28d6cbdb06bcdf017961b3ac}
+      \strng{authorfullhash}{4f65dcdb28d6cbdb06bcdf017961b3ac}
+      \field{labelalpha}{Wan20}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2020 International Conference on Information Science, Parallel and Distributed Systems (ISPDS)}
+      \field{title}{Exploration of Topological Data Analysis In 3D Printing}
+      \field{year}{2020}
+      \field{pages}{150\bibrangedash 153}
+      \range{pages}{4}
+    \endentry
+    \entry{weed2019sharp}{article}{}
+      \name{author}{2}{}{%
+        {{hash=beacf890fefa83e76f984b760a49dde1}{%
+           family={Weed},
+           familyi={W\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=93da2819ab01d8a5e7bae39ce6f17c1f}{%
+           family={Bach},
+           familyi={B\bibinitperiod},
+           given={Francis},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {JSTOR}%
+      }
+      \strng{namehash}{9839d187dd13fd8c8493bc09f4ec9ba7}
+      \strng{fullhash}{9839d187dd13fd8c8493bc09f4ec9ba7}
+      \strng{bibnamehash}{9839d187dd13fd8c8493bc09f4ec9ba7}
+      \strng{authorbibnamehash}{9839d187dd13fd8c8493bc09f4ec9ba7}
+      \strng{authornamehash}{9839d187dd13fd8c8493bc09f4ec9ba7}
+      \strng{authorfullhash}{9839d187dd13fd8c8493bc09f4ec9ba7}
+      \field{labelalpha}{WB19}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bernoulli}
+      \field{number}{4A}
+      \field{title}{Sharp asymptotic and finite-sample rates of convergence of empirical measures in Wasserstein distance}
+      \field{volume}{25}
+      \field{year}{2019}
+      \field{pages}{2620\bibrangedash 2648}
+      \range{pages}{29}
+    \endentry
+    \entry{xu2019scalable}{article}{}
+      \name{author}{3}{}{%
+        {{hash=6089e89dd54f06ece4073b97080c8602}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Hongteng},
+           giveni={H\bibinitperiod}}}%
+        {{hash=046bba67059e9ba1930508dbbc554fed}{%
+           family={Luo},
+           familyi={L\bibinitperiod},
+           given={Dixin},
+           giveni={D\bibinitperiod}}}%
+        {{hash=ce681750caa3045d8bb30c05a70f10d7}{%
+           family={Carin},
+           familyi={C\bibinitperiod},
+           given={Lawrence},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{f4ea6d2a41231a00fea595ae4c8b722b}
+      \strng{fullhash}{296334b1f78ebf95374234a0525df1c1}
+      \strng{bibnamehash}{296334b1f78ebf95374234a0525df1c1}
+      \strng{authorbibnamehash}{296334b1f78ebf95374234a0525df1c1}
+      \strng{authornamehash}{f4ea6d2a41231a00fea595ae4c8b722b}
+      \strng{authorfullhash}{296334b1f78ebf95374234a0525df1c1}
+      \field{extraname}{1}
+      \field{labelalpha}{XLC19}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Advances in neural information processing systems}
+      \field{title}{Scalable Gromov-Wasserstein learning for graph partitioning and matching}
+      \field{volume}{32}
+      \field{year}{2019}
+    \endentry
+    \entry{xu2019gromov}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=6089e89dd54f06ece4073b97080c8602}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Hongteng},
+           giveni={H\bibinitperiod}}}%
+        {{hash=046bba67059e9ba1930508dbbc554fed}{%
+           family={Luo},
+           familyi={L\bibinitperiod},
+           given={Dixin},
+           giveni={D\bibinitperiod}}}%
+        {{hash=55bb21a31fded4aad976b7902dc8206a}{%
+           family={Zha},
+           familyi={Z\bibinitperiod},
+           given={Hongyuan},
+           giveni={H\bibinitperiod}}}%
+        {{hash=6858ddf453f2c9361af9158ad918a8fe}{%
+           family={Duke},
+           familyi={D\bibinitperiod},
+           given={Lawrence\bibnamedelima Carin},
+           giveni={L\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{f4ea6d2a41231a00fea595ae4c8b722b}
+      \strng{fullhash}{87be74fe23a0fcbbaf0c5cf50f585239}
+      \strng{bibnamehash}{f4ea6d2a41231a00fea595ae4c8b722b}
+      \strng{authorbibnamehash}{f4ea6d2a41231a00fea595ae4c8b722b}
+      \strng{authornamehash}{f4ea6d2a41231a00fea595ae4c8b722b}
+      \strng{authorfullhash}{87be74fe23a0fcbbaf0c5cf50f585239}
+      \field{extraname}{2}
+      \field{labelalpha}{Xu+19}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International conference on machine learning}
+      \field{title}{Gromov-wasserstein learning for graph matching and node embedding}
+      \field{year}{2019}
+      \field{pages}{6932\bibrangedash 6941}
+      \range{pages}{10}
+    \endentry
+    \entry{zechel2014topographical}{article}{}
+      \name{author}{5}{}{%
+        {{hash=32399523cc3c2fd3e995670093b67b8a}{%
+           family={Zechel},
+           familyi={Z\bibinitperiod},
+           given={Sabrina},
+           giveni={S\bibinitperiod}}}%
+        {{hash=033f91f690b666def56019116fc3490e}{%
+           family={Zajac},
+           familyi={Z\bibinitperiod},
+           given={Pawel},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c1a751fad7cc8a25ca40849bc612a510}{%
+           family={Lönnerberg},
+           familyi={L\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=0c6f7fcfee257dd477700b715f09bf50}{%
+           family={Ibáñez},
+           familyi={I\bibinitperiod},
+           given={Carlos\bibnamedelima F},
+           giveni={C\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=a62c53130ab2b27ccc9d8db6e21d4bf5}{%
+           family={Linnarsson},
+           familyi={L\bibinitperiod},
+           given={Sten},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{bc56a974fb88538a598aaaf66af284b9}
+      \strng{fullhash}{45abfe94a5a60af962be748466dd6000}
+      \strng{bibnamehash}{bc56a974fb88538a598aaaf66af284b9}
+      \strng{authorbibnamehash}{bc56a974fb88538a598aaaf66af284b9}
+      \strng{authornamehash}{bc56a974fb88538a598aaaf66af284b9}
+      \strng{authorfullhash}{45abfe94a5a60af962be748466dd6000}
+      \field{labelalpha}{Zec+14}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Genome biology}
+      \field{title}{Topographical transcriptome mapping of the mouse medial ganglionic eminence by spatially resolved RNA-seq}
+      \field{volume}{15}
+      \field{year}{2014}
+      \field{pages}{1\bibrangedash 12}
+      \range{pages}{12}
+    \endentry
+    \entry{zhang2023duality}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=2d0f2d6e6e359930ad146fd4d06ec79f}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Zhengxin},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=ad434070039488cca3669175e0eea0b2}{%
+           family={Goldfeld},
+           familyi={G\bibinitperiod},
+           given={Ziv},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=3124060c5b85d59ac3ed92f925a40509}{%
+           family={Mroueh},
+           familyi={M\bibinitperiod},
+           given={Youssef},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=98f2dc9a110f56b9eb14240d49edfc66}{%
+           family={Sriperumbudur},
+           familyi={S\bibinitperiod},
+           given={Bharath},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{fullhash}{60307d92e5d3ed668ccba52056114a46}
+      \strng{bibnamehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{authorbibnamehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{authornamehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{authorfullhash}{60307d92e5d3ed668ccba52056114a46}
+      \field{extraname}{1}
+      \field{labelalpha}{Zha+23}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{NeurIPS 2023 Workshop Optimal Transport and Machine Learning}
+      \field{title}{Duality and Sample Complexity for the Gromov-Wasserstein Distance}
+      \field{year}{2023}
+    \endentry
+    \entry{zhang2024gromov}{article}{}
+      \name{author}{4}{}{%
+        {{hash=2d0f2d6e6e359930ad146fd4d06ec79f}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Zhengxin},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=ad434070039488cca3669175e0eea0b2}{%
+           family={Goldfeld},
+           familyi={G\bibinitperiod},
+           given={Ziv},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=3124060c5b85d59ac3ed92f925a40509}{%
+           family={Mroueh},
+           familyi={M\bibinitperiod},
+           given={Youssef},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=6c9aa083edd83b22c3bb4039bc85d422}{%
+           family={Sriperumbudur},
+           familyi={S\bibinitperiod},
+           given={Bharath\bibnamedelima K},
+           giveni={B\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Institute of Mathematical Statistics}%
+      }
+      \strng{namehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{fullhash}{0d62fcce2be62825ebd73230733603fe}
+      \strng{bibnamehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{authorbibnamehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{authornamehash}{e7a596bcdfce940fd44b8a525e614df3}
+      \strng{authorfullhash}{0d62fcce2be62825ebd73230733603fe}
+      \field{extraname}{2}
+      \field{labelalpha}{Zha+24}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Annals of Statistics}
+      \field{number}{4}
+      \field{title}{Gromov--Wasserstein distances: Entropic regularization, duality and sample complexity}
+      \field{volume}{52}
+      \field{year}{2024}
+      \field{pages}{1616\bibrangedash 1645}
+      \range{pages}{30}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

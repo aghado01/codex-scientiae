@@ -1,0 +1,337 @@
+\begin{thebibliography}{10}
+
+\bibitem{Porter2020}
+Mason~A. Porter.
+\newblock Nonlinearity + networks: A 2020 vision.
+\newblock In {\em Emerging Frontiers in Nonlinear Science}, pages 131--159.
+  Springer International Publishing, 2020.
+
+\bibitem{Holme2013}
+Petter Holme and Jari Saramäki, editors.
+\newblock {\em Temporal Networks}.
+\newblock Springer Berlin Heidelberg, 2013.
+
+\bibitem{Holme2015}
+Petter Holme.
+\newblock Modern temporal network theory: a colloquium.
+\newblock {\em The European Physical Journal B}, 88(9), sep 2015.
+
+\bibitem{Skyrms2000}
+B.~Skyrms and R.~Pemantle.
+\newblock A dynamic model of social network formation.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  97(16):9340--9346, aug 2000.
+
+\bibitem{Husein2019}
+Ismail Husein, Herman Mawengkang, Saib Suwilo, and Mardiningsih.
+\newblock Modeling the transmission of infectious disease in a dynamic network.
+\newblock {\em Journal of Physics: Conference Series}, 1255(1):012052, aug
+  2019.
+
+\bibitem{Xu2019b}
+Mengkai Xu, Srinivasan Radhakrishnan, Sagar Kamarthi, and Xiaoning Jin.
+\newblock Resiliency of mutualistic supplier-manufacturer networks.
+\newblock {\em Scientific Reports}, 9(1), sep 2019.
+
+\bibitem{Schaefer2018}
+Benjamin Schäfer, Dirk Witthaut, Marc Timme, and Vito Latora.
+\newblock Dynamically induced cascading failures in power grids.
+\newblock {\em Nature Communications}, 9(1), may 2018.
+
+\bibitem{DavidBoyce2012}
+Bin~Ran David~Boyce.
+\newblock {\em Modeling Dynamic Transportation Networks}.
+\newblock Springer Berlin Heidelberg, 2012.
+
+\bibitem{Enright2018}
+Jessica Enright and Rowland~Raymond Kao.
+\newblock Epidemics on dynamic networks.
+\newblock {\em Epidemics}, 24:88--97, sep 2018.
+
+\bibitem{Nuss2016}
+Philip Nuss, T.E. Graedel, Elisa Alonso, and Adam Carroll.
+\newblock Mapping supply chain risk by network analysis of product platforms.
+\newblock {\em Sustainable Materials and Technologies}, 10:14--22, dec 2016.
+
+\bibitem{Soltan2014}
+Saleh Soltan, Dorian Mazauric, and Gil Zussman.
+\newblock Cascading failures in power grids.
+\newblock In {\em Proceedings of the 5th international conference on Future
+  energy systems}. {ACM}, jun 2014.
+
+\bibitem{Bast2015}
+Hannah Bast, Daniel Delling, Andrew Goldberg, Matthias Müller-Hannemann,
+  Thomas Pajor, Peter Sanders, Dorothea Wagner, and Renato~F. Werneck.
+\newblock Route planning in transportation networks, 2015.
+
+\bibitem{Sugishita2020}
+Kashin Sugishita and Yasuo Asakura.
+\newblock Vulnerability studies in the fields of transportation and complex
+  networks: a citation network analysis.
+\newblock {\em Public Transport}, 13(1):1--34, sep 2020.
+
+\bibitem{Hackl2019}
+Jürgen Hackl and Bryan~T. Adey.
+\newblock Estimation of traffic flow changes using networks in networks
+  approaches.
+\newblock {\em Applied Network Science}, 4(1), may 2019.
+
+\bibitem{Chen2016a}
+Xiaoying Chen, Chong Zhang, Bin Ge, and Weidong Xiao.
+\newblock Temporal query processing in social network.
+\newblock {\em Journal of Intelligent Information Systems}, 49(2):147--166, dec
+  2016.
+
+\bibitem{Huang2015}
+Silu Huang, Ada Wai-Chee Fu, and Ruifeng Liu.
+\newblock Minimum spanning trees in temporal graphs.
+\newblock In {\em Proceedings of the 2015 {ACM} {SIGMOD} International
+  Conference on Management of Data}. {ACM}, may 2015.
+
+\bibitem{Wang2019}
+Yishu Wang, Ye~Yuan, Yuliang Ma, and Guoren Wang.
+\newblock Time-dependent graphs: Definitions, applications, and algorithms.
+\newblock {\em Data Science and Engineering}, 4(4):352--366, sep 2019.
+
+\bibitem{Borgatti2005}
+Stephen~P. Borgatti.
+\newblock Centrality and network flow.
+\newblock {\em Social Networks}, 27(1):55--71, jan 2005.
+
+\bibitem{Crawford2018}
+Joseph Crawford and Tijana Milenkovi{\'{c}}.
+\newblock {ClueNet}: Clustering a temporal network based on topological
+  similarity rather than denseness.
+\newblock {\em {PLOS} {ONE}}, 13(5):e0195993, may 2018.
+
+\bibitem{You2021}
+Jingyi You, Chenlong Hu, Hidetaka Kamigaito, Kotaro Funakoshi, and Manabu
+  Okumura.
+\newblock Robust dynamic clustering for temporal networks.
+\newblock In {\em Proceedings of the 30th {ACM} International Conference on
+  Information {\&} Knowledge Management}. {ACM}, oct 2021.
+
+\bibitem{Moriano2019}
+Pablo Moriano, Jorge Finke, and Yong-Yeol Ahn.
+\newblock Community-based event detection in temporal networks.
+\newblock {\em Scientific Reports}, 9(1), mar 2019.
+
+\bibitem{Kempe2002}
+David Kempe, Jon Kleinberg, and Amit Kumar.
+\newblock Connectivity and inference problems for temporal networks.
+\newblock {\em Journal of Computer and System Sciences}, 64(4):820--842, jun
+  2002.
+
+\bibitem{Dey2021}
+Tamal~K Dey and Yusu Wang.
+\newblock {\em Computational Topology for Data Analysis}.
+\newblock Cambridge University Press, 2021.
+
+\bibitem{Munch2017}
+Elizabeth Munch.
+\newblock A user's guide to topological data analysis.
+\newblock {\em Journal of Learning Analytics}, 4(2):47--61, jul 2017.
+
+\bibitem{Carlsson2010}
+Gunnar Carlsson and Vin de~Silva.
+\newblock Zigzag persistence.
+\newblock {\em Foundations of Computational Mathematics}, 10(4):367--405, apr
+  2010.
+
+\bibitem{Aktas2019}
+Mehmet~E. Aktas, Esra Akbas, and Ahmed~El Fatmaoui.
+\newblock Persistence homology of networks: methods and applications.
+\newblock {\em Applied Network Science}, 4(1), aug 2019.
+
+\bibitem{Gallotti2015}
+Riccardo Gallotti and Marc Barthelemy.
+\newblock The multilayer temporal network of public transport in great britain.
+\newblock {\em Scientific Data}, 2(1), jan 2015.
+
+\bibitem{Tymochko2020}
+Sarah Tymochko, Elizabeth Munch, and Firas~A. Khasawneh.
+\newblock Using zigzag persistent homology to detect hopf bifurcations in
+  dynamical systems.
+\newblock {\em Algorithms}, 13(11):278, oct 2020.
+
+\bibitem{McCullough2015}
+Michael McCullough, Michael Small, Thomas Stemler, and Herbert Ho-Ching Iu.
+\newblock Time lagged ordinal partition networks for capturing dynamics of
+  continuous dynamical systems.
+\newblock {\em Chaos: An Interdisciplinary Journal of Nonlinear Science},
+  25(5):053101, may 2015.
+
+\bibitem{Myers2019}
+Audun Myers, Elizabeth Munch, and Firas~A. Khasawneh.
+\newblock Persistent homology of complex networks for dynamic state detection.
+\newblock {\em Physical Review E}, 100(2), aug 2019.
+
+\bibitem{Myers2022}
+Audun Myers, Firas~A. Khasawneh, and Elizabeth Munch.
+\newblock Topological signal processing using the weighted ordinal partition
+  network.
+\newblock apr 2022.
+
+\bibitem{Hatcher}
+Allen Hatcher.
+\newblock {\em Algebraic Topology}.
+\newblock Cambridge University Press, 2002.
+
+\bibitem{Munkres2}
+James~R. Munkres.
+\newblock {\em Elements of Algebraic Topology}.
+\newblock Addison Wesley, 1993.
+
+\bibitem{Oudot2015}
+S.~Y. Oudot.
+\newblock {\em Persistence theory: from quiver representations to data
+  analysis}, volume 209 of {\em AMS Mathematical Surveys and Monographs}.
+\newblock American Mathematical Society, 2015.
+
+\bibitem{Carlsson2009a}
+Gunnar Carlsson, Vin de~Silva, and Dmitriy Morozov.
+\newblock Zigzag persistent homology and real-valued functions.
+\newblock In {\em Proceedings of the 25th annual symposium on Computational
+  geometry - SCG 09}. {ACM} Press, 2009.
+
+\bibitem{Dionysus2}
+Dmitriy Morozov.
+\newblock Dionysus2.
+\newblock \url{http://www.mrzv.org/software/dionysus2/}, 2019.
+
+\bibitem{Landherr2010}
+Andrea Landherr, Bettina Friedl, and Julia Heidemann.
+\newblock A critical review of centrality measures in social networks.
+\newblock {\em Business {\&} Information Systems Engineering}, 2(6):371--385,
+  oct 2010.
+
+\bibitem{vanHagen2011}
+M.~{van Hagen}.
+\newblock {\em Waiting experience at train stations}.
+\newblock PhD thesis, University of Twente, April 2011.
+
+\bibitem{Khor2016}
+Alexander Khor and Michael Small.
+\newblock Examining k-nearest neighbour networks: Superfamily phenomena and
+  inversion.
+\newblock {\em Chaos: An Interdisciplinary Journal of Nonlinear Science},
+  26(4):043101, apr 2016.
+
+\bibitem{Jacob2019}
+Rinku Jacob, K.~P. Harikrishnan, R.~Misra, and G.~Ambika.
+\newblock Weighted recurrence networks for the analysis of time-series data.
+\newblock {\em Proceedings of the Royal Society A: Mathematical, Physical and
+  Engineering Sciences}, 475(2221):20180256, jan 2019.
+
+\bibitem{Small2009a}
+Michael Small, Jie Zhang, and Xiaoke Xu.
+\newblock Transforming time series into complex networks.
+\newblock In {\em Lecture Notes of the Institute for Computer Sciences, Social
+  Informatics and Telecommunications Engineering}, pages 2078--2089. Springer
+  Berlin Heidelberg, 2009.
+
+\bibitem{Small2013a}
+Michael Small.
+\newblock Complex networks from time series: Capturing dynamics.
+\newblock In {\em 2013 {IEEE} International Symposium on Circuits and Systems
+  ({ISCAS}2013)}. {IEEE}, may 2013.
+
+\bibitem{Pomeau1980}
+Yves Pomeau and Paul Manneville.
+\newblock Intermittent transition to turbulence in dissipative dynamical
+  systems.
+\newblock {\em Communications in Mathematical Physics}, 74(2):189--197, jun
+  1980.
+
+\bibitem{Myers2020c}
+Audun Myers and Firas~A. Khasawneh.
+\newblock On the automatic parameter selection for permutation entropy.
+\newblock {\em Chaos: An Interdisciplinary Journal of Nonlinear Science},
+  30(3):033130, mar 2020.
+
+\bibitem{CohenSteiner2006}
+David Cohen-Steiner, Herbert Edelsbrunner, and Dmitriy Morozov.
+\newblock {Vines and vineyards by updating persistence in linear time}.
+\newblock {\em Proceedings of the twenty-second annual symposium on
+  Computational geometry - SCG '06}, page 119, 2006.
+
+\bibitem{Ulmer2019}
+M.~Ulmer, Lori Ziegelmeier, and Chad~M. Topaz.
+\newblock A topological approach to selecting models of biological experiments.
+\newblock {\em {PLOS} {ONE}}, 14(3):e0213679, mar 2019.
+
+\bibitem{Guezel2022}
+{\.{I}}smail Güzel, Elizabeth Munch, and Firas~A. Khasawneh.
+\newblock Detecting bifurcations in dynamical systems with {CROCKER} plots.
+\newblock {\em Chaos: An Interdisciplinary Journal of Nonlinear Science},
+  32(9):093111, sep 2022.
+
+\bibitem{Kim2022}
+Woojin Kim and Facundo Mémoli.
+\newblock Extracting persistent clusters in dynamic data via m\"obius
+  inversion, 2022.
+
+\bibitem{Kim2019}
+Woojin Kim, Facundo Mémoli, and Anastasios Stefanou.
+\newblock Interleaving by parts: Join decompositions of interleavings and
+  join-assemblage of geodesics.
+\newblock December 2019.
+
+\bibitem{Kim2020}
+Woojin Kim, Facundo M{\'e}moli, and Zane Smith.
+\newblock Analysis of dynamic graphs and dynamic metric spaces via zigzag
+  persistence.
+\newblock In Nils~A. Baas, Gunnar~E. Carlsson, Gereon Quick, Markus Szymik, and
+  Marius Thaule, editors, {\em Topological Data Analysis}, pages 371--389,
+  Cham, 2020. Springer International Publishing.
+
+\bibitem{Kim2020a}
+Woojin Kim.
+\newblock {\em The Persistent Topology of Dynamic Data}.
+\newblock phdthesis, The Ohio State University, 2020.
+
+\bibitem{Kim2021}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Spatiotemporal persistent homology for dynamic metric spaces.
+\newblock {\em Discrete \& Computational Geometry}, 66(3):831--875, 2021.
+
+\bibitem{Chowdhury2018c}
+Samir Chowdhury, Bowen Dai, and Facundo Mémoli.
+\newblock The importance of forgetting: Limiting memory improves recovery of
+  topological characteristics from neural data.
+\newblock {\em PLOS ONE}, 13(9):1--20, 09 2018.
+
+\bibitem{Milosavljevic2011}
+Nikola Milosavljevic, Dmitriy Morozov, and Primoz Skraba.
+\newblock Zigzag persistent homology in matrix multiplication time.
+\newblock In {\em Proceedings of the 27th Annual Symposium on Computational
+  Geometry}, 2011.
+
+\bibitem{Bauer2021}
+Ulrich Bauer.
+\newblock Ripser: efficient computation of vietoris{\textendash}rips
+  persistence barcodes.
+\newblock {\em Journal of Applied and Computational Topology}, jun 2021.
+
+\bibitem{Otter2017}
+Nina Otter, Mason~A Porter, Ulrike Tillmann, Peter Grindrod, and Heather~A
+  Harrington.
+\newblock A roadmap for the computation of persistent homology.
+\newblock {\em {EPJ} Data Science}, 6(1), aug 2017.
+
+\bibitem{Dey2021a}
+Tamal~K. Dey and Tao Hou.
+\newblock Computing zigzag persistence on graphs in near-linear time.
+\newblock March 2021.
+
+\bibitem{Dey2022}
+Tamal~K. Dey and Tao Hou.
+\newblock Fast computation of zigzag persistence.
+\newblock April 2022.
+
+\bibitem{Dey2021b}
+Tamal~K. Dey and Tao Hou.
+\newblock Updating barcodes and representatives for zigzag persistence.
+\newblock December 2021.
+
+\end{thebibliography}

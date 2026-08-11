@@ -1,0 +1,240 @@
+\begin{thebibliography}{28}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Anderberg(1973)]{clustering_textbook1}
+Michael~R. Anderberg.
+\newblock Index.
+\newblock In \emph{Cluster Analysis for Applications}, Probability and
+  Mathematical Statistics: A Series of Monographs and Textbooks, pp.\
+  355--359. Academic Press, 1973.
+\newblock \doi{https://doi.org/10.1016/B978-0-12-057650-0.50026-0}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/B9780120576500500260}.
+
+\bibitem[Biau et~al.(2011)Biau, Chazal, Cohen-Steiner, Devroye, and
+  Rodr{\'i}guez]{biau:dtm_density}
+G{\'e}rard Biau, Fr{\'e}d{\'e}ric Chazal, David Cohen-Steiner, Luc Devroye, and
+  Carlos Rodr{\'i}guez.
+\newblock {A weighted k-nearest neighbor density estimate for geometric
+  inference}.
+\newblock \emph{Electronic Journal of Statistics}, 5\penalty0 (none):\penalty0
+  204 -- 237, 2011.
+\newblock \doi{10.1214/11-EJS606}.
+\newblock URL \url{https://doi.org/10.1214/11-EJS606}.
+
+\bibitem[Bois et~al.(2024)Bois, Tervil, and Oudre]{outlier}
+Alexandre Bois, Brian Tervil, and Laurent Oudre.
+\newblock Persistence-based clustering with outlier-removing filtration.
+\newblock \emph{Frontiers in Applied Mathematics and Statistics}, 10, 2024.
+\newblock \doi{10.3389/fams.2024.1260828}.
+
+\bibitem[Carlsson(2014)]{carlsson2014}
+Gunnar Carlsson.
+\newblock Topological pattern recognition for point cloud data.
+\newblock \emph{Acta Numerica}, 23:\penalty0 289--368, 2014.
+
+\bibitem[Carri{{\`e}}re et~al.(2018)Carri{{\`e}}re, Michel, and
+  Oudot]{mapper_parameter_selection_carriere}
+Mathieu Carri{{\`e}}re, Bertrand Michel, and Steve Oudot.
+\newblock Statistical analysis and parameter selection for mapper.
+\newblock \emph{Journal of Machine Learning Research}, 19\penalty0
+  (12):\penalty0 1--39, 2018.
+\newblock URL \url{http://jmlr.org/papers/v19/17-291.html}.
+
+\bibitem[Chalapathi et~al.(2021)Chalapathi, Zhou, and
+  Wang]{mapper_parameter_selection_wang}
+Nithin Chalapathi, Youjia Zhou, and Bei Wang.
+\newblock Adaptive covers for mapper graphs using information criteria.
+\newblock In \emph{2021 IEEE International Conference on Big Data (Big Data)},
+  pp.\  3789--3800, 2021.
+\newblock \doi{10.1109/BigData52589.2021.9671324}.
+
+\bibitem[Chazal et~al.(2013)Chazal, Guibas, Oudot, and
+  Skraba]{chazal2013persistence}
+Fr{\'e}d{\'e}ric Chazal, Leonidas~J Guibas, Steve~Y Oudot, and Primoz Skraba.
+\newblock Persistence-based clustering in riemannian manifolds.
+\newblock \emph{Journal of the ACM (JACM)}, 60\penalty0 (6):\penalty0 1--38,
+  2013.
+
+\bibitem[Chazal et~al.(2016)Chazal, Oudot, Glisse, and
+  De~Silva]{chazal:hal-01330678}
+Fr{\'e}d{\'e}ric Chazal, Steve~Y. Oudot, Marc Glisse, and Vin De~Silva.
+\newblock \emph{{The Structure and Stability of Persistence Modules}}.
+\newblock SpringerBriefs in Mathematics. {Springer Verlag}, 2016.
+\newblock URL \url{https://hal.inria.fr/hal-01330678}.
+
+\bibitem[Chazal et~al.(2017)Chazal, Fasy, Lecci, Michel, Rinaldo, and
+  Wasserman]{chazal_bottleneck_bootstrap}
+Fr{\'{e}}d{\'{e}}ric Chazal, Brittany Fasy, Fabrizio Lecci, Bertrand Michel,
+  Alessandro Rinaldo, and Larry~A. Wasserman.
+\newblock Robust topological inference: Distance to a measure and kernel
+  distance.
+\newblock \emph{J. Mach. Learn. Res.}, 18:\penalty0 159:1--159:40, 2017.
+\newblock URL \url{http://jmlr.org/papers/v18/15-484.html}.
+
+\bibitem[Cotsakis et~al.(2021)Cotsakis, Shaw, Tierny, and
+  Levine]{cotsakis2021implementing}
+Ryan Cotsakis, Jim Shaw, Julien Tierny, and Joshua~A. Levine.
+\newblock Implementing persistence-based clustering of point clouds in the
+  topology toolkit.
+\newblock In Ingrid Hotz, Talha Bin~Masood, Filip Sadlo, and Julien Tierny
+  (eds.), \emph{Topological Methods in Data Analysis and Visualization VI},
+  pp.\  343--357, Cham, 2021. Springer International Publishing.
+\newblock ISBN 978-3-030-83500-2.
+
+\bibitem[Duda et~al.(2000)Duda, Hart, and Stork]{clustering_textbook2}
+Richard~O. Duda, Peter~E. Hart, and David~G. Stork.
+\newblock \emph{Pattern Classification (2nd Edition)}.
+\newblock Wiley-Interscience, USA, 2000.
+\newblock ISBN 0471056693.
+
+\bibitem[Edelsbrunner et~al.(2002)Edelsbrunner, Letscher, and
+  Zomorodian]{Edelsbrunner2002}
+Edelsbrunner, Letscher, and Zomorodian.
+\newblock Topological persistence and simplification.
+\newblock \emph{Discrete {\&} Computational Geometry}, 28\penalty0
+  (4):\penalty0 511--533, Nov 2002.
+\newblock ISSN 1432-0444.
+\newblock \doi{10.1007/s00454-002-2885-2}.
+\newblock URL \url{https://doi.org/10.1007/s00454-002-2885-2}.
+
+\bibitem[Edelsbrunner \& Harer(2010)Edelsbrunner and Harer]{EH10}
+H.~Edelsbrunner and J.~Harer.
+\newblock \emph{Computational Topology: An Introduction}.
+\newblock Applied Mathematics. American Mathematical Society, 2010.
+\newblock ISBN 9780821849255.
+\newblock URL \url{https://books.google.fr/books?id=MDXa6gFRZuIC}.
+
+\bibitem[Efrat et~al.(2001)Efrat, Itai, and Katz]{Efrat2001}
+A.~Efrat, A.~Itai, and M.~J. Katz.
+\newblock Geometry helps in bottleneck matching and related problems.
+\newblock \emph{Algorithmica}, 31\penalty0 (1):\penalty0 1--28, Sep 2001.
+\newblock ISSN 1432-0541.
+\newblock \doi{10.1007/s00453-001-0016-8}.
+\newblock URL \url{https://doi.org/10.1007/s00453-001-0016-8}.
+
+\bibitem[Fowlkes \& Mallows(1983)Fowlkes and Mallows]{fowlkes1983method}
+Edward~B Fowlkes and Colin~L Mallows.
+\newblock A method for comparing two hierarchical clusterings.
+\newblock \emph{Journal of the American statistical association}, 78\penalty0
+  (383):\penalty0 553--569, 1983.
+
+\bibitem[Gagolewski et~al.(2022)]{gagolewski_benchmarking_suite_release}
+M.~Gagolewski et~al.
+\newblock A benchmark suite for clustering algorithms: Version 1.1.0, 2022.
+\newblock URL
+  \url{https://github.com/gagolews/clustering-data-v1/releases/tag/v1.1.0}.
+\newblock Software release.
+
+\bibitem[Gagolewski(2022)]{gagolewski_benchmarking_suite}
+Marek Gagolewski.
+\newblock A framework for benchmarking clustering algorithms.
+\newblock \emph{SoftwareX}, 20:\penalty0 101270, 2022.
+\newblock ISSN 2352-7110.
+\newblock \doi{https://doi.org/10.1016/j.softx.2022.101270}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/S2352711022001881}.
+
+\bibitem[Glisse(2025)]{gudhi:PersistenceBasedClustering}
+Marc Glisse.
+\newblock persistence-based clustering.
+\newblock In \emph{GUDHI User and Reference Manual}. GUDHI Editorial Board,
+  3.11.0 edition, 2025.
+\newblock URL \url{https://gudhi.inria.fr/python/3.11.0/clustering.html}.
+
+\bibitem[Godi(2025)]{gudhi:BottleneckDistance}
+Fran{\c{c}}ois Godi.
+\newblock Bottleneck distance.
+\newblock In \emph{GUDHI User and Reference Manual}. GUDHI Editorial Board,
+  3.11.0 edition, 2025.
+\newblock URL
+  \url{https://gudhi.inria.fr/doc/3.11.0/group__bottleneck__distance.html}.
+
+\bibitem[Kerber et~al.(2017)Kerber, Morozov, and
+  Nigmetov]{kerber_morozov_nigmetov_compare_persistence_diagrams}
+Michael Kerber, Dmitriy Morozov, and Arnur Nigmetov.
+\newblock Geometry helps to compare persistence diagrams.
+\newblock \emph{ACM J. Exp. Algorithmics}, 22, September 2017.
+\newblock ISSN 1084-6654.
+\newblock \doi{10.1145/3064175}.
+\newblock URL \url{https://doi.org/10.1145/3064175}.
+
+\bibitem[Loader(2024)]{locfit_package}
+Catherine Loader.
+\newblock \emph{locfit: Local Regression, Likelihood and Density Estimation},
+  2024.
+\newblock URL \url{https://CRAN.R-project.org/package=locfit}.
+\newblock R package version 1.5-9.9.
+
+\bibitem[Romano et~al.(2016)Romano, Nguyen, Bailey, and
+  Verspoor]{adjusting_for_chance_romano}
+Simone Romano, Xuan~Vinh Nguyen, James Bailey, and Karin Verspoor.
+\newblock Adjusting for chance clustering comparison measures.
+\newblock \emph{J. Mach. Learn. Res.}, 17:\penalty0 134:1--134:32, 2016.
+\newblock URL \url{https://jmlr.org/papers/v17/15-627.html}.
+
+\bibitem[Rosen et~al.(2023)Rosen, Hajij, and
+  Wang]{mapper_parameter_selection_wang_2}
+P.~Rosen, M.~Hajij, and B.~Wang.
+\newblock Homology-preserving multi-scale graph skeletonization using mapper on
+  graphs.
+\newblock In \emph{2023 Topological Data Analysis and Visualization
+  (TopoInVis)}, pp.\  10--20, Los Alamitos, CA, USA, oct 2023. IEEE Computer
+  Society.
+\newblock \doi{10.1109/TopoInVis60193.2023.00008}.
+\newblock URL
+  \url{https://doi.ieeecomputersociety.org/10.1109/TopoInVis60193.2023.00008}.
+
+\bibitem[Sarfraz et~al.(2019)Sarfraz, Sharma, and
+  Stiefelhagen]{sarfraz2019efficient}
+M.~Saquib Sarfraz, Vivek Sharma, and Rainer Stiefelhagen.
+\newblock Efficient parameter-free clustering using first neighbor relations.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, pp.\  8934--8943, 2019.
+
+\bibitem[Singh et~al.(2007)Singh, M{\'e}moli, Carlsson,
+  et~al.]{singh2007topological}
+Gurjeet Singh, Facundo M{\'e}moli, Gunnar~E Carlsson, et~al.
+\newblock Topological methods for the analysis of high dimensional data sets
+  and 3d object recognition.
+\newblock \emph{PBG@ Eurographics}, 2:\penalty0 091--100, 2007.
+
+\bibitem[Tauzin et~al.(2020)Tauzin, Lupo, Tunstall, Pérez, Caorsi,
+  Medina-Mardones, Dassatti, and Hess]{giotto-tda}
+Guillaume Tauzin, Umberto Lupo, Lewis Tunstall, Julian~Burella Pérez, Matteo
+  Caorsi, Anibal Medina-Mardones, Alberto Dassatti, and Kathryn Hess.
+\newblock giotto-tda: A topological data analysis toolkit for machine learning
+  and data exploration, 2020.
+
+\bibitem[Tierny et~al.(2018)Tierny, Favelier, Levine, Gueunet, and
+  Michaux]{topology_toolkit}
+Julien Tierny, Guillaume Favelier, {Joshua A.} Levine, Charles Gueunet, and
+  Michael Michaux.
+\newblock The topology toolkit.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics},
+  24\penalty0 (1):\penalty0 832--842, January 2018.
+\newblock ISSN 1077-2626.
+\newblock \doi{10.1109/TVCG.2017.2743938}.
+\newblock Funding Information: This work is partially supported by the
+  Bpifrance grant “AVIDO” (Programme d{\textquoteright}Investissements
+  d{\textquoteright}Avenir FSN2, reference P112017-2661376/DOS0021427) and by
+  the National Science Foundation IIS-1654221. We would like to thank the
+  reviewers for their thoughtful remarks and suggestions. We would also like to
+  thank Attila Gyulassy, Julien Jomier and Joachim Pouderoux for insightful
+  discussions and Will Schroeder, who encouraged us to write this manuscript.
+  Publisher Copyright: {\textcopyright} 1995-2012 IEEE.
+
+\bibitem[Zomorodian \& Carlsson(2005)Zomorodian and Carlsson]{Zomorodian2005}
+Afra Zomorodian and Gunnar Carlsson.
+\newblock Computing persistent homology.
+\newblock \emph{Discrete {\&} Computational Geometry}, 33\penalty0
+  (2):\penalty0 249--274, Feb 2005.
+\newblock ISSN 1432-0444.
+\newblock \doi{10.1007/s00454-004-1146-y}.
+\newblock URL \url{https://doi.org/10.1007/s00454-004-1146-y}.
+
+\end{thebibliography}

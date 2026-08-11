@@ -1,0 +1,153 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Bai \harvardand\ Saranadasa}{1996}{bai1996effect}
+Bai, Z. \harvardand\ Saranadasa, H.  \harvardyearleft 1996\harvardyearright .
+\newblock Effect of high dimension: by an example of a two sample problem, {\em
+  Statistica Sinica} pp.~311--329.
+
+\harvarditem{Baraud et~al.}{2002}{baraud2002non}
+Baraud, Y. et~al.  \harvardyearleft 2002\harvardyearright .
+\newblock Non-asymptotic minimax rates of testing in signal detection, {\em
+  Bernoulli} {\bf 8}(5):~577--606.
+
+\harvarditem{Cai \harvardand\ Liu}{2011}{cai2011adaptive}
+Cai, T. \harvardand\ Liu, W.  \harvardyearleft 2011\harvardyearright .
+\newblock Adaptive thresholding for sparse covariance matrix estimation, {\em
+  Journal of the American Statistical Association} {\bf 106}(494):~672--684.
+
+\harvarditem[Cai et~al.]{Cai, Liu \harvardand\ Luo}{2011}{cai2011constrained}
+Cai, T., Liu, W. \harvardand\ Luo, X.  \harvardyearleft 2011\harvardyearright .
+\newblock A constrained $\ell_1$ minimization approach to sparse precision
+  matrix estimation, {\em Journal of the American Statistical Association} {\bf
+  106}(494):~594--607.
+
+\harvarditem[Cai et~al.]{Cai, Liu \harvardand\ Xia}{2013}{cai2013two}
+Cai, T., Liu, W. \harvardand\ Xia, Y.  \harvardyearleft 2013\harvardyearright .
+\newblock Two-sample covariance matrix testing and support recovery in
+  high-dimensional and sparse settings, {\em Journal of the American
+  Statistical Association} {\bf 108}(501):~265--277.
+
+\harvarditem[Cai et~al.]{Cai, Liu \harvardand\ Xia}{2014}{cai2014two}
+Cai, T.~T., Liu, W. \harvardand\ Xia, Y.  \harvardyearleft
+  2014\harvardyearright .
+\newblock Two-sample test of high dimensional means under dependence, {\em
+  Journal of the Royal Statistical Society: Series B (Statistical Methodology)}
+  {\bf 76}(2):~349--372.
+
+\harvarditem[Cao et~al.]{Cao, Lin \harvardand\ Li}{2018}{cao2018two}
+Cao, Y., Lin, W. \harvardand\ Li, H.  \harvardyearleft 2018\harvardyearright .
+\newblock Two-sample tests of high-dimensional means for compositional data,
+  {\em Biometrika} {\bf 105}(1):~115--132.
+
+\harvarditem[Gregory et~al.]{Gregory, Carroll, Baladandayuthapani \harvardand\
+  Lahiri}{2015}{gregory2015two}
+Gregory, K.~B., Carroll, R.~J., Baladandayuthapani, V. \harvardand\ Lahiri,
+  S.~N.  \harvardyearleft 2015\harvardyearright .
+\newblock A two-sample test for equality of means in high dimension, {\em
+  Journal of the American Statistical Association} {\bf 110}(510):~837--849.
+
+\harvarditem{He \harvardand\ Chen}{2018}{he2018high}
+He, J. \harvardand\ Chen, S.~X.  \harvardyearleft 2018\harvardyearright .
+\newblock High-dimensional two-sample covariance matrix testing via
+  super-diagonals, {\em Statistica Sinica} {\bf 28}:~2671--2696.
+
+\harvarditem{Jeffreys}{1998}{jeffreys1998theory}
+Jeffreys, H.  \harvardyearleft 1998\harvardyearright .
+\newblock {\em The theory of probability}, OUP Oxford.
+
+\harvarditem{Kass \harvardand\ Raftery}{1995}{kass1995bayes}
+Kass, R.~E. \harvardand\ Raftery, A.~E.  \harvardyearleft 1995\harvardyearright
+  .
+\newblock Bayes factors, {\em Journal of the American Statistical Association}
+  {\bf 90}(430):~773--795.
+
+\harvarditem{Ke{\v{c}}ki{\'c} \harvardand\ Vasi{\'c}}{1971}{kevckic1971some}
+Ke{\v{c}}ki{\'c}, J.~D. \harvardand\ Vasi{\'c}, P.~M.  \harvardyearleft
+  1971\harvardyearright .
+\newblock Some inequalities for the gamma function, {\em Publications de
+  l'Institut Math{\'e}matique} {\bf 11}(31):~107--114.
+
+\harvarditem[Khan et~al.]{Khan, Wei, Ringner, Saal, Ladanyi, Westermann,
+  Berthold, Schwab, Antonescu, Peterson et~al.}{2001}{khan2001classification}
+Khan, J., Wei, J.~S., Ringner, M., Saal, L.~H., Ladanyi, M., Westermann, F.,
+  Berthold, F., Schwab, M., Antonescu, C.~R., Peterson, C. et~al.
+  \harvardyearleft 2001\harvardyearright .
+\newblock Classification and diagnostic prediction of cancers using gene
+  expression profiling and artificial neural networks, {\em Nature medicine}
+  {\bf 7}(6):~673--679.
+
+\harvarditem{Kolar \harvardand\ Liu}{2012}{kolar2012marginal}
+Kolar, M. \harvardand\ Liu, H.  \harvardyearleft 2012\harvardyearright .
+\newblock Marginal regression for multitask learning., {\em AISTATS},
+  pp.~647--655.
+
+\harvarditem[Lee et~al.]{Lee, Lin \harvardand\ Dunson}{2021}{lee2018maximum}
+Lee, K., Lin, L. \harvardand\ Dunson, D.  \harvardyearleft
+  2021\harvardyearright .
+\newblock {Maximum pairwise Bayes factors for covariance structure testing},
+  {\em Electronic Journal of Statistics} {\bf 15}(2):~4384 -- 4419.
+
+\harvarditem{Li \harvardand\ Chen}{2012}{li2012two}
+Li, J. \harvardand\ Chen, S.~X.  \harvardyearleft 2012\harvardyearright .
+\newblock Two sample tests for high-dimensional covariance matrices, {\em The
+  Annals of Statistics} {\bf 40}(2):~908--940.
+
+\harvarditem{Schott}{2007}{schott2007test}
+Schott, J.~R.  \harvardyearleft 2007\harvardyearright .
+\newblock A test for the equality of covariance matrices when the dimension is
+  large relative to the sample sizes, {\em Computational Statistics \& Data
+  Analysis} {\bf 51}(12):~6535--6542.
+
+\harvarditem[Shen et~al.]{Shen, Lin \harvardand\ Zhu}{2011}{shen2011shrinkage}
+Shen, Y., Lin, Z. \harvardand\ Zhu, J.  \harvardyearleft 2011\harvardyearright
+  .
+\newblock Shrinkage-based regularization tests for high-dimensional data with
+  application to gene set analysis, {\em Computational Statistics \& Data
+  Analysis} {\bf 55}(7):~2221--2233.
+
+\harvarditem{Srivastava \harvardand\ Du}{2008}{srivastava2008test}
+Srivastava, M.~S. \harvardand\ Du, M.  \harvardyearleft 2008\harvardyearright .
+\newblock A test for the mean vector with fewer observations than the
+  dimension, {\em Journal of Multivariate Analysis} {\bf 99}(3):~386--402.
+
+\harvarditem{Srivastava \harvardand\ Yanagihara}{2010}{srivastava2010testing}
+Srivastava, M.~S. \harvardand\ Yanagihara, H.  \harvardyearleft
+  2010\harvardyearright .
+\newblock Testing the equality of several covariance matrices with fewer
+  observations than the dimension, {\em Journal of Multivariate Analysis} {\bf
+  101}(6):~1319--1329.
+
+\harvarditem{Tsai \harvardand\ Chen}{2009}{tsai2009multivariate}
+Tsai, C.-A. \harvardand\ Chen, J.~J.  \harvardyearleft 2009\harvardyearright .
+\newblock Multivariate analysis of variance test for gene set analysis, {\em
+  Bioinformatics} {\bf 25}(7):~897--903.
+
+\harvarditem[Wang et~al.]{Wang, Lin \harvardand\ Tang}{2019}{wang2019robust}
+Wang, W., Lin, N. \harvardand\ Tang, X.  \harvardyearleft 2019\harvardyearright
+  .
+\newblock Robust two-sample test of high-dimensional mean vectors under
+  dependence, {\em Journal of Multivariate Analysis} {\bf 169}:~312--329.
+
+\harvarditem[Xu et~al.]{Xu, Lin, Wei \harvardand\ Pan}{2016}{xu2016adaptive}
+Xu, G., Lin, L., Wei, P. \harvardand\ Pan, W.  \harvardyearleft
+  2016\harvardyearright .
+\newblock An adaptive two-sample test for high-dimensional means, {\em
+  Biometrika} {\bf 103}(3):~609--624.
+
+\harvarditem[Zheng et~al.]{Zheng, Lin, Guo \harvardand\
+  Yin}{2017}{zheng2017testing}
+Zheng, S., Lin, R., Guo, J. \harvardand\ Yin, G.  \harvardyearleft
+  2017\harvardyearright .
+\newblock Testing homogeneity of high-dimensional covariance matrices, {\em
+  Statistica Sinica} .
+\newblock Accepted.
+
+\harvarditem[Zoh et~al.]{Zoh, Sarkar, Carroll \harvardand\
+  Mallick}{2018}{zoh2018powerful}
+Zoh, R.~S., Sarkar, A., Carroll, R.~J. \harvardand\ Mallick, B.~K.
+  \harvardyearleft 2018\harvardyearright .
+\newblock A powerful bayesian test for equality of means in high dimensions,
+  {\em Journal of the American Statistical Association} {\bf
+  113}(524):~1733--1741.
+
+\end{thebibliography}
