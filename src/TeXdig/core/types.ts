@@ -97,10 +97,12 @@ export type SpanProvenance = "parser" | "lexical" | "synthesized-hull";
 // ---------------------------------------------------------------------------
 
 /**
- * Deterministic address string: `${kind}@${sourceId}:${startUtf16}-${endUtf16}`.
- * Because the deposited tree is frozen and fingerprinted, span-addressed IDs are
- * stable across runs over the same tree. Later stages mint derived entities under
- * a different scheme that chains back to these via Origin.
+ * Deterministic address string under the shared id grammar (see handoff.ts
+ * ID_CLASSES): `ent:{kind}@{sourceId}:{startUtf16}-{endUtf16}`. Because the
+ * deposited tree is frozen and fingerprinted, span-addressed IDs are stable
+ * across runs over the same tree, and the id string is the verbatim join key
+ * everywhere. Later stages mint derived entities under their own classes,
+ * chaining back to these via Origin.
  */
 export type EntityId = string;
 
@@ -143,8 +145,11 @@ export type MathCarrier =
 /**
  * Small-vocabulary environment roles assigned during census. Everything not in
  * a known vocabulary stays `generic`; refinement is downstream elaboration.
+ * `bibliography` marks the thebibliography carrier WHEREVER it occurs — in a
+ * .bbl, or inline in an \input'ed .tex file; the bibliography is a carrier the
+ * census finds, not a file role.
  */
-export type EnvironmentRole = "float" | "math" | "verbatim" | "generic";
+export type EnvironmentRole = "float" | "math" | "verbatim" | "bibliography" | "generic";
 
 export type EnvelopeMarkerKind =
   | "documentclass"
@@ -154,7 +159,17 @@ export type EnvelopeMarkerKind =
   | "appendix"
   | "bibliography";
 
-export type IncludeDirective = "input" | "include" | "bibliography" | "addbibresource";
+/**
+ * `bibliographystyle` is a resource tie, not a file inclusion: it names the
+ * ordering policy and is the only in-document link to an in-tree .bst. Source
+ * order is not a cue — it may appear after \bibliography.
+ */
+export type IncludeDirective =
+  | "input"
+  | "include"
+  | "bibliography"
+  | "addbibresource"
+  | "bibliographystyle";
 
 export type CensusEntity =
   /**
@@ -172,13 +187,34 @@ export type CensusEntity =
     })
   | (CensusEntityBase & {
       kind: "macro-definition";
-      /** The DEFINED macro's name (e.g. `pair` for \newcommand{\pair}...). */
+      /**
+       * The DEFINED macro's name (e.g. `pair` for \newcommand{\pair}...).
+       * Csnames are recorded byte-exact and case-sensitive; names outside
+       * [A-Za-z]+ occur in the corpus (\1, starred operators, @-names under
+       * \makeatletter) and must survive as join keys.
+       */
       definedName: string;
       dialect: DefinitionDialect;
       /** Raw signature text as written, e.g. `[2][d]` or an xparse spec. */
       signatureRaw?: string;
+      /**
+       * Body extent is knowable even when expansion is not: \def/\let bodies
+       * carry spans so pointer-hood and dependencies can be derived from
+       * non-elaborable definitions (e.g. \def\secref, a redefined \eqref).
+       */
+      bodySpan?: SourceSpan;
       /** False for dialects the elaborator cannot expand (e.g. `def`): detected-when-knowable, elaborated later or never. */
       elaborable: boolean;
+    })
+  | (CensusEntityBase & {
+      kind: "environment-definition";
+      /** The DEFINED environment's name (e.g. `lemma` for \newtheorem{lemma}...). */
+      definedName: string;
+      mechanism: "newtheorem" | "newenvironment" | "newfloat";
+      signatureRaw?: string;
+      /** Counter/numbering argument as written, for newtheorem. */
+      counterRaw?: string;
+      bodySpan?: SourceSpan;
     })
   | (CensusEntityBase & {
       kind: "environment";
@@ -314,6 +350,9 @@ export const DiagnosticCodes = {
   UnreachableSource: "census/unreachable-source",
   BibParseError: "census/bib-parse-error",
   BibDuplicateKey: "census/bib-duplicate-key",
+  /** \input{Introduction} resolving to introduction.tex: on-disk casing wins, and the paper does not build on Linux — a finding, not something to smooth over. */
+  IncludeCaseMismatch: "census/include-case-mismatch",
+  OrdinalLabelMismatch: "census/ordinal-label-mismatch",
 } as const;
 
 export type DiagnosticCode = (typeof DiagnosticCodes)[keyof typeof DiagnosticCodes];

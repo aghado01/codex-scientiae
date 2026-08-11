@@ -16,13 +16,19 @@ attributed to the tree fingerprint via the job identity digest.
 
 ## Stage-1 exit gates
 
-1. **Coverage** — every UTF-16 unit of every source file is claimed by an entity or reported as
-   residue. Zero silent bytes; residue is a defect signal with an address, not an absence.
+1. **Coverage** — every UTF-16 unit of every **parsed** source file is claimed by an entity or
+   reported as residue. Zero silent bytes; residue is a defect signal with an address, not an
+   absence. Unparsed inventoried files (class/style, `.bst`, binary assets) sit outside this gate:
+   they are sha-attested in `sources.jsonl`, nothing more.
 2. **Agreement** — every inventoried entity is witness-reconciled (lexical scanner and parser agree)
    or carries a named, attributed defect.
 3. **Closure** — every entity minted after stage 1 must carry an origin chain that terminates in this
    inventory (or declared configuration). Downstream discovery that cannot cite an inventoried site
-   is a stage-1 bug.
+   is a stage-1 bug. Applies to frontmatter too: declared metadata is span-anchored rows, not flat
+   strings.
+4. **Traversal completeness** — every content-bearing claim is reachable from `walk.jsonl`; anything
+   claimed but unreachable is an orphan diagnostic. This catches "censused correctly but lost during
+   assembly," which coverage alone cannot see.
 
 ## Model
 
@@ -40,28 +46,65 @@ attributed to the tree fingerprint via the job identity digest.
   against the parser witness — unified-latex for LaTeX and `.bbl`, latex-utensils for `.bib` (both
   rich typing, known position gaps). Reconciliation fills parser gaps from the raw stream and
   surfaces disagreement as findings. Original source is always a slice, never `printRaw`.
-- **Ordering**: comment/verbatim stratification precedes fence census precedes control-sequence
-  census — the small vocabulary of things that change what everything else means is swept first.
+- **Ordering**: comment/verbatim stratification precedes **everything** — including include-graph
+  construction (a commented-out `\input` of a nonexistent file exists in the corpus and must not
+  produce a diagnostic). Then fence census, then control-sequence census. This supersedes the
+  parse-after-graph ordering in the early notes.
 
 ## Emitted stores
 
-One runstamped container per document (batch-executor `Writes` root), UTF-8 without BOM, LF rows:
+One runstamped container per document — one document per batch-executor job, the job container is
+the document container (`Writes` root). UTF-8 without BOM, LF rows. Three tiers:
+
+**Handoff tier** — downstream consumes only this; every row downstream interprets carries its exact
+source slice inline (self-contained; the deposit tree is evidence substrate, not part of the
+handoff):
 
 | Store | Content |
 | --- | --- |
-| `sources.jsonl` | One row per source file: id, sha256, UTF-16 length, entrypoint flag |
-| `entities.jsonl` | The census: one row per `CensusEntity` |
-| `claims.jsonl` | Pillar claims cross-indexing entities to overlay membership |
-| `coverage.json` | Per-source coverage accounting and residue spans |
-| `diagnostics.jsonl` | Registered-code diagnostics (the defect queue) |
-| `summary.json` | Run summary: counts, gate outcomes, schema version, tree fingerprint |
+| `walk.jsonl` | Traversal-serialized structure: sections, paragraphs, anchors in reading order; content as text-run/ref arrays; `includeChain` context |
+| `zones.jsonl` | Compiled closure-sealed units (math, diagrams, verbatim, floats, theorem-like): slice, closure, per-name binding verdicts, isolability, validation |
+| `macros.jsonl` | Compiled definition store: signature, body slice/span (non-elaborable dialects included), deps, normalized-body `fingerprint` |
+| `references.jsonl` | Canonical reference items: appearance-normalized ordinal + basis, source label register, per-field provenance |
+| `pointers.jsonl` | Label declarations and pointer sites (pointer-hood derived transitively from definition bodies, never a fixed vocabulary), resolution edges |
+| `frontmatter.jsonl` | Span-anchored declared metadata (title, author blob, date, abstract) |
+| `graph.jsonl` | Relational projection of all stores; graph-primitive/0.1-aligned node/edge rows, both ends anchored, address-valued ids; to be registered |
+
+**Evidence tier**: `sources.jsonl` (with language/role/parsed classification), `entities.jsonl`
+(two-witness census), `claims.jsonl` (pillar claims).
+
+**Audit tier**: `coverage.json`, `diagnostics.jsonl`, `summary.json` (gate outcomes, counts,
+`treeSha256`, schema versions).
+
+## Linking conventions
+
+- One id grammar: `{class}:{locator}`, classes registered in `core/handoff.ts` `ID_CLASSES` with
+  store residency. The id string is the verbatim join key everywhere; all joins are string equality.
+- Content references use the array form (text runs alternating with refs) as the ONLY stored form.
+  Masked text is a debug rendering, never an artifact — sentinel-token leakage was a shipped-defect
+  class in the previous lane and the mechanism is not carried forward.
+- One shared `seq` order space (entrypoint traversal across includes) covers walk nodes, zones,
+  macro records, and pointer sites; macro shadowing resolves on the same scale.
+
+## Reference canon
+
+`references.jsonl` reconciles all bibliography witnesses — `.bbl` / inline `thebibliography`
+(compiled list: order, labels, formatted text), `.bib` (structured fields), `\bibliographystyle`
+(ordering policy), citation sites (appearance order), provider metadata — into one canonical item
+per resolved identity, per-field provenance under a registered merge policy, disagreements as
+findings. The canonical **ordinal is always normalized**: 1-based, order of first citation
+appearance; uncited items append in list order (`ordinalBasis` records the basis per item). The
+paper's own register (alpha labels, list position) is preserved beside the ordinal, never as it;
+1:1 ordinal/label correspondence is audited and deviations are findings. Structuring formatted
+`.bbl` text into fields when no `.bib` exists is interpretation and stays downstream.
 
 ## Later cuts
 
-Cut 2: relation joins (binding, attachment, support closure, purity verdicts). Cut 3: closed-term
-assembly, isolated evaluation, render + differential-alignment validation. Orchestration joins
-`batch-adapters` as `Get-TeXdigBatchJob` under the standard job-emission contract; the census CLI
-stays a pure worker (tree + entrypoint in, stores out).
+Cut 2: relation joins (binding, attachment, support closure, purity verdicts) filling the zone and
+macro stores. Cut 3: isolated evaluation and render + differential-alignment validation.
+Orchestration joins `batch-adapters` as `Get-TeXdigBatchJob` under the standard job-emission
+contract; the census CLI stays a pure worker (tree + entrypoint in, stores out). PDF-only deposits
+are refused at planning, not failed at the worker.
 
 ## Runtime
 
