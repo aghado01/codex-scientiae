@@ -5,7 +5,7 @@ Status before correction: D39 closes K4c with 1976 contract checks green. The po
 finds no algorithmic defect in K3/K4, but exposes one equality inconsistency and several stale or
 conflated premises in the K5–K7 plan. This brief corrects those premises before K5 source work.
 
-> **Supersession note (2026-08-09):** D43's
+> **Supersession note (2026-08-09; extended 2026-08-10):** D43's
 > [K5a contract](sol-doccer-k5a-contract-20260809_193131.md) supersedes D40's provisional K5a
 > carrier/reference shape; those carriers are now implemented. D44's
 > [K5b contract](sol-doccer-k5b-saturation-contract-20260809_215158.md) supersedes D40's provisional
@@ -20,8 +20,14 @@ conflated premises in the K5–K7 plan. This brief corrects those premises befor
 > used at both relation endpoints, `ComposeOrigins` requires the exact middle basis object, and K6
 > remains partial relation-valued lineage while K7 owns synthetic completeness and deletion
 > residue. D45's appended implementation report records the landed direct relation, projection,
-> and `TextSlice` adapter. Where the texts conflict, D43 controls K5a, D44 controls K5b, and D45
-> controls K6.
+> and `TextSlice` adapter. D47's
+> [K7 materialization contract](sol-doccer-k7-materialization-contract-20260810_173159.md)
+> supersedes D40's provisional K7 plan and conflict/residue shape: a plan is now an ordered output
+> program with closed copy/origin-mapped/synthetic positive pieces, scalar-safe boundaries, exact
+> result-stage identity, and per-slot unused-source material without inferred deletion. D47's
+> appended implementation report records the landed materializer, five witness families,
+> independent 156-plan census, and delivered-surface smoke. Where the texts conflict, D43 controls
+> K5a, D44 controls K5b, D45 controls K6, and D47 controls K7.
 
 ## 1. Register is codepoint-address terminology; mathematics is a channel
 

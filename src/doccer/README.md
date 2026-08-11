@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D46, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D47, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -48,6 +48,7 @@ FactKey / CanonicalFactTable      + master-relative semantic fact identity
 SupportHypergraph                 + exact-basis supplied support evidence
 FactSaturation                    + finite positive least closure and support
 OriginBasis / OriginRelation      + exact-stage output-to-source material lineage
+RewritePlan / Materialize         + exact ordered output realization and residue
 Scoped collectors                 + declarative recognition
 Interval joins                    + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -109,9 +110,9 @@ including an interior surrogate boundary; scalar safety belongs to topology-atom
 values are not interval empties. Forward inclusive prefix parity, inverse transitions, raw chunk
 carry, typed material continuity, exact classifier stamps, narrowly defined unknown membership,
 separate boundary/classifier residue, and evidence-bearing transactional claim emission are
-implemented under `Vectors/`. The portable V1 reference closed at its 2536-check landing; the
-subsequent direct K6 relation implementation raises the current harness to 2639. No accelerated
-vector or origin backend is implemented. A
+implemented under `Vectors/`. The portable V1 reference closed at its 2536-check landing; direct
+K6 origins raised the harness to 2639 and D47's K7 materializer raises the current harness to 2751.
+No accelerated vector, origin, or materialization backend is implemented. A
 test-local byte wrapper demonstrates that the raw algebra is basisless, but D46 creates no public
 byte master or generic unit-mask family.
 
@@ -147,19 +148,34 @@ canonical finite `OriginRelation`. Atom coordinates are `(slot ordinal, atom ord
 `ComposeOrigins` is ordinary output-to-source relation composition and requires the exact shared
 middle basis object; matching tags or compatible masters never substitute it. Forward span
 projection retains the exact relation and one disconnected-preserving `SpanSet` per source slot.
-Relations remain partial and many-to-many: K7 separately owns origin-or-synthetic output coverage
-and deletion residue. `TextSlice` is the total injective functional witness.
+Relations remain partial and many-to-many: D47 separately owns local origin-or-synthetic output
+coverage and per-slot unused-source residue without inferring deletion. `TextSlice` is the total
+injective functional witness.
 
 D46's V1 implementation was an execution-order detour rather than a K6 dependency. D45's direct
-finite implementation is now closed at 2639 checks; K7 contract work is the active default lane.
+finite implementation is closed at 2639 checks. D47 freezes and implements K7 under
+`src/doccer/Materialization/` after the
+[materialization read-ahead](../../issues/doccer/discussions/sol-doccer-k7-materialization-read-ahead-20260810_171743.md).
+A `RewritePlan` is an exact-source-basis ordered output program whose positive pieces are closed to
+exact copy, explicit origin-mapped literal, or explained synthetic literal. Output coordinates are
+assigned only during realization; cross-piece surrogate fusion is refused. The result creates a
+new master and exact singleton output basis, retains a stamped reconstructing piece partition and
+K6 relation, and reports one unused-source `SpanSet` per source slot without inferring deletion.
+The optional `FactReference` remains opaque. Exact-middle composition is retained and automatic
+slot lifting is deferred. Composition carries origin edges only: synthetic explanations,
+derivation references, piece partitions, and unused-source residue remain local to their exact
+result stage, so a cross-stage audit retains the result chain. The
+[D47 contract](../../issues/doccer/briefs/sol-doccer-k7-materialization-contract-20260810_173159.md)
+and its implementation report are closed; the harness is 2751 and K8 cross-carrier integration is
+the default next K lane.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
 `AllenCompose`, located `Seq`, the occurrence-level `ComposePairs`, and flat-path
-`PathSelection.Select`, `FactSaturation.Saturate`, and exact-stage `ComposeOrigins` are implemented.
-`Materialize` remains a contract reservation.
+`PathSelection.Select`, `FactSaturation.Saturate`, exact-stage `ComposeOrigins`, and exact-plan
+`RewriteMaterialization.Materialize` are implemented.
 Path selection is one exact
 nonnegative-additive complete-path executor, not a universal selection carrier. K4c additionally
 implements the separately named `Laminarizer.Admit` and
@@ -280,6 +296,17 @@ owners and Lean reactivation triggers live in the D25 registry in
   exact singleton child/parent masters. The complete 16-relation/256-pair/4,096-triple independent
   Boolean-matrix census, exact-clone adversaries, material shapes, and scalar-width slice chains
   are green;
+- K7 exact-plan materialization: `MaterializationTarget` retains exact output identity and slot
+  tag; canonical `PieceOrigin` values and factory-only immutable `OutputPiece` objects close each
+  positive declaration to exact copy, locally total origin-mapped literal, or explained synthetic
+  literal; `RewritePlan` snapshots the exact source basis, target, piece order/multiplicity, and
+  resolved payloads while validating source geometry, checked cumulative length, and scalar-safe
+  boundaries. `RewriteMaterialization.Materialize` creates a new master and singleton output basis,
+  exact-plan/output-master-stamped gap-free piece partition, direct K6 origin relation, and one
+  unused-source `SpanSet` per input slot. Five adversarial fixture families and the complete
+  independent 156-plan/430-piece census cover reconstruction, UTF-16, origin/synthetic posture,
+  exact-middle composition, and evidence retention; delivered-payload smoke pins all eight public
+  K7 types and their essential signatures;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -353,8 +380,9 @@ owners and Lean reactivation triggers live in the D25 registry in
 
 These surfaces are absent because their contract or implementation gate is not closed. Contract
 closure is the only authorization gate on engine work; D43 and D44 crossed and implemented the
-K5a fact/support and K5b saturation gates, D45 crossed and implemented K6's origin gate, and D46
-crossed and implemented V0/V1's vector/mask gates. K7 contract work is next. A
+K5a fact/support and K5b saturation gates, D45 crossed and implemented K6's origin gate, D46
+crossed and implemented V0/V1's vector/mask gates, and D47 crossed and implemented K7
+materialization. A
 consumer's arrival prioritizes and validates; it never authorizes, and its absence is never by
 itself a reason to leave a gap. Where the brief names a "first consumer"
 trigger, read it as a prioritization default for a contract whose remaining questions a real
@@ -365,8 +393,6 @@ closes honestly without one:
   segment-list storage, span projection under a named policy with explicit residuals); the
   remaining open questions are the ones a first real edit-plan or normalization job would settle,
   so that job is the prioritization default rather than a permission condition;
-- the rest of the lift algebra — project, group, run-within, and slice/rebase are in;
-  materialize is not;
 - further density measures beyond gap cadence (never a generic `Density` verb — each future
   measure arrives individually named, declaring numerator, denominator, window basis, boundary
   policy, exclusions);
@@ -388,16 +414,13 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K7's output-piece/materialization contract and source against the landed exact-stage
-  `OriginBasis`/`OriginRelation`, `ComposeOrigins`, projection, and `TextSlice` adapter; K5b is
-  closed and does not block materialization;
 - further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
   other ties—require separately named contracts rather than widening D37 silently. Structural
   optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
   contracts, not implications of D39;
 - F7a exact/thresholded distance and correspondence independently; F7b performed-transform origin
-  production may now target landed K6; and F7c explicit correspondence-to-origin promotion and
-  materialization integration remains after K7. A performed transform may emit actual origins; post-hoc
+  production may target landed K6; and F7c explicit correspondence-to-origin promotion and
+  materialization integration now has its K6/K7 carrier prerequisites. A performed transform may emit actual origins; post-hoc
   alignment is correspondence evidence unless explicitly promoted;
 - F8a direct comparison/hash substrate, F8b rolling/content-defined producers, F8c similarity
   signatures/candidate indexes, and F8d streaming sketches. Fast prefilters verify positive matches

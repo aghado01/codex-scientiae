@@ -12,7 +12,7 @@ Inputs:
 - [D29 joint K2 contract](sol-doccer-k2-joint-contract-20260804_214547.md);
 - [ICDT 2025 ET close read](../discussions/fable-et-framework-close-read-20260803.md);
 - [ThermoMapper rigor-harness README](../../../../ThermoMapper/lean/README.md),
-  [enthymeme sources](../../../../ThermoMapper/lean/enthymemes/), and
+  [enthymeme sources](../../../../ThermoMapper/lean/Enthymemata/), and
   [meta-CI gate](../../../../ThermoMapper/lean/scripts/meta-ci.ps1).
 
 ## 1. Disposition
@@ -466,7 +466,7 @@ direct implementation.
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
 | Functional origins embed into relation-valued origins | D45 exact-relation inclusion plus the landed strict `TextSlice` fixture, scalar-width slice chain, and relation-shape tests | before origin compression, stage fusion, or functional fast paths |
 | Exact-stage multi-source origin composition | D45 exact reference-identity middle basis, direct ordinary relational implementation, and complete two-atom Boolean-matrix oracle | leading future Lean candidate if automatic slot lifting, K6/K7 composition, stage fusion, or another backend remains disputed |
-| Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
+| Output-piece partition and reconstruction | D47 ordered positive-piece construction, closed origin/synthetic posture, scalar-boundary validation, exact result stamps, direct K6 edge translation, targeted adversaries, and landed independent 156-plan/430-piece oracle | before alternate/streaming/fused/incremental/parallel/compressed materialization, intermediate elision, automatic slot lifting, persisted identity, or a non-direct global reconstruction guarantee |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
 This triage leaves no present theorem whose completion should block K5. D35–D36 close K3/K4a,
@@ -721,10 +721,11 @@ not substitute that stage identity.
 
 The symmetric endpoint sort is the read-ahead decision that keeps multi-source stages closed under
 ordinary composition. It does not add automatic retagging, slot substitution, pass-through edges,
-or DAG flattening. K7 must present a complete relation over its exact middle stage, and it retains
-the independent obligations for positive output-piece reconstruction, origin-or-synthetic atom
-coverage, and deletion/conflict residue. A future automatic parallel/slot-lift operator would be a
-new law rather than an implication of finite relation composition.
+or DAG flattening. D47 now requires K7 to present one complete direct relation from its exact
+singleton output stage to its exact plan source stage, and separately owns positive output-piece
+reconstruction, origin-or-synthetic atom coverage, and unused-source residue without inferred
+deletion. A future automatic parallel/slot-lift operator remains a new law rather than an
+implication of finite relation composition.
 
 The gate is reapplied and remains deferred. The first implementation is a direct finite relation
 with no compression or alternate backend. An independent Boolean-matrix oracle can exhaust all 16
@@ -750,3 +751,60 @@ direct-versus-composed slice lineage. Delivered-payload smoke pins the carrier a
 signatures. This discharges the first-backend D45 burden without activating Lean; every alternate-
 backend, fusion, intermediate-elision, automatic slot-lift, and novel K7 multi-source trigger above
 remains unchanged.
+
+## 2026-08-10 D47 K7 exact-plan materialization gate
+
+D47 freezes K7 after a source-shape read-ahead against the landed D45 implementation. A
+`RewritePlan` is one exact-source-`OriginBasis` ordered output program, not a patch set. Its
+positive `OutputPiece` objects have exactly three postures: exact source copy, literal with a
+locally total declared source-origin map, or literal with explicit synthetic explanation and no
+origin. Output coordinates are assigned only during realization. Candidate ranking, edit
+conflict, rejection, recovery, and patch compilation therefore remain outside the materializer.
+
+One additional UTF-16 hypothesis is structural in the public contract: an adjacent high-surrogate
+and low-surrogate cannot cross a piece boundary. Without that check, two piece-local atoms would
+fuse into one output scalar and invalidate local origin ordinals. Preserved unpaired surrogates
+otherwise remain legal. With the boundary condition, the output atom tiling is the ordinal sum of
+the piece tilings.
+
+`Materialize` directly concatenates the resolved payloads, creates a new `TextMaster` and exact
+singleton output basis, assigns a positive gap-free stamped span to every piece, translates local
+origins into one K6 relation, and returns the per-source-slot complement of named source atoms as
+unused material. Every output atom is origin-bearing or belongs to one synthetic piece. Empty
+output has zero pieces while retaining its new empty master and singleton basis. Unused material
+is not a semantic deletion judgment.
+
+The gate is reapplied and remains deferred. Ordered concatenation constructs the unique partition;
+closed piece factories make local completeness decidable; scalar-boundary validation preserves
+atom indexing; and direct K6 edge construction uses the already discharged relation carrier. The
+implementation chip added exact-reference, material-shape, UTF-16, evidence, empty, and two-stage
+composition adversaries plus an independent census of all 156 plans through length three over two
+source atoms and five piece archetypes. Those owners protect the first direct surface without
+changing its signature.
+
+D47 does not activate D45's novel multi-source trigger: one materialization directly builds one
+relation over its supplied exact source basis, and repeated composition works only when the next
+plan reuses the exact retained prior output basis. No automatic pass-through, compatible-basis
+substitution, retagging, or slot lift is claimed.
+
+The composition claim is deliberately origin-only and local-stage completeness is not promoted to
+a flattened theorem. A copied synthetic intermediate has an immediate-stage origin, but composing
+to the older basis yields no edge and does not inherit the prior explanation. Synthetic,
+derivation, piece, and residue evidence remain on the retained result chain.
+
+Reactivate before an alternate, streaming, fused, incremental, parallel, or compressed
+materializer claims the same complete result; before intermediate masters or piece boundaries are
+elided; before automatic multi-source lifting claims coherent composition; before persisted forms
+claim cross-process identity; or before a non-direct global reconstruction theorem becomes
+load-bearing. The contract-only D47 chip changed no runtime source and left the harness at 2639.
+
+The direct reference implementation subsequently landed on 2026-08-10 (runtime harness
+2639→2751) without an alternate backend or wider signature. Five fixture families cover
+construction/refusal, material shapes, UTF-16 atom boundaries, exact result/evidence/composition,
+and the independent **156-plan** census (**430** realized piece positions). Separate adversaries
+exercise supplementary and lone-surrogate copy translation, cross-piece fusion refusal,
+unrelated-master opaque `FactReference` retention, empty/zero-slot output, exact-middle clone
+refusal, and copied-synthetic non-flattening. Delivered-payload smoke pins all eight K7 public
+names and their essential signatures. This discharges the first-backend D47 burden without
+activating Lean; every alternate-backend, fusion, intermediate-elision, slot-lift, persistence,
+and non-direct reconstruction trigger above remains unchanged.

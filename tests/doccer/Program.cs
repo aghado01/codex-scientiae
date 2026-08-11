@@ -121,6 +121,11 @@ internal static partial class Program
             OriginCompositionMatchesIndependentBooleanMatrixOracle();
             OriginProjectionPreservesMaterialShapeAndSlotIdentity();
             TextSliceEmbedsAsExactFunctionalOrigin();
+            MaterializationConstructionSnapshotsAndRefusesInvalidPlans();
+            MaterializationCoversRequiredMaterialShapes();
+            MaterializationPreservesUtf16AtomBoundaries();
+            MaterializationResultRetainsEvidenceAndComposesExactly();
+            MaterializationMatchesIndependentFinitePlanOracle();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }

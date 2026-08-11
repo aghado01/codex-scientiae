@@ -1,13 +1,22 @@
 # Doccer K6 contract — exact-stage relation-valued origins
 
 Runstamp 20260810_001537. **Status: D45 contract and reference implementation closed; harness
-2536→2639 with zero warnings; K7 contract work is next.**
+2536→2639 with zero warnings; D47 subsequently closed K7 at 2751 and K8 is next.**
 
 This brief supersedes the provisional K6 carrier language in the
 [D40 correction](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) without
 reopening its sequencing decision. K6 remains independent of K5a/K5b and is the sole prerequisite
 for K7 materialization. The read-ahead covers the implemented atom/slice substrate, exact-basis
 precedents through K5, the K7 handoff, the F7 producer boundary, and the deferred assurance gate.
+
+> **Supersession note (2026-08-10):** D47's
+> [K7 materialization contract](sol-doccer-k7-materialization-contract-20260810_173159.md)
+> resolves the K7 questions reserved here. K7 uses an ordered output program with closed
+> copy/origin-mapped/synthetic positive pieces, retains the exact singleton output basis, reports
+> unused source material without inferring deletion, and composes only through the exact retained
+> middle basis. D47's appended implementation report records the landed reference materializer,
+> five witness families, independent 156-plan census, and delivered-surface smoke. D45's K6 carrier
+> and assurance boundary are unchanged.
 
 Inputs:
 
@@ -46,9 +55,9 @@ O_{A,B}\subseteq TaggedAtoms(A)\times TaggedAtoms(B).
 
 An ordinary materialization has a singleton output basis and an ordered multi-source input basis.
 Permitting either endpoint to contain several slots makes the carrier closed under ordinary
-relational composition and lets a later K7 stage retain pass-through sources without inventing a
-special multi-source composition law. It does not require every materialization to expose a
-multi-slot output.
+relational composition and lets an explicitly declared combined stage retain pass-through sources
+without changing the relation sort. D47 does not make ordinary materialization expose a multi-slot
+output or infer the combined-stage lift.
 
 ## 2. Exact tagged origin basis
 
@@ -149,9 +158,9 @@ On composable exact stages:
 
 This is ordinary finite relation composition. It does not merge tags, infer a slot correspondence,
 or flatten a stage DAG. A mixed-source K7 pipeline must present a complete relation over the exact
-middle stage, including explicit identity edges for any pass-through slots. Whether K7 later needs
-a separately named parallel/slot-lift constructor is a K7 contract question; `ComposeOrigins` does
-not guess one from compatible masters or matching tag strings.
+middle stage, including explicit identity edges for any pass-through slots. D47 later defers a
+separately named parallel/slot-lift constructor; `ComposeOrigins` does not guess one from
+compatible masters or matching tag strings.
 
 ## 5. Material projection without hull substitution
 
@@ -181,11 +190,11 @@ K6 intentionally allows an output atom to have zero origins. In this carrier, ze
 “no source atom is declared.” They do not by themselves prove that the atom was synthesized,
 inserted, lost, or unexplained.
 
-K7 owns the completeness rule: every materialized output atom must have one or more declared K6
-origins or belong to a positive-material output piece carrying an explicit synthetic explanation.
-Similarly, deleted or unused source material belongs to named plan/change residue or explicit
-absence in K7/F7 producer results. K6 does not encode deletion through converse edges, zero-width
-spans, or sentinel atom ordinals.
+D47 freezes K7's completeness rule: every materialized output atom must have one or more declared
+K6 origins or belong to a positive-material output piece carrying an explicit synthetic
+explanation. It reports unused source atoms as named per-slot material residue without inferring
+semantic deletion; a future change model may classify them separately. K6 does not encode deletion
+through converse edges, zero-width spans, or sentinel atom ordinals.
 
 Consequently:
 
@@ -268,8 +277,8 @@ K6 does not add:
 - a compressed or performance-promised storage backend.
 
 With this implementation landed, F7b performed-transform producers may target the K6 carrier;
-F7a remains correspondence-only and independent. K7 decides plan/piece/residue identity against
-the landed relation rather than widening it during implementation.
+F7a remains correspondence-only and independent. D47 subsequently decides plan/piece/residue
+identity against the landed relation rather than widening it during implementation.
 
 ## 11. Landing gate and handoff
 
@@ -280,8 +289,8 @@ it to **2536**.
 
 The following implementation chip owned the exact public names and constructors described above,
 the reference composition/projection path under `src/doccer/Origins/`, the `TextSlice` adapter, the
-four bounded witnesses, delivered-payload smoke coverage, and the report below. K7 contract work
-follows the landed K6 relation and must retain the exact output basis needed by subsequent stages.
+four bounded witnesses, delivered-payload smoke coverage, and the report below. D47 subsequently
+froze K7 against the landed relation and requires the exact output basis needed by later stages.
 
 ## 12. Implementation report
 
@@ -316,5 +325,5 @@ and pins their constructors, factories, endpoint/query properties, exact composi
 and `TextSlice` adapter signatures. No K7 type, synthesis/deletion inference, alignment carrier,
 reverse origin API, compressed backend, or master lineage pointer landed. The first-backend
 `K6-COMPOSE-ORIGINS` obligation is discharged without activating Lean; its alternate-backend,
-fusion, slot-lift, and novel K7 composition triggers remain intact. **K6 is closed; K7 contract work
-is the default next lane.**
+fusion, slot-lift, and novel K7 composition triggers remain intact. **K6 is closed; D47 froze K7,
+whose reference source subsequently landed at 2751 checks; K8 is the default next K lane.**

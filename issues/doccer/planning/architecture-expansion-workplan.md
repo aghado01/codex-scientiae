@@ -17,7 +17,9 @@ The evidence base is:
   [D43 fact/support contract](../briefs/sol-doccer-k5a-contract-20260809_193131.md) and for K5b by
   the [D44 saturation contract](../briefs/sol-doccer-k5b-saturation-contract-20260809_215158.md),
   and for K6 by the
-  [D45 origin contract](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md);
+  [D45 origin contract](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md), and for K7 by
+  the [materialization read-ahead](../discussions/sol-doccer-k7-materialization-read-ahead-20260810_171743.md)
+  and [D47 contract](../briefs/sol-doccer-k7-materialization-contract-20260810_173159.md);
 - [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
   [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
   [D41 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
@@ -903,8 +905,9 @@ O_{A,B}\subseteq TaggedAtoms(A)\times TaggedAtoms(B).
 \]
 
 A normal materialization still uses a singleton output basis and a possibly multi-source input
-basis. The symmetric carrier is the smallest type-closed form for ordinary multi-source stage
-composition; it does not imply that one materialization emits several masters.
+basis. The symmetric carrier is the smallest type-closed form for explicitly declared multi-slot
+stage composition; it does not imply that one materialization emits several masters or that D47
+infers a combined-stage lift.
 
 Direction is fixed: output material to tagged source material. <code>OriginRelation</code> retains
 exact output/source basis references and a canonical edge set. <code>Identity(B)</code> is the full
@@ -948,8 +951,8 @@ smoke pins the six public carrier names and their essential signatures (harness 
 warnings; **K6 closed**).
 
 K6 does not infer retagging, slot substitution, pass-through identity, or DAG flattening. A mixed-
-source K7 stage presents a complete relation over its exact middle stage; K7 may later justify a
-separately named parallel/slot-lift constructor if repeated plans need one.
+source K7 stage presents a complete relation over its exact middle stage; D47 defers a separately
+named parallel/slot-lift constructor until a concrete repeated-plan consumer needs one.
 
 D41 keeps producer epistemics explicit. A stage that performs a transformation, including an
 explicit normalization producer, may emit actual origins because it observes the births and
@@ -959,48 +962,71 @@ does not become historical provenance merely because its trace has the same pair
 explicit promotion must retain the assumption and policy stamp. K6 closes the declared relation
 carrier first. F7a distance/edit-script/correspondence is independently useful and does not build
 an origin type; F7b normalization/performed-transform origin production may now target the landed
-K6 carrier; F7c explicit promotion/materialization integration still waits for K7. None is a K6
-prerequisite.
+K6 carrier; the landed K6/K7 carriers now leave F7c explicit promotion/materialization integration
+independently available. None is a K6 prerequisite.
 
-### K7 — rewrite plans and <code>Materialize</code>
+### K7 — rewrite plans and <code>Materialize</code> (closed by D47)
 
-Close D7's final lift only with origins and residue present.
+D47 closes the contract in the
+[materialization brief](../briefs/sol-doccer-k7-materialization-contract-20260810_173159.md). A
+`RewritePlan` is an ordered output program, not a patch set: it retains one exact source
+`OriginBasis`, a `MaterializationTarget`, and a snapshotted sequence of positive `OutputPiece`
+declarations. Pieces carry no output offsets. Declaration order fixes the output, and the engine
+validates and realizes that supplied program without choosing what the rewrite means.
 
 ~~~text
-OutputPiece
-  supplied literal or source-copy instruction
-  output extent after assembly
-  declared source origins
-  optional narrow K5a FactReference
+OutputPieceKind
+  Copy | OriginMapped | Synthetic
+
+PieceOrigin
+  local output atom ordinal -> plan-source OriginAtom
+
+RewritePlan
+  exact source OriginBasis + output target + ordered positive pieces
 
 MaterializationResult
-  immutable output master
-  exact retained output OriginBasis
-  ordered piece view
-  stage origin relation
-  residuals
-  plan/run identity
+  new output TextMaster + exact singleton output OriginBasis
+  exact-plan/output-master-stamped positive piece partition
+  stage OriginRelation + per-source-slot unused SpanSet
 ~~~
 
-The engine validates and realizes a supplied plan; it does not decide what the rewrite means.
+Frozen semantics:
 
-Exit gate:
+- `Copy` derives payload and one-to-one origins from one nonempty scalar-bounded span on the exact
+  source-basis slot;
+- `OriginMapped` supplies a nonempty literal and canonical piece-local origins covering every
+  local topology atom;
+- `Synthetic` supplies a nonempty literal plus a required nonblank explanation and has no origin;
+- one piece cannot mix origin-bearing and synthetic atoms;
+- every adjacent piece boundary remains a scalar boundary after concatenation, so a high/low
+  surrogate pair cannot fuse two local atoms across pieces;
+- realized pieces are positive, ordered, gap-free, and exactly reconstruct the new master; empty
+  output has zero pieces but a new empty master and singleton output basis;
+- every output atom has origin edge(s) or belongs to one explicitly synthetic piece;
+- `UnusedSources` retains the complement of named source atoms as one exact-master `SpanSet` per
+  source slot and does not infer semantic deletion;
+- an optional singular exact-table `FactReference` is retained opaquely and does not require K5b,
+  supply origins, replace synthesis explanation, or cause support-graph execution; and
+- a later stage composes only when its source basis is the exact retained prior output basis.
 
-- pieces form an ordered, gap-free partition of the output master;
-- every material-bearing piece has positive extent; an empty output has zero pieces;
-- output equals their exact concatenation;
-- copied content remains literal source material;
-- transformed or synthetic content is explicitly supplied;
-- every output atom has declared origins or a synthetic explanation;
-- conflicts and unused pieces are refused or reported under a named policy;
-- the source remains immutable;
-- derivation answers why; origin answers where;
-- repeated materializations reuse retained exact intermediate `OriginBasis` stages and compose
-  origins through them.
+Composition carries K6 origin edges only. Origin-or-synthetic completeness is local to one exact
+result stage; synthetic explanations, derivation references, piece partitions, and unused-source
+residue do not flatten through `ComposeOrigins`. Cross-stage audit retains the exact result chain.
 
-Insertion and synthesis create positive output material. Deletion is absence or named plan/change
-residue, never a zero-width output piece or `SpanBatch` claim. K6/K7 do not reopen K4's inherited
-nonempty-claim law.
+Overlapping/repeated source reads are valid. Candidate-edit conflicts, ranking, rejected pieces,
+recovery, and patch-to-plan compilation remain producer policy; every final plan piece is emitted
+once. Automatic compatible-basis substitution, retagging, pass-through identity, and multi-source
+slot lifting are deferred.
+
+The source chip has landed the eight D47 public names under `src/doccer/Materialization/`, direct
+plan validation and execution, exact reference/UTF-16/material-shape adversaries, a two-stage
+composition fixture including a copied synthetic intermediate, delivered-surface smoke, and an
+independent 156-plan census over two source atoms and five piece archetypes. The census covers 430
+realized piece positions; the measured harness is 2639→2751 with zero warnings. **K7 is closed.**
+
+Insertion and synthesis create positive output material. Unused input is named result residue,
+never a zero-width output piece or `SpanBatch` claim. K6/K7 do not reopen K4's inherited nonempty-
+claim law.
 
 <code>OffsetMap</code> then becomes a restricted compressed interface for a single-source monotone
 alignment. Its <code>Exact | Range | Unmapped</code> point queries do not define general origins.
@@ -1222,7 +1248,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K5a | compatible-master fact-key identity, canonical deduplication/order, exact table/occurrence evidence, immutable support, and alternative-support preservation |
 | K5b | D44 finite ground-rule monotonicity, fixed-point termination, key-to-final-ordinal freeze, fair-order independence, and complete enabled support |
 | K6 | exact tagged-stage identity, functional-origin embedding, ordinary origin composition, disconnected projection, and exact-middle refusal |
-| K7 | positive output-piece partition, origin-or-synthetic coverage, residue, and exact reconstruction |
+| K7 | D47 ordered-program identity, closed copy/origin-mapped/synthetic posture, scalar-safe positive partition, exact reconstruction, origin-or-synthetic coverage, exact result stage, and per-slot unused-source residue |
 | V0 raw vector | basisless length/bit identity, ordinary zero/all values, logical tails, Boolean/shift/population/parity semantics, and representation independence |
 | V0 UTF-16 mask | compatible-master/exact-unit-window identity, arbitrary in-range unit boundaries, typed continuity, exact classifier stamps, and narrow unknown-membership semantics |
 | V prefix scan | forward inclusive prefix/transition inversion, chunk/carry agreement, logical-tail independence, classifier uncertainty refinement, and V2 backend equivalence |
@@ -1326,12 +1352,13 @@ selection as D37, the K4c contract as D38, structural-family closure as D39, the
 coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, the
 V-lane formal-assurance split as D42, the K5a fact/support contract as D43, and the finite positive
 ground-saturation contract as D44. D45 freezes and implements the exact-stage relation-valued K6
-origin contract, and D46 freezes the V0 basisless-vector/UTF-16-mask contract after its V1
-implementation read-ahead. K2, K3, all K4 lanes, K5a, K5b, portable V1, and K6 are closed. K7
-contract work is now the active chip, and K5b does not block K6 or K7. D41 records
+origin contract, D46 freezes the V0 basisless-vector/UTF-16-mask contract after its V1
+implementation read-ahead, and D47 freezes and implements exact-plan K7 materialization after its
+own read-ahead. K2, K3, all K4 lanes, K5a, K5b, portable V1, K6, and K7 are closed at 2751 checks.
+K8 cross-carrier integration is now the active default K chip. D41 records
 the round-2 capability excavation without changing type edges: A0–A2, F7a, F8a/F8b contract work,
 and F9a current-population work remain independently available. V2 follows reference semantics
-and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes wait only for
+and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes now have
 their named carriers. Most broader F8/F9 implementation remains post-K execution priority rather
 than a K8 type dependency.
 
@@ -1357,4 +1384,8 @@ intermediate elision, automatic slot lifting, or a novel K7 multi-source composi
 D46 separately reapplies the raw-vector, wrapper, scan, and harvest gates and defers them under one
 portable implementation plus independent finite oracles. Reapply for signature changes, public
 word layout, generalized common-basis masks, V2/fused refinement, or topology-bypassing harvest
-that claims the same result.
+that claims the same result. D47 reapplies and defers `K7-MATERIALIZE` because ordered
+concatenation, closed piece modes, scalar-boundary validation, direct K6 edge translation, and a
+bounded independent plan census own the first reference guarantee. Reapply for an alternate,
+streaming, fused, incremental, parallel, or compressed materializer; intermediate elision;
+automatic slot lifting; persisted identity; or a non-direct global reconstruction theorem.

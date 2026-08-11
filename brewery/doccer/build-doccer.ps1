@@ -154,6 +154,14 @@ $expectedTypes = @(
     'CodexSci.Doccer.OriginEdge'
     'CodexSci.Doccer.OriginRelation'
     'CodexSci.Doccer.OriginProjection'
+    'CodexSci.Doccer.OutputPieceKind'
+    'CodexSci.Doccer.MaterializationTarget'
+    'CodexSci.Doccer.PieceOrigin'
+    'CodexSci.Doccer.OutputPiece'
+    'CodexSci.Doccer.RewritePlan'
+    'CodexSci.Doccer.MaterializedPiece'
+    'CodexSci.Doccer.MaterializationResult'
+    'CodexSci.Doccer.RewriteMaterialization'
     'CodexSci.Doccer.BooleanVector'
     'CodexSci.Doccer.BooleanPrefixParityResult'
     'CodexSci.Doccer.Utf16UnitMask'
@@ -359,6 +367,120 @@ $null = Require-PublicProperty $originProjection 'OutputSpan' $textSpan
 $null = Require-PublicProperty $originProjection 'SourceRegions' $genericReadOnlyListSpanSet
 $null = Require-PublicProperty $originProjection 'Count' ([int])
 $null = Require-PublicProperty $originProjection 'Item' $spanSet
+
+$outputPieceKind = $assembly.GetType('CodexSci.Doccer.OutputPieceKind', $true)
+$materializationTarget = $assembly.GetType('CodexSci.Doccer.MaterializationTarget', $true)
+$pieceOrigin = $assembly.GetType('CodexSci.Doccer.PieceOrigin', $true)
+$outputPiece = $assembly.GetType('CodexSci.Doccer.OutputPiece', $true)
+$rewritePlan = $assembly.GetType('CodexSci.Doccer.RewritePlan', $true)
+$materializedPiece = $assembly.GetType('CodexSci.Doccer.MaterializedPiece', $true)
+$materializationResult = $assembly.GetType('CodexSci.Doccer.MaterializationResult', $true)
+$rewriteMaterialization = $assembly.GetType('CodexSci.Doccer.RewriteMaterialization', $true)
+$factReference = $assembly.GetType('CodexSci.Doccer.FactReference', $true)
+$nullableDefinition = [Nullable[int]].GetGenericTypeDefinition()
+$nullableInt = $nullableDefinition.MakeGenericType([int])
+$nullableTextSpan = $nullableDefinition.MakeGenericType($textSpan)
+$nullableFactReference = $nullableDefinition.MakeGenericType($factReference)
+$genericEnumerablePieceOrigin = $genericEnumerableDefinition.MakeGenericType($pieceOrigin)
+$genericEnumerableOutputPiece = $genericEnumerableDefinition.MakeGenericType($outputPiece)
+$genericReadOnlyListPieceOrigin = $genericReadOnlyListDefinition.MakeGenericType($pieceOrigin)
+$genericReadOnlyListOutputPiece = $genericReadOnlyListDefinition.MakeGenericType($outputPiece)
+$genericReadOnlyListMaterializedPiece = $genericReadOnlyListDefinition.MakeGenericType($materializedPiece)
+$equatablePieceOrigin = [IEquatable[int]].GetGenericTypeDefinition().MakeGenericType($pieceOrigin)
+$publicStaticFlags = [Reflection.BindingFlags]::Public -bor [Reflection.BindingFlags]::Static
+$copyFactory = $outputPiece.GetMethod(
+    'Copy', $publicStaticFlags, $null, [Type[]]@([int], $textSpan, $nullableFactReference), $null)
+$mappedFactory = $outputPiece.GetMethod(
+    'OriginMapped',
+    $publicStaticFlags,
+    $null,
+    [Type[]]@([string], $genericEnumerablePieceOrigin, $nullableFactReference),
+    $null)
+$syntheticFactory = $outputPiece.GetMethod(
+    'Synthetic',
+    $publicStaticFlags,
+    $null,
+    [Type[]]@([string], [string], $nullableFactReference),
+    $null)
+$rewritePlanIndexer = $rewritePlan.GetProperty(
+    'Item',
+    [Reflection.BindingFlags]::Public -bor [Reflection.BindingFlags]::Instance)
+
+if (-not $outputPieceKind.IsEnum -or
+    [Enum]::GetUnderlyingType($outputPieceKind) -ne [int] -or
+    (($outputPieceKind.GetEnumNames() -join ',') -ne 'Copy,OriginMapped,Synthetic') -or
+    ((($outputPieceKind.GetEnumValues() | ForEach-Object { [int] $_ }) -join ',') -ne '0,1,2') -or
+    $null -eq $materializationTarget.GetConstructor([Type[]]@([string], [long], [string])) -or
+    $materializationTarget.GetConstructors().Count -ne 1 -or
+    $null -eq $pieceOrigin.GetConstructor([Type[]]@([int], $originAtom)) -or
+    -not $pieceOrigin.IsValueType -or
+    -not $equatablePieceOrigin.IsAssignableFrom($pieceOrigin) -or
+    $outputPiece.GetConstructors().Count -ne 0 -or
+    $rewritePlan.GetConstructors().Count -ne 0 -or
+    $materializedPiece.GetConstructors().Count -ne 0 -or
+    $materializationResult.GetConstructors().Count -ne 0 -or
+    -not $materializationTarget.IsSealed -or
+    -not $outputPiece.IsSealed -or
+    -not $rewritePlan.IsSealed -or
+    -not $materializedPiece.IsSealed -or
+    -not $materializationResult.IsSealed -or
+    $rewriteMaterialization.GetConstructors().Count -ne 0 -or
+    -not $rewriteMaterialization.IsAbstract -or
+    -not $rewriteMaterialization.IsSealed -or
+    -not $genericReadOnlyListOutputPiece.IsAssignableFrom($rewritePlan) -or
+    $null -eq $rewritePlanIndexer -or
+    $rewritePlanIndexer.GetIndexParameters().Count -ne 1 -or
+    $rewritePlanIndexer.GetIndexParameters()[0].ParameterType -ne [int]) {
+    throw 'Packaged K7 materialization carrier construction surface is incomplete.'
+}
+
+foreach ($factory in @($copyFactory, $mappedFactory, $syntheticFactory)) {
+    if ($null -eq $factory -or
+        -not $factory.GetParameters()[2].IsOptional -or
+        -not $factory.GetParameters()[2].HasDefaultValue -or
+        $null -ne $factory.GetParameters()[2].DefaultValue) {
+        throw "Packaged OutputPiece.$($factory.Name) is missing its optional null derivation default."
+    }
+}
+
+$null = Require-PublicProperty $materializationTarget 'DocumentId' ([string])
+$null = Require-PublicProperty $materializationTarget 'Revision' ([long])
+$null = Require-PublicProperty $materializationTarget 'OutputTag' ([string])
+$null = Require-PublicProperty $pieceOrigin 'OutputAtomOrdinal' ([int])
+$null = Require-PublicProperty $pieceOrigin 'Source' $originAtom
+$null = Require-PublicMethod $outputPiece 'Copy' $true $outputPiece ([Type[]]@(
+    [int], $textSpan, $nullableFactReference))
+$null = Require-PublicMethod $outputPiece 'OriginMapped' $true $outputPiece ([Type[]]@(
+    [string], $genericEnumerablePieceOrigin, $nullableFactReference))
+$null = Require-PublicMethod $outputPiece 'Synthetic' $true $outputPiece ([Type[]]@(
+    [string], [string], $nullableFactReference))
+$null = Require-PublicProperty $outputPiece 'Kind' $outputPieceKind
+$null = Require-PublicProperty $outputPiece 'SourceSlotOrdinal' $nullableInt
+$null = Require-PublicProperty $outputPiece 'SourceSpan' $nullableTextSpan
+$null = Require-PublicProperty $outputPiece 'Literal' ([string])
+$null = Require-PublicProperty $outputPiece 'Origins' $genericReadOnlyListPieceOrigin
+$null = Require-PublicProperty $outputPiece 'SyntheticExplanation' ([string])
+$null = Require-PublicProperty $outputPiece 'Derivation' $nullableFactReference
+$null = Require-PublicMethod $rewritePlan 'Create' $true $rewritePlan ([Type[]]@(
+    $originBasis, $materializationTarget, $genericEnumerableOutputPiece))
+$null = Require-PublicProperty $rewritePlan 'SourceBasis' $originBasis
+$null = Require-PublicProperty $rewritePlan 'Target' $materializationTarget
+$null = Require-PublicProperty $rewritePlan 'Pieces' $genericReadOnlyListOutputPiece
+$null = Require-PublicProperty $rewritePlan 'Count' ([int])
+$null = Require-PublicProperty $rewritePlan 'Item' $outputPiece
+$null = Require-PublicProperty $materializedPiece 'Plan' $rewritePlan
+$null = Require-PublicProperty $materializedPiece 'PieceOrdinal' ([int])
+$null = Require-PublicProperty $materializedPiece 'Piece' $outputPiece
+$null = Require-PublicProperty $materializedPiece 'OutputMaster' $textMaster
+$null = Require-PublicProperty $materializedPiece 'OutputSpan' $textSpan
+$null = Require-PublicProperty $materializationResult 'Plan' $rewritePlan
+$null = Require-PublicProperty $materializationResult 'OutputMaster' $textMaster
+$null = Require-PublicProperty $materializationResult 'OutputBasis' $originBasis
+$null = Require-PublicProperty $materializationResult 'Pieces' $genericReadOnlyListMaterializedPiece
+$null = Require-PublicProperty $materializationResult 'Origins' $originRelation
+$null = Require-PublicProperty $materializationResult 'UnusedSources' $genericReadOnlyListSpanSet
+$null = Require-PublicMethod $rewriteMaterialization 'Materialize' $true $materializationResult ([Type[]]@(
+    $rewritePlan))
 
 $booleanVector = $assembly.GetType('CodexSci.Doccer.BooleanVector', $true)
 $booleanScan = $assembly.GetType('CodexSci.Doccer.BooleanPrefixParityResult', $true)
