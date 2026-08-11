@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-10)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D46**, contract harness **2536 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D46**, contract harness **2639 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the initial text/claim substrate
@@ -110,17 +110,18 @@ executable hierarchy diamond, and independent 256-program powerset oracle close 
 chip immediately before it.
 
 D45 and its
-[K6 origin brief](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md) now freeze that lane
-before source work. `OriginBasis` is an exact reference-identity ordered namespace of uniquely
+[K6 origin brief](../briefs/sol-doccer-k6-origin-contract-20260810_001537.md) freeze and implement
+that lane. `OriginBasis` is an exact reference-identity ordered namespace of uniquely
 tagged master slots and serves as the endpoint sort on both sides of a canonical finite
 `OriginRelation`.
 `ComposeOrigins` is ordinary output-to-source relation composition requiring the exact middle
 basis object; compatible masters and matching tags never substitute stage identity. Projection
 retains the exact relation and one disconnected-preserving `SpanSet` per source slot. K6 permits
 partial many-to-many lineage while K7 separately owns origin-or-synthetic output completeness and
-deletion residue. `TextSlice` supplies the total injective functional witness. The contract-only
-chip left the harness at 2324. D46's bounded independent V1 reference has since closed at 2536;
-K6 source implementation now resumes as the active default lane.
+deletion residue. `TextSlice` supplies the total injective functional witness. After the
+contract-only chip and D46's bounded independent V1 detour, the direct relation implementation,
+complete 16/256/4,096 Boolean-matrix census, material-shape adversaries, slice chain, and delivered
+surface smoke close K6 at 2639 checks. K7 contract work is now the default lane.
 
 D46 and its
 [V0 Boolean-vector/unit-mask brief](../briefs/sol-doccer-v0-boolean-vector-unit-mask-contract-20260810_013731.md)
@@ -152,19 +153,16 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Origin implementation (K6):** implement D45's exact `OriginBasis`, basis-relative atom/edge
-   values, canonical `OriginRelation`, exact-middle `ComposeOrigins`, disconnected-preserving
-   projection, and functional `TextSlice` adapter under the finite relation oracle. K5b is closed
-   and does not block K6.
-2. **Materialization (K7):** after K6, close D7's final lift with positive-material ordered output
-   pieces, a new immutable master, residuals, and composed stage origins. K7 has only an optional
+1. **Materialization (K7):** against the landed K6 carrier, close D7's final lift with
+   positive-material ordered output pieces, a new immutable master, residuals, and composed stage
+   origins. K7 has only an optional
    K5a `FactReference` seam; it does not require saturation. `OffsetMap` becomes a restricted
    monotone single-source view, not the universal transform carrier.
-3. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+2. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-4. **Downstream commitments and optional branches:** stable carrier identities unlock the
+3. **Downstream commitments and optional branches:** stable carrier identities unlock the
    committed separate CLI module and its wire forms, durable adapters, persistence, and indexes.
    Most substantial F8/F9 implementations retain a post-K
    execution default, but no family has a blanket K8 type dependency: F7a correspondence,
@@ -302,14 +300,14 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 ## Open questions in play
 
 - See [decisions.md § Open](decisions.md): the per-line terminator-kind view remains unscheduled;
-  D45's K6 source implementation is the active default lane after V1 closure. D40 restores
+  D45's K6 source implementation is closed and K7 contract work is the active default lane. D40 restores
   Doccer's historical register to its codepoint-address meaning and
   removes the unrelated math-channel dependency; `math-register` remains only the legacy
   repository name pending migration. D41 keeps post-hoc alignment evidence distinct from actual
   producer origins. D42 splits the V-lane formal obligations without activating Lean; D46 freezes
   the raw/vector-wrapper boundary and closes the bounded portable V1 chip before K6.
   D43 closes K5a and its implementation; D44 closes K5b ground saturation and its implementation;
-  D45 freezes K6's exact-stage relation contract.
+  D45 freezes and implements K6's exact-stage relation contract.
   All Tranche-2 stragglers are closed — see the
   [ledger](ledger.md).
 

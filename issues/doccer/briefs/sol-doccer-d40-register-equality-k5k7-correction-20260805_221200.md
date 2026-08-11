@@ -19,7 +19,9 @@ conflated premises in the K5–K7 plan. This brief corrects those premises befor
 > provisional K6 carrier shape: one exact reference-identity ordered tagged `OriginBasis` is now
 > used at both relation endpoints, `ComposeOrigins` requires the exact middle basis object, and K6
 > remains partial relation-valued lineage while K7 owns synthetic completeness and deletion
-> residue. Where the texts conflict, D43 controls K5a, D44 controls K5b, and D45 controls K6.
+> residue. D45's appended implementation report records the landed direct relation, projection,
+> and `TextSlice` adapter. Where the texts conflict, D43 controls K5a, D44 controls K5b, and D45
+> controls K6.
 
 ## 1. Register is codepoint-address terminology; mathematics is a channel
 
@@ -211,7 +213,7 @@ removed.
 The Doccer build completes with zero warnings and the contract harness remains **1976 checks
 passed**. At D40 landing, K5a contract work was the default next chip and K6 contract work was an
 independently available sibling; the supersession note records the subsequent D43/D44 closures and
-D45 K6 contract freeze.
+D45 K6 contract/source closure.
 
 ## 9. Terminology amendment
 

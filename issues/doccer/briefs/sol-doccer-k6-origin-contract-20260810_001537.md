@@ -1,7 +1,7 @@
 # Doccer K6 contract — exact-stage relation-valued origins
 
-Runstamp 20260810_001537. **Status: contract frozen as D45; implementation is the active default
-lane after V1 closure; current harness 2536.**
+Runstamp 20260810_001537. **Status: D45 contract and reference implementation closed; harness
+2536→2639 with zero warnings; K7 contract work is next.**
 
 This brief supersedes the provisional K6 carrier language in the
 [D40 correction](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) without
@@ -267,18 +267,54 @@ K6 does not add:
 - persisted tags, stage IDs, wire forms, byte coordinates, or cross-process identity; or
 - a compressed or performance-promised storage backend.
 
-F7b performed-transform producers may target the K6 carrier only after this implementation lands;
-F7a remains correspondence-only and independent. K7 decides plan/piece/residue identity against the
-landed relation rather than widening it during implementation.
+With this implementation landed, F7b performed-transform producers may target the K6 carrier;
+F7a remains correspondence-only and independent. K7 decides plan/piece/residue identity against
+the landed relation rather than widening it during implementation.
 
 ## 11. Landing gate and handoff
 
-The contract-only chip closes when D45, the `K6-COMPOSE-ORIGINS` registry row, workplan, roadmap,
-ledger, engine README, D40 supersession note, and deferred Lean packet agree. No K6 source type or
-test lands in this chip, so the harness remains **2324**.
+The contract-only chip closed when D45, the `K6-COMPOSE-ORIGINS` registry row, workplan, roadmap,
+ledger, engine README, D40 supersession note, and deferred Lean packet agreed. No K6 source type or
+test landed in that chip, so the harness remained **2324**. D46's independent V1 detour then raised
+it to **2536**.
 
-The following implementation chip owns the exact public names and constructors described above,
+The following implementation chip owned the exact public names and constructors described above,
 the reference composition/projection path under `src/doccer/Origins/`, the `TextSlice` adapter, the
-four bounded witnesses, delivered-payload smoke coverage, and an implementation report appended to
-this brief. K7 contract work follows the landed K6 relation and must retain the exact output basis
-needed by subsequent stages.
+four bounded witnesses, delivered-payload smoke coverage, and the report below. K7 contract work
+follows the landed K6 relation and must retain the exact output basis needed by subsequent stages.
+
+## 12. Implementation report
+
+Completed 2026-08-10. `src/doccer/Origins/OriginBasis.cs` lands immutable `OriginSlot` carriers and
+reference-identity `OriginBasis` objects with snapshotted ordered slots, ordinal tag uniqueness,
+legal zero-slot posture, and basis-relative atom validation. `OriginAtom` and `OriginEdge` are
+finite coordinate values. `OriginRelation.Create` validates both exact endpoint bases, snapshots,
+sorts, and deduplicates the output-to-source edge set; relation equality and hashing retain exact
+basis-object identity. `None`, tagged-atom `Identity`, and the derived functional, total, and
+injective queries preserve the partial many-to-many carrier without introducing a second map type.
+
+`src/doccer/Origins/OriginRelation.cs` implements exact-middle `ComposeOrigins` as direct finite
+relational composition. It retains the outer exact bases and removes duplicate outer edges without
+recording middle witnesses. `ProjectSources` validates a scalar-bounded span on its selected output
+slot, treats an empty span as empty material, and returns an exact-relation-stamped
+`OriginProjection` with one normalized `SpanSet` per source slot. Meeting source atoms merge;
+disconnected material and compatible duplicate slots do not. `OriginRelation.FromTextSlice` is the
+named strict adapter: singleton bases must retain the slice's exact child and parent master objects,
+and every child atom maps to the parent atom occupying its rebased span.
+
+`tests/doccer/K6OriginTests.cs` adds construction, immutability, canonical-order, exact-identity,
+degenerate-basis, partial/contraction/duplication, disconnected-projection, compatible-slot,
+surrogate, empty-slice, and slice-chain adversaries. The independent two-by-two Boolean-matrix
+oracle covers all **16** relations, **256** composable pairs, and **4,096** triples, checking
+identity, associativity, shape queries, outer-basis stamps, and duplicate-witness collapse. A
+value-identical middle basis and a compatible-master middle clone both fail composition; the slice
+chain agrees with direct child-to-ancestor atom rebasing only when the exact middle basis is reused.
+
+The release harness is green at **2639 checks** (**2536→2639**) with zero compiler warnings. The
+brewery publishes and smoke-tests the delivered package, requires all six K6 public carrier names,
+and pins their constructors, factories, endpoint/query properties, exact composition, projection,
+and `TextSlice` adapter signatures. No K7 type, synthesis/deletion inference, alignment carrier,
+reverse origin API, compressed backend, or master lineage pointer landed. The first-backend
+`K6-COMPOSE-ORIGINS` obligation is discharged without activating Lean; its alternate-backend,
+fusion, slot-lift, and novel K7 composition triggers remain intact. **K6 is closed; K7 contract work
+is the default next lane.**

@@ -148,6 +148,12 @@ $expectedTypes = @(
     'CodexSci.Doccer.SaturationProblem'
     'CodexSci.Doccer.SaturationResult'
     'CodexSci.Doccer.FactSaturation'
+    'CodexSci.Doccer.OriginSlot'
+    'CodexSci.Doccer.OriginBasis'
+    'CodexSci.Doccer.OriginAtom'
+    'CodexSci.Doccer.OriginEdge'
+    'CodexSci.Doccer.OriginRelation'
+    'CodexSci.Doccer.OriginProjection'
     'CodexSci.Doccer.BooleanVector'
     'CodexSci.Doccer.BooleanPrefixParityResult'
     'CodexSci.Doccer.Utf16UnitMask'
@@ -284,6 +290,76 @@ function Require-PublicProperty {
     }
 }
 
+$originSlot = $assembly.GetType('CodexSci.Doccer.OriginSlot', $true)
+$originBasis = $assembly.GetType('CodexSci.Doccer.OriginBasis', $true)
+$originAtom = $assembly.GetType('CodexSci.Doccer.OriginAtom', $true)
+$originEdge = $assembly.GetType('CodexSci.Doccer.OriginEdge', $true)
+$originRelation = $assembly.GetType('CodexSci.Doccer.OriginRelation', $true)
+$originProjection = $assembly.GetType('CodexSci.Doccer.OriginProjection', $true)
+$textSlice = $assembly.GetType('CodexSci.Doccer.TextSlice', $true)
+$textMaster = $assembly.GetType('CodexSci.Doccer.TextMaster', $true)
+$textSpan = $assembly.GetType('CodexSci.Doccer.TextSpan', $true)
+$spanSet = $assembly.GetType('CodexSci.Doccer.SpanSet', $true)
+$genericEnumerableDefinition = [Collections.Generic.IEnumerable[int]].GetGenericTypeDefinition()
+$genericReadOnlyListDefinition = [Collections.Generic.IReadOnlyList[int]].GetGenericTypeDefinition()
+$genericEnumerableOriginSlot = $genericEnumerableDefinition.MakeGenericType($originSlot)
+$genericEnumerableOriginEdge = $genericEnumerableDefinition.MakeGenericType($originEdge)
+$genericReadOnlyListOriginSlot = $genericReadOnlyListDefinition.MakeGenericType($originSlot)
+$genericReadOnlyListSpanSet = $genericReadOnlyListDefinition.MakeGenericType($spanSet)
+$genericReadOnlyListOriginEdge = $genericReadOnlyListDefinition.MakeGenericType($originEdge)
+$equatableOriginRelation = [IEquatable[int]].GetGenericTypeDefinition().MakeGenericType($originRelation)
+
+if ($null -eq $originSlot.GetConstructor([Type[]]@([string], $textMaster)) -or
+    $originBasis.GetConstructors().Count -ne 0 -or
+    $null -eq $originAtom.GetConstructor([Type[]]@([int], [int])) -or
+    $null -eq $originEdge.GetConstructor([Type[]]@($originAtom, $originAtom)) -or
+    $originRelation.GetConstructors().Count -ne 0 -or
+    $originProjection.GetConstructors().Count -ne 0 -or
+    -not $originAtom.IsValueType -or
+    -not $originEdge.IsValueType -or
+    -not $genericReadOnlyListOriginSlot.IsAssignableFrom($originBasis) -or
+    -not $genericReadOnlyListOriginEdge.IsAssignableFrom($originRelation) -or
+    -not $genericReadOnlyListSpanSet.IsAssignableFrom($originProjection) -or
+    -not $equatableOriginRelation.IsAssignableFrom($originRelation)) {
+    throw 'Packaged K6 origin carrier construction surface is incomplete.'
+}
+
+$null = Require-PublicProperty $originSlot 'Tag' ([string])
+$null = Require-PublicProperty $originSlot 'Master' $textMaster
+$null = Require-PublicMethod $originBasis 'Create' $true $originBasis ([Type[]]@($genericEnumerableOriginSlot))
+$null = Require-PublicProperty $originBasis 'Count' ([int])
+$null = Require-PublicProperty $originBasis 'Item' $originSlot
+$null = Require-PublicProperty $originBasis 'Slots' $genericReadOnlyListOriginSlot
+$null = Require-PublicProperty $originAtom 'SlotOrdinal' ([int])
+$null = Require-PublicProperty $originAtom 'AtomOrdinal' ([int])
+$null = Require-PublicProperty $originEdge 'Output' $originAtom
+$null = Require-PublicProperty $originEdge 'Source' $originAtom
+$null = Require-PublicMethod $originRelation 'Create' $true $originRelation ([Type[]]@(
+    $originBasis, $originBasis, $genericEnumerableOriginEdge))
+$null = Require-PublicMethod $originRelation 'None' $true $originRelation ([Type[]]@(
+    $originBasis, $originBasis))
+$null = Require-PublicMethod $originRelation 'Identity' $true $originRelation ([Type[]]@($originBasis))
+$null = Require-PublicMethod $originRelation 'FromTextSlice' $true $originRelation ([Type[]]@(
+    $textSlice, $originBasis, $originBasis))
+$null = Require-PublicMethod $originRelation 'ComposeOrigins' $false $originRelation ([Type[]]@(
+    $originRelation))
+$null = Require-PublicMethod $originRelation 'ProjectSources' $false $originProjection ([Type[]]@(
+    [int], $textSpan))
+$null = Require-PublicProperty $originRelation 'OutputBasis' $originBasis
+$null = Require-PublicProperty $originRelation 'SourceBasis' $originBasis
+$null = Require-PublicProperty $originRelation 'Count' ([int])
+$null = Require-PublicProperty $originRelation 'IsEmpty' ([bool])
+$null = Require-PublicProperty $originRelation 'IsFunctional' ([bool])
+$null = Require-PublicProperty $originRelation 'IsTotal' ([bool])
+$null = Require-PublicProperty $originRelation 'IsInjective' ([bool])
+$null = Require-PublicProperty $originRelation 'Item' $originEdge
+$null = Require-PublicProperty $originProjection 'Relation' $originRelation
+$null = Require-PublicProperty $originProjection 'OutputSlotOrdinal' ([int])
+$null = Require-PublicProperty $originProjection 'OutputSpan' $textSpan
+$null = Require-PublicProperty $originProjection 'SourceRegions' $genericReadOnlyListSpanSet
+$null = Require-PublicProperty $originProjection 'Count' ([int])
+$null = Require-PublicProperty $originProjection 'Item' $spanSet
+
 $booleanVector = $assembly.GetType('CodexSci.Doccer.BooleanVector', $true)
 $booleanScan = $assembly.GetType('CodexSci.Doccer.BooleanPrefixParityResult', $true)
 $unitMask = $assembly.GetType('CodexSci.Doccer.Utf16UnitMask', $true)
@@ -296,11 +372,8 @@ $classifiedScan = $assembly.GetType('CodexSci.Doccer.Utf16ClassificationPrefixPa
 $claimStamp = $assembly.GetType('CodexSci.Doccer.UnitMaskClaimStamp', $true)
 $harvest = $assembly.GetType('CodexSci.Doccer.Utf16UnitHarvestResult', $true)
 $emission = $assembly.GetType('CodexSci.Doccer.Utf16ClaimEmissionResult', $true)
-$textMaster = $assembly.GetType('CodexSci.Doccer.TextMaster', $true)
-$textSpan = $assembly.GetType('CodexSci.Doccer.TextSpan', $true)
 $spanLevel = $assembly.GetType('CodexSci.Doccer.SpanLevel', $true)
 $spanBatchBuilder = $assembly.GetType('CodexSci.Doccer.SpanBatchBuilder', $true)
-$spanSet = $assembly.GetType('CodexSci.Doccer.SpanSet', $true)
 $genericEnumerableInt = [Collections.Generic.IEnumerable[int]]
 $genericReadOnlyCollectionInt = [Collections.Generic.IReadOnlyCollection[int]]
 $genericReadOnlyListInt = [Collections.Generic.IReadOnlyList[int]]

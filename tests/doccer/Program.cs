@@ -117,6 +117,10 @@ internal static partial class Program
             Utf16UnitHarvestIsScalarSafeAndComplete();
             Utf16ClaimEmissionIsTransactionalAndEvidenceBearing();
             BooleanVectorSupportsATestLocalByteBasis();
+            OriginBasisAndRelationAreExactCanonicalValues();
+            OriginCompositionMatchesIndependentBooleanMatrixOracle();
+            OriginProjectionPreservesMaterialShapeAndSlotIdentity();
+            TextSliceEmbedsAsExactFunctionalOrigin();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }

@@ -48,8 +48,9 @@ D46 does not create an unqualified `UnitMask`, generalized master protocol, byte
 that UTF-16 is Doccer's only future material basis.
 
 V1 landed ahead of the already frozen K6 source chip. This was an execution-order detour, not a
-type dependency: V1 and K6 remain independent, K6's D45 contract is unchanged, and K6 resumes now
-that V1 is closed. V2 and all other bitmap-shaped proposals remain later.
+type dependency: V1 and K6 remain independent, K6's D45 contract is unchanged, and K6 resumed when
+V1 closed. The following D45 implementation chip has since closed K6 at 2639 checks. V2 and all
+other bitmap-shaped proposals remain later.
 
 ## 2. `BooleanVector`
 
@@ -326,8 +327,8 @@ V1 is closed only when:
    warnings.
 
 With the report below, V1 closes and the default execution lane returns to D45's K6 source
-implementation. V2, packed regions, suppression acceleration, and A1 remain separate evidence-
-gated continuations.
+implementation. That returned lane subsequently closed at 2639 checks. V2, packed regions,
+suppression acceleration, and A1 remain separate evidence-gated continuations.
 
 ## 12. V1 implementation report — 2026-08-10
 
@@ -370,4 +371,5 @@ of every public V1 carrier and result. Both builds report zero warnings.
 
 V1 is closed. No public word layout, V2 backend, packed `SpanSet`, suppression bitmap, generalized
 material basis, byte master, A1 change, K6 type, or CLI vector command landed. The active default
-execution lane returns to D45's K6 source implementation.
+execution lane returned to D45's K6 source implementation; D45's appended report now records its
+subsequent closure and the K7 handoff.

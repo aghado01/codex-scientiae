@@ -47,6 +47,7 @@ HierarchyView / ResolutionMap     + explicit parent and layer incidence evidence
 FactKey / CanonicalFactTable      + master-relative semantic fact identity
 SupportHypergraph                 + exact-basis supplied support evidence
 FactSaturation                    + finite positive least closure and support
+OriginBasis / OriginRelation      + exact-stage output-to-source material lineage
 Scoped collectors                 + declarative recognition
 Interval joins                    + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -108,8 +109,9 @@ including an interior surrogate boundary; scalar safety belongs to topology-atom
 values are not interval empties. Forward inclusive prefix parity, inverse transitions, raw chunk
 carry, typed material continuity, exact classifier stamps, narrowly defined unknown membership,
 separate boundary/classifier residue, and evidence-bearing transactional claim emission are
-implemented under `Vectors/`. The portable V1 reference is closed at 2536 harness checks; no
-accelerated backend is implemented, and the already frozen K6 implementation resumes next. A
+implemented under `Vectors/`. The portable V1 reference closed at its 2536-check landing; the
+subsequent direct K6 relation implementation raises the current harness to 2639. No accelerated
+vector or origin backend is implemented. A
 test-local byte wrapper demonstrates that the raw algebra is basisless, but D46 creates no public
 byte master or generic unit-mask family.
 
@@ -138,25 +140,26 @@ space, retains every enabled support, then creates a new canonical table and rem
 final ordinals. `SaturationResult` retains the exact problem and result graph. No callback,
 variable-bearing rule language, negation, selection, or scheduler trace enters the contract.
 
-D45 freezes K6's source contract without implementing it. `OriginBasis` is an exact ordered
-namespace of uniquely tagged `TextMaster` slots and is used at both endpoints of a canonical finite
-`OriginRelation`. Atom coordinates are `(slot ordinal, atom ordinal)` over `TextTopology.Atoms`.
+D45 freezes and implements K6's source contract under `src/doccer/Origins/`. `OriginBasis` is an
+exact ordered namespace of uniquely tagged `TextMaster` slots and is used at both endpoints of a
+canonical finite `OriginRelation`. Atom coordinates are `(slot ordinal, atom ordinal)` over
+`TextTopology.Atoms`.
 `ComposeOrigins` is ordinary output-to-source relation composition and requires the exact shared
 middle basis object; matching tags or compatible masters never substitute it. Forward span
 projection retains the exact relation and one disconnected-preserving `SpanSet` per source slot.
 Relations remain partial and many-to-many: K7 separately owns origin-or-synthetic output coverage
 and deletion residue. `TextSlice` is the total injective functional witness.
 
-D46's now-closed V1 implementation was an execution-order detour rather than a K6 dependency.
-D45 remains frozen and K6 has resumed as the active default lane.
+D46's V1 implementation was an execution-order detour rather than a K6 dependency. D45's direct
+finite implementation is now closed at 2639 checks; K7 contract work is the active default lane.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
 `AllenCompose`, located `Seq`, the occurrence-level `ComposePairs`, and flat-path
-`PathSelection.Select` and `FactSaturation.Saturate` are implemented. `ComposeOrigins` now has the
-frozen D45 contract but no source implementation; `Materialize` remains a contract reservation.
+`PathSelection.Select`, `FactSaturation.Saturate`, and exact-stage `ComposeOrigins` are implemented.
+`Materialize` remains a contract reservation.
 Path selection is one exact
 nonnegative-additive complete-path executor, not a universal selection carrier. K4c additionally
 implements the separately named `Laminarizer.Admit` and
@@ -267,6 +270,16 @@ owners and Lean reactivation triggers live in the D25 registry in
   same exact occurrence batch; `SaturationResult` retains the exact problem and graph. Direct
   adversaries, all 24 seed/support/rule permutations, the executable hierarchy diamond, and an
   independent powerset oracle over all 256 two-fact zero/unary programs are green;
+- K6 exact-stage origins: immutable `OriginSlot`/reference-identity `OriginBasis` values define
+  ordered uniquely tagged disjoint unions of `TextTopology` atoms; basis-relative `OriginAtom` and
+  `OriginEdge` values form canonical exact-endpoint `OriginRelation` edge sets with tagged-atom
+  identity, partial many-to-many posture, exact-middle `ComposeOrigins`, and derived
+  functional/total/injective queries. `OriginProjection` retains the exact relation, selected
+  output slot/span, and a disconnected-preserving normalized `SpanSet` for every source slot;
+  compatible slots do not collapse. `OriginRelation.FromTextSlice` strictly embeds the slice's
+  exact singleton child/parent masters. The complete 16-relation/256-pair/4,096-triple independent
+  Boolean-matrix census, exact-clone adversaries, material shapes, and scalar-width slice chains
+  are green;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -340,8 +353,8 @@ owners and Lean reactivation triggers live in the D25 registry in
 
 These surfaces are absent because their contract or implementation gate is not closed. Contract
 closure is the only authorization gate on engine work; D43 and D44 crossed and implemented the
-K5a fact/support and K5b saturation gates, D45 crossed K6's contract gate, and D46 crossed and
-implemented V0/V1's vector/mask gates. K6 implementation is next. A
+K5a fact/support and K5b saturation gates, D45 crossed and implemented K6's origin gate, and D46
+crossed and implemented V0/V1's vector/mask gates. K7 contract work is next. A
 consumer's arrival prioritizes and validates; it never authorizes, and its absence is never by
 itself a reason to leave a gap. Where the brief names a "first consumer"
 trigger, read it as a prioritization default for a contract whose remaining questions a real
@@ -375,16 +388,16 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- D45's now-active exact-stage `OriginBasis`/`OriginRelation` implementation, `ComposeOrigins`,
-  projection, and `TextSlice` adapter after closed V1; K7's output-piece/materialization contract and
-  source remain later; K5b is closed and does not block either lane;
+- K7's output-piece/materialization contract and source against the landed exact-stage
+  `OriginBasis`/`OriginRelation`, `ComposeOrigins`, projection, and `TextSlice` adapter; K5b is
+  closed and does not block materialization;
 - further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
   other ties—require separately named contracts rather than widening D37 silently. Structural
   optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
   contracts, not implications of D39;
 - F7a exact/thresholded distance and correspondence independently; F7b performed-transform origin
-  production after K6; and F7c explicit correspondence-to-origin promotion/materialization
-  integration after its K6/K7 carriers. A performed transform may emit actual origins; post-hoc
+  production may now target landed K6; and F7c explicit correspondence-to-origin promotion and
+  materialization integration remains after K7. A performed transform may emit actual origins; post-hoc
   alignment is correspondence evidence unless explicitly promoted;
 - F8a direct comparison/hash substrate, F8b rolling/content-defined producers, F8c similarity
   signatures/candidate indexes, and F8d streaming sketches. Fast prefilters verify positive matches

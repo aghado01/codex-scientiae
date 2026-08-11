@@ -464,8 +464,8 @@ direct implementation.
 | K5a canonical fact/support identity | D43 immutable reference construction, canonical-order/equality laws, adversarial exact-basis validation, proposal permutations, and a manually supplied two-support diamond | before an alternate, persisted, compressed, or incremental fact/support backend claims the same extensional identity without complete differential evidence |
 | Positive finite saturation reaches one least fixed point with complete enabled support | D44 finite data-only ground rules, explicit key-space operator, reference worklist, independent bounded closure/support oracle, and order-permutation tests | before a wider rule carrier or alternate/compressed/parallel/incremental saturation claims the same fact and support semantics |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
-| Functional origins embed into relation-valued origins | D45 exact-relation inclusion plus the pending direct `TextSlice` fixture and relation tests | before origin compression, stage fusion, or functional fast paths |
-| Exact-stage multi-source origin composition | D45 exact reference-identity middle basis, pending ordinary relational implementation, and independent Boolean-matrix oracle | leading future Lean candidate if automatic slot lifting, K6/K7 composition, stage fusion, or another backend remains disputed |
+| Functional origins embed into relation-valued origins | D45 exact-relation inclusion plus the landed strict `TextSlice` fixture, scalar-width slice chain, and relation-shape tests | before origin compression, stage fusion, or functional fast paths |
+| Exact-stage multi-source origin composition | D45 exact reference-identity middle basis, direct ordinary relational implementation, and complete two-atom Boolean-matrix oracle | leading future Lean candidate if automatic slot lifting, K6/K7 composition, stage fusion, or another backend remains disputed |
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
@@ -737,6 +737,16 @@ Reactivate before a compressed/indexed/parallel or functional fast path claims e
 equivalence, before fusion or intermediate-master elision claims to preserve lineage, before an
 automatic slot-lift/parallel constructor claims coherent composition laws, or when K7 introduces a
 novel multi-source reconstruction theorem not owned by direct construction-time validation. The
-contract-only D45 chip left the runtime harness at 2324; independent V1 then raised the current
-harness to 2536 without changing this K6 disposition. Recheck it after the K6 implementation
-report, but the source carrier alone does not require Lean.
+contract-only D45 chip left the runtime harness at 2324; independent V1 then raised it to 2536
+without changing this K6 disposition.
+
+The direct reference implementation subsequently landed on 2026-08-10 (runtime harness
+2536→2639) without compression, an alternate backend, or a wider composition signature. The
+independent owner exhausts all 16 relations, 256 composable pairs, and 4,096 triples over exact
+two-atom stages. Separate adversaries cover value-identical and compatible-master middle clones,
+duplicate-compatible source slots, zero-origin/contraction/duplication shapes, disconnected
+projection, zero-slot and singleton-empty bases, scalar-width and unpaired-surrogate slices, and
+direct-versus-composed slice lineage. Delivered-payload smoke pins the carrier and operation
+signatures. This discharges the first-backend D45 burden without activating Lean; every alternate-
+backend, fusion, intermediate-elision, automatic slot-lift, and novel K7 multi-source trigger above
+remains unchanged.

@@ -884,7 +884,7 @@ A variable-bearing Horn/Datalog grammar, arbitrary callback carrier, serializabl
 negation, deletion, aggregation, winner/stage policy, proof-tree unfolding, semiring evaluation,
 parallel/incremental execution, and persistence remain separate contracts.
 
-### K6 — origin algebra before materialization
+### K6 — origin algebra before materialization (closed 2026-08-10)
 
 K6 is a sibling of K5a/K5b after K4b. It does not consume canonical facts or saturation; support
 and origin remain different types. D45 freezes the contract in the
@@ -939,6 +939,14 @@ Exit gate:
   two-atom relations/pairs/triples; and
 - birth-event instrumentation from a future NSST backend is only one origin producer.
 
+The reference implementation is landed under `src/doccer/Origins/`. Construction snapshots and
+validates exact basis-relative coordinates; direct composition and exact-relation-stamped
+projection retain the contract above. The harness exhausts all 16 relations, 256 composable pairs,
+and 4,096 triples, and separately covers exact-middle clones, duplicate-compatible slots,
+disconnected images, degenerate bases, and scalar-width `TextSlice` chains. Delivered-payload
+smoke pins the six public carrier names and their essential signatures (harness 2536→2639; zero
+warnings; **K6 closed**).
+
 K6 does not infer retagging, slot substitution, pass-through identity, or DAG flattening. A mixed-
 source K7 stage presents a complete relation over its exact middle stage; K7 may later justify a
 separately named parallel/slot-lift constructor if repeated plans need one.
@@ -950,8 +958,8 @@ a named edit model, cost/tie policy, resource bound, ambiguity, and unmatched re
 does not become historical provenance merely because its trace has the same pair shape; an
 explicit promotion must retain the assumption and policy stamp. K6 closes the declared relation
 carrier first. F7a distance/edit-script/correspondence is independently useful and does not build
-an origin type; F7b normalization/performed-transform origin production waits for K6; F7c explicit
-promotion/materialization integration waits for the K6/K7 carriers it names. None is a K6
+an origin type; F7b normalization/performed-transform origin production may now target the landed
+K6 carrier; F7c explicit promotion/materialization integration still waits for K7. None is a K6
 prerequisite.
 
 ### K7 — rewrite plans and <code>Materialize</code>
@@ -1317,10 +1325,10 @@ the joint located/graph core as D35, the flat result closure as D36, additive co
 selection as D37, the K4c contract as D38, structural-family closure as D39, the post-K4
 coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, the
 V-lane formal-assurance split as D42, the K5a fact/support contract as D43, and the finite positive
-ground-saturation contract as D44. D45 freezes the exact-stage relation-valued K6 origin contract,
-and D46 freezes the V0 basisless-vector/UTF-16-mask contract after its V1 implementation
-read-ahead. K2, K3, all K4 lanes, K5a, K5b, and portable V1 are closed. D45 K6 is now the active
-chip, and K5b does not block K6 or K7. D41 records
+ground-saturation contract as D44. D45 freezes and implements the exact-stage relation-valued K6
+origin contract, and D46 freezes the V0 basisless-vector/UTF-16-mask contract after its V1
+implementation read-ahead. K2, K3, all K4 lanes, K5a, K5b, portable V1, and K6 are closed. K7
+contract work is now the active chip, and K5b does not block K6 or K7. D41 records
 the round-2 capability excavation without changing type edges: A0–A2, F7a, F8a/F8b contract work,
 and F9a current-population work remain independently available. V2 follows reference semantics
 and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes wait only for
