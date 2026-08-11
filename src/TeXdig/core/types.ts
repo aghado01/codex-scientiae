@@ -1,0 +1,282 @@
+/**
+ * TeXdig stage-1 census types — the working schema for the census/assembly stage.
+ *
+ * These shapes are the stage-1 contract: a closed, span-addressed inventory of every
+ * knowable carrier on the source surface, reconciled between two witnesses, with
+ * coverage accounting over every source file. Mechanical only — no expansion,
+ * no interpretation. See ../README.md for the exit gates.
+ *
+ * Erasable-syntax TypeScript only: this file must run under Node's native type
+ * stripping (unions and const objects, no enums/namespaces).
+ */
+
+export const CENSUS_SCHEMA_VERSION = "texdig-census/0.1" as const;
+
+// ---------------------------------------------------------------------------
+// Source addressing
+// ---------------------------------------------------------------------------
+
+/** Forward-slash path relative to the deposited `{slug}-tex/` root. */
+export type SourceId = string;
+
+/**
+ * Canonical coordinates are UTF-16 code units (JS-native parser positions).
+ * Byte offsets are boundary projections computed at emission when a consumer
+ * declares them; they are never a second source of truth.
+ */
+export interface SourceSpan {
+  sourceId: SourceId;
+  /** Inclusive start, UTF-16 code units. */
+  startUtf16: number;
+  /** Exclusive end, UTF-16 code units. */
+  endUtf16: number;
+}
+
+/** One row of `sources.jsonl`. */
+export interface SourceFileRecord {
+  id: SourceId;
+  sha256: string;
+  lengthUtf16: number;
+  entrypoint: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Witnesses and agreement
+// ---------------------------------------------------------------------------
+
+export type WitnessKind = "lexical" | "parser";
+
+export interface WitnessRecord {
+  witness: WitnessKind;
+  span: SourceSpan;
+  /** Scanner rule or parser node type that produced this sighting. */
+  detail?: string;
+}
+
+/**
+ * Reconciliation state of one entity across the two witnesses. Anything other
+ * than `agreed` must be accompanied by a diagnostic naming the discrepancy.
+ */
+export type AgreementState = "agreed" | "lexical-only" | "parser-only" | "conflict";
+
+/**
+ * Parser macro-node positions exclude attached arguments and Argument wrappers
+ * may be positionless, so full extents are sometimes computed as a hull from
+ * control-sequence + argument-content spans. Synthesized spans must never be
+ * mistaken for parser-given ones.
+ */
+export type SpanProvenance = "parser" | "lexical" | "synthesized-hull";
+
+// ---------------------------------------------------------------------------
+// Entity identity
+// ---------------------------------------------------------------------------
+
+/**
+ * Deterministic address string: `${kind}@${sourceId}:${startUtf16}-${endUtf16}`.
+ * Because the deposited tree is frozen and fingerprinted, span-addressed IDs are
+ * stable across runs over the same tree. Later stages mint derived entities under
+ * a different scheme that chains back to these via Origin.
+ */
+export type EntityId = string;
+
+// ---------------------------------------------------------------------------
+// Census entities (discriminated on `kind` — keep switches exhaustive)
+// ---------------------------------------------------------------------------
+
+interface CensusEntityBase {
+  id: EntityId;
+  span: SourceSpan;
+  spanProvenance: SpanProvenance;
+  witnesses: WitnessRecord[];
+  agreement: AgreementState;
+}
+
+/**
+ * How a macro definition was declared. `configured` marks signatures injected
+ * from lane configuration rather than discovered in the document; `def`-dialect
+ * sites are detected and cataloged even though they are not elaborable.
+ */
+export type DefinitionDialect =
+  | "newcommand"
+  | "renewcommand"
+  | "providecommand"
+  | "xparse"
+  | "math-operator"
+  | "paired-delimiter"
+  | "let"
+  | "def"
+  | "configured";
+
+/** Delimiter identity of a math carrier — `display` alone loses env identity. */
+export type MathCarrier =
+  | { form: "dollar" }
+  | { form: "double-dollar" }
+  | { form: "paren" }
+  | { form: "bracket" }
+  | { form: "env"; name: string };
+
+/**
+ * Small-vocabulary environment roles assigned during census. Everything not in
+ * a known vocabulary stays `generic`; refinement is downstream elaboration.
+ */
+export type EnvironmentRole = "float" | "math" | "verbatim" | "generic";
+
+export type EnvelopeMarkerKind =
+  | "documentclass"
+  | "begin-document"
+  | "end-document"
+  | "section"
+  | "appendix"
+  | "bibliography";
+
+export type IncludeDirective = "input" | "include" | "bibliography" | "addbibresource";
+
+export type CensusEntity =
+  /**
+   * A control-sequence site not claimed by a more specific kind below.
+   * Definition-forming, include, and envelope-forming commands are recorded
+   * under their specific kinds only; this is the generic remainder.
+   */
+  | (CensusEntityBase & {
+      kind: "macro-invocation";
+      /** Control-sequence name without the backslash. */
+      name: string;
+      inMathMode?: boolean;
+      /** Parser-witnessed attachments where signatures were known; hull completion is a later pass. */
+      argumentSpans?: SourceSpan[];
+    })
+  | (CensusEntityBase & {
+      kind: "macro-definition";
+      /** The DEFINED macro's name (e.g. `pair` for \newcommand{\pair}...). */
+      definedName: string;
+      dialect: DefinitionDialect;
+      /** Raw signature text as written, e.g. `[2][d]` or an xparse spec. */
+      signatureRaw?: string;
+      /** False for dialects the elaborator cannot expand (e.g. `def`): detected-when-knowable, elaborated later or never. */
+      elaborable: boolean;
+    })
+  | (CensusEntityBase & {
+      kind: "environment";
+      name: string;
+      role: EnvironmentRole;
+      /** Interior extent between \begin{...} and \end{...}, when both fences are witnessed. */
+      bodySpan?: SourceSpan;
+    })
+  /**
+   * Math carriers. A math environment (equation, align, ...) yields BOTH an
+   * `environment` entity (the fence) and a `math` entity (the carrier) over the
+   * same extent, cross-linked here — overlays, not a partition.
+   */
+  | (CensusEntityBase & {
+      kind: "math";
+      mode: "inline" | "display";
+      carrier: MathCarrier;
+      fenceEntityId?: EntityId;
+    })
+  | (CensusEntityBase & {
+      kind: "verbatim-inline";
+      /** The \verb delimiter character actually used. */
+      delimiter: string;
+    })
+  | (CensusEntityBase & { kind: "comment" })
+  | (CensusEntityBase & {
+      kind: "include";
+      directive: IncludeDirective;
+      /** Target exactly as written in the source. */
+      targetRaw: string;
+      resolvedSourceId?: SourceId;
+    })
+  | (CensusEntityBase & {
+      kind: "envelope-marker";
+      marker: EnvelopeMarkerKind;
+      /** Sectioning command name (`section`, `subsection*`, ...) when marker is `section`. */
+      name?: string;
+      titleSpan?: SourceSpan;
+    });
+
+export type CensusKind = CensusEntity["kind"];
+
+// ---------------------------------------------------------------------------
+// Pillar claims and coverage
+// ---------------------------------------------------------------------------
+
+export type Pillar = "envelope" | "spine" | "fence";
+
+/**
+ * One row of `claims.jsonl`. Spine claims are POSITIVE claims (text runs
+ * witnessed lexically and/or as parser string/whitespace nodes) — the spine is
+ * never defined as the complement of the other pillars, so residue stays a
+ * real signal rather than a vacuous zero.
+ */
+export interface PillarClaim {
+  pillar: Pillar;
+  entityId?: EntityId;
+  span: SourceSpan;
+  /** Claim-specific label, e.g. `text-run`, `blank-run`, `float`, `fence`. */
+  role: string;
+}
+
+export interface SourceCoverage {
+  sourceId: SourceId;
+  lengthUtf16: number;
+  claimedUtf16: number;
+  residueUtf16: number;
+  /** Every unclaimed span — the seed of the defect-directed recovery queue. */
+  residue: SourceSpan[];
+}
+
+// ---------------------------------------------------------------------------
+// Diagnostics
+// ---------------------------------------------------------------------------
+
+export type DiagnosticSeverity = "info" | "warning" | "defect";
+
+/**
+ * Registered diagnostic codes — grow this registry, never emit free-string
+ * codes. A code nobody registered is itself a defect.
+ */
+export const DiagnosticCodes = {
+  WitnessDisagreement: "census/witness-disagreement",
+  UnmatchedBegin: "census/unmatched-begin",
+  UnmatchedEnd: "census/unmatched-end",
+  UnterminatedVerbatim: "census/unterminated-verbatim",
+  UnterminatedMath: "census/unterminated-math",
+  SpanSynthesized: "census/span-synthesized",
+  UnresolvedInclude: "census/unresolved-include",
+  UnknownEnvironment: "census/unknown-environment",
+  OpaqueRegion: "census/opaque-region",
+  Residue: "census/residue",
+} as const;
+
+export type DiagnosticCode = (typeof DiagnosticCodes)[keyof typeof DiagnosticCodes];
+
+export interface Diagnostic {
+  code: DiagnosticCode;
+  severity: DiagnosticSeverity;
+  message: string;
+  span?: SourceSpan;
+  entityId?: EntityId;
+  witness?: WitnessKind;
+}
+
+// ---------------------------------------------------------------------------
+// Run summary
+// ---------------------------------------------------------------------------
+
+export interface CensusSummary {
+  schema: typeof CENSUS_SCHEMA_VERSION;
+  slug: string;
+  /** The deposit's frozen tree fingerprint this census is attributed to. */
+  treeSha256: string;
+  entrypoint: SourceId;
+  sourceCount: number;
+  entityCounts: Partial<Record<CensusKind, number>>;
+  agreementCounts: Partial<Record<AgreementState, number>>;
+  diagnosticCounts: Partial<Record<DiagnosticSeverity, number>>;
+  coverage: {
+    totalUtf16: number;
+    claimedUtf16: number;
+    residueUtf16: number;
+    residueSegments: number;
+  };
+}
