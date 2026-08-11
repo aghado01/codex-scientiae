@@ -1,8 +1,8 @@
 /**
- * TeXdig stage-1 handoff-tier types — the durable artifact contract downstream
+ * TeXdig stage-1 contract-tier types — the durable artifact contract downstream
  * consumes. Compiled from the census/evidence tier; self-contained (inline
  * slices ride every row downstream interprets); the deposit tree is evidence
- * substrate, not part of the handoff.
+ * substrate, not part of the contract.
  *
  * Linking convention: every discrete object's id is `{class}:{locator}` with
  * classes from ID_CLASSES below. The id string is the verbatim join key
@@ -21,7 +21,7 @@ import type {
   MathCarrier,
 } from "./types.ts";
 
-export const HANDOFF_SCHEMA_VERSION = "texdig-handoff/0.1" as const;
+export const CONTRACT_SCHEMA_VERSION = "texdig-contract/0.1" as const;
 
 // ---------------------------------------------------------------------------
 // ID grammar

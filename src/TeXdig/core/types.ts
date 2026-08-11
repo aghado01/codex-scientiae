@@ -97,7 +97,7 @@ export type SpanProvenance = "parser" | "lexical" | "synthesized-hull";
 // ---------------------------------------------------------------------------
 
 /**
- * Deterministic address string under the shared id grammar (see handoff.ts
+ * Deterministic address string under the shared id grammar (see contracts.ts
  * ID_CLASSES): `ent:{kind}@{sourceId}:{startUtf16}-{endUtf16}`. Because the
  * deposited tree is frozen and fingerprinted, span-addressed IDs are stable
  * across runs over the same tree, and the id string is the verbatim join key

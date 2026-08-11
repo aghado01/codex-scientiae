@@ -56,9 +56,9 @@ attributed to the tree fingerprint via the job identity digest.
 One runstamped container per document — one document per batch-executor job, the job container is
 the document container (`Writes` root). UTF-8 without BOM, LF rows. Three tiers:
 
-**Handoff tier** — downstream consumes only this; every row downstream interprets carries its exact
+**Contract tier** — downstream consumes only this; every row downstream interprets carries its exact
 source slice inline (self-contained; the deposit tree is evidence substrate, not part of the
-handoff):
+contract):
 
 | Store | Content |
 | --- | --- |
@@ -78,7 +78,7 @@ handoff):
 
 ## Linking conventions
 
-- One id grammar: `{class}:{locator}`, classes registered in `core/handoff.ts` `ID_CLASSES` with
+- One id grammar: `{class}:{locator}`, classes registered in `core/contracts.ts` `ID_CLASSES` with
   store residency. The id string is the verbatim join key everywhere; all joins are string equality.
 - Content references use the array form (text runs alternating with refs) as the ONLY stored form.
   Masked text is a debug rendering, never an artifact — sentinel-token leakage was a shipped-defect
