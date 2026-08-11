@@ -1,4 +1,4 @@
-Here's the shape I'd argue for. Every placement below is decided by the same test — can the contract be stated without naming a provider or a product — and where an operation appeared N times wearing N names, it collapses to one operation plus a descriptor.
+Every placement below is decided by the same test — can the contract be stated without naming a provider or a product — and where an operation appeared N times wearing N names, it collapses to one operation plus a descriptor.
 
 ```text
 src/
