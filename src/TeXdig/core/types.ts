@@ -46,6 +46,8 @@ export type SourceRole =
   | "included"
   | "bibliography-resource"
   | "bbl-sidecar"
+  /** .bst — BibTeX style programs; not LaTeX, consumed only by the bibtex compiler, already baked into any .bbl. */
+  | "bibliography-style"
   | "class-or-style"
   | "asset"
   | "unreachable-tex";
