@@ -1,7 +1,7 @@
 {
   "version": 1,
   "default_sources": ["openalex", "semanticscholar", "arxiv", "zenodo"],
-  "per_page": 25,
+  "metadata_fallback_sources": ["semanticscholar", "openalex"],
   "providers": {
     "openalex": {
       "base_url": "https://api.openalex.org",

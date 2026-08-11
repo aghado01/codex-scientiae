@@ -316,6 +316,15 @@ function Expand-LatexSourceArchive {
     try {
         $input = [System.IO.File]::OpenRead($archive)
         try {
+            $hasher = [System.Security.Cryptography.SHA256]::Create()
+            try {
+                $archiveHashBytes = $hasher.ComputeHash($input)
+                $archiveSha256 = [System.Convert]::ToHexString($archiveHashBytes).ToLowerInvariant()
+            }
+            finally {
+                $hasher.Dispose()
+            }
+            $input.Position = 0
             $magic = [byte[]]::new(2)
             if ($input.Read($magic, 0, 2) -ne 2 -or $magic[0] -ne 0x1F -or $magic[1] -ne 0x8B) {
                 throw "source archive is not a gzip stream: '$archive'"
@@ -384,6 +393,7 @@ function Expand-LatexSourceArchive {
             destination_path = $destination
             archive_kind     = $kind
             archive_entries  = $entryCount
+            archive_sha256   = $archiveSha256
         }
     } finally {
         if (Test-Path -LiteralPath $stage) { Remove-LatexPrivatePath -Path $stage -ExpectedParent $parent }
@@ -628,12 +638,27 @@ function Test-LatexSourceTree {
 }
 
 function Read-SourceDepositJson {
-    param([Parameter(Mandatory)] [string]$Path)
+    param(
+        [Parameter(Mandatory)] [string]$Path,
+        [long]$MaxBytes = 32MB
+    )
     $strictUtf8 = [System.Text.UTF8Encoding]::new($false, $true)
+    $stream = [System.IO.File]::Open(
+        $Path,
+        [System.IO.FileMode]::Open,
+        [System.IO.FileAccess]::Read,
+        [System.IO.FileShare]::Read)
     try {
-        $json = [System.IO.File]::ReadAllText($Path, $strictUtf8)
+        if ($stream.Length -gt $MaxBytes) {
+            throw "JSON file exceeds the $MaxBytes-byte boundary: '$Path'"
+        }
+        $bytes = [byte[]]::new([int]$stream.Length)
+        $stream.ReadExactly($bytes)
+        $json = $strictUtf8.GetString($bytes)
     } catch [System.Text.DecoderFallbackException] {
         throw "JSON file is not valid UTF-8: '$Path'"
+    } finally {
+        $stream.Dispose()
     }
     try {
         $document = [System.Text.Json.JsonDocument]::Parse($json)
@@ -777,6 +802,34 @@ function Resolve-SourceDepositProviderMetadata {
     $candidate = Join-Path $DocumentDir "$Slug.arxiv.json"
     if (Test-PathHasReparsePoint -Path $candidate) {
         throw "provider metadata must not traverse a symbolic link or reparse point: '$candidate'"
+    }
+    if ([System.IO.File]::Exists($candidate)) { return [System.IO.Path]::GetFullPath($candidate) }
+    return $null
+}
+
+function Resolve-SourceDepositMetadataBundle {
+    <#
+    .SYNOPSIS
+        Resolve a validated API metadata bundle inside the document deposit.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [string]$DocumentDir,
+        [Parameter(Mandatory)] [string]$Slug,
+        [string]$MetadataBundlePath = ''
+    )
+    if ($MetadataBundlePath) {
+        $selected = Resolve-SourceDepositScopedPath -Path $MetadataBundlePath -DocumentDir $DocumentDir
+        if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
+            (Test-PathHasReparsePoint -Path $selected) -or
+            -not [System.IO.File]::Exists($selected)) {
+            throw "API metadata bundle must be a file inside the document directory: '$MetadataBundlePath'"
+        }
+        return $selected
+    }
+    $candidate = Join-Path $DocumentDir "$Slug.api-metadata.json"
+    if (Test-PathHasReparsePoint -Path $candidate) {
+        throw "API metadata bundle must not traverse a symbolic link or reparse point: '$candidate'"
     }
     if ([System.IO.File]::Exists($candidate)) { return [System.IO.Path]::GetFullPath($candidate) }
     return $null
@@ -937,10 +990,12 @@ function Resolve-LatexSourceDepositRoot {
         throw "document deposit must not traverse a symbolic link or reparse point: '$documentRoot'"
     }
     if (-not $Slug) { $Slug = Split-Path -Leaf $documentRoot }
-    if ([string]::IsNullOrWhiteSpace($Slug) -or $Slug -in @('.', '..') -or
-        (Split-Path -Leaf $Slug) -ne $Slug -or
-        $Slug.IndexOfAny([System.IO.Path]::GetInvalidFileNameChars()) -ge 0) {
-        throw "slug must be one safe directory-leaf name: '$Slug'"
+    if (-not (Test-PortableLeaf -Value $Slug)) {
+        throw "slug must be one portable directory-leaf name: '$Slug'"
+    }
+    $directoryLeaf = Split-Path -Leaf $documentRoot
+    if (-not [string]::Equals($Slug, $directoryLeaf, [System.StringComparison]::Ordinal)) {
+        throw "slug '$Slug' does not match document directory leaf '$directoryLeaf'"
     }
     return [pscustomobject]@{
         DocumentDir = $documentRoot
@@ -962,6 +1017,26 @@ function Assert-SourceDepositProviderMatchesSlug {
     $provider = Read-SourceDepositJson -Path $ProviderPath
     if ($provider.idv -and [string]$provider.idv -ne $Slug) {
         throw "provider metadata idv '$($provider.idv)' does not match deposit slug '$Slug'"
+    }
+}
+
+function Assert-SourceDepositMetadataMatchesSlug {
+    <#
+    .SYNOPSIS
+        Refuse an API metadata bundle addressed to another deposit.
+    #>
+    [CmdletBinding()]
+    param(
+        [string]$MetadataPath,
+        [Parameter(Mandatory)][string]$Slug
+    )
+    if (-not $MetadataPath) { return }
+    $metadata = Read-SourceDepositJson -Path $MetadataPath
+    if ([string]$metadata.schema -ne 'codex-scientiae/deposit-metadata/0.1') {
+        throw "API metadata bundle has an unsupported schema: '$MetadataPath'"
+    }
+    if ([string]$metadata.deposit_slug -cne $Slug) {
+        throw "API metadata bundle slug '$($metadata.deposit_slug)' does not match deposit slug '$Slug'"
     }
 }
 
@@ -1038,7 +1113,8 @@ function New-LatexSourceDepositFacts {
         [Parameter(Mandatory)]$Validation,
         [Parameter(Mandatory)][string]$Publication,
         [Parameter(Mandatory)]$Ledger,
-        [string]$ProviderPath = ''
+        [string]$ProviderPath = '',
+        [string]$MetadataPath = ''
     )
 
     $relative = {
@@ -1052,6 +1128,7 @@ function New-LatexSourceDepositFacts {
         DocumentDir         = $DocumentDir
         Slug                = $Slug
         Archive             = (& $relative $ArchivePath)
+        ArchiveSha256       = [string]$Expansion.archive_sha256
         ArchiveKind         = [string]$Expansion.archive_kind
         Tree                = (& $relative $SourcePath)
         TreeSha256          = [string]$Validation.tree_sha256
@@ -1060,6 +1137,7 @@ function New-LatexSourceDepositFacts {
         Entrypoint          = [string]$Validation.entrypoint
         EntrypointSelection = [string]$Validation.entrypoint_selection
         ProviderJson        = (& $relative $ProviderPath)
+        MetadataJson        = (& $relative $MetadataPath)
         Pdf                 = $(if ([System.IO.File]::Exists($pdfPath)) { (& $relative $pdfPath) } else { $null })
         Publication         = $Publication
         Findings            = [pscustomobject]@{
@@ -1146,6 +1224,7 @@ function Invoke-JsonlEngineArticleDeposit {
         $argument.Add('--document-dir');         $argument.Add($Facts.DocumentDir)
         $argument.Add('--slug');                 $argument.Add($Facts.Slug)
         $argument.Add('--archive');              $argument.Add($Facts.Archive)
+        $argument.Add('--archive-sha256');       $argument.Add($Facts.ArchiveSha256)
         $argument.Add('--archive-kind');         $argument.Add($Facts.ArchiveKind)
         $argument.Add('--tree');                 $argument.Add($Facts.Tree)
         $argument.Add('--tree-sha256');          $argument.Add($Facts.TreeSha256)
@@ -1157,6 +1236,9 @@ function Invoke-JsonlEngineArticleDeposit {
         $argument.Add('--findings-json');        $argument.Add($findingsFile)
         if ($Facts.ProviderJson) {
             $argument.Add('--provider-json'); $argument.Add($Facts.ProviderJson)
+        }
+        if ($Facts.MetadataJson) {
+            $argument.Add('--metadata-json'); $argument.Add($Facts.MetadataJson)
         }
         if ($Facts.Pdf) { $argument.Add('--pdf'); $argument.Add($Facts.Pdf) }
 
@@ -1209,6 +1291,7 @@ function Publish-LatexSourceTree {
         [string]$Slug = '',
         [string]$ArchivePath = '',
         [string]$ProviderMetadataPath = '',
+        [string]$MetadataBundlePath = '',
         [string]$MainTex = '',
         [long]$MaxExpandedBytes = 4GB,
         [int]$MaxEntries = 100000,
@@ -1219,6 +1302,9 @@ function Publish-LatexSourceTree {
     $identity = Resolve-LatexSourceDepositRoot -DocumentDir $DocumentDir -Slug $Slug
     $documentRoot = [string]$identity.DocumentDir
     $Slug = [string]$identity.Slug
+    if ($ProviderMetadataPath -and $MetadataBundlePath) {
+        throw 'ProviderMetadataPath and MetadataBundlePath are mutually exclusive'
+    }
 
     $lock = $null
     $candidate = $null
@@ -1229,6 +1315,12 @@ function Publish-LatexSourceTree {
         $providerPath = Resolve-SourceDepositProviderMetadata -DocumentDir $documentRoot -Slug $Slug `
             -ProviderMetadataPath $ProviderMetadataPath
         Assert-SourceDepositProviderMatchesSlug -ProviderPath $providerPath -Slug $Slug
+        $metadataPath = Resolve-SourceDepositMetadataBundle -DocumentDir $documentRoot -Slug $Slug `
+            -MetadataBundlePath $MetadataBundlePath
+        if ($providerPath -and $metadataPath) {
+            throw "both legacy provider metadata and API metadata bundle exist for '$Slug'; refusing to choose"
+        }
+        Assert-SourceDepositMetadataMatchesSlug -MetadataPath $metadataPath -Slug $Slug
 
         $pdfPath = Join-Path $documentRoot "$Slug.pdf"
         if (Test-PathHasReparsePoint -Path $pdfPath) {
@@ -1240,6 +1332,11 @@ function Publish-LatexSourceTree {
         $expansion = Expand-LatexSourceArchive -ArchivePath $archive -DestinationPath $candidate `
             -MaxExpandedBytes $MaxExpandedBytes -MaxEntries $MaxEntries
         $candidateValidation = Test-LatexSourceTree -RootPath $candidate -Slug $Slug -MainTex $MainTex
+
+        $currentArchiveSha256 = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+        if ($currentArchiveSha256 -cne [string]$expansion.archive_sha256) {
+            throw "source archive changed after expansion: '$archive'"
+        }
 
         $archive = ConvertTo-CanonicalSourceDepositArchive -ArchivePath $archive `
             -DocumentDir $documentRoot -Slug $Slug
@@ -1257,7 +1354,8 @@ function Publish-LatexSourceTree {
             -Validation $installed.Validation `
             -Publication $installed.Publication `
             -Ledger $ledger `
-            -ProviderPath $providerPath
+            -ProviderPath $providerPath `
+            -MetadataPath $metadataPath
 
         if ($FinalizePublication) {
             return & $FinalizePublication $facts
@@ -1286,6 +1384,7 @@ function New-LatexSourceDeposit {
         [string]$Slug = '',
         [string]$ArchivePath = '',
         [string]$ProviderMetadataPath = '',
+        [string]$MetadataBundlePath = '',
         [string]$MainTex = '',
         [string]$FindingsPath = '',
         [switch]$KeepFindings,
@@ -1316,8 +1415,8 @@ function New-LatexSourceDeposit {
     }.GetNewClosure()
 
     return Publish-LatexSourceTree -DocumentDir $identity.DocumentDir -Slug $identity.Slug `
-        -ArchivePath $ArchivePath -ProviderMetadataPath $ProviderMetadataPath -MainTex $MainTex `
+        -ArchivePath $ArchivePath -ProviderMetadataPath $ProviderMetadataPath `
+        -MetadataBundlePath $MetadataBundlePath -MainTex $MainTex `
         -MaxExpandedBytes $MaxExpandedBytes -MaxEntries $MaxEntries `
         -LockTimeoutSeconds $LockTimeoutSeconds -FinalizePublication $finalize
 }
-

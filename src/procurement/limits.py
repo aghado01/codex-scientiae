@@ -1,0 +1,5 @@
+"""Shared size limits for procurement wire values."""
+
+MAX_API_RESPONSE_BYTES = 16 * 1024 * 1024
+MAX_API_RESPONSE_BASE64_CHARS = 4 * ((MAX_API_RESPONSE_BYTES + 2) // 3)
+MAX_DEPOSIT_METADATA_BUNDLE_BYTES = 32 * 1024 * 1024

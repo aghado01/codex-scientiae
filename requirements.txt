@@ -3,6 +3,10 @@
 # Boilerplate
 
 pytest
+pydantic>=2.13,<3
+httpx>=0.28,<1
+defusedxml>=0.7,<1
+mcp>=2,<3
 
 # Document & Markdown Processing
 markdown

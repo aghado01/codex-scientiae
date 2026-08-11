@@ -177,7 +177,7 @@ D20 patch activation extends three existing containers without changing physical
 six `Batchable` patch-contract cases covering exact portable-leaf lookup, the 1 MiB ceiling, bytes, schema,
 identity, guards, and provenance; one `CapabilityGated` end-to-end conversion; and two
 `CapabilityGated` LaTeX-adapter cases. The current semantic inventory is therefore 49 files: 36 `Batchable`,
-13 `CapabilityGated`, no `NeedsRefactor` or `SerialOnly`, 519 textual `It` blocks, and 530 observed tests.
+13 `CapabilityGated`, no `NeedsRefactor` or `SerialOnly`, 520 textual `It` blocks, and 531 observed tests.
 Focused exact-file Pester 6 gates passed 22/22 patch-contract tests, 7/7 LaTeX integration tests, and 10/10
 LaTeX-adapter tests.
 
@@ -218,13 +218,18 @@ while pytest's JUnit and observation report 264 outcomes after adding 72 subtest
 remains authoritative durable evidence; the shell does not merge it with Pester NUnit.
 
 The earlier post-admission parity witness completed 11/11 jobs at both four workers (17.205 seconds) and
-one worker (33.392 seconds). The final hardening refresh keeps the lane at 12 files. Its direct shared-suite
+one worker (33.392 seconds). The subsequent hardening snapshot contained 12 files. Its direct shared-suite
 gate passed 190 methods with two genuine symbolic-link capability skips and passed 72 subtests, yielding 264
 selected outcomes. `test_deposit.py` contributes 26 methods plus 27 subtests, or 53 outcomes: 24 methods
 passed and two symlink cases skipped. A two-worker multilingual gate paired it with the five-test Pester
 deposit container: both jobs succeeded in 9.641 seconds, retained their separate native reports, and left
 the pytest job-local `json-scratch` empty under
 `artifacts/test-runs/deposit-parity-hardened-20260808`.
+
+The current lane contains 21 files and collects 270 methods. Its direct shared-suite gate passes 268 methods
+with the same two symbolic-link capability skips plus 75 subtests, yielding 345 observed outcomes. The
+multilingual public batch shell passes all 21 pytest containers plus the seven-case LaTeX deposit Pester
+container as 22/22 independent jobs at four workers.
 
 ## Batchable Pester-container contract
 
@@ -390,7 +395,8 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | `math-channel/` | Mathematical register normalization and math-render audit |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
 | `procurement/` | Scholarly discovery and acquisition adapters (libraries; MCP shells under `mcp-servers/`) |
-| `mcp-servers/` | MCP server shells (procurement + reader) |
+| `mcps/` | Python MCP presentation adapters and protocol-level tests. |
+| `mcp-servers/` | Legacy PowerShell MCP shells retained during migration. |
 | `node_utils/` | Node-backed utilities (md-lint, pdf-raster, tikz-render) |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
 | `logistics/` | Shared logistics primitives (run paths, portable paths, latex-source deposit) |

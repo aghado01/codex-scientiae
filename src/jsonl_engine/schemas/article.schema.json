@@ -88,6 +88,13 @@
         "type": "string"
       }
     },
+    "concepts": {
+      "description": "Aggregator subject concepts. These are not arXiv categories.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "primary_category": {
       "type": [
         "string",
@@ -117,8 +124,108 @@
         "provider_metadata": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/fileRecord"
+            "allOf": [
+              {"$ref": "#/$defs/fileRecord"},
+              {
+                "if": {
+                  "properties": {"role": {"const": "api-metadata-bundle"}},
+                  "required": ["role"]
+                },
+                "then": {
+                  "required": [
+                    "provider",
+                    "provider_roles",
+                    "artifact_provider",
+                    "artifact_provider_roles",
+                    "route",
+                    "fetched_at",
+                    "response_url",
+                    "response_format",
+                    "response_sha256"
+                  ],
+                  "properties": {
+                    "provider": {"type": "string", "minLength": 1},
+                    "provider_roles": {
+                      "type": "array",
+                      "items": {"$ref": "#/$defs/providerRole"},
+                      "uniqueItems": true
+                    },
+                    "artifact_provider_roles": {
+                      "type": "array",
+                      "contains": {"const": "artifact-access"},
+                      "items": {"$ref": "#/$defs/providerRole"},
+                      "uniqueItems": true
+                    },
+                    "route": {
+                      "enum": ["artifact-provider", "aggregator-fallback"]
+                    },
+                    "fetched_at": {"type": "string", "format": "date-time"},
+                    "artifact_provider": {"type": "string", "minLength": 1},
+                    "response_url": {"type": "string", "minLength": 1},
+                    "response_format": {"type": "string", "minLength": 1},
+                    "response_sha256": {"$ref": "#/$defs/sha256"}
+                  }
+                }
+              }
+            ]
           }
+        },
+        "metadata_resolution": {
+          "type": "object",
+          "required": [
+            "route",
+            "artifact",
+            "selected_provider",
+            "selected_provider_roles",
+            "attempts"
+          ],
+          "properties": {
+            "route": {"enum": ["artifact-provider", "aggregator-fallback"]},
+            "artifact": {
+              "type": "object",
+              "required": ["provider", "identifier", "provider_roles"],
+              "properties": {
+                "provider": {"type": "string", "minLength": 1},
+                "identifier": {"type": "string", "minLength": 1},
+                "provider_roles": {
+                  "type": "array",
+                  "contains": {"const": "artifact-access"},
+                  "items": {"$ref": "#/$defs/providerRole"},
+                  "uniqueItems": true
+                }
+              },
+              "additionalProperties": false
+            },
+            "selected_provider": {"type": "string", "minLength": 1},
+            "selected_provider_roles": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/providerRole"},
+              "uniqueItems": true
+            },
+            "attempts": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "required": ["provider", "status", "error"],
+                "properties": {
+                  "provider": {"type": "string", "minLength": 1},
+                  "status": {"enum": ["ok", "error", "not-supported"]},
+                  "error": {"type": ["string", "null"]}
+                },
+                "allOf": [
+                  {
+                    "if": {"properties": {"status": {"const": "ok"}}},
+                    "then": {"properties": {"error": {"type": "null"}}},
+                    "else": {"properties": {"error": {"type": "string", "minLength": 1}}}
+                  }
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
         },
         "latex_source": {
           "type": "object",
@@ -174,6 +281,37 @@
           }
         }
       },
+      "allOf": [
+        {
+          "if": {"required": ["metadata_resolution"]},
+          "then": {
+            "properties": {
+              "provider_metadata": {
+                "contains": {
+                  "type": "object",
+                  "required": ["role"],
+                  "properties": {"role": {"const": "api-metadata-bundle"}}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["provider_metadata"],
+            "properties": {
+              "provider_metadata": {
+                "contains": {
+                  "type": "object",
+                  "required": ["role"],
+                  "properties": {"role": {"const": "api-metadata-bundle"}}
+                }
+              }
+            }
+          },
+          "then": {"required": ["metadata_resolution"]}
+        }
+      ],
       "additionalProperties": true
     },
     "source_forms": {
@@ -326,6 +464,14 @@
     "sha256": {
       "type": "string",
       "pattern": "^[0-9a-f]{64}$"
+    },
+    "providerRole": {
+      "enum": [
+        "artifact-origin",
+        "artifact-access",
+        "metadata-authority",
+        "metadata-aggregator"
+      ]
     },
     "probeLedger": {
       "description": "One entry per probe the deposit transaction is accountable for. An outcome other than 'passed' requires a reason, so a probe that did not apply is distinguishable from one that held. Additional keys carry per-probe detail.",

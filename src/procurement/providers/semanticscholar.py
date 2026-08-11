@@ -9,9 +9,9 @@ from urllib.parse import quote
 
 from procurement.errors import ProviderHttpError, ProviderPayloadError
 from procurement.http import HttpClient, RequestPolicy
-from procurement.identifiers import extract_doi, normalize_arxiv_id, normalize_doi
-from procurement.models import SearchPage, SearchRequest, SourceReference, WorkRecord
-from procurement.providers.base import RelatedKind
+from procurement.identifiers import extract_doi, is_doi, normalize_arxiv_id, normalize_doi
+from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.providers.base import RelatedKind, retrieved_metadata
 from procurement.settings import ProviderHttpSettings, RuntimeSecrets
 
 
@@ -19,6 +19,7 @@ class SemanticScholarProvider:
     """Semantic Scholar Graph API mapped onto procurement records."""
 
     name = "semanticscholar"
+    search_constraints = frozenset()
     _fields = ",".join(
         (
             "paperId",
@@ -48,16 +49,21 @@ class SemanticScholarProvider:
         self._http = http
         self._graph_url = settings.base_url.rstrip("/")
         self._recommendations_url = (settings.secondary_base_url or "").rstrip("/")
-        headers = {"User-Agent": secrets.user_agent()}
-        if secrets.semantic_scholar_api_key:
-            headers["x-api-key"] = secrets.semantic_scholar_api_key
-        self._headers = headers
-        interval = min(settings.min_interval_seconds, 0.35) if secrets.semantic_scholar_api_key else settings.min_interval_seconds
+        self._user_agent = secrets.user_agent()
+        self._api_key = secrets.semantic_scholar_api_key
         self._policy = RequestPolicy(
-            min_interval_seconds=interval,
+            min_interval_seconds=settings.min_interval_seconds,
             timeout_seconds=settings.timeout_seconds,
             max_attempts=settings.max_attempts,
+            backoff_seconds=1.0,
+            retry_rate_limits=True,
         )
+
+    def _request_headers(self) -> dict[str, str]:
+        headers = {"User-Agent": self._user_agent}
+        if self._api_key is not None:
+            headers["x-api-key"] = self._api_key.get_secret_value()
+        return headers
 
     async def _get_json(
         self,
@@ -70,7 +76,7 @@ class SemanticScholarProvider:
         payload = await self._http.get_json(
             f"{base}/{path.lstrip('/')}",
             params=params,
-            headers=self._headers,
+            headers=self._request_headers(),
             rate_key=self.name,
             policy=self._policy,
         )
@@ -86,7 +92,7 @@ class SemanticScholarProvider:
             canonical = "ARXIV" if prefix.casefold() == "arxiv" else "DOI" if prefix.casefold() == "doi" else prefix
             return f"{canonical}:{payload}"
         doi = normalize_doi(value)
-        if re.match(r"^10\.\d", value):
+        if is_doi(value):
             return f"DOI:{doi}"
         arxiv = normalize_arxiv_id(value)
         if arxiv:
@@ -154,16 +160,47 @@ class SemanticScholarProvider:
         results = payload.get("data")
         if not isinstance(results, list):
             raise ProviderPayloadError("Semantic Scholar search response is missing data[]")
-        works = tuple(self.map_work(item) for item in results if isinstance(item, Mapping) and item.get("paperId"))
+        works = tuple(
+            self.map_work(item)
+            for item in results
+            if isinstance(item, Mapping) and item.get("paperId")
+        )
         total_raw = payload.get("total")
         total = int(total_raw) if total_raw is not None else None
         next_raw = payload.get("next")
         next_start = int(next_raw) if next_raw is not None else None
-        return SearchPage(provider=self.name, total_available=total, start=request.start, next_start=next_start, works=works)
+        return SearchPage(
+            provider=self.name,
+            total_available=total,
+            start=request.start,
+            next_start=next_start,
+            works=works,
+        )
 
     async def get_work(self, identifier: str) -> WorkRecord:
         key = quote(self.normalize_key(identifier), safe=":")
         return self.map_work(await self._get_json(f"paper/{key}", {"fields": self._fields}))
+
+    async def get_metadata(self, identifier: str) -> RetrievedMetadata:
+        """Return normalized metadata with its exact HTTP-decoded Semantic Scholar payload."""
+
+        key = quote(self.normalize_key(identifier), safe=":")
+        document = await self._http.get_document(
+            f"{self._graph_url}/paper/{key}",
+            params={"fields": self._fields},
+            headers=self._request_headers(),
+            rate_key=self.name,
+            policy=self._policy,
+        )
+        try:
+            payload = document.json()
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise ProviderPayloadError("Semantic Scholar returned invalid JSON metadata") from exc
+        if not isinstance(payload, Mapping):
+            raise ProviderPayloadError(
+                "Semantic Scholar returned a non-object JSON metadata payload"
+            )
+        return retrieved_metadata(self.map_work(payload), document)
 
     async def related(self, identifier: str, kind: RelatedKind, limit: int) -> tuple[WorkRecord, ...]:
         key = quote(self.normalize_key(identifier), safe=":")

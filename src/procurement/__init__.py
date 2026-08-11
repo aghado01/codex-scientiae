@@ -1,7 +1,11 @@
 """Scholarly discovery and acquisition capabilities."""
 
 from procurement.models import (
+    ApiResponseEvidence,
+    DepositMetadataBundle,
     ProviderReport,
+    ProviderCatalogResponse,
+    ProviderDescriptor,
     RelatedResponse,
     ResolveResponse,
     SearchPage,
@@ -13,6 +17,10 @@ from procurement.models import (
 )
 
 __all__ = [
+    "ApiResponseEvidence",
+    "DepositMetadataBundle",
+    "ProviderCatalogResponse",
+    "ProviderDescriptor",
     "ProviderReport",
     "RelatedResponse",
     "ResolveResponse",

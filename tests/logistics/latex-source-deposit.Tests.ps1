@@ -257,6 +257,27 @@ Describe 'LaTeX source deposit through the JSONL engine' {
         Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
     }
 
+    It 'rejects mismatched or nonportable slugs before locking or mutating source material' {
+        $deposit = New-LatexDepositTestDirectory -Root $TestDrive -Slug '2501.00007v1'
+        New-LatexDepositTarGzip -Path $deposit.ArchivePath -Files ([ordered]@{
+                'main.tex' = '\documentclass{article}\begin{document}Body.\end{document}'
+            })
+        $archiveBefore = [System.IO.File]::ReadAllBytes($deposit.ArchivePath)
+
+        { New-LatexSourceDeposit -DocumentDir $deposit.DocumentDirectory `
+                -Slug 'different-slug' -PythonPath $script:Python } |
+            Should -Throw '*does not match document directory leaf*'
+        { New-LatexSourceDeposit -DocumentDir $deposit.DocumentDirectory `
+                -Slug 'CON' -PythonPath $script:Python } |
+            Should -Throw '*portable directory-leaf*'
+
+        [System.IO.File]::ReadAllBytes($deposit.ArchivePath) | Should -Be $archiveBefore
+        [System.IO.File]::Exists($deposit.ArticlePath) | Should -BeFalse
+        [System.IO.Directory]::Exists((Join-Path $deposit.DocumentDirectory `
+                    "$($deposit.Slug)-tex")) | Should -BeFalse
+        Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
+    }
+
     It 'records member confinement as not applicable for a single-TeX gzip payload' `
             -Skip:(-not $script:LatexDepositPythonAvailable) {
         $deposit = New-LatexDepositTestDirectory -Root $TestDrive -Slug '2501.00003v1'
@@ -410,6 +431,106 @@ Describe 'LaTeX source deposit through the JSONL engine' {
                     "$($pdfGuardDeposit.Slug)-tex")) | Should -BeFalse
         Assert-NoLatexDepositTransactionResidue `
             -DocumentDirectory $pdfGuardDeposit.DocumentDirectory
+        Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
+    }
+
+    It 'publishes API metadata independently from the LaTeX probe and records provider roles' `
+            -Skip:(-not $script:LatexDepositPythonAvailable) {
+        $deposit = New-LatexDepositTestDirectory -Root $TestDrive -Slug '2501.00006v2'
+        New-LatexDepositTarGzip -Path $deposit.ArchivePath -Files ([ordered]@{
+                'main.tex' = '\documentclass{article}\title{Embedded title}\begin{document}Body.\end{document}'
+            })
+
+        $responseBody = $script:Utf8.GetBytes('<feed>API response</feed>')
+        $responseHash = [System.Convert]::ToHexString(
+            [System.Security.Cryptography.SHA256]::HashData($responseBody)
+        ).ToLowerInvariant()
+        $metadataPath = Join-Path $deposit.DocumentDirectory "$($deposit.Slug).api-metadata.json"
+        $bundle = [ordered]@{
+            schema = 'codex-scientiae/deposit-metadata/0.1'
+            deposit_slug = $deposit.Slug
+            artifact = [ordered]@{
+                provider = 'arxiv'
+                identifier = $deposit.Slug
+                provider_roles = @('artifact-origin', 'artifact-access', 'metadata-authority')
+            }
+            route = 'artifact-provider'
+            selected = [ordered]@{
+                provider = 'arxiv'
+                provider_roles = @('artifact-origin', 'artifact-access', 'metadata-authority')
+                work = [ordered]@{
+                    title = 'API title'
+                    authors = @('API Author')
+                    abstract = 'API abstract'
+                    doi = $null
+                    arxiv_id = $deposit.Slug
+                    published = '2025-01-01'
+                    updated = $null
+                    year = 2025
+                    venue = $null
+                    open_access_url = $null
+                    pdf_url = $null
+                    citation_count = $null
+                    reference_count = $null
+                    tldr = $null
+                    concepts = @()
+                    categories = @('cs.AI')
+                    external_ids = [ordered]@{ arxiv = $deposit.Slug }
+                    sources = @([ordered]@{
+                            provider = 'arxiv'
+                            identifier = $deposit.Slug
+                            url = 'https://arxiv.org/abs/2501.00006v2'
+                            doi = $null
+                            arxiv_id = $deposit.Slug
+                            published = '2025-01-01'
+                            updated = $null
+                        })
+                }
+                response = [ordered]@{
+                    url = 'https://export.arxiv.org/api/query?id_list=2501.00006v2'
+                    media_type = 'application/atom+xml'
+                    fetched_at = '2026-08-11T00:00:00Z'
+                    sha256 = $responseHash
+                    body_base64 = [System.Convert]::ToBase64String($responseBody)
+                }
+            }
+            attempts = @([ordered]@{ provider = 'arxiv'; status = 'ok'; error = $null })
+            article = [ordered]@{
+                title = 'API title'
+                authors = @('API Author')
+                abstract = 'API abstract'
+                identifiers = [ordered]@{
+                    arxiv = '2501.00006'
+                    arxiv_versioned = $deposit.Slug
+                    doi = $null
+                    external = [ordered]@{ arxiv = $deposit.Slug }
+                }
+                categories = @('cs.AI')
+                concepts = @()
+                primary_category = 'cs.AI'
+                published = '2025-01-01'
+                updated = $null
+            }
+        }
+        [System.IO.File]::WriteAllText(
+            $metadataPath,
+            (ConvertTo-Json -InputObject $bundle -Depth 20 -Compress),
+            $script:Utf8)
+
+        $result = New-LatexSourceDeposit -DocumentDir $deposit.DocumentDirectory `
+            -MetadataBundlePath $metadataPath -PythonPath $script:Python
+
+        $result.Status | Should -Be 'deposited'
+        $article = Read-LatexDepositJson -Path $deposit.ArticlePath
+        $article.title | Should -Be 'API title'
+        @($article.authors) | Should -Be @('API Author')
+        $article.evidence.latex_source.declarations.title_tex | Should -Be 'Embedded title'
+        $article.evidence.metadata_resolution.route | Should -Be 'artifact-provider'
+        $article.evidence.metadata_resolution.artifact.provider | Should -Be 'arxiv'
+        $metadataEvidence = @($article.evidence.provider_metadata)
+        $metadataEvidence.Count | Should -Be 1
+        $metadataEvidence[0].role | Should -Be 'api-metadata-bundle'
+        $metadataEvidence[0].response_sha256 | Should -Be $responseHash
         Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
     }
 

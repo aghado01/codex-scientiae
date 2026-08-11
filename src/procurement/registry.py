@@ -6,7 +6,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from procurement.errors import ProviderNotFoundError, UnsupportedCapabilityError
-from procurement.providers.base import Capability
+from procurement.models import ProviderDescriptor
+from procurement.providers.base import Capability, ProviderRole, SEARCH_CONSTRAINTS
 
 _METHOD_BY_CAPABILITY = {
     Capability.SEARCH: "search",
@@ -15,6 +16,7 @@ _METHOD_BY_CAPABILITY = {
     Capability.REFERENCES: "related",
     Capability.RECOMMENDATIONS: "related",
     Capability.RESOLVE: "resolve",
+    Capability.METADATA: "get_metadata",
 }
 
 
@@ -24,6 +26,7 @@ class ProviderBinding:
 
     provider: Any
     capabilities: frozenset[Capability]
+    roles: frozenset[ProviderRole] = frozenset()
 
     def __post_init__(self) -> None:
         name = getattr(self.provider, "name", None)
@@ -33,6 +36,17 @@ class ProviderBinding:
             method = _METHOD_BY_CAPABILITY[capability]
             if not callable(getattr(self.provider, method, None)):
                 raise ValueError(f"provider {name!r} advertises {capability.value!r} without {method}()")
+        if Capability.SEARCH in self.capabilities:
+            constraints = getattr(self.provider, "search_constraints", None)
+            if not isinstance(constraints, frozenset):
+                raise ValueError(
+                    f"search provider {name!r} requires an immutable search_constraints declaration"
+                )
+            unknown = constraints.difference(SEARCH_CONSTRAINTS)
+            if unknown:
+                raise ValueError(
+                    f"search provider {name!r} declares unknown constraints: {sorted(unknown)}"
+                )
 
     @property
     def name(self) -> str:
@@ -69,4 +83,28 @@ class ProviderRegistry:
             binding.name
             for binding in self._bindings.values()
             if capability is None or capability in binding.capabilities
+        )
+
+    def binding(self, name: str) -> ProviderBinding:
+        """Return one complete declaration by case-insensitive name."""
+
+        binding = self._bindings.get(name.casefold())
+        if binding is None:
+            known = ", ".join(self.names()) or "(none)"
+            raise ProviderNotFoundError(f"unknown provider {name!r}; registered providers: {known}")
+        return binding
+
+    def describe(self) -> tuple[ProviderDescriptor, ...]:
+        """Return stable role and capability declarations for every provider."""
+
+        return tuple(
+            ProviderDescriptor(
+                name=binding.name,
+                roles=tuple(sorted(role.value for role in binding.roles)),
+                capabilities=tuple(sorted(capability.value for capability in binding.capabilities)),
+                search_constraints=tuple(
+                    sorted(getattr(binding.provider, "search_constraints", frozenset()))
+                ),
+            )
+            for binding in self._bindings.values()
         )

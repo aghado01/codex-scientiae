@@ -353,6 +353,7 @@ def _cmd_deposit(args: argparse.Namespace) -> int:
         document_dir=args.document_dir,
         slug=args.slug,
         archive=args.archive,
+        archive_sha256=args.archive_sha256,
         archive_kind=args.archive_kind,
         tree=args.tree,
         tree_sha256=args.tree_sha256,
@@ -363,6 +364,7 @@ def _cmd_deposit(args: argparse.Namespace) -> int:
         publication=args.publication,
         findings_json=args.findings_json,
         provider_json=args.provider_json,
+        metadata_json=args.metadata_json,
         pdf=args.pdf,
     )
     _emit_for(args, [result.as_dict()])
@@ -482,6 +484,7 @@ def _build_parser() -> argparse.ArgumentParser:
     deposit.add_argument("--document-dir", required=True)
     deposit.add_argument("--slug", required=True)
     deposit.add_argument("--archive", required=True)
+    deposit.add_argument("--archive-sha256", required=True)
     deposit.add_argument(
         "--archive-kind", required=True, choices=("tar+gzip", "single-tex+gzip")
     )
@@ -497,7 +500,9 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=("published-new-tree", "recovered-existing-tree"),
     )
     deposit.add_argument("--findings-json", required=True)
-    deposit.add_argument("--provider-json")
+    metadata = deposit.add_mutually_exclusive_group()
+    metadata.add_argument("--provider-json")
+    metadata.add_argument("--metadata-json")
     deposit.add_argument("--pdf")
     deposit.set_defaults(handler=_cmd_deposit)
 

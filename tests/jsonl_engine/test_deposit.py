@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import copy
 import hashlib
 import json
@@ -23,6 +24,8 @@ from jsonl_engine import (
     deposit_article,
 )
 from jsonl_engine.reader import read_json
+from procurement.limits import MAX_API_RESPONSE_BASE64_CHARS
+from procurement.models import DepositMetadataBundle
 
 from jsonl_test_support import article as article_record
 
@@ -61,6 +64,118 @@ def _article_scratch(document_dir: str):
     )
 
 
+def _metadata_bundle(
+    slug: str,
+    *,
+    artifact_provider: str = "arxiv",
+    selected_provider: str = "arxiv",
+    route: str = "artifact-provider",
+    body: bytes = b"<feed>metadata</feed>",
+):
+    artifact_roles = (
+        ["artifact-origin", "artifact-access", "metadata-authority"]
+        if artifact_provider in {"arxiv", "zenodo"}
+        else ["artifact-access"]
+    )
+    selected_roles = (
+        ["artifact-origin", "artifact-access", "metadata-authority"]
+        if route == "artifact-provider"
+        else ["metadata-aggregator"]
+    )
+    arxiv_versioned = slug if artifact_provider == "arxiv" else None
+    arxiv_id = slug.rsplit("v", 1)[0] if arxiv_versioned else None
+    doi = "10.1000/example" if artifact_provider == "scihub" else None
+    artifact_identifier = arxiv_versioned or doi or slug.removeprefix("zenodo_")
+    work_arxiv = arxiv_versioned if route == "artifact-provider" else arxiv_id
+    concepts = ["Optimization"] if route == "aggregator-fallback" else []
+    work_categories = ["math.OC"] if artifact_provider == "arxiv" else []
+    article_categories = work_categories if route == "artifact-provider" else []
+    source_identifier = artifact_identifier if route == "artifact-provider" else "W1"
+    work = {
+        "title": "API title",
+        "authors": ["API Author"],
+        "abstract": "API abstract",
+        "doi": doi,
+        "arxiv_id": work_arxiv,
+        "published": "2026-01-01",
+        "updated": None,
+        "year": 2026,
+        "venue": None,
+        "open_access_url": None,
+        "pdf_url": None,
+        "citation_count": None,
+        "reference_count": None,
+        "tldr": None,
+        "concepts": concepts,
+        "categories": work_categories,
+        "external_ids": {"provider": "external-id"},
+        "sources": [
+            {
+                "provider": selected_provider,
+                "identifier": source_identifier,
+                "url": None,
+                "doi": doi,
+                "arxiv_id": work_arxiv,
+                "published": "2026-01-01",
+                "updated": None,
+            }
+        ],
+    }
+    attempts = []
+    if route == "aggregator-fallback":
+        attempts.append(
+            {
+                "provider": artifact_provider,
+                "status": "not-supported" if artifact_provider == "scihub" else "error",
+                "error": (
+                    "artifact-access provider is not a metadata authority"
+                    if artifact_provider == "scihub"
+                    else "artifact metadata authority unavailable"
+                ),
+            }
+        )
+    attempts.append({"provider": selected_provider, "status": "ok", "error": None})
+    return {
+        "schema": "codex-scientiae/deposit-metadata/0.1",
+        "deposit_slug": slug,
+        "artifact": {
+            "provider": artifact_provider,
+            "identifier": artifact_identifier,
+            "provider_roles": artifact_roles,
+        },
+        "route": route,
+        "selected": {
+            "provider": selected_provider,
+            "provider_roles": selected_roles,
+            "work": work,
+            "response": {
+                "url": f"https://{selected_provider}.example/record",
+                "media_type": "application/json",
+                "fetched_at": "2026-08-11T00:00:00Z",
+                "sha256": hashlib.sha256(body).hexdigest(),
+                "body_base64": base64.b64encode(body).decode("ascii"),
+            },
+        },
+        "attempts": attempts,
+        "article": {
+            "title": "API title",
+            "authors": ["API Author"],
+            "abstract": "API abstract",
+            "identifiers": {
+                "arxiv": arxiv_id,
+                "arxiv_versioned": arxiv_versioned,
+                "doi": doi,
+                "external": {"provider": "external-id"},
+            },
+            "categories": article_categories,
+            "concepts": concepts,
+            "primary_category": article_categories[0] if article_categories else None,
+            "published": "2026-01-01",
+            "updated": None,
+        },
+    }
+
+
 def _run_cli(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, "-m", "jsonl_engine", *args],
@@ -77,7 +192,7 @@ class DepositFixture:
         self,
         parent: str,
         *,
-        slug: str = "1234.5678v1",
+        slug: str = "2304.5678v1",
         with_provider: bool = False,
         with_pdf: bool = False,
         checks=None,
@@ -163,7 +278,7 @@ class DepositFixture:
         self.provider_path = None
         if with_provider:
             self.provider = {
-                "id": "1234.5678",
+                "id": slug.rsplit("v", 1)[0],
                 "idv": slug,
                 "title": "Provider título",
                 "authors": ["A. Author", "B. Author"],
@@ -201,6 +316,7 @@ class DepositFixture:
             "document_dir": self.document_dir,
             "slug": self.slug,
             "archive": self.archive_name,
+            "archive_sha256": hashlib.sha256(self.archive_bytes).hexdigest(),
             "archive_kind": "tar+gzip",
             "tree": self.tree_name,
             "tree_sha256": _tree_fingerprint(self.tree_path),
@@ -225,6 +341,7 @@ class DepositFixture:
             ("--document-dir", "document_dir"),
             ("--slug", "slug"),
             ("--archive", "archive"),
+            ("--archive-sha256", "archive_sha256"),
             ("--archive-kind", "archive_kind"),
             ("--tree", "tree"),
             ("--tree-sha256", "tree_sha256"),
@@ -244,6 +361,29 @@ class DepositFixture:
 
 
 class TestDepositCreation(unittest.TestCase):
+    def test_metadata_wire_schema_tracks_the_shared_output_model(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            wire = ArticleManifest(tmpdir).schemas.get_schema(
+                "deposit.metadata.schema.json"
+            )
+        generated = DepositMetadataBundle.model_json_schema(by_alias=True)
+
+        self.assertEqual(set(wire["required"]), set(generated["required"]))
+        self.assertEqual(
+            set(wire["$defs"]["workRecord"]["required"]),
+            set(generated["$defs"]["WorkRecord"]["required"]),
+        )
+        self.assertEqual(
+            set(wire["properties"]["article"]["required"]),
+            set(generated["$defs"]["ArticleMetadataProjection"]["required"]),
+        )
+        self.assertEqual(
+            wire["properties"]["selected"]["properties"]["response"]["properties"][
+                "body_base64"
+            ]["maxLength"],
+            MAX_API_RESPONSE_BASE64_CHARS,
+        )
+
     def test_minimal_deposit_has_exact_document_bytes_schema_and_source_hash(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             fixture = DepositFixture(tmpdir)
@@ -287,6 +427,132 @@ class TestDepositCreation(unittest.TestCase):
             self.assertFalse(os.path.exists(fixture.article_path + ".jidx"))
             self.assertFalse(os.path.exists(fixture.article_path + ".sig"))
             self.assertEqual([], _article_scratch(fixture.document_dir))
+
+    def test_api_metadata_bundle_projects_article_and_preserves_response_evidence(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            bundle = _metadata_bundle(fixture.slug)
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            bundle_path = os.path.join(fixture.document_dir, bundle_name)
+            _write_json(bundle_path, bundle)
+
+            result = deposit_article(
+                **fixture.kwargs(metadata_json=bundle_name)
+            )
+
+            self.assertEqual(result.article["title"], "API title")
+            self.assertEqual(result.article["authors"], ["API Author"])
+            self.assertEqual(result.article["categories"], ["math.OC"])
+            self.assertEqual(result.article["concepts"], [])
+            evidence = result.article["evidence"]["provider_metadata"][0]
+            self.assertEqual(evidence["role"], "api-metadata-bundle")
+            self.assertEqual(evidence["provider"], "arxiv")
+            self.assertEqual(evidence["artifact_provider"], "arxiv")
+            self.assertEqual(evidence["response_sha256"], bundle["selected"]["response"]["sha256"])
+            resolution = result.article["evidence"]["metadata_resolution"]
+            self.assertEqual(resolution["route"], "artifact-provider")
+
+            with open(fixture.article_path, "rb") as handle:
+                article_before = handle.read()
+            repeated = deposit_article(**fixture.kwargs(metadata_json=bundle_name))
+            self.assertEqual(repeated.status, "already-deposited")
+            with open(fixture.article_path, "rb") as handle:
+                self.assertEqual(handle.read(), article_before)
+
+            changed_body = b"<feed>changed metadata</feed>"
+            bundle["selected"]["work"]["title"] = "Changed API title"
+            bundle["article"]["title"] = "Changed API title"
+            bundle["selected"]["response"]["body_base64"] = base64.b64encode(
+                changed_body
+            ).decode("ascii")
+            bundle["selected"]["response"]["sha256"] = hashlib.sha256(
+                changed_body
+            ).hexdigest()
+            _write_json(bundle_path, bundle)
+            with self.assertRaisesRegex(DepositConflict, r"at \$/title"):
+                deposit_article(**fixture.kwargs(metadata_json=bundle_name))
+            with open(fixture.article_path, "rb") as handle:
+                self.assertEqual(handle.read(), article_before)
+
+    def test_aggregator_metadata_does_not_become_artifact_provenance_or_categories(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir, slug="doi-example")
+            bundle = _metadata_bundle(
+                fixture.slug,
+                artifact_provider="scihub",
+                selected_provider="openalex",
+                route="aggregator-fallback",
+                body=b'{"id":"W1"}',
+            )
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            _write_json(os.path.join(fixture.document_dir, bundle_name), bundle)
+
+            result = deposit_article(**fixture.kwargs(metadata_json=bundle_name))
+
+            self.assertEqual(result.article["categories"], [])
+            self.assertEqual(result.article["concepts"], ["Optimization"])
+            resolution = result.article["evidence"]["metadata_resolution"]
+            self.assertEqual(resolution["artifact"]["provider"], "scihub")
+            self.assertEqual(resolution["selected_provider"], "openalex")
+
+    def test_tampered_api_response_digest_is_refused_without_a_sentinel(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            bundle = _metadata_bundle(fixture.slug)
+            bundle["selected"]["response"]["sha256"] = "0" * 64
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            _write_json(os.path.join(fixture.document_dir, bundle_name), bundle)
+
+            with self.assertRaisesRegex(DepositError, "does not match sha256"):
+                deposit_article(**fixture.kwargs(metadata_json=bundle_name))
+
+            self.assertFalse(os.path.lexists(fixture.article_path))
+            self.assertEqual([], _article_scratch(fixture.document_dir))
+
+    def test_aggregator_bundle_requires_a_failed_artifact_provider_attempt(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir, slug="doi-example")
+            bundle = _metadata_bundle(
+                fixture.slug,
+                artifact_provider="scihub",
+                selected_provider="openalex",
+                route="aggregator-fallback",
+            )
+            bundle["attempts"] = bundle["attempts"][1:]
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            _write_json(os.path.join(fixture.document_dir, bundle_name), bundle)
+
+            with self.assertRaisesRegex(DepositError, "must begin with the artifact provider"):
+                deposit_article(**fixture.kwargs(metadata_json=bundle_name))
+
+            self.assertFalse(os.path.lexists(fixture.article_path))
+
+    def test_selected_work_and_article_projection_cannot_drift(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            bundle = _metadata_bundle(fixture.slug)
+            bundle["selected"]["work"]["title"] = "Different normalized title"
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            _write_json(os.path.join(fixture.document_dir, bundle_name), bundle)
+
+            with self.assertRaisesRegex(DepositError, "article projection does not match"):
+                deposit_article(**fixture.kwargs(metadata_json=bundle_name))
+
+            self.assertFalse(os.path.lexists(fixture.article_path))
+
+    def test_legacy_and_api_metadata_inputs_are_mutually_exclusive(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir, with_provider=True)
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            _write_json(
+                os.path.join(fixture.document_dir, bundle_name),
+                _metadata_bundle(fixture.slug),
+            )
+
+            with self.assertRaisesRegex(DepositError, "mutually exclusive"):
+                deposit_article(
+                    **fixture.kwargs(metadata_json=bundle_name)
+                )
 
     def test_provider_and_pdf_are_projected_and_fingerprinted(self):
         with tempfile.TemporaryDirectory() as tmpdir:

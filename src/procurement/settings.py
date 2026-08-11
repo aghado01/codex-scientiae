@@ -7,7 +7,7 @@ import os
 from importlib.resources import files
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
 from procurement.errors import ConfigurationError
 
@@ -31,7 +31,7 @@ class DiscoverySettings(BaseModel):
 
     version: int = Field(ge=1)
     default_sources: tuple[str, ...]
-    per_page: int = Field(default=25, ge=1, le=100)
+    metadata_fallback_sources: tuple[str, ...]
     providers: dict[str, ProviderHttpSettings]
 
     @classmethod
@@ -50,12 +50,14 @@ class RuntimeSecrets(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     contact_email: str | None = None
-    semantic_scholar_api_key: str | None = None
+    openalex_api_key: SecretStr | None = Field(default=None, repr=False)
+    semantic_scholar_api_key: SecretStr | None = Field(default=None, repr=False)
 
     @classmethod
     def from_environment(cls) -> "RuntimeSecrets":
         return cls(
             contact_email=os.environ.get("CODEX_SCHOLAR_MAILTO") or None,
+            openalex_api_key=os.environ.get("OPENALEX_API_KEY") or None,
             semantic_scholar_api_key=os.environ.get("SEMANTIC_SCHOLAR_API_KEY") or None,
         )
 

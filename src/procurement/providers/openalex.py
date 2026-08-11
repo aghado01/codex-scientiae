@@ -10,8 +10,8 @@ from urllib.parse import quote, urlparse
 from procurement.errors import ProviderHttpError, ProviderPayloadError
 from procurement.http import HttpClient, RequestPolicy
 from procurement.identifiers import extract_doi, normalize_doi
-from procurement.models import SearchPage, SearchRequest, SourceReference, WorkRecord
-from procurement.providers.base import RelatedKind
+from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.providers.base import RelatedKind, retrieved_metadata
 from procurement.settings import ProviderHttpSettings, RuntimeSecrets
 
 
@@ -19,6 +19,7 @@ class OpenAlexProvider:
     """OpenAlex works API mapped onto procurement records."""
 
     name = "openalex"
+    search_constraints = frozenset({"filters"})
     _select = ",".join(
         (
             "id",
@@ -28,7 +29,7 @@ class OpenAlexProvider:
             "publication_date",
             "updated_date",
             "cited_by_count",
-            "referenced_works",
+            "referenced_works_count",
             "authorships",
             "primary_location",
             "best_oa_location",
@@ -48,6 +49,7 @@ class OpenAlexProvider:
         self._http = http
         self._base_url = settings.base_url.rstrip("/")
         self._contact = secrets.contact_email
+        self._api_key = secrets.openalex_api_key
         self._headers = {"User-Agent": secrets.user_agent()}
         self._policy = RequestPolicy(
             min_interval_seconds=settings.min_interval_seconds,
@@ -59,6 +61,8 @@ class OpenAlexProvider:
         query = dict(params or {})
         if self._contact:
             query["mailto"] = self._contact
+        if self._api_key is not None:
+            query["api_key"] = self._api_key.get_secret_value()
         payload = await self._http.get_json(
             f"{self._base_url}/{path.lstrip('/')}",
             params=query,
@@ -77,7 +81,15 @@ class OpenAlexProvider:
         if match:
             return match.group(1)
         doi = normalize_doi(value)
-        if value.lower().startswith(("doi:", "http://doi.org/", "https://doi.org/", "http://dx.doi.org/", "https://dx.doi.org/")):
+        if value.lower().startswith(
+            (
+                "doi:",
+                "http://doi.org/",
+                "https://doi.org/",
+                "http://dx.doi.org/",
+                "https://dx.doi.org/",
+            )
+        ):
             return f"doi:{doi}"
         if re.match(r"^10\.\d", value):
             return f"doi:{doi}"
@@ -159,8 +171,10 @@ class OpenAlexProvider:
             if isinstance(topic, Mapping) and topic.get("display_name"):
                 concepts.append(str(topic["display_name"]))
 
-        referenced = payload.get("referenced_works")
-        reference_count = len(referenced) if isinstance(referenced, list) else None
+        reference_count = payload.get("referenced_works_count")
+        if reference_count is None:
+            referenced = payload.get("referenced_works")
+            reference_count = len(referenced) if isinstance(referenced, list) else None
         publication_year = payload.get("publication_year")
         citation_count = payload.get("cited_by_count")
         source_url = raw_id or f"https://openalex.org/{source_id}"
@@ -178,7 +192,7 @@ class OpenAlexProvider:
             open_access_url=open_access_url,
             pdf_url=pdf_url,
             citation_count=int(citation_count) if citation_count is not None else None,
-            reference_count=reference_count,
+            reference_count=int(reference_count) if reference_count is not None else None,
             concepts=concepts[:5],
             external_ids=external_ids,
             sources=(
@@ -214,12 +228,46 @@ class OpenAlexProvider:
         meta = payload.get("meta") if isinstance(payload.get("meta"), Mapping) else {}
         total_raw = meta.get("count")
         total = int(total_raw) if total_raw is not None else None
-        next_start = request.start + len(works) if total is not None and request.start + len(works) < total else None
-        return SearchPage(provider=self.name, total_available=total, start=request.start, next_start=next_start, works=works)
+        next_start = (
+            request.start + len(works)
+            if total is not None and request.start + len(works) < total
+            else None
+        )
+        return SearchPage(
+            provider=self.name,
+            total_available=total,
+            start=request.start,
+            next_start=next_start,
+            works=works,
+        )
 
     async def get_work(self, identifier: str) -> WorkRecord:
         key = quote(self.normalize_key(identifier), safe=":")
         return self.map_work(await self._get_json(f"works/{key}", {"select": self._select}))
+
+    async def get_metadata(self, identifier: str) -> RetrievedMetadata:
+        """Return normalized metadata with its exact HTTP-decoded OpenAlex payload."""
+
+        key = quote(self.normalize_key(identifier), safe=":")
+        params: dict[str, Any] = {"select": self._select}
+        if self._contact:
+            params["mailto"] = self._contact
+        if self._api_key is not None:
+            params["api_key"] = self._api_key.get_secret_value()
+        document = await self._http.get_document(
+            f"{self._base_url}/works/{key}",
+            params=params,
+            headers=self._headers,
+            rate_key=self.name,
+            policy=self._policy,
+        )
+        try:
+            payload = document.json()
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise ProviderPayloadError("OpenAlex returned invalid JSON metadata") from exc
+        if not isinstance(payload, Mapping):
+            raise ProviderPayloadError("OpenAlex returned a non-object JSON metadata payload")
+        return retrieved_metadata(self.map_work(payload), document)
 
     async def related(self, identifier: str, kind: RelatedKind, limit: int) -> tuple[WorkRecord, ...]:
         bounded = min(max(limit, 1), 50)

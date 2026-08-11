@@ -21,6 +21,9 @@ from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from filelock import FileLock, Timeout
+from pydantic import ValidationError
+from procurement.limits import MAX_DEPOSIT_METADATA_BUNDLE_BYTES
+from procurement.models import DepositMetadataBundle
 
 from .kinds.article import ArticleManifest
 from .reader import loads
@@ -196,15 +199,39 @@ def _resolve_relative(
     return value, actual
 
 
-def _stable_read(path: str) -> Tuple[bytes, _FileWitness]:
+def _stable_read(
+    path: str,
+    *,
+    max_bytes: int | None = None,
+) -> Tuple[bytes, _FileWitness]:
     with open(path, "rb") as handle:
         before = os.fstat(handle.fileno())
         if not stat.S_ISREG(before.st_mode):
             raise DepositError(f"source is not a regular file: '{path}'")
-        raw = handle.read()
+        if max_bytes is not None and before.st_size > max_bytes:
+            raise DepositError(
+                f"source exceeds the {max_bytes}-byte read limit: '{path}'"
+            )
+        raw = handle.read() if max_bytes is None else handle.read(max_bytes + 1)
+        if max_bytes is not None and len(raw) > max_bytes:
+            raise DepositError(
+                f"source exceeds the {max_bytes}-byte read limit: '{path}'"
+            )
         after = os.fstat(handle.fileno())
-    identity_before = (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
-    identity_after = (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns)
+    identity_before = (
+        before.st_dev,
+        before.st_ino,
+        before.st_size,
+        before.st_mtime_ns,
+        before.st_ctime_ns,
+    )
+    identity_after = (
+        after.st_dev,
+        after.st_ino,
+        after.st_size,
+        after.st_mtime_ns,
+        after.st_ctime_ns,
+    )
     if identity_before != identity_after or len(raw) != after.st_size:
         raise DepositError(f"file changed while it was being read: '{path}'")
     try:
@@ -230,8 +257,20 @@ def _fingerprint(path: str) -> Tuple[int, str, _FileWitness]:
             size += len(chunk)
             digest.update(chunk)
         after = os.fstat(handle.fileno())
-    identity_before = (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
-    identity_after = (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns)
+    identity_before = (
+        before.st_dev,
+        before.st_ino,
+        before.st_size,
+        before.st_mtime_ns,
+        before.st_ctime_ns,
+    )
+    identity_after = (
+        after.st_dev,
+        after.st_ino,
+        after.st_size,
+        after.st_mtime_ns,
+        after.st_ctime_ns,
+    )
     if identity_before != identity_after or size != after.st_size:
         raise DepositError(f"file changed while it was being fingerprinted: '{path}'")
     try:
@@ -243,6 +282,75 @@ def _fingerprint(path: str) -> Tuple[int, str, _FileWitness]:
     if not stat.S_ISREG(current.st_mode) or not _same_file_generation(after, current):
         raise DepositError(f"file path changed while it was being fingerprinted: '{path}'")
     return size, digest.hexdigest(), _FileWitness.capture(path, current)
+
+
+def _fingerprint_tree(root: str) -> Tuple[str, int, int]:
+    """Recompute the PowerShell source-tree fingerprint without following links."""
+
+    records: List[Tuple[str, str]] = []
+    portable_paths: set[str] = set()
+    pending = [root]
+    while pending:
+        directory = pending.pop()
+        try:
+            entries = list(os.scandir(directory))
+        except OSError as exc:
+            raise DepositError(f"source tree cannot be enumerated: '{directory}'") from exc
+        for entry in entries:
+            try:
+                info = entry.stat(follow_symlinks=False)
+            except OSError as exc:
+                raise DepositError(f"source tree entry cannot be measured: '{entry.path}'") from exc
+            attributes = getattr(info, "st_file_attributes", 0)
+            if stat.S_ISLNK(info.st_mode) or attributes & 0x400:
+                raise DepositError(
+                    f"source tree contains a symbolic link or reparse point: '{entry.path}'"
+                )
+            if stat.S_ISDIR(info.st_mode):
+                pending.append(entry.path)
+                continue
+            if not stat.S_ISREG(info.st_mode):
+                raise DepositError(f"source tree entry is not a regular file: '{entry.path}'")
+            relative = os.path.relpath(entry.path, root).replace(os.sep, "/")
+            parts = relative.split("/")
+            if any(not _is_portable_leaf(part) for part in parts):
+                raise DepositError(f"source tree contains a non-portable path: {relative!r}")
+            portable_key = relative.casefold()
+            if portable_key in portable_paths:
+                raise DepositError(
+                    f"source tree contains duplicate or case-colliding paths: {relative!r}"
+                )
+            portable_paths.add(portable_key)
+            records.append((relative, entry.path))
+    if not records:
+        raise DepositError(f"source tree is empty: '{root}'")
+
+    records.sort(key=lambda item: item[0].encode("utf-16-be", "surrogatepass"))
+    witnessed: List[bytes] = []
+    tex_files = 0
+    for relative, path in records:
+        size, digest, _ = _fingerprint(path)
+        witnessed.append(f"{relative}\0{size}\0{digest}\n".encode("utf-8"))
+        if relative.casefold().endswith(".tex"):
+            tex_files += 1
+    tree_hash = hashlib.sha256(b"".join(witnessed)).hexdigest()
+    return tree_hash, len(records), tex_files
+
+
+def _assert_tree_snapshot(
+    root: str,
+    *,
+    expected_sha256: str,
+    expected_files: int,
+    expected_tex_files: int,
+) -> None:
+    actual_sha256, actual_files, actual_tex_files = _fingerprint_tree(root)
+    if actual_sha256 != expected_sha256:
+        raise DepositConflict("published source tree does not match its supplied sha256")
+    if actual_files != expected_files or actual_tex_files != expected_tex_files:
+        raise DepositConflict(
+            "published source tree counts do not match supplied files/tex_files"
+        )
 
 
 def _assert_file_witnesses(witnesses: Iterable[_FileWitness]) -> None:
@@ -284,11 +392,16 @@ def _file_record(
 
 
 def _read_object_with_bytes(
-    path: str, *, label: str
+    path: str,
+    *,
+    label: str,
+    max_bytes: int | None = None,
 ) -> Tuple[Dict[str, Any], bytes, _FileWitness]:
     try:
-        raw, witness = _stable_read(path)
+        raw, witness = _stable_read(path, max_bytes=max_bytes)
         value = loads(raw, path=path)
+    except DepositError:
+        raise
     except Exception as exc:
         raise DepositError(f"{label} is not a strict UTF-8 JSON object: '{path}': {exc}") from exc
     return value, raw, witness
@@ -345,12 +458,44 @@ def _provider_values(provider: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def _read_metadata_bundle(
+    kind: ArticleManifest,
+    path: str,
+    *,
+    slug: str,
+) -> Tuple[Dict[str, Any], bytes, _FileWitness]:
+    bundle, raw, witness = _read_object_with_bytes(
+        path,
+        label="API metadata bundle",
+        max_bytes=MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
+    )
+    try:
+        kind.schemas.get_validator("deposit.metadata.schema.json").validate(bundle)
+    except Exception as exc:
+        raise DepositError(f"API metadata bundle does not satisfy its schema: '{path}': {exc}") from exc
+
+    try:
+        DepositMetadataBundle.model_validate(bundle)
+    except ValidationError as exc:
+        raise DepositError(
+            f"API metadata bundle does not satisfy the shared procurement contract: "
+            f"'{path}': {exc}"
+        ) from exc
+
+    if bundle["deposit_slug"] != slug:
+        raise DepositError(
+            f"API metadata bundle slug {bundle['deposit_slug']!r} does not match deposit slug {slug!r}"
+        )
+    return bundle, raw, witness
+
+
 def _assemble_article(
     *,
     kind: ArticleManifest,
     slug: str,
     archive: str,
     archive_full: str,
+    archive_sha256: str,
     archive_kind: str,
     tree: str,
     tree_sha256: str,
@@ -362,21 +507,34 @@ def _assemble_article(
     findings: Dict[str, Any],
     provider_json: Optional[str],
     provider_full: Optional[str],
+    metadata_json: Optional[str],
+    metadata_full: Optional[str],
     pdf: Optional[str],
     pdf_full: Optional[str],
 ) -> Tuple[Dict[str, Any], Tuple[_FileWitness, ...]]:
     witnesses: List[_FileWitness] = []
     provider = None
     provider_raw = None
+    metadata = None
+    metadata_raw = None
     if provider_full is not None:
         provider, provider_raw, provider_witness = _read_object_with_bytes(
-            provider_full, label="provider metadata"
+            provider_full,
+            label="provider metadata",
+            max_bytes=MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
         )
         witnesses.append(provider_witness)
     if provider is not None and provider.get("idv") and provider.get("idv") != slug:
         raise DepositError(
             f"provider metadata idv {provider.get('idv')!r} does not match deposit slug {slug!r}"
         )
+    if metadata_full is not None:
+        metadata, metadata_raw, metadata_witness = _read_metadata_bundle(
+            kind,
+            metadata_full,
+            slug=slug,
+        )
+        witnesses.append(metadata_witness)
 
     archive_record = _file_record(
         path=archive,
@@ -386,6 +544,10 @@ def _assemble_article(
         witnesses=witnesses,
         extra={"archive_kind": archive_kind},
     )
+    if archive_record["sha256"] != archive_sha256:
+        raise DepositConflict(
+            "published source archive does not match its expansion-time sha256"
+        )
     tree_record = {
         "role": "latex-source-tree",
         "path": tree,
@@ -429,20 +591,60 @@ def _assemble_article(
             }
         )
 
+    metadata_resolution = None
+    if metadata is not None and metadata_raw is not None and metadata_json is not None:
+        selected = metadata["selected"]
+        response = selected["response"]
+        artifact = metadata["artifact"]
+        provider_evidence.append(
+            {
+                "role": "api-metadata-bundle",
+                "path": metadata_json,
+                "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+                "bytes": len(metadata_raw),
+                "sha256": hashlib.sha256(metadata_raw).hexdigest(),
+                "provider": selected["provider"],
+                "provider_roles": copy.deepcopy(selected["provider_roles"]),
+                "artifact_provider": artifact["provider"],
+                "artifact_provider_roles": copy.deepcopy(artifact["provider_roles"]),
+                "route": metadata["route"],
+                "fetched_at": response["fetched_at"],
+                "response_url": response["url"],
+                "response_format": response["media_type"],
+                "response_sha256": response["sha256"],
+            }
+        )
+        metadata_resolution = {
+            "route": metadata["route"],
+            "artifact": copy.deepcopy(artifact),
+            "selected_provider": selected["provider"],
+            "selected_provider_roles": copy.deepcopy(selected["provider_roles"]),
+            "attempts": copy.deepcopy(metadata["attempts"]),
+        }
+
     timestamp = _utc_timestamp()
+    bibliographic = (
+        copy.deepcopy(metadata["article"])
+        if metadata is not None
+        else _provider_values(provider)
+    )
+    evidence: Dict[str, Any] = {
+        "provider_metadata": provider_evidence,
+        "latex_source": {
+            "entrypoint": entrypoint,
+            "selection": entrypoint_selection,
+            "declarations": copy.deepcopy(findings["declarations"]),
+        },
+        "package_control_files": copy.deepcopy(findings["package_control_files"]),
+    }
+    if metadata_resolution is not None:
+        evidence["metadata_resolution"] = metadata_resolution
+
     values: Dict[str, Any] = {
         "slug": slug,
         "initialized_utc": timestamp,
-        **_provider_values(provider),
-        "evidence": {
-            "provider_metadata": provider_evidence,
-            "latex_source": {
-                "entrypoint": entrypoint,
-                "selection": entrypoint_selection,
-                "declarations": copy.deepcopy(findings["declarations"]),
-            },
-            "package_control_files": copy.deepcopy(findings["package_control_files"]),
-        },
+        **bibliographic,
+        "evidence": evidence,
         "source_forms": source_forms,
         "validation": {
             "status": "valid",
@@ -541,8 +743,9 @@ def _rollback_created_article(
 ) -> None:
     """Remove only the exact article this transaction just published.
 
-    The caller still holds the article lease. Re-reading before unlink keeps a failed source
-    postcheck from deleting an artifact that an uncoordinated actor replaced after publication.
+    The caller still holds the article lease. Re-reading before unlink protects lease-cooperating
+    writers and refuses a replacement already visible at the closing check. Uncoordinated writes
+    are outside the lease contract.
     """
     current, raw = _read_existing_article(kind, path)
     canonical = serialize_json(
@@ -570,6 +773,7 @@ def deposit_article(
     document_dir: str,
     slug: str,
     archive: str,
+    archive_sha256: str,
     archive_kind: str,
     tree: str,
     tree_sha256: str,
@@ -580,16 +784,18 @@ def deposit_article(
     publication: str,
     findings_json: str,
     provider_json: Optional[str] = None,
+    metadata_json: Optional[str] = None,
     pdf: Optional[str] = None,
     lock_timeout: float = 60.0,
 ) -> DepositResult:
     """Create or validate one source-ready ``article.json`` deposit.
 
-    Artifact paths are normalized forward-slash paths relative to ``document_dir``. The tree hash,
-    counts, entrypoint, declarations, package-control fingerprints, and probe ledger are witnessed
-    source facts supplied by the LaTeX transaction; file hashes and provider projection are derived
-    here from the deposited artifacts. The caller must prevent concurrent mutation of the source
-    tree and deposited inputs for this call; ``New-LatexSourceDeposit`` holds that source lock.
+    Artifact paths are normalized forward-slash paths relative to ``document_dir``. The archive
+    digest is the expansion-time witness and is remeasured here. The tree digest and counts are
+    recomputed before and after publication. Entrypoint facts, declarations, package-control
+    fingerprints, and the probe ledger come from the LaTeX transaction; provider projections are
+    derived from deposited evidence. The caller must prevent concurrent mutation of the source tree
+    and deposited inputs for this call; ``New-LatexSourceDeposit`` holds that source lock.
     """
     root, directory_leaf = _document_root(document_dir)
     slug = _validate_slug(slug, directory_leaf=directory_leaf)
@@ -601,10 +807,14 @@ def deposit_article(
         raise DepositError(
             f"publication must be one of {sorted(_PUBLICATIONS)}, got {publication!r}"
         )
-    if not isinstance(tree_sha256, str) or len(tree_sha256) != 64 or any(
-        char not in "0123456789abcdef" for char in tree_sha256
+    for label, digest in (
+        ("archive_sha256", archive_sha256),
+        ("tree_sha256", tree_sha256),
     ):
-        raise DepositError("tree_sha256 must be 64 lowercase hexadecimal characters")
+        if not isinstance(digest, str) or len(digest) != 64 or any(
+            char not in "0123456789abcdef" for char in digest
+        ):
+            raise DepositError(f"{label} must be 64 lowercase hexadecimal characters")
     if isinstance(files, bool) or not isinstance(files, int) or files < 1:
         raise DepositError("files must be an integer greater than zero")
     if isinstance(tex_files, bool) or not isinstance(tex_files, int) or tex_files < 1:
@@ -630,10 +840,18 @@ def deposit_article(
     if not _within(tree_full, entrypoint_full):
         raise DepositError(f"entrypoint escapes the source tree: {entrypoint!r}")
 
+    if provider_json is not None and metadata_json is not None:
+        raise DepositError("provider_json and metadata_json are mutually exclusive")
+
     provider_full = None
     if provider_json is not None:
         provider_json, provider_full = _resolve_relative(
             root, provider_json, label="provider_json", kind="file"
+        )
+    metadata_full = None
+    if metadata_json is not None:
+        metadata_json, metadata_full = _resolve_relative(
+            root, metadata_json, label="metadata_json", kind="file"
         )
     pdf_full = None
     if pdf is not None:
@@ -655,6 +873,7 @@ def deposit_article(
             slug=slug,
             archive=archive,
             archive_full=archive_full,
+            archive_sha256=archive_sha256,
             archive_kind=archive_kind,
             tree=tree,
             tree_sha256=tree_sha256,
@@ -666,8 +885,16 @@ def deposit_article(
             findings=findings,
             provider_json=provider_json,
             provider_full=provider_full,
+            metadata_json=metadata_json,
+            metadata_full=metadata_full,
             pdf=pdf,
             pdf_full=pdf_full,
+        )
+        _assert_tree_snapshot(
+            tree_full,
+            expected_sha256=tree_sha256,
+            expected_files=files,
+            expected_tex_files=tex_files,
         )
         _assert_file_witnesses(source_witnesses)
         created_here = False
@@ -688,6 +915,12 @@ def deposit_article(
             # check also protects direct service/CLI callers from a source replacement in the
             # narrow interval between the pre-publication witness check and the atomic publish.
             _assert_file_witnesses(source_witnesses)
+            _assert_tree_snapshot(
+                tree_full,
+                expected_sha256=tree_sha256,
+                expected_files=files,
+                expected_tex_files=tex_files,
+            )
         except BaseException:
             if created_here:
                 _rollback_created_article(kind, article_path, candidate)

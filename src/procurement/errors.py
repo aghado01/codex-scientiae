@@ -43,3 +43,15 @@ class ProviderPayloadError(ProviderError):
 
 class ProviderRecordNotFoundError(ProviderError):
     """A provider returned no record for an identifier."""
+
+
+class MetadataError(ProcurementError):
+    """API metadata could not satisfy a source-deposit contract."""
+
+
+class MetadataIdentityError(MetadataError):
+    """Returned metadata does not identify the deposited artifact."""
+
+
+class MetadataUnavailableError(MetadataError):
+    """No configured metadata provider produced a valid observation."""

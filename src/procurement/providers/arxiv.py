@@ -12,7 +12,8 @@ from defusedxml import ElementTree
 from procurement.errors import IdentifierError, ProviderPayloadError, ProviderRecordNotFoundError
 from procurement.http import HttpClient, RequestPolicy
 from procurement.identifiers import normalize_doi, split_arxiv_id
-from procurement.models import SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.providers.base import retrieved_metadata
 from procurement.settings import ProviderHttpSettings, RuntimeSecrets
 
 _ATOM = "http://www.w3.org/2005/Atom"
@@ -52,6 +53,7 @@ class ArxivProvider:
     """arXiv query API mapped onto procurement records."""
 
     name = "arxiv"
+    search_constraints = frozenset({"categories", "date_from", "date_to", "sort"})
 
     def __init__(
         self,
@@ -167,6 +169,8 @@ class ArxivProvider:
 
     async def search(self, request: SearchRequest) -> SearchPage:
         limit = min(request.limit, 50)
+        if request.sort not in {None, "date", "mostrecent", "relevance"}:
+            raise ValueError("arXiv sort must be 'date', 'mostrecent', or 'relevance'")
         sort_by = "submittedDate" if request.sort in {"date", "mostrecent"} else "relevance"
         feed = self.parse_feed(
             await self._query(
@@ -179,7 +183,12 @@ class ArxivProvider:
                 }
             )
         )
-        next_start = request.start + len(feed.works) if feed.total is not None and request.start + len(feed.works) < feed.total else None
+        next_start = (
+            request.start + len(feed.works)
+            if feed.total is not None
+            and request.start + len(feed.works) < feed.total
+            else None
+        )
         return SearchPage(
             provider=self.name,
             total_available=feed.total,
@@ -194,3 +203,19 @@ class ArxivProvider:
         if not feed.works:
             raise ProviderRecordNotFoundError(f"arXiv returned no record for {identifier!r}")
         return feed.works[0]
+
+    async def get_metadata(self, identifier: str) -> RetrievedMetadata:
+        """Return normalized metadata with the exact decoded arXiv Atom payload."""
+
+        normalized = split_arxiv_id(identifier).versioned
+        document = await self._http.get_document(
+            self._url,
+            params={"id_list": normalized, "max_results": 1},
+            headers=self._headers,
+            rate_key=self.name,
+            policy=self._policy,
+        )
+        feed = self.parse_feed(document.text)
+        if not feed.works:
+            raise ProviderRecordNotFoundError(f"arXiv returned no record for {identifier!r}")
+        return retrieved_metadata(feed.works[0], document)

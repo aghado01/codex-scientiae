@@ -26,11 +26,14 @@ build-backend = "hatchling.build"
 [project]
 name = "codex-scientiae"
 version = "0.1.0"
-description = "Codex Scientiae — Python lane (JSONL engine and artifact registries)"
+description = "Codex Scientiae — Python lane for artifact registries and scholarly procurement"
 requires-python = ">=3.12"
 
+[project.scripts]
+scientiae-procurement = "mcps.procurement.server:main"
+
 [tool.hatch.build.targets.wheel]
-packages = ["src/jsonl_engine"]
+packages = ["src/jsonl_engine", "src/procurement", "src/mcps"]
 
 [tool.pytest.ini_options]
 # Anchors rootdir at the repository root so `pytest` and `python -m pytest` agree. Import resolution

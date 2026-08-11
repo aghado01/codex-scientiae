@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/deposit-metadata/0.1",
+  "title": "Codex Scientiae API metadata bundle",
+  "description": "A self-contained API response witness and normalized article projection for one source deposit.",
+  "type": "object",
+  "required": [
+    "schema",
+    "deposit_slug",
+    "artifact",
+    "route",
+    "selected",
+    "attempts",
+    "article"
+  ],
+  "properties": {
+    "schema": {
+      "const": "codex-scientiae/deposit-metadata/0.1"
+    },
+    "deposit_slug": {
+      "$ref": "#/$defs/portableLeaf"
+    },
+    "artifact": {
+      "type": "object",
+      "required": ["provider", "identifier", "provider_roles"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "identifier": {"type": "string", "minLength": 1},
+        "provider_roles": {
+          "type": "array",
+          "contains": {"const": "artifact-access"},
+          "items": {"$ref": "#/$defs/providerRole"},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "route": {
+      "enum": ["artifact-provider", "aggregator-fallback"]
+    },
+    "selected": {
+      "type": "object",
+      "required": ["provider", "provider_roles", "work", "response"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "provider_roles": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/providerRole"},
+          "uniqueItems": true
+        },
+        "work": {"$ref": "#/$defs/workRecord"},
+        "response": {
+          "type": "object",
+          "required": ["url", "media_type", "fetched_at", "sha256", "body_base64"],
+          "properties": {
+            "url": {"type": "string", "minLength": 1},
+            "media_type": {"type": "string", "minLength": 1},
+            "fetched_at": {"type": "string", "format": "date-time"},
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "body_base64": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 22369624,
+              "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "attempts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["provider", "status", "error"],
+        "properties": {
+          "provider": {"type": "string", "minLength": 1},
+          "status": {"enum": ["ok", "error", "not-supported"]},
+          "error": {"type": ["string", "null"]}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"status": {"const": "ok"}}},
+            "then": {"properties": {"error": {"type": "null"}}},
+            "else": {"properties": {"error": {"type": "string", "minLength": 1}}}
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "article": {
+      "type": "object",
+      "required": [
+        "title",
+        "authors",
+        "abstract",
+        "identifiers",
+        "categories",
+        "concepts",
+        "primary_category",
+        "published",
+        "updated"
+      ],
+      "properties": {
+        "title": {"type": ["string", "null"]},
+        "authors": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "abstract": {"type": ["string", "null"]},
+        "identifiers": {
+          "type": "object",
+          "required": ["arxiv", "arxiv_versioned", "doi", "external"],
+          "properties": {
+            "arxiv": {"type": ["string", "null"]},
+            "arxiv_versioned": {"type": ["string", "null"]},
+            "doi": {"type": ["string", "null"]},
+            "external": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            }
+          },
+          "additionalProperties": false
+        },
+        "categories": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "concepts": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "primary_category": {"type": ["string", "null"]},
+        "published": {"type": ["string", "null"]},
+        "updated": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"route": {"const": "artifact-provider"}}},
+      "then": {
+        "properties": {
+          "selected": {
+            "properties": {
+              "provider_roles": {"contains": {"const": "metadata-authority"}}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"route": {"const": "aggregator-fallback"}}},
+      "then": {
+        "properties": {
+          "selected": {
+            "properties": {
+              "provider_roles": {"contains": {"const": "metadata-aggregator"}}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "providerRole": {
+      "enum": [
+        "artifact-origin",
+        "artifact-access",
+        "metadata-authority",
+        "metadata-aggregator"
+      ]
+    },
+    "portableLeaf": {
+      "type": "string",
+      "pattern": "^(?!(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm][1-9]|[Ll][Pp][Tt][1-9])(?:\\.|$))(?!\\.{1,2}$)(?!.*[ .]$)[^<>:\"/\\\\|?*\\u0000-\\u001F]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sourceReference": {
+      "type": "object",
+      "required": [
+        "provider",
+        "identifier",
+        "url",
+        "doi",
+        "arxiv_id",
+        "published",
+        "updated"
+      ],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "identifier": {"type": "string", "minLength": 1},
+        "url": {"type": ["string", "null"]},
+        "doi": {"type": ["string", "null"]},
+        "arxiv_id": {"type": ["string", "null"]},
+        "published": {"$ref": "#/$defs/nullableDate"},
+        "updated": {"$ref": "#/$defs/nullableDate"}
+      },
+      "additionalProperties": false
+    },
+    "workRecord": {
+      "type": "object",
+      "required": [
+        "title",
+        "authors",
+        "abstract",
+        "doi",
+        "arxiv_id",
+        "published",
+        "updated",
+        "year",
+        "venue",
+        "open_access_url",
+        "pdf_url",
+        "citation_count",
+        "reference_count",
+        "tldr",
+        "concepts",
+        "categories",
+        "external_ids",
+        "sources"
+      ],
+      "properties": {
+        "title": {"type": ["string", "null"]},
+        "authors": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "abstract": {"type": ["string", "null"]},
+        "doi": {"type": ["string", "null"]},
+        "arxiv_id": {"type": ["string", "null"]},
+        "published": {"$ref": "#/$defs/nullableDate"},
+        "updated": {"$ref": "#/$defs/nullableDate"},
+        "year": {
+          "anyOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ]
+        },
+        "venue": {"type": ["string", "null"]},
+        "open_access_url": {"type": ["string", "null"]},
+        "pdf_url": {"type": ["string", "null"]},
+        "citation_count": {
+          "anyOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ]
+        },
+        "reference_count": {
+          "anyOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ]
+        },
+        "tldr": {"type": ["string", "null"]},
+        "concepts": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "categories": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "external_ids": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/sourceReference"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "nullableDate": {
+      "anyOf": [
+        {"type": "string", "format": "date"},
+        {"type": "string", "format": "date-time"},
+        {"type": "null"}
+      ]
+    }
+  },
+  "additionalProperties": false
+}

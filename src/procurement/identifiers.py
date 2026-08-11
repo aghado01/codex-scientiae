@@ -10,9 +10,13 @@ from procurement.errors import IdentifierError
 
 _DOI_PREFIX = re.compile(r"^(?:(?:https?://)?(?:dx\.)?doi\.org/|doi:)\s*", re.IGNORECASE)
 _DOI_IN_TEXT = re.compile(r"10\.\d{4,9}/[^\s<>\"']+", re.IGNORECASE)
-_ARXIV_NEW = re.compile(r"^\d{4}\.\d{4,5}(?:v\d+)?$", re.IGNORECASE)
-_ARXIV_OLD = re.compile(r"^[a-z][a-z-]*(?:\.[a-z]{2})?/\d{7}(?:v\d+)?$", re.IGNORECASE)
-_ARXIV_VERSION = re.compile(r"v(\d+)$", re.IGNORECASE)
+_DOI_EXACT = re.compile(r"^10\.\d{4,9}/[^\s<>\"']+$", re.IGNORECASE)
+_ARXIV_NEW = re.compile(r"^\d{2}(?:0[1-9]|1[0-2])\.\d{4,5}(?:v[1-9]\d*)?$", re.IGNORECASE)
+_ARXIV_OLD = re.compile(
+    r"^[a-z][a-z-]*(?:\.[a-z]{2})?/\d{2}(?:0[1-9]|1[0-2])\d{3}(?:v[1-9]\d*)?$",
+    re.IGNORECASE,
+)
+_ARXIV_VERSION = re.compile(r"v([1-9]\d*)$", re.IGNORECASE)
 _ZENODO = re.compile(r"^(?:(?:10\.5281/)?zenodo\.)?(\d+)$", re.IGNORECASE)
 
 
@@ -38,6 +42,13 @@ def extract_doi(value: object | None) -> str | None:
         return None
     candidate = match.group(0).rstrip(".,;:)]}")
     return normalize_doi(candidate)
+
+
+def is_doi(value: object | None) -> bool:
+    """Return whether a value is a complete DOI in a supported resolver form."""
+
+    normalized = normalize_doi(value)
+    return bool(normalized and _DOI_EXACT.fullmatch(normalized))
 
 
 def normalize_arxiv_id(value: object | None) -> str | None:
@@ -106,11 +117,27 @@ class ZenodoIdentifier:
 def split_zenodo_id(value: object) -> ZenodoIdentifier:
     """Parse a Zenodo record number, shorthand, or DOI."""
 
-    text = str(value).strip()
+    text = unquote(str(value)).strip()
+    parsed = urlparse(text)
+    if parsed.hostname and parsed.hostname.casefold() in {"zenodo.org", "www.zenodo.org"}:
+        match = re.fullmatch(r"/(?:record|records)/(\d+)/?", parsed.path, re.IGNORECASE)
+        if match:
+            text = match.group(1)
+    else:
+        text = re.sub(r"^doi:\s*", "", text, flags=re.IGNORECASE)
+        text = re.sub(
+            r"^https?://(?:dx\.)?doi\.org/",
+            "",
+            text,
+            flags=re.IGNORECASE,
+        )
     match = _ZENODO.fullmatch(text)
     if not match:
         raise IdentifierError(f"invalid Zenodo identifier: {value!r}")
-    record_id = match.group(1)
+    record_number = int(match.group(1))
+    if record_number < 1:
+        raise IdentifierError(f"invalid Zenodo identifier: {value!r}")
+    record_id = str(record_number)
     return ZenodoIdentifier(
         record_id=record_id,
         doi=f"10.5281/zenodo.{record_id}",
