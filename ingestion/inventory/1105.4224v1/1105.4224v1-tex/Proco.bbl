@@ -1,0 +1,136 @@
+\begin{thebibliography}{10}
+
+\bibitem{Allen81}
+Allen, J.F.:
+\newblock An interval-based representation of temporal knowledge.
+\newblock In Hayes, P.J., ed.: IJCAI, William Kaufmann (1981)  221--226
+
+\bibitem{Allen83}
+Allen, J.F.:
+\newblock Maintaining knowledge about temporal intervals.
+\newblock Commun. ACM \textbf{26}(11) (1983)  832--843
+
+\bibitem{VilainK86}
+Vilain, M.B., Kautz, H.A.:
+\newblock Constraint propagation algorithms for temporal reasoning.
+\newblock In: AAAI. (1986)  377--382
+
+\bibitem{RandellCC92}
+Randell, D.A., Cui, Z., Cohn, A.G.:
+\newblock A spatial logic based on regions and connection.
+\newblock In: KR. (1992)  165--176
+
+\bibitem{PujariKS99}
+Pujari, A.K., Kumari, G.V., Sattar, A.:
+\newblock \mbox{INDU}: An interval and duration network.
+\newblock In Foo, N.Y., ed.: Australian Joint Conference on Artificial
+  Intelligence. Volume 1747 of Lecture Notes in Computer Science., Springer
+  (1999)  291--303
+
+\bibitem{Moratz06}
+Moratz, R.:
+\newblock Representing relative direction as a binary relation of oriented
+  points.
+\newblock In Brewka, G., Coradeschi, S., Perini, A., Traverso, P., eds.: ECAI.
+  Volume 141 of Frontiers in Artificial Intelligence and Applications., IOS
+  Press (2006)  407--411
+
+\bibitem{Goyal00}
+Goyal, R.K.:
+\newblock Similarity assessment for cardinal directions between extended
+  spatial objects.
+\newblock PhD thesis (2000) The University of Maine.
+
+\bibitem{WallgrunFWDF06}
+Wallgr{\"u}n, J.O., Frommberger, L., Wolter, D., Dylla, F., Freksa, C.:
+\newblock Qualitative spatial representation and reasoning in the
+  sparq-toolbox.
+\newblock In Barkowsky, T., Knauff, M., Ligozat, G., Montello, D.R., eds.:
+  Spatial Cognition. Volume 4387 of Lecture Notes in Computer Science.,
+  Springer (2006)  39--58
+
+\bibitem{WestphalWG09}
+Westphal, M., W{\"o}lfl, S., Gantner, Z.:
+\newblock {GQR: A fast solver for binary qualitative constraint networks}.
+\newblock In: AAAI Spring Symposium on Benchmarking of Qualitative Spatial and
+  Temporal Reasoning Systems. (2009)
+
+\bibitem{LiY03}
+Li, S., Ying, M.:
+\newblock Region connection calculus: Its models and composition table.
+\newblock Artif. Intell. \textbf{145}(1-2) (2003)  121--146
+
+\bibitem{RenzL05}
+Renz, J., Ligozat, G.:
+\newblock Weak composition for qualitative spatial and temporal reasoning.
+\newblock In van Beek, P., ed.: CP. Volume 3709 of Lecture Notes in Computer
+  Science., Springer (2005)  534--548
+
+\bibitem{Cohn95}
+Cohn, A.G.:
+\newblock The challenge of qualitative spatial reasoning.
+\newblock ACM Comput. Surv. \textbf{27}(3) (1995)  323--325
+
+\bibitem{Frommberger+07}
+Frommberger, L., Lee, J.H., Wallgr\"{u}n, J.O., Dylla, F.:
+\newblock Composition in $\mathcal{OPRA}_m$.
+\newblock Technical report, SFB/TR 8, University of Bremen (2007)
+
+\bibitem{MM10}
+Mossakowski, T., Moratz, R.:
+\newblock Qualitative reasoning about relative direction on adjustable levels
+  of granularity.
+\newblock CoRR \textbf{abs/1011.0098} (2010)
+
+\bibitem{SkiadopoulosK04}
+Skiadopoulos, S., Koubarakis, M.:
+\newblock Composing cardinal direction relations.
+\newblock Artif. Intell. \textbf{152}(2) (2004)  143--171
+
+\bibitem{LiuZLY10}
+Liu, W., Zhang, X., Li, S., Ying, M.:
+\newblock Reasoning about cardinal directions between extended objects.
+\newblock Artif. Intell. \textbf{174}(12-13) (2010)  951--983
+
+\bibitem{LigozatR04}
+Ligozat, G., Renz, J.:
+\newblock What is a qualitative calculus? a general framework.
+\newblock In Zhang, C., Guesgen, H.W., Yeap, W.K., eds.: PRICAI. Volume 3157 of
+  Lecture Notes in Computer Science., Springer (2004)  53--64
+
+\bibitem{Bennett94}
+Bennett, B.:
+\newblock Some observations and puzzles about composing spatial and temporal
+  relations.
+\newblock In: in R. Rodr\'{i}guez (ed.), Proceedings ECAI-94 Workshop on
+  Spatial and Temporal Reasoning. (1994)  65--72
+
+\bibitem{BalbianiCL06}
+Balbiani, P., Condotta, J.F., Ligozat, G.:
+\newblock On the consistency problem for the \mbox{INDU} calculus.
+\newblock J. Applied Logic \textbf{4}(2) (2006)  119--140
+
+\bibitem{Egenhofer94}
+Egenhofer, M.J.:
+\newblock Deriving the composition of binary topological relations.
+\newblock J. Vis. Lang. Comput. \textbf{5}(2) (1994)  133--149
+
+\bibitem{Cohn+93}
+Cohn, A.G., Randell, D.A., Cui, Z., Bennett, B.:
+\newblock Qualitative spatial reasoning and representation.
+\newblock In Carret\'{e}, N.P., Singh, M.G., eds.: Qualitative Reasoning and
+  Decision Technologies, Barcelona, CIMNE (1993)  513--522
+
+\bibitem{Clementini+10}
+Clementini, E., Skiadopoulos, S., Billen, R., Tarquini, F.:
+\newblock A reasoning system of ternary projective relations.
+\newblock IEEE Trans. on Knowl. and Data Eng. \textbf{22} (February 2010)
+  161--178
+
+\bibitem{Wolter11}
+Wolter, D.:
+\newblock Analyzing qualitative spatio-temporal calculi using algebraic
+  geometry.
+\newblock Spatial Cognition \& Computation (to appear).
+
+\end{thebibliography}

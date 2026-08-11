@@ -1,0 +1,202 @@
+
+
+
+\section{Supplementary Material}
+\label{app:myappendix}  
+
+% Question Box
+\newtcolorbox{questionbox}{
+    colback=blue!3!white,
+    colframe=blue!70!black!30!gray,
+    fonttitle=\bfseries\large,
+    title=Question,
+    sharp corners,
+    boxrule=1pt,
+    left=6pt, % Extra left padding
+    top=4pt,
+    bottom=4pt,
+    enhanced,
+    before upper={\parindent0pt\noindent}
+}
+
+% Answer Box
+\newtcolorbox{answerbox}{
+    colback=green!3!white,
+    colframe=green!50!black!30!gray,
+    fonttitle=\bfseries\large,
+    title=Answer,
+    sharp corners,
+    boxrule=1pt,
+    left=6pt,
+    top=4pt,
+    bottom=4pt,
+    enhanced,
+    before upper={\parindent0pt\noindent}
+}
+
+
+\subsection{A. Pseudo Code}
+
+\begin{algorithm}[hpt]
+\caption{LogicRAG: Logic-Aware Retrieval-Augmented Generation}
+\label{alg:logicrag}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Query $Q$, LLM, embedding model $\theta$, knowledge corpus $K$
+\State \textbf{Output:} Final answer $A$
+\State Use LLM to decompose $Q$ into subproblems $P = \{p_1, \dots, p_n\}$
+\State Initialize DAG $G = (V, E)$ with $V = \{v_i \leftrightarrow p_i\}$ and $E = \emptyset$
+\State Use LLM to infer logical dependencies among $P$ and populate $E$
+\State Topologically sort $G$ to obtain ranks $\text{rank}(p_i)$ for all $p_i$
+\State Initialize rolling memory $\text{Mem}^{(0)} \gets \emptyset$
+\For{each rank $r$ in ascending topological order}
+    \State Let $S^{(r)} = \{p_i \mid \text{rank}(p_i) = r\}$ \Comment{Subproblems at same level}
+    \State Construct unified query $q^{(r)} = \texttt{Merge}(S^{(r)})$ using LLM
+    \State Retrieve documents $C^{(r)} = R(q^{(r)}; \theta, K)$ \Comment{Unified retrieval}
+    \State Summarize $C^{(r)}$ with respect to $Q$ and $\text{Mem}^{(r-1)}$ to get $\text{Mem}^{(r)}$
+    \For{each $p_i \in S^{(r)}$}
+        \State Use LLM to resolve $p_i$ using $\text{Mem}^{(r)}$ and store intermediate answer $a_i$
+    \EndFor
+  \If{LLM identifies a new unresolved subproblem $p_{n+1}$}
+        \State Add new node $v_{n+1}$ to $V$ and edge(s) to $E$ if needed
+        \State Append $p_{n+1}$ as a new rank after the current rank sequence
+    \EndIf
+\EndFor
+\State Generate final answer $A = \texttt{Compose}(\{a_i\})$ using LLM
+\State \textbf{Return} $A$
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\subsection{B. Related Work}
+
+\textbf{Graph-based RAG} methods explicitly structure textual corpora into graphs to support multi-hop reasoning. For example, hierarchical-graph methods like GraphRAG~\cite{edge2024local} and RAPTOR~\cite{sarthi2024raptor} organize knowledge into multi-level document graphs (via community detection or recursive tree summarization) for coarse-to-fine retrieval. LightRAG~\cite{guo2024lightrag} similarly builds a dual-level, graph-augmented index to enable efficient, incrementally updatable retrieval. Inspired by hippocampal memory models, HippoRAG~\cite{HippoRAG} and HippoRAG2~\cite{hipporag2} constructs a knowledge graph to index text chunks, and employ Personalized PageRank to perform one-shot multi-hop search. These graph-based approaches can employ off-the-shelf graph reasoning algorithms~\cite{difflogic, neusymea, zhou2025taming, liu2023rsc, bei2023non, chen2024graphcrosscorelated,li2023gslb} for enhancing retrieval accuracy. However, they rely on pre-built knowledge graphs or indexes. In contrast, LogicRAG eschews any fixed graph: it dynamically constructs a logic dependency graph of intermediate subqueries at inference time and uses a topological ordering to guide retrieval in a logically coherent sequence. LogicRAG also prunes redundant graph branches and context passages at each step to reduce overlap and token usage, enabling efficient multi-hop reasoning without a precomputed graph structure.
+
+\textbf{Reasoning-enhanced RAG} methods instead interleave retrieval with the model’s own reasoning process. Think-on-Graph~\cite{ma2024think-on-graph-2.0} alternates between using a static knowledge graph and text retrieval, leveraging entity links to deepen contextual retrieval iteratively. Likewise, RRP~\cite{xiao2025reliablereasoningpathdistilling} distills guidance for LLM reasoning on well-established knowledge graphs. IRCoT~\cite{IRCOT} interleaves retrieval with a chain-of-thought: it uses the LLM’s intermediate reasoning steps to decide what to retrieve next, feeding retrieved facts back into the CoT. Likewise, IM-RAG~\cite{im-rag} trains the LLM to generate iterative ``inner monologue'' queries over multiple rounds of retrieval, refining its queries via reinforcement learning. Recent LAG~\cite{xiao2025laglogicaugmentedgenerationcartesian} enhances problem solving by problem decomposition and logic augmentation from a Cartesian perspective. These methods improve multi-step QA by tightly coupling retrieval with reasoning steps, but they still depend on fixed resources (like a static KG) or predetermined retrieval schedules. LogicRAG, by contrast, constructs and updates its reasoning DAG adaptively during inference. It schedules subgoals by topologically sorting the DAG, effectively planning retrieval in dependency order, and prunes irrelevant branches and context on the fly. This dynamic, adaptive planning lets LogicRAG perform flexible multi-step reasoning efficiently, without any static graph or fixed retrieval plan.
+
+
+
+\subsection*{C. Notations}
+
+Please refer to Table~\ref{tab:notation}.
+
+
+\begin{table}[hpt]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Description} \\
+\midrule
+$Q$ & Input query \\
+$A$ & Final answer generated by the RAG system \\
+$K$ & External knowledge corpus \\
+$C$ & Retrieved context for the query $Q$ \\
+$R(\cdot)$ & Retrieval function mapping queries to relevant contexts from $K$ \\
+$P = \{p_1, \dots, p_n\}$ & Set of subproblems decomposed from the input query $Q$ \\
+$G = (V, E)$ & Query logic dependency graph (a DAG) modeling subproblem dependencies \\
+$V = \{v_1, \dots, v_n\}$ & Node set of $G$, where $v_i$ corresponds to subproblem $p_i$ \\
+$E \subseteq V \times V$ & Directed edge set representing logical dependencies among subproblems \\
+$\mathrm{Pa}(v_i)$ & Set of parent nodes of $v_i$ in the DAG $G$ \\
+$f_{\mathrm{RAG}}(p_i, C_i)$ & RAG model output for subproblem $p_i$ with context $C_i$ \\
+$a_i$ & Answer generated for subproblem $p_i$ \\
+$\mathrm{Mem}^{(i)}$ & Rolling memory at step $i$, containing  summarized prior context \\
+$\mathrm{rank}(p_i)$ & Topological rank of subproblem $p_i$ in DAG $G$ \\
+$S^{(i)}$ & Set of subproblems with the same  rank $\mathrm{rank}(p_i)$ \\
+$q^{\mathrm{uni}}_i$ & Unified query constructed from $S^{(i)}$ \\
+$C^{\mathrm{uni}}_i$ & Retrieved context for the unified query $q^{\mathrm{uni}}_i$ \\
+\bottomrule
+\end{tabular}
+\caption{Notation Table}
+\label{tab:notation}
+\end{table}
+
+
+\subsection*{D. Case Study}
+
+We show a case of a three-hop question from the MuSiQue dataset, to demonstrate how to identify supporting knowledge for the question by multiround retrieval with reasoning. 
+
+This example demonstrates a complex multi-hop question requiring geopolitical knowledge, temporal reasoning, and indirect entity resolution. The question refers obliquely to the Soviet Union through the phrase \textit{“the country where, despite being headquartered in the nation called the nobilities commonwealth, the top-ranking Warsaw Pact operatives originated,”} which demands recognizing that the \textit{“nobilities commonwealth”} is a historical reference to the Polish–Lithuanian Commonwealth, and that while the Warsaw Pact was signed in Warsaw, Poland, it was dominated by the USSR. Thus, the country in question is the Soviet Union, making the Tripartite discussions involve Britain, France, and the USSR.
+
+To answer the temporal aspect of the question, the model must locate when discussions involving these three parties began. \textit{RetrievalBox3} provides a precise temporal signal: \textit{“In mid-June, the main Tripartite negotiations started.”} This date, paired with the correct identification of the USSR, allows for an accurate answer—June. The example illustrates the model’s ability to resolve indirect references, integrate multi-document evidence, and infer temporal details grounded in historical context.
+
+
+
+% Retrieval Box
+\newtcolorbox{retrievalbox}{
+    colback=orange!3!white,
+    colframe=orange!80!black!80!,
+    fonttitle=\bfseries\large,
+    title=Retrieval Round 1,
+    sharp corners,
+    boxrule=1pt,
+    left=6pt,
+    top=4pt,
+    bottom=4pt,
+    enhanced,
+    before upper={\parindent0pt\noindent}
+}
+
+\newtcolorbox{retrievalbox2}{
+    colback=orange!3!white,
+    % colframe=orange!80!black,
+    colframe=orange!80!black!80!,
+    fonttitle=\bfseries\large,
+    title=Retrieval Round 2,
+    sharp corners,
+    boxrule=1pt,
+    left=6pt,
+    top=4pt,
+    bottom=4pt,
+    enhanced,
+    before upper={\parindent0pt\noindent}
+}
+
+\newtcolorbox{retrievalbox3}{
+    colback=orange!3!white,
+    % colframe=orange!80!black,
+    colframe=orange!80!black!80!,
+    fonttitle=\bfseries\large,
+    title=Retrieval Round 3,
+    sharp corners,
+    boxrule=1pt,
+    left=6pt,
+    top=4pt,
+    bottom=4pt,
+    enhanced,
+    before upper={\parindent0pt\noindent}
+}
+
+
+\begin{questionbox}
+What month did the Tripartite discussions begin between Britain, France, \textbf{and the country where, despite being headquartered in the nation called the nobilities commonwealth, the top-ranking Warsaw Pact operatives} originated?
+\end{questionbox}
+
+\begin{retrievalbox}
+The Warsaw Pact, formally known as the Treaty of Friendship, Cooperation and Mutual Assistance, was a collective defence treaty signed in Warsaw, Poland among the Soviet Union and seven Soviet satellite states of Central and Eastern Europe during the Cold War. The Warsaw Pact was the military complement to the Council for Mutual Economic Assistance (CoMEcon), the regional economic organization for the socialist states of Central and Eastern Europe. The Warsaw Pact was created in reaction to the integration of West Germany into NATO in 1955 per the London and Paris Conferences of 1954, but it is also considered to have been motivated by Soviet desires to maintain control over military forces in Central and Eastern Europe.
+\end{retrievalbox}
+
+\begin{retrievalbox2}
+The eight member countries of the Warsaw Pact pledged the mutual defense of any member who would be attacked. Relations among the treaty signatories were based upon mutual non-intervention in the internal affairs of the member countries, respect for national sovereignty, and political independence. However, almost all governments of those member states were indirectly controlled by the Soviet Union.
+\end{retrievalbox2}
+
+\begin{retrievalbox3}
+By the end of May, drafts were formally presented. In mid-June, the main Tripartite negotiations started. The discussion was focused on potential guarantees to central and east European countries should a German aggression arise. The USSR proposed to consider that a political turn towards Germany by the Baltic states would constitute an "indirect aggression" towards the Soviet Union. Britain opposed such proposals, because they feared the Soviets\' proposed language could justify a Soviet intervention in Finland and the Baltic states, or push those countries to seek closer relations with Germany. The discussion about a definition of "indirect aggression" became one of the sticking points between the parties, and by mid-July, the tripartite political negotiations effectively stalled, while the parties agreed to start negotiations on a military agreement, which the Soviets insisted must be entered into simultaneously with any political agreement.
+\end{retrievalbox3}
+
+
+\begin{answerbox}
+\textbf{June}
+\medskip
+\textit{Supporting Evidence:}
+\begin{itemize}[leftmargin=*,nosep]
+    \item Historical records state: "\textbf{In mid-June}, the main Tripartite negotiations started"
+    \item Contextual factors:
+    \begin{itemize}[leftmargin=*]
+        \item The "nobilities commonwealth" refers to the USSR (headquartered in Moscow)
+        \item Warsaw Pact operatives were predominantly Soviet-controlled
+        \item Discussions focused on Central/Eastern European security guarantees
+    \end{itemize}
+\end{itemize}
+\end{answerbox}
+

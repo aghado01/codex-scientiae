@@ -1,0 +1,447 @@
+\begin{thebibliography}{89}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Abraham et~al.(2022)Abraham, Rahman, and Kaur}]{abraham2022tablequery}
+Abhijith~Neil Abraham, Fariz Rahman, and Damanpreet Kaur. 2022.
+\newblock Tablequery: Querying tabular data with natural language.
+\newblock \emph{arXiv preprint arXiv:2202.00454}.
+
+\bibitem[{Achiam et~al.(2023)}]{achiam2023gpt}
+Josh Achiam and 1 others. 2023.
+\newblock Gpt-4 technical report.
+\newblock \emph{arXiv preprint arXiv:2303.08774}.
+
+\bibitem[{Agarwal et~al.(2025)Agarwal, Singh, Zhang, Bohnet, Rosias, Chan, Zhang, Anand, Abbas, Nova et~al.}]{agarwal2025many}
+Rishabh Agarwal, Avi Singh, Lei Zhang, Bernd Bohnet, Luis Rosias, Stephanie Chan, Biao Zhang, Ankesh Anand, Zaheer Abbas, Azade Nova, and 1 others. 2025.
+\newblock Many-shot in-context learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:76930--76966.
+
+\bibitem[{Akhtar et~al.(2023)Akhtar, Shankarampeta, Gupta, Patil, Cocarascu, and Simperl}]{akhtar2023exploring}
+Mubashara Akhtar, Abhilash Shankarampeta, Vivek Gupta, Arpit Patil, Oana Cocarascu, and Elena Simperl. 2023.
+\newblock Exploring the numerical reasoning capabilities of language models: A comprehensive analysis on tabular data.
+\newblock \emph{arXiv preprint arXiv:2311.02216}.
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal, Neelakantan, Shyam, Sastry, Askell et~al.}]{brown2020language}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, and 1 others. 2020.
+\newblock Language models are few-shot learners.
+\newblock \emph{Advances in neural information processing systems}, 33:1877--1901.
+
+\bibitem[{Chen et~al.(2024{\natexlab{a}})Chen, Lin, Han, and Sun}]{chen2024benchmarking}
+Jiawei Chen, Hongyu Lin, Xianpei Han, and Le~Sun. 2024{\natexlab{a}}.
+\newblock Benchmarking large language models in retrieval-augmented generation.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, volume~38, pages 17754--17762.
+
+\bibitem[{Chen(2022)}]{chen2022large}
+Wenhu Chen. 2022.
+\newblock Large language models are few (1)-shot table reasoners.
+\newblock \emph{arXiv preprint arXiv:2210.06710}.
+
+\bibitem[{Chen et~al.(2024{\natexlab{b}})Chen, Fang, Lin, and Liu}]{chen2024relational}
+Yang Chen, Cong Fang, Zhouchen Lin, and Bing Liu. 2024{\natexlab{b}}.
+\newblock Relational learning in pre-trained models: A theory from hypergraph recovery perspective.
+\newblock \emph{arXiv preprint arXiv:2406.11249}.
+
+\bibitem[{Chen et~al.(2021)Chen, Coskunuzer, and Gel}]{chen2021topological}
+Yuzhou Chen, Baris Coskunuzer, and Yulia Gel. 2021.
+\newblock Topological relational learning on graphs.
+\newblock \emph{Advances in neural information processing systems}, 34:27029--27042.
+
+\bibitem[{Chen et~al.(2025)Chen, Tang, Deng, Wu, Wu, Jiang, Prasanna, Cohan, and Wang}]{chen2025locagent}
+Zhaoling Chen, Xiangru Tang, Gangda Deng, Fang Wu, Jialong Wu, Zhiwei Jiang, Viktor Prasanna, Arman Cohan, and Xingyao Wang. 2025.
+\newblock Locagent: Graph-guided llm agents for code localization.
+\newblock \emph{arXiv preprint arXiv:2503.09089}.
+
+\bibitem[{De~Raedt(2008)}]{de2008logical}
+Luc De~Raedt. 2008.
+\newblock \emph{Logical and relational learning}.
+\newblock Springer Science \& Business Media.
+
+\bibitem[{De~Raedt and Kersting(2008)}]{de2008probabilistic}
+Luc De~Raedt and Kristian Kersting. 2008.
+\newblock Probabilistic inductive logic programming.
+\newblock In \emph{Probabilistic inductive logic programming: theory and applications}, pages 1--27. Springer.
+
+\bibitem[{D{\v{z}}eroski(2010)}]{dvzeroski2010relational}
+Sa{\v{s}}o D{\v{z}}eroski. 2010.
+\newblock \emph{Relational data mining}.
+\newblock Springer.
+
+\bibitem[{Eggert et~al.(2023)Eggert, Huo, Biven, and Waugh}]{eggert2023tablib}
+Gus Eggert, Kevin Huo, Mike Biven, and Justin Waugh. 2023.
+\newblock Tablib: A dataset of 627m tables with context.
+\newblock \emph{arXiv preprint arXiv:2310.07875}.
+
+\bibitem[{Fang et~al.(2024)Fang, Xu, Tan, Zhang, Hu, Qi, Nickleach, Socolinsky, Sengamedu, Faloutsos et~al.}]{fang2024large}
+Xi~Fang, Weijie Xu, Fiona~Anting Tan, Jiani Zhang, Ziqing Hu, Yanjun~Jane Qi, Scott Nickleach, Diego Socolinsky, Srinivasan Sengamedu, Christos Faloutsos, and 1 others. 2024.
+\newblock Large language models (llms) on tabular data: Prediction, generation, and understanding-a survey.
+
+\bibitem[{Fey et~al.(2023)Fey, Hu, Huang, Lenssen, Ranjan, Robinson, Ying, You, and Leskovec}]{fey2023relational}
+Matthias Fey, Weihua Hu, Kexin Huang, Jan~Eric Lenssen, Rishabh Ranjan, Joshua Robinson, Rex Ying, Jiaxuan You, and Jure Leskovec. 2023.
+\newblock Relational deep learning: Graph representation learning on relational databases.
+\newblock \emph{arXiv preprint arXiv:2312.04615}.
+
+\bibitem[{Fey et~al.(2024)Fey, Hu, Huang, Lenssen, Ranjan, Robinson, Ying, You, and Leskovec}]{feyposition}
+Matthias Fey, Weihua Hu, Kexin Huang, Jan~Eric Lenssen, Rishabh Ranjan, Joshua Robinson, Rex Ying, Jiaxuan You, and Jure Leskovec. 2024.
+\newblock Position: Relational deep learning-graph representation learning on relational databases.
+\newblock In \emph{Forty-first International Conference on Machine Learning}.
+
+\bibitem[{Fey and Lenssen(2019)}]{fey2019fast}
+Matthias Fey and Jan~Eric Lenssen. 2019.
+\newblock Fast graph representation learning with pytorch geometric.
+\newblock \emph{arXiv preprint arXiv:1903.02428}.
+
+\bibitem[{Gao et~al.(2023)Gao, Xiong, Gao, Jia, Pan, Bi, Dai, Sun, and Wang}]{gao2023retrieval}
+Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi~Dai, Jiawei Sun, and Haofen Wang. 2023.
+\newblock Retrieval-augmented generation for large language models: A survey.
+\newblock \emph{arXiv preprint arXiv:2312.10997}.
+
+\bibitem[{Gardner et~al.(2024)Gardner, Perdomo, and Schmidt}]{gardner2024large}
+Josh Gardner, Juan~C Perdomo, and Ludwig Schmidt. 2024.
+\newblock Large scale transfer learning for tabular data via language modeling.
+\newblock \emph{arXiv preprint arXiv:2406.12031}.
+
+\bibitem[{Garg et~al.(2022)Garg, Tsipras, Liang, and Valiant}]{garg2022can}
+Shivam Garg, Dimitris Tsipras, Percy~S Liang, and Gregory Valiant. 2022.
+\newblock What can transformers learn in-context? a case study of simple function classes.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:30583--30598.
+
+\bibitem[{Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and Dahl}]{gilmer2017neural}
+Justin Gilmer, Samuel~S Schoenholz, Patrick~F Riley, Oriol Vinyals, and George~E Dahl. 2017.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{International conference on machine learning}, pages 1263--1272. PMLR.
+
+\bibitem[{Gulati and Roysdon(2024)}]{gulati2024tabmt}
+Manbir Gulati and Paul Roysdon. 2024.
+\newblock Tabmt: Generating tabular data with masked transformers.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36.
+
+\bibitem[{Guo et~al.(2025)Guo, Yang, Zhang, Song, Zhang, Xu, Zhu, Ma, Wang, Bi et~al.}]{guo2025deepseek}
+Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, and 1 others. 2025.
+\newblock Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:2501.12948}.
+
+\bibitem[{Gupta et~al.(2024)Gupta, Ranjan, and Singh}]{gupta2024comprehensive}
+Shailja Gupta, Rajesh Ranjan, and Surya~Narayan Singh. 2024.
+\newblock A comprehensive survey of retrieval-augmented generation (rag): Evolution, current landscape and future directions.
+\newblock \emph{arXiv preprint arXiv:2410.12837}.
+
+\bibitem[{Hamilton et~al.(2017)Hamilton, Ying, and Leskovec}]{hamilton2017inductive}
+Will Hamilton, Zhitao Ying, and Jure Leskovec. 2017.
+\newblock Inductive representation learning on large graphs.
+\newblock \emph{Advances in neural information processing systems}, 30.
+
+\bibitem[{He et~al.(2024)He, Tian, Sun, Chawla, Laurent, LeCun, Bresson, and Hooi}]{he2024g}
+Xiaoxin He, Yijun Tian, Yifei Sun, Nitesh~V Chawla, Thomas Laurent, Yann LeCun, Xavier Bresson, and Bryan Hooi. 2024.
+\newblock G-retriever: Retrieval-augmented generation for textual graph understanding and question answering.
+\newblock \emph{arXiv preprint arXiv:2402.07630}.
+
+\bibitem[{Hegselmann et~al.(2023)Hegselmann, Buendia, Lang, Agrawal, Jiang, and Sontag}]{hegselmann2023tabllm}
+Stefan Hegselmann, Alejandro Buendia, Hunter Lang, Monica Agrawal, Xiaoyi Jiang, and David Sontag. 2023.
+\newblock Tabllm: Few-shot classification of tabular data with large language models.
+\newblock In \emph{International Conference on Artificial Intelligence and Statistics}, pages 5549--5581. PMLR.
+
+\bibitem[{Hou et~al.(2024)Hou, Zhang, Lin, Lu, Xie, McAuley, and Zhao}]{hou2024large}
+Yupeng Hou, Junjie Zhang, Zihan Lin, Hongyu Lu, Ruobing Xie, Julian McAuley, and Wayne~Xin Zhao. 2024.
+\newblock Large language models are zero-shot rankers for recommender systems.
+\newblock In \emph{European Conference on Information Retrieval}, pages 364--381. Springer.
+
+\bibitem[{Hu et~al.(2024)Hu, Yuan, Zhang, Nitta, Cao, Kocijan, Leskovec, and Fey}]{hu2024pytorch}
+Weihua Hu, Yiwen Yuan, Zecheng Zhang, Akihiro Nitta, Kaidi Cao, Vid Kocijan, Jure Leskovec, and Matthias Fey. 2024.
+\newblock Pytorch frame: A modular framework for multi-modal tabular learning.
+\newblock \emph{arXiv preprint arXiv:2404.00776}.
+
+\bibitem[{Hu et~al.(2020)Hu, Dong, Wang, and Sun}]{hu2020heterogeneous}
+Ziniu Hu, Yuxiao Dong, Kuansan Wang, and Yizhou Sun. 2020.
+\newblock Heterogeneous graph transformer.
+\newblock In \emph{Proceedings of the web conference 2020}, pages 2704--2710.
+
+\bibitem[{Iida et~al.(2021)Iida, Thai, Manjunatha, and Iyyer}]{iida2021tabbie}
+Hiroshi Iida, Dung Thai, Varun Manjunatha, and Mohit Iyyer. 2021.
+\newblock Tabbie: Pretrained representations of tabular data.
+\newblock \emph{arXiv preprint arXiv:2105.02584}.
+
+\bibitem[{Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and Liu}]{ke2017lightgbm}
+Guolin Ke, Qi~Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu. 2017.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock \emph{Advances in neural information processing systems}, 30.
+
+\bibitem[{Kingma(2014)}]{kingma2014adam}
+Diederik~P Kingma. 2014.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{arXiv preprint arXiv:1412.6980}.
+
+\bibitem[{Kipf and Welling(2016)}]{kipf2016semi}
+Thomas~N Kipf and Max Welling. 2016.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock \emph{arXiv preprint arXiv:1609.02907}.
+
+\bibitem[{LeCun et~al.(2015)LeCun, Bengio, and Hinton}]{lecun2015deep}
+Yann LeCun, Yoshua Bengio, and Geoffrey Hinton. 2015.
+\newblock Deep learning.
+\newblock \emph{nature}, 521(7553):436--444.
+
+\bibitem[{Lewis et~al.(2020)Lewis, Perez, Piktus, Petroni, Karpukhin, Goyal, K{\"u}ttler, Lewis, Yih, Rockt{\"a}schel et~al.}]{lewis2020retrieval}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich K{\"u}ttler, Mike Lewis, Wen-tau Yih, Tim Rockt{\"a}schel, and 1 others. 2020.
+\newblock Retrieval-augmented generation for knowledge-intensive nlp tasks.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:9459--9474.
+
+\bibitem[{Li et~al.(2024)Li, Huang, Zheng, Wang, Wang, Pan, and Li}]{li2024rllm}
+Weichen Li, Xiaotong Huang, Jianwu Zheng, Zheng Wang, Chaokun Wang, Li~Pan, and Jianhua Li. 2024.
+\newblock rllm: Relational table learning with llms.
+\newblock \emph{arXiv preprint arXiv:2407.20157}.
+
+\bibitem[{Lin(2017)}]{lin2017focal}
+T~Lin. 2017.
+\newblock Focal loss for dense object detection.
+\newblock \emph{arXiv preprint arXiv:1708.02002}.
+
+\bibitem[{Liu et~al.(2024)Liu, Li, Wu, and Lee}]{liu2024visual}
+Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong~Jae Lee. 2024.
+\newblock Visual instruction tuning.
+\newblock \emph{Advances in neural information processing systems}, 36.
+
+\bibitem[{Liu et~al.(2021)Liu, Chen, Guo, Ziyadi, Lin, Chen, and Lou}]{liu2021tapex}
+Qian Liu, Bei Chen, Jiaqi Guo, Morteza Ziyadi, Zeqi Lin, Weizhu Chen, and Jian-Guang Lou. 2021.
+\newblock Tapex: Table pre-training via learning a neural sql executor.
+\newblock \emph{arXiv preprint arXiv:2107.07653}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{a}})Liu, Wang, and Chen}]{liu2023rethinking}
+Tianyang Liu, Fei Wang, and Muhao Chen. 2023{\natexlab{a}}.
+\newblock Rethinking tabular data understanding with large language models.
+\newblock \emph{arXiv preprint arXiv:2312.16702}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{b}})Liu, Gautam, Ma, and Lakkaraju}]{liu2023investigating}
+Yanchen Liu, Srishti Gautam, Jiaqi Ma, and Himabindu Lakkaraju. 2023{\natexlab{b}}.
+\newblock Investigating the fairness of large language models for predictions on tabular data.
+\newblock \emph{arXiv preprint arXiv:2310.14607}.
+
+\bibitem[{Loshchilov(2017)}]{loshchilov2017decoupled}
+I~Loshchilov. 2017.
+\newblock Decoupled weight decay regularization.
+\newblock \emph{arXiv preprint arXiv:1711.05101}.
+
+\bibitem[{Lu et~al.(2021)Lu, Bartolo, Moore, Riedel, and Stenetorp}]{lu2021fantastically}
+Yao Lu, Max Bartolo, Alastair Moore, Sebastian Riedel, and Pontus Stenetorp. 2021.
+\newblock Fantastically ordered prompts and where to find them: Overcoming few-shot prompt order sensitivity.
+\newblock \emph{arXiv preprint arXiv:2104.08786}.
+
+\bibitem[{Ma et~al.(2021)Ma, Wu, Xue, Yang, Zhou, Sheng, Xiong, and Akoglu}]{ma2021comprehensive}
+Xiaoxiao Ma, Jia Wu, Shan Xue, Jian Yang, Chuan Zhou, Quan~Z Sheng, Hui Xiong, and Leman Akoglu. 2021.
+\newblock A comprehensive survey on graph anomaly detection with deep learning.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering}, 35(12):12012--12038.
+
+\bibitem[{Min et~al.(2022)Min, Lyu, Holtzman, Artetxe, Lewis, Hajishirzi, and Zettlemoyer}]{min2022rethinking}
+Sewon Min, Xinxi Lyu, Ari Holtzman, Mikel Artetxe, Mike Lewis, Hannaneh Hajishirzi, and Luke Zettlemoyer. 2022.
+\newblock Rethinking the role of demonstrations: What makes in-context learning work?
+\newblock \emph{arXiv preprint arXiv:2202.12837}.
+
+\bibitem[{Minaee et~al.(2024)Minaee, Mikolov, Nikzad, Chenaghlu, Socher, Amatriain, and Gao}]{minaee2024large}
+Shervin Minaee, Tomas Mikolov, Narjes Nikzad, Meysam Chenaghlu, Richard Socher, Xavier Amatriain, and Jianfeng Gao. 2024.
+\newblock Large language models: A survey.
+\newblock \emph{arXiv preprint arXiv:2402.06196}.
+
+\bibitem[{Motl and Schulte(2015)}]{motl2015ctu}
+Jan Motl and Oliver Schulte. 2015.
+\newblock The ctu prague relational learning repository.
+\newblock \emph{arXiv preprint arXiv:1511.03086}.
+
+\bibitem[{Nickel et~al.(2016)Nickel, Rosasco, and Poggio}]{nickel2016holographic}
+Maximilian Nickel, Lorenzo Rosasco, and Tomaso Poggio. 2016.
+\newblock Holographic embeddings of knowledge graphs.
+\newblock In \emph{Proceedings of the AAAI conference on artificial intelligence}, volume~30.
+
+\bibitem[{Nickel et~al.(2011)Nickel, Tresp, Kriegel et~al.}]{nickel2011three}
+Maximilian Nickel, Volker Tresp, Hans-Peter Kriegel, and 1 others. 2011.
+\newblock A three-way model for collective learning on multi-relational data.
+\newblock In \emph{Icml}, volume~11, pages 3104482--3104584.
+
+\bibitem[{Padhi et~al.(2021)Padhi, Schiff, Melnyk, Rigotti, Mroueh, Dognin, Ross, Nair, and Altman}]{padhi2021tabular}
+Inkit Padhi, Yair Schiff, Igor Melnyk, Mattia Rigotti, Youssef Mroueh, Pierre Dognin, Jerret Ross, Ravi Nair, and Erik Altman. 2021.
+\newblock Tabular transformers for modeling multivariate time series.
+\newblock In \emph{ICASSP 2021-2021 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, pages 3565--3569. IEEE.
+
+\bibitem[{Pan(2023)}]{pan2023context}
+Jane Pan. 2023.
+\newblock What in-context learning “learns” in-context: Disentangling task recognition and task learning.
+\newblock Master's thesis, Princeton University.
+
+\bibitem[{Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan, Killeen, Lin, Gimelshein, Antiga et~al.}]{paszke2019pytorch}
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, and 1 others. 2019.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock \emph{Advances in neural information processing systems}, 32.
+
+\bibitem[{Perozzi et~al.(2014)Perozzi, Al-Rfou, and Skiena}]{perozzi2014deepwalk}
+Bryan Perozzi, Rami Al-Rfou, and Steven Skiena. 2014.
+\newblock Deepwalk: Online learning of social representations.
+\newblock In \emph{Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining}, pages 701--710.
+
+\bibitem[{Qin et~al.(2022)Qin, Kim, Zhao, Yu, Rossi, and Fu}]{qin2022external}
+Can Qin, Sungchul Kim, Handong Zhao, Tong Yu, Ryan~A Rossi, and Yun Fu. 2022.
+\newblock External knowledge infusion for tabular pre-training models with dual-adapters.
+\newblock In \emph{Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining}, pages 1401--1409.
+
+\bibitem[{Qin et~al.(2024)Qin, Luo, Wang, Jiang, and Sun}]{qin2024relational}
+Zongyue Qin, Chen Luo, Zhengyang Wang, Haoming Jiang, and Yizhou Sun. 2024.
+\newblock Relational database augmented large language model.
+\newblock \emph{arXiv preprint arXiv:2407.15071}.
+
+\bibitem[{Raffel et~al.(2020)Raffel, Shazeer, Roberts, Lee, Narang, Matena, Zhou, Li, and Liu}]{raffel2020exploring}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter~J Liu. 2020.
+\newblock Exploring the limits of transfer learning with a unified text-to-text transformer.
+\newblock \emph{Journal of machine learning research}, 21(140):1--67.
+
+\bibitem[{Robinson et~al.(2024)Robinson, Ranjan, Hu, Huang, Han, Dobles, Fey, Lenssen, Yuan, Zhang et~al.}]{robinson2024relbench}
+Joshua Robinson, Rishabh Ranjan, Weihua Hu, Kexin Huang, Jiaqi Han, Alejandro Dobles, Matthias Fey, Jan~E Lenssen, Yiwen Yuan, Zecheng Zhang, and 1 others. 2024.
+\newblock Relbench: A benchmark for deep learning on relational databases.
+\newblock \emph{arXiv preprint arXiv:2407.20060}.
+
+\bibitem[{Rozemberczki et~al.(2021)Rozemberczki, Bonner, Nikolov, Ughetto, Nilsson, and Papa}]{rozemberczki2021unified}
+Benedek Rozemberczki, Stephen Bonner, Andriy Nikolov, Michael Ughetto, Sebastian Nilsson, and Eliseo Papa. 2021.
+\newblock A unified view of relational deep learning for drug pair scoring.
+\newblock \emph{arXiv preprint arXiv:2111.02916}.
+
+\bibitem[{Ruan et~al.(2024)Ruan, Lan, Ma, Dong, He, and Feng}]{ruan2024language}
+Yucheng Ruan, Xiang Lan, Jingying Ma, Yizhi Dong, Kai He, and Mengling Feng. 2024.
+\newblock Language modeling on tabular data: A survey of foundations, techniques and evolution.
+\newblock \emph{arXiv preprint arXiv:2408.10548}.
+
+\bibitem[{Schlichtkrull et~al.(2018)Schlichtkrull, Kipf, Bloem, Van Den~Berg, Titov, and Welling}]{schlichtkrull2018modeling}
+Michael Schlichtkrull, Thomas~N Kipf, Peter Bloem, Rianne Van Den~Berg, Ivan Titov, and Max Welling. 2018.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In \emph{The semantic web: 15th international conference, ESWC 2018, Heraklion, Crete, Greece, June 3--7, 2018, proceedings 15}, pages 593--607. Springer.
+
+\bibitem[{Singha et~al.(2023)Singha, Cambronero, Gulwani, Le, and Parnin}]{singha2023tabular}
+Ananya Singha, Jos{\'e} Cambronero, Sumit Gulwani, Vu~Le, and Chris Parnin. 2023.
+\newblock Tabular representation, noisy operators, and impacts on table structure understanding tasks in llms.
+\newblock \emph{arXiv preprint arXiv:2310.10358}.
+
+\bibitem[{Struyf and Blockeel(2010)}]{struyf2010relational}
+Jan Struyf and Hendrik Blockeel. 2010.
+\newblock Relational learning.
+
+\bibitem[{Sui et~al.(2024)Sui, Zhou, Zhou, Han, and Zhang}]{sui2024table}
+Yuan Sui, Mengyu Zhou, Mingjie Zhou, Shi Han, and Dongmei Zhang. 2024.
+\newblock Table meets llm: Can large language models understand structured table data? a benchmark and empirical study.
+\newblock In \emph{Proceedings of the 17th ACM International Conference on Web Search and Data Mining}, pages 645--654.
+
+\bibitem[{Sui et~al.(2023)Sui, Zou, Zhou, He, Du, Han, and Zhang}]{sui2023tap4llm}
+Yuan Sui, Jiaru Zou, Mengyu Zhou, Xinyi He, Lun Du, Shi Han, and Dongmei Zhang. 2023.
+\newblock Tap4llm: Table provider on sampling, augmenting, and packing semi-structured data for large language model reasoning.
+\newblock \emph{arXiv preprint arXiv:2312.09039}.
+
+\bibitem[{Sundar and Heck(2023)}]{sundar2023ctbls}
+Anirudh~S Sundar and Larry Heck. 2023.
+\newblock ctbls: Augmenting large language models with conversational tables.
+\newblock \emph{arXiv preprint arXiv:2303.12024}.
+
+\bibitem[{Tang et~al.(2025)Tang, Shao, Sohn, Chen, Zhang, Xiang, Wu, Zhao, Wu, Shi et~al.}]{tang2025medagentsbench}
+Xiangru Tang, Daniel Shao, Jiwoong Sohn, Jiapeng Chen, Jiayi Zhang, Jinyu Xiang, Fang Wu, Yilun Zhao, Chenglin Wu, Wenqi Shi, and 1 others. 2025.
+\newblock Medagentsbench: Benchmarking thinking models and agent frameworks for complex medical reasoning.
+\newblock \emph{arXiv preprint arXiv:2503.07459}.
+
+\bibitem[{Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar et~al.}]{touvron2023Llama}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timoth{\'e}e Lacroix, Baptiste Rozi{\`e}re, Naman Goyal, Eric Hambro, Faisal Azhar, and 1 others. 2023.
+\newblock Llama: Open and efficient foundation language models.
+\newblock \emph{arXiv preprint arXiv:2302.13971}.
+
+\bibitem[{Wang et~al.(2023)Wang, Wang, and Sun}]{wang2023unipredict}
+Ruiyu Wang, Zifeng Wang, and Jimeng Sun. 2023.
+\newblock Unipredict: Large language models are universal tabular predictors.
+\newblock \emph{arXiv preprint arXiv:2310.03266}.
+
+\bibitem[{Wang et~al.(2024)Wang, Salmani, Omidi, Ren, Rezagholizadeh, and Eshaghi}]{wang2024beyond}
+Xindi Wang, Mahsa Salmani, Parsa Omidi, Xiangyu Ren, Mehdi Rezagholizadeh, and Armaghan Eshaghi. 2024.
+\newblock Beyond the limits: A survey of techniques to extend the context length in large language models.
+\newblock \emph{arXiv preprint arXiv:2402.02244}.
+
+\bibitem[{Wang et~al.(2021)Wang, Dong, Jia, Li, Fu, Han, and Zhang}]{wang2021tuta}
+Zhiruo Wang, Haoyu Dong, Ran Jia, Jia Li, Zhiyi Fu, Shi Han, and Dongmei Zhang. 2021.
+\newblock Tuta: Tree-based transformers for generally structured table pre-training.
+\newblock In \emph{Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery \& Data Mining}, pages 1780--1790.
+
+\bibitem[{Wang and Sun(2022)}]{wang2022transtab}
+Zifeng Wang and Jimeng Sun. 2022.
+\newblock Transtab: Learning transferable tabular transformers across tables.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:2902--2915.
+
+\bibitem[{Wasi et~al.(2024)Wasi, Islam, Akib, and Bappy}]{wasi2024graph}
+Azmine~Toushik Wasi, MD~Islam, Adipto~Raihan Akib, and Mahathir~Mohammad Bappy. 2024.
+\newblock Graph neural networks in supply chain analytics and optimization: Concepts, perspectives, dataset and benchmarks.
+\newblock \emph{arXiv preprint arXiv:2411.08550}.
+
+\bibitem[{Wei et~al.(2022)Wei, Wang, Schuurmans, Bosma, Xia, Chi, Le, Zhou et~al.}]{wei2022chain}
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed~Chi, Quoc~V Le, Denny Zhou, and 1 others. 2022.
+\newblock Chain-of-thought prompting elicits reasoning in large language models.
+\newblock \emph{Advances in neural information processing systems}, 35:24824--24837.
+
+\bibitem[{Wolf et~al.(2023)Wolf, Wies, Avnery, Levine, and Shashua}]{wolf2023fundamental}
+Yotam Wolf, Noam Wies, Oshri Avnery, Yoav Levine, and Amnon Shashua. 2023.
+\newblock Fundamental limitations of alignment in large language models.
+\newblock \emph{arXiv preprint arXiv:2304.11082}.
+
+\bibitem[{Wu et~al.(2023)Wu, Li, Jin, Jiang, Radev, Niu, and Li}]{wu2023rethinking}
+Fang Wu, Siyuan Li, Xurui Jin, Yinghui Jiang, Dragomir Radev, Zhangming Niu, and Stan~Z Li. 2023.
+\newblock Rethinking explaining graph neural networks via non-parametric subgraph matching.
+\newblock In \emph{International conference on machine learning}, pages 37511--37523. PMLR.
+
+\bibitem[{Wu et~al.(2024)Wu, Li, and Li}]{wu2024discovering}
+Fang Wu, Siyuan Li, and Stan~Z Li. 2024.
+\newblock Discovering the representation bottleneck of graph neural networks.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering}.
+
+\bibitem[{Wu and Li(2024)}]{wu2024insertgnn}
+Fang Wu and Stan Li. 2024.
+\newblock Insertgnn: A hierarchical graph neural network for the toefl sentence insertion problem.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2024}, pages 173--180.
+
+\bibitem[{Wydmuch et~al.(2024)Wydmuch, Borchmann, and Grali{\'n}ski}]{wydmuch2024tackling}
+Marek Wydmuch, {\L}ukasz Borchmann, and Filip Grali{\'n}ski. 2024.
+\newblock Tackling prediction tasks in relational databases with llms.
+\newblock \emph{arXiv preprint arXiv:2411.11829}.
+
+\bibitem[{Xu et~al.(2024)Xu, Wu, Zhang, and Zhao}]{xu2024retrieval}
+Zerui Xu, Fang Wu, Yuanyuan Zhang, and Yue Zhao. 2024.
+\newblock Retrieval-reasoning large language model-based synthetic clinical trial generation.
+\newblock \emph{arXiv preprint arXiv:2410.12476}.
+
+\bibitem[{Yang et~al.(2023)Yang, Wang, Liu, Wu, and Liu}]{yang2023unitabe}
+Yazheng Yang, Yuqi Wang, Guang Liu, Ledell Wu, and Qi~Liu. 2023.
+\newblock Unitabe: Pretraining a unified tabular encoder for heterogeneous tabular data.
+\newblock \emph{arXiv preprint arXiv:2307.09249}.
+
+\bibitem[{Ye et~al.(2023)Ye, Hui, Yang, Li, Huang, and Li}]{ye2023large}
+Yunhu Ye, Binyuan Hui, Min Yang, Binhua Li, Fei Huang, and Yongbin Li. 2023.
+\newblock Large language models are versatile decomposers: Decomposing evidence and questions for table-based reasoning.
+\newblock In \emph{Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval}, pages 174--184.
+
+\bibitem[{Ying et~al.(2018)Ying, He, Chen, Eksombatchai, Hamilton, and Leskovec}]{ying2018graph}
+Rex Ying, Ruining He, Kaifeng Chen, Pong Eksombatchai, William~L Hamilton, and Jure Leskovec. 2018.
+\newblock Graph convolutional neural networks for web-scale recommender systems.
+\newblock In \emph{Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery \& data mining}, pages 974--983.
+
+\bibitem[{Zahradn{\'\i}k et~al.(2023)Zahradn{\'\i}k, Neumann, and {\v{S}}{\'\i}r}]{zahradnik2023deep}
+Luk{\'a}{\v{s}} Zahradn{\'\i}k, Jan Neumann, and Gustav {\v{S}}{\'\i}r. 2023.
+\newblock A deep learning blueprint for relational databases.
+\newblock In \emph{NeurIPS 2023 Second Table Representation Learning Workshop}.
+
+\bibitem[{Zambaldi et~al.(2018)Zambaldi, Raposo, Santoro, Bapst, Li, Babuschkin, Tuyls, Reichert, Lillicrap, Lockhart et~al.}]{zambaldi2018relational}
+Vinicius Zambaldi, David Raposo, Adam Santoro, Victor Bapst, Yujia Li, Igor Babuschkin, Karl Tuyls, David Reichert, Timothy Lillicrap, Edward Lockhart, and 1 others. 2018.
+\newblock Relational deep reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1806.01830}.
+
+\bibitem[{Zhang et~al.(2023)Zhang, Li, Cui, Cai, Liu, Fu, Huang, Zhao, Zhang, Chen et~al.}]{zhang2023siren}
+Yue Zhang, Yafu Li, Leyang Cui, Deng Cai, Lemao Liu, Tingchen Fu, Xinting Huang, Enbo Zhao, Yu~Zhang, Yulong Chen, and 1 others. 2023.
+\newblock Siren's song in the ai ocean: a survey on hallucination in large language models.
+\newblock \emph{arXiv preprint arXiv:2309.01219}.
+
+\bibitem[{Zhao et~al.(2023)Zhao, Zhou, Li, Tang, Wang, Hou, Min, Zhang, Zhang, Dong et~al.}]{zhao2023survey}
+Wayne~Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, and 1 others. 2023.
+\newblock A survey of large language models.
+\newblock \emph{arXiv preprint arXiv:2303.18223}.
+
+\bibitem[{Zhu et~al.(2021)Zhu, Lei, Huang, Wang, Zhang, Lv, Feng, and Chua}]{zhu2021tat}
+Fengbin Zhu, Wenqiang Lei, Youcheng Huang, Chao Wang, Shuo Zhang, Jiancheng Lv, Fuli Feng, and Tat-Seng Chua. 2021.
+\newblock Tat-qa: A question answering benchmark on a hybrid of tabular and textual content in finance.
+\newblock \emph{arXiv preprint arXiv:2105.07624}.
+
+\end{thebibliography}

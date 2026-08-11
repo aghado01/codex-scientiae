@@ -1,0 +1,74 @@
+\vspace{-0.2cm}
+\section{Knowledge Units}
+
+To extract knowledge from a document, its text is segmented into manageable sections or paragraphs. Each paragraph is subsequently processed by an LM to identify entities, along with their attributes and relationships, resulting in a structured output referred to as a \textit{Knowledge Unit} (Table \ref{tab:original_vs_ku}).
+
+\vspace{-1.0em}
+
+\begin{quote}
+\textbf{Knowledge Unit (KU):} A set of entities, attributes, and relationships, capturing a short original text excerpt. 
+\end{quote}
+
+\vspace{-1.0em}
+Each Knowledge Unit captures:
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0em]
+    \item \textit{Entities}: the core concepts or objects in the paragraph, with relevant attributes.
+    \item \textit{Relationships}: statements that connect or link entities, such as causal or definitional relationships.
+    \item \textit{Attributes}: statements that describe entities according to the excerpt.
+    \item \textit{Context summary}: A few sentences summarizing the previous knowledge units.
+    \item \textit{Sentence MinHash}: A list of MinHashes of the source sentences used to generate this KU. 
+\end{itemize}
+
+\begin{table*}[ht]
+\centering
+\small
+\vspace{-0.3cm}
+\caption{\textbf{Converting Original Text to a Knowledge Unit.} \emph{Left:} Sample input paragraph presenting the dark matter field fluid model explaining the Earth-Moon system's evolution and predicting Mars's rotational deceleration, challenging tidal friction as the primary driver.~\cite{pan2007evolution} 
+\emph{Right:} Resulting \textbf{Knowledge Unit}, including a short contextual note, MinHashes of the source sentences and extracted factual statements (entities, relationships, attributes). The output has been truncated, a complete KU can be found in the Appendix \ref{sec:example_ku}.}\vspace{0.1cm}
+\setlength{\tabcolsep}{8pt} % Adjust column padding
+\renewcommand{\arraystretch}{1.3} % Adjust row padding for readability
+\begin{tabularx}{\textwidth}{X|X}
+\hline
+\textbf{Original Text} & \textbf{Knowledge Unit Representation} \\
+\hline
+The evolution of the Earth-Moon system is described by the dark matter field fluid model proposed in the Meeting of Division of Particle and Field 2004, American Physical Society. The current behavior of the Earth-Moon system agrees with this model very well, and the general pattern of the evolution of the Moon-Earth system described by this model agrees with geological and fossil evidence. The closest distance of the Moon to Earth was about 259000 km at 4.5 billion years ago, which is far beyond the Roche's limit. The result suggests that the tidal friction may not be the primary cause for the evolution of the Earth-Moon system. The average dark matter field fluid constant derived from Earth-Moon system data is $4.39 \times 10^{-22} \, \text{s}^{-1}\text{m}^{-1}$. This model predicts that Mars's rotation is also slowing with the angular acceleration rate about $-4.38 \times 10^{-22} \, \text{rad} \, \text{s}^{-2}$. 
+& 
+\begin{minipage}[t]{\linewidth}
+\tiny
+\textbf{Context:} \texttt{"The text appears in a scientific discussion on how the Earth-Moon system's evolution can be explained by a dark matter field fluid model\ldots"}\\
+\textbf{Source Sentence MinHash:} \texttt{[24175356, 47043276, 9024081, 8553571, \ldots]},\\
+\textbf{Earth-Moon System}: \texttt{\{} \\
+    \hspace*{0.5em} \textbf{Relations}: \texttt{\{} \\
+        \hspace*{1em} \texttt{evolution\_described\_by: "Dark Matter Field Fluid Model"},\\
+        \hspace*{1em} \texttt{current\_behavior\_agrees\_with}: \texttt{"Dark Matter Field Fluid Model"},\\
+        \hspace*{1em} \texttt{evolution\_pattern\_agrees\_with}: \texttt{["Geological Evidence", "Fossil Evidence"]} \\
+    \hspace*{0.5em} \texttt{\}}, \\
+    \hspace*{0.5em} \textbf{Attributes}: \texttt{\{} \\
+        \hspace*{1em} \texttt{closest\_distance\_4.5\_billion\_years\_ago}: \texttt{"259000 km"},\\
+        \hspace*{1em} \texttt{distance\_relative\_to\_Roche\_limit}: \texttt{"Far beyond"} \\
+    \hspace*{0.5em} \texttt{\}} \\
+\texttt{\},}\\
+\textbf{Dark Matter Field Fluid Model}: \texttt{\{} \\
+    \hspace*{0.5em} \textbf{Relations}: \texttt{\{} \\
+        \hspace*{1em} \texttt{proposed\_at}: \texttt{"Meeting of Division of Particle and Field 2004, American Physical Society"},\\
+        \hspace*{1em} \texttt{describes\_evolution\_of}: \texttt{"Earth-Moon System"},\\
+        \hspace*{1em} \texttt{predicts\_slowing\_rotation\_of}: \texttt{"Mars"} \\
+    \hspace*{0.5em} \texttt{\}}, \\
+\ldots \\
+\end{minipage}
+\\
+\hline
+\end{tabularx}
+\vspace*{-0.5cm}
+\label{tab:original_vs_ku}
+\end{table*}
+
+\textbf{Motivation for Paragraph-Level Granularity}
+Using paragraph-sized segments avoids two extremes. If segments are too short (such as single sentences), the knowledge becomes scattered. If segments are too long (such as entire papers), the language model's question-answering performance deteriorates, as it struggles to effectively extract all relevant facts from such large chunks of text in a single step. Paragraph-level chunks represent an optimal granularity that allows the language model to focus effectively on extracting and processing all the facts contained within the text segment.
+
+\textbf{Comparison to Knowledge Graphs}
+Knowledge Units are very similar to knowledge graphs~\cite{hogan2021knowledge}; however, they are generated locally, on a per-paragraph basis, rather than globally. One primary difference is that Knowledge Graphs require to have either locally or even globally unique identifiers (URI/IRIs).  This is not the case for the KU graphlets we extract - for two KUs extracted from neighboring paragraphs of a source document, the entities and relationships might differ, even when referring to the same concepts. Hence, KUs lack more logic-based knowledge representation such as OWL-based knowledge graphs. Secondly, unlike conventional knowledge graph tools such as REBEL~\citep{rebel2021}, which decompose text into concise triples (subject, relation, object), Knowledge Units maintain the contextual richness and nuances of the original paragraph, ensuring that relationships and entities remain closely aligned with the source text. While these are significant disadvantages for general-purpose knowledge representation, it is not required for our prime use case of knowledge and context provision for downstream AI applications.
+
+\textbf{Constructing Knowledge Units with LLMs}
+\label{sec:ch3:ku_pipeline}
+We create each Knowledge Unit using large language models guided by a few-shot prompt. We split each scholarly text into paragraphs that have roughly 200 to 500 tokens. The language model then extracts a structured set of entities, relationships, and attributes from each paragraph. We instruct the model to avoid copying the original wording. Instead, it stores key facts in a simple data structure, omitting stylistic language. If we process a longer document, we include the previous 10 KUs in the prompt so that the model remains consistent in naming entities across paragraphs.

@@ -1,0 +1,118 @@
+\section{Methods}
+
+\subsection{Amazon Bedrock Knowledge Base Setup}
+\label{subsec:bedrock_kb_setup}
+
+The source documents used to build the knowledge base were uploaded as PDF files to an Amazon S3 bucket. Amazon S3 served as the document storage layer for the Bedrock knowledge base, allowing the PDF files to be ingested, parsed, chunked, embedded, and indexed for retrieval. During synchronization, Amazon Bedrock accessed the PDF files from the S3 data source and processed them according to the configured parsing, chunking, embedding, and vector storage settings.
+
+The knowledge base for the retrieval-augmented generation pipeline was configured in Amazon Bedrock to support document ingestion, embedding generation, vector storage, and evidence retrieval. The document parsing stage used the default parser provided by Amazon Bedrock. This parser was selected to maintain a standard ingestion workflow and to avoid introducing additional preprocessing complexity during the initial knowledge base setup.
+
+For document segmentation, fixed-size chunking was used with a chunk size of 300 tokens and a 20\% overlap between consecutive chunks. In this approach, each document was divided into consistent text segments while preserving a portion of adjacent context across chunk boundaries. The 300-token chunk size was selected to provide sufficient semantic context within each retrieved unit, while the 20\% overlap helped reduce information loss when relevant content spanned across neighboring chunks. This configuration also supported a reproducible retrieval process by maintaining consistent evidence units during answer generation and grounding evaluation.
+
+The embedding model used for the knowledge base was Amazon Titan Text Embeddings V2. Each text chunk was converted into a dense vector representation using this embedding model. These vector representations allowed the retrieval system to identify semantically relevant chunks in response to user queries, even when the query wording did not exactly match the original document text.
+
+Amazon OpenSearch Serverless was used as the vector database for storing and retrieving the embedded document chunks. The vector store enabled similarity-based retrieval over the indexed document collection. During query processing, Amazon Bedrock searched the knowledge base and returned the most relevant chunks from the OpenSearch Serverless index. These retrieved chunks were then used as the evidence context for the downstream RAG answer-generation stage.
+
+Overall, the Amazon Bedrock knowledge base setup consisted of default document parsing, fixed-size chunking, Titan Text Embeddings V2 for embedding generation, and Amazon OpenSearch Serverless for vector storage and retrieval. This configuration provided a structured and reproducible foundation for building the RAG pipeline and evaluating the grounding quality of generated responses.
+
+
+
+\subsection{Prompt Design for Query Processing}
+\label{subsec:prompt_design_query}
+
+The prompt design in this study was developed to support evidence-grounded response generation within the retrieval-augmented generation framework. After each query was processed through the retrieval and reranking stages, the selected evidence chunks were organized into a structured context and provided to the language model as the only allowable source of information. The purpose of this design was to ensure that the generated response remained closely aligned with the retrieved evidence and did not rely on external knowledge or unsupported inference.
+
+The prompt instructed the model to answer each query using only the retrieved sources. It also required the response to be written in a formal academic style, with one factual claim presented per sentence. This sentence-level structure was used to make the generated output suitable for later claim-level grounding evaluation. Each generated sentence could therefore be treated as a separate claim and evaluated against the retrieved evidence.
+
+To reduce unsupported generation, the prompt included explicit restrictions against making claims that were not directly supported by the retrieved sources. The model was also instructed not to expand concepts that were only briefly mentioned in the retrieved evidence. This was important because language models may otherwise generate plausible but unsupported explanations based on their pretrained knowledge. When the retrieved sources did not contain sufficient information to answer a query, the model was instructed to state that the available evidence was insufficient.
+
+In the baseline implementation, the final answer was generated without displaying source labels in the response. Therefore, the evaluation focused on internal grounding accuracy, meaning whether each generated claim was supported by the retrieved evidence. The same prompt structure can also be adapted for strict citation accuracy evaluation by requiring each factual claim to include an explicit source label. This distinction allows the framework to separately evaluate general grounding quality and exact citation support.
+
+Overall, the prompt design was intended to make the answer-generation stage controlled, conservative, and suitable for systematic evaluation. By limiting the model to retrieved evidence and enforcing claim-level response structure, the prompt helped align generated answers with the goals of grounded RAG evaluation.
+
+
+\subsection{Prompt Design for Grounding Evaluation}
+\label{subsec:prompt_design_evaluation}
+
+The grounding evaluation stage was designed to assess whether the generated responses were supported by the retrieved evidence. In this stage, the system used the previously generated answers and the corresponding retrieved and reranked evidence chunks. No additional retrieval, reranking, or answer generation was performed during evaluation. This separation allowed the study to focus specifically on the reliability of the generated claims with respect to the evidence that had already been selected by the RAG pipeline.
+
+Each generated answer was first divided into individual factual claims. The evaluation was then conducted at the claim level rather than only at the full-answer level. This design allowed a more detailed assessment of grounding quality, since a single generated answer may contain both supported and unsupported statements. For each claim, the judge model was provided with the original query, the extracted claim, and the retrieved evidence associated with that query.
+
+The evaluation prompt instructed the judge model to determine whether the retrieved evidence directly supported the claim. The judge was required to use only the provided evidence and was explicitly instructed not to rely on outside knowledge. A claim was marked as supported only when the retrieved evidence directly justified the full meaning of the claim. If the evidence was incomplete, indirect, vague, or only partially relevant, the claim was treated as unsupported. This conservative evaluation strategy was used to avoid overestimating the grounding performance of the RAG system.
+
+The judge model was also instructed to return the evaluation result in a structured format. The output included a binary support decision, the source or sources most relevant to the claim, and a brief explanation of the judgment. This structured response enabled systematic calculation of claim-level, query-level, and overall grounding accuracy.
+
+Because the baseline generated answers did not include explicit source labels in the final response, the evaluation measured general grounding accuracy rather than strict citation accuracy. In this context, grounding accuracy refers to whether each generated claim was supported by any of the retrieved evidence chunks associated with the query. Strict citation accuracy would require each claim to include an explicit source citation and would evaluate whether the cited source specifically supports the claim.
+
+Overall, the grounding evaluation prompt was designed to provide a controlled and reproducible method for assessing evidence support in RAG-generated answers. By evaluating each factual claim against the retrieved evidence using conservative criteria, the evaluation process provided a more transparent measure of the reliability and factual grounding of the generated responses.
+
+\subsection{Model Selection for Answer Generation and Grounding Evaluation}
+\label{subsec:model_selection_generation_evaluation}
+
+Two different large language models were used in this study to separate the answer-generation stage from the grounding-evaluation stage. For the RAG answer-generation component, Anthropic Claude Sonnet 4.6 was used through Amazon Bedrock. This model was selected as the generator because the task required producing formal, coherent, and evidence-grounded responses from retrieved and reranked document chunks. The generation prompt instructed the model to use only the retrieved sources and to avoid unsupported inference.
+
+For the grounding-evaluation component, Amazon Nova Pro was used as the judge model through the Amazon Bedrock inference profile \texttt{us.amazon.nova-pro-v1:0}. The judge model was responsible for evaluating whether each extracted factual claim from the generated answer was directly supported by the retrieved evidence. The evaluation prompt required the judge to return a structured decision indicating whether the claim was supported, the most relevant source, and a brief explanation.
+
+Using two different models was important for methodological reliability. If the same model were used for both answer generation and evaluation, the evaluation could be affected by self-evaluation bias, where the model may be more likely to accept or justify its own generated output. To reduce this risk, the study used Claude Sonnet 4.6 as the generator and Amazon Nova Pro as an independent evaluator. This separation helped ensure that generated claims were assessed by a different model family rather than by the same model that produced the answer.
+
+This design also improved the transparency of the evaluation framework. The generator model was responsible for producing an answer from the retrieved evidence, while the judge model was responsible only for determining whether the generated claims were supported by that evidence. By assigning these tasks to separate models, the study reduced potential evaluation bias and created a clearer distinction between response generation and evidence verification.
+
+In addition, the use of a separate judge model supported a more conservative grounding assessment. The evaluation model was instructed not to use outside knowledge and to mark a claim as supported only when the retrieved evidence directly justified the full meaning of the claim. If the evidence was vague, indirect, incomplete, or only partially relevant, the claim was treated as unsupported. This approach helped avoid overestimating the grounding accuracy of the RAG system.
+
+Overall, the use of Claude Sonnet 4.6 for RAG-based answer generation and Amazon Nova Pro for claim-level grounding evaluation provided a more reliable and reproducible experimental design. The separation of generation and evaluation roles allowed the study to assess whether the RAG-generated answers were genuinely supported by the retrieved evidence rather than merely fluent or generally plausible.
+
+\subsection{End-to-End RAG Pipeline Implementation}
+\label{subsec:end_to_end_pipeline}
+
+Algorithm~\ref{alg:rag_pipeline} summarizes the complete implementation workflow. The algorithm begins with hybrid retrieval from the Amazon Bedrock Knowledge Base, applies duplicate removal and Cohere reranking, generates evidence-grounded answers from the top-ranked chunks, and then evaluates each extracted factual claim against the saved reranked evidence. This design ensures that the generation and evaluation stages remain traceable to the retrieved source chunks.
+
+\begin{algorithm}[!t]
+\caption{Hybrid Retrieve-Rerank-Ground RAG Pipeline}
+\label{alg:rag_pipeline}
+\footnotesize
+\begin{algorithmic}[1]
+\REQUIRE Query set $Q$, Bedrock Knowledge Base $KB$, retrieval size $k=20$, answer-context size $m=5$
+\ENSURE Reranked evidence, grounded answers, and grounding accuracy results
+
+\FOR{each query $q_i \in Q$}
+    \STATE Retrieve $k$ candidate chunks from $KB$ using hybrid search.
+    \STATE Remove duplicate chunks using chunk identifiers or text-based keys.
+    \STATE Rerank retrieved chunks using the Cohere reranking model.
+    \STATE Save reranked chunks with retrieval rank, rerank score, metadata, and text.
+\ENDFOR
+
+\FOR{each query $q_i \in Q$}
+    \STATE Select the top $m$ reranked chunks as evidence context.
+    \STATE Format selected chunks as numbered source blocks.
+    \STATE Generate an evidence-grounded answer using only the selected chunks.
+    \STATE Store the query, generated answer, and selected evidence metadata.
+\ENDFOR
+
+\FOR{each generated answer $a_i$}
+    \STATE Split $a_i$ into sentence-level factual claims.
+    \STATE Retrieve the saved reranked evidence for the corresponding query.
+    \FOR{each claim $c_{ij}$}
+        \STATE Judge whether $c_{ij}$ is directly supported by the retrieved evidence.
+        \STATE Record the support label, best supporting source, and explanation.
+    \ENDFOR
+\ENDFOR
+
+\STATE Compute claim-level, query-level, and overall grounding accuracy.
+\STATE Export retrieval, generation, claim-level, and summary results as CSV files.
+\RETURN Grounded answers and grounding evaluation summaries.
+\end{algorithmic}
+\end{algorithm}
+
+The complete experimental pipeline was implemented as a multi-stage citation-aware RAG workflow in Python. The pipeline connected Amazon Bedrock Knowledge Base, Amazon OpenSearch Serverless, Cohere reranking, Amazon Bedrock Runtime, and a claim-level grounding evaluation module. The implementation was organized into three main phases: hybrid retrieval and reranking, grounded answer generation, and grounding evaluation using previously saved result files.
+
+In the first phase, each query was submitted to the Amazon Bedrock Knowledge Base using the Bedrock Agent Runtime client. The retrieval configuration used \texttt{overrideSearchType = HYBRID}, which allowed the knowledge base to combine lexical keyword matching and semantic vector retrieval. For each query, the system retrieved an initial set of 20 candidate evidence chunks. Each returned chunk included the original Bedrock retrieval rank, Bedrock retrieval score, page number, chunk identifier, source location, metadata, and retrieved text. Duplicate chunks were removed using the Bedrock chunk identifier when available; otherwise, the first portion of the text was used as a fallback deduplication key.
+
+In the second phase, the deduplicated candidate chunks were passed to the Cohere reranking model. The reranker received the original query and the retrieved chunk texts as input and assigned a relevance score to each candidate chunk. The reranked output reordered the candidate chunks according to query-specific relevance. For the retrieval-result file, the top 20 reranked chunks were retained for each query to support later analysis of retrieval and reranking behavior. These outputs were saved in a structured CSV file containing the query identifier, query text, final reranked position, original Bedrock rank, Bedrock score, Cohere rerank score, page number, chunk identifier, source location, text preview, and full chunk text.
+
+In the third phase, grounded answers were generated from the top-ranked retrieved evidence. For each query, the pipeline repeated the hybrid retrieval and reranking process and selected the top five reranked chunks as the final evidence context. These chunks were formatted as numbered source blocks containing page information, source location, and retrieved text. The answer-generation prompt instructed the model to use only the retrieved evidence, avoid outside knowledge, write in a formal academic style, and present one factual claim per sentence. The generation model was configured with a low temperature of 0.1 to encourage conservative and evidence-focused responses. If the retrieved evidence was insufficient, the model was instructed to explicitly state that the retrieved sources did not provide enough evidence.
+
+In the final phase, the generated answers were evaluated using a claim-level grounding procedure. The evaluation module loaded the saved answer file and reranked chunk file without performing additional retrieval, reranking, or answer generation. Each generated answer was split into candidate factual claims using sentence-level segmentation, while short fragments, headings, table rows, and generic insufficient-evidence statements were removed. For each query, the saved reranked chunks were sorted by final rank and formatted into an evidence context. Each extracted claim was then evaluated against the retrieved evidence using Amazon Nova Pro as a judge model. The judge was instructed to return a structured JSON output containing a binary support decision, the best supporting source, and a brief explanation. A claim was marked as supported only if the retrieved evidence directly justified the full meaning of the claim. Claims with incomplete, vague, indirect, or partial support were treated as unsupported.
+
+The pipeline generated three categories of output files. The first file stored hybrid retrieval and reranking results at the chunk level. The second file stored the generated answer for each query. The third set of files stored claim-level grounding judgments, query-level grounding accuracy, and overall grounding accuracy. This output design allowed the retrieval, reranking, generation, and evaluation stages to be inspected independently and supported systematic analysis of grounding reliability.
+
+All intermediate outputs were stored as structured CSV files, including the retrieved and reranked chunks, generated answers, claim-level grounding judgments, query-level accuracy, and overall summary statistics. This design supports reproducibility by allowing each stage of the pipeline to be inspected independently.

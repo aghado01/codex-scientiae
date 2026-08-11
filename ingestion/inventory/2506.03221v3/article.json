@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2506.03221v3",
+  "initialized_utc": "2026-08-11T03:19:26.727239Z",
+  "title": null,
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "ExtracTable: Human-in-the-Loop Transformation of Scientific Corpora into Structured Knowledge",
+        "authors_tex": [
+          "Lena John\\inst{1}\\orcidID{0009-0007-2097-9761} \\and Ahmed Malek Ghanmi\\inst{2} \\and\nTim Wittenborg\\inst{3,4}\\orcidID{0009-0000-9933-8922} \\and\nSören Auer\\inst{1,3,4}\\orcidID{0000-0002-0698-2864} \\and Oliver Karras\\inst{1}\\orcidID{0000-0001-5336-6899}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 369,
+        "sha256": "e7f34462391d61868d45a1265f719f3d20f85068e8868fcb7d5b425798dc0bad"
+      }
+    ]
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "2506.03221v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 718491,
+      "sha256": "5ba64f404e96d19e0c523ed15763d355f6985b87607675e4b7f097baad9dd1b0",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2506.03221v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "2506.03221v3.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 15,
+      "tex_files": 1,
+      "sha256": "de22e0ef6c91bf1b6b61d515e76ef9bf4c535255aafe0bd41e3cf588b5ca9478"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-11T03:19:26.727239Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 17
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 15
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "entrypoint": "main.tex",
+        "selection": "single-candidate"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

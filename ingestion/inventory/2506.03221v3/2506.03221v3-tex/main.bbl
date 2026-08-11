@@ -1,0 +1,135 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{https://doi.org/#1}
+
+\bibitem{alshami_harnessing_2023}
+Alshami, A., Elsayed, M., Ali, E., et~al.: Harnessing the {Power} of {ChatGPT} for {Automating} {Systematic} {Review} {Process}: {Methodology}, {Case} {Study}, {Limitations}, and {Future} {Directions}. Systems  \textbf{11}(7), ~351 (2023). \doi{10.3390/systems11070351}
+
+\bibitem{Auer.2023}
+Auer, S., Barone, D.A., Bartz, C., Cortes, E.G., Jaradeh, M.Y., Karras, O., Koubarakis, M., Mouromtsev, D., Pliukhin, D., Radyush, D., et~al.: {The SciQA Scientific Question Answering Benchmark for Scholarly Knowledge}. Scientific Reports  \textbf{13}(1), ~7240 (2023)
+
+\bibitem{Auer.2025}
+Auer, S., et~al.: {Open Research Knowledge Graph: A Large-Scale Neuro-Symbolic Knowledge Organization System}. In: Handbook on Neurosymbolic AI and Knowledge Graphs. IOS Press (2025)
+
+\bibitem{auer_dbpedia_2007}
+Auer, S., Bizer, C., Kobilarov, G., et~al.: {DBpedia}: {A} {Nucleus} for a {Web} of {Open} {Data}. In: The {Semantic} {Web}. pp. 722--735. Springer, Berlin, Heidelberg (2007). \doi{10.1007/978-3-540-76298-0_52}
+
+\bibitem{bacinger_system_2022}
+Bacinger, F., Boticki, I., Mlinaric, D.: System for {Semi}-{Automated} {Literature} {Review} {Based} on {Machine} {Learning}. Electronics  \textbf{11}(24), ~4124 (2022). \doi{10.3390/electronics11244124}
+
+\bibitem{bangor_determining_2009}
+Bangor, A., Kortum, P., Miller, J.: Determining what individual {SUS} scores mean: adding an adjective rating scale. J. Usability Studies  \textbf{4}(3),  114--123 (May 2009)
+
+\bibitem{basili_experience_2002}
+Basili, V.R., Caldiera, G., Rombach, H.D.: Experience {Factory}. In: Encyclopedia of {Software} {Engineering}. John Wiley \& Sons, Ltd (2002). \doi{10.1002/0471028959.sof110}
+
+\bibitem{dalvi_mishra_towards_2022}
+Dalvi~Mishra, B., Tafjord, O., Clark, P.: Towards {Teachable} {Reasoning} {Systems}: {Using} a {Dynamic} {Memory} of {User} {Feedback} for {Continual} {System} {Improvement}. In: Proceedings of the 2022 {Conference} on {Empirical} {Methods} in {Natural} {Language} {Processing}. pp. 9465--9480. Association for Computational Linguistics, Abu Dhabi, United Arab Emirates (Dec 2022). \doi{10.18653/v1/2022.emnlp-main.644}
+
+\bibitem{danler_quality_2024}
+Danler, M., Hackl, W.O., Neururer, S.B., Pfeifer, B.: Quality and {Effectiveness} of {AI} {Tools} for {Students} and {Researchers} for {Scientific} {Literature} {Review} and {Analysis}. In: {dHealth} 2024, pp. 203--208. IOS Press (2024). \doi{10.3233/SHTI240038}, \url{https://ebooks.iospress.nl/doi/10.3233/SHTI240038}
+
+\bibitem{dessi_generating_2021}
+Dessì, D., Osborne, F., Reforgiato~Recupero, D., et~al.: Generating knowledge graphs by employing {Natural} {Language} {Processing} and {Machine} {Learning} techniques within the scholarly domain. Future Generation Computer Systems  \textbf{116},  253--264 (Mar 2021). \doi{10.1016/j.future.2020.10.026}
+
+\bibitem{dessi_scicero_2022}
+Dessí, D., Osborne, F., Reforgiato~Recupero, D., et~al.: {SCICERO}: {A} deep learning and {NLP} approach for generating scientific knowledge graphs in the computer science domain. Knowledge-Based Systems  \textbf{258},  109945 (Dec 2022). \doi{10.1016/j.knosys.2022.109945}
+
+\bibitem{hofer_construction_2024}
+Hofer, M., Obraczka, D., Saeedi, A., et~al.: Construction of {Knowledge} {Graphs}: {Current} {State} and {Challenges}. Information  \textbf{15}(8), ~509 (2024). \doi{10.3390/info15080509}
+
+\bibitem{huaman_knowledge_2022}
+Huaman, E., Fensel, D.: Knowledge {Graph} {Curation}: {A} {Practical} {Framework}. In: Proceedings of the 10th {International} {Joint} {Conference} on {Knowledge} {Graphs}. pp. 166--171. {IJCKG} '21, Association for Computing Machinery, New York, NY, USA (Jan 2022). \doi{10.1145/3502223.3502247}
+
+\bibitem{ioannidis_drkg_2020}
+Ioannidis, V.N., Song, X., Manchanda, S., et~al.: {DRKG} - {Drug} {Repurposing} {Knowledge} {Graph} for {Covid}-19 (2020), \url{https://github.com/gnn4dr/DRKG/}
+
+\bibitem{jain_domain-specific_2020}
+Jain, N.: Domain-{Specific} {Knowledge} {Graph} {Construction} for {Semantic} {Analysis}. In: The {Semantic} {Web}: {ESWC} 2020 {Satellite} {Events}. pp. 250--260. Springer International Publishing (2020). \doi{10.1007/978-3-030-62327-2_40}
+
+\bibitem{John.2025}
+John, L.: Human-in-the-loop workflow for neuro-symbolic scholarly knowledge organization - experiment material [data set]. Zenodo  (2025). \doi{https://doi.org/10.5281/zenodo.15228337}
+
+\bibitem{John_Scimantify.2025}
+John, L., Farfar, K.E., Auer, S., Karras, O.: {SciMantify - A Hybrid Approach for the Evolving Semantification of Scientific Knowledge}. In: 25th International Conference on Web Engineering (ICWE) 2025 (2025). \doi{10.15488/19006}, accepted at ICWE 2025. Proceedings to appear.
+
+\bibitem{karras_kg-empire_2024}
+Karras, O.: {KG}-{EmpiRE}: {A} {Community}-{Maintainable} {Knowledge} {Graph} for a {Sustainable} {Literature} {Review} on the {State} and {Evolution} of {Empirical} {Research} in {Requirements} {Engineering}. In: 2024 {IEEE} 32nd {International} {Requirements} {Engineering} {Conference} ({RE}). pp. 500--501 (2024). \doi{10.1109/RE59067.2024.00063}, iSSN: 2332-6441
+
+\bibitem{Karras2025}
+Karras, O.: {Research Knowledge Graphs for Sustainable Literature Reviews in Software Engineering and Beyond}. In: Software Engineering 2025--Companion Proceedings. pp. 10--18420. Gesellschaft f{\"u}r Informatik, Bonn (2025)
+
+\bibitem{Karras.2024}
+Karras, O., Budde, L., Merkel, P., Hermsdorf, J., Stonis, M., Overmeyer, L., Behrens, B.A., Auer, S.: {Organizing Scientific Knowledge from Engineering Sciences Using the Open Research Knowledge Graph: The Tailored Forming Process Chain Use Case}. Data Science Journal  (Nov 2024). \doi{10.5334/dsj-2024-052}
+
+\bibitem{karras_divide_2023}
+Karras, O., Wernlein, F., Klünder, J., Auer, S.: Divide and {Conquer} the {EmpiRE}: {A} {Community}-{Maintainable} {Knowledge} {Graph} of {Empirical} {Research} in {Requirements} {Engineering}. In: 2023 {ACM}/{IEEE} {International} {Symposium} on {Empirical} {Software} {Engineering} and {Measurement} ({ESEM}). pp. 1--12 (Oct 2023). \doi{10.1109/ESEM56168.2023.10304795}
+
+\bibitem{khalid_explainable_2022}
+Khalid, M., Khattak, H.A., Ahmad, A., et~al.: Explainable {Prediction} of {Medical} {Codes} through {Automated} {Knowledge} {Graph} {Curation} {Framework}. In: 2022 19th {International} {Bhurban} {Conference} on {Applied} {Sciences} and {Technology} ({IBCAST}). pp. 331--336 (Aug 2022). \doi{10.1109/IBCAST54850.2022.9990551}, iSSN: 2151-1411
+
+\bibitem{kommineni_human_2024}
+Kommineni, V.K., König-Ries, B., Samuel, S.: From human experts to machines: {An} {LLM} supported approach to ontology and knowledge graph construction (Mar 2024). \doi{10.48550/arXiv.2403.08345}, arXiv:2403.08345 [cs]
+
+\bibitem{larsen_understanding_2019}
+Larsen, K.R., Hovorka, D., Dennis, A., West, J.: Understanding the {Elephant}: {The} {Discourse} {Approach} to {Boundary} {Identification} and {Corpus} {Construction} for {Theory} {Review} {Articles}. Journal of the Association for Information Systems  \textbf{20}(7) (Jul 2019). \doi{10.17705/1jais.00556}
+
+\bibitem{lewis_item_2018}
+Lewis, J.R., Sauro, J.: Item {Benchmarks} for the {System}. Journal of Usability Studies  \textbf{13}(3) (2018)
+
+\bibitem{mosqueira-rey_human---loop_2023}
+Mosqueira-Rey, E., Hernández-Pereira, E., Alonso-Ríos, D., et~al.: Human-in-the-loop machine learning: a state of the art. Artificial Intelligence Review  \textbf{56}(4),  3005--3054 (Apr 2023). \doi{10.1007/s10462-022-10246-w}
+
+\bibitem{Oelen.2019}
+Oelen, A., Jaradeh, M.Y., Farfar, K.E., Stocker, M., Auer, S.: Comparing research contributions in a scholarly knowledge graph. International Confrence on Knowledge Capture  (2019). \doi{https://doi.org/10.15488/9388}
+
+\bibitem{oliveira_software_2014}
+Oliveira, K.M.d.: Software {Quality} {Assurance} by means of {Methodologies}, {Measurements} and {Knowledge} {Management} {Issues}. thesis, Université de Valenciennes et du Hainaut-Cambrésis (Jun 2014), \url{https://hal.science/tel-01094776}
+
+\bibitem{perkovic_hallucinations_2024}
+Perković, G., Drobnjak, A., Botički, I.: Hallucinations in {LLMs}: {Understanding} and {Addressing} {Challenges}. In: 2024 47th {MIPRO} {ICT} and {Electronics} {Convention} ({MIPRO}). pp. 2084--2088 (2024). \doi{10.1109/MIPRO60963.2024.10569238}
+
+\bibitem{rathi_p21_2023}
+Rathi, H., Malik, A., Behera, D.C., Kamboj, G.: P21 {A} {Comparative} {Analysis} of {Large} {Language} {Models} ({LLM}) {Utilised} in {Systematic} {Literature} {Review}. Value in Health  \textbf{26}(12), ~S6 (Dec 2023). \doi{10.1016/j.jval.2023.09.030}
+
+\bibitem{ren_human-machine_2023}
+Ren, M., Chen, N., Qiu, H.: Human-machine {Collaborative} {Decision}-making: {An} {Evolutionary} {Roadmap} {Based} on {Cognitive} {Intelligence}. International Journal of Social Robotics  \textbf{15}(7),  1101--1114 (Jul 2023). \doi{10.1007/s12369-023-01020-1}
+
+\bibitem{sakor_falcon_2020}
+Sakor, A., Singh, K., Patel, A., Vidal, M.E.: Falcon 2.0: {An} {Entity} and {Relation} {Linking} {Tool} over {Wikidata}. In: Proceedings of the 29th {ACM} {International} {Conference} on {Information} \& {Knowledge} {Management}. pp. 3141--3148. {CIKM} '20, Association for Computing Machinery, New York, NY, USA (Oct 2020). \doi{10.1145/3340531.3412777}
+
+\bibitem{schatz_workflow_2022}
+Schatz, K., Korn, D., Tropsha, A., Chirkova, R.: Workflow for {Domain}- and {Task}-{Sensitive} {Curation} of {Knowledge} {Graphs}, with {Use} {Case} of {DRKG}. In: 2022 {IEEE} {International} {Conference} on {Big} {Data} ({Big} {Data}). pp. 3692--3701 (Dec 2022). \doi{10.1109/BigData55660.2022.10020536}
+
+\bibitem{snyder_literature_2019}
+Snyder, H.: Literature review as a research methodology: {An} overview and guidelines. Journal of Business Research  \textbf{104},  333--339 (Nov 2019). \doi{10.1016/j.jbusres.2019.07.039}
+
+\bibitem{tsaneva_enhancing_2024}
+Tsaneva, S., Dessì, D., Osborne, F., Sabou, M.: Enhancing {Scientific} {Knowledge} {Graph} {Generation} {Pipelines} with {LLMs} and {Human}-in-the-{Loop}. Baltimore (2024), \url{https://ceur-ws.org/Vol-3780/paper1.pdf}
+
+\bibitem{vahdati_unveiling_2018}
+Vahdati, S., Palma, G., Nath, R.J., et~al.: Unveiling {Scholarly} {Communities} over {Knowledge} {Graphs}. In: Digital {Libraries} for {Open} {Knowledge}. pp. 103--115. Springer International Publishing, Cham (2018). \doi{10.1007/978-3-030-00066-0_9}
+
+\bibitem{vrandecic_wikidata_2014}
+Vrandečić, D., Krötzsch, M.: Wikidata: a free collaborative knowledgebase. Commun. ACM  \textbf{57}(10),  78--85 (Sep 2014). \doi{10.1145/2629489}
+
+\bibitem{Wade2022TheSemanticScholar}
+Wade, A.D.: The semantic scholar academic graph (s2ag). Companion Proceedings of the Web Conference 2022  (2022), \url{https://api.semanticscholar.org/CorpusID:251597885}
+
+\bibitem{wagner_artificial_2022}
+Wagner, G., Lukyanenko, R., Paré, G.: Artificial intelligence and the conduct of literature reviews  \textbf{37}(2),  209--226 (2022). \doi{10.1177/02683962211048201}
+
+\bibitem{wilkinson_fair_2016}
+Wilkinson, M.D., Dumontier, M., Aalbersberg, I.J., et~al.: The {FAIR} {Guiding} {Principles} for scientific data management and stewardship. Scientific Data  \textbf{3}(1),  160018 (Mar 2016). \doi{10.1038/sdata.2016.18}
+
+\bibitem{wittenborg_swarm-slr_2024}
+Wittenborg, T., Karras, O., Auer, S.: {SWARM}-{SLR} - {Streamlined} {Workflow} {Automation} for {Machine}-{Actionable} {Systematic} {Literature} {Reviews}. In: Linking {Theory} and {Practice} of {Digital} {Libraries}. pp. 20--40. Springer Nature Switzerland, Cham (2024). \doi{10.1007/978-3-031-72437-4_2}
+
+\bibitem{wohlin_experimentation_2012}
+Wohlin, C., Runeson, P., Höst, M., et~al.: Experimentation in {Software} {Engineering}. Springer Publishing Company, Incorporated (May 2012)
+
+\bibitem{ye_hybrid_2024}
+Ye, A., Maiti, A., Schmidt, M., Pedersen, S.J.: A {Hybrid} {Semi}-{Automated} {Workflow} for {Systematic} and {Literature} {Review} {Processes} with {Large} {Language} {Model} {Analysis}. Future Internet  \textbf{16}(5), ~167 (May 2024). \doi{10.3390/fi16050167}, number: 5 Publisher: Multidisciplinary Digital Publishing Institute
+
+\end{thebibliography}

@@ -1,0 +1,266 @@
+\begin{thebibliography}{10}
+
+\bibitem{aho1974design}
+Alfred~V Aho and John~E Hopcroft.
+\newblock {\em The design and analysis of computer algorithms}.
+\newblock Pearson Education India, 1974.
+
+\bibitem{dagstuhlreport}
+Rajeev Alur, Miko{\l}aj Boja\'{n}czyk, Emmanuel Filiot, Anca Muscholl, and
+  Sarah Winter.
+\newblock {Regular Transformations (Dagstuhl Seminar 23202)}.
+\newblock {\em Dagstuhl Reports}, 13(5):96--113, 2023.
+
+\bibitem{AlurC10}
+Rajeev Alur and Pavol Cern{\'{y}}.
+\newblock Expressiveness of streaming string transducers.
+\newblock In {\em FSTTCS}, pages 1--12, 2010.
+
+\bibitem{AlurD11}
+Rajeev Alur and Jyotirmoy~V. Deshmukh.
+\newblock Nondeterministic streaming string transducers.
+\newblock In {\em ICALP}, volume 6756, pages 1--20, 2011.
+
+\bibitem{AlurD22}
+Rajeev Alur, Taylor Dohmen, and Ashutosh Trivedi.
+\newblock Composing copyless streaming string transducers.
+\newblock {\em CoRR}, abs/2209.05448, 2022.
+
+\bibitem{AmarilliBMN19}
+Antoine Amarilli, Pierre Bourhis, Stefan Mengel, and Matthias Niewerth.
+\newblock Enumeration on trees with tractable combined complexity and efficient
+  updates.
+\newblock In {\em PODS}, pages 89--103. {ACM}, 2019.
+
+\bibitem{DBLP:journals/sigmod/AmarilliBMN20}
+Antoine Amarilli, Pierre Bourhis, Stefan Mengel, and Matthias Niewerth.
+\newblock Constant-delay enumeration for nondeterministic document spanners.
+\newblock {\em {SIGMOD} Rec.}, 49(1):25--32, 2020.
+
+\bibitem{amarilli2021constant}
+Antoine Amarilli, Pierre Bourhis, Stefan Mengel, and Matthias Niewerth.
+\newblock Constant-delay enumeration for nondeterministic document spanners.
+\newblock {\em ACM Transactions on Database Systems (TODS)}, 46(1):1--30, 2021.
+
+\bibitem{AmarilliBMN21}
+Antoine Amarilli, Pierre Bourhis, Stefan Mengel, and Matthias Niewerth.
+\newblock Constant-delay enumeration for nondeterministic document spanners.
+\newblock {\em {ACM} Trans. Database Syst.}, 46(1):2:1--2:30, 2021.
+
+\bibitem{berstel2013transductions}
+Jean Berstel.
+\newblock {\em Transductions and context-free languages}.
+\newblock Springer-Verlag, 2013.
+
+\bibitem{Bojanczyk2018}
+Mikolaj Bojanczyk.
+\newblock Polyregular functions.
+\newblock {\em CoRR}, abs/1810.08760, 2018.
+
+\bibitem{Bojanczyk22}
+Mikolaj Bojanczyk.
+\newblock Transducers of polynomial growth.
+\newblock In {\em LICS}, pages 1:1--1:27. {ACM}, 2022.
+
+\bibitem{BourhisEtAl2021}
+Pierre Bourhis, Alejandro Grez, Louis Jachiet, and Cristian Riveros.
+\newblock Ranked enumeration of {MSO} logic on words.
+\newblock In {\em 24th International Conference on Database Theory, {ICDT}
+  2021, March 23-26, 2021, Nicosia, Cyprus}, pages 20:1--20:19, 2021.
+
+\bibitem{DoleschalKM23}
+Johannes Doleschal, Benny Kimelfeld, and Wim Martens.
+\newblock The complexity of aggregates over extractions by regular expressions.
+\newblock {\em Logical Methods in Computer Science}, 19(3), 2023.
+
+\bibitem{DoleschalEtAl2019}
+Johannes Doleschal, Benny Kimelfeld, Wim Martens, Yoav Nahshon, and Frank
+  Neven.
+\newblock Split-correctness in information extraction.
+\newblock In {\em Proceedings of the 38th {ACM} Symposium on Principles of
+  Database Systems, {PODS} 2019, Amsterdam, The Netherlands, June 30 - July 5,
+  2019}, pages 149--163, 2019.
+
+\bibitem{doleschal2019split}
+Johannes Doleschal, Benny Kimelfeld, Wim Martens, Yoav Nahshon, and Frank
+  Neven.
+\newblock Split-correctness in information extraction.
+\newblock In {\em Proceedings of the 38th ACM SIGMOD-SIGACT-SIGAI Symposium on
+  Principles of Database Systems}, pages 149--163, 2019.
+
+\bibitem{doleschal2022weight}
+Johannes Doleschal, Benny Kimelfeld, Wim Martens, and Liat Peterfreund.
+\newblock Weight annotation in information extraction.
+\newblock {\em Logical Methods in Computer Science}, 18, 2022.
+
+\bibitem{DriscollSST86}
+James~R. Driscoll, Neil Sarnak, Daniel~Dominic Sleator, and Robert~Endre
+  Tarjan.
+\newblock Making data structures persistent.
+\newblock In {\em STOC}, pages 109--121, 1986.
+
+\bibitem{EngelfrietH01}
+Joost Engelfriet and Hendrik~Jan Hoogeboom.
+\newblock {MSO} definable string transductions and two-way finite-state
+  transducers.
+\newblock {\em {ACM} Trans. Comput. Log.}, 2(2):216--254, 2001.
+
+\bibitem{engelfriet2002two}
+Joost Engelfriet and Sebastian Maneth.
+\newblock Two-way finite state transducers with nested pebbles.
+\newblock In {\em MFCS}, pages 234--244. Springer, 2002.
+
+\bibitem{FaginKRV13}
+Ronald Fagin, Benny Kimelfeld, Frederick Reiss, and Stijn Vansummeren.
+\newblock Spanners: a formal framework for information extraction.
+\newblock In {\em PODS}, pages 37--48. {ACM}, 2013.
+
+\bibitem{fagin2015document}
+Ronald Fagin, Benny Kimelfeld, Frederick Reiss, and Stijn Vansummeren.
+\newblock Document spanners: A formal approach to information extraction.
+\newblock {\em Journal of the ACM (JACM)}, 62(2):1--51, 2015.
+
+\bibitem{florenzano2020efficient}
+Fernando Florenzano, Cristian Riveros, Mart{\'\i}n Ugarte, Stijn Vansummeren,
+  and Domagoj Vrgo{\v{c}}.
+\newblock Efficient enumeration algorithms for regular document spanners.
+\newblock {\em ACM Transactions on Database Systems (TODS)}, 45(1):1--42, 2020.
+
+\bibitem{freydenberger2018document}
+Dominik Freydenberger and Mario Holldack.
+\newblock Document spanners: From expressive power to decision problems.
+\newblock {\em Theory of Computing Systems}, 62:854--898, 2018.
+
+\bibitem{Freydenberger2019}
+Dominik~D. Freydenberger.
+\newblock A logic for document spanners.
+\newblock {\em Theory Comput. Syst.}, 63(7):1679--1754, 2019.
+
+\bibitem{FreydenbergerEtAl2018}
+Dominik~D. Freydenberger, Benny Kimelfeld, and Liat Peterfreund.
+\newblock Joining extractions of regular expressions.
+\newblock In {\em Proceedings of the 37th {ACM} {SIGMOD-SIGACT-SIGAI} Symposium
+  on Principles of Database Systems, Houston, TX, USA, June 10-15, 2018}, pages
+  137--149, 2018.
+
+\bibitem{FreydenbergerThompson2020}
+Dominik~D. Freydenberger and Sam~M. Thompson.
+\newblock Dynamic complexity of document spanners.
+\newblock In {\em 23rd International Conference on Database Theory, {ICDT}
+  2020, March 30-April 2, 2020, Copenhagen, Denmark}, pages 11:1--11:21, 2020.
+
+\bibitem{FreydenbergerThompson2022}
+Dominik~D. Freydenberger and Sam~M. Thompson.
+\newblock Splitting spanner atoms: {A} tool for acyclic core spanners.
+\newblock In {\em Proc. {ICDT} 2022}, pages 10:1--10:18, 2022.
+
+\bibitem{FASTUS}
+Jerry~R. Hobbs, Douglas~E. Appelt, John Bear, David~J. Israel, Megumi Kameyama,
+  Mark~E. Stickel, and Mabry Tyson.
+\newblock {FASTUS:} {A} cascaded finite-state transducer for extracting
+  information from natural-language text.
+\newblock {\em CoRR}, cmp-lg/9705013, 1997.
+
+\bibitem{karttunen1997replace}
+Lauri Karttunen.
+\newblock The replace operator.
+\newblock {\em Finite-State Language Processing}, pages 117--147, 1997.
+
+\bibitem{maturana2018document}
+Francisco Maturana, Cristian Riveros, and Domagoj Vrgoc.
+\newblock Document spanners for extracting incomplete information:
+  Expressiveness and complexity.
+\newblock In {\em PODS}, pages 125--136, 2018.
+
+\bibitem{MunozR22}
+Martin Mu{\~{n}}oz and Cristian Riveros.
+\newblock Streaming enumeration on nested documents.
+\newblock In {\em ICDT}, volume 220 of {\em LIPIcs}, pages 19:1--19:18, 2022.
+
+\bibitem{MunozR23}
+Martin Mu{\~{n}}oz and Cristian Riveros.
+\newblock Constant-delay enumeration for slp-compressed documents.
+\newblock In {\em ICDT}, volume 255, pages 7:1--7:17, 2023.
+
+\bibitem{MuschollP19}
+Anca Muscholl and Gabriele Puppis.
+\newblock The many facets of string transducers (invited talk).
+\newblock In Rolf Niedermeier and Christophe Paul, editors, {\em STACS}, volume
+  126 of {\em LIPIcs}, pages 2:1--2:21, 2019.
+
+\bibitem{Peterfreund21}
+Liat Peterfreund.
+\newblock Grammars for document spanners.
+\newblock In Ke~Yi and Zhewei Wei, editors, {\em ICDT}, volume 186 of {\em
+  LIPIcs}, pages 7:1--7:18, 2021.
+
+\bibitem{PeterfreundEtAl2019}
+Liat Peterfreund, Dominik~D. Freydenberger, Benny Kimelfeld, and Markus
+  Kr{\"{o}}ll.
+\newblock Complexity bounds for relational algebra over document spanners.
+\newblock In {\em Proceedings of the 38th {ACM} {SIGMOD-SIGACT-SIGAI} Symposium
+  on Principles of Database Systems, {PODS} 2019, Amsterdam, The Netherlands,
+  June 30 - July 5, 2019.}, pages 320--334, 2019.
+
+\bibitem{PeterfreundCFK19}
+Liat Peterfreund, Balder ten Cate, Ronald Fagin, and Benny Kimelfeld.
+\newblock Recursive programs for document spanners.
+\newblock In {\em 22nd International Conference on Database Theory, {ICDT}
+  2019, March 26-28, 2019, Lisbon, Portugal}, pages 13:1--13:18, 2019.
+
+\bibitem{RiverosJV23}
+Cristian Riveros, Nicol{\'{a}}s Van~Sint Jan, and Domagoj Vrgoc.
+\newblock Rematch: a novel regex engine for finding all matches.
+\newblock {\em VLDB}, 16(11):2792--2804, 2023.
+
+\bibitem{SchmidSchweikardt_ICDT21}
+Markus~L. Schmid and Nicole Schweikardt.
+\newblock A purely regular approach to non-regular core spanners.
+\newblock In Ke~Yi and Zhewei Wei, editors, {\em 24th International Conference
+  on Database Theory, {ICDT} 2021, March 23-26, 2021, Nicosia, Cyprus}, volume
+  186 of {\em LIPIcs}, pages 4:1--4:19. Schloss Dagstuhl - Leibniz-Zentrum
+  f{\"{u}}r Informatik, 2021.
+
+\bibitem{schmid2021spanner}
+Markus~L. Schmid and Nicole Schweikardt.
+\newblock Spanner evaluation over slp-compressed documents.
+\newblock In {\em PODS'21: Proceedings of the 40th {ACM} {SIGMOD-SIGACT-SIGAI}
+  Symposium on Principles of Database Systems, Virtual Event, China, June
+  20-25, 2021}, pages 153--165, 2021.
+
+\bibitem{SchmidSchweikardt_Gems}
+Markus~L. Schmid and Nicole Schweikardt.
+\newblock Document spanners - {A} brief overview of concepts, results, and
+  recent developments.
+\newblock In Leonid Libkin and Pablo Barcel{\'{o}}, editors, {\em {PODS} '22:
+  International Conference on Management of Data, Philadelphia, PA, USA, June
+  12 - 17, 2022}, pages 139--150. {ACM}, 2022.
+
+\bibitem{SchmidSchweikardtPODS2022}
+Markus~L. Schmid and Nicole Schweikardt.
+\newblock Query evaluation over slp-represented document databases with complex
+  document editing.
+\newblock In {\em {PODS} '22: International Conference on Management of Data,
+  Philadelphia, PA, USA, June 12 - 17, 2022}, pages 79--89, 2022.
+
+\bibitem{Segoufin13}
+Luc Segoufin.
+\newblock Enumerating with constant delay the answers to a query.
+\newblock In {\em ICDT}, pages 10--20, 2013.
+
+\bibitem{substitution1}
+https://www.tutorialsteacher.com/regex/substitution, 2024.
+\newblock Accessed on 2024-03-15.
+
+\bibitem{substitution2}
+https://learn.microsoft.com/en-us/dotnet/standard/base-types/substitutions-in-regular-expressions,
+  2024.
+\newblock Accessed on 2024-03-15.
+
+\bibitem{vassiliadis2009survey}
+Panos Vassiliadis.
+\newblock A survey of extract--transform--load technology.
+\newblock {\em International Journal of Data Warehousing and Mining (IJDWM)},
+  5(3):1--27, 2009.
+
+\end{thebibliography}

@@ -1,0 +1,105 @@
+
+\documentclass{article}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+\usepackage{multirow}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\ap}[1]{{\color{purple}[AP: #1]}}
+\newcommand{\ah}[1]{{\color{green}[AH: #1]}}
+\newcommand{\rk}[1]{{\color{orange}[RK: #1]}}
+\usepackage{pdfpages}
+\usepackage{enumitem} % Add this in the preamble
+\usepackage{tcolorbox}
+\usepackage[fixed]{fontawesome5}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{amsmath} 
+
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{breaklinks=true}
+
+\linespread{0.995}
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Use the following line for the initial blind version submitted for review:
+% \usepackage{icml2024}
+
+
+% UNCOMMENT ONLY for the final, accepted version!
+% If accepted, instead use the following line for the camera-ready submission:
+\usepackage[accepted]{icml2024}
+\usepackage[symbol]{footmisc}
+
+
+% Define title for running head
+\icmltitlerunning{Project Alexandria: Towards Freeing Scientific Knowledge from Copyright Burdens via LLMs}
+
+\begin{document}
+
+\twocolumn[
+\vspace*{-0.75cm}
+\icmltitle{Project Alexandria: Towards Freeing Scientific Knowledge\\ from Copyright Burdens via LLMs}
+
+\vspace*{-0.3cm}
+\begin{center}
+\textbf{ 
+Christoph Schuhmann$^{1\circ}$ \quad
+Gollam Rabby$^{3,1\circ}$ \\
+Ameya Prabhu$^{2,4\diamond}$ \quad
+Tawsif Ahmed$^{1,2\diamond}$ \quad
+Andreas Hochlehnert$^{2,4\diamond}$ \quad
+Huu Nguyen$^{1,2,5\diamond}$  \quad
+Nick Akinci$^{6\diamond}$ \\
+Ludwig Schmidt$^{2,7\dagger}$ \quad
+Robert Kaczmarczyk$^{1,10\dagger}$ \quad
+Sören Auer$^{3,8\dagger}$ \quad
+Jenia Jitsev$^{1,2,9\dagger}$ \quad
+Matthias Bethge$^{2,4\dagger}$ \vspace{0.1cm}}\\
+{
+$^1$LAION \quad
+$^2$Open-$\Psi$ (Open-Sci) Collective \quad
+$^3$L3S Research Center, Leibniz University Hannover \\ 
+$^4$T\"ubingen AI Center, University of T\"ubingen \quad
+$^5$Ontocord.ai \quad 
+$^6$Heidrich Rechtsanwälte \quad
+$^7$Stanford University \\
+$^8$ TIB—Leibniz Information Centre for Science and Technology \quad 
+$^9$ Juelich Supercomputing Center\\
+$^{10}$ Technical University of Munich, Germany\\} \vspace{0.2cm}
+\raisebox{-1pt}{\faDatabase} \href{https://huggingface.co/datasets/laion/project-alexandria}{\texttt{Knowledge-Units Database}} \quad 
+\raisebox{-1pt}{\faGlobe} \href{https://projects.laion.ai/project-alexandria/}{\texttt{Project Page}} \quad 
+\raisebox{-1pt}{\faGithub} \href{https://github.com/laion-ai/project-alexandria}{\texttt{Codebase}}
+\end{center}
+\vskip 0.3in
+]
+\footnotetext{\hspace{-0.4cm}$^\circ$ Equal lead \quad  $^\diamond$Equal core contribution \quad $^\dagger$Equal supervision\\ Refer to Author Contributions section for details.}
+
+\input{sections/abstract}
+\input{sections/intro}
+\input{sections/knowledgeunits}
+\input{sections/legal}
+\input{sections/results}
+\input{sections/alternate}
+\input{sections/conclusions}
+
+
+\bibliography{main}
+\bibliographystyle{icml2024}
+
+
+\newpage
+\appendix
+\input{supplementary/appendix}
+
+
+
+\end{document}

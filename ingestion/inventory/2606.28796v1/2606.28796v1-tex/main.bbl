@@ -1,0 +1,118 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Appalaraju et~al.(2021)Appalaraju, Jasani, Kota, Xie, and Manmatha}]{appalaraju_docformer:_2021}
+Srikar Appalaraju, Bhavan Jasani, Bhargava~Urala Kota, Yusheng Xie, and R.~Manmatha. 2021.
+\newblock \href {https://doi.org/10.48550/arXiv.2106.11539} {{DocFormer}: {End}-to-{End} {Transformer} for {Document} {Understanding}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2106.11539.
+
+\bibitem[{Baek et~al.(2019)Baek, Kim, Lee, Park, Han, Yun, Oh, and Lee}]{baek_what_2019}
+Jeonghun Baek, Geewook Kim, Junyeop Lee, Sungrae Park, Dongyoon Han, Sangdoo Yun, Seong~Joon Oh, and Hwalsuk Lee. 2019.
+\newblock \href {https://doi.org/10.48550/arXiv.1904.01906} {What {Is} {Wrong} {With} {Scene} {Text} {Recognition} {Model} {Comparisons}? {Dataset} and {Model} {Analysis}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:1904.01906.
+
+\bibitem[{Fan et~al.(2020)Fan, Bhosale, Schwenk, Ma, El-Kishky, Goyal, Baines, Celebi, Wenzek, Chaudhary, Goyal, Birch, Liptchinsky, Edunov, Grave, Auli, and Joulin}]{fan_beyond_2020}
+Angela Fan, Shruti Bhosale, Holger Schwenk, Zhiyi Ma, Ahmed El-Kishky, Siddharth Goyal, Mandeep Baines, Onur Celebi, Guillaume Wenzek, Vishrav Chaudhary, Naman Goyal, Tom Birch, Vitaliy Liptchinsky, Sergey Edunov, Edouard Grave, Michael Auli, and Armand Joulin. 2020.
+\newblock \href {https://doi.org/10.48550/ARXIV.2010.11125} {Beyond {English}-{Centric} {Multilingual} {Machine} {Translation}}.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Gala et~al.(2023)Gala, Chitale, AK, Gumma, Doddapaneni, Kumar, Nawale, Sujatha, Puduppully, Raghavan, Kumar, Khapra, Dabre, and Kunchukuttan}]{gala_indictrans2:_2023}
+Jay Gala, Pranjal~A. Chitale, Raghavan AK, Varun Gumma, Sumanth Doddapaneni, Aswanth Kumar, Janki Nawale, Anupama Sujatha, Ratish Puduppully, Vivek Raghavan, Pratyush Kumar, Mitesh~M. Khapra, Raj Dabre, and Anoop Kunchukuttan. 2023.
+\newblock \href {https://doi.org/10.48550/arXiv.2305.16307} {{IndicTrans2}: {Towards} {High}-{Quality} and {Accessible} {Machine} {Translation} {Models} for all 22 {Scheduled} {Indian} {Languages}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2305.16307.
+
+\bibitem[{Huang et~al.(2022)Huang, Lv, Cui, Lu, and Wei}]{huang_layoutlmv3:_2022}
+Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, and Furu Wei. 2022.
+\newblock \href {https://doi.org/10.48550/arXiv.2204.08387} {{LayoutLMv3}: {Pre}-training for {Document} {AI} with {Unified} {Text} and {Image} {Masking}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2204.08387.
+
+\bibitem[{Jadhav et~al.(2025)Jadhav, Shanbhag, Thakurdesai, Sinare, and Joshi}]{Jadhav_Shanbhag_Thakurdesai_Sinare_Joshi_2025}
+Suramya Jadhav, Abhay Shanbhag, Amogh Thakurdesai, Ridhima Sinare, and Raviraj Joshi. 2025.
+\newblock \href {https://arxiv.org/abs/2411.17637} {On limitations of llm as annotator for low resource languages}.
+
+\bibitem[{Joshi(2022{\natexlab{a}})}]{joshi2022l3cube_mahacorpus}
+Raviraj Joshi. 2022{\natexlab{a}}.
+\newblock L3cube-mahacorpus and mahabert: Marathi monolingual corpus, marathi bert language models, and resources.
+\newblock In \emph{Proceedings of the WILDRE-6 workshop within the 13th language resources and evaluation conference}, pages 97--101.
+
+\bibitem[{Joshi(2022{\natexlab{b}})}]{joshi2022l3cube_mahanlp}
+Raviraj Joshi. 2022{\natexlab{b}}.
+\newblock L3cube-mahanlp: Marathi natural language processing datasets, models, and library.
+\newblock \emph{arXiv preprint arXiv:2205.14728}.
+
+\bibitem[{Li and Srikumar(2020)}]{li_augmenting_2020}
+Tao Li and Vivek Srikumar. 2020.
+\newblock \href {https://doi.org/10.48550/arXiv.1906.06298} {Augmenting {Neural} {Networks} with {First}-order {Logic}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:1906.06298.
+
+\bibitem[{Smith(2007)}]{smith2007tesseract}
+R.~Smith. 2007.
+\newblock \href {https://doi.org/10.1109/ICDAR.2007.4376991} {An overview of the tesseract ocr engine}.
+\newblock volume~2, pages 629 -- 633.
+
+\bibitem[{Team et~al.(2022)Team, Costa-jussà, Cross, Çelebi, Elbayad, Heafield, Heffernan, Kalbassi, Lam, Licht, Maillard, Sun, Wang, Wenzek, Youngblood, Akula, Barrault, Gonzalez, Hansanti, Hoffman, Jarrett, Sadagopan, Rowe, Spruit, Tran, Andrews, Ayan, Bhosale, Edunov, Fan, Gao, Goswami, Guzmán, Koehn, Mourachko, Ropers, Saleem, Schwenk, and Wang}]{team_no_2022}
+NLLB Team, Marta~R. Costa-jussà, James Cross, Onur Çelebi, Maha Elbayad, Kenneth Heafield, Kevin Heffernan, Elahe Kalbassi, Janice Lam, Daniel Licht, Jean Maillard, Anna Sun, Skyler Wang, Guillaume Wenzek, Al~Youngblood, Bapi Akula, Loic Barrault, Gabriel~Mejia Gonzalez, Prangthip Hansanti, and 20 others. 2022.
+\newblock \href {https://doi.org/10.48550/arXiv.2207.04672} {No {Language} {Left} {Behind}: {Scaling} {Human}-{Centered} {Machine} {Translation}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2207.04672.
+
+\bibitem[{Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozière, Goyal, Hambro, Azhar, Rodriguez, Joulin, Grave, and Lample}]{touvron_llama:_2023}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, Aurelien Rodriguez, Armand Joulin, Edouard Grave, and Guillaume Lample. 2023.
+\newblock \href {https://doi.org/10.48550/arXiv.2302.13971} {{LLaMA}: {Open} and {Efficient} {Foundation} {Language} {Models}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2302.13971.
+
+\bibitem[{Vaswani et~al.(2023)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin}]{vaswani_attention_2023}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2023.
+\newblock \href {https://doi.org/10.48550/arXiv.1706.03762} {Attention {Is} {All} {You} {Need}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:1706.03762.
+
+\bibitem[{Wang et~al.(2023)Wang, Wang, Cao, Shen, and Huang}]{wang_images_2023}
+Xinlong Wang, Wen Wang, Yue Cao, Chunhua Shen, and Tiejun Huang. 2023.
+\newblock \href {https://doi.org/10.48550/arXiv.2212.02499} {Images {Speak} in {Images}: {A} {Generalist} {Painter} for {In}-{Context} {Visual} {Learning}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2212.02499.
+
+\bibitem[{Xiao et~al.(2021)Xiao, Singh, Mintun, Darrell, Dollár, and Girshick}]{xiao_early_2021}
+Tete Xiao, Mannat Singh, Eric Mintun, Trevor Darrell, Piotr Dollár, and Ross Girshick. 2021.
+\newblock \href {https://doi.org/10.48550/arXiv.2106.14881} {Early {Convolutions} {Help} {Transformers} {See} {Better}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2106.14881.
+
+\bibitem[{Xu et~al.(2022)Xu, Xu, Lv, Cui, Wei, Wang, Lu, Florencio, Zhang, Che, Zhang, and Zhou}]{xu_layoutlmv2:_2022}
+Yang Xu, Yiheng Xu, Tengchao Lv, Lei Cui, Furu Wei, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Wanxiang Che, Min Zhang, and Lidong Zhou. 2022.
+\newblock \href {https://doi.org/10.48550/arXiv.2012.14740} {{LayoutLMv2}: {Multi}-modal {Pre}-training for {Visually}-{Rich} {Document} {Understanding}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2012.14740.
+
+\bibitem[{Xu et~al.(2020)Xu, Li, Cui, Huang, Wei, and Zhou}]{xu_layoutlm:_2020}
+Yiheng Xu, Minghao Li, Lei Cui, Shaohan Huang, Furu Wei, and Ming Zhou. 2020.
+\newblock \href {https://doi.org/10.48550/arXiv.1912.13318} {{LayoutLM}: {Pre}-training of {Text} and {Layout} for {Document} {Image} {Understanding}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:1912.13318.
+
+\bibitem[{Xu et~al.(2021)Xu, Lv, Cui, Wang, Lu, Florencio, Zhang, and Wei}]{xu_layoutxlm:_2021}
+Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, and Furu Wei. 2021.
+\newblock \href {https://doi.org/10.48550/arXiv.2104.08836} {{LayoutXLM}: {Multimodal} {Pre}-training for {Multilingual} {Visually}-rich {Document} {Understanding}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2104.08836.
+
+\bibitem[{Zhao et~al.(2026)Zhao, Zhou, Li, Tang, Wang, Hou, Min, Zhang, Zhang, Dong, Du, Yang, Chen, Chen, Jiang, Ren, Li, Tang, Liu, Liu, Nie, and Wen}]{zhao_survey_2026}
+Wayne~Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min, Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen, Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, and 3 others. 2026.
+\newblock \href {https://doi.org/10.48550/arXiv.2303.18223} {A {Survey} of {Large} {Language} {Models}}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:2303.18223.
+
+\bibitem[{Zhong et~al.(2019)Zhong, Tang, and Yepes}]{zhong_publaynet:_2019}
+Xu~Zhong, Jianbin Tang, and Antonio~Jimeno Yepes. 2019.
+\newblock \href {https://doi.org/10.48550/arXiv.1908.07836} {{PubLayNet}: largest dataset ever for document layout analysis}.
+\newblock \emph{arXiv preprint}.
+\newblock ArXiv:1908.07836.
+
+\end{thebibliography}

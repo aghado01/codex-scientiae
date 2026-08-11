@@ -1,0 +1,63 @@
+\vspace{-0.2cm}
+\section{Alternative Positions}
+\vspace{-0.1cm}
+
+Extracting valuable scientific knowledge from scholarly texts is debated from two main perspectives. One view argues that existing methods like LM embeddings already separate factual content from expressive elements, making a new format like Knowledge Units unnecessary (see Section \ref{sec:embed}). Conversely, critics question whether scientific knowledge can ever be freed from copyright constraints, citing the complexity of legal challenges, limitations of automated extraction methods, and the potential for large-scale harm (see Subsection \ref{sec:criticism}).
+
+\vspace{-0.2cm}
+\subsection{Limitations of Embeddings}
+\label{sec:embed}
+
+\begin{table}[t]
+\centering
+\small
+\vspace{-0.25cm}
+\setlength{\tabcolsep}{6pt} % adjust column spacing
+\caption{Cosine similarity scores between original texts and their modified versions using BGE-M3 embeddings. Scrambled word orders achieve high similarity scores highlighting the embeddings' coarse-grained semantic representations.}\vspace{0.1cm}\label{tab:cosine_similarity}
+\begin{tabular}{lc}
+\toprule
+\textbf{Texts Compared} & \textbf{Cosine Similarity} \\ \midrule
+Original-Random Words (\textit{Lower Bound}) & 0.45 \\
+Original-Unrelated Abstract & 0.47 \\ 
+Original-Knowledge Unit  & 0.82 \\ 
+Original-Scrambled Word Order & 0.89 \\
+Original-Original (\textit{Upper Bound}) & 1.0\\ \bottomrule
+\end{tabular}
+\vspace{-0.5cm}
+\end{table}
+
+While text embeddings are commonly used to store and share even copyrighted content, we demonstrate they inadequately preserve scientific knowledge—even state-of-the-art models on MTEB Leaderboard \cite{muennighoff2023mtebmassivetextembedding} like BGE-M3 \cite{chen2024bgem3embeddingmultilingualmultifunctionality}. Embeddings primarily capture coarse semantic similarity but fail to encode precise factual statements, causal relationships, or numeric details.
+
+\textbf{Experimental Setup:} We embedded abstracts from prior analysis using BGE-M3 and evaluated knowledge retention via cosine similarity. 
+
+\textbf{Sanity Checks:} Baselines included (1) gibberish vs. original (lower bound), (2) original vs. itself (upper bound), (3) unrelated domain-matched abstracts, and (4) scrambled abstracts (randomized word order).
+
+\textbf{Result.} Table~\ref{tab:cosine_similarity} summarizes the results. We see that heavily scrambled text often showed high similarity to the original, revealing that surface-level spurious patterns drive much of the model’s similarity score. Cosine similarity, the most popular method for using embeddings, cannot separate whether the extracted facts (e.g., relationships, causal statements, numerical data) actually match the source.
+
+\textbf{Conclusion.} Embeddings often fail to capture precise factual details, making them unreliable \textit{technically} for preserving scientific knowledge. Similarly, simple paraphrasing may still resemble the original text’s structure and style too closely, raising potential \textit{legality} concerns. 
+
+
+\vspace{-0.2cm}
+\subsection{Addressing Common Criticisms}
+\label{sec:criticism}
+
+We address a few common criticisms to our position below:
+
+\textbf{1. Credit Attribution:} Critics contend that open-access extraction of research findings into structured databases risks diluting traditional citation metrics (e.g., impact factors), as users may cite the database over original papers.\\
+\textit{Rebuttal:} Traceable attribution systems (e.g., DOIs embedded in extracted facts) and enhanced accessibility can amplify citation reach while preserving credit to authors.
+
+\textbf{2. Oversimplification of Nuance in Research:} Knowledge Units may not effectively capture intricate procedures such as mathematical proofs or biochemical assays. In general, information that is best presented through tables, diagrams, or proofs does not easily convert into Knowledge Units.\\
+\textit{Rebuttal:} We agree, this is a critical limitation of KUs. However, mathematical proofs, assay descriptions, tables of results and similar long-form structured texts are largely not even eligible for copyright. However, we need to accurately identify and release such text information as-is. 
+
+
+
+\textbf{3. Legal Risks:} Transformative-use defenses under fair use law are context-dependent, requiring costly case-by-case litigation, creating deterrence through legal uncertainty.\\
+\textit{Rebuttal:} We agree. We try to mitigate this by careful design, using structured extraction frameworks converting text into non-expressive factual units. We additionally highlight the process must involve only temporary access to original copyrighted texts, strictly for the purpose of analysis under TDM exceptions, followed by their deletion. No original copyrighted material should be retained. 
+
+\textbf{4. Hallucination Propagation:}  Automated extraction risks embedding inaccuracies, particularly in high-stakes domains, without scalable human validation.\\
+\textit{Rebuttal:} We agree, and believe a critical next step is designing hybrid systems integrating cross-referencing algorithms, confidence scoring, and targeted human oversight for critical assertions to balance scalability with rigor. The KUs would be akin to editing a machine-readable Wikipedia (human-readable with good UI), one can simply edit the incorrect KU and replace the wrong information. Moreover, we believe that upcoming more capable models, like recently developed reasoning models, will provide further way to automate and scale verification of extracted knowledge content, requiring human assistance only in few manageable cases.
+
+\textbf{5. Irreversible Harm.} Once Knowledge Units is released, any flaws discovered later affects all released content, making the copyright harm irreversible.\\
+\textit{Rebuttal:} Our proposal presents an idea with a prototype to demonstrate feasibility -- this is a position paper rather than a proposed system. We stress the need for further iteration before deployment and advocate for exploration over immediate adoption to prevent uncritical implementation. Other measures, designed to reduce hallucination propagation can similarly update KU contents in this case, mitigating any harm caused similar to those adopted for leaks of copyrighted data.
+
+\textbf{6. Replication of failures of Semantic Web.} We think semantic web initiatives such as schema.org or life-science KGs have excelled in adoption and impact. However, the standardization done in fully fledged KGs is not (yet) feasible (e.g., wrt. unique identification and schema harmonization) and hence omitted in the design of KUs to avoid past failures, as it is not critical for our purpose. We want to enable KUs to primarily allow sharing of knowledge on platforms like HuggingFace contribute strongly to open science.

@@ -1,0 +1,226 @@
+\begin{thebibliography}{44}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[hat(2012)]{hathitrustcase}
+{T}he {A}uthors {G}uild, {I}nc. et al v. {H}athitrust et al --- dockets.justia.com, 2012.
+\newblock URL \url{https://dockets.justia.com/docket/new-york/nysdce/1:2011cv06351/384619}.
+
+\bibitem[Adhikari(2021)]{adhikari2021idea}
+Adhikari, A.~S.
+\newblock Idea - expression dichotomy: A comparative study of legal application in uk, usa and india.
+\newblock \emph{Journal of Multi-Disciplinary Legal Research}, 2021.
+
+\bibitem[Akinci(2023)]{heidrich2023legal}
+Akinci, N.
+\newblock Prüfung urheberrechtlicher fragestellungen.
+\newblock \emph{Legal Request}, 2023.
+\newblock Document attached in Appendix \ref{sec:legal}.
+
+\bibitem[Austin \& Ginsburg(2022)Austin and Ginsburg]{authorhumanrights}
+Austin, G. and Ginsburg, J.~C.
+\newblock Authors’ rights as human rights, 2022.
+\newblock URL \url{https://anzsilperspective.com/authors-rights-as-human-rights/}.
+
+\bibitem[Ax(2015)]{googleBooksCase}
+Ax, J.
+\newblock Google book-scanning project is legal, says u.s. appeals court, 2015.
+\newblock URL \url{https://www.reuters.com/article/technology/google-book-scanning-project-legal-says-us-appeals-court-idUSKCN0SA1S0/}.
+
+\bibitem[Campbell(2016)]{campbell2016authors}
+Campbell, V.
+\newblock Authors guild v. google, inc.
+\newblock \emph{DePaul J. Art Tech. \& Intell. Prop. L}, 2016.
+
+\bibitem[Chabot et~al.(2014)Chabot, Caron, Laplante, and St-Pierre]{chabot2014interrelationships}
+Chabot, F., Caron, A., Laplante, M., and St-Pierre, D.~H.
+\newblock Interrelationships between ghrelin, insulin and glucose homeostasis: physiological relevance.
+\newblock \emph{World journal of diabetes}, 2014.
+
+\bibitem[Chen et~al.(2024)Chen, Xiao, Zhang, Luo, Lian, and Liu]{chen2024bgem3embeddingmultilingualmultifunctionality}
+Chen, J., Xiao, S., Zhang, P., Luo, K., Lian, D., and Liu, Z.
+\newblock {BGE} m3-embedding: Multi-lingual, multi-functionality, multi-granularity text embeddings through self-knowledge distillation.
+\newblock 2024.
+
+\bibitem[Cipolloni \& Kudler-Flam(2023)Cipolloni and Kudler-Flam]{cipolloni2023entanglement}
+Cipolloni, G. and Kudler-Flam, J.
+\newblock Entanglement entropy of non-hermitian eigenstates and the ginibre ensemble.
+\newblock \emph{Physical Review Letters}, 2023.
+
+\bibitem[Clement et~al.(2019)Clement, Bierbaum, O'Keeffe, and Alemi]{clement2019arxiv}
+Clement, C.~B., Bierbaum, M., O'Keeffe, K.~P., and Alemi, A.~A.
+\newblock On the use of arxiv as a dataset, 2019.
+
+\bibitem[Cohan et~al.(2018)Cohan, Dernoncourt, Kim, Bui, Kim, Chang, and Goharian]{DBLP:conf/naacl/CohanDKBKCG18}
+Cohan, A., Dernoncourt, F., Kim, D.~S., Bui, T., Kim, S., Chang, W., and Goharian, N.
+\newblock A discourse-aware attention model for abstractive summarization of long documents.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, NAACL-HLT, New Orleans, Louisiana, USA, June 1-6, 2018, Volume 2 (Short Papers)}, 2018.
+
+\bibitem[Cox(2015)]{USfairuseTDM2015}
+Cox, K.
+\newblock {Fair Use in Text and Data Mining: ARL Publishes Issue Brief}, 2015.
+\newblock URL \url{https://www.arl.org/news/fair-use-in-text-and-data-mining-arl-publishes-issue-brief/}.
+
+\bibitem[Else(2018)]{else2018dutch}
+Else, H.
+\newblock Dutch publishing giant cuts off researchers in germany and sweden.
+\newblock \emph{Nature}, 2018.
+
+\bibitem[{Federal Ministry of Eductaion and Research} \& {German Library Association}(2020){Federal Ministry of Eductaion and Research} and {German Library Association}]{bmbf2020copyright}
+{Federal Ministry of Eductaion and Research} and {German Library Association}.
+\newblock Copyright in academic work, 2020.
+\newblock URL \url{https://www.bmbf.de/SharedDocs/Publikationen/DE/FS/31580_Urheberrecht_in_der_Wissenschaft_en.pdf?__blob=publicationFile&v=4}.
+
+\bibitem[Fraser et~al.(2023)Fraser, Hobert, Jahn, Mayr, and Peters]{NoDealFraser}
+Fraser, N., Hobert, A., Jahn, N., Mayr, P., and Peters, I.
+\newblock No deal: German researchers' publishing and citing behaviors after big deal negotiations with elsevier.
+\newblock \emph{Quant. Sci. Stud.}, 2023.
+
+\bibitem[Gaind(2019)]{gaind2019huge}
+Gaind, N.
+\newblock Huge us university cancels subscription with elsevier.
+\newblock \emph{Nature}, 2019.
+
+\bibitem[Geller(2009)]{geller2009german}
+Geller, P.~E.
+\newblock A german approach to fair use: Test cases for trips criteria for copyright limitations.
+\newblock \emph{J. Copyright Soc'y USA}, 57:\penalty0 553, 2009.
+
+\bibitem[Gr{\"a}tz(2021)]{gratz2021kunstliche}
+Gr{\"a}tz, A.
+\newblock \emph{K{\"u}nstliche Intelligenz im Urheberrecht}.
+\newblock Springer, 2021.
+
+\bibitem[Guo et~al.(2025)Guo, Yang, Zhang, Song, Zhang, Xu, Zhu, Ma, Wang, Bi, et~al.]{deepseekai2025deepseekr1incentivizingreasoningcapability}
+Guo, D., Yang, D., Zhang, H., Song, J., Zhang, R., Xu, R., Zhu, Q., Ma, S., Wang, P., Bi, X., et~al.
+\newblock Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:2501.12948}, 2025.
+
+\bibitem[Hale(2022)]{patentlyunfair}
+Hale, Z.~A.
+\newblock Authors’ rights as human rights, 2022.
+\newblock URL \url{https://ualr.edu/socialchange/2018/04/04/patently-unfair/}.
+
+\bibitem[Hoffmann et~al.(2011)Hoffmann, Richter, Hoffmann, and Richter]{hoffmann2011copyrights}
+Hoffmann, M., Richter, T.~S., Hoffmann, M., and Richter, T.~S.
+\newblock Copyrights zwischen feingeist und zeitgeist--das urheberrecht.
+\newblock \emph{Geistiges Eigentum in der Betriebspraxis}, pp.\  123--136, 2011.
+
+\bibitem[Hogan et~al.(2021)Hogan, Blomqvist, Cochez, d'Amato, de~Melo, Gutierrez, Kirrane, Labra~Gayo, Navigli, Neumaier, Ngonga~Ngomo, Polleres, Rashid, Rula, Schmelzeisen, Sequeda, Staab, and Zimmermann]{hogan2021knowledge}
+Hogan, A., Blomqvist, E., Cochez, M., d'Amato, C., de~Melo, G., Gutierrez, C., Kirrane, S., Labra~Gayo, J.~E., Navigli, R., Neumaier, S., Ngonga~Ngomo, A.-C., Polleres, A., Rashid, S.~M., Rula, A., Schmelzeisen, L., Sequeda, J., Staab, S., and Zimmermann, A.
+\newblock Knowledge graphs.
+\newblock \emph{Synthesis Lectures on Data, Semantics, and Knowledge}, 2021.
+
+\bibitem[Huguet~Cabot \& Navigli(2021)Huguet~Cabot and Navigli]{rebel2021}
+Huguet~Cabot, P.-L. and Navigli, R.
+\newblock {REBEL:} relation extraction by end-to-end language generation.
+\newblock In \emph{Findings of the Association for Computational Linguistics: {EMNLP} 2021, Virtual Event / Punta Cana, Dominican Republic, 16-20 November, 2021}, 2021.
+
+\bibitem[Jain(2012)]{jain2012principle}
+Jain, S.
+\newblock The principle of idea-expression dichotomy: A comparative study of us, uk \& indian jurisdictions.
+\newblock \emph{UK \& Indian Jurisdictions (March 26, 2012)}, 2012.
+
+\bibitem[Legner(2019)]{legner2019erzeugnisse}
+Legner, S.
+\newblock Erzeugnisse k{\"u}nstlicher intelligenz im urheberrecht.
+\newblock \emph{ZUM}, 63:\penalty0 807--812, 2019.
+
+\bibitem[Lenat et~al.(1990)Lenat, Guha, Pittman, Pratt, and Shepherd]{lenat1990cyc}
+Lenat, D.~B., Guha, R.~V., Pittman, K., Pratt, D., and Shepherd, M.
+\newblock Cyc: toward programs with common sense.
+\newblock \emph{Communications of the ACM}, 33\penalty0 (8):\penalty0 30--49, 1990.
+
+\bibitem[Muennighoff et~al.(2023)Muennighoff, Tazi, Magne, and Reimers]{muennighoff2023mtebmassivetextembedding}
+Muennighoff, N., Tazi, N., Magne, L., and Reimers, N.
+\newblock Mteb: Massive text embedding benchmark.
+\newblock In \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics, EACL 2023, Dubrovnik, Croatia, May 2-6, 2023}, 2023.
+
+\bibitem[of~the High Commissioner~for Human~Rights(2015)]{scienceright}
+of~the High Commissioner~for Human~Rights, T.~O.
+\newblock The impact of intellectual property regimes on the enjoyment of right to science and culture, 2015.
+\newblock URL \url{https://www.ohchr.org/en/special-procedures/sr-cultural-rights/impact-intellectual-property-regimes-enjoyment-right-science-and-culture}.
+
+\bibitem[OpenAI(2023)]{achiam2023gpt}
+OpenAI.
+\newblock Gpt-4 technical report.
+\newblock \emph{arXiv preprint arXiv:2303.08774}, 2023.
+
+\bibitem[Pan(2007)]{pan2007evolution}
+Pan, H.
+\newblock The evolution of the earth-moon system based on the dark matter field fluid model.
+\newblock \emph{arXiv preprint arXiv:0704.0003}, 2007.
+
+\bibitem[Pike \& Loki()Pike and Loki]{sherlock}
+Pike, R. and Loki.
+\newblock The sherlock plagiarism detector.
+\newblock URL \url{https://web.archive.org/web/20180703060842/http://rp-www.cs.usyd.edu.au/~scilect/sherlock}.
+
+\bibitem[Prabhakaran et~al.(2022)Prabhakaran, Mitchell, Gebru, and Gabriel]{humanrightsbasedapproachresponsible}
+Prabhakaran, V., Mitchell, M., Gebru, T., and Gabriel, I.
+\newblock A human rights-based approach to responsible ai, 2022.
+
+\bibitem[Raginsky(2007)]{DBLP:journals/corr/abs-0704-0671}
+Raginsky, M.
+\newblock Learning from compressed observations.
+\newblock In \emph{2007 IEEE Information Theory Workshop}, pp.\  420--425. IEEE, 2007.
+
+\bibitem[Reichman \& Okediji(2012)Reichman and Okediji]{reichman2012copyright}
+Reichman, J.~H. and Okediji, R.~L.
+\newblock When copyright law and science collide: empowering digitally integrated research methods on a global scale.
+\newblock \emph{Minnesota Law Review}, 2012.
+
+\bibitem[Soldaini \& Lo(2023)Soldaini and Lo]{peS2o}
+Soldaini, L. and Lo, K.
+\newblock pes2o (pretraining efficiently on s2orc) dataset.
+\newblock \emph{Allen Institute for AI, Tech. Rep}, 2023.
+
+\bibitem[Stodden(2009)]{stodden2008legal}
+Stodden, V.
+\newblock The legal framework for reproducible scientific research: Licensing and copyright.
+\newblock \emph{Comput. Sci. Eng.}, 2009.
+
+\bibitem[Streinu \& Theran(2009{\natexlab{a}})Streinu and Theran]{DBLP:journals/gc/StreinuT09}
+Streinu, I. and Theran, L.
+\newblock Sparsity-certifying graph decompositions.
+\newblock \emph{Graphs Comb.}, 2009{\natexlab{a}}.
+
+\bibitem[Streinu \& Theran(2009{\natexlab{b}})Streinu and Theran]{streinu2009sparsity}
+Streinu, I. and Theran, L.
+\newblock Sparsity-certifying graph decompositions.
+\newblock \emph{Graphs Comb.}, 2009{\natexlab{b}}.
+
+\bibitem[Suber(2012)]{suber2012open}
+Suber, P.
+\newblock \emph{Open access}.
+\newblock 2012.
+
+\bibitem[Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, et~al.]{touvron2023llama}
+Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M.-A., Lacroix, T., Rozi{\`e}re, B., Goyal, N., Hambro, E., Azhar, F., et~al.
+\newblock Llama: open and efficient foundation language models. arxiv.
+\newblock \emph{arXiv preprint arXiv:2302.13971}, 2023.
+
+\bibitem[Virnau et~al.(2006)Virnau, Mirny, and Kardar]{virnau2006intricate}
+Virnau, P., Mirny, L.~A., and Kardar, M.
+\newblock Intricate knots in proteins: Function and evolution.
+\newblock \emph{PLoS Comput. Biol.}, 2006.
+
+\bibitem[Wandtke(2010)]{wandtke2010urheberrecht}
+Wandtke, A.-A.
+\newblock \emph{Urheberrecht}.
+\newblock de Gruyter, 2010.
+
+\bibitem[White(2019)]{white2019publications}
+White, K.
+\newblock Publications output: Us trends and international comparisons. science \& engineering indicators 2020. nsb-2020-6.
+\newblock \emph{National Science Foundation}, 2019.
+
+\bibitem[Yen(1989)]{yen1989first}
+Yen, A.~C.
+\newblock A first amendment perspective on the idea/expression dichotomy and copyright in a work's total concept and feel.
+\newblock \emph{Emory LJ}, 1989.
+
+\end{thebibliography}
