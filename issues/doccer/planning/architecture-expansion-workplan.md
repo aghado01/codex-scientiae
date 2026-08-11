@@ -1,6 +1,8 @@
 # Doccer architectural expansion workplan
 
-Living workplan for the many-sorted kernel expansion. This document refines the queue in
+Living workplan for the many-sorted kernel expansion. This document retains the detailed
+architecture and dependency rationale; current cross-arc status and next closure gates are
+consolidated in [status-registry.md](status-registry.md). It refines the short queue in
 [roadmap.md](roadmap.md); the decision canon remains [decisions.md](decisions.md), and completed
 work still moves to [ledger.md](ledger.md).
 
@@ -216,6 +218,7 @@ flowchart TD
     K0 -.->|D41/D42/D46 registry addenda| V0
     V0 --> V1
     V1 --> V2
+    A0 -.->|evidence gate| V2
     A0 --> A1
     A0 --> A2
     A0 -.-> AP
@@ -286,7 +289,7 @@ Every public tranche closes only when all applicable rows are satisfied.
 | C# contract harness | Positive, boundary, adversarial, and law-oracle cases are green. |
 | Lean/theory | A theorem, finite decision certificate, or explicit reason that this is policy rather than algebra is recorded. |
 | Witness | At least one bounded adapter recipe demonstrates the operation without donating domain meaning to the kernel. |
-| Documentation | Decision canon, README, roadmap, and ledger agree with the landed state. |
+| Documentation | Decision canon, status registry, README, roadmap, and ledger agree with the landed state. |
 
 The law registry introduced in K0 records which assurance mechanism owns each claim:
 
@@ -1285,15 +1288,17 @@ Known concrete geometry continues to use exact joins and validators.
 
 ### O3 — operational acceleration and persistence
 
-- F4 indexing begins only after K2/K3 semantics freeze.
+- K2/K3 semantics are now frozen; F4 indexing begins only after A0 identifies one measured hot
+  query and owning carrier.
 - D41's A0 baseline precedes claims that A1/A2 or a later index is faster; A1/A2 preserve D30/D37
   and do not expose D20's numeric columns or rewrite evidence-bearing policies.
-- F2 persistence waits for an explicit decision about which occurrence, fact, support, plan, and
-  origin identities cross process boundaries, and fixes the fingerprint algorithm/version and
+- F2 portable artifacts wait for an explicit decision about which occurrence, fact, support, plan,
+  and origin identities cross process boundaries, and fix the fingerprint algorithm/version and
   canonical UTF-16 byte order before persisting the current host-endian in-process commitment.
 - CLI verbs wait for stable carrier wire forms; provisional DLL-reach adapters continue as
   disposable census instruments.
-- ECSA-style packed enumeration is considered only after K5 has a real support/result structure.
+- K5 now supplies a real support/result structure; ECSA-style packed enumeration remains dormant
+  until A0 identifies an actual alternative-support enumeration or storage cost.
 
 ## 9. Reconciliation with existing roadmap families
 
@@ -1304,9 +1309,9 @@ Known concrete geometry continues to use exact joins and validators.
 | First durable CLI verbs | after stable carriers and wire identity; no longer the expansion critical path |
 | Materialize | K7, no longer an isolated discretionary lift |
 | F1 OffsetMap | restricted view after K6/K7; may be pressure-tested earlier |
-| F2 persistence | after identity choices across K2, K5, K6, and K7 |
+| F2 portable identity / persisted artifacts | after identity choices across K2, K5, K6, and K7; shaped by the first cross-process consumer |
 | F3 byte addressing | separate coordinate-map branch after K6 semantics |
-| F4 indexed joins | acceleration after K2/K3 reference semantics |
+| F4 carrier-specific indexes | measured acceleration after K2/K3 reference semantics and A0 evidence |
 | F5 agreement scoring | after K4 selection/result shape |
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
 | V0–V2 vectors/masks | D46 closes V0 and V1 as basisless `BooleanVector` plus explicit `Utf16UnitMask`, classifier/continuity, topology-atom harvest, and evidence-bearing claim emission; V2 only after Doccer-measured evidence and its per-backend D42/D46 gate; packed `SpanSet` and suppression equivalence remain separate future obligations |

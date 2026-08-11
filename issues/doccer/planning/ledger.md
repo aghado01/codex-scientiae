@@ -1,6 +1,7 @@
 # Doccer ledger — completed roadmap items
 
-Planning document, sibling to [decisions.md](decisions.md) and [roadmap.md](roadmap.md): when a
+Completed-work history, sibling to [decisions.md](decisions.md) and [roadmap.md](roadmap.md).
+Current cross-arc state and next gates live in [status-registry.md](status-registry.md). When a
 roadmap item closes, it moves here with its date, the contracts it minted, and its witness. The
 roadmap holds only what is ahead; this file holds what has landed. Not a changelog — entries are
 roadmap-item grain, corrected in place if wrong (the judgment rule applies); the full arguments

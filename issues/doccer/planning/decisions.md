@@ -6,8 +6,10 @@ full arguments live in the runstamped briefs under [../briefs/](../briefs/) — 
 [founding run](../briefs/fable-doccer-dev-brief-20260801_222912.md) minted D1–D14, the per-chip
 briefs carry the later contracts with their reports — and the evidence in
 [../discussions/](../discussions/). Completed roadmap items are recorded in
-[ledger.md](ledger.md). The MarkPig legwork is historical evidence — cited, never amended.
-`src/doccer/README.md` is the in-repo contract surface and must agree with this file.
+[ledger.md](ledger.md). Current status and relationships across the K/V/A/F/O/L labels are
+consolidated in [status-registry.md](status-registry.md). The MarkPig legwork is historical
+evidence — cited, never amended. `src/doccer/README.md` is the in-repo contract surface and must
+agree with this file.
 
 ## Doctrine
 
@@ -969,12 +971,16 @@ their result semantics interchangeable.
 
 ## Deferred families (F) — trigger = prioritization default, per D14
 
+This table owns the families' contract shapes and default triggers. Their current readiness,
+cross-family relationships, and next closure units are consolidated in
+[status-registry.md](status-registry.md).
+
 | # | family | state | default trigger |
 |---|---|---|---|
 | F1 | `OffsetMap` | contract shape **drafted**: point results `Exact \| Range \| Unmapped`; ICU-Edits-style segment list (`Identity/Expand/Contract/Delete/Insert`); span projection under a named policy (`Clip/Expand/Drop/Residual/Refuse`, **Residual** default posture); exactness laws on preserved coordinates; maps compose; acceptance edge-cases in [grok-offsetmap-unicode](../discussions/grok-offsetmap-unicode.md) | first edit-plan or normalization job |
-| F2 | Persisted batch format | interning tables landed as groundwork; mdnav sidecar = identity/staleness design donor; subsumes the CLI wire format, not duplicates it; before any `TextMaster` fingerprint crosses platforms, freeze the commitment algorithm/version and canonical UTF-16 byte order rather than persisting the current host-endian byte view | first cross-process consumer |
+| F2 | Portable identity / persisted artifacts | interning tables landed as groundwork; mdnav sidecar = identity/staleness design donor; subsumes the CLI wire format, not duplicates it; before any `TextMaster` fingerprint crosses platforms, freeze the commitment algorithm/version and canonical UTF-16 byte order rather than persisting the current host-endian byte view | first cross-process consumer |
 | F3 | Byte addressing | encoding map (bytes↔code units) is a distinct object from the Unicode-form map; reconcile with OffsetMap, never bolt onto `TextMaster` | byte-exact reproduction/provenance need; a successor-design decision |
-| F4 | Indexed joins / lookup acceleration | semantics are the contract; pure acceleration | Tier-2 tests freeze semantics |
+| F4 | Carrier-specific indexes / lookup acceleration | K2/K3 reference semantics are frozen; indexes remain private acceleration owned by one carrier/query and cannot change result identity or policy | A0 plus one measured hot query |
 | F5 | Tier-2/3 acceptance, agreement scoring | needs an honest pair of independent producers (ATX vs setext natural) | markdown inventory exists |
 | F6 | Markdown adapter + mdnav succession | oracle harness vs mdnav on doc-dive fixtures; exceed at the collapse points (quote-nested fences, setext/ATX disagreement, multi-line HTML, H1×breaks join); conserve instrument virtues; doc-dive skill retargets unchanged | Phase-2 exit + markdown inventory |
 | F7 | Distance/correspondence and derived-origin producers | F7a exact/thresholded distance plus edit-script/correspondence evidence is independent and never historical provenance by itself; F7b performed transforms may emit actual K6 origins plus loss; F7c explicit promotion/materialization integration retains policy, ambiguity, unmatched, and resource evidence | F7a independently schedulable; F7b after K6; F7c after the K6/K7 carriers it consumes |

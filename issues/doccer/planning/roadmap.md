@@ -1,9 +1,11 @@
 # Doccer roadmap — what is ahead
 
-Living document — current truth, corrected in place, holding only work **not yet done**.
-Decisions and the question ledger live in [decisions.md](decisions.md); completed roadmap items
-move to [ledger.md](ledger.md); arguments in the runstamped briefs under
-[../briefs/](../briefs/); evidence in [../discussions/](../discussions/).
+Living document — current truth, corrected in place, holding the short execution queue for work
+**not yet done**. The cross-arc status, readiness, relationships, and next closure gates live in
+[status-registry.md](status-registry.md). Decisions and the question ledger live in
+[decisions.md](decisions.md); completed roadmap items move to [ledger.md](ledger.md); arguments in
+the runstamped briefs under [../briefs/](../briefs/); evidence in
+[../discussions/](../discussions/).
 
 ## Current state (2026-08-10)
 
@@ -162,9 +164,9 @@ surface smoke close K7 at **2751 checks** (**2639→2751**, zero warnings).
 Engines first; **codex-scientiae adapters last**. scriba-scientiae was aborted — codex-scientiae is
 renovated from the inside, so its converter/LaTeX lanes are the living lanes, and they become
 thin consumers of doccer only after the doccer-native surface exists. Contracts gate work;
-consumers witness (D14). Per-topic containment: `planning/` = living truth (decisions, roadmap,
-ledger); `briefs/` = one small runstamped brief per chip iteration, guidance + that chip's
-report appended on completion; `discussions/` = captured evidence.
+consumers witness (D14). Per-topic containment: `planning/` = living truth (decisions, status
+registry, roadmap, ledger); `briefs/` = one small runstamped brief per chip iteration, guidance +
+that chip's report appended on completion; `discussions/` = captured evidence.
 
 ## Queue
 
@@ -259,9 +261,10 @@ F7a correspondence, F8a/F8b low-level contract or current-carrier witnesses, F9a
 views over current populations, the F-UCD data-provenance record, a callable runtime Tier-1 law
 runner if demanded, and early `OffsetMap` pressure tests that do not pre-empt K6 origins.
 
-Maturity-gated beyond that: F2 persisted batches (after fingerprint algorithm/version/canonical
-byte order) → F4 indexed joins → F5 Tier-2/3 agreement scoring → F6 markdown adapter and the mdnav
-succession (oracle harness on the doc-dive fixtures; exceed mdnav precisely at its collapse
+Consumer- and evidence-gated beyond that: F2 portable artifacts wait for fingerprint
+algorithm/version/canonical byte order; F4 indexing independently waits for A0 plus one measured
+hot query; F5 Tier-2/3 agreement supplies an honest producer pair to F6's markdown adapter and
+mdnav succession (oracle harness on the doc-dive fixtures; exceed mdnav precisely at its collapse
 points; conserve its instrument virtues). Broader F8 signature/index/sketch and F9 fitted/search
 implementations retain post-K priority; F7 transform-origin/promotion and fact/origin feature
 recipes are scheduled by K6/K7/K5 carrier dependencies rather than K8 as a blanket. D14 permits
@@ -334,8 +337,9 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 
 ## Standing context for future sessions
 
-- Decision canon, this roadmap, and the ledger are the entry points; `src/doccer/README.md` is
-  the in-repo contract surface and must stay in agreement.
+- The status registry is the current cross-arc entry point; the decision canon, this roadmap, and
+  the ledger retain their contract, queue, and history roles. `src/doccer/README.md` is the in-repo
+  contract surface and must stay in agreement.
 - MarkPig legwork = historical evidence, never amended. mdnav relation = succession + spec
   witness, no cross-talk (its three strata: pseudo-parsing → supplanted eventually; instrument
   verbs → spec witness; doc-dive skill semantics → permanently above the engine).

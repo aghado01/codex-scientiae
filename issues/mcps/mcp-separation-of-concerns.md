@@ -14,17 +14,12 @@ src/
       server.ps1
       tools/
       schemas/
-    scholar/
-    latex-ingest/
+    adjutant/
+      server.ps1
+      tools/
+      schemas/
 
-  audits/
-    math-render/
-    ...
-
-  shared/
   procurement/
-  latex-ingest/
-  md-postprocess/
   ...
 ```
 
@@ -47,21 +42,12 @@ The boundaries matter:
 - Artifact placement belongs to the workflow/run being invoked; the MCP adapter merely supplies addressing and returns the result.
 - Shared domain primitives belong outside `mcps`. Only primitives that are intrinsically MCP protocol machinery belong in `mcps/runtime`.
 
-The current membrane server is a strong example of what needs separating: server startup, tool catalogue, document resolution, workflow orchestration, audits, conversion, publishing, and experimental harvesting are all composed in one file. During eviction, I would preserve very little of that shell directly. Instead, classify each handler as:
+Classify each handler as:
 
 1. Protocol glue — rebuild under `src/mcps`.
 2. Workflow policy — extract only if still wanted.
 3. Reusable operation — recapture independently.
 4. Algorithm or primitive — evaluate and retain on merit.
 5. Product-specific behavior — evict with the shell.
-
-This also gives us a good test boundary:
-
-```text
-tests/mcps/<server>/       MCP schemas, dispatch, envelopes, adapter behavior
-tests/audits/              reusable audit contracts
-tests/<operation>/         workflow behavior
-tests/shared/              primitive laws and invariants
-```
 
 The key doctrine is: MCPs expose and coordinate capabilities; they do not own the reusable mechanics behind them. That should make future Reader, Librarian, Scholar, and latex-ingest MCPs much easier to assemble without repeating or disguising operations.
