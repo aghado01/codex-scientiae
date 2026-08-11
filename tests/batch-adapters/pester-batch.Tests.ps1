@@ -154,7 +154,7 @@ Describe 'adapters module surface for pester-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-LatexBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
+            'Get-PesterBatchJob', 'Get-PytestBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         Get-Command Get-TestBatchJob -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         foreach ($oldPath in @(

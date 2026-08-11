@@ -10,10 +10,9 @@ MuPDF (WASM) rasterizes *whatever is drawn* on a PDF page or region, so one mech
 **and** raster content, outputs PNG, and never emits a sub-PDF/SVG. The colocated `pdf-raster.ps1`
 wrapper exposes this worker through `Invoke-PdfRaster`; callers own their output layout.
 
-The **LaTeX ingestion lane** uses this engine as its PNG terminal register: it
-converts `\includegraphics` PDF assets to PNG and rasterizes per-diagram compiled PDFs (tectonic →
-PDF → here). NOTE: this build has **no SVG or EPS document handler** — only PDF (+ raster images).
-`src/latex-ingest/latex-ingest.ps1` (via `Invoke-PdfRaster`) drives it for the oracle.
+Callers use this as a PNG terminal for PDF pages and clip regions (including diagram PDFs from
+tectonic). NOTE: this build has **no SVG or EPS document handler** — only PDF (+ raster images).
+Drive it through `Invoke-PdfRaster`; layout and orchestration stay with the caller.
 
 ## Usage
 

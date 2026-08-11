@@ -45,7 +45,6 @@ Describe 'BEX-403 adapter thinness gate' {
         @($executorCalls | Sort-Object) | Should -Be @(
             'batch-executor\New-BatchJob'
             'batch-executor\New-BatchJob'
-            'batch-executor\New-BatchJob'
         )
 
         $publicFunctions = foreach ($record in $script:AdapterSourceAsts) {
@@ -56,7 +55,7 @@ Describe 'BEX-403 adapter thinness gate' {
                 }, $true)
         }
         @($publicFunctions.Name | Sort-Object) | Should -Be @(
-            'Get-LatexBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
+            'Get-PesterBatchJob', 'Get-PytestBatchJob')
 
         $forbiddenInputs = @(
             'MaxWorkers'

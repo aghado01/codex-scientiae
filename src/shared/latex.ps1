@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/latex-ingest/latex.ps1 — LaTeX structural primitives.
+  src/shared/latex.ps1 — LaTeX structural primitives.
 
   Get-LatexBalance: single-pass delimiter-balance scanner. Counts {} [] () depth and
   \left..\right pairing (incl \bigl/\bigr sizing), skipping escaped literals (\{ \( ...)
@@ -14,7 +14,7 @@
   and the signed per-class residuals (brace/brack/paren/lr) for seam diagnostics.
 #>
 
-. "$PSScriptRoot/../shared/masks.ps1"   # the mask algebra the math-vs-prose / alignment predicates are built from
+. "$PSScriptRoot/masks.ps1"   # the mask algebra the math-vs-prose / alignment predicates are built from
 
 function Get-LatexBalance([string]$s) {
     $brace = 0; $brack = 0; $paren = 0; $lr = 0; $neg = $false

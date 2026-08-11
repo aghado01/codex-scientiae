@@ -22,13 +22,12 @@ the resolved budget is present in every execution record.
 
 ## Companion adapters
 
-The [`batch-adapters`](../batch-adapters/README.md) module exports `Get-PesterBatchJob`, `Get-PytestBatchJob`, and
-`Get-LatexBatchJob` as public files in one package, with no compatibility alias or module per command. The
+The [`batch-adapters`](../batch-adapters/README.md) module exports `Get-PesterBatchJob` and
+`Get-PytestBatchJob` as public files in one package, with no compatibility alias or module per command. The
 test planners discover one physical framework file per process job and assign framework-native result and
-suite-artifact writes beneath the caller run; the LaTeX planner maps source-ready document manifests to
-isolated latex-ingest process jobs with caller-owned run addressing and complete application write
-declarations. All emit jobs without changing this module's public surface or owning execution. Callers
-compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
+suite-artifact writes beneath the caller run. They emit jobs without changing this module's public surface
+or owning execution. Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
+A successor LaTeX conversion planner may rejoin the adapters module later under the same contract.
 
 The pytest unit is one physical `test_*.py` file with native JUnit and separate retained/temporary addresses
 beneath `RunDirectory/pytest-jobs/<container>`. It uses the existing `PowerShellProcess` mode and

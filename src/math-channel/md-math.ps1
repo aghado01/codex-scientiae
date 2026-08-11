@@ -25,7 +25,7 @@
     Repair-MathAlignment 'a &= b \\ &= c'                 # -> \begin{aligned} ... \end{aligned}
 #>
 
-. "$PSScriptRoot/../latex-ingest/latex.ps1"   # Test-AlignmentOutsideEnv — the predicate Repair-MathAlignment fixes against
+. "$PSScriptRoot/../shared/latex.ps1"   # Test-AlignmentOutsideEnv — the predicate Repair-MathAlignment fixes against
 
 # Compact a span of space-tokenized LaTeX: drop the named font-only macros, then tighten the
 # delimiters the tokenizer loosened. Conservative — only braces and sub/superscripts close up;

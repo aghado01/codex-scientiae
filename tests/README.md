@@ -110,7 +110,7 @@ only this shelf and never fall back to use-case-local installations:
 
 ```pwsh
 pwsh -File tests/run.ps1
-pwsh -File tests/run.ps1 -Path tests/latex-ingest
+pwsh -File tests/run.ps1 -Path tests/batch-adapters
 pwsh -File tests/run.ps1 -Path tests/shared/masks.Tests.ps1
 ```
 
@@ -383,11 +383,10 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 
 | Directory | Current ownership |
 |---|---|
-| `adapters/` | Pester, pytest, and LaTeX batch planning, addressing, and isolated execution. |
+| `batch-adapters/` | Pester and pytest batch planning (executor job emission). |
 | `md-postprocess/` | Markdown post-process, audits, TOC engine, and deliverable bundling |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |
-| `latex-ingest/` | LaTeX ingestion, stores, patches, and rendering integration |
 | `math-channel/` | Mathematical register normalization and math-render audit |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
 | `procurement/` | Scholarly discovery and acquisition adapters (libraries; MCP shells under `mcp-servers/`) |

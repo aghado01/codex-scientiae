@@ -24,7 +24,7 @@
 . "$PSScriptRoot/../../math-channel/md-math.ps1"       # Optimize-MathContent, Repair-MathAlignment, Test-MathGlyphToken, Test-StrongMath
 . "$PSScriptRoot/../../math-channel/math-channel.ps1"  # Convert-MathToLatex + ConvertTo-RegisterMath (previously reached transitively)
 . "$PSScriptRoot/../../logistics/crawl.ps1"
-. "$PSScriptRoot/../../latex-ingest/latex.ps1"         # Get-LatexBalance, Test-IsMath, Test-AlignmentOutsideEnv
+. "$PSScriptRoot/../../shared/latex.ps1"         # Get-LatexBalance, Test-IsMath, Test-AlignmentOutsideEnv
 
 $script:Ligatures = @{
     "$([char]0xFB00)" = 'ff'; "$([char]0xFB01)" = 'fi'; "$([char]0xFB02)" = 'fl'
@@ -278,7 +278,7 @@ function Test-MathBridge([string]$between) {
     return ($t.Length -le 40 -and $t -notmatch '[A-Za-z]{4,}')
 }
 
-# Test-IsMath (math-vs-prose) and Test-AlignmentOutsideEnv now live in latex.ps1, shared with the
+# Test-IsMath (math-vs-prose) and Test-AlignmentOutsideEnv live in shared/latex.ps1, shared with the
 # chunk-level fidelity grader so the two derivations of "is this math" can't drift apart. Both
 # Find-MathClosureIssues and Repair-SplitEquations below consume them via that sourced module.
 

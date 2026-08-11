@@ -169,7 +169,6 @@ BeforeAll {
                     $runnerOwners.Add("$relative::$name")
                 }
                 if ($scriptFile.Name -notlike '*.Tests.ps1' -and $name -in @(
-                        'adapters\Get-LatexBatchJob'
                         'adapters\Get-PesterBatchJob'
                         'adapters\Get-PytestBatchJob'
                         'batch-executor\New-BatchPlan'
@@ -195,9 +194,6 @@ BeforeAll {
         }
         $actualCompositionOwners = @($compositionOwners | Sort-Object)
         $expectedCompositionOwners = @(
-            'src/latex-ingest/latex-batch.ps1::adapters\Get-LatexBatchJob'
-            'src/latex-ingest/latex-batch.ps1::batch-executor\Invoke-BatchPlan'
-            'src/latex-ingest/latex-batch.ps1::batch-executor\New-BatchPlan'
             'tests/parallel.ps1::adapters\Get-PesterBatchJob'
             'tests/parallel.ps1::adapters\Get-PytestBatchJob'
             'tests/parallel.ps1::batch-executor\Invoke-BatchPlan'
