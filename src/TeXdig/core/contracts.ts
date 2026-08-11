@@ -4,6 +4,12 @@
  * slices ride every row downstream interprets); the deposit tree is evidence
  * substrate, not part of the contract.
  *
+ * Ownership: the jsonl_engine schema registry is the normative authority for
+ * emitted stores. These types are the in-language DTO layer for the emitter;
+ * once emission lands, the store shapes are minted as registered schemas
+ * (src/jsonl_engine/schemas/, graph.jsonl $ref-ing graph-primitive/0.1) and
+ * golden-fixture validate-json conformance holds DTO and schema together.
+ *
  * Linking convention: every discrete object's id is `{class}:{locator}` with
  * classes from ID_CLASSES below. The id string is the verbatim join key
  * everywhere — no re-keying; all joins are string equality. Content references

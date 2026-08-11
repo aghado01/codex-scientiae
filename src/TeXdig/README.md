@@ -76,6 +76,11 @@ contract):
 **Audit tier**: `coverage.json`, `diagnostics.jsonl`, `summary.json` (gate outcomes, counts,
 `treeSha256`, schema versions).
 
+Schema ownership: the jsonl_engine registry is the normative contract authority. `core/contracts.ts`
+is the in-language DTO layer; when emission lands, store shapes are minted as registered schemas
+under `src/jsonl_engine/schemas/` and golden-fixture `validate-json` conformance keeps the two in
+agreement.
+
 ## Linking conventions
 
 - One id grammar: `{class}:{locator}`, classes registered in `core/contracts.ts` `ID_CLASSES` with
