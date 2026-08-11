@@ -46,7 +46,12 @@ export type SourceRole =
   | "included"
   | "bibliography-resource"
   | "bbl-sidecar"
-  /** .bst — BibTeX style programs; not LaTeX, consumed only by the bibtex compiler, already baked into any .bbl. */
+  /**
+   * .bst — BibTeX style programs; not LaTeX, consumed only by the bibtex
+   * compiler. With a .bbl present their work is already baked in; in
+   * bib-without-bbl trees the .bst is the ordering-policy EVIDENCE the
+   * reference canon reads (via \bibliographystyle), not redundancy.
+   */
   | "bibliography-style"
   | "class-or-style"
   | "asset"
