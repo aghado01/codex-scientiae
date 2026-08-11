@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "default_sources": ["openalex", "semanticscholar", "arxiv", "zenodo"],
+  "per_page": 25,
+  "providers": {
+    "openalex": {
+      "base_url": "https://api.openalex.org",
+      "min_interval_seconds": 0.15,
+      "timeout_seconds": 30,
+      "max_attempts": 3
+    },
+    "semanticscholar": {
+      "base_url": "https://api.semanticscholar.org/graph/v1",
+      "secondary_base_url": "https://api.semanticscholar.org/recommendations/v1",
+      "min_interval_seconds": 1.1,
+      "timeout_seconds": 30,
+      "max_attempts": 3
+    },
+    "arxiv": {
+      "base_url": "https://export.arxiv.org/api/query",
+      "min_interval_seconds": 3.0,
+      "timeout_seconds": 30,
+      "max_attempts": 3
+    },
+    "zenodo": {
+      "base_url": "https://zenodo.org/api/records",
+      "min_interval_seconds": 1.0,
+      "timeout_seconds": 30,
+      "max_attempts": 3
+    }
+  }
+}
