@@ -144,7 +144,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         }
 
         It "hulls definition bodies through nested attached arguments" {
-            $wdef = $script:Entities | Where-Object { $_.kind -eq "macro-definition" -and $_.definedName -eq "wrap" }
+            $wdef = $script:Entities | Where-Object { $_.kind -eq "macro-definition" -and $_.definedName -eq "wrap" -and $_.dialect -eq "newcommand" }
             $wdef.text | Should -Be '\newcommand{\wrap}{\mathsf{W}}'
         }
 
@@ -306,8 +306,79 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         }
 
         It "leaves non-elaborable dialects out of the expansion table" {
-            # \def\zz and \let\also are detected-when-knowable; no expansion rows.
-            ($script:Expansions | Where-Object { $_.definedName -in @("zz", "also") }) | Should -BeNullOrEmpty
+            # \def\zz is detected-when-knowable; no expansion rows.
+            ($script:Expansions | Where-Object { $_.definedName -eq "zz" }) | Should -BeNullOrEmpty
+        }
+
+        It "resolves \let aliases to their governing definitions" {
+            $alias = $script:Expansions | Where-Object { $_.definedName -eq "alias" }
+            $alias.expandedText | Should -Be '\mathsf{W}'
+            $alias.viaAliases | Should -Contain "alias"
+            $alias.definitionEntityId | Should -Match '^ent:macro-definition@'
+        }
+
+        It "shadows on the shared seq scale: pre-renew W, post-renew V" {
+            $wraps = @($script:Expansions | Where-Object { $_.definedName -eq "wrap" } | Sort-Object seq)
+            $wraps.Count | Should -Be 2
+            $wraps[0].expandedText | Should -Be '\mathsf{W}'
+            $wraps[1].expandedText | Should -Be '\mathsf{V}'
+        }
+    }
+
+    Context "Compiled Macro Store (macros.jsonl)" {
+        BeforeAll {
+            $macRaw = Get-Content -Raw (Join-Path $script:OutDir "macros.jsonl")
+            $script:Macros = @($macRaw.Trim().Split("`n") | Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
+        }
+
+        It "compiles one record per census definition with def: ids and fingerprints" {
+            foreach ($rec in $script:Macros) {
+                $rec.id | Should -Match '^def:'
+                $rec.fingerprint | Should -Match '^[0-9a-f]{64}$'
+                $rec.entityId | Should -Match '^ent:macro-definition@'
+            }
+        }
+
+        It "orders redefinitions on the shared seq scale with distinct fingerprints" {
+            $wraps = @($script:Macros | Where-Object { $_.definedName -eq "wrap" } | Sort-Object seq)
+            $wraps.Count | Should -Be 2
+            $wraps[0].dialect | Should -Be "newcommand"
+            $wraps[1].dialect | Should -Be "renewcommand"
+            $wraps[0].seq | Should -BeLessThan $wraps[1].seq
+            $wraps[0].fingerprint | Should -Not -Be $wraps[1].fingerprint
+        }
+
+        It "scopes direct deps at the definition's own position" {
+            $double = $script:Macros | Where-Object { $_.definedName -eq "double" }
+            $wrapFirst = @($script:Macros | Where-Object { $_.definedName -eq "wrap" } | Sort-Object seq)[0]
+            $double.deps | Should -Contain $wrapFirst.id
+            $also = $script:Macros | Where-Object { $_.definedName -eq "also" }
+            $zz = $script:Macros | Where-Object { $_.definedName -eq "zz" }
+            $also.deps | Should -Contain $zz.id
+        }
+
+        It "keeps non-elaborable and configured records with bodies where knowable" {
+            ($script:Macros | Where-Object { $_.dialect -eq "def" }).bodyText | Should -Be "42"
+            ($script:Macros | Where-Object { $_.dialect -eq "configured" }) | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context "Catcode Arbitration" {
+        It "resolves truncated @-name conflicts inside makeatletter regions for the lexical witness" {
+            # Harvested corpus specimen: near #-parameter tokens unified-latex
+            # truncates csnames (\m@th read as m@t or m); the scanner is
+            # byte-exact and the region licenses the @-name reading.
+            $mth = $script:Entities | Where-Object { $_.name -eq "m@th" }
+            $mth | Should -Not -BeNullOrEmpty
+            $mth.agreement | Should -Be "agreed"
+            $mth.text | Should -Be '\m@th'
+        }
+
+        It "names the arbitration and leaves no conflicts on the fixture" {
+            $diag = Get-Content (Join-Path $script:OutDir "diagnostics.jsonl") | ForEach-Object { ConvertFrom-Json $_ }
+            ($diag | Where-Object { $_.code -eq "census/catcode-arbitrated" }) | Should -Not -BeNullOrEmpty
+            $sum = Get-Content -Raw (Join-Path $script:OutDir "summary.json") | ConvertFrom-Json
+            $sum.agreementCounts.PSObject.Properties["conflict"] | Should -BeNullOrEmpty
         }
     }
 
@@ -324,9 +395,11 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         }
 
         It "declares emitted and deferred stores" {
-            $script:Summary.stores.emitted.Count | Should -Be 7
+            $script:Summary.stores.emitted.Count | Should -Be 8
             $script:Summary.stores.emitted | Should -Contain "expansion.jsonl"
+            $script:Summary.stores.emitted | Should -Contain "macros.jsonl"
             $script:Summary.stores.deferred | Should -Contain "walk.jsonl"
+            $script:Summary.stores.deferred | Should -Not -Contain "macros.jsonl"
         }
 
         It "reports coverage accounting where claimed + residue equals total" {

@@ -724,6 +724,82 @@ export function reconcileLatex(
     // scanner consumes stratified text; strata already own those entities.
   }
 
+  // -------------------------------------------------------------------------
+  // 6. Catcode arbitration. Between \makeatletter and \makeatother, `@` IS a
+  //    letter: the lexical scanner (which always treats it as one) reads
+  //    @-names correctly there, while unified-latex tokenizes catcode-naively
+  //    (\m@th → \m + "@th"). A name conflict inside such a region where the
+  //    lexical reading extends the parser reading across an `@` is resolved
+  //    FOR the lexical witness — by region evidence, not preference.
+  // -------------------------------------------------------------------------
+  const regionEvents: { start: number; kind: "on" | "off" }[] = [];
+  for (const ent of entities) {
+    if (ent.kind !== "macro-invocation") continue;
+    if (ent.name === "makeatletter") regionEvents.push({ start: ent.span.startUtf16, kind: "on" });
+    else if (ent.name === "makeatother") regionEvents.push({ start: ent.span.startUtf16, kind: "off" });
+  }
+  if (regionEvents.length > 0) {
+    regionEvents.sort((a, b) => a.start - b.start);
+    const regions: { from: number; to: number }[] = [];
+    let openAt: number | null = null;
+    for (const ev of regionEvents) {
+      if (ev.kind === "on" && openAt === null) openAt = ev.start;
+      else if (ev.kind === "off" && openAt !== null) {
+        regions.push({ from: openAt, to: ev.start });
+        openAt = null;
+      }
+    }
+    if (openAt !== null) regions.push({ from: openAt, to: rawText.length });
+    const inRegion = (pos: number) => regions.some((r) => pos >= r.from && pos < r.to);
+
+    const arbitratedOldIds = new Set<string>();
+    for (const ent of entities) {
+      if (ent.agreement !== "conflict" || ent.kind !== "macro-invocation") continue;
+      if (!inRegion(ent.span.startUtf16)) continue;
+      const lexW = ent.witnesses.find((w) => w.witness === "lexical");
+      const lexName = lexW?.detail || "";
+      // The parser's reading must be a PROPER PREFIX of the lexical @-name:
+      // unified-latex truncates csnames near #-parameter tokens (\m@th → m@t
+      // or m), while the scanner reads byte-exactly. @-names are only
+      // plausible readings inside the region — that is the evidence gate.
+      if (
+        !lexW ||
+        !lexName.includes("@") ||
+        !lexName.startsWith(ent.name) ||
+        lexName.length <= ent.name.length
+      ) {
+        continue;
+      }
+
+      arbitratedOldIds.add(ent.id);
+      ent.name = lexName;
+      ent.span = lexW.span;
+      ent.spanProvenance = "lexical";
+      ent.argumentSpans = undefined; // parsed under the wrong tokenization
+      ent.agreement = "agreed";
+      ent.id = mintEntityId("macro-invocation", ent.span);
+      diagnostics.push({
+        code: DiagnosticCodes.CatcodeArbitrated,
+        severity: "info",
+        message: `\\${lexName}: catcode-naive parser tokenization yielded to the lexical reading inside a \\makeatletter region`,
+        span: ent.span,
+        entityId: ent.id,
+      });
+    }
+    if (arbitratedOldIds.size > 0) {
+      for (let i = diagnostics.length - 1; i >= 0; i--) {
+        const d = diagnostics[i];
+        if (
+          d.code === DiagnosticCodes.WitnessDisagreement &&
+          d.entityId &&
+          arbitratedOldIds.has(d.entityId)
+        ) {
+          diagnostics.splice(i, 1);
+        }
+      }
+    }
+  }
+
   return { sourceId, entities, diagnostics, extraClaims };
 }
 

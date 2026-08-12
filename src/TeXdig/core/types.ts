@@ -375,6 +375,8 @@ export const DiagnosticCodes = {
   BackfillUnavailable: "census/backfill-unavailable",
   /** unified-latex threw on a parsed source: the parser witness is absent for the whole file, and every entity there is lexical-only by defect, not design. */
   LatexParseError: "census/latex-parse-error",
+  /** A witness conflict resolved by catcode evidence: inside a \makeatletter region the lexical reading of an @-name is authoritative and the catcode-naive parser tokenization yields. */
+  CatcodeArbitrated: "census/catcode-arbitrated",
   /** An expansion site retained expandable names after substitution — dangling parameters or unexpandable interior. */
   ExpansionIncomplete: "elaborate/expansion-incomplete",
   /** An expansion site failed to reach a fixed point within the round bound — self-referential or mutually recursive definitions. */

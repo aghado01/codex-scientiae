@@ -33,6 +33,8 @@ export interface EmitBundle {
   rawContents: Map<SourceId, string>;
   /** Elaboration tier: per-site macro expansions (rows shaped by elaborate/expand.ts). */
   expansionRows?: object[];
+  /** Contract tier: compiled definition store (rows shaped by compile/macros.ts). */
+  macroRecords?: object[];
 }
 
 export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSummary {
@@ -84,6 +86,14 @@ export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSumm
     fs.writeFileSync(expansionPath, expansionContent, { encoding: "utf-8" });
   }
 
+  // 5c. macros.jsonl (contract tier, when compiled)
+  if (bundle.macroRecords) {
+    const macrosPath = path.join(resolvedOutDir, "macros.jsonl");
+    const macrosContent = bundle.macroRecords.map(r => JSON.stringify(r)).join("\n") +
+      (bundle.macroRecords.length > 0 ? "\n" : "");
+    fs.writeFileSync(macrosPath, macrosContent, { encoding: "utf-8" });
+  }
+
   // 6. summary.json
   let totalUtf16 = 0;
   let claimedUtf16 = 0;
@@ -126,12 +136,13 @@ export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSumm
         "diagnostics.jsonl",
         "summary.json",
         ...(bundle.expansionRows ? ["expansion.jsonl"] : []),
+        ...(bundle.macroRecords ? ["macros.jsonl"] : []),
       ],
-      // Contract tier lands in cuts 2–3; declared so absence is a statement.
+      // Remaining contract tier lands in later cuts; declared so absence is a statement.
       deferred: [
         "walk.jsonl",
         "zones.jsonl",
-        "macros.jsonl",
+        ...(bundle.macroRecords ? [] : ["macros.jsonl"]),
         "references.jsonl",
         "pointers.jsonl",
         "frontmatter.jsonl",

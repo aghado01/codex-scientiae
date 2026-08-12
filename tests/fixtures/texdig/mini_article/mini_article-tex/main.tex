@@ -10,6 +10,8 @@
 \DeclareMathOperator{\rank}{rank}
 \newcommand{\wrap}{\mathsf{W}}
 \newcommand{\double}{\wrap\wrap}
+\let\alias\wrap
+\makeatletter \sbox2{$#6\m@th$} \makeatother
 
 \begin{document}
 
@@ -35,7 +37,10 @@ x_1 &=& y^2 \\
 
 \[ f(x)=\begin{cases} \mathrm{id}& \mbox{if} \gamma_i \\ 0&\mbox{else} \end{cases} \]
 
-Expanded forms: $\rank(A)$, \wrap{} and \double.
+Expanded forms: $\rank(A)$, \wrap{} and \double; alias \alias.
+
+\renewcommand{\wrap}{\mathsf{V}}
+Renewed: \wrap{} again.
 
 \verb|inline_verb_test|
 

@@ -23,6 +23,8 @@ import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
 import { buildConfiguredChannel, mintConfiguredEntities } from "../census/configured.ts";
 import { buildUtensilsIndex, backfillLexicalOnly } from "../census/backfill-utensils.ts";
 import { expandDocument, type ExpandDocumentInput } from "../elaborate/expand.ts";
+import { buildTraversalOrder } from "../compile/traversal.ts";
+import { compileMacroRecords } from "../compile/macros.ts";
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
@@ -168,6 +170,21 @@ export async function runCensus(options: CliArgs) {
     }
   }
 
+  // \let-alias signature propagation: an alias of a signature-bearing macro
+  // takes that signature, so alias sites attach arguments like their targets
+  // (and expansion receives complete invocations). Bounded chain walk.
+  const aliasPairs: { alias: string; target: string }[] = [];
+  for (const discovery of discoveries.values()) {
+    const raw = graph.rawContents.get(discovery.sourceId) || "";
+    for (const def of discovery.macroDefs) {
+      if (def.dialect !== "let" || !def.bodySpan) continue;
+      const targetSlice = raw.slice(def.bodySpan.startUtf16, def.bodySpan.endUtf16).trim();
+      if (targetSlice.startsWith("\\")) {
+        aliasPairs.push({ alias: def.definedName, target: targetSlice.slice(1) });
+      }
+    }
+  }
+
   const configured = buildConfiguredChannel(requestedPackages, deps);
   if (configured.unresolvedPackages.length > 0) {
     allDiagnostics.push({
@@ -183,6 +200,16 @@ export async function runCensus(options: CliArgs) {
   for (const discovery of discoveries.values()) {
     Object.assign(registry.macros, discovery.registry.macros);
     Object.assign(registry.environments, discovery.registry.environments);
+  }
+  for (let round = 0; round < 4; round++) {
+    let changed = false;
+    for (const { alias, target } of aliasPairs) {
+      if (!registry.macros[alias] && registry.macros[target]) {
+        registry.macros[alias] = registry.macros[target];
+        changed = true;
+      }
+    }
+    if (!changed) break;
   }
 
   // ---------------------------------------------------------------------
@@ -332,8 +359,31 @@ export async function runCensus(options: CliArgs) {
   );
 
   // ---------------------------------------------------------------------
+  // Compile tier: the shared seq order space (entrypoint traversal across
+  // includes) and macros.jsonl, the first contract-tier store.
+  // ---------------------------------------------------------------------
+  const latexSourceIds = new Set(
+    graph.sources.filter((r) => r.parsed && r.language === "latex").map((r) => r.id)
+  );
+  const startsBySource = new Map<string, number[]>();
+  for (const ent of allEntities) {
+    if (!latexSourceIds.has(ent.span.sourceId)) continue;
+    const list = startsBySource.get(ent.span.sourceId) || [];
+    list.push(ent.span.startUtf16);
+    startsBySource.set(ent.span.sourceId, list);
+  }
+  const traversal = buildTraversalOrder(
+    graph.entrypointResolved ?? entrypoint,
+    startsBySource,
+    graph.includeEdges
+  );
+  const macroRecords = compileMacroRecords(allEntities, graph.rawContents, traversal.seqByAddress);
+
+  // ---------------------------------------------------------------------
   // Elaboration: per-site macro expansion over the censused document. The
   // census stays mechanical; this tier interprets, origin-chained to it.
+  // Shadowing resolves on the shared seq scale; \let aliases resolve
+  // transitively to their governing definitions.
   // ---------------------------------------------------------------------
   const expansionInputs: ExpandDocumentInput[] = [];
   for (const record of graph.sources) {
@@ -345,7 +395,13 @@ export async function runCensus(options: CliArgs) {
       rawText: graph.rawContents.get(record.id) || "",
     });
   }
-  const expansion = expandDocument(expansionInputs, deps, registry, allEntities);
+  const expansion = expandDocument(
+    expansionInputs,
+    deps,
+    registry,
+    allEntities,
+    traversal.seqByAddress
+  );
   allDiagnostics.push(...expansion.diagnostics);
 
   // Emit bundle (entrypoint reported with on-disk casing when it resolved)
@@ -361,6 +417,7 @@ export async function runCensus(options: CliArgs) {
       diagnostics: allDiagnostics,
       rawContents: graph.rawContents,
       expansionRows: expansion.rows,
+      macroRecords,
     },
     options.outDir
   );
