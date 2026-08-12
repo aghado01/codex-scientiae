@@ -363,19 +363,55 @@ def _discover_article_paths(
     return [path for path, _ in sorted(discovered, key=lambda item: item[1].casefold())]
 
 
-def discover_article_paths(catalog_dir: str) -> List[str]:
-    """Return safe direct-child article sentinel paths in portable canonical order."""
+def _catalog_pin(
+    catalog_dir: str,
+    retained: PinnedPublicationRoot | None,
+) -> tuple[str, PinnedPublicationRoot, bool]:
+    """Return one active catalog pin and whether this function opened it."""
+
+    if retained is not None:
+        requested = os.path.abspath(catalog_dir)
+        if os.path.normcase(requested) != os.path.normcase(retained.path):
+            raise InventoryCatalogError(
+                "retained publication root does not own the requested catalog: "
+                f"'{requested}'"
+            )
+        try:
+            retained.assert_current()
+        except (OSError, RuntimeError) as exc:
+            raise InventoryCatalogError(
+                f"configured catalog path no longer names its retained generation: "
+                f"'{retained.path}'"
+            ) from exc
+        return retained.path, retained, False
 
     root = _catalog_root(catalog_dir)
-    publication_root = PinnedPublicationRoot(root)
+    opened = PinnedPublicationRoot(root)
     try:
-        publication_root.__enter__()
+        opened.__enter__()
     except OSError as exc:
         raise InventoryCatalogError(f"catalog directory could not be pinned: '{root}'") from exc
+    return root, opened, True
+
+
+def discover_article_paths(
+    catalog_dir: str,
+    *,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> List[str]:
+    """Return safe direct-child article sentinels through an optional retained catalog pin."""
+
+    root, active_root, owned = _catalog_pin(catalog_dir, publication_root)
     try:
-        return _discover_article_paths(root, publication_root)
+        paths = _discover_article_paths(root, active_root)
+        if not active_root.path_is_current():
+            raise InventoryCatalogError(
+                f"catalog directory changed while it was enumerated: '{root}'"
+            )
+        return paths
     finally:
-        publication_root.__exit__(None, None, None)
+        if owned:
+            active_root.__exit__(None, None, None)
 
 
 def _inventory_occupancy(
@@ -407,29 +443,25 @@ def build_inventory(
     catalog_dir: str,
     article_paths: Sequence[str] | None = None,
     force: bool = False,
+    publication_root: PinnedPublicationRoot | None = None,
 ) -> InventoryCatalogResult:
     """Validate articles and publish ``inventory.jsonl`` under ``catalog_dir``.
 
     ``article_paths=None`` discovers safe direct-child sentinels. An explicitly supplied empty
     sequence publishes an empty inventory.
     """
-    root = _catalog_root(catalog_dir)
-    publication_root = PinnedPublicationRoot(root)
+    root, active_root, owned = _catalog_pin(catalog_dir, publication_root)
     try:
-        publication_root.__enter__()
-    except OSError as exc:
-        raise InventoryCatalogError(f"catalog directory could not be pinned: '{root}'") from exc
-    try:
-        registry = InventoryRegistry(target_dir=root, publication_root=publication_root)
+        registry = InventoryRegistry(target_dir=root, publication_root=active_root)
         inventory_path = registry.get_output_path()
         _inventory_occupancy(
             inventory_path,
             force=force,
-            publication_root=publication_root,
+            publication_root=active_root,
         )
 
         inputs = (
-            _discover_article_paths(root, publication_root)
+            _discover_article_paths(root, active_root)
             if article_paths is None
             else list(article_paths)
         )
@@ -448,7 +480,7 @@ def build_inventory(
                 _load_article_at_catalog_path(
                     root,
                     full,
-                    publication_root=publication_root,
+                    publication_root=active_root,
                 )
             )
 
@@ -461,7 +493,7 @@ def build_inventory(
                 f"inventory already exists; pass force=True to overwrite: '{inventory_path}'"
             ) from exc
 
-        if not publication_root.path_is_current():
+        if not active_root.path_is_current():
             raise InventoryCatalogError(
                 f"catalog directory changed during inventory publication: '{root}'"
             )
@@ -473,7 +505,8 @@ def build_inventory(
             slugs=slugs,
         )
     finally:
-        publication_root.__exit__(None, None, None)
+        if owned:
+            active_root.__exit__(None, None, None)
 
 
 def load_article_paths_json(path: str) -> List[str]:

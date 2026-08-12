@@ -72,10 +72,14 @@ factory catalog, so adding another adapter does not require a provider switch in
 The runtime catalog distinguishes metadata aggregators, scholarly repositories, and access-only sources;
 Sci-Hub is classified as access-only rather than as a repository or metadata authority.
 
-Filesystem trust boundary: acquisition and source-materialization roots are pathname-confined but not yet
-pinned to their initialized directory identities. Their mutation and immutability guarantees assume those
-roots and ancestors are not renamed or replaced while an operation runs. This remains a production-cutover
-blocker. Inventory rebuild separately pins its catalog generation across sentinel reads and publication.
+Filesystem trust boundary: composition captures and retains the physical identities of the staging root,
+local-import inboxes, and article catalogs for the application lifetime. Acquisition, local import, and
+source materialization have not yet routed every internal filesystem operation through those retained
+handles. Their transaction guarantees therefore still assume the named roots are not replaced while an
+operation runs, particularly on POSIX where retaining a descriptor does not freeze the lexical route. This
+remains a production-cutover blocker. Inventory rebuild separately uses descriptor-relative publication
+across sentinel reads and publication; the named catalog service supplies the application-retained catalog
+pin rather than reopening the configured pathname.
 
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are

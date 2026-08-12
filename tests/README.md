@@ -231,10 +231,13 @@ deposit container: both jobs succeeded in 9.641 seconds, retained their separate
 the pytest job-local `json-scratch` empty under
 `artifacts/test-runs/deposit-parity-hardened-20260808`.
 
-The procurement Python migration expands the current lane to 26 files and 357 collected methods. The full
-public pytest batch passes all 26 independent containers. Native JUnit reports 495 observed outcomes: 492
-passed and three symbolic-link capability skips, including 138 subtest outcomes. The earlier multilingual
-22-job witness predates this expanded lane and remains historical rather than the current Python census.
+The earlier procurement Python migration snapshot contained 26 files and 357 collected methods; its full
+public pytest batch passed all 26 independent containers and native JUnit reported 495 observed outcomes.
+The pinned-root/document-store kernel brings the current JSONL-engine plus procurement closure to 28
+physical containers and 399 directly collected tests. Its repository-local direct gate passed 392 with seven
+platform/capability skips. The two new physical containers also passed through the public batch shell as
+two independent jobs: 18 passed and three platform/capability skips across 21 selected tests. The earlier
+multilingual 22-job witness remains historical rather than the current Python census.
 
 ## Batchable Pester-container contract
 

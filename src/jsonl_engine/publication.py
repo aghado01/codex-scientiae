@@ -1,8 +1,8 @@
-"""Generation-pinned directory operations for multi-file artifact publication.
+"""Hierarchical generation-pinned directory operations for artifact publication.
 
 The path-oriented engine remains the owner of JSONL bytes and sidecars.  A pinned publication
 root changes only how those names reach the filesystem: POSIX operations are relative to an open
-directory descriptor, while Windows holds the root directory without delete sharing. Windows
+directory descriptor, while Windows holds each pinned directory without delete sharing. Windows
 refuses rename or removal of that open directory and of ancestors containing it, so the complete
 named route remains fixed for the lifetime of the transaction.
 """
@@ -136,17 +136,30 @@ class PinnedPublicationRoot:
         self._directory_fd: int | None = None
         self._windows_handles: list[int] = []
         self._identity: tuple[int, ...] | None = None
+        self._activation: object | None = None
+        self._parent: PinnedPublicationRoot | None = None
+        self._parent_leaf: str | None = None
+        self._parent_activation: object | None = None
 
     def __enter__(self) -> "PinnedPublicationRoot":
         if self._identity is not None:
             raise RuntimeError("publication root is already active")
+        if self._parent is not None:
+            self._parent._require_active()
+            self._parent_activation = self._parent._activation
         if os.name == "nt":
             self._pin_windows()
+        elif self._parent is not None:
+            descriptor = self._open_posix_child()
+            info = os.fstat(descriptor)
+            self._directory_fd = descriptor
+            self._identity = (int(info.st_dev), int(info.st_ino))
         else:
             descriptor = self._open_posix_route()
             info = os.fstat(descriptor)
             self._directory_fd = descriptor
             self._identity = (int(info.st_dev), int(info.st_ino))
+        self._activation = object()
         return self
 
     def __exit__(
@@ -164,6 +177,29 @@ class PinnedPublicationRoot:
             self._directory_fd = None
             self._windows_handles = []
             self._identity = None
+            self._activation = None
+            self._parent_activation = None
+
+    def _open_posix_child(self) -> int:
+        """Open one physical child relative to the active parent generation."""
+
+        assert self._parent is not None
+        assert self._parent_leaf is not None
+        parent_fd = self._parent.directory_fd
+        if parent_fd is None:
+            raise RuntimeError("POSIX child pin has no parent directory descriptor")
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(self._parent_leaf, flags, dir_fd=parent_fd)
+        try:
+            info = os.fstat(descriptor)
+            if not stat.S_ISDIR(info.st_mode) or _is_reparse(info):
+                raise NotADirectoryError(
+                    f"publication child is not a physical directory: '{self.path}'"
+                )
+            return descriptor
+        except BaseException:
+            os.close(descriptor)
+            raise
 
     def _open_posix_route(self) -> int:
         """Open every component without link traversal and return the root descriptor."""
@@ -326,6 +362,30 @@ class PinnedPublicationRoot:
     def _require_active(self) -> None:
         if self._identity is None:
             raise RuntimeError("publication root is not active")
+        if self._parent is not None:
+            self._parent._require_active()
+            if self._parent._activation is not self._parent_activation:
+                raise RuntimeError("publication child outlived its parent activation")
+
+    @property
+    def is_active(self) -> bool:
+        """Return whether this directory pin and its parent activation remain active."""
+
+        if self._identity is None:
+            return False
+        try:
+            self._require_active()
+        except RuntimeError:
+            return False
+        return True
+
+    @property
+    def identity(self) -> tuple[int, ...]:
+        """Return the filesystem identity captured for the active directory generation."""
+
+        self._require_active()
+        assert self._identity is not None
+        return self._identity
 
     @property
     def directory_fd(self) -> int | None:
@@ -347,6 +407,42 @@ class PinnedPublicationRoot:
 
     def absolute(self, leaf: str) -> str:
         return os.path.join(self.path, _plain_leaf(leaf, label="publication leaf"))
+
+    def pin_child(self, leaf: str) -> "PinnedPublicationRoot":
+        """Return an unopened pin for one direct physical child directory."""
+
+        self._require_active()
+        child_leaf = _plain_leaf(leaf, label="publication child")
+        child = type(self)(self.absolute(child_leaf))
+        child._parent = self
+        child._parent_leaf = child_leaf
+        return child
+
+    def mkdir_leaf(self, leaf: str, *, mode: int = 0o700) -> str:
+        """Create one direct child directory relative to the pinned generation."""
+
+        leaf = _plain_leaf(leaf, label="publication child")
+        self._require_active()
+        if self._directory_fd is not None:
+            os.mkdir(leaf, mode=mode, dir_fd=self._directory_fd)
+        else:
+            os.mkdir(self.absolute(leaf), mode=mode)
+        info = self.stat_leaf(leaf)
+        if not stat.S_ISDIR(info.st_mode) or _is_reparse(info):
+            raise NotADirectoryError(
+                f"created publication child is not a physical directory: '{self.absolute(leaf)}'"
+            )
+        return self.absolute(leaf)
+
+    def rmdir_leaf(self, leaf: str) -> None:
+        """Remove one empty direct child directory relative to the pinned generation."""
+
+        leaf = _plain_leaf(leaf, label="publication child")
+        self._require_active()
+        if self._directory_fd is not None:
+            os.rmdir(leaf, dir_fd=self._directory_fd)
+        else:
+            os.rmdir(self.absolute(leaf))
 
     def list_names(self) -> list[str]:
         self._require_active()
@@ -406,7 +502,7 @@ class PinnedPublicationRoot:
         leaf = _plain_leaf(leaf, label="publication leaf")
         self._require_active()
         if self._directory_fd is None:
-            return open(self.absolute(leaf), mode)
+            return self._open_windows_leaf(leaf, mode)
         flags, permissions = self._open_flags(mode)
         descriptor = os.open(
             leaf,
@@ -415,6 +511,71 @@ class PinnedPublicationRoot:
             dir_fd=self._directory_fd,
         )
         return os.fdopen(descriptor, mode)
+
+    def _open_windows_leaf(self, leaf: str, mode: str) -> BinaryIO:
+        """Open one Windows leaf without following a final reparse point."""
+
+        import ctypes
+        import msvcrt
+        from ctypes import wintypes
+
+        if os.name != "nt":
+            raise RuntimeError("Windows leaf opening is unavailable on this platform")
+        access_and_creation = {
+            "rb": (0x80000000, 3, os.O_RDONLY | getattr(os, "O_BINARY", 0)),
+            "wb": (0x40000000, 2, os.O_WRONLY | getattr(os, "O_BINARY", 0)),
+            "xb": (0x40000000, 1, os.O_WRONLY | getattr(os, "O_BINARY", 0)),
+        }
+        try:
+            desired_access, creation, descriptor_flags = access_and_creation[mode]
+        except KeyError as exc:
+            raise ValueError(f"unsupported pinned-root file mode: {mode!r}") from exc
+
+        create_file = ctypes.WinDLL("kernel32", use_last_error=True).CreateFileW
+        create_file.argtypes = (
+            wintypes.LPCWSTR,
+            wintypes.DWORD,
+            wintypes.DWORD,
+            wintypes.LPVOID,
+            wintypes.DWORD,
+            wintypes.DWORD,
+            wintypes.HANDLE,
+        )
+        create_file.restype = wintypes.HANDLE
+        invalid = wintypes.HANDLE(-1).value
+        path = self.absolute(leaf)
+        handle = create_file(
+            path,
+            desired_access,
+            0x0001 | 0x0002,  # READ | WRITE sharing; no DELETE sharing
+            None,
+            creation,
+            0x00000080 | 0x00200000,  # NORMAL | OPEN_REPARSE_POINT
+            None,
+        )
+        if handle == invalid:
+            error = ctypes.WinError(ctypes.get_last_error())
+            error.filename = path
+            raise error
+        numeric_handle = int(handle)
+        try:
+            descriptor = msvcrt.open_osfhandle(numeric_handle, descriptor_flags)
+        except BaseException:
+            self._close_windows(numeric_handle)
+            raise
+        try:
+            file_handle = os.fdopen(descriptor, mode)
+        except BaseException:
+            os.close(descriptor)
+            raise
+        try:
+            info = os.fstat(file_handle.fileno())
+            if not stat.S_ISREG(info.st_mode) or _is_reparse(info):
+                raise OSError(f"publication leaf is not a physical regular file: '{path}'")
+            return file_handle
+        except BaseException:
+            file_handle.close()
+            raise
 
     def open_child_file(self, child: str, leaf: str, mode: str) -> BinaryIO:
         child = _plain_leaf(child, label="catalog child")
@@ -527,6 +688,20 @@ class PinnedPublicationRoot:
         """Return whether the original lexical path still names the pinned generation."""
 
         self._require_active()
+        if self._parent is not None:
+            if not self._parent.path_is_current():
+                return False
+            assert self._parent_leaf is not None
+            try:
+                named = self._parent.stat_leaf(self._parent_leaf)
+                opened = self.stat_root()
+            except OSError:
+                return False
+            return (
+                stat.S_ISDIR(named.st_mode)
+                and not _is_reparse(named)
+                and _same_directory(named, opened)
+            )
         if self._directory_fd is None:
             # The Windows root handle denies replacement of the root or its ancestor route.
             return True
@@ -540,6 +715,14 @@ class PinnedPublicationRoot:
             if "named_descriptor" in locals():
                 os.close(named_descriptor)
         return not _is_reparse(named) and _same_directory(named, opened)
+
+    def assert_current(self) -> None:
+        """Raise when the lexical route no longer names the pinned directory generation."""
+
+        if not self.path_is_current():
+            raise RuntimeError(
+                f"publication root path no longer names its pinned generation: '{self.path}'"
+            )
 
 
 __all__ = ["PinnedPublicationRoot"]

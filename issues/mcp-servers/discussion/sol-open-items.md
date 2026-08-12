@@ -1,4 +1,4 @@
-The pinning-adjacent package cut is implemented without compatibility modules. The next milestone is the root and store kernel; transaction logic no longer needs to be written into flat modules that would immediately move.
+The package cut and root/store kernel are implemented without compatibility modules. The next milestone is acquisition and local-import pinning; transaction logic now has one retained-root and document-store substrate.
 
 The earlier provider-catalog resumption notes are superseded. This file tracks the post-cut sequence.
 
@@ -17,7 +17,7 @@ The earlier provider-catalog resumption notes are superseded. This file tracks t
 ```mermaid
 flowchart LR
     A["Landed provider and hygiene foundation"] --> B["Hard package cut complete"]
-    B --> C["Pinned-root and document-store kernel"]
+    B --> C["Pinned-root and document-store kernel complete"]
     C --> D["Acquisition and local-import pinning"]
     D --> E["Source-materialization pinning"]
     E --> F["Remaining domain and MCP decomposition"]
@@ -46,26 +46,30 @@ The cut is mechanically reviewable: direct import changes, no compatibility file
 
 The remaining `models.py` and `payloads.py` split follows pinning. Those files do not obstruct filesystem correctness.
 
-### 2. Root and store kernel
+### 2. Root and store kernel — implemented
 
-Build one application-owned configured-root catalog:
+`storage/roots.py` provides one application-owned configured-root catalog for:
 
 - staging root;
 - local-import inboxes;
 - article catalog roots;
 - physical identity captured at application initialization;
 - handles/descriptors retained for application lifetime;
-- clean closure through `ProcurementApplication.close()`.
+- clean, idempotent closure through `ProcurementApplication.close()`.
 
-Generalize [PinnedPublicationRoot](/D:/aghado01/codex-scientiae/src/jsonl_engine/publication.py:127) into a hierarchical directory primitive with child pinning, anchored creation, direct-file operations, generation-keyed locks, and current-path checks.
+[PinnedPublicationRoot](/D:/aghado01/codex-scientiae/src/jsonl_engine/publication.py) now provides child pinning tied to the exact parent activation, anchored child-directory creation/removal, no-follow direct-file operations, exposed physical identity, generation-keyed locks, and current-path assertions. POSIX child access is descriptor-relative. Windows retains no-delete-share handles and opens direct file leaves without following a final reparse point.
 
-This is also where procurement should leverage the engine more explicitly:
+The engine and procurement storage layers now divide single-document ownership explicitly:
 
-- add a generic engine JSON-document kind/store primitive;
-- let procurement supply its schema catalog;
-- implement acquisition and deposit-metadata document kinds;
-- keep `defaults.json` as ordinary configuration;
-- keep `acquisition.json` as JSON, not force it into JSONL.
+- `jsonl_engine.documents` owns the generic schema-backed JSON document kind and pinned store;
+- procurement supplies `ProcurementSchemaCatalog` to its document kinds;
+- `AcquisitionManifestDocument` and `DepositMetadataDocument` own their domain conversion and byte limits;
+- `defaults.json` remains ordinary configuration;
+- `acquisition.json` remains JSON rather than being forced into JSONL.
+
+The application root catalog is the lifetime substrate, not a claim that every existing transaction is already descriptor-relative. Acquisition/local import and source materialization still use pathname operations internally and are the next two vertical migrations.
+
+`ArticleCatalogService` already passes the application-retained catalog pin into engine discovery and inventory publication. It cannot silently open a replacement generation from the same configured pathname.
 
 ### 3. Acquisition pinning
 
@@ -112,4 +116,4 @@ After the transactions are sound:
 
 One nuance: eliminating Python import compatibility does not mean silently weakening persisted evidence contracts. Schema changes should still be deliberate and versioned.
 
-Overall, the project is at a good architectural hinge. The next move is the pinned-root and document-store kernel—not another provider or workflow feature.
+Overall, the project is at a good architectural hinge. The next move is acquisition and local-import pinning through the landed kernel—not another provider or workflow feature.

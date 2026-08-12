@@ -15,10 +15,10 @@ from pydantic import Field, field_validator, model_validator
 from jsonl_engine.sidecar import lock_path
 from jsonl_engine.writer import write_json
 from procurement.errors import AcquisitionConflictError, AcquisitionError
+from procurement.limits import MAX_ACQUISITION_MANIFEST_BYTES
 from procurement.models import ArtifactReference, DomainModel, validate_deposit_slug
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 
-MAX_ACQUISITION_MANIFEST_BYTES = 1024 * 1024
 _JOURNAL_LEAF = ".acquisition-publish.json"
 _PARTIAL_LEAF = ".download.part"
 _FORM_ORDER = {"source": 0, "pdf": 1, "html": 2}

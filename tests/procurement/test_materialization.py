@@ -13,6 +13,7 @@ import tarfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from collections.abc import Iterator
 
 import pytest
 import jsonschema
@@ -54,6 +55,7 @@ from procurement.operations.local_import import LocalImportRequest, LocalImportS
 from procurement.operations.materialization import SourceMaterializationService
 from procurement.storage.acquisitions import AcquisitionStore
 from procurement.storage.catalogs import ArticleCatalogRoots
+from procurement.storage.roots import ProcurementRootCatalog
 from procurement.storage.source_deposits import SourceDepositStore
 
 
@@ -77,6 +79,7 @@ class Layout:
     catalog_root: Path
     acquisitions: AcquisitionStore
     deposits: SourceDepositStore
+    roots: ProcurementRootCatalog
 
 
 class StaticMetadataService:
@@ -106,20 +109,31 @@ class RejectingMetadataService:
 
 
 @pytest.fixture
-def layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Layout:
+def layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Layout]:
     scratch = tmp_path / "json-scratch"
     monkeypatch.setenv("CODEX_JSON_SCRATCH_ROOT", str(scratch))
     staging_root = tmp_path / "staging"
     catalog_root = tmp_path / "catalog"
     staging_root.mkdir()
     catalog_root.mkdir()
-    catalog_roots = ArticleCatalogRoots({"primary": str(catalog_root)})
-    return Layout(
-        staging_root=staging_root,
-        catalog_root=catalog_root,
-        acquisitions=AcquisitionStore(staging_root, lock_timeout=2),
-        deposits=SourceDepositStore(catalog_roots, lock_timeout=2),
-    )
+    inbox_root = tmp_path / "inbox"
+    inbox_root.mkdir()
+    roots = ProcurementRootCatalog(
+        staging_root,
+        article_catalogs={"primary": catalog_root},
+        local_inboxes={"manual": inbox_root},
+    ).open()
+    try:
+        catalog_roots = ArticleCatalogRoots(roots)
+        yield Layout(
+            staging_root=staging_root,
+            catalog_root=catalog_root,
+            acquisitions=AcquisitionStore(staging_root, lock_timeout=2),
+            deposits=SourceDepositStore(catalog_roots, lock_timeout=2),
+            roots=roots,
+        )
+    finally:
+        roots.close()
 
 
 def artifact() -> ArtifactReference:

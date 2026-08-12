@@ -16,10 +16,13 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 from .policy import DEFAULT_ENCODING, Codec
 from .sidecar import temp_write_path
+
+if TYPE_CHECKING:
+    from .publication import PinnedPublicationRoot
 
 
 class JsonWriterError(ValueError):
@@ -101,12 +104,14 @@ def serialize_json(
     codec: Codec = Codec.UNICODE,
     indent: Optional[int] = None,
     sort_keys: bool = False,
+    trailing_newline: bool = False,
     path: Optional[str] = None,
 ) -> bytes:
     """Serialize `value` to bytes. Compact separators unless `indent` is set.
 
-    Key order is insertion order unless `sort_keys` is set. Text with no form in `encoding` raises
-    rather than being substituted; see Codec.
+    Key order is insertion order unless `sort_keys` is set. ``trailing_newline`` is encoded in the
+    same pass as the document so BOM-emitting encodings still emit one document-boundary BOM. Text
+    with no form in `encoding` raises rather than being substituted; see Codec.
     """
     text = _serialize_json_text(
         value,
@@ -115,7 +120,88 @@ def serialize_json(
         sort_keys=sort_keys,
         path=path,
     )
+    if trailing_newline:
+        text += "\n"
     return _encode_json_text(text, encoding=encoding, codec=codec, path=path)
+
+
+def write_bytes(
+    path: str,
+    raw: bytes,
+    *,
+    atomic: bool = True,
+    overwrite: bool = True,
+    publication_root: Optional["PinnedPublicationRoot"] = None,
+) -> str:
+    """Publish one complete byte document and return its absolute path.
+
+    An active ``publication_root`` confines staging, publication, and cleanup to one retained
+    directory generation. Without one, the path-oriented writer retains its ordinary filesystem
+    behavior.
+    """
+
+    if not isinstance(raw, bytes):
+        raise TypeError("raw document content must be bytes")
+    if not atomic and not overwrite:
+        raise ValueError("overwrite=False requires atomic=True")
+
+    full = os.path.abspath(path)
+    if publication_root is not None:
+        publication_root.direct_leaf(full)
+    else:
+        parent = os.path.dirname(full)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
+
+    def open_document(candidate: str, mode: str):
+        if publication_root is not None:
+            return publication_root.open_file(candidate, mode)
+        return open(candidate, mode)
+
+    if not atomic:
+        with open_document(full, "wb") as handle:
+            written = handle.write(raw)
+            if written != len(raw):
+                raise OSError(
+                    f"short write while writing document ({written} of {len(raw)} bytes): "
+                    f"'{full}'"
+                )
+        return full
+
+    tmp = temp_write_path(full)
+    try:
+        with open_document(tmp, "xb") as handle:
+            written = handle.write(raw)
+            if written != len(raw):
+                raise OSError(
+                    f"short write while staging document ({written} of {len(raw)} bytes): "
+                    f"'{full}'"
+                )
+            handle.flush()
+            os.fsync(handle.fileno())
+        if publication_root is not None:
+            publication_root.publish(tmp, full, overwrite=overwrite)
+        else:
+            publish_staged_file(tmp, full, overwrite=overwrite)
+    except BaseException:
+        try:
+            exists = (
+                publication_root.lexists(tmp)
+                if publication_root is not None
+                else os.path.lexists(tmp)
+            )
+        except (OSError, RuntimeError, ValueError):
+            exists = False
+        if exists:
+            try:
+                if publication_root is not None:
+                    publication_root.unlink(tmp)
+                else:
+                    os.remove(tmp)
+            except OSError:
+                pass
+        raise
+    return full
 
 
 def write_json(
@@ -129,6 +215,7 @@ def write_json(
     trailing_newline: bool = True,
     atomic: bool = True,
     overwrite: bool = True,
+    publication_root: Optional["PinnedPublicationRoot"] = None,
 ) -> str:
     """Write one JSON document to `path`. Returns the absolute path written.
 
@@ -138,9 +225,6 @@ def write_json(
     already at the destination. It is available only with atomic publication: a direct
     create-if-absent write would expose partial bytes to readers.
     """
-    if not atomic and not overwrite:
-        raise ValueError("overwrite=False requires atomic=True")
-
     full = os.path.abspath(path)
     text = _serialize_json_text(
         value,
@@ -155,33 +239,10 @@ def write_json(
     # BOM at the document boundary rather than a second BOM before the trailing newline.
     raw = _encode_json_text(text, encoding=encoding, codec=codec, path=full)
 
-    parent = os.path.dirname(full)
-    if parent:
-        os.makedirs(parent, exist_ok=True)
-
-    if not atomic:
-        with open(full, "wb") as handle:
-            handle.write(raw)
-        return full
-
-    # Adjacent keeps publication atomic; unique keeps concurrent writers from sharing scratch.
-    tmp = temp_write_path(full)
-    try:
-        with open(tmp, "xb") as handle:
-            written = handle.write(raw)
-            if written != len(raw):
-                raise OSError(
-                    f"short write while staging JSON document ({written} of {len(raw)} bytes): "
-                    f"'{full}'"
-                )
-            handle.flush()
-            os.fsync(handle.fileno())
-        publish_staged_file(tmp, full, overwrite=overwrite)
-    except BaseException:
-        if os.path.exists(tmp):
-            try:
-                os.remove(tmp)
-            except OSError:
-                pass
-        raise
-    return full
+    return write_bytes(
+        full,
+        raw,
+        atomic=atomic,
+        overwrite=overwrite,
+        publication_root=publication_root,
+    )

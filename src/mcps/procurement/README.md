@@ -30,10 +30,12 @@ a client-selected URL, serialized plan, absolute destination, or arbitrary stora
 portable direct-child PDF or gzip source before publishing the same acquisition receipt with explicit
 `local-import` custody. It accepts neither a host path nor a URL.
 
-Server-selected storage names do not by themselves pin filesystem identity. A local actor able to replace
-a configured staging or source-catalog root or ancestor can redirect a mutating operation. Do not cut the
-mutating tools over from the legacy deployment until those hierarchical roots are pinned, or deployment
-protects them from replacement. Inventory rebuild already pins its selected catalog generation.
+The application retains the physical identities of every configured storage root, but the acquisition,
+local-import, and source-materialization transactions do not yet route every internal operation through
+those handles. A local actor able to replace a configured route can still redirect pathname-based work,
+particularly on POSIX. Do not cut the mutating tools over from the legacy deployment until those vertical
+transactions use the retained hierarchy, or deployment protects the routes from replacement. Inventory
+rebuild already pins its selected catalog generation through publication.
 
 `list_article_catalogs` exposes the configured names accepted by the filesystem operations; clients cannot
 submit a root path. `materialize_source_deposit` consumes one existing acquisition receipt, safely unpacks

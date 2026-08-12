@@ -1,73 +1,72 @@
-"""Configured article-catalog roots used by procurement storage."""
+"""Article-catalog view over the application-owned configured-root catalog."""
 
 from __future__ import annotations
 
-import os
-from collections.abc import Mapping
-from dataclasses import dataclass
-from types import MappingProxyType
+from dataclasses import dataclass, field
+
+from jsonl_engine.publication import PinnedPublicationRoot
+
+from procurement.storage.roots import (
+    ConfiguredRootDescriptor,
+    ConfiguredRootError,
+    ConfiguredRootKind,
+    ProcurementRootCatalog,
+)
 
 
 class ArticleCatalogConfigurationError(ValueError):
     """A named article-catalog configuration is invalid or unknown."""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ArticleCatalogDescriptor:
-    """One configured catalog name and its frozen filesystem root."""
+    """One configured catalog and its retained physical root generation."""
 
     name: str
     catalog_dir: str
+    identity: tuple[int, ...]
+    publication_root: PinnedPublicationRoot = field(repr=False, compare=False)
 
     def as_dict(self) -> dict[str, str]:
         return {"name": self.name, "catalog_dir": self.catalog_dir}
 
 
 class ArticleCatalogRoots:
-    """Resolve configured article-catalog names to frozen roots."""
+    """Resolve article-catalog names through one active configured-root catalog."""
 
-    def __init__(self, catalog_roots: Mapping[str, str]) -> None:
-        configured: dict[str, ArticleCatalogDescriptor] = {}
-        for raw_name, raw_root in catalog_roots.items():
-            if not isinstance(raw_name, str) or not raw_name.strip():
-                raise ArticleCatalogConfigurationError(
-                    "article catalog names must be non-empty strings"
-                )
-            if not isinstance(raw_root, str) or not raw_root.strip():
-                raise ArticleCatalogConfigurationError(
-                    f"article catalog {raw_name!r} requires a non-empty root"
-                )
-            name = raw_name.strip()
-            folded = name.casefold()
-            if folded in configured:
-                raise ArticleCatalogConfigurationError(
-                    f"article catalog names contain a case collision at {name!r}"
-                )
-            configured[folded] = ArticleCatalogDescriptor(
-                name=name,
-                catalog_dir=os.path.abspath(raw_root),
-            )
-        self._catalogs = MappingProxyType(configured)
+    def __init__(self, roots: ProcurementRootCatalog) -> None:
+        if not isinstance(roots, ProcurementRootCatalog):
+            raise TypeError("ArticleCatalogRoots requires a ProcurementRootCatalog")
+        if not roots.is_open:
+            raise ArticleCatalogConfigurationError("configured root catalog is not open")
+        self._roots = roots
+
+    @staticmethod
+    def _descriptor(value: ConfiguredRootDescriptor) -> ArticleCatalogDescriptor:
+        return ArticleCatalogDescriptor(
+            name=value.name,
+            catalog_dir=value.path,
+            identity=value.identity,
+            publication_root=value.publication_root,
+        )
 
     def catalogs(self) -> tuple[ArticleCatalogDescriptor, ...]:
         """Return configured catalogs in canonical name order."""
 
-        return tuple(
-            sorted(self._catalogs.values(), key=lambda descriptor: descriptor.name.casefold())
-        )
+        try:
+            values = self._roots.descriptors(ConfiguredRootKind.ARTICLE_CATALOG)
+        except ConfiguredRootError as exc:
+            raise ArticleCatalogConfigurationError(str(exc)) from exc
+        return tuple(self._descriptor(value) for value in values)
 
     def resolve(self, name: str) -> ArticleCatalogDescriptor:
-        """Return the frozen descriptor for one configured, case-insensitive name."""
+        """Return one configured, case-insensitive article-catalog descriptor."""
 
-        if not isinstance(name, str) or not name.strip():
-            raise ArticleCatalogConfigurationError("article catalog name must not be blank")
-        descriptor = self._catalogs.get(name.strip().casefold())
-        if descriptor is None:
-            available = [item.name for item in self.catalogs()]
-            raise ArticleCatalogConfigurationError(
-                f"unknown article catalog {name!r}; available: {available}"
-            )
-        return descriptor
+        try:
+            value = self._roots.resolve(ConfiguredRootKind.ARTICLE_CATALOG, name)
+        except ConfiguredRootError as exc:
+            raise ArticleCatalogConfigurationError(str(exc)) from exc
+        return self._descriptor(value)
 
 
 __all__ = [

@@ -126,6 +126,20 @@ class TestCompositionValidation(unittest.TestCase):
         finally:
             asyncio.run(application.close())
 
+    def test_application_owns_configured_root_lifetime(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        application = build_application(workspace_root=root)
+        descriptors = application.roots.descriptors()
+        self.assertTrue(application.roots.is_open)
+        self.assertEqual(3, len(descriptors))
+        self.assertTrue(all(item.publication_root.is_active for item in descriptors))
+
+        asyncio.run(application.close())
+        asyncio.run(application.close())
+
+        self.assertFalse(application.roots.is_open)
+        self.assertTrue(all(not item.publication_root.is_active for item in descriptors))
+
     def test_factory_catalog_extension_adds_repository_without_composition_branch(self) -> None:
         payload = copy.deepcopy(load_settings().model_dump())
         payload["providers"]["biorxiv"] = {

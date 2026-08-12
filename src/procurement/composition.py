@@ -23,6 +23,11 @@ from procurement.providers.base import Capability, ProviderRole
 from procurement.source.archive import ArchiveLimits
 from procurement.storage.acquisitions import AcquisitionStore
 from procurement.storage.catalogs import ArticleCatalogRoots
+from procurement.storage.roots import (
+    ConfiguredRootError,
+    ConfiguredRootKind,
+    ProcurementRootCatalog,
+)
 from procurement.storage.source_deposits import SourceDepositStore
 from procurement.transport.http import HttpClient, RequestPolicy
 
@@ -69,71 +74,92 @@ def build_application(
         )
         for inbox in settings.acquisition.local_inboxes
     }
+    roots = ProcurementRootCatalog(
+        staging_root,
+        article_catalogs=catalog_roots,
+        local_inboxes=local_inbox_roots,
+    )
+    try:
+        roots.open()
+    except (ConfiguredRootError, OSError, ValueError) as exc:
+        raise ConfigurationError(
+            f"configured procurement roots could not be pinned: {exc}"
+        ) from exc
+
     secrets = secrets or RuntimeSecrets.from_environment()
     http = http or HttpClient()
-
-    catalog = factories.build(
-        settings.providers,
-        http=http,
-        secrets=secrets,
-        artifact_limits=settings.acquisition.limits,
-    )
-    metadata = MetadataService(catalog, settings.metadata_fallback_sources)
-    policies = {}
-    for binding in catalog.bindings(capability=Capability.PLAN_ARTIFACT):
-        provider_settings = settings.providers.get(binding.name)
-        if provider_settings is not None:
-            policies[binding.name] = RequestPolicy(
-                min_interval_seconds=provider_settings.min_interval_seconds,
-                timeout_seconds=provider_settings.timeout_seconds,
-                max_attempts=provider_settings.max_attempts,
-            )
-    article_catalog_roots = ArticleCatalogRoots(catalog_roots)
-    catalog_service = ArticleCatalogService(article_catalog_roots)
-    acquisition_store = AcquisitionStore(
-        staging_root,
-        lock_timeout=settings.acquisition.lock_timeout_seconds,
-    )
-    acquisition_service = AcquisitionService(
-        catalog,
-        http,
-        acquisition_store,
-        provider_policies=policies,
-        user_agent=secrets.user_agent(),
-        maximum_expanded_source_bytes=settings.acquisition.limits.expanded_source_bytes,
-    )
-    local_import_service = LocalImportService(
-        local_inbox_roots,
-        acquisition_store,
-        settings.acquisition.limits,
-    )
-    source_store = SourceDepositStore(
-        article_catalog_roots,
-        lock_timeout=settings.acquisition.lock_timeout_seconds,
-    )
-    materialization_service = SourceMaterializationService(
-        metadata,
-        acquisition_store,
-        source_store,
-        archive_limits=ArchiveLimits(
-            max_archive_bytes=settings.acquisition.limits.source_bytes,
-            max_gzip_payload_bytes=settings.acquisition.limits.expanded_source_bytes,
-            max_extracted_bytes=settings.acquisition.limits.expanded_source_bytes,
-            max_member_bytes=settings.acquisition.limits.expanded_source_bytes,
-            max_entries=settings.acquisition.limits.archive_entries,
-        ),
-        lock_timeout=settings.acquisition.lock_timeout_seconds,
-    )
-    return ProcurementApplication(
-        providers=catalog,
-        discovery=DiscoveryService(catalog, settings.default_sources),
-        metadata=metadata,
-        http=http,
-        acquisition=acquisition_service,
-        local_import=local_import_service,
-        catalogs=catalog_service,
-        materialization=materialization_service,
-    )
+    try:
+        provider_catalog = factories.build(
+            settings.providers,
+            http=http,
+            secrets=secrets,
+            artifact_limits=settings.acquisition.limits,
+        )
+        metadata = MetadataService(provider_catalog, settings.metadata_fallback_sources)
+        policies = {}
+        for binding in provider_catalog.bindings(capability=Capability.PLAN_ARTIFACT):
+            provider_settings = settings.providers.get(binding.name)
+            if provider_settings is not None:
+                policies[binding.name] = RequestPolicy(
+                    min_interval_seconds=provider_settings.min_interval_seconds,
+                    timeout_seconds=provider_settings.timeout_seconds,
+                    max_attempts=provider_settings.max_attempts,
+                )
+        article_catalog_roots = ArticleCatalogRoots(roots)
+        catalog_service = ArticleCatalogService(article_catalog_roots)
+        acquisition_store = AcquisitionStore(
+            roots.staging.path,
+            lock_timeout=settings.acquisition.lock_timeout_seconds,
+        )
+        acquisition_service = AcquisitionService(
+            provider_catalog,
+            http,
+            acquisition_store,
+            provider_policies=policies,
+            user_agent=secrets.user_agent(),
+            maximum_expanded_source_bytes=settings.acquisition.limits.expanded_source_bytes,
+        )
+        configured_inboxes = {
+            descriptor.name: descriptor.path
+            for descriptor in roots.descriptors(ConfiguredRootKind.LOCAL_INBOX)
+        }
+        local_import_service = LocalImportService(
+            configured_inboxes,
+            acquisition_store,
+            settings.acquisition.limits,
+        )
+        source_store = SourceDepositStore(
+            article_catalog_roots,
+            lock_timeout=settings.acquisition.lock_timeout_seconds,
+        )
+        materialization_service = SourceMaterializationService(
+            metadata,
+            acquisition_store,
+            source_store,
+            archive_limits=ArchiveLimits(
+                max_archive_bytes=settings.acquisition.limits.source_bytes,
+                max_gzip_payload_bytes=settings.acquisition.limits.expanded_source_bytes,
+                max_extracted_bytes=settings.acquisition.limits.expanded_source_bytes,
+                max_member_bytes=settings.acquisition.limits.expanded_source_bytes,
+                max_entries=settings.acquisition.limits.archive_entries,
+            ),
+            lock_timeout=settings.acquisition.lock_timeout_seconds,
+        )
+        roots.assert_current()
+        return ProcurementApplication(
+            providers=provider_catalog,
+            discovery=DiscoveryService(provider_catalog, settings.default_sources),
+            metadata=metadata,
+            http=http,
+            roots=roots,
+            acquisition=acquisition_service,
+            local_import=local_import_service,
+            catalogs=catalog_service,
+            materialization=materialization_service,
+        )
+    except BaseException:
+        roots.close()
+        raise
 
 
 def _validate_composition_settings(

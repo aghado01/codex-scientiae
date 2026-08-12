@@ -192,6 +192,16 @@ class TestSingleDocumentWriter(unittest.TestCase):
             self.assertEqual(1, raw.count(codecs.BOM_UTF16))
             self.assertEqual({"math": "∫"}, read_json(path, encoding="utf-16"))
 
+    def test_serialized_utf16_newline_shares_the_document_encoding_pass(self):
+        raw = serialize_json(
+            {"math": "∫"},
+            encoding="utf-16",
+            trailing_newline=True,
+        )
+
+        self.assertEqual(1, raw.count(codecs.BOM_UTF16))
+        self.assertTrue(raw.decode("utf-16").endswith("\n"))
+
     def test_utf8_sig_document_round_trips_only_under_its_declared_codec(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = os.path.join(tmpdir, "doc.json")

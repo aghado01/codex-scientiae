@@ -7,6 +7,8 @@ Layered leaf-first, so each module depends only on what sits below it:
     ordering    a total, host-independent order over JSON values
     sidecar     the artifact path triple, .NET ticks, scratch and lock placement
     writer      serialize_json / write_json -- single-object artifacts
+    publication retained directory generations and anchored filesystem operations
+    documents   schema-backed single-object kinds and pinned stores
     reader      read_json / JsonlStore      -- both artifact shapes
     engine      JsonlEngine                 -- JSONL bytes, offsets, sidecar transaction
     inspect     physical facts and stable views of an actively appended store
@@ -24,7 +26,9 @@ from .policy import DEFAULT_ENCODING, Codec, Eol, is_line_framable
 from .pointer import MISSING, PointerError, exists as pointer_exists, resolve as pointer_resolve
 from .ordering import KeyComparison, SortField
 from .sidecar import StorePaths, get_file_dotnet_ticks, store_paths
-from .writer import JsonWriterError, serialize_json, write_json
+from .writer import JsonWriterError, serialize_json, write_bytes, write_json
+from .publication import PinnedPublicationRoot
+from .documents import JsonDocumentError, JsonDocumentKind, JsonDocumentStore
 from .reader import (
     Jidx,
     JsonReaderError,
@@ -73,7 +77,12 @@ __all__ = [
     "Discipline",
     "JsonWriterError",
     "serialize_json",
+    "write_bytes",
     "write_json",
+    "PinnedPublicationRoot",
+    "JsonDocumentError",
+    "JsonDocumentKind",
+    "JsonDocumentStore",
     # reading
     "JsonReaderError",
     "JsonlStore",

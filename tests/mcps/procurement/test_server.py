@@ -6,6 +6,8 @@ import asyncio
 import base64
 import copy
 import hashlib
+import os
+import tempfile
 import unittest
 from datetime import datetime, timezone
 from types import SimpleNamespace
@@ -45,6 +47,22 @@ from procurement.operations.local_import import (
     LocalImportInboxCatalog,
 )
 from procurement.operations.metadata import MetadataService
+from procurement.storage.roots import ProcurementRootCatalog
+
+
+def application_roots(parent: str) -> ProcurementRootCatalog:
+    """Open one complete configured-root set for a direct application fixture."""
+
+    staging = os.path.join(parent, "staging")
+    catalog = os.path.join(parent, "catalog")
+    inbox = os.path.join(parent, "inbox")
+    for path in (staging, catalog, inbox):
+        os.mkdir(path)
+    return ProcurementRootCatalog(
+        staging,
+        article_catalogs={"inventory": catalog},
+        local_inboxes={"manual": inbox},
+    ).open()
 
 
 class StaticCatalogService:
@@ -283,7 +301,7 @@ class RecordingAggregator:
 
 class TestProcurementMcp(unittest.TestCase):
     def test_lists_and_calls_discovery_tool_with_structured_output(self) -> None:
-        async def exercise() -> None:
+        async def exercise(roots: ProcurementRootCatalog) -> None:
             provider = StaticProvider()
             aggregator = AggregatorProvider()
             registry = ProviderCatalog(
@@ -316,6 +334,7 @@ class TestProcurementMcp(unittest.TestCase):
                     discovery=service,
                     metadata=metadata,
                     http=HttpClient(raw),
+                    roots=roots,
                     acquisition=StaticAcquisitionService(),
                     catalogs=StaticCatalogService(),
                     local_import=local_import,
@@ -696,10 +715,15 @@ class TestProcurementMcp(unittest.TestCase):
                     )
                     self.assertTrue(invalid_query.is_error)
 
-        asyncio.run(exercise())
+        with tempfile.TemporaryDirectory() as root_parent:
+            roots = application_roots(root_parent)
+            try:
+                asyncio.run(exercise(roots))
+            finally:
+                roots.close()
 
     def test_explicit_empty_metadata_fallback_is_preserved_by_the_protocol(self) -> None:
-        async def exercise() -> None:
+        async def exercise(roots: ProcurementRootCatalog) -> None:
             authority = FailingAuthority()
             aggregator = RecordingAggregator()
             registry = ProviderCatalog(
@@ -730,6 +754,7 @@ class TestProcurementMcp(unittest.TestCase):
                     discovery=DiscoveryService(registry, ("arxiv",)),
                     metadata=MetadataService(registry, ("semanticscholar",)),
                     http=HttpClient(raw),
+                    roots=roots,
                     acquisition=StaticAcquisitionService(),
                 )
                 async with Client(create_server(application)) as client:
@@ -788,4 +813,9 @@ class TestProcurementMcp(unittest.TestCase):
                         "doi:10.1000/example",
                     )
 
-        asyncio.run(exercise())
+        with tempfile.TemporaryDirectory() as root_parent:
+            roots = application_roots(root_parent)
+            try:
+                asyncio.run(exercise(roots))
+            finally:
+                roots.close()

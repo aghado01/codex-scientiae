@@ -50,7 +50,10 @@ class ArticleCatalogService:
     def inspect(self, name: str) -> ArticleCatalogSnapshot:
         """Validate path topology and report direct-child article membership."""
         descriptor = self.resolve(name)
-        article_paths = discover_article_paths(descriptor.catalog_dir)
+        article_paths = discover_article_paths(
+            descriptor.catalog_dir,
+            publication_root=descriptor.publication_root,
+        )
         slugs = tuple(os.path.basename(os.path.dirname(path)) for path in article_paths)
         return ArticleCatalogSnapshot(
             name=descriptor.name,
@@ -62,7 +65,11 @@ class ArticleCatalogService:
     def rebuild(self, name: str, *, force: bool = False) -> InventoryCatalogResult:
         """Publish the named catalog inventory from safe direct-child discovery."""
         descriptor = self.resolve(name)
-        return build_inventory(catalog_dir=descriptor.catalog_dir, force=force)
+        return build_inventory(
+            catalog_dir=descriptor.catalog_dir,
+            force=force,
+            publication_root=descriptor.publication_root,
+        )
 
 
 __all__ = ["ArticleCatalogService", "ArticleCatalogSnapshot"]
