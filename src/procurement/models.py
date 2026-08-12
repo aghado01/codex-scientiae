@@ -19,6 +19,7 @@ from pydantic import (
 )
 
 from procurement.identifiers import (
+    artifact_slug,
     arxiv_identity,
     is_doi,
     normalize_arxiv_id,
@@ -86,9 +87,10 @@ def validate_artifact_deposit_reference(
         parsed = split_arxiv_id(identifier)
         if parsed.version is None:
             raise ValueError("an arXiv source deposit requires a versioned identifier")
-        if deposit_slug != parsed.versioned:
+        expected_slug = artifact_slug("arxiv", parsed.versioned)
+        if deposit_slug != expected_slug:
             raise ValueError(
-                f"arXiv deposit slug {deposit_slug!r} must match artifact {parsed.versioned!r}"
+                f"arXiv deposit slug {deposit_slug!r} must match artifact leaf {expected_slug!r}"
             )
         return parsed.versioned
     if key == "zenodo":
@@ -160,12 +162,16 @@ def _require_serialized_properties(schema: dict[str, Any]) -> None:
 
 def _deposit_bundle_schema(schema: dict[str, Any]) -> None:
     _require_serialized_properties(schema)
+    schema["required"] = [
+        name for name in schema.get("required", ()) if name != "identity_anchor"
+    ]
     schema["$id"] = "codex-scientiae/deposit-metadata/0.1"
     schema["allOf"] = [
         {
             "if": {"properties": {"route": {"const": "artifact-provider"}}},
             "then": {
                 "properties": {
+                    "identity_anchor": {"type": "null"},
                     "selected": {
                         "properties": {
                             "provider_roles": {
@@ -180,6 +186,7 @@ def _deposit_bundle_schema(schema: dict[str, Any]) -> None:
             "if": {"properties": {"route": {"const": "aggregator-fallback"}}},
             "then": {
                 "properties": {
+                    "identity_anchor": {"type": "null"},
                     "selected": {
                         "properties": {
                             "provider_roles": {
@@ -188,6 +195,22 @@ def _deposit_bundle_schema(schema: dict[str, Any]) -> None:
                         }
                     }
                 }
+            },
+        },
+        {
+            "if": {"properties": {"route": {"const": "identifier-aggregator"}}},
+            "then": {
+                "required": ["identity_anchor"],
+                "properties": {
+                    "identity_anchor": {"not": {"type": "null"}},
+                    "selected": {
+                        "properties": {
+                            "provider_roles": {
+                                "contains": {"const": "metadata-aggregator"}
+                            }
+                        }
+                    },
+                },
             },
         },
     ]
@@ -611,6 +634,27 @@ class ArtifactReference(DomainModel):
         return self
 
 
+class WorkIdentityAnchor(DomainModel):
+    """Caller-supplied scholarly identity used to select API metadata."""
+
+    kind: Literal["doi"]
+    value: str = Field(min_length=1)
+    supplied_by: Literal["caller"] = "caller"
+
+    @field_validator("value", mode="before")
+    @classmethod
+    def _canonicalize_value(cls, value: object) -> str:
+        if not is_doi(value):
+            raise ValueError("a DOI identity anchor requires a complete DOI")
+        return normalize_doi(value) or ""
+
+    @property
+    def identity_aliases(self) -> frozenset[str]:
+        """Return the canonical work aliases represented by the anchor."""
+
+        return frozenset({f"doi:{self.value}"})
+
+
 class ApiResponseEvidence(DomainModel):
     """Exact HTTP-decoded API payload used for one metadata observation."""
 
@@ -745,6 +789,38 @@ def project_article_metadata(
         arxiv_id = parsed.versionless
         arxiv_versioned = parsed.versioned if parsed.version is not None else None
 
+    return _project_article_metadata(
+        work,
+        arxiv_id=arxiv_id,
+        arxiv_versioned=arxiv_versioned,
+        preserve_categories=preserve_categories,
+    )
+
+
+def project_identifier_article_metadata(work: WorkRecord) -> ArticleMetadataProjection:
+    """Project metadata selected by a work identifier rather than artifact provenance."""
+
+    arxiv_id = work.arxiv_id
+    arxiv_versioned = work.arxiv_id
+    if arxiv_id:
+        parsed = split_arxiv_id(arxiv_id)
+        arxiv_id = parsed.versionless
+        arxiv_versioned = parsed.versioned if parsed.version is not None else None
+    return _project_article_metadata(
+        work,
+        arxiv_id=arxiv_id,
+        arxiv_versioned=arxiv_versioned,
+        preserve_categories=False,
+    )
+
+
+def _project_article_metadata(
+    work: WorkRecord,
+    *,
+    arxiv_id: str | None,
+    arxiv_versioned: str | None,
+    preserve_categories: bool,
+) -> ArticleMetadataProjection:
     categories = work.categories if preserve_categories else ()
     return ArticleMetadataProjection(
         title=work.title,
@@ -779,7 +855,12 @@ class DepositMetadataBundle(DomainModel):
         json_schema_extra={"pattern": PORTABLE_LEAF_PATTERN},
     )
     artifact: ArtifactReference
-    route: Literal["artifact-provider", "aggregator-fallback"]
+    identity_anchor: WorkIdentityAnchor | None = None
+    route: Literal[
+        "artifact-provider",
+        "aggregator-fallback",
+        "identifier-aggregator",
+    ]
     selected: MetadataObservation
     attempts: tuple[MetadataAttempt, ...] = Field(
         min_length=1,
@@ -804,30 +885,41 @@ class DepositMetadataBundle(DomainModel):
             successful[0].provider.casefold() != self.selected.provider.casefold()
         ):
             raise ValueError("exactly one successful attempt must name the selected provider")
-        if self.attempts[0].provider.casefold() != self.artifact.provider.casefold():
+        identifier_route = self.route == "identifier-aggregator"
+        if not identifier_route and (
+            self.attempts[0].provider.casefold() != self.artifact.provider.casefold()
+        ):
             raise ValueError("metadata attempts must begin with the artifact provider")
         if self.attempts[-1].status != "ok" or (
             self.attempts[-1].provider.casefold() != self.selected.provider.casefold()
         ):
             raise ValueError("the selected provider must be the final successful attempt")
 
-        same_provider = (
-            self.selected.provider.casefold() == self.artifact.provider.casefold()
-        )
-        if self.route == "artifact-provider":
-            if not same_provider:
-                raise ValueError("artifact-provider route must select the artifact provider")
-            if "metadata-authority" not in self.selected.provider_roles:
-                raise ValueError("artifact-provider route requires a metadata authority")
-            if len(self.attempts) != 1:
-                raise ValueError("artifact-provider route must stop after authority success")
-        else:
-            if same_provider:
-                raise ValueError("aggregator fallback must select a different provider")
+        if identifier_route:
+            if self.identity_anchor is None:
+                raise ValueError("an identifier route requires an identity anchor")
             if "metadata-aggregator" not in self.selected.provider_roles:
-                raise ValueError("aggregator fallback requires a metadata aggregator")
-            if self.attempts[0].status == "ok":
-                raise ValueError("aggregator fallback requires a failed authority-first attempt")
+                raise ValueError("identifier-aggregator route requires a metadata aggregator")
+        else:
+            if self.identity_anchor is not None:
+                raise ValueError("artifact metadata routes cannot carry an identity anchor")
+            same_provider = (
+                self.selected.provider.casefold() == self.artifact.provider.casefold()
+            )
+            if self.route == "artifact-provider":
+                if not same_provider:
+                    raise ValueError("artifact-provider route must select the artifact provider")
+                if "metadata-authority" not in self.selected.provider_roles:
+                    raise ValueError("artifact-provider route requires a metadata authority")
+                if len(self.attempts) != 1:
+                    raise ValueError("artifact-provider route must stop after authority success")
+            else:
+                if same_provider:
+                    raise ValueError("aggregator fallback must select a different provider")
+                if "metadata-aggregator" not in self.selected.provider_roles:
+                    raise ValueError("aggregator fallback requires a metadata aggregator")
+                if self.attempts[0].status == "ok":
+                    raise ValueError("aggregator fallback requires a failed authority-first attempt")
 
         canonical_identifier = validate_artifact_deposit_reference(
             self.artifact.provider,
@@ -837,14 +929,17 @@ class DepositMetadataBundle(DomainModel):
         if canonical_identifier != self.artifact.identifier:
             raise ValueError("artifact identifier is not in canonical provider form")
 
-        expected_aliases = artifact_identity_aliases(
-            self.artifact.provider,
-            self.artifact.identifier,
+        expected_aliases = (
+            self.identity_anchor.identity_aliases
+            if self.identity_anchor is not None
+            else artifact_identity_aliases(
+                self.artifact.provider,
+                self.artifact.identifier,
+            )
         )
         if expected_aliases.isdisjoint(self.selected.work.identity_aliases):
-            raise ValueError(
-                "selected metadata does not identify the referenced artifact"
-            )
+            subject = "identity anchor" if identifier_route else "referenced artifact"
+            raise ValueError(f"selected metadata does not identify the {subject}")
         if self.route == "artifact-provider" and self.artifact.provider.casefold() == "arxiv":
             returned = self.selected.work.arxiv_id
             if returned is None or (
@@ -853,14 +948,18 @@ class DepositMetadataBundle(DomainModel):
             ):
                 raise ValueError("arXiv authority metadata does not identify the artifact version")
 
-        expected_article = project_article_metadata(
-            self.artifact.provider,
-            self.artifact.identifier,
-            self.selected.work,
-            preserve_categories=(
-                self.route == "artifact-provider"
-                and self.artifact.provider.casefold() == "arxiv"
-            ),
+        expected_article = (
+            project_identifier_article_metadata(self.selected.work)
+            if identifier_route
+            else project_article_metadata(
+                self.artifact.provider,
+                self.artifact.identifier,
+                self.selected.work,
+                preserve_categories=(
+                    self.route == "artifact-provider"
+                    and self.artifact.provider.casefold() == "arxiv"
+                ),
+            )
         )
         if self.article != expected_article:
             raise ValueError("article projection does not match the selected metadata")

@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import copy
 import hashlib
 import unittest
 from datetime import datetime, timezone
+from types import SimpleNamespace
 
 import httpx
+import jsonschema
 from mcp import Client
 
 from mcps.procurement.server import create_server
@@ -18,15 +21,168 @@ from procurement.http import HttpClient
 from procurement.limits import MAX_API_RESPONSE_BASE64_CHARS
 from procurement.models import (
     PORTABLE_LEAF_PATTERN,
+    ArtifactReference,
     SearchPage,
     SearchRequest,
     SourceReference,
     WorkRecord,
 )
 from procurement.models import ApiResponseEvidence, RetrievedMetadata
+from procurement.payloads import (
+    AcquiredArtifact,
+    AcquisitionManifest,
+    AcquisitionOutcome,
+    AcquisitionResult,
+    LocalImportProvenance,
+    acquisition_manifest_schema,
+)
 from procurement.providers.base import Capability, ProviderRole
 from procurement.registry import ProviderBinding, ProviderRegistry
 from procurement.services import DiscoveryService, MetadataService
+from procurement.source import SourceMaterializationResult
+from procurement.services.local_import import (
+    LocalImportInbox,
+    LocalImportInboxCatalog,
+)
+
+
+class StaticCatalogService:
+    def __init__(self) -> None:
+        self.descriptor = SimpleNamespace(name="inventory", catalog_dir="D:/catalog")
+
+    def catalogs(self):
+        return (self.descriptor,)
+
+    def resolve(self, name: str):
+        if name.casefold() != "inventory":
+            raise ValueError("unknown catalog")
+        return self.descriptor
+
+    def inspect(self, name: str):
+        self.resolve(name)
+        return SimpleNamespace(
+            name="inventory",
+            catalog_dir="D:/catalog",
+            article_count=2,
+            slugs=("a", "b"),
+        )
+
+    def rebuild(self, name: str, *, force: bool = False):
+        self.resolve(name)
+        return SimpleNamespace(
+            catalog_dir="D:/catalog",
+            inventory_path="D:/catalog/inventory.jsonl",
+            article_count=2,
+            slugs=["a", "b"],
+        )
+
+
+class RecordingMaterializationService:
+    def __init__(self) -> None:
+        self.requests = []
+
+    async def materialize(self, request):
+        self.requests.append(request)
+        return SourceMaterializationResult(
+            catalog=request.catalog,
+            slug=request.acquisition_slug,
+            status="deposited",
+            created=True,
+            artifact=ArtifactReference(
+                provider="arxiv",
+                identifier=request.acquisition_slug,
+                provider_roles=(
+                    "artifact-origin",
+                    "artifact-access",
+                    "metadata-authority",
+                ),
+            ),
+            acquisition_manifest_path="D:/staging/acquisition.json",
+            document_directory="D:/catalog/2008.10579v1",
+            article_path="D:/catalog/2008.10579v1/article.json",
+            archive_path="D:/catalog/2008.10579v1/2008.10579v1.tar.gz",
+            source_path="D:/catalog/2008.10579v1/2008.10579v1-tex",
+            metadata_path="D:/catalog/2008.10579v1/2008.10579v1.api-metadata.json",
+            archive_sha256="a" * 64,
+            tree_sha256="b" * 64,
+            archive_kind="tar+gzip",
+            entrypoint="main.tex",
+            metadata_route="artifact-provider",
+        )
+
+
+class RecordingLocalImportService:
+    def __init__(self) -> None:
+        self.requests = []
+
+    def inboxes(self) -> LocalImportInboxCatalog:
+        return LocalImportInboxCatalog(inboxes=(LocalImportInbox(name="manual"),))
+
+    async def import_artifact(self, request):
+        self.requests.append(request)
+        body = b"%PDF-1.7\n%%EOF\n"
+        manifest = AcquisitionManifest(
+            slug=request.deposit_slug,
+            artifact=ArtifactReference(
+                provider="manual-import",
+                identifier=request.deposit_slug,
+                provider_roles=("artifact-access",),
+            ),
+            forms=(
+                AcquiredArtifact(
+                    kind="pdf",
+                    path=f"{request.deposit_slug}.pdf",
+                    format="application/pdf",
+                    bytes=len(body),
+                    sha256=hashlib.sha256(body).hexdigest(),
+                    custody="local-import",
+                    local_import=LocalImportProvenance(
+                        inbox=request.inbox,
+                        leaf=request.leaf,
+                        imported_at=datetime(2026, 8, 11, tzinfo=timezone.utc),
+                    ),
+                ),
+            ),
+        )
+        return AcquisitionResult(
+            staging_directory=f"D:/staging/{request.deposit_slug}",
+            manifest_path=f"D:/staging/{request.deposit_slug}/acquisition.json",
+            manifest=manifest,
+            outcomes=(
+                AcquisitionOutcome(
+                    kind="pdf",
+                    status="acquired",
+                    path=f"{request.deposit_slug}.pdf",
+                ),
+            ),
+        )
+
+
+class StaticAcquisitionService:
+    def inspect(self, slug: str) -> AcquisitionManifest:
+        return AcquisitionManifest(
+            slug=slug,
+            artifact=ArtifactReference(
+                provider="manual-import",
+                identifier=slug,
+                provider_roles=("artifact-access",),
+            ),
+            forms=(
+                AcquiredArtifact(
+                    kind="pdf",
+                    path=f"{slug}.pdf",
+                    format="application/pdf",
+                    bytes=5,
+                    sha256="a" * 64,
+                    custody="local-import",
+                    local_import=LocalImportProvenance(
+                        inbox="manual",
+                        leaf="paper.pdf",
+                        imported_at=datetime(2026, 8, 11, tzinfo=timezone.utc),
+                    ),
+                ),
+            ),
+        )
 
 
 class StaticProvider:
@@ -102,12 +258,14 @@ class RecordingAggregator:
         return RetrievedMetadata(
             work=WorkRecord(
                 title="Fallback paper",
+                doi="10.1000/example",
                 arxiv_id="2008.10579",
                 concepts=("Optimization",),
                 sources=(
                     SourceReference(
                         provider=self.name,
                         identifier="W1",
+                        doi="10.1000/example",
                         arxiv_id="2008.10579",
                     ),
                 ),
@@ -149,11 +307,17 @@ class TestProcurementMcp(unittest.TestCase):
             )
             service = DiscoveryService(registry, ("arxiv",))
             metadata = MetadataService(registry, ("openalex",))
+            materialization = RecordingMaterializationService()
+            local_import = RecordingLocalImportService()
             async with httpx.AsyncClient(transport=httpx.MockTransport(lambda request: httpx.Response(500))) as raw:
                 application = ProcurementApplication(
                     discovery=service,
                     metadata=metadata,
                     http=HttpClient(raw),
+                    acquisition=StaticAcquisitionService(),
+                    catalogs=StaticCatalogService(),
+                    local_import=local_import,
+                    materialization=materialization,
                 )
                 server = create_server(application)
                 async with Client(server) as client:
@@ -167,9 +331,114 @@ class TestProcurementMcp(unittest.TestCase):
                             "resolve_reference",
                             "get_work",
                             "prepare_source_deposit_metadata",
+                            "prepare_article_metadata_by_doi",
+                            "plan_artifact_acquisition",
+                            "acquire_artifact",
+                            "get_acquisition_receipt",
+                            "list_local_import_inboxes",
+                            "import_local_artifact",
+                            "materialize_source_deposit",
+                            "list_article_catalogs",
+                            "inspect_article_catalog",
+                            "rebuild_article_inventory",
                             "list_procurement_providers",
                         },
                     )
+                    receipt_output = tools_by_name[
+                        "get_acquisition_receipt"
+                    ].model_dump(mode="json", by_alias=True)["outputSchema"]
+                    acquisition_output = tools_by_name[
+                        "acquire_artifact"
+                    ].model_dump(mode="json", by_alias=True)["outputSchema"]
+                    self.assertEqual(receipt_output, acquisition_manifest_schema())
+                    self.assertEqual(
+                        acquisition_output,
+                        AcquisitionResult.model_json_schema(
+                            mode="serialization", by_alias=True
+                        ),
+                    )
+                    jsonschema.Draft202012Validator.check_schema(receipt_output)
+                    jsonschema.Draft202012Validator.check_schema(acquisition_output)
+                    self.assertEqual(
+                        receipt_output["$defs"]["ChecksumExpectation"]["allOf"],
+                        acquisition_output["$defs"]["ChecksumExpectation"]["allOf"],
+                    )
+                    self.assertEqual(
+                        receipt_output["$defs"]["AcquiredArtifact"]["properties"][
+                            "origin_url"
+                        ]["pattern"],
+                        acquisition_output["$defs"]["AcquiredArtifact"]["properties"][
+                            "origin_url"
+                        ]["pattern"],
+                    )
+                    self.assertEqual(
+                        receipt_output["allOf"],
+                        acquisition_output["$defs"]["AcquisitionManifest"]["allOf"],
+                    )
+                    self.assertEqual(len(acquisition_output["allOf"]), 2)
+                    self.assertEqual(
+                        len(
+                            acquisition_output["$defs"]["AcquisitionOutcome"][
+                                "allOf"
+                            ]
+                        ),
+                        1,
+                    )
+
+                    receipt = AcquisitionManifest(
+                        slug="2008.10579v1",
+                        artifact=ArtifactReference(
+                            provider="arxiv",
+                            identifier="2008.10579v1",
+                            provider_roles=(
+                                "artifact-origin",
+                                "artifact-access",
+                                "metadata-authority",
+                            ),
+                        ),
+                        forms=(
+                            AcquiredArtifact(
+                                kind="source",
+                                path="arXiv-2008.10579v1.tar.gz",
+                                format="application/gzip",
+                                bytes=1,
+                                sha256="a" * 64,
+                                origin_url="https://arxiv.org/e-print/2008.10579v1",
+                                candidate_id="arxiv-export-source",
+                                fetched_at=datetime(2026, 8, 11, tzinfo=timezone.utc),
+                            ),
+                        ),
+                    )
+                    successful = AcquisitionResult(
+                        staging_directory="D:/staging/2008.10579v1",
+                        manifest_path="D:/staging/2008.10579v1/acquisition.json",
+                        manifest=receipt,
+                        outcomes=(
+                            AcquisitionOutcome(
+                                kind="source",
+                                status="acquired",
+                                path="arXiv-2008.10579v1.tar.gz",
+                            ),
+                        ),
+                    ).model_dump(mode="json", by_alias=True)
+                    result_validator = jsonschema.Draft202012Validator(
+                        acquisition_output
+                    )
+                    result_validator.validate(successful)
+
+                    success_without_manifest = copy.deepcopy(successful)
+                    success_without_manifest["manifest"] = None
+                    success_without_manifest["manifest_path"] = None
+                    self.assertFalse(
+                        result_validator.is_valid(success_without_manifest)
+                    )
+                    split_manifest_pair = copy.deepcopy(successful)
+                    split_manifest_pair["manifest_path"] = None
+                    self.assertFalse(result_validator.is_valid(split_manifest_pair))
+                    contradictory_outcome = copy.deepcopy(successful)
+                    contradictory_outcome["outcomes"][0]["error"] = "unexpected"
+                    self.assertFalse(result_validator.is_valid(contradictory_outcome))
+
                     search_tool = tools_by_name["discover_search"].model_dump(
                         mode="json", by_alias=True
                     )
@@ -241,7 +510,116 @@ class TestProcurementMcp(unittest.TestCase):
                         ],
                         MAX_API_RESPONSE_BASE64_CHARS,
                     )
-                    self.assertEqual(len(metadata_output["allOf"]), 2)
+                    self.assertEqual(len(metadata_output["allOf"]), 3)
+
+                    doi_metadata_tool = tools_by_name[
+                        "prepare_article_metadata_by_doi"
+                    ].model_dump(mode="json", by_alias=True)
+                    self.assertEqual(
+                        doi_metadata_tool["inputSchema"]["properties"]["acquisition_slug"][
+                            "pattern"
+                        ],
+                        PORTABLE_LEAF_PATTERN,
+                    )
+                    self.assertIn(
+                        "identifier-aggregator",
+                        doi_metadata_tool["outputSchema"]["properties"]["route"]["enum"],
+                    )
+
+                    source_tool = tools_by_name["materialize_source_deposit"].model_dump(
+                        mode="json", by_alias=True
+                    )
+                    source_input = source_tool["inputSchema"]
+                    self.assertEqual(
+                        source_input["properties"]["acquisition_slug"]["pattern"],
+                        PORTABLE_LEAF_PATTERN,
+                    )
+                    metadata_schema = source_input["properties"]["metadata"]
+                    union_schema = next(
+                        branch
+                        for branch in metadata_schema["anyOf"]
+                        if "oneOf" in branch
+                    )
+                    self.assertEqual(
+                        set(union_schema["discriminator"]["mapping"]),
+                        {"artifact-identity", "explicit-doi", "omit"},
+                    )
+                    self.assertIn(
+                        "[Tt][Ee][Xx]",
+                        source_input["properties"]["main_tex"]["anyOf"][0]["pattern"],
+                    )
+
+                    local_import_tool = tools_by_name["import_local_artifact"].model_dump(
+                        mode="json", by_alias=True
+                    )
+                    self.assertEqual(
+                        set(local_import_tool["inputSchema"]["properties"]),
+                        {"inbox", "leaf", "deposit_slug"},
+                    )
+                    for field in ("inbox", "leaf", "deposit_slug"):
+                        self.assertEqual(
+                            local_import_tool["inputSchema"]["properties"][field][
+                                "pattern"
+                            ],
+                            PORTABLE_LEAF_PATTERN,
+                        )
+
+                    catalog_list = await client.call_tool("list_article_catalogs", {})
+                    self.assertFalse(catalog_list.is_error)
+                    self.assertEqual(
+                        catalog_list.structured_content["catalogs"][0]["name"],
+                        "inventory",
+                    )
+                    catalog_snapshot = await client.call_tool(
+                        "inspect_article_catalog", {"catalog": "inventory"}
+                    )
+                    self.assertFalse(catalog_snapshot.is_error)
+                    self.assertEqual(catalog_snapshot.structured_content["article_count"], 2)
+                    inventory_result = await client.call_tool(
+                        "rebuild_article_inventory",
+                        {"catalog": "inventory", "force": True},
+                    )
+                    self.assertFalse(inventory_result.is_error)
+                    self.assertEqual(inventory_result.structured_content["slugs"], ["a", "b"])
+
+                    inboxes = await client.call_tool("list_local_import_inboxes", {})
+                    self.assertFalse(inboxes.is_error)
+                    self.assertEqual(
+                        inboxes.structured_content["inboxes"],
+                        [{"name": "manual"}],
+                    )
+                    imported = await client.call_tool(
+                        "import_local_artifact",
+                        {
+                            "inbox": "manual",
+                            "leaf": "paper.pdf",
+                            "deposit_slug": "doi-paper",
+                        },
+                    )
+                    self.assertFalse(imported.is_error)
+                    self.assertEqual(
+                        imported.structured_content["manifest"]["forms"][0]["custody"],
+                        "local-import",
+                    )
+                    self.assertEqual(local_import.requests[0].leaf, "paper.pdf")
+
+                    source_result = await client.call_tool(
+                        "materialize_source_deposit",
+                        {
+                            "catalog": "inventory",
+                            "acquisition_slug": "2008.10579v1",
+                            "metadata": {
+                                "mode": "artifact-identity",
+                                "fallback_sources": [],
+                            },
+                        },
+                    )
+                    self.assertFalse(source_result.is_error)
+                    self.assertEqual(source_result.structured_content["status"], "deposited")
+                    self.assertEqual(
+                        materialization.requests[0].metadata_fallback_sources,
+                        (),
+                    )
                     result = await client.call_tool(
                         "discover_search",
                         {"query": "persistent homology", "source": "arxiv", "max_results": 5},
@@ -339,6 +717,7 @@ class TestProcurementMcp(unittest.TestCase):
                     discovery=DiscoveryService(registry, ("arxiv",)),
                     metadata=MetadataService(registry, ("semanticscholar",)),
                     http=HttpClient(raw),
+                    acquisition=StaticAcquisitionService(),
                 )
                 async with Client(create_server(application)) as client:
                     disabled = await client.call_tool(
@@ -367,6 +746,33 @@ class TestProcurementMcp(unittest.TestCase):
                     self.assertEqual(
                         [attempt["status"] for attempt in enabled.structured_content["attempts"]],
                         ["error", "ok"],
+                    )
+
+                    by_doi = await client.call_tool(
+                        "prepare_article_metadata_by_doi",
+                        {
+                            "acquisition_slug": "manual-paper",
+                            "doi": "https://doi.org/10.1000/EXAMPLE",
+                            "fallback_sources": ["semanticscholar"],
+                        },
+                    )
+                    self.assertFalse(by_doi.is_error)
+                    assert by_doi.structured_content is not None
+                    self.assertEqual(
+                        by_doi.structured_content["route"],
+                        "identifier-aggregator",
+                    )
+                    self.assertEqual(
+                        by_doi.structured_content["artifact"]["provider"],
+                        "manual-import",
+                    )
+                    self.assertEqual(
+                        by_doi.structured_content["identity_anchor"]["value"],
+                        "10.1000/example",
+                    )
+                    self.assertEqual(
+                        aggregator.identifiers[-1],
+                        "doi:10.1000/example",
                     )
 
         asyncio.run(exercise())

@@ -4,11 +4,16 @@ from __future__ import annotations
 
 import asyncio
 import gzip
+import tempfile
+import threading
 import unittest
 from datetime import datetime, timezone
+from pathlib import Path
+from unittest import mock
 
 import httpx
 
+import procurement.http as procurement_http
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
 from procurement.http import HttpClient, RateLimiter, RequestPolicy
 
@@ -33,6 +38,89 @@ class TestRateLimiter(unittest.TestCase):
 
 
 class TestHttpClient(unittest.TestCase):
+    def test_download_bounds_each_worker_write_even_for_one_giant_transport_chunk(self) -> None:
+        payload = b"x" * (2 * procurement_http._DOWNLOAD_CHUNK_BYTES + 17)
+        write_sizes: list[int] = []
+        original_write = procurement_http._WorkerDownloadSink._write
+
+        class GiantBody(httpx.AsyncByteStream):
+            async def __aiter__(self):
+                yield payload
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, stream=GiantBody())
+
+        def observed_write(sink, chunk: bytes) -> None:
+            write_sizes.append(len(chunk))
+            original_write(sink, chunk)
+
+        async def exercise(destination: Path) -> None:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                result = await HttpClient(raw).download_to(
+                    "https://provider.example/payload",
+                    str(destination),
+                    allowed_hosts=("provider.example",),
+                    policy=RequestPolicy(
+                        max_attempts=1,
+                        max_decoded_body_bytes=len(payload),
+                    ),
+                )
+            self.assertEqual(result.bytes, len(payload))
+
+        with tempfile.TemporaryDirectory() as root, mock.patch.object(
+            procurement_http._WorkerDownloadSink,
+            "_write",
+            observed_write,
+        ):
+            asyncio.run(exercise(Path(root) / "payload.part"))
+
+        self.assertEqual(sum(write_sizes), len(payload))
+        self.assertLessEqual(max(write_sizes), procurement_http._DOWNLOAD_CHUNK_BYTES)
+
+    def test_download_fsync_does_not_block_the_event_loop(self) -> None:
+        entered = threading.Event()
+        release = threading.Event()
+        loop_thread: list[int] = []
+        fsync_threads: list[int] = []
+
+        def blocking_fsync(descriptor: int) -> None:
+            del descriptor
+            fsync_threads.append(threading.get_ident())
+            entered.set()
+            if not release.wait(2):
+                raise AssertionError("event loop did not remain responsive during download fsync")
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, content=b"bounded payload")
+
+        async def exercise(destination: Path) -> None:
+            loop_thread.append(threading.get_ident())
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                task = asyncio.create_task(
+                    HttpClient(raw).download_to(
+                        "https://provider.example/payload",
+                        str(destination),
+                        allowed_hosts=("provider.example",),
+                        policy=RequestPolicy(max_attempts=1),
+                    )
+                )
+                self.assertTrue(await asyncio.to_thread(entered.wait, 1))
+                await asyncio.sleep(0)
+                self.assertFalse(task.done())
+                release.set()
+                result = await asyncio.wait_for(task, timeout=1)
+            self.assertEqual(result.bytes, len(b"bounded payload"))
+
+        try:
+            with tempfile.TemporaryDirectory() as root, mock.patch(
+                "procurement.http.os.fsync", side_effect=blocking_fsync
+            ):
+                asyncio.run(exercise(Path(root) / "payload.part"))
+        finally:
+            release.set()
+        self.assertEqual(len(fsync_threads), 1)
+        self.assertNotEqual(loop_thread[0], fsync_threads[0])
+
     def test_retries_only_bounded_transient_statuses(self) -> None:
         attempts = 0
         sleeps: list[float] = []

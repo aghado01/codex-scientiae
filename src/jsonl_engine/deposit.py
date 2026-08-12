@@ -621,6 +621,10 @@ def _assemble_article(
             "selected_provider_roles": copy.deepcopy(selected["provider_roles"]),
             "attempts": copy.deepcopy(metadata["attempts"]),
         }
+        if metadata.get("identity_anchor") is not None:
+            metadata_resolution["identity_anchor"] = copy.deepcopy(
+                metadata["identity_anchor"]
+            )
 
     timestamp = _utc_timestamp()
     bibliographic = (

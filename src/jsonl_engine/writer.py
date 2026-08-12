@@ -30,6 +30,28 @@ class JsonWriterError(ValueError):
         super().__init__(f"{message}: '{path}'" if path else message)
 
 
+def publish_staged_file(staged_path: str, destination_path: str, *, overwrite: bool) -> None:
+    """Atomically publish one complete adjacent file, optionally without replacement."""
+
+    if overwrite:
+        os.replace(staged_path, destination_path)
+    elif os.name == "nt":
+        # Windows rename is atomic and refuses an existing destination. POSIX rename replaces,
+        # so that platform uses the link-based no-clobber publication below.
+        os.rename(staged_path, destination_path)
+    else:
+        # Linking a complete adjacent file creates the destination atomically without the
+        # overwrite semantics of POSIX rename. A crash after the link leaves a complete
+        # destination plus discoverable scratch, never a partial document.
+        os.link(staged_path, destination_path)
+        try:
+            os.remove(staged_path)
+        except OSError:
+            # Publication already succeeded. The exact adjacent scratch name is discoverable and
+            # can be swept under an artifact lease; cleanup failure does not invalidate the final.
+            pass
+
+
 def _serialize_json_text(
     value: Any,
     *,
@@ -154,24 +176,7 @@ def write_json(
                 )
             handle.flush()
             os.fsync(handle.fileno())
-        if overwrite:
-            os.replace(tmp, full)
-        elif os.name == "nt":
-            # Windows rename is atomic and refuses an existing destination. POSIX rename replaces,
-            # so that platform uses the link-based no-clobber publication below.
-            os.rename(tmp, full)
-        else:
-            # Linking a complete adjacent file creates the destination atomically without the
-            # overwrite semantics of os.replace/os.rename on POSIX. A crash after the link leaves a
-            # complete destination plus discoverable scratch, never a partial document.
-            os.link(tmp, full)
-            try:
-                os.remove(tmp)
-            except OSError:
-                # Publication already succeeded. The exact adjacent scratch name is discoverable
-                # and can be swept under the artifact lease; it is not sound to report the complete
-                # destination as a failed write merely because unlinking its second name failed.
-                pass
+        publish_staged_file(tmp, full, overwrite=overwrite)
     except BaseException:
         if os.path.exists(tmp):
             try:

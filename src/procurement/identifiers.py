@@ -105,6 +105,12 @@ def arxiv_identity(value: object) -> str:
     return split_arxiv_id(value).versionless.casefold()
 
 
+def arxiv_deposit_slug(value: object) -> str:
+    """Return the portable deposit leaf for one arXiv identifier."""
+
+    return split_arxiv_id(value).versioned.replace("/", "_")
+
+
 @dataclass(frozen=True, slots=True)
 class ZenodoIdentifier:
     """Canonical forms of a Zenodo record identifier."""
@@ -143,3 +149,22 @@ def split_zenodo_id(value: object) -> ZenodoIdentifier:
         doi=f"10.5281/zenodo.{record_id}",
         slug=f"zenodo_{record_id}",
     )
+
+
+def artifact_slug(provider: str, identifier: object) -> str:
+    """Return the canonical portable leaf for an artifact-provider identity."""
+
+    key = provider.casefold()
+    if key == "arxiv":
+        return arxiv_deposit_slug(identifier)
+    if key == "zenodo":
+        return split_zenodo_id(identifier).slug
+    if key == "scihub":
+        doi = normalize_doi(identifier)
+        if not is_doi(doi):
+            raise IdentifierError(f"invalid DOI artifact identifier: {identifier!r}")
+        slug = re.sub(r"[^A-Za-z0-9._-]", "_", doi or "").strip("_")
+        if not slug:
+            raise IdentifierError(f"invalid DOI artifact identifier: {identifier!r}")
+        return slug
+    raise IdentifierError(f"unknown artifact provider: {provider!r}")

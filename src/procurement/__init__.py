@@ -12,13 +12,35 @@ from procurement.models import (
     SearchRequest,
     SearchResponse,
     SourceReference,
+    WorkIdentityAnchor,
     WorkRecord,
     merge_works,
+)
+from procurement.payloads import (
+    AcquisitionManifest,
+    AcquisitionResult,
+    ArtifactAcquisitionRequest,
+    ArtifactPlanSummary,
+)
+from procurement.source import (
+    ArtifactIdentityMetadata,
+    ExplicitDoiMetadata,
+    OmitArticleMetadata,
+    SourceDepositStore,
+    SourceMaterializationRequest,
+    SourceMaterializationResult,
 )
 
 __all__ = [
     "ApiResponseEvidence",
+    "AcquisitionManifest",
+    "AcquisitionResult",
+    "ArtifactAcquisitionRequest",
+    "ArtifactPlanSummary",
+    "ArtifactIdentityMetadata",
     "DepositMetadataBundle",
+    "ExplicitDoiMetadata",
+    "OmitArticleMetadata",
     "ProviderCatalogResponse",
     "ProviderDescriptor",
     "ProviderReport",
@@ -27,7 +49,11 @@ __all__ = [
     "SearchPage",
     "SearchRequest",
     "SearchResponse",
+    "SourceDepositStore",
+    "SourceMaterializationRequest",
+    "SourceMaterializationResult",
     "SourceReference",
+    "WorkIdentityAnchor",
     "WorkRecord",
     "merge_works",
 ]

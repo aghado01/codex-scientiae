@@ -6,6 +6,7 @@ import os
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import jsonschema
 
@@ -55,9 +56,12 @@ class TestJsonlEngineV7(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(root, "AGENTS.md")))
 
     def test_find_repository_root_fail_fast(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+        # The batch runner deliberately places each job's temporary directory beneath its
+        # caller-owned run directory. That run directory may itself live in the repository,
+        # so filesystem placement cannot be used to manufacture the no-sentinel condition.
+        with patch("jsonl_engine.paths.os.path.exists", return_value=False):
             with self.assertRaises(RuntimeError):
-                find_repository_root(start_path=tmpdir)
+                find_repository_root(start_path=os.path.abspath(os.sep))
 
     def test_inventory_row_is_an_article_object(self):
         """An article object is inserted verbatim as a row; no projection, no row shape."""

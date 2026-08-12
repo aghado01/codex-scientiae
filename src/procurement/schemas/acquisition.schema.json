@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/acquisition/0.1",
+  "title": "Procurement acquisition receipt",
+  "description": "A validated get-only receipt. It does not assert that source material has been unpacked or is source-ready.",
+  "type": "object",
+  "required": ["schema", "state", "slug", "artifact", "forms"],
+  "x-identity": ["/slug"],
+  "x-runtime-invariants": [
+    "artifact provider, slug, and identifier form one canonical provider identity",
+    "form paths are unique under portable Unicode case-folding"
+  ],
+  "allOf": [
+    {
+      "properties": {
+        "forms": {
+          "contains": {
+            "type": "object",
+            "properties": {"kind": {"const": "source"}},
+            "required": ["kind"]
+          },
+          "minContains": 0,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "forms": {
+          "contains": {
+            "type": "object",
+            "properties": {"kind": {"const": "pdf"}},
+            "required": ["kind"]
+          },
+          "minContains": 0,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "forms": {
+          "contains": {
+            "type": "object",
+            "properties": {"kind": {"const": "html"}},
+            "required": ["kind"]
+          },
+          "minContains": 0,
+          "maxContains": 1
+        }
+      }
+    }
+  ],
+  "properties": {
+    "schema": {"const": "codex-scientiae/acquisition/0.1"},
+    "state": {"const": "acquired"},
+    "slug": {"$ref": "#/$defs/portableLeaf"},
+    "artifact": {
+      "type": "object",
+      "required": ["provider", "identifier", "provider_roles"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "identifier": {"type": "string", "minLength": 1},
+        "provider_roles": {
+          "type": "array",
+          "contains": {"const": "artifact-access"},
+          "items": {"$ref": "#/$defs/providerRole"},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "forms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "path",
+          "format",
+          "bytes",
+          "sha256",
+          "custody",
+          "origin_url",
+          "candidate_id",
+          "fetched_at",
+          "provider_checksum",
+          "local_import"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {"custody": {"const": "provider-download"}},
+              "required": ["custody"]
+            },
+            "then": {
+              "properties": {
+                "origin_url": {"type": "string"},
+                "candidate_id": {"type": "string", "minLength": 1},
+                "fetched_at": {"type": "string", "format": "date-time"},
+                "local_import": {"type": "null"}
+              }
+            },
+            "else": {
+              "properties": {
+                "origin_url": {"type": "null"},
+                "candidate_id": {"type": "null"},
+                "fetched_at": {"type": "null"},
+                "provider_checksum": {"type": "null"},
+                "local_import": {"not": {"type": "null"}}
+              }
+            }
+          }
+        ],
+        "properties": {
+          "kind": {"enum": ["source", "pdf", "html"]},
+          "path": {"$ref": "#/$defs/portableLeaf"},
+          "format": {"type": "string", "minLength": 1},
+          "bytes": {"type": "integer", "minimum": 1},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "custody": {"enum": ["provider-download", "local-import"]},
+          "origin_url": {
+            "anyOf": [{"type": "string"}, {"type": "null"}],
+            "format": "uri",
+            "pattern": "^(?:[Hh][Tt][Tt][Pp][Ss]://(?:[^:/?#@\\s\\[\\]]+|\\[[0-9A-Fa-f:.]+\\])(?::[0-9]{1,5})?|[Hh][Tt][Tt][Pp]://(?:[Ll][Oo][Cc][Aa][Ll][Hh][Oo][Ss][Tt]\\.?|127(?:\\.(?:0|[1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-5])){3}|\\[(?:::1|0:0:0:0:0:0:0:1)\\])(?::[0-9]{1,5})?)(?=[/?#]|$)"
+          },
+          "candidate_id": {
+            "anyOf": [
+              {"type": "string", "minLength": 1},
+              {"type": "null"}
+            ]
+          },
+          "fetched_at": {
+            "anyOf": [
+              {"type": "string", "format": "date-time"},
+              {"type": "null"}
+            ]
+          },
+          "provider_checksum": {
+            "oneOf": [
+              {"type": "null"},
+              {"$ref": "#/$defs/checksum"}
+            ]
+          },
+          "local_import": {
+            "oneOf": [
+              {"type": "null"},
+              {"$ref": "#/$defs/localImport"}
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "portableLeaf": {
+      "type": "string",
+      "pattern": "^(?!(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm][1-9]|[Ll][Pp][Tt][1-9])(?:\\.|$))(?!\\.{1,2}$)(?!.*[ .]$)[^<>:\"/\\\\|?*\\u0000-\\u001F]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "providerRole": {
+      "enum": [
+        "artifact-origin",
+        "artifact-access",
+        "metadata-authority",
+        "metadata-aggregator"
+      ]
+    },
+    "localImport": {
+      "type": "object",
+      "required": ["inbox", "leaf", "imported_at"],
+      "properties": {
+        "inbox": {"$ref": "#/$defs/portableLeaf"},
+        "leaf": {"$ref": "#/$defs/portableLeaf"},
+        "imported_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "checksum": {
+      "type": "object",
+      "required": ["algorithm", "digest"],
+      "properties": {
+        "algorithm": {"enum": ["md5", "sha256"]},
+        "digest": {"type": "string"}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"algorithm": {"const": "md5"}},
+            "required": ["algorithm"]
+          },
+          "then": {"properties": {"digest": {"pattern": "^[0-9a-f]{32}$"}}}
+        },
+        {
+          "if": {
+            "properties": {"algorithm": {"const": "sha256"}},
+            "required": ["algorithm"]
+          },
+          "then": {"properties": {"digest": {"pattern": "^[0-9a-f]{64}$"}}}
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

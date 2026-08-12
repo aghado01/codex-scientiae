@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date
 from typing import Any
+from urllib.parse import quote, urlsplit
 
 from defusedxml import ElementTree
 
@@ -13,8 +14,16 @@ from procurement.errors import IdentifierError, ProviderPayloadError, ProviderRe
 from procurement.http import HttpClient, RequestPolicy
 from procurement.identifiers import normalize_doi, split_arxiv_id
 from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.models import ArtifactReference
+from procurement.payloads import (
+    ArtifactAcquisitionRequest,
+    ArtifactPlan,
+    PlannedArtifact,
+    RetrievalCandidate,
+)
 from procurement.providers.base import retrieved_metadata
-from procurement.settings import ProviderHttpSettings, RuntimeSecrets
+from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
+from procurement.identifiers import artifact_slug
 
 _ATOM = "http://www.w3.org/2005/Atom"
 _ARXIV = "http://arxiv.org/schemas/atom"
@@ -60,6 +69,7 @@ class ArxivProvider:
         http: HttpClient,
         settings: ProviderHttpSettings,
         secrets: RuntimeSecrets = RuntimeSecrets(),
+        artifact_limits: ArtifactLimitSettings = ArtifactLimitSettings(),
     ) -> None:
         self._http = http
         self._url = settings.base_url
@@ -69,6 +79,11 @@ class ArxivProvider:
             timeout_seconds=settings.timeout_seconds,
             max_attempts=settings.max_attempts,
         )
+        self._artifact_base_url = (settings.artifact_base_url or "https://arxiv.org").rstrip("/")
+        self._secondary_artifact_base_url = (
+            settings.secondary_artifact_base_url or "https://export.arxiv.org"
+        ).rstrip("/")
+        self._artifact_limits = artifact_limits
 
     async def _query(self, params: Mapping[str, Any]) -> str:
         return await self._http.get_text(
@@ -219,3 +234,106 @@ class ArxivProvider:
         if not feed.works:
             raise ProviderRecordNotFoundError(f"arXiv returned no record for {identifier!r}")
         return retrieved_metadata(feed.works[0], document)
+
+    async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
+        """Resolve one request to version-pinned arXiv artifact routes."""
+
+        if request.provider.casefold() != self.name:
+            raise ValueError("arXiv cannot plan an acquisition for another provider")
+        requested = split_arxiv_id(request.identifier)
+        retrieved = await self.get_metadata(requested.versioned)
+        returned_raw = retrieved.work.arxiv_id
+        if returned_raw is None:
+            raise ProviderPayloadError("arXiv metadata omitted the returned identifier")
+        returned = split_arxiv_id(returned_raw)
+        if returned.version is None:
+            raise ProviderPayloadError("arXiv metadata did not resolve an exact artifact version")
+        if requested.versionless.casefold() != returned.versionless.casefold():
+            raise ProviderPayloadError(
+                f"arXiv returned {returned.versioned!r} for artifact {requested.versionless!r}"
+            )
+        if requested.version is not None and requested.versioned.casefold() != returned.versioned.casefold():
+            raise ProviderPayloadError(
+                f"arXiv returned {returned.versioned!r} for version-pinned request {requested.versioned!r}"
+            )
+
+        identifier = returned.versioned
+        slug = artifact_slug(self.name, identifier)
+        encoded = quote(identifier, safe="/")
+        primary_host = urlsplit(self._artifact_base_url).hostname
+        secondary_host = urlsplit(self._secondary_artifact_base_url).hostname
+        if not primary_host or not secondary_host:
+            raise ProviderPayloadError("arXiv artifact endpoints require HTTP hosts")
+        allowed_hosts = tuple(dict.fromkeys((primary_host.casefold(), secondary_host.casefold())))
+        payloads: list[PlannedArtifact] = []
+        for kind in request.artifacts:
+            if kind == "source":
+                payloads.append(
+                    PlannedArtifact(
+                        kind=kind,
+                        target_leaf=f"arXiv-{slug}.tar.gz",
+                        media_type="application/gzip",
+                        payload_kind="gzip",
+                        minimum_bytes=2,
+                        maximum_bytes=self._artifact_limits.source_bytes,
+                        candidates=(
+                            RetrievalCandidate(
+                                candidate_id="arxiv-export-eprint",
+                                url=f"{self._secondary_artifact_base_url}/e-print/{encoded}",
+                                allowed_hosts=allowed_hosts,
+                            ),
+                            RetrievalCandidate(
+                                candidate_id="arxiv-source",
+                                url=f"{self._artifact_base_url}/src/{encoded}",
+                                allowed_hosts=allowed_hosts,
+                            ),
+                        ),
+                    )
+                )
+            elif kind == "pdf":
+                payloads.append(
+                    PlannedArtifact(
+                        kind=kind,
+                        target_leaf=f"{slug}.pdf",
+                        media_type="application/pdf",
+                        payload_kind="pdf",
+                        minimum_bytes=5,
+                        maximum_bytes=self._artifact_limits.pdf_bytes,
+                        candidates=(
+                            RetrievalCandidate(
+                                candidate_id="arxiv-pdf",
+                                url=f"{self._artifact_base_url}/pdf/{encoded}",
+                                allowed_hosts=(primary_host.casefold(),),
+                            ),
+                        ),
+                    )
+                )
+            else:
+                payloads.append(
+                    PlannedArtifact(
+                        kind=kind,
+                        target_leaf=f"{slug}.html",
+                        media_type="text/html",
+                        payload_kind="html",
+                        minimum_bytes=16,
+                        maximum_bytes=self._artifact_limits.html_bytes,
+                        candidates=(
+                            RetrievalCandidate(
+                                candidate_id="arxiv-html",
+                                url=f"{self._artifact_base_url}/html/{encoded}",
+                                allowed_hosts=(primary_host.casefold(),),
+                            ),
+                        ),
+                    )
+                )
+
+        return ArtifactPlan(
+            artifact=ArtifactReference(
+                provider=self.name,
+                identifier=identifier,
+                provider_roles=("artifact-origin", "artifact-access", "metadata-authority"),
+            ),
+            deposit_slug=slug,
+            requested=request.artifacts,
+            payloads=tuple(payloads),
+        )

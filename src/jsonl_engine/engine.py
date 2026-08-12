@@ -6,7 +6,7 @@ and a SHA-256 signature (.sig) accumulated during the write.
 
 Offsets are captured from file.tell() as each record is written.
 
-commit() renames the .jsonl into place, stats the published file, then writes and renames the
+commit() publishes the .jsonl atomically, stats the published file, then writes and renames the
 sidecars. The index records that file's length and last-write time; ticks are integer arithmetic on
 st_mtime_ns.
 
@@ -25,7 +25,7 @@ import struct
 import hashlib
 from enum import Enum
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from .policy import DEFAULT_ENCODING, Codec, Eol, is_line_framable
 from .sidecar import (
@@ -40,7 +40,10 @@ from .sidecar import (
     get_ticks_offset,
     store_paths,
 )
-from .writer import JsonWriterError, serialize_json, write_json
+from .writer import JsonWriterError, publish_staged_file, serialize_json, write_json
+
+if TYPE_CHECKING:
+    from .publication import PinnedPublicationRoot
 
 # Codec and Eol are re-exported from policy, ticks and schema id from sidecar, for existing
 # importers. The definitions live in the leaf modules that both the writer and the reader share.
@@ -79,7 +82,9 @@ class JsonlEngine:
         emit_index: bool = True,
         emit_sig: bool = True,
         lock: bool = True,
-        lock_timeout: float = 60.0
+        lock_timeout: float = 60.0,
+        require_absent: bool = False,
+        publication_root: Optional["PinnedPublicationRoot"] = None,
     ):
         self.discipline = discipline
         self.codec = codec
@@ -99,11 +104,18 @@ class JsonlEngine:
         self.emit_sig = emit_sig
         self.lock = lock
         self.lock_timeout = lock_timeout
+        self.require_absent = require_absent
+        self.publication_root = publication_root
+        if publication_root is not None and discipline is not Discipline.CREATE:
+            raise ValueError("a pinned publication root currently requires create discipline")
 
         paths = store_paths(output_path)
         self.output_path = paths.artifact
         self.jidx_path = paths.jidx
         self.sig_path = paths.sig
+        if self.publication_root is not None:
+            for path in (self.output_path, self.jidx_path, self.sig_path):
+                self.publication_root.direct_leaf(path)
 
         # Resolved at __enter__: a scratch path is per-transaction, and reusing one across two
         # opens of the same engine would recreate the collision it exists to avoid.
@@ -126,7 +138,10 @@ class JsonlEngine:
         if self.discipline == Discipline.SEALED:
             raise PermissionError(f"Cannot open sealed JSONL artifact for writing: {self.output_path}")
 
-        os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
+        if self.publication_root is None:
+            os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
+        else:
+            self.publication_root.direct_leaf(self.output_path)
 
         # An exclusive lease over the whole transaction, not merely over the rename. commit()
         # publishes the store and then writes two sidecars against it; a second writer landing
@@ -134,6 +149,14 @@ class JsonlEngine:
         # directory -- see sidecar.lock_path.
         self._acquire_lease()
         try:
+            # This precondition is intentionally evaluated only after the artifact lease is held.
+            # A caller-side existence check cannot distinguish two concurrent create-only writers:
+            # both can observe absence before either publishes.  lexists() also refuses dangling
+            # links rather than treating them as vacant output paths.
+            if self.require_absent and self._lexists(self.output_path):
+                raise FileExistsError(
+                    f"Refusing to replace existing JSONL artifact: {self.output_path}"
+                )
             self._sweep_stale_scratch()
 
             self.tmp_path = temp_write_path(self.output_path)
@@ -150,13 +173,13 @@ class JsonlEngine:
             # A commit must not leave a sidecar describing bytes it replaced. A sidecar already on
             # disk is therefore rebuilt whether or not this write asked for one: its presence is a
             # standing request, and the alternative is silently orphaning it against the new bytes.
-            self._emit_index = self.emit_index or os.path.exists(self.jidx_path)
-            self._emit_sig = self.emit_sig or os.path.exists(self.sig_path)
+            self._emit_index = self.emit_index or self._lexists(self.jidx_path)
+            self._emit_sig = self.emit_sig or self._lexists(self.sig_path)
 
-            if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
+            if self.discipline == Discipline.APPEND and self._lexists(self.output_path):
                 self._adopt_existing()
             else:
-                self._file = open(self.tmp_path, "wb")
+                self._file = self._open(self.tmp_path, "wb")
         except BaseException:
             # __exit__ is never called when __enter__ raises. Every operation after lease
             # acquisition therefore lives under this one cleanup guard, including APPEND's early
@@ -182,7 +205,11 @@ class JsonlEngine:
 
         from filelock import FileLock, Timeout
 
-        target = lock_path(self.output_path)
+        target = (
+            self.publication_root.lock_path(self.output_path)
+            if self.publication_root is not None
+            else lock_path(self.output_path)
+        )
         self._lock = FileLock(target, timeout=self.lock_timeout)
         try:
             self._lock.acquire()
@@ -204,9 +231,18 @@ class JsonlEngine:
         if self._lock is None:
             return []
         removed = []
-        for stale in find_stale_scratch(self.output_path):
+        stale_paths = (
+            self.publication_root.stale_scratch(
+                self.output_path,
+                self.jidx_path,
+                self.sig_path,
+            )
+            if self.publication_root is not None
+            else find_stale_scratch(self.output_path)
+        )
+        for stale in stale_paths:
             try:
-                os.remove(stale)
+                self._remove(stale)
                 removed.append(stale)
             except OSError:
                 pass
@@ -230,11 +266,44 @@ class JsonlEngine:
                 pass
         self._file = None
         for tmp_file in (self.tmp_path, self.jidx_tmp, self.sig_tmp):
-            if tmp_file and os.path.exists(tmp_file):
+            if tmp_file and self._lexists(tmp_file):
                 try:
-                    os.remove(tmp_file)
+                    self._remove(tmp_file)
                 except OSError:
                     pass
+
+    def _lexists(self, path: str) -> bool:
+        if self.publication_root is not None:
+            return self.publication_root.lexists(path)
+        return os.path.lexists(path)
+
+    def _open(self, path: str, mode: str):
+        if self.publication_root is not None:
+            return self.publication_root.open_file(path, mode)
+        return open(path, mode)
+
+    def _remove(self, path: str) -> None:
+        if self.publication_root is not None:
+            self.publication_root.unlink(path)
+        else:
+            os.remove(path)
+
+    def _stat(self, path: str) -> os.stat_result:
+        if self.publication_root is not None:
+            return self.publication_root.stat_path(path)
+        return os.stat(path, follow_symlinks=False)
+
+    def _replace(self, staged: str, destination: str) -> None:
+        if self.publication_root is not None:
+            self.publication_root.replace(staged, destination)
+        else:
+            os.replace(staged, destination)
+
+    def _publish(self, staged: str, destination: str, *, overwrite: bool) -> None:
+        if self.publication_root is not None:
+            self.publication_root.publish(staged, destination, overwrite=overwrite)
+        else:
+            publish_staged_file(staged, destination, overwrite=overwrite)
 
     def _adopt_existing(self) -> None:
         """Carry the published store into this transaction's tmp file, in one pass.
@@ -410,7 +479,7 @@ class JsonlEngine:
 
         The ordering is forced, not incidental. Both sidecars record the published file's byte
         length and last-write ticks, and neither exists until the .jsonl is at its final path, so
-        the rename has to come first. That leaves a window in which the store is published and its
+        publication has to come first. That leaves a window in which the store is published and its
         sidecars are not yet in place.
 
         A store is signed by default and an unsigned one is a valid state, so the window is
@@ -432,8 +501,12 @@ class JsonlEngine:
                 self._poisoned = f"finalizing scratch: {type(exc).__name__}: {exc}"
                 raise
 
-        # 1. Atomically rename .jsonl.tmp -> final .jsonl FIRST
-        os.replace(self.tmp_path, self.output_path)
+        # 1. Atomically publish .jsonl scratch -> final .jsonl FIRST
+        self._publish(
+            self.tmp_path,
+            self.output_path,
+            overwrite=not self.require_absent,
+        )
 
         try:
             self._write_sidecars(stage_metadata)
@@ -455,8 +528,9 @@ class JsonlEngine:
     def _write_sidecars(self, stage_metadata: Optional[Dict[str, Any]]) -> None:
         """Build both sidecars against the published file, then rename them into place."""
         # 2. Stat the final published .jsonl file for exact size and .NET integer ticks
-        file_size = os.path.getsize(self.output_path)
-        ticks = get_file_dotnet_ticks(self.output_path)
+        published_info = self._stat(self.output_path)
+        file_size = published_info.st_size
+        ticks = (published_info.st_mtime_ns // 100) + get_ticks_offset()
 
         # 3. Generate JSOI v2 .jidx.tmp sidecar using exact stat ticks
         if self._emit_index:
@@ -487,22 +561,37 @@ class JsonlEngine:
             # is the artifact that tells a reader what that policy was, so it cannot require the
             # answer in order to be read. atomic=False because the rename is step 5 -- both
             # sidecars appear together or not at all.
-            write_json(
-                self.sig_tmp,
-                sig_payload,
-                encoding=DEFAULT_ENCODING,
-                codec=Codec.ASCII,
-                indent=2,
-                atomic=False,
-            )
+            if self.publication_root is None:
+                write_json(
+                    self.sig_tmp,
+                    sig_payload,
+                    encoding=DEFAULT_ENCODING,
+                    codec=Codec.ASCII,
+                    indent=2,
+                    atomic=False,
+                )
+            else:
+                raw = serialize_json(
+                    sig_payload,
+                    encoding=DEFAULT_ENCODING,
+                    codec=Codec.ASCII,
+                    indent=2,
+                    path=self.sig_tmp,
+                ) + b"\n"
+                with self._open(self.sig_tmp, "wb") as handle:
+                    written = handle.write(raw)
+                    if written != len(raw):
+                        raise OSError(
+                            f"short write for signature: wrote {written!r} of {len(raw)} bytes"
+                        )
 
         # 5. Atomically rename sidecars into target destinations. No existence guard: if the emit
         #    flag is set, step 3 or 4 wrote the tmp, and a missing one is the silent non-write this
         #    method exists to refuse. os.replace raises, which is the point.
         if self._emit_index:
-            os.replace(self.jidx_tmp, self.jidx_path)
+            self._replace(self.jidx_tmp, self.jidx_path)
         if self._emit_sig:
-            os.replace(self.sig_tmp, self.sig_path)
+            self._replace(self.sig_tmp, self.sig_path)
 
     def _discard_stale_sidecars(self) -> List[str]:
         """Remove sidecars describing bytes this commit replaced. Returns what was removed."""
@@ -514,9 +603,9 @@ class JsonlEngine:
             if not enabled:
                 continue
             for target, label in ((tmp, None), (path, os.path.basename(path))):
-                if os.path.exists(target):
+                if self._lexists(target):
                     try:
-                        os.remove(target)
+                        self._remove(target)
                         if label:
                             removed.append(label)
                     except OSError:
@@ -529,7 +618,7 @@ class JsonlEngine:
         ASCII 'JSOI' | int32 ver=2 | int32 lineCount | int64 sourceLength |
         int64 sourceLastWriteUtcTicks | int64[lineCount] offsets
         """
-        with open(target_jidx_path, "wb") as f:
+        with self._open(target_jidx_path, "wb") as f:
             f.write(b"JSOI")                              # Magic (4B ASCII)
             f.write(struct.pack("<i", 2))                 # Version 2 (int32)
             f.write(struct.pack("<i", len(self.offsets))) # Line Count (int32)

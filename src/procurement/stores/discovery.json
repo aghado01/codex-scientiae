@@ -18,6 +18,8 @@
     },
     "arxiv": {
       "base_url": "https://export.arxiv.org/api/query",
+      "artifact_base_url": "https://arxiv.org",
+      "secondary_artifact_base_url": "https://export.arxiv.org",
       "min_interval_seconds": 3.0,
       "timeout_seconds": 30,
       "max_attempts": 3
@@ -27,6 +29,29 @@
       "min_interval_seconds": 1.0,
       "timeout_seconds": 30,
       "max_attempts": 3
+    }
+  },
+  "acquisition": {
+    "staging_root": "ingestion/staging",
+    "catalogs": [
+      {
+        "name": "inventory",
+        "path": "ingestion/inventory"
+      }
+    ],
+    "local_inboxes": [
+      {
+        "name": "manual",
+        "path": "ingestion/imports"
+      }
+    ],
+    "lock_timeout_seconds": 60,
+    "limits": {
+      "source_bytes": 4294967296,
+      "pdf_bytes": 1073741824,
+      "html_bytes": 134217728,
+      "expanded_source_bytes": 4294967296,
+      "archive_entries": 100000
     }
   }
 }

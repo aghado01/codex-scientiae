@@ -15,6 +15,7 @@ from procurement.models import (
     SearchRequest,
     WorkRecord,
 )
+from procurement.payloads import ArtifactAcquisitionRequest, ArtifactPlan
 
 RelatedKind = Literal["citations", "references", "recommendations"]
 SEARCH_CONSTRAINT_FIELDS = (
@@ -54,6 +55,7 @@ class Capability(StrEnum):
     RECOMMENDATIONS = "recommendations"
     RESOLVE = "resolve"
     METADATA = "metadata"
+    PLAN_ARTIFACT = "plan_artifact"
 
 
 class ProviderRole(StrEnum):
@@ -94,3 +96,9 @@ class ResolveProvider(Protocol):
     name: str
 
     async def resolve(self, reference: str) -> tuple[WorkRecord, ...]: ...
+
+
+class ArtifactPlanningProvider(Protocol):
+    name: str
+
+    async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan: ...

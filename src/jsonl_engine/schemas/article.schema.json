@@ -157,7 +157,11 @@
                       "uniqueItems": true
                     },
                     "route": {
-                      "enum": ["artifact-provider", "aggregator-fallback"]
+                      "enum": [
+                        "artifact-provider",
+                        "aggregator-fallback",
+                        "identifier-aggregator"
+                      ]
                     },
                     "fetched_at": {"type": "string", "format": "date-time"},
                     "artifact_provider": {"type": "string", "minLength": 1},
@@ -180,7 +184,13 @@
             "attempts"
           ],
           "properties": {
-            "route": {"enum": ["artifact-provider", "aggregator-fallback"]},
+            "route": {
+              "enum": [
+                "artifact-provider",
+                "aggregator-fallback",
+                "identifier-aggregator"
+              ]
+            },
             "artifact": {
               "type": "object",
               "required": ["provider", "identifier", "provider_roles"],
@@ -201,6 +211,19 @@
               "type": "array",
               "items": {"$ref": "#/$defs/providerRole"},
               "uniqueItems": true
+            },
+            "identity_anchor": {
+              "type": "object",
+              "required": ["kind", "value", "supplied_by"],
+              "properties": {
+                "kind": {"const": "doi"},
+                "value": {
+                  "type": "string",
+                  "pattern": "^10\\.\\d{4,9}/[^\\s<>\\\"']+$"
+                },
+                "supplied_by": {"const": "caller"}
+              },
+              "additionalProperties": false
             },
             "attempts": {
               "type": "array",
@@ -225,6 +248,18 @@
               }
             }
           },
+          "allOf": [
+            {
+              "if": {
+                "properties": {"route": {"const": "identifier-aggregator"}},
+                "required": ["route"]
+              },
+              "then": {"required": ["identity_anchor"]},
+              "else": {
+                "properties": {"identity_anchor": false}
+              }
+            }
+          ],
           "additionalProperties": false
         },
         "latex_source": {

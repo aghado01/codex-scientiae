@@ -11,15 +11,17 @@ from procurement.errors import (
     MetadataUnavailableError,
     ProviderError,
 )
-from procurement.identifiers import normalize_doi, split_arxiv_id, split_zenodo_id
+from procurement.identifiers import is_doi, normalize_doi, split_arxiv_id, split_zenodo_id
 from procurement.models import (
     ArtifactReference,
     DepositMetadataBundle,
     MetadataAttempt,
     MetadataObservation,
     ProviderCatalogResponse,
+    WorkIdentityAnchor,
     artifact_identity_aliases,
     project_article_metadata,
+    project_identifier_article_metadata,
     validate_artifact_deposit_reference,
     validate_deposit_slug,
 )
@@ -171,6 +173,115 @@ class MetadataService:
                 ),
             ),
         )
+
+    async def collect_by_doi(
+        self,
+        *,
+        deposit_slug: str,
+        artifact: ArtifactReference,
+        doi: str,
+        fallback_sources: tuple[str, ...] | None = None,
+    ) -> DepositMetadataBundle:
+        """Select aggregator metadata by an explicit DOI independently of artifact provenance."""
+
+        deposit_slug = validate_deposit_slug(deposit_slug)
+        if not is_doi(doi):
+            raise ValueError("a DOI metadata route requires a complete DOI")
+        anchor = WorkIdentityAnchor(kind="doi", value=doi)
+
+        canonical_identifier = validate_artifact_deposit_reference(
+            artifact.provider,
+            deposit_slug,
+            artifact.identifier,
+        )
+        if canonical_identifier != artifact.identifier:
+            artifact = ArtifactReference(
+                provider=artifact.provider,
+                identifier=canonical_identifier,
+                provider_roles=artifact.provider_roles,
+            )
+
+        fallbacks = self._fallback_sources if fallback_sources is None else fallback_sources
+        candidates = self._aggregator_bindings(fallbacks)
+        if not candidates:
+            raise MetadataUnavailableError(
+                f"no metadata aggregator was selected for DOI {anchor.value!r}"
+            )
+
+        attempts: list[MetadataAttempt] = []
+        selected: MetadataObservation | None = None
+        lookup = f"doi:{anchor.value}"
+        for binding in candidates:
+            if Capability.METADATA not in binding.capabilities:
+                attempts.append(
+                    MetadataAttempt(
+                        provider=binding.name,
+                        status="not-supported",
+                        error="provider does not expose metadata",
+                    )
+                )
+                continue
+            provider = cast(MetadataProvider, binding.provider)
+            try:
+                retrieved = await provider.get_metadata(lookup)
+                if anchor.identity_aliases.isdisjoint(retrieved.work.identity_aliases):
+                    raise MetadataIdentityError(
+                        f"metadata identities {sorted(retrieved.work.identity_aliases)} "
+                        f"do not match DOI identity {anchor.value!r}"
+                    )
+            except asyncio.CancelledError:
+                raise
+            except (MetadataError, ProviderError, ValueError) as exc:
+                attempts.append(
+                    MetadataAttempt(
+                        provider=binding.name,
+                        status="error",
+                        error=str(exc) or type(exc).__name__,
+                    )
+                )
+                continue
+            attempts.append(MetadataAttempt(provider=binding.name, status="ok"))
+            selected = MetadataObservation(
+                provider=binding.name,
+                provider_roles=tuple(sorted(role.value for role in binding.roles)),
+                work=retrieved.work,
+                response=retrieved.response,
+            )
+            break
+
+        if selected is None:
+            detail = "; ".join(f"{item.provider}: {item.error}" for item in attempts)
+            raise MetadataUnavailableError(
+                f"no metadata aggregator satisfied DOI {anchor.value!r}: {detail}"
+            )
+
+        return DepositMetadataBundle(
+            deposit_slug=deposit_slug,
+            artifact=artifact,
+            identity_anchor=anchor,
+            route="identifier-aggregator",
+            selected=selected,
+            attempts=tuple(attempts),
+            article=project_identifier_article_metadata(selected.work),
+        )
+
+    def _aggregator_bindings(
+        self,
+        names: tuple[str, ...],
+    ) -> tuple[ProviderBinding, ...]:
+        """Resolve distinct declared metadata aggregators in caller order."""
+
+        selected: list[ProviderBinding] = []
+        seen: set[str] = set()
+        for name in names:
+            binding = self._registry.binding(name)
+            if ProviderRole.METADATA_AGGREGATOR not in binding.roles:
+                raise ValueError(f"fallback provider {name!r} is not a metadata aggregator")
+            key = binding.name.casefold()
+            if key not in seen:
+                selected.append(binding)
+                seen.add(key)
+        return tuple(selected)
 
     @staticmethod
     def _lookup_reference(

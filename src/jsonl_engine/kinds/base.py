@@ -19,7 +19,7 @@ missing features of a store -- they are the definition of a registry, and live i
 import os
 from abc import ABC
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 import jsonschema
 
@@ -27,6 +27,9 @@ from ..engine import Discipline, JsonlEngine
 from ..policy import DEFAULT_ENCODING, Codec, Eol
 from ..reader import JsonlStore
 from ..schemas import SchemaCatalog, get_schema_catalog
+
+if TYPE_CHECKING:
+    from ..publication import PinnedPublicationRoot
 
 # The base header schema every kind gets unless it declares its own. Named, not inlined: the two row
 # categories are declared the same way, and a kind carrying container metadata of its own -- stats,
@@ -86,9 +89,11 @@ class BaseStore(ABC):
         target_dir: str,
         run_id: Optional[str] = None,
         schema_catalog: Optional[SchemaCatalog] = None,
+        publication_root: Optional["PinnedPublicationRoot"] = None,
     ):
         self.target_dir = os.path.abspath(target_dir)
         self.run_id = run_id
+        self.publication_root = publication_root
         self._records: List[Dict[str, Any]] = []
 
         self.schemas = schema_catalog or get_schema_catalog()
@@ -209,11 +214,19 @@ class BaseStore(ABC):
         return self._open_writer(stem=stem, filename=filename)
 
     def _open_writer(
-        self, stem: Optional[str] = None, filename: Optional[str] = None
+        self,
+        stem: Optional[str] = None,
+        filename: Optional[str] = None,
+        *,
+        require_absent: bool = False,
     ) -> "StoreWriter":
         """Internal writer construction route for kinds that constrain public writing."""
         out_path = self.get_output_path(stem=stem, filename=filename)
-        return StoreWriter(self, self._engine(out_path), out_path)
+        return StoreWriter(
+            self,
+            self._engine(out_path, require_absent=require_absent),
+            out_path,
+        )
 
     def open_store(
         self, stem: Optional[str] = None, filename: Optional[str] = None
@@ -230,7 +243,7 @@ class BaseStore(ABC):
             validator=_KindRowValidator(self),
         )
 
-    def _engine(self, out_path: str) -> JsonlEngine:
+    def _engine(self, out_path: str, *, require_absent: bool = False) -> JsonlEngine:
         """A JsonlEngine carrying this kind's declared discipline and policy."""
         return JsonlEngine(
             output_path=out_path,
@@ -240,6 +253,8 @@ class BaseStore(ABC):
             encoding=self.ENCODING,
             emit_index=self.EMIT_INDEX,
             emit_sig=self.EMIT_SIG,
+            require_absent=require_absent,
+            publication_root=self.publication_root,
         )
 
     def wants_header(self, out_path: str) -> bool:

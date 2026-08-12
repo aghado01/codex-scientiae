@@ -10,9 +10,11 @@ from datetime import datetime, timezone
 
 from pydantic import ValidationError
 
+from jsonl_engine.schemas import get_schema_catalog
 from procurement.errors import MetadataUnavailableError, ProviderError
 from procurement.models import (
     ApiResponseEvidence,
+    ArtifactReference,
     DepositMetadataBundle,
     RetrievedMetadata,
     SourceReference,
@@ -184,6 +186,10 @@ class TestMetadataService(unittest.TestCase):
         unpinned["artifact"]["identifier"] = "2008.10579"
         with self.assertRaisesRegex(ValidationError, "versioned identifier"):
             DepositMetadataBundle.model_validate(unpinned)
+
+        legacy = result.model_dump(mode="json", by_alias=True)
+        del legacy["identity_anchor"]
+        self.assertIsNone(DepositMetadataBundle.model_validate(legacy).identity_anchor)
 
     def test_aggregator_fallback_preserves_concepts_without_fabricating_categories(self) -> None:
         arxiv = FakeMetadataProvider("arxiv", failure=ProviderError("Atom unavailable"))
@@ -530,3 +536,183 @@ class TestMetadataService(unittest.TestCase):
                 )
             )
         self.assertEqual(zenodo.identifiers, ["123"])
+
+    def test_explicit_doi_uses_ordered_aggregators_independently_of_artifact(self) -> None:
+        wrong = FakeMetadataProvider(
+            "openalex",
+            metadata_result(
+                "openalex",
+                work("openalex", "W-wrong", doi="10.1000/wrong"),
+                b'{"id":"W-wrong"}',
+            ),
+        )
+        semantic = FakeMetadataProvider(
+            "semanticscholar",
+            metadata_result(
+                "semanticscholar",
+                work(
+                    "semanticscholar",
+                    "P1",
+                    doi="10.1000/example",
+                    arxiv_id="2008.10579",
+                    categories=("untrusted.category",),
+                    concepts=("Optimization",),
+                ),
+                b'{"paperId":"P1"}',
+            ),
+        )
+        service = MetadataService(
+            ProviderRegistry(
+                [
+                    ProviderBinding(
+                        wrong,
+                        frozenset({Capability.METADATA}),
+                        AGGREGATOR_ROLES,
+                    ),
+                    ProviderBinding(
+                        semantic,
+                        frozenset({Capability.METADATA}),
+                        AGGREGATOR_ROLES,
+                    ),
+                ]
+            ),
+            ("openalex", "semanticscholar"),
+        )
+        artifact = ArtifactReference(
+            provider="manual-import",
+            identifier="sha256:abc123",
+            provider_roles=("artifact-access",),
+        )
+
+        result = asyncio.run(
+            service.collect_by_doi(
+                deposit_slug="manual-paper",
+                artifact=artifact,
+                doi="https://doi.org/10.1000/EXAMPLE",
+            )
+        )
+
+        self.assertEqual(result.route, "identifier-aggregator")
+        self.assertEqual(result.artifact, artifact)
+        self.assertIsNotNone(result.identity_anchor)
+        assert result.identity_anchor is not None
+        self.assertEqual(result.identity_anchor.kind, "doi")
+        self.assertEqual(result.identity_anchor.value, "10.1000/example")
+        self.assertEqual(result.identity_anchor.supplied_by, "caller")
+        self.assertEqual([item.status for item in result.attempts], ["error", "ok"])
+        self.assertIn("do not match DOI identity", result.attempts[0].error or "")
+        self.assertEqual(wrong.identifiers, ["doi:10.1000/example"])
+        self.assertEqual(semantic.identifiers, ["doi:10.1000/example"])
+        self.assertEqual(result.article.identifiers.doi, "10.1000/example")
+        self.assertEqual(result.article.identifiers.arxiv, "2008.10579")
+        self.assertEqual(result.article.categories, ())
+        self.assertEqual(result.article.concepts, ("Optimization",))
+        get_schema_catalog().get_validator("deposit.metadata.schema.json").validate(
+            result.model_dump(mode="json", by_alias=True)
+        )
+
+    def test_explicit_doi_rejects_empty_or_nonaggregator_fallbacks_before_io(self) -> None:
+        authority = FakeMetadataProvider(
+            "arxiv",
+            failure=AssertionError("identifier route must not query an authority"),
+        )
+        semantic = FakeMetadataProvider(
+            "semanticscholar",
+            metadata_result(
+                "semanticscholar",
+                work("semanticscholar", "P1", doi="10.1000/example"),
+                b'{"paperId":"P1"}',
+            ),
+        )
+        service = MetadataService(
+            ProviderRegistry(
+                [
+                    ProviderBinding(
+                        authority,
+                        frozenset({Capability.METADATA}),
+                        AUTHORITY_ROLES,
+                    ),
+                    ProviderBinding(
+                        semantic,
+                        frozenset({Capability.METADATA}),
+                        AGGREGATOR_ROLES,
+                    ),
+                ]
+            ),
+            ("semanticscholar",),
+        )
+        artifact = ArtifactReference(
+            provider="manual-import",
+            identifier="sha256:abc123",
+            provider_roles=("artifact-access",),
+        )
+
+        with self.assertRaisesRegex(MetadataUnavailableError, "no metadata aggregator was selected"):
+            asyncio.run(
+                service.collect_by_doi(
+                    deposit_slug="manual-paper",
+                    artifact=artifact,
+                    doi="10.1000/example",
+                    fallback_sources=(),
+                )
+            )
+        with self.assertRaisesRegex(ValueError, "is not a metadata aggregator"):
+            asyncio.run(
+                service.collect_by_doi(
+                    deposit_slug="manual-paper",
+                    artifact=artifact,
+                    doi="10.1000/example",
+                    fallback_sources=("arxiv",),
+                )
+            )
+        self.assertEqual(authority.identifiers, [])
+        self.assertEqual(semantic.identifiers, [])
+
+    def test_identifier_bundle_rejects_anchor_and_projection_tampering(self) -> None:
+        semantic = FakeMetadataProvider(
+            "semanticscholar",
+            metadata_result(
+                "semanticscholar",
+                work("semanticscholar", "P1", doi="10.1000/example"),
+                b'{"paperId":"P1"}',
+            ),
+        )
+        service = MetadataService(
+            ProviderRegistry(
+                [
+                    ProviderBinding(
+                        semantic,
+                        frozenset({Capability.METADATA}),
+                        AGGREGATOR_ROLES,
+                    )
+                ]
+            ),
+            ("semanticscholar",),
+        )
+        artifact = ArtifactReference(
+            provider="manual-import",
+            identifier="sha256:abc123",
+            provider_roles=("artifact-access",),
+        )
+        result = asyncio.run(
+            service.collect_by_doi(
+                deposit_slug="manual-paper",
+                artifact=artifact,
+                doi="10.1000/example",
+            )
+        )
+
+        wrong_anchor = result.model_dump(mode="json", by_alias=True)
+        wrong_anchor["identity_anchor"]["value"] = "10.1000/other"
+        with self.assertRaisesRegex(ValidationError, "does not identify the identity anchor"):
+            DepositMetadataBundle.model_validate(wrong_anchor)
+
+        missing_anchor = result.model_dump(mode="json", by_alias=True)
+        del missing_anchor["identity_anchor"]
+        with self.assertRaisesRegex(ValidationError, "requires an identity anchor"):
+            DepositMetadataBundle.model_validate(missing_anchor)
+
+        wrong_projection = result.model_dump(mode="json", by_alias=True)
+        wrong_projection["article"]["title"] = "Unwitnessed title"
+        with self.assertRaisesRegex(ValidationError, "article projection does not match"):
+            DepositMetadataBundle.model_validate(wrong_projection)

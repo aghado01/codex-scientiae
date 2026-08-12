@@ -25,6 +25,19 @@ from jsonl_engine.writer import write_json
 
 
 class TestScratchPaths(unittest.TestCase):
+    def test_create_only_commit_does_not_replace_an_uncoordinated_writer(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            peer_bytes = b"peer-writer-owned\n"
+            with self.assertRaises(FileExistsError):
+                with JsonlEngine(output_path=path, require_absent=True) as engine:
+                    engine.append({"writer": "engine"})
+                    with open(path, "wb") as handle:
+                        handle.write(peer_bytes)
+                    engine.commit()
+            with open(path, "rb") as handle:
+                self.assertEqual(peer_bytes, handle.read())
+
     def test_two_writers_do_not_share_a_scratch_file(self):
         """The bug the lease was masking: '{artifact}.tmp' is one path for every writer.
 

@@ -199,17 +199,26 @@ class Registry(BaseStore):
         *,
         stem: Optional[str] = None,
         filename: Optional[str] = None,
+        overwrite: bool = True,
     ) -> str:
         """Rebuild this registry from `entries`. Returns the path written.
 
         Buffered by construction: uniqueness and ordering both need the whole population before the
         first row can be emitted. A registry is precisely the case where you need the set in hand,
         which is why it does not stream.
+
+        ``overwrite=False`` requires an absent output after the artifact lease is acquired and
+        publishes with an atomic no-replace operation. A concurrent writer cannot be overwritten,
+        whether or not it cooperates with the lease.
         """
         ordered = self.collate(entries)
         self._entry_count = len(ordered)
 
-        with self._open_writer(stem=stem, filename=filename) as writer:
+        with self._open_writer(
+            stem=stem,
+            filename=filename,
+            require_absent=not overwrite,
+        ) as writer:
             for record in ordered:
                 writer.append(record)
             writer.commit()

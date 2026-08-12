@@ -3,22 +3,29 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
+import os
 import time
 from collections.abc import Awaitable, Callable, Mapping
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
-from typing import Any
+from functools import partial
+from typing import Any, BinaryIO, TypeVar
 
 import httpx
 
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
 from procurement.limits import MAX_API_RESPONSE_BYTES
+from procurement.payloads import is_safe_artifact_url
 
 Clock = Callable[[], float]
 Sleeper = Callable[[float], Awaitable[None]]
 UtcNow = Callable[[], datetime]
+_T = TypeVar("_T")
+_DOWNLOAD_CHUNK_BYTES = 1024 * 1024
 _SENSITIVE_QUERY_PARAMETERS = frozenset(
     {"access_token", "api-key", "api_key", "apikey", "key", "mailto", "token"}
 )
@@ -36,6 +43,18 @@ class HttpDocument:
 
     def json(self) -> Any:
         return json.loads(self.body)
+
+
+@dataclass(frozen=True, slots=True)
+class HttpDownload:
+    """One streamed decoded response stored at a caller-owned private path."""
+
+    url: str
+    media_type: str
+    fetched_at: datetime
+    bytes: int
+    sha256: str
+    digests: tuple[tuple[str, str], ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -63,6 +82,111 @@ class RequestPolicy:
             raise ValueError("retry timing values must not be negative")
         if self.max_decoded_body_bytes < 1:
             raise ValueError("max_decoded_body_bytes must be at least one")
+
+
+class _WorkerDownloadSink:
+    """Write and hash one bounded stream on a dedicated filesystem worker."""
+
+    def __init__(self, destination: str, algorithms: tuple[str, ...]) -> None:
+        self._destination = destination
+        self._algorithms = algorithms
+        self._executor = ThreadPoolExecutor(
+            max_workers=1,
+            thread_name_prefix="procurement-download",
+        )
+        self._handle: BinaryIO | None = None
+        self._digesters: dict[str, Any] = {}
+        self._total = 0
+        self._owns_destination = False
+
+    def _submit(self, function: Callable[..., _T], *args: object):
+        loop = asyncio.get_running_loop()
+        return loop.run_in_executor(self._executor, partial(function, *args))
+
+    async def _run(self, function: Callable[..., _T], *args: object) -> _T:
+        """Settle one worker operation before propagating any cancellation."""
+
+        future = self._submit(function, *args)
+        cancelled = False
+        while True:
+            try:
+                result = await asyncio.shield(future)
+            except asyncio.CancelledError:
+                cancelled = True
+                if future.done():
+                    try:
+                        future.result()
+                    except BaseException:
+                        pass
+                    raise
+                continue
+            except BaseException:
+                if cancelled:
+                    raise asyncio.CancelledError()
+                raise
+            if cancelled:
+                raise asyncio.CancelledError()
+            return result
+
+    def _open(self) -> None:
+        self._handle = open(self._destination, "xb")
+        self._owns_destination = True
+        self._digesters = {name: hashlib.new(name) for name in self._algorithms}
+
+    def _write(self, chunk: bytes) -> None:
+        if self._handle is None:
+            raise RuntimeError("download sink is not open")
+        written = self._handle.write(chunk)
+        if written != len(chunk):
+            raise OSError(
+                f"short artifact write ({written} of {len(chunk)} bytes): "
+                f"'{self._destination}'"
+            )
+        for digester in self._digesters.values():
+            digester.update(chunk)
+        self._total += written
+
+    def _finish(self) -> tuple[int, tuple[tuple[str, str], ...]]:
+        if self._handle is None:
+            raise RuntimeError("download sink is not open")
+        try:
+            self._handle.flush()
+            os.fsync(self._handle.fileno())
+        finally:
+            self._handle.close()
+            self._handle = None
+        return self._total, tuple(
+            (name, self._digesters[name].hexdigest()) for name in self._algorithms
+        )
+
+    def _abort(self) -> None:
+        if self._handle is not None:
+            try:
+                self._handle.close()
+            finally:
+                self._handle = None
+        if self._owns_destination:
+            try:
+                os.remove(self._destination)
+            except FileNotFoundError:
+                pass
+
+    async def open(self) -> None:
+        await self._run(self._open)
+
+    async def write(self, chunk: bytes) -> None:
+        await self._run(self._write, chunk)
+
+    async def finish(self) -> tuple[int, tuple[tuple[str, str], ...]]:
+        return await self._run(self._finish)
+
+    async def abort(self) -> None:
+        await self._run(self._abort)
+
+    def shutdown(self) -> None:
+        """Release the idle worker after its file boundary has settled."""
+
+        self._executor.shutdown(wait=True, cancel_futures=True)
 
 
 class RateLimiter:
@@ -249,6 +373,175 @@ class HttpClient:
             body=response.content,
             text=self._strict_text(response),
         )
+
+    async def download_to(
+        self,
+        url: str,
+        destination: str,
+        *,
+        allowed_hosts: tuple[str, ...],
+        headers: Mapping[str, str] | None = None,
+        rate_key: str | None = None,
+        policy: RequestPolicy = RequestPolicy(),
+        hash_algorithms: tuple[str, ...] = (),
+        max_redirects: int = 5,
+    ) -> HttpDownload:
+        """Stream one bounded response to a private file with redirect-host enforcement."""
+
+        allowed = frozenset(host.casefold().strip(".") for host in allowed_hosts)
+        if not allowed:
+            raise ValueError("download_to requires at least one allowed host")
+        if os.path.lexists(destination):
+            raise FileExistsError(f"private download path already exists: '{destination}'")
+        algorithms = tuple(dict.fromkeys(("sha256", *hash_algorithms)))
+        try:
+            for name in algorithms:
+                hashlib.new(name)
+        except ValueError as exc:
+            raise ValueError(f"unsupported download hash algorithm: {exc}") from exc
+
+        last_error: Exception | None = None
+        for attempt in range(1, policy.max_attempts + 1):
+            current_url = httpx.URL(url)
+            previous_scheme: str | None = None
+            response: httpx.Response | None = None
+            sink: _WorkerDownloadSink | None = None
+            completed = False
+            try:
+                for redirect_count in range(max_redirects + 1):
+                    host = (current_url.host or "").casefold().strip(".")
+                    scheme = current_url.scheme.casefold()
+                    if previous_scheme == "https" and scheme == "http":
+                        raise ProviderHttpError(
+                            "artifact redirect attempted an HTTPS-to-HTTP downgrade at "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    if not is_safe_artifact_url(str(current_url)) or host not in allowed:
+                        raise ProviderHttpError(
+                            "artifact route left its allowed hosts or safe transport at "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    await self._limiter.wait(rate_key or host, policy.min_interval_seconds)
+                    request = self._client.build_request(
+                        "GET",
+                        current_url,
+                        headers=headers,
+                        timeout=policy.timeout_seconds,
+                    )
+                    response = await self._client.send(
+                        request,
+                        stream=True,
+                        follow_redirects=False,
+                    )
+                    if response.status_code not in {301, 302, 303, 307, 308}:
+                        break
+                    location = response.headers.get("location")
+                    await response.aclose()
+                    response = None
+                    if not location:
+                        raise ProviderHttpError(
+                            f"artifact redirect omitted Location for {self._evidence_url(current_url)}"
+                        )
+                    if redirect_count == max_redirects:
+                        raise ProviderHttpError(
+                            f"artifact route exceeded {max_redirects} redirects for "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    previous_scheme = scheme
+                    current_url = current_url.join(location)
+
+                if response is None:
+                    raise ProviderHttpError("artifact route produced no response")
+                if not 200 <= response.status_code < 300:
+                    status = response.status_code
+                    message = self._response_message(response)
+                    retry_default = policy.backoff_seconds * (2 ** (attempt - 1))
+                    retry_after = self._retry_after_seconds(response, default=retry_default)
+                    await response.aclose()
+                    response = None
+                    if status in policy.rate_limit_statuses:
+                        error = ProviderRateLimitError(message, status_code=status)
+                        if not policy.retry_rate_limits or attempt == policy.max_attempts:
+                            raise error
+                        if retry_after > policy.max_retry_after_seconds:
+                            raise error
+                        last_error = error
+                        await self._sleep(retry_after)
+                        continue
+                    error = ProviderHttpError(message, status_code=status)
+                    if status not in policy.retry_statuses or attempt == policy.max_attempts:
+                        raise error
+                    last_error = error
+                    delay = retry_after if status == 503 else retry_default
+                    if delay > policy.max_retry_after_seconds:
+                        raise error
+                    await self._sleep(delay)
+                    continue
+
+                declared_length: int | None = None
+                if "content-encoding" not in response.headers:
+                    try:
+                        declared_length = int(response.headers.get("content-length", ""))
+                    except ValueError:
+                        declared_length = None
+                if declared_length is not None and declared_length > policy.max_decoded_body_bytes:
+                    raise ProviderPayloadError(
+                        "artifact response exceeds the decoded-body limit for "
+                        f"{self._evidence_url(response.url)}"
+                    )
+
+                total = 0
+                sink = _WorkerDownloadSink(destination, algorithms)
+                await sink.open()
+                async for chunk in response.aiter_bytes(chunk_size=_DOWNLOAD_CHUNK_BYTES):
+                    total += len(chunk)
+                    if total > policy.max_decoded_body_bytes:
+                        raise ProviderPayloadError(
+                            "artifact response exceeds the decoded-body limit for "
+                            f"{self._evidence_url(response.url)}"
+                        )
+                    # Awaiting each worker write bounds queued data to the current HTTP chunk.
+                    await sink.write(chunk)
+                written, digests = await sink.finish()
+                if written != total:
+                    raise ProviderPayloadError(
+                        f"artifact response could not be stored completely for "
+                        f"{self._evidence_url(response.url)}"
+                    )
+                if declared_length is not None and total != declared_length:
+                    raise ProviderPayloadError(
+                        f"artifact response was truncated for {self._evidence_url(response.url)}"
+                    )
+                media_type = response.headers.get("content-type", "application/octet-stream")
+                media_type = media_type.split(";", 1)[0].strip().casefold()
+                completed = True
+                return HttpDownload(
+                    url=self._evidence_url(response.url),
+                    media_type=media_type,
+                    fetched_at=self._utc_now(),
+                    bytes=total,
+                    sha256=dict(digests)["sha256"],
+                    digests=digests,
+                )
+            except (httpx.TransportError, httpx.StreamError) as exc:
+                last_error = exc
+                if attempt == policy.max_attempts:
+                    raise ProviderHttpError(
+                        f"artifact request failed: {type(exc).__name__}"
+                    ) from exc
+            finally:
+                try:
+                    if response is not None:
+                        await response.aclose()
+                finally:
+                    if sink is not None:
+                        try:
+                            if not completed:
+                                await sink.abort()
+                        finally:
+                            sink.shutdown()
+            await self._sleep(policy.backoff_seconds * (2 ** (attempt - 1)))
+        raise ProviderHttpError(f"artifact request attempts exhausted: {last_error}")
 
     @staticmethod
     def _evidence_url(url: httpx.URL) -> str:

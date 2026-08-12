@@ -35,8 +35,15 @@
       },
       "additionalProperties": false
     },
+    "identity_anchor": {
+      "anyOf": [
+        {"$ref": "#/$defs/workIdentityAnchor"},
+        {"type": "null"}
+      ],
+      "default": null
+    },
     "route": {
-      "enum": ["artifact-provider", "aggregator-fallback"]
+      "enum": ["artifact-provider", "aggregator-fallback", "identifier-aggregator"]
     },
     "selected": {
       "type": "object",
@@ -145,6 +152,7 @@
       "if": {"properties": {"route": {"const": "artifact-provider"}}},
       "then": {
         "properties": {
+          "identity_anchor": {"type": "null"},
           "selected": {
             "properties": {
               "provider_roles": {"contains": {"const": "metadata-authority"}}
@@ -157,6 +165,21 @@
       "if": {"properties": {"route": {"const": "aggregator-fallback"}}},
       "then": {
         "properties": {
+          "identity_anchor": {"type": "null"},
+          "selected": {
+            "properties": {
+              "provider_roles": {"contains": {"const": "metadata-aggregator"}}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"route": {"const": "identifier-aggregator"}}},
+      "then": {
+        "required": ["identity_anchor"],
+        "properties": {
+          "identity_anchor": {"$ref": "#/$defs/workIdentityAnchor"},
           "selected": {
             "properties": {
               "provider_roles": {"contains": {"const": "metadata-aggregator"}}
@@ -174,6 +197,20 @@
         "metadata-authority",
         "metadata-aggregator"
       ]
+    },
+    "workIdentityAnchor": {
+      "type": "object",
+      "required": ["kind", "value", "supplied_by"],
+      "properties": {
+        "kind": {"const": "doi"},
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^10\\.\\d{4,9}/[^\\s<>\\\"']+$"
+        },
+        "supplied_by": {"const": "caller"}
+      },
+      "additionalProperties": false
     },
     "portableLeaf": {
       "type": "string",

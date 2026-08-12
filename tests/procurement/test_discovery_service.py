@@ -62,7 +62,11 @@ class CancelledProvider(FakeProvider):
         raise asyncio.CancelledError
 
 
-ALL_CAPABILITIES = frozenset(capability for capability in Capability if capability is not Capability.METADATA)
+ALL_DISCOVERY_CAPABILITIES = frozenset(
+    capability
+    for capability in Capability
+    if capability not in {Capability.METADATA, Capability.PLAN_ARTIFACT}
+)
 
 
 class TestDiscoveryService(unittest.TestCase):
@@ -82,8 +86,8 @@ class TestDiscoveryService(unittest.TestCase):
         broken = FakeProvider("arxiv", failure=RuntimeError("temporary outage"))
         registry = ProviderRegistry(
             [
-                ProviderBinding(openalex, ALL_CAPABILITIES),
-                ProviderBinding(semantic, ALL_CAPABILITIES),
+                ProviderBinding(openalex, ALL_DISCOVERY_CAPABILITIES),
+                ProviderBinding(semantic, ALL_DISCOVERY_CAPABILITIES),
                 ProviderBinding(broken, frozenset({Capability.SEARCH})),
             ]
         )
@@ -173,7 +177,9 @@ class TestDiscoveryService(unittest.TestCase):
             "semanticscholar",
             SearchPage(provider="semanticscholar", start=0, works=(record("semanticscholar", "P1"),)),
         )
-        registry = ProviderRegistry([ProviderBinding(semantic, ALL_CAPABILITIES)])
+        registry = ProviderRegistry(
+            [ProviderBinding(semantic, ALL_DISCOVERY_CAPABILITIES)]
+        )
         service = DiscoveryService(registry, ("semanticscholar",))
         response = asyncio.run(service.related("seed", kind="recommendations", limit=7))
         self.assertEqual(response.provider, "semanticscholar")

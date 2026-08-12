@@ -107,6 +107,53 @@ class ArticleManifest(BaseStore):
                 "latex_source",
                 "selection",
             )
+
+        resolution = record["evidence"].get("metadata_resolution")
+        api_evidence = [
+            item
+            for item in record["evidence"]["provider_metadata"]
+            if item.get("role") == "api-metadata-bundle"
+        ]
+        if resolution is not None:
+            if len(api_evidence) != 1:
+                conflict(
+                    "metadata resolution requires exactly one API metadata bundle record",
+                    "evidence",
+                    "provider_metadata",
+                )
+            bundle = api_evidence[0]
+            relationships = (
+                ("route", "route"),
+                ("selected_provider", "provider"),
+                ("selected_provider_roles", "provider_roles"),
+            )
+            for resolution_field, bundle_field in relationships:
+                if resolution[resolution_field] != bundle[bundle_field]:
+                    conflict(
+                        f"metadata resolution {resolution_field} must match API evidence",
+                        "evidence",
+                        "metadata_resolution",
+                        resolution_field,
+                    )
+            artifact = resolution["artifact"]
+            if artifact["provider"] != bundle["artifact_provider"] or artifact[
+                "provider_roles"
+            ] != bundle["artifact_provider_roles"]:
+                conflict(
+                    "metadata resolution artifact must match API evidence",
+                    "evidence",
+                    "metadata_resolution",
+                    "artifact",
+                )
+            anchor = resolution.get("identity_anchor")
+            if anchor is not None and record["identifiers"].get("doi") != anchor["value"]:
+                conflict(
+                    "DOI identity anchor must equal the projected article DOI",
+                    "evidence",
+                    "metadata_resolution",
+                    "identity_anchor",
+                    "value",
+                )
         return record
 
     def validate(self, record: Dict[str, Any]) -> None:

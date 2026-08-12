@@ -55,3 +55,15 @@ class MetadataIdentityError(MetadataError):
 
 class MetadataUnavailableError(MetadataError):
     """No configured metadata provider produced a valid observation."""
+
+
+class AcquisitionError(ProcurementError):
+    """Artifact planning, retrieval, validation, or publication failed."""
+
+
+class AcquisitionConflictError(AcquisitionError):
+    """Staged bytes or their receipt conflict with an acquisition request."""
+
+
+class SourceMaterializationError(ProcurementError):
+    """An acquired source could not become a validated source deposit."""

@@ -9,6 +9,7 @@ Enumerating the deposits is not this class's job and never reaches the engine. A
 rebuild() an iterable of article objects; where they were found is run-layout knowledge.
 """
 
+from ..ordering import KeyComparison
 from .catalog import KindCatalog
 from .registry import Registry
 
@@ -19,3 +20,4 @@ class InventoryRegistry(Registry):
     VERSION = "0.1"
     RECORD_SCHEMA = "article.schema.json"
     NAME_FORMAT = "inventory.jsonl"
+    KEY_COMPARISON = KeyComparison.ORDINAL_IGNORE_CASE

@@ -5,13 +5,22 @@ from __future__ import annotations
 from collections.abc import Mapping
 from html.parser import HTMLParser
 from typing import Any
+from urllib.parse import urlsplit
 
 from procurement.errors import ProviderPayloadError
-from procurement.http import HttpClient, RequestPolicy
-from procurement.identifiers import split_zenodo_id
-from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.http import HttpClient, HttpDocument, RequestPolicy
+from procurement.identifiers import artifact_slug, split_zenodo_id
+from procurement.models import ArtifactReference, RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.payloads import (
+    ArtifactAcquisitionRequest,
+    ArtifactPlan,
+    ChecksumExpectation,
+    PlannedArtifact,
+    RetrievalCandidate,
+    UnavailableArtifact,
+)
 from procurement.providers.base import retrieved_metadata
-from procurement.settings import ProviderHttpSettings, RuntimeSecrets
+from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
 
 
 class _TextExtractor(HTMLParser):
@@ -78,6 +87,7 @@ class ZenodoProvider:
         http: HttpClient,
         settings: ProviderHttpSettings,
         secrets: RuntimeSecrets = RuntimeSecrets(),
+        artifact_limits: ArtifactLimitSettings = ArtifactLimitSettings(),
     ) -> None:
         self._http = http
         self._base_url = settings.base_url.rstrip("/")
@@ -87,6 +97,7 @@ class ZenodoProvider:
             timeout_seconds=settings.timeout_seconds,
             max_attempts=settings.max_attempts,
         )
+        self._artifact_limits = artifact_limits
 
     async def _get_json(self, path: str = "", params: Mapping[str, Any] | None = None) -> Mapping[str, Any]:
         url = self._base_url + (f"/{path.lstrip('/')}" if path else "")
@@ -207,6 +218,12 @@ class ZenodoProvider:
     async def get_metadata(self, identifier: str) -> RetrievedMetadata:
         """Return normalized metadata with its exact HTTP-decoded Zenodo payload."""
 
+        payload, document = await self._record_document(identifier)
+        return retrieved_metadata(self.map_work(payload), document)
+
+    async def _record_document(self, identifier: str) -> tuple[Mapping[str, Any], HttpDocument]:
+        """Return one exact Zenodo record payload and its decoded HTTP evidence."""
+
         record = split_zenodo_id(identifier)
         document = await self._http.get_document(
             f"{self._base_url}/{record.record_id}",
@@ -220,4 +237,151 @@ class ZenodoProvider:
             raise ProviderPayloadError("Zenodo returned invalid JSON metadata") from exc
         if not isinstance(payload, Mapping):
             raise ProviderPayloadError("Zenodo returned a non-object JSON metadata payload")
-        return retrieved_metadata(self.map_work(payload), document)
+        return payload, document
+
+    async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
+        """Map an exact Zenodo files manifest to bounded artifact candidates."""
+
+        if request.provider.casefold() != self.name:
+            raise ValueError("Zenodo cannot plan an acquisition for another provider")
+        requested_id = split_zenodo_id(request.identifier)
+        payload, _ = await self._record_document(requested_id.record_id)
+        returned_id = split_zenodo_id(payload.get("id"))
+        if returned_id.record_id != requested_id.record_id:
+            raise ProviderPayloadError(
+                f"Zenodo returned record {returned_id.record_id!r} for {requested_id.record_id!r}"
+            )
+        slug = artifact_slug(self.name, returned_id.record_id)
+        raw_files = payload.get("files")
+        if not isinstance(raw_files, list) or any(
+            not isinstance(item, Mapping) for item in raw_files
+        ):
+            raise ProviderPayloadError("Zenodo record is missing a valid files[] manifest")
+        files = raw_files
+        payloads: list[PlannedArtifact] = []
+        unavailable: list[UnavailableArtifact] = []
+
+        for kind in request.artifacts:
+            matches = [item for item in files if self._file_matches_kind(item, kind)]
+            if not matches:
+                unavailable.append(
+                    UnavailableArtifact(
+                        kind=kind,
+                        reason=f"Zenodo record has no {kind!r} file in files[]",
+                    )
+                )
+                continue
+            if len(matches) > 1:
+                names = sorted(self._file_name(item) for item in matches)
+                unavailable.append(
+                    UnavailableArtifact(
+                        kind=kind,
+                        reason=f"Zenodo record has ambiguous {kind!r} files: {', '.join(names)}",
+                    )
+                )
+                continue
+            file_record = matches[0]
+            name = self._file_name(file_record)
+            links = file_record.get("links")
+            links = links if isinstance(links, Mapping) else {}
+            routes: list[tuple[str, str]] = []
+            for key in ("self", "download"):
+                value = links.get(key)
+                if value and str(value) not in {url for _, url in routes}:
+                    routes.append((key, str(value)))
+            if not routes:
+                unavailable.append(
+                    UnavailableArtifact(
+                        kind=kind,
+                        reason=f"Zenodo file {name!r} has no download link",
+                    )
+                )
+                continue
+            allowed_host = (urlsplit(self._base_url).hostname or "").casefold()
+            if not allowed_host:
+                raise ProviderPayloadError("Zenodo API endpoint requires an HTTP host")
+            candidates = tuple(
+                RetrievalCandidate(
+                    candidate_id=f"zenodo-{link_name}",
+                    url=url,
+                    allowed_hosts=(allowed_host,),
+                )
+                for link_name, url in routes
+            )
+            checksum = self._checksum(file_record.get("checksum"))
+            size_raw = file_record.get("size")
+            expected_bytes: int | None = None
+            if isinstance(size_raw, int) and not isinstance(size_raw, bool) and size_raw > 0:
+                expected_bytes = size_raw
+            maximum = {
+                "source": self._artifact_limits.source_bytes,
+                "pdf": self._artifact_limits.pdf_bytes,
+                "html": self._artifact_limits.html_bytes,
+            }[kind]
+            if expected_bytes is not None and expected_bytes > maximum:
+                unavailable.append(
+                    UnavailableArtifact(
+                        kind=kind,
+                        reason=f"Zenodo file {name!r} exceeds the configured {maximum}-byte limit",
+                    )
+                )
+                continue
+            target = {
+                "source": f"{slug}.tar.gz",
+                "pdf": f"{slug}.pdf",
+                "html": f"{slug}.html",
+            }[kind]
+            media = {
+                "source": "application/gzip",
+                "pdf": "application/pdf",
+                "html": "text/html",
+            }[kind]
+            payloads.append(
+                PlannedArtifact(
+                    kind=kind,
+                    target_leaf=target,
+                    media_type=media,
+                    payload_kind={"source": "gzip", "pdf": "pdf", "html": "html"}[kind],
+                    minimum_bytes={"source": 2, "pdf": 5, "html": 16}[kind],
+                    maximum_bytes=maximum,
+                    expected_bytes=expected_bytes,
+                    checksum=checksum,
+                    candidates=candidates,
+                )
+            )
+
+        return ArtifactPlan(
+            artifact=ArtifactReference(
+                provider=self.name,
+                identifier=returned_id.record_id,
+                provider_roles=("artifact-origin", "artifact-access", "metadata-authority"),
+            ),
+            deposit_slug=slug,
+            requested=request.artifacts,
+            payloads=tuple(payloads),
+            unavailable=tuple(unavailable),
+        )
+
+    @staticmethod
+    def _file_name(file_record: Mapping[str, Any]) -> str:
+        return str(file_record.get("key") or file_record.get("filename") or "").strip()
+
+    @classmethod
+    def _file_matches_kind(cls, file_record: Mapping[str, Any], kind: str) -> bool:
+        name = cls._file_name(file_record).casefold()
+        if kind == "source":
+            return name.endswith((".tar.gz", ".tgz"))
+        return name.endswith(f".{kind}")
+
+    @staticmethod
+    def _checksum(value: object | None) -> ChecksumExpectation | None:
+        if value is None:
+            return None
+        text = str(value).strip().casefold()
+        if ":" not in text:
+            raise ProviderPayloadError("Zenodo file checksum is missing its algorithm")
+        algorithm, digest = text.split(":", 1)
+        try:
+            return ChecksumExpectation(algorithm=algorithm, digest=digest)
+        except ValueError as exc:
+            raise ProviderPayloadError(f"Zenodo file checksum is invalid: {text!r}") from exc

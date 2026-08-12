@@ -1,0 +1,562 @@
+"""Generation-pinned directory operations for multi-file artifact publication.
+
+The path-oriented engine remains the owner of JSONL bytes and sidecars.  A pinned publication
+root changes only how those names reach the filesystem: POSIX operations are relative to an open
+directory descriptor, while Windows holds the root directory without delete sharing. Windows
+refuses rename or removal of that open directory and of ancestors containing it, so the complete
+named route remains fixed for the lifetime of the transaction.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import ntpath
+import os
+import stat
+from pathlib import Path
+from types import TracebackType
+from typing import BinaryIO
+
+from .sidecar import scratch_root
+from .writer import publish_staged_file
+
+_REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+_DIRECTORY_ATTRIBUTE = getattr(stat, "FILE_ATTRIBUTE_DIRECTORY", 0x10)
+
+
+def _is_reparse(info: os.stat_result) -> bool:
+    return stat.S_ISLNK(info.st_mode) or bool(
+        getattr(info, "st_file_attributes", 0) & _REPARSE_POINT
+    )
+
+
+def _plain_leaf(value: str, *, label: str) -> str:
+    if (
+        not isinstance(value, str)
+        or not value
+        or value in (".", "..")
+        or os.path.basename(value) != value
+        or os.path.isabs(value)
+    ):
+        raise ValueError(f"{label} must be one relative filesystem leaf")
+    return value
+
+
+def _path_components(path: str) -> list[str]:
+    """Return an absolute directory route from its anchor through ``path``."""
+
+    absolute = Path(os.path.abspath(path))
+    current = absolute.anchor
+    components: list[str] = []
+    if current:
+        components.append(current)
+    for part in absolute.parts:
+        if part == absolute.anchor:
+            continue
+        current = os.path.join(current, part) if current else part
+        components.append(current)
+    return components
+
+
+def _extended_windows_path(path: str) -> str:
+    """Return one normalized absolute DOS or UNC path in Win32 extended form."""
+
+    normalized = ntpath.normpath(path).replace("/", "\\")
+    if normalized.startswith("\\\\.\\"):
+        raise ValueError(f"device namespace paths are not publication roots: '{path}'")
+    folded = normalized[:8].upper()
+    if folded == "\\\\?\\UNC\\":
+        return "\\\\?\\UNC\\" + normalized[8:]
+    if normalized.startswith("\\\\?\\"):
+        remainder = normalized[4:]
+        drive, tail = ntpath.splitdrive(remainder)
+        if len(drive) == 2 and drive[1] == ":":
+            drive = drive[0].upper() + ":"
+            return "\\\\?\\" + drive + tail
+        return "\\\\?\\" + remainder
+    if normalized.startswith("\\\\"):
+        return "\\\\?\\UNC\\" + normalized[2:]
+    drive, tail = ntpath.splitdrive(normalized)
+    if not drive or not tail.startswith("\\"):
+        raise ValueError(f"publication root is not an absolute Windows path: '{path}'")
+    drive = drive[0].upper() + drive[1:]
+    return "\\\\?\\" + drive + tail
+
+
+def _windows_paths_equal(left: str, right: str) -> bool:
+    """Compare normalized Win32 routes exactly under Windows ordinal semantics."""
+
+    import ctypes
+    from ctypes import wintypes
+
+    normalized_left = _extended_windows_path(left)
+    normalized_right = _extended_windows_path(right)
+    compare = ctypes.WinDLL("kernel32", use_last_error=True).CompareStringOrdinal
+    compare.argtypes = (
+        wintypes.LPCWSTR,
+        ctypes.c_int,
+        wintypes.LPCWSTR,
+        ctypes.c_int,
+        wintypes.BOOL,
+    )
+    compare.restype = ctypes.c_int
+    result = compare(
+        normalized_left,
+        len(normalized_left),
+        normalized_right,
+        len(normalized_right),
+        False,
+    )
+    if result == 0:
+        raise ctypes.WinError(ctypes.get_last_error())
+    return result == 2  # CSTR_EQUAL
+
+
+def _same_directory(left: os.stat_result, right: os.stat_result) -> bool:
+    if left.st_ino or right.st_ino:
+        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
+    left_birth = getattr(left, "st_birthtime_ns", None)
+    right_birth = getattr(right, "st_birthtime_ns", None)
+    if left_birth is not None or right_birth is not None:
+        return left.st_dev == right.st_dev and left_birth == right_birth
+    return left.st_dev == right.st_dev and getattr(
+        left, "st_ctime_ns", None
+    ) == getattr(right, "st_ctime_ns", None)
+
+
+def _is_transaction_scratch(subject: str, candidate: str) -> bool:
+    prefix = subject + "."
+    if not candidate.startswith(prefix):
+        return False
+    parts = candidate[len(prefix) :].split(".")
+    if len(parts) != 3:
+        return False
+    pid, token, extension = parts
+    return (
+        bool(pid)
+        and pid.isdecimal()
+        and len(token) == 12
+        and all(character in "0123456789abcdef" for character in token)
+        and extension == "tmp"
+    )
+
+
+class PinnedPublicationRoot:
+    """One physical directory generation retained across reads and publication.
+
+    The object is an active context manager.  Engine publication paths must be direct children;
+    catalog readers may additionally use the direct-child inspection helpers.
+    """
+
+    def __init__(self, path: str | os.PathLike[str]) -> None:
+        self.path = os.path.abspath(os.fspath(path))
+        self._directory_fd: int | None = None
+        self._windows_handles: list[int] = []
+        self._identity: tuple[int, ...] | None = None
+
+    def __enter__(self) -> "PinnedPublicationRoot":
+        if self._identity is not None:
+            raise RuntimeError("publication root is already active")
+        if os.name == "nt":
+            self._pin_windows()
+        else:
+            descriptor = self._open_posix_route()
+            info = os.fstat(descriptor)
+            self._directory_fd = descriptor
+            self._identity = (int(info.st_dev), int(info.st_ino))
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        try:
+            if self._directory_fd is not None:
+                os.close(self._directory_fd)
+            for handle in reversed(self._windows_handles):
+                self._close_windows(handle)
+        finally:
+            self._directory_fd = None
+            self._windows_handles = []
+            self._identity = None
+
+    def _open_posix_route(self) -> int:
+        """Open every component without link traversal and return the root descriptor."""
+
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+        components = _path_components(self.path)
+        if not components:
+            raise NotADirectoryError(f"publication root is not accessible: '{self.path}'")
+        descriptor: int | None = None
+        try:
+            descriptor = os.open(components[0], flags)
+            for component in components[1:]:
+                child = os.path.basename(component)
+                following = os.open(child, flags, dir_fd=descriptor)
+                os.close(descriptor)
+                descriptor = following
+            info = os.fstat(descriptor)
+            if not stat.S_ISDIR(info.st_mode) or _is_reparse(info):
+                raise NotADirectoryError(
+                    f"publication root is not a physical directory: '{self.path}'"
+                )
+            return descriptor
+        except BaseException:
+            if descriptor is not None:
+                os.close(descriptor)
+            raise
+
+    def _pin_windows(self) -> None:
+        import ctypes
+        from ctypes import wintypes
+
+        class ByHandleFileInformation(ctypes.Structure):
+            _fields_ = (
+                ("attributes", wintypes.DWORD),
+                ("creation_time", wintypes.FILETIME),
+                ("access_time", wintypes.FILETIME),
+                ("write_time", wintypes.FILETIME),
+                ("volume_serial", wintypes.DWORD),
+                ("size_high", wintypes.DWORD),
+                ("size_low", wintypes.DWORD),
+                ("links", wintypes.DWORD),
+                ("file_index_high", wintypes.DWORD),
+                ("file_index_low", wintypes.DWORD),
+            )
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        create_file = kernel32.CreateFileW
+        create_file.argtypes = (
+            wintypes.LPCWSTR,
+            wintypes.DWORD,
+            wintypes.DWORD,
+            wintypes.LPVOID,
+            wintypes.DWORD,
+            wintypes.DWORD,
+            wintypes.HANDLE,
+        )
+        create_file.restype = wintypes.HANDLE
+        invalid = wintypes.HANDLE(-1).value
+        get_information = kernel32.GetFileInformationByHandle
+        get_information.argtypes = (wintypes.HANDLE, ctypes.POINTER(ByHandleFileInformation))
+        get_information.restype = wintypes.BOOL
+        opened: list[int] = []
+        root_information: ByHandleFileInformation | None = None
+        try:
+            for component in [self.path]:
+                handle = create_file(
+                    component,
+                    0x0001 | 0x0080,  # FILE_LIST_DIRECTORY | FILE_READ_ATTRIBUTES
+                    0x0001 | 0x0002,  # READ | WRITE sharing; deliberately no DELETE sharing
+                    None,
+                    3,  # OPEN_EXISTING
+                    0x02000000 | 0x00200000,  # BACKUP_SEMANTICS | OPEN_REPARSE_POINT
+                    None,
+                )
+                if handle == invalid:
+                    error = ctypes.WinError(ctypes.get_last_error())
+                    error.filename = component
+                    raise error
+                numeric_handle = int(handle)
+                opened.append(numeric_handle)
+                information = ByHandleFileInformation()
+                if not get_information(handle, ctypes.byref(information)):
+                    error = ctypes.WinError(ctypes.get_last_error())
+                    error.filename = component
+                    raise error
+                if not information.attributes & _DIRECTORY_ATTRIBUTE:
+                    raise NotADirectoryError(
+                        f"publication route component is not a directory: '{component}'"
+                    )
+                if information.attributes & _REPARSE_POINT:
+                    raise NotADirectoryError(
+                        f"publication route contains a reparse point: '{component}'"
+                    )
+                resolved = self._windows_final_path(numeric_handle)
+                if not _windows_paths_equal(resolved, self.path):
+                    raise NotADirectoryError(
+                        "publication root resolves through another filesystem route: "
+                        f"expected '{_extended_windows_path(self.path)}', got '{resolved}'"
+                    )
+                root_information = information
+        except BaseException:
+            for opened_handle in reversed(opened):
+                self._close_windows(opened_handle)
+            raise
+
+        if root_information is None:
+            raise NotADirectoryError(f"publication root is not accessible: '{self.path}'")
+        self._windows_handles = opened
+        self._identity = (
+            int(root_information.volume_serial),
+            int(root_information.file_index_high),
+            int(root_information.file_index_low),
+        )
+
+    @staticmethod
+    def _close_windows(handle: int) -> None:
+        import ctypes
+        from ctypes import wintypes
+
+        close = ctypes.WinDLL("kernel32", use_last_error=True).CloseHandle
+        close.argtypes = (wintypes.HANDLE,)
+        close.restype = wintypes.BOOL
+        close(wintypes.HANDLE(handle))
+
+    @staticmethod
+    def _windows_final_path(handle: int) -> str:
+        """Return the normalized DOS-volume path naming an open Windows directory."""
+
+        import ctypes
+        from ctypes import wintypes
+
+        get_final_path = ctypes.WinDLL(
+            "kernel32", use_last_error=True
+        ).GetFinalPathNameByHandleW
+        get_final_path.argtypes = (
+            wintypes.HANDLE,
+            wintypes.LPWSTR,
+            wintypes.DWORD,
+            wintypes.DWORD,
+        )
+        get_final_path.restype = wintypes.DWORD
+        # FILE_NAME_NORMALIZED | VOLUME_NAME_DOS are both represented by zero-valued flags.
+        size = get_final_path(wintypes.HANDLE(handle), None, 0, 0)
+        if size == 0:
+            raise ctypes.WinError(ctypes.get_last_error())
+        while True:
+            buffer = ctypes.create_unicode_buffer(size + 1)
+            copied = get_final_path(
+                wintypes.HANDLE(handle),
+                buffer,
+                len(buffer),
+                0,
+            )
+            if copied == 0:
+                raise ctypes.WinError(ctypes.get_last_error())
+            if copied < len(buffer):
+                return buffer.value
+            size = copied
+
+    def _require_active(self) -> None:
+        if self._identity is None:
+            raise RuntimeError("publication root is not active")
+
+    @property
+    def directory_fd(self) -> int | None:
+        """Return the POSIX directory descriptor, or ``None`` on Windows."""
+
+        self._require_active()
+        return self._directory_fd
+
+    def direct_leaf(self, path: str | os.PathLike[str]) -> str:
+        """Return a direct-child leaf for one absolute engine path."""
+
+        self._require_active()
+        full = os.path.abspath(os.fspath(path))
+        try:
+            relative = os.path.relpath(full, self.path)
+        except ValueError as exc:
+            raise ValueError(f"publication path is outside its pinned root: '{full}'") from exc
+        return _plain_leaf(relative, label="publication path")
+
+    def absolute(self, leaf: str) -> str:
+        return os.path.join(self.path, _plain_leaf(leaf, label="publication leaf"))
+
+    def list_names(self) -> list[str]:
+        self._require_active()
+        if self._directory_fd is not None:
+            return list(os.listdir(self._directory_fd))
+        return list(os.listdir(self.path))
+
+    def stat_root(self) -> os.stat_result:
+        """Return metadata for the pinned root generation."""
+
+        self._require_active()
+        if self._directory_fd is not None:
+            return os.fstat(self._directory_fd)
+        return os.stat(self.path, follow_symlinks=False)
+
+    def lexists(self, path: str | os.PathLike[str]) -> bool:
+        leaf = self.direct_leaf(path)
+        try:
+            self.stat_leaf(leaf)
+            return True
+        except FileNotFoundError:
+            return False
+
+    def stat_leaf(self, leaf: str) -> os.stat_result:
+        leaf = _plain_leaf(leaf, label="publication leaf")
+        self._require_active()
+        if self._directory_fd is not None:
+            return os.stat(leaf, dir_fd=self._directory_fd, follow_symlinks=False)
+        return os.stat(self.absolute(leaf), follow_symlinks=False)
+
+    def stat_path(self, path: str | os.PathLike[str]) -> os.stat_result:
+        return self.stat_leaf(self.direct_leaf(path))
+
+    def stat_child(self, child: str) -> os.stat_result:
+        return self.stat_leaf(_plain_leaf(child, label="catalog child"))
+
+    def stat_child_file(self, child: str, leaf: str) -> os.stat_result:
+        child = _plain_leaf(child, label="catalog child")
+        leaf = _plain_leaf(leaf, label="catalog child file")
+        self._require_active()
+        if self._directory_fd is None:
+            return os.stat(os.path.join(self.path, child, leaf), follow_symlinks=False)
+        child_fd = os.open(
+            child,
+            os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0),
+            dir_fd=self._directory_fd,
+        )
+        try:
+            return os.stat(leaf, dir_fd=child_fd, follow_symlinks=False)
+        finally:
+            os.close(child_fd)
+
+    def open_file(self, path: str | os.PathLike[str], mode: str) -> BinaryIO:
+        return self.open_leaf(self.direct_leaf(path), mode)
+
+    def open_leaf(self, leaf: str, mode: str) -> BinaryIO:
+        leaf = _plain_leaf(leaf, label="publication leaf")
+        self._require_active()
+        if self._directory_fd is None:
+            return open(self.absolute(leaf), mode)
+        flags, permissions = self._open_flags(mode)
+        descriptor = os.open(
+            leaf,
+            flags | getattr(os, "O_NOFOLLOW", 0),
+            permissions,
+            dir_fd=self._directory_fd,
+        )
+        return os.fdopen(descriptor, mode)
+
+    def open_child_file(self, child: str, leaf: str, mode: str) -> BinaryIO:
+        child = _plain_leaf(child, label="catalog child")
+        leaf = _plain_leaf(leaf, label="catalog child file")
+        self._require_active()
+        if self._directory_fd is None:
+            return open(os.path.join(self.path, child, leaf), mode)
+        child_fd = os.open(
+            child,
+            os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0),
+            dir_fd=self._directory_fd,
+        )
+        try:
+            flags, permissions = self._open_flags(mode)
+            descriptor = os.open(
+                leaf,
+                flags | getattr(os, "O_NOFOLLOW", 0),
+                permissions,
+                dir_fd=child_fd,
+            )
+        finally:
+            os.close(child_fd)
+        return os.fdopen(descriptor, mode)
+
+    @staticmethod
+    def _open_flags(mode: str) -> tuple[int, int]:
+        binary = getattr(os, "O_BINARY", 0)
+        if mode == "rb":
+            return os.O_RDONLY | binary, 0o666
+        if mode == "wb":
+            return os.O_WRONLY | os.O_CREAT | os.O_TRUNC | binary, 0o666
+        if mode == "xb":
+            return os.O_WRONLY | os.O_CREAT | os.O_EXCL | binary, 0o666
+        raise ValueError(f"unsupported pinned-root file mode: {mode!r}")
+
+    def unlink(self, path: str | os.PathLike[str]) -> None:
+        leaf = self.direct_leaf(path)
+        if self._directory_fd is not None:
+            os.unlink(leaf, dir_fd=self._directory_fd)
+        else:
+            os.remove(self.absolute(leaf))
+
+    def replace(self, staged: str | os.PathLike[str], destination: str | os.PathLike[str]) -> None:
+        source_leaf = self.direct_leaf(staged)
+        destination_leaf = self.direct_leaf(destination)
+        if self._directory_fd is not None:
+            os.replace(
+                source_leaf,
+                destination_leaf,
+                src_dir_fd=self._directory_fd,
+                dst_dir_fd=self._directory_fd,
+            )
+        else:
+            os.replace(self.absolute(source_leaf), self.absolute(destination_leaf))
+
+    def publish(
+        self,
+        staged: str | os.PathLike[str],
+        destination: str | os.PathLike[str],
+        *,
+        overwrite: bool,
+    ) -> None:
+        source_leaf = self.direct_leaf(staged)
+        destination_leaf = self.direct_leaf(destination)
+        if self._directory_fd is None:
+            publish_staged_file(
+                self.absolute(source_leaf),
+                self.absolute(destination_leaf),
+                overwrite=overwrite,
+            )
+            return
+        if overwrite:
+            os.replace(
+                source_leaf,
+                destination_leaf,
+                src_dir_fd=self._directory_fd,
+                dst_dir_fd=self._directory_fd,
+            )
+            return
+        os.link(
+            source_leaf,
+            destination_leaf,
+            src_dir_fd=self._directory_fd,
+            dst_dir_fd=self._directory_fd,
+            follow_symlinks=False,
+        )
+        try:
+            os.unlink(source_leaf, dir_fd=self._directory_fd)
+        except OSError:
+            pass
+
+    def stale_scratch(self, *subjects: str | os.PathLike[str]) -> list[str]:
+        leaves = tuple(self.direct_leaf(subject) for subject in subjects)
+        return [
+            self.absolute(name)
+            for name in self.list_names()
+            if any(_is_transaction_scratch(subject, name) for subject in leaves)
+        ]
+
+    def lock_path(self, artifact_path: str | os.PathLike[str]) -> str:
+        """Return a lock address keyed by directory generation and artifact leaf."""
+
+        leaf = self.direct_leaf(artifact_path)
+        assert self._identity is not None
+        key = repr(("pinned-publication", self._identity, leaf.casefold())).encode("utf-8")
+        digest = hashlib.sha256(key).hexdigest()[:32]
+        return os.path.join(scratch_root(), f"{digest}.lock")
+
+    def path_is_current(self) -> bool:
+        """Return whether the original lexical path still names the pinned generation."""
+
+        self._require_active()
+        if self._directory_fd is None:
+            # The Windows root handle denies replacement of the root or its ancestor route.
+            return True
+        try:
+            named_descriptor = self._open_posix_route()
+            named = os.fstat(named_descriptor)
+            opened = os.fstat(self._directory_fd)
+        except OSError:
+            return False
+        finally:
+            if "named_descriptor" in locals():
+                os.close(named_descriptor)
+        return not _is_reparse(named) and _same_directory(named, opened)
+
+
+__all__ = ["PinnedPublicationRoot"]

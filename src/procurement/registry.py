@@ -17,6 +17,7 @@ _METHOD_BY_CAPABILITY = {
     Capability.RECOMMENDATIONS: "related",
     Capability.RESOLVE: "resolve",
     Capability.METADATA: "get_metadata",
+    Capability.PLAN_ARTIFACT: "plan_artifact",
 }
 
 
