@@ -20,7 +20,7 @@ import httpx
 from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
 from procurement.limits import MAX_API_RESPONSE_BYTES
-from procurement.payloads import is_safe_artifact_url
+from procurement.domain.acquisition.planning import is_safe_artifact_url
 
 Clock = Callable[[], float]
 Sleeper = Callable[[float], Awaitable[None]]

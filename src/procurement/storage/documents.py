@@ -7,12 +7,12 @@ from typing import Any
 from jsonl_engine.documents import JsonDocumentKind
 from jsonl_engine.schemas import SchemaCatalog
 
+from procurement.domain.acquisition.receipts import AcquisitionManifest
 from procurement.limits import (
     MAX_ACQUISITION_MANIFEST_BYTES,
     MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
 )
 from procurement.domain.metadata import DepositMetadataBundle
-from procurement.payloads import AcquisitionManifest
 from procurement.storage.schemas import get_procurement_schema_catalog
 
 

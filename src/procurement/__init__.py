@@ -8,6 +8,11 @@ from procurement.domain.discovery import (
     SearchRequest,
     SearchResponse,
 )
+from procurement.domain.acquisition.planning import (
+    ArtifactAcquisitionRequest,
+    ArtifactPlanSummary,
+)
+from procurement.domain.acquisition.receipts import AcquisitionManifest, AcquisitionResult
 from procurement.domain.metadata import ApiResponseEvidence, DepositMetadataBundle
 from procurement.domain.providers import ProviderCatalogResponse, ProviderDescriptor
 from procurement.domain.works import (
@@ -15,12 +20,6 @@ from procurement.domain.works import (
     WorkIdentityAnchor,
     WorkRecord,
     merge_works,
-)
-from procurement.payloads import (
-    AcquisitionManifest,
-    AcquisitionResult,
-    ArtifactAcquisitionRequest,
-    ArtifactPlanSummary,
 )
 from procurement.domain.materialization import (
     ArtifactIdentityMetadata,

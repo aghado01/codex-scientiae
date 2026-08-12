@@ -24,7 +24,7 @@ from procurement.domain.works import (
     SourceReference,
     WorkRecord,
 )
-from procurement.payloads import (
+from procurement.domain.acquisition.receipts import (
     AcquiredArtifact,
     AcquisitionManifest,
     LocalImportProvenance,

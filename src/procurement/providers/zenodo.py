@@ -7,13 +7,7 @@ from html.parser import HTMLParser
 from typing import Any
 from urllib.parse import urlsplit
 
-from procurement.domain.discovery import SearchPage, SearchRequest
-from procurement.domain.metadata import ArtifactReference, RetrievedMetadata
-from procurement.domain.works import SourceReference, WorkRecord
-from procurement.errors import ProviderPayloadError
-from procurement.transport.http import HttpClient, HttpDocument, RequestPolicy
-from procurement.identifiers import artifact_slug, split_zenodo_id
-from procurement.payloads import (
+from procurement.domain.acquisition.planning import (
     ArtifactAcquisitionRequest,
     ArtifactPlan,
     ChecksumExpectation,
@@ -21,6 +15,12 @@ from procurement.payloads import (
     RetrievalCandidate,
     UnavailableArtifact,
 )
+from procurement.domain.discovery import SearchPage, SearchRequest
+from procurement.domain.metadata import ArtifactReference, RetrievedMetadata
+from procurement.domain.works import SourceReference, WorkRecord
+from procurement.errors import ProviderPayloadError
+from procurement.transport.http import HttpClient, HttpDocument, RequestPolicy
+from procurement.identifiers import artifact_slug, split_zenodo_id
 from procurement.providers.base import (
     Capability,
     ProviderCategory,

@@ -51,7 +51,7 @@ from procurement.domain.works import (
     WorkIdentityAnchor,
     WorkRecord,
 )
-from procurement.payloads import AcquiredArtifact, AcquisitionManifest
+from procurement.domain.acquisition.receipts import AcquiredArtifact, AcquisitionManifest
 from procurement.operations.catalogs import ArticleCatalogService
 from procurement.operations.local_import import LocalImportRequest, LocalImportService
 from procurement.operations.materialization import SourceMaterializationService

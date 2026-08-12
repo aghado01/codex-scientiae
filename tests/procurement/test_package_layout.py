@@ -27,6 +27,7 @@ def test_removed_flat_namespaces_have_no_compatibility_modules() -> None:
         "procurement.filesystem",
         "procurement.http",
         "procurement.models",
+        "procurement.payloads",
         "procurement.services",
         "procurement.settings",
         "procurement.staging",

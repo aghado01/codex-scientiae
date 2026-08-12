@@ -16,6 +16,12 @@ from pydantic import Field, StringConstraints, WithJsonSchema
 
 from procurement.application import ProcurementApplication
 from procurement.composition import build_application
+from procurement.domain.acquisition.planning import (
+    ArtifactAcquisitionRequest,
+    ArtifactKind,
+    ArtifactPlanSummary,
+)
+from procurement.domain.acquisition.receipts import AcquisitionManifest, AcquisitionResult
 from procurement.domain.base import DomainModel
 from procurement.domain.deposits import PORTABLE_LEAF_PATTERN
 from procurement.domain.discovery import (
@@ -34,13 +40,6 @@ from procurement.domain.materialization import (
 from procurement.domain.metadata import DepositMetadataBundle
 from procurement.domain.providers import ProviderCatalogResponse
 from procurement.domain.works import WorkRecord
-from procurement.payloads import (
-    AcquisitionManifest,
-    AcquisitionResult,
-    ArtifactAcquisitionRequest,
-    ArtifactKind,
-    ArtifactPlanSummary,
-)
 from procurement.operations.local_import import (
     LocalImportInboxCatalog,
     LocalImportRequest,

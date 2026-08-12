@@ -10,18 +10,18 @@ from urllib.parse import quote, urlsplit
 
 from defusedxml import ElementTree
 
+from procurement.domain.acquisition.planning import (
+    ArtifactAcquisitionRequest,
+    ArtifactPlan,
+    PlannedArtifact,
+    RetrievalCandidate,
+)
 from procurement.domain.discovery import SearchPage, SearchRequest
 from procurement.domain.metadata import ArtifactReference, RetrievedMetadata
 from procurement.domain.works import SourceReference, WorkRecord
 from procurement.errors import IdentifierError, ProviderPayloadError, ProviderRecordNotFoundError
 from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.identifiers import normalize_doi, split_arxiv_id
-from procurement.payloads import (
-    ArtifactAcquisitionRequest,
-    ArtifactPlan,
-    PlannedArtifact,
-    RetrievalCandidate,
-)
 from procurement.providers.base import (
     Capability,
     ProviderCategory,

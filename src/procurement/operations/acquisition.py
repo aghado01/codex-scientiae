@@ -14,18 +14,20 @@ from types import TracebackType
 from typing import BinaryIO, TypeVar
 
 from jsonl_engine.publication import PinnedPublicationRoot
-from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
-from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy
-from procurement.payloads import (
-    AcquiredArtifact,
-    AcquisitionManifest,
-    AcquisitionOutcome,
-    AcquisitionResult,
+from procurement.domain.acquisition.planning import (
     ArtifactAcquisitionRequest,
     ArtifactPlan,
     ArtifactPlanSummary,
     PlannedArtifact,
 )
+from procurement.domain.acquisition.receipts import (
+    AcquiredArtifact,
+    AcquisitionManifest,
+    AcquisitionOutcome,
+    AcquisitionResult,
+)
+from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
+from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy
 from procurement.providers.base import Capability
 from procurement.providers.catalog import ProviderCatalog
 from procurement.storage.acquisitions import (

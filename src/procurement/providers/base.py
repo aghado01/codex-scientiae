@@ -9,10 +9,10 @@ from enum import StrEnum
 from typing import Literal, Protocol
 
 from procurement.domain.discovery import SearchPage, SearchRequest
+from procurement.domain.acquisition.planning import ArtifactAcquisitionRequest, ArtifactPlan
 from procurement.domain.metadata import ApiResponseEvidence, RetrievedMetadata
 from procurement.domain.works import WorkRecord
 from procurement.transport.http import HttpDocument
-from procurement.payloads import ArtifactAcquisitionRequest, ArtifactPlan
 
 RelatedKind = Literal["citations", "references", "recommendations"]
 SEARCH_CONSTRAINT_FIELDS = (

@@ -24,9 +24,7 @@ from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import AcquisitionConflictError, ProviderHttpError, ProviderPayloadError
 from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.domain.metadata import ArtifactReference
-from procurement.payloads import (
-    AcquiredArtifact,
-    AcquisitionManifest,
+from procurement.domain.acquisition.planning import (
     ArtifactAcquisitionRequest,
     ArtifactPlan,
     ArtifactPlanSummary,
@@ -34,6 +32,10 @@ from procurement.payloads import (
     PlannedArtifact,
     RetrievalCandidate,
     UnavailableArtifact,
+)
+from procurement.domain.acquisition.receipts import (
+    AcquiredArtifact,
+    AcquisitionManifest,
     acquisition_manifest_schema,
 )
 from procurement.providers.arxiv import ArxivProvider

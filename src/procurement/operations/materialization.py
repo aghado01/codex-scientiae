@@ -13,6 +13,7 @@ from jsonl_engine.publication import (
     PublicationError,
     copy_file_no_clobber,
 )
+from procurement.domain.acquisition.receipts import AcquiredArtifact, AcquisitionManifest
 from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
@@ -27,7 +28,6 @@ from procurement.source.archive import (
 )
 from procurement.errors import SourceMaterializationError
 from procurement.identifiers import is_doi, normalize_doi
-from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 from procurement.operations.metadata import MetadataService
 from procurement.source.findings import build_source_findings
 from procurement.storage.acquisitions import AcquisitionStore

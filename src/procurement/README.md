@@ -18,10 +18,11 @@ storage/             acquisition/deposit transactions, catalog roots, and schema
 transport/           HTTP policy and transport primitives
 ```
 
-The former flat `archive`, `http`, `models`, `settings`, `source`, `staging`, and `services` modules have no
-compatibility aliases. Shared model infrastructure, portable deposit validation, scholarly works,
-discovery envelopes, provider descriptors, and metadata evidence live in focused `domain` modules.
-`payloads.py` remains top-level until the acquisition-contract cut.
+The former flat `archive`, `http`, `models`, `payloads`, `settings`, `source`, `staging`, and `services`
+modules have no compatibility aliases. Shared model infrastructure, portable deposit validation,
+scholarly works, discovery envelopes, provider descriptors, metadata evidence, and acquisition contracts
+live in focused `domain` modules. Acquisition planning and safe-route policy are separate from durable
+receipt and operation-result contracts.
 
 The current discovery plane contains OpenAlex, Semantic Scholar, arXiv, and Zenodo adapters behind an
 explicit provider catalog. Each adapter owns one immutable descriptor containing its category, roles,

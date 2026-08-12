@@ -15,17 +15,17 @@ from typing import Literal, Self
 from pydantic import Field, field_validator, model_validator
 
 from jsonl_engine.publication import PinnedPublicationRoot
-from procurement.domain.base import DomainModel
-from procurement.domain.deposits import PORTABLE_LEAF_PATTERN, validate_deposit_slug
-from procurement.domain.metadata import ArtifactReference
-from procurement.errors import AcquisitionConflictError, AcquisitionError
-from procurement.payloads import (
+from procurement.domain.acquisition.receipts import (
     AcquiredArtifact,
     AcquisitionManifest,
     AcquisitionOutcome,
     AcquisitionResult,
     LocalImportProvenance,
 )
+from procurement.domain.base import DomainModel
+from procurement.domain.deposits import PORTABLE_LEAF_PATTERN, validate_deposit_slug
+from procurement.domain.metadata import ArtifactReference
+from procurement.errors import AcquisitionConflictError, AcquisitionError
 from procurement.configuration import ArtifactLimitSettings
 from procurement.operations.acquisition import validate_gzip_payload, validate_pdf_payload
 from procurement.storage.acquisitions import (

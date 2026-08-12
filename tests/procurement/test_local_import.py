@@ -16,7 +16,7 @@ from pydantic import ValidationError
 
 import procurement.operations.local_import as local_import_module
 from procurement.errors import AcquisitionConflictError, AcquisitionError
-from procurement.payloads import acquisition_manifest_schema
+from procurement.domain.acquisition.receipts import acquisition_manifest_schema
 from procurement.configuration import ArtifactLimitSettings
 from procurement.operations.local_import import LocalImportRequest, LocalImportService
 from procurement.storage.acquisitions import AcquisitionStore
