@@ -1,36 +1,37 @@
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path "$PSScriptRoot/../..").Path
     $script:FixtureDir = Join-Path $script:RepositoryRoot "tests/fixtures/texdig/mini_article"
-    $script:DepsDir = Join-Path $script:RepositoryRoot "packages/node/node_modules"
-    $script:CensusScript = Join-Path $script:RepositoryRoot "src/TeXdig/cli/census.ts"
 
-    $script:OutDir = if ($env:CODEX_TEST_ARTIFACT_ROOT) {
-        Join-Path $env:CODEX_TEST_ARTIFACT_ROOT "mini_article"
+    # The runner IS the worker contract: validate-json gate + stamped
+    # container + census invocation + typed run record. Dot-sourcing brings
+    # its strict mode into this session; the tests' Where-Object probes over
+    # heterogeneous entity rows are deliberately lax, so restore.
+    . (Join-Path $script:RepositoryRoot "src/TeXdig/run-census.ps1")
+    Set-StrictMode -Off
+
+    $outRoot = if ($env:CODEX_TEST_ARTIFACT_ROOT) {
+        $env:CODEX_TEST_ARTIFACT_ROOT
     } else {
-        Join-Path $TestDrive "mini_article_out"
+        Join-Path $TestDrive "texdig-runs"
     }
 
-    if (-not (Test-Path $script:OutDir)) {
-        New-Item -ItemType Directory -Path $script:OutDir -Force | Out-Null
-    }
-
-    # Execute census worker
-    $nodeArgs = @(
-        $script:CensusScript,
-        "--article", $script:FixtureDir,
-        "--deps", $script:DepsDir,
-        "--out", $script:OutDir
-    )
-
-    $stdout = & node @nodeArgs 2>&1
-    $script:ExitCode = $LASTEXITCODE
+    $script:Run = Invoke-TeXdigCensus -Article $script:FixtureDir -OutRoot $outRoot -Stamp "pester"
+    $script:OutDir = $script:Run.RunDir
     $global:LASTEXITCODE = 0
 }
 
 Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
-    Context "Mini Fixture Execution" {
-        It "exits cleanly with zero exit code" {
-            $script:ExitCode | Should -Be 0
+    Context "Runner & Worker Contract" {
+        It "returns a typed run record with full fixture agreement" {
+            $script:Run.PSObject.TypeNames | Should -Contain "TeXdig.CensusRun"
+            $script:Run.Slug | Should -Be "mini_article"
+            $script:Run.Agreed | Should -Be $script:Run.Entities
+            $script:Run.Defects | Should -Be 0
+        }
+
+        It "claims the fixture completely" {
+            $script:Run.ResidueUtf16 | Should -Be 0
+            $script:Run.ClaimedUtf16 | Should -Be $script:Run.TotalUtf16
         }
 
         It "emits all 6 evidence and audit tier stores" {
