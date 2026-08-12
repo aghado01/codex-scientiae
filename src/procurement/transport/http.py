@@ -17,6 +17,7 @@ from typing import Any, BinaryIO, TypeVar
 
 import httpx
 
+from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
 from procurement.limits import MAX_API_RESPONSE_BYTES
 from procurement.payloads import is_safe_artifact_url
@@ -29,6 +30,15 @@ _DOWNLOAD_CHUNK_BYTES = 1024 * 1024
 _SENSITIVE_QUERY_PARAMETERS = frozenset(
     {"access_token", "api-key", "api_key", "apikey", "key", "mailto", "token"}
 )
+
+
+def _require_download_root(root: PinnedPublicationRoot) -> None:
+    try:
+        root.assert_current()
+    except RuntimeError as exc:
+        raise ProviderPayloadError(
+            "artifact destination no longer names its retained directory generation"
+        ) from exc
 
 
 @dataclass(frozen=True, slots=True)
@@ -87,9 +97,15 @@ class RequestPolicy:
 class _WorkerDownloadSink:
     """Write and hash one bounded stream on a dedicated filesystem worker."""
 
-    def __init__(self, destination: str, algorithms: tuple[str, ...]) -> None:
+    def __init__(
+        self,
+        destination: str,
+        algorithms: tuple[str, ...],
+        publication_root: PinnedPublicationRoot,
+    ) -> None:
         self._destination = destination
         self._algorithms = algorithms
+        self._publication_root = publication_root
         self._executor = ThreadPoolExecutor(
             max_workers=1,
             thread_name_prefix="procurement-download",
@@ -129,7 +145,7 @@ class _WorkerDownloadSink:
             return result
 
     def _open(self) -> None:
-        self._handle = open(self._destination, "xb")
+        self._handle = self._publication_root.open_file(self._destination, "xb")
         self._owns_destination = True
         self._digesters = {name: hashlib.new(name) for name in self._algorithms}
 
@@ -167,7 +183,7 @@ class _WorkerDownloadSink:
                 self._handle = None
         if self._owns_destination:
             try:
-                os.remove(self._destination)
+                self._publication_root.unlink(self._destination)
             except FileNotFoundError:
                 pass
 
@@ -379,6 +395,7 @@ class HttpClient:
         url: str,
         destination: str,
         *,
+        publication_root: PinnedPublicationRoot,
         allowed_hosts: tuple[str, ...],
         headers: Mapping[str, str] | None = None,
         rate_key: str | None = None,
@@ -386,12 +403,16 @@ class HttpClient:
         hash_algorithms: tuple[str, ...] = (),
         max_redirects: int = 5,
     ) -> HttpDownload:
-        """Stream one bounded response to a private file with redirect-host enforcement."""
+        """Stream one bounded response into an active pinned directory generation."""
 
+        if not isinstance(publication_root, PinnedPublicationRoot):
+            raise TypeError("download_to requires an active PinnedPublicationRoot")
+        _require_download_root(publication_root)
+        publication_root.direct_leaf(destination)
         allowed = frozenset(host.casefold().strip(".") for host in allowed_hosts)
         if not allowed:
             raise ValueError("download_to requires at least one allowed host")
-        if os.path.lexists(destination):
+        if publication_root.lexists(destination):
             raise FileExistsError(f"private download path already exists: '{destination}'")
         algorithms = tuple(dict.fromkeys(("sha256", *hash_algorithms)))
         try:
@@ -491,7 +512,7 @@ class HttpClient:
                     )
 
                 total = 0
-                sink = _WorkerDownloadSink(destination, algorithms)
+                sink = _WorkerDownloadSink(destination, algorithms, publication_root)
                 await sink.open()
                 async for chunk in response.aiter_bytes(chunk_size=_DOWNLOAD_CHUNK_BYTES):
                     total += len(chunk)
@@ -512,6 +533,7 @@ class HttpClient:
                     raise ProviderPayloadError(
                         f"artifact response was truncated for {self._evidence_url(response.url)}"
                     )
+                _require_download_root(publication_root)
                 media_type = response.headers.get("content-type", "application/octet-stream")
                 media_type = media_type.split(";", 1)[0].strip().casefold()
                 completed = True

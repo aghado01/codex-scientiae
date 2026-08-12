@@ -108,7 +108,7 @@ def build_application(
         article_catalog_roots = ArticleCatalogRoots(roots)
         catalog_service = ArticleCatalogService(article_catalog_roots)
         acquisition_store = AcquisitionStore(
-            roots.staging.path,
+            roots.staging,
             lock_timeout=settings.acquisition.lock_timeout_seconds,
         )
         acquisition_service = AcquisitionService(
@@ -119,12 +119,8 @@ def build_application(
             user_agent=secrets.user_agent(),
             maximum_expanded_source_bytes=settings.acquisition.limits.expanded_source_bytes,
         )
-        configured_inboxes = {
-            descriptor.name: descriptor.path
-            for descriptor in roots.descriptors(ConfiguredRootKind.LOCAL_INBOX)
-        }
         local_import_service = LocalImportService(
-            configured_inboxes,
+            roots.descriptors(ConfiguredRootKind.LOCAL_INBOX),
             acquisition_store,
             settings.acquisition.limits,
         )

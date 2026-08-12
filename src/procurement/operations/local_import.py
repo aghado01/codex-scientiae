@@ -6,7 +6,7 @@ import asyncio
 import hashlib
 import os
 import stat
-from collections.abc import Mapping
+from collections.abc import Iterable
 from datetime import datetime, timezone
 from functools import partial
 from pathlib import Path
@@ -14,6 +14,7 @@ from typing import Literal, Self
 
 from pydantic import Field, field_validator, model_validator
 
+from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import AcquisitionConflictError, AcquisitionError
 from procurement.models import (
     ArtifactReference,
@@ -34,11 +35,20 @@ from procurement.storage.acquisitions import (
     AcquisitionItem,
     AcquisitionStore,
     collate_acquisition,
-    validate_form_file,
 )
+from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
 
 _COPY_CHUNK_BYTES = 1024 * 1024
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+
+
+def _require_current(root: PinnedPublicationRoot, *, label: str) -> None:
+    try:
+        root.assert_current()
+    except RuntimeError as exc:
+        raise AcquisitionConflictError(
+            f"{label} no longer names its retained directory generation"
+        ) from exc
 
 
 class LocalImportRequest(DomainModel):
@@ -86,20 +96,34 @@ class LocalImportService:
 
     def __init__(
         self,
-        inboxes: Mapping[str, str | Path],
+        inboxes: Iterable[ConfiguredRootDescriptor],
         store: AcquisitionStore,
         limits: ArtifactLimitSettings,
     ) -> None:
-        configured: dict[str, tuple[str, Path]] = {}
-        for name, path in inboxes.items():
-            canonical = validate_deposit_slug(name)
+        configured: dict[str, ConfiguredRootDescriptor] = {}
+        for descriptor in inboxes:
+            if (
+                not isinstance(descriptor, ConfiguredRootDescriptor)
+                or descriptor.kind is not ConfiguredRootKind.LOCAL_INBOX
+            ):
+                raise TypeError(
+                    "LocalImportService requires active local-inbox root descriptors"
+                )
+            try:
+                active_identity = descriptor.publication_root.identity
+            except RuntimeError as exc:
+                raise AcquisitionError(
+                    f"local-import inbox is no longer active: {descriptor.name!r}"
+                ) from exc
+            if active_identity != descriptor.identity:
+                raise AcquisitionError(
+                    f"local-import inbox identity is no longer active: {descriptor.name!r}"
+                )
+            canonical = validate_deposit_slug(descriptor.name)
             key = canonical.casefold()
             if key in configured:
                 raise AcquisitionError(f"duplicate local-import inbox name: {canonical!r}")
-            configured[key] = (
-                canonical,
-                _require_physical_directory(Path(path), label=f"local inbox {canonical!r}"),
-            )
+            configured[key] = descriptor
         if not configured:
             raise AcquisitionError("at least one local-import inbox is required")
         self._inboxes = configured
@@ -110,7 +134,7 @@ class LocalImportService:
     def inbox_names(self) -> tuple[str, ...]:
         """Return configured logical names without host filesystem paths."""
 
-        return tuple(value[0] for value in self._inboxes.values())
+        return tuple(value.name for value in self._inboxes.values())
 
     def inboxes(self) -> LocalImportInboxCatalog:
         """Return typed logical inbox descriptors without host filesystem paths."""
@@ -140,10 +164,10 @@ class LocalImportService:
                 f"unknown local-import inbox {request.inbox!r}; "
                 f"configured names: {', '.join(self.inbox_names)}"
             )
-        inbox_name, root = inbox
-        source = root / request.leaf
-        if source.parent != root:
-            raise AcquisitionError("local import must name one direct inbox child")
+        inbox_name = inbox.name
+        inbox_root = inbox.publication_root
+        _require_current(inbox_root, label="local-import inbox")
+        source = Path(inbox_root.absolute(request.leaf))
 
         artifact = ArtifactReference(
             provider="manual-import",
@@ -155,13 +179,14 @@ class LocalImportService:
             if manifest is not None and manifest.artifact != artifact:
                 raise AcquisitionConflictError(
                     "staging item acquisition identity conflicts with the local import"
-                )
+            )
 
             partial = item.private_download_path()
-            journal: Path | None = None
             try:
                 kind, size, digest = _copy_import_candidate(
+                    inbox_root,
                     source,
+                    item.publication_root,
                     partial,
                     source_maximum=self._limits.source_bytes,
                     pdf_maximum=self._limits.pdf_bytes,
@@ -170,11 +195,12 @@ class LocalImportService:
                     validate_gzip_payload(
                         partial,
                         maximum_expanded_bytes=self._limits.expanded_source_bytes,
+                        publication_root=item.publication_root,
                     )
                     target_leaf = f"{request.deposit_slug}.tar.gz"
                     media_type = "application/gzip"
                 else:
-                    validate_pdf_payload(partial)
+                    validate_pdf_payload(partial, publication_root=item.publication_root)
                     target_leaf = f"{request.deposit_slug}.pdf"
                     media_type = "application/pdf"
 
@@ -201,11 +227,12 @@ class LocalImportService:
                         raise AcquisitionConflictError(
                             f"existing {kind!r} target disagrees with the local-import target"
                         )
-                    validate_form_file(item.directory, existing)
+                    item.validate_form(existing)
                     if existing.bytes != size or existing.sha256 != digest:
                         raise AcquisitionConflictError(
                             f"local {kind!r} bytes conflict with the existing receipt"
                         )
+                    _require_current(inbox_root, label="local-import inbox")
                     return _result(
                         item,
                         manifest,
@@ -217,12 +244,12 @@ class LocalImportService:
                     )
 
                 destination = item.artifact_path(target_leaf)
-                if os.path.lexists(destination):
+                if item.exists(destination):
                     raise AcquisitionConflictError(
                         f"unreceipted artifact occupies the local-import target: '{destination}'"
                     )
 
-                journal = item.write_journal(artifact, partial, form)
+                item.write_journal(artifact, partial, form)
                 item.publish_download(partial, form)
                 incoming = AcquisitionManifest(
                     slug=request.deposit_slug,
@@ -231,19 +258,19 @@ class LocalImportService:
                 )
                 manifest = collate_acquisition(manifest, incoming)
                 item.publish_manifest(manifest)
-                journal.unlink()
-                journal = None
+                item.delete_journal()
                 for value in manifest.forms:
-                    validate_form_file(item.directory, value)
+                    item.validate_form(value)
+                _require_current(inbox_root, label="local-import inbox")
                 return _result(
                     item,
                     manifest,
                     AcquisitionOutcome(kind=kind, status="acquired", path=form.path),
                 )
             finally:
-                if os.path.lexists(partial):
+                if item.exists(partial):
                     try:
-                        partial.unlink()
+                        item.unlink(partial)
                     except OSError:
                         pass
 
@@ -286,20 +313,6 @@ def _same_named_generation(left: os.stat_result, right: os.stat_result) -> bool:
     )
 
 
-def _require_physical_directory(path: Path, *, label: str) -> Path:
-    requested = path.absolute()
-    try:
-        info = requested.stat(follow_symlinks=False)
-        resolved = requested.resolve(strict=True)
-    except OSError as exc:
-        raise AcquisitionError(f"{label} is not accessible: '{requested}'") from exc
-    if not stat.S_ISDIR(info.st_mode) or _is_link_or_reparse(info):
-        raise AcquisitionError(f"{label} must be a physical directory: '{requested}'")
-    if os.path.normcase(str(requested)) != os.path.normcase(str(resolved)):
-        raise AcquisitionError(f"{label} must not traverse a link: '{requested}'")
-    return resolved
-
-
 def _classify(head: bytes) -> Literal["source", "pdf"]:
     if head.startswith(b"%PDF-"):
         return "pdf"
@@ -309,7 +322,9 @@ def _classify(head: bytes) -> Literal["source", "pdf"]:
 
 
 def _copy_import_candidate(
+    source_root: PinnedPublicationRoot,
     source: Path,
+    destination_root: PinnedPublicationRoot,
     destination: Path,
     *,
     source_maximum: int,
@@ -317,8 +332,12 @@ def _copy_import_candidate(
 ) -> tuple[Literal["source", "pdf"], int, str]:
     """Copy one stable direct-child generation and return its classified digest."""
 
+    source_root.direct_leaf(source)
+    destination_root.direct_leaf(destination)
+    _require_current(source_root, label="local-import inbox")
+    _require_current(destination_root, label="acquisition item")
     try:
-        named_before = source.stat(follow_symlinks=False)
+        named_before = source_root.stat_path(source)
     except OSError as exc:
         raise AcquisitionError(f"local-import file is not readable: '{source}'") from exc
     if not stat.S_ISREG(named_before.st_mode) or _is_link_or_reparse(named_before):
@@ -331,10 +350,10 @@ def _copy_import_candidate(
             f"local-import file exceeds the {maximum}-byte absolute boundary"
         )
 
-    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
     try:
-        descriptor = os.open(source, flags)
-        with os.fdopen(descriptor, "rb") as input_handle, destination.open("xb") as output_handle:
+        with source_root.open_file(source, "rb") as input_handle, destination_root.open_file(
+            destination, "xb"
+        ) as output_handle:
             opened_before = os.fstat(input_handle.fileno())
             if not stat.S_ISREG(opened_before.st_mode) or not _same_named_generation(
                 named_before, opened_before
@@ -371,13 +390,15 @@ def _copy_import_candidate(
     if size != opened_after.st_size or not _same_open_snapshot(opened_before, opened_after):
         raise AcquisitionConflictError(f"local-import file changed while copying: '{source}'")
     try:
-        named_after = source.stat(follow_symlinks=False)
+        named_after = source_root.stat_path(source)
     except OSError as exc:
         raise AcquisitionConflictError(
             f"local-import file disappeared after copying: '{source}'"
         ) from exc
     if _is_link_or_reparse(named_after) or not _same_named_generation(opened_after, named_after):
         raise AcquisitionConflictError(f"local-import path changed while copying: '{source}'")
+    _require_current(source_root, label="local-import inbox")
+    _require_current(destination_root, label="acquisition item")
     return kind, size, digest.hexdigest()
 
 

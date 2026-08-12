@@ -128,7 +128,7 @@ def layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Layout]:
         yield Layout(
             staging_root=staging_root,
             catalog_root=catalog_root,
-            acquisitions=AcquisitionStore(staging_root, lock_timeout=2),
+            acquisitions=AcquisitionStore(roots.staging, lock_timeout=2),
             deposits=SourceDepositStore(catalog_roots, lock_timeout=2),
             roots=roots,
         )
@@ -485,15 +485,14 @@ def test_manual_tarball_plus_explicit_doi_converges_on_normal_article_json(
 ) -> None:
     slug = "manual-paper"
     doi = "10.1000/example"
-    inbox = tmp_path / "manual-inbox"
-    inbox.mkdir()
+    inbox = Path(layout.roots.resolve("local-inbox", "manual").path)
     source = MAIN_TEX.replace(
         b"\\begin{document}",
         b"\\doi{10.1000/example}\n\\begin{document}",
     )
     (inbox / "downloaded-source.tgz").write_bytes(tar_gzip_source(main_tex=source))
     importer = LocalImportService(
-        {"manual": inbox},
+        layout.roots.descriptors("local-inbox"),
         layout.acquisitions,
         ArtifactLimitSettings(
             source_bytes=1024 * 1024,

@@ -11,6 +11,7 @@ import os
 import tempfile
 import threading
 import unittest
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
@@ -19,6 +20,7 @@ import httpx
 import jsonschema
 from pydantic import ValidationError
 
+from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import AcquisitionConflictError, ProviderHttpError, ProviderPayloadError
 from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.models import ArtifactReference
@@ -46,6 +48,7 @@ from procurement.storage.acquisitions import (
     collate_acquisition,
     measure_artifact_file,
 )
+from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
 
 
 NOW = datetime(2026, 8, 11, 12, 0, tzinfo=timezone.utc)
@@ -150,10 +153,9 @@ class StaticPlanningProvider:
 def acquisition_service(
     plan: ArtifactPlan,
     http: HttpClient,
-    root: str,
+    store: AcquisitionStore,
     *,
     maximum_expanded_source_bytes: int = 1024 * 1024,
-    store: AcquisitionStore | None = None,
 ) -> tuple[AcquisitionService, StaticPlanningProvider]:
     planner = StaticPlanningProvider(plan)
     registry = ProviderCatalog(
@@ -175,7 +177,7 @@ def acquisition_service(
         AcquisitionService(
             registry,
             http,
-            store or AcquisitionStore(root),
+            store,
             provider_policies={
                 "arxiv": RequestPolicy(max_attempts=1, max_decoded_body_bytes=1024 * 1024)
             },
@@ -183,6 +185,23 @@ def acquisition_service(
         ),
         planner,
     )
+
+
+@contextmanager
+def opened_acquisition_store(
+    root: str | Path,
+    *,
+    lock_timeout: float = 60.0,
+):
+    with PinnedPublicationRoot(root) as pinned:
+        descriptor = ConfiguredRootDescriptor(
+            kind=ConfiguredRootKind.STAGING,
+            name="default",
+            path=pinned.path,
+            identity=pinned.identity,
+            publication_root=pinned,
+        )
+        yield AcquisitionStore(descriptor, lock_timeout=lock_timeout)
 
 
 class TestAcquisitionModels(unittest.TestCase):
@@ -575,14 +594,16 @@ class TestStreamedDownloads(unittest.TestCase):
             )
 
         async def exercise(destination: Path) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                result = await HttpClient(raw, utc_now=lambda: NOW).download_to(
-                    "https://provider.test/start",
-                    str(destination),
-                    allowed_hosts=("provider.test",),
-                    policy=RequestPolicy(max_attempts=1, max_decoded_body_bytes=1024),
-                    hash_algorithms=("md5",),
-                )
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    result = await HttpClient(raw, utc_now=lambda: NOW).download_to(
+                        "https://provider.test/start",
+                        str(destination),
+                        publication_root=output_root,
+                        allowed_hosts=("provider.test",),
+                        policy=RequestPolicy(max_attempts=1, max_decoded_body_bytes=1024),
+                        hash_algorithms=("md5",),
+                    )
             self.assertEqual(destination.read_bytes(), PDF)
             self.assertEqual(result.sha256, hashlib.sha256(PDF).hexdigest())
             self.assertEqual(dict(result.digests)["md5"], hashlib.md5(PDF).hexdigest())
@@ -600,14 +621,16 @@ class TestStreamedDownloads(unittest.TestCase):
             return httpx.Response(302, headers={"location": "https://evil.test/payload"})
 
         async def exercise(destination: Path) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                with self.assertRaisesRegex(ProviderHttpError, "left its allowed hosts"):
-                    await HttpClient(raw).download_to(
-                        "https://provider.test/start",
-                        str(destination),
-                        allowed_hosts=("provider.test",),
-                        policy=RequestPolicy(max_attempts=1),
-                    )
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    with self.assertRaisesRegex(ProviderHttpError, "left its allowed hosts"):
+                        await HttpClient(raw).download_to(
+                            "https://provider.test/start",
+                            str(destination),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.test",),
+                            policy=RequestPolicy(max_attempts=1),
+                        )
             self.assertFalse(os.path.lexists(destination))
 
         with tempfile.TemporaryDirectory() as root:
@@ -625,14 +648,16 @@ class TestStreamedDownloads(unittest.TestCase):
             )
 
         async def exercise(destination: Path) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                with self.assertRaisesRegex(ProviderHttpError, "HTTPS-to-HTTP downgrade"):
-                    await HttpClient(raw).download_to(
-                        "https://provider.test/start",
-                        str(destination),
-                        allowed_hosts=("provider.test",),
-                        policy=RequestPolicy(max_attempts=1),
-                    )
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    with self.assertRaisesRegex(ProviderHttpError, "HTTPS-to-HTTP downgrade"):
+                        await HttpClient(raw).download_to(
+                            "https://provider.test/start",
+                            str(destination),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.test",),
+                            policy=RequestPolicy(max_attempts=1),
+                        )
             self.assertFalse(os.path.lexists(destination))
 
         with tempfile.TemporaryDirectory() as root:
@@ -660,14 +685,16 @@ class TestStreamedDownloads(unittest.TestCase):
         )
 
         async def exercise(destination: Path, handler, policy: RequestPolicy, pattern: str) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                with self.assertRaisesRegex(ProviderPayloadError, pattern):
-                    await HttpClient(raw).download_to(
-                        "https://provider.test/payload",
-                        str(destination),
-                        allowed_hosts=("provider.test",),
-                        policy=policy,
-                    )
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    with self.assertRaisesRegex(ProviderPayloadError, pattern):
+                        await HttpClient(raw).download_to(
+                            "https://provider.test/payload",
+                            str(destination),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.test",),
+                            policy=policy,
+                        )
             self.assertFalse(os.path.lexists(destination))
 
         with tempfile.TemporaryDirectory() as root:
@@ -692,21 +719,23 @@ class TestStreamedDownloads(unittest.TestCase):
             delays.append(delay)
 
         async def exercise(destination: Path) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                result = await HttpClient(
-                    raw,
-                    sleep=sleep,
-                    utc_now=lambda: NOW,
-                ).download_to(
-                    "https://provider.test/payload",
-                    str(destination),
-                    allowed_hosts=("provider.test",),
-                    policy=RequestPolicy(
-                        max_attempts=2,
-                        retry_rate_limits=True,
-                        max_retry_after_seconds=3,
-                    ),
-                )
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    result = await HttpClient(
+                        raw,
+                        sleep=sleep,
+                        utc_now=lambda: NOW,
+                    ).download_to(
+                        "https://provider.test/payload",
+                        str(destination),
+                        publication_root=output_root,
+                        allowed_hosts=("provider.test",),
+                        policy=RequestPolicy(
+                            max_attempts=2,
+                            retry_rate_limits=True,
+                            max_retry_after_seconds=3,
+                        ),
+                    )
             self.assertEqual(result.bytes, len(PDF))
 
         with tempfile.TemporaryDirectory() as root:
@@ -716,32 +745,80 @@ class TestStreamedDownloads(unittest.TestCase):
 
 
 class TestAcquisitionService(unittest.TestCase):
-    def test_store_lock_wait_does_not_block_the_event_loop(self) -> None:
-        plan = artifact_plan((planned_artifact("pdf"),))
+    def test_store_rejects_an_unretained_path_dependency(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            with self.assertRaisesRegex(TypeError, "active staging-root descriptor"):
+                AcquisitionStore(root)  # type: ignore[arg-type]
 
-        def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(200, content=PDF)
+    def test_item_replacement_between_creation_and_pin_is_never_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            staging = Path(root) / "staging"
+            staging.mkdir()
+            with opened_acquisition_store(staging) as store:
+                original_pin_child = PinnedPublicationRoot.pin_child
+                swapped = False
+                blocked = False
 
-        async def exercise(root: str) -> None:
-            store = AcquisitionStore(root, lock_timeout=2)
-            entered = threading.Event()
-            release = threading.Event()
+                def replace_before_pin(
+                    parent: PinnedPublicationRoot,
+                    leaf: str,
+                ) -> PinnedPublicationRoot:
+                    nonlocal swapped, blocked
+                    if parent is store.publication_root and not swapped and not blocked:
+                        item = staging / leaf
+                        displaced = staging / "item-before-pin"
+                        try:
+                            os.rename(item, displaced)
+                        except OSError:
+                            blocked = True
+                        else:
+                            swapped = True
+                            item.mkdir()
+                    return original_pin_child(parent, leaf)
 
-            def hold_store_lease() -> None:
-                with store.transaction(plan.deposit_slug):
+                caught: AcquisitionConflictError | None = None
+                try:
+                    with mock.patch.object(
+                        PinnedPublicationRoot,
+                        "pin_child",
+                        replace_before_pin,
+                    ):
+                        with store.transaction("paper"):
+                            pass
+                except AcquisitionConflictError as exc:
+                    caught = exc
+
+                if swapped:
+                    self.assertIsNotNone(caught)
+                    assert caught is not None
+                    self.assertIn("changed while its generation was pinned", str(caught))
+                    self.assertEqual(list((staging / "paper").iterdir()), [])
+                else:
+                    self.assertTrue(blocked)
+                    self.assertIsNone(caught)
+
+    def test_streamed_download_cannot_be_redirected_to_a_replacement_generation(self) -> None:
+        async def exercise(base: Path, target_kind: str) -> None:
+            staging = base / "staging"
+            staging.mkdir()
+            entered = asyncio.Event()
+            release = asyncio.Event()
+
+            class PausedBody(httpx.AsyncByteStream):
+                async def __aiter__(self):
                     entered.set()
-                    release.wait(2)
+                    await release.wait()
+                    yield PDF
 
-            holder = threading.Thread(target=hold_store_lease, daemon=True)
-            holder.start()
-            self.assertTrue(await asyncio.to_thread(entered.wait, 1))
-            try:
+            def handler(request: httpx.Request) -> httpx.Response:
+                return httpx.Response(200, stream=PausedBody())
+
+            with opened_acquisition_store(staging) as store:
                 async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
                     service, _ = acquisition_service(
-                        plan,
+                        artifact_plan((planned_artifact("pdf"),)),
                         HttpClient(raw, utc_now=lambda: NOW),
-                        root,
-                        store=store,
+                        store,
                     )
                     task = asyncio.create_task(
                         service.acquire(
@@ -752,14 +829,84 @@ class TestAcquisitionService(unittest.TestCase):
                             )
                         )
                     )
-                    await asyncio.sleep(0.05)
-                    self.assertFalse(task.done())
+                    await asyncio.wait_for(entered.wait(), timeout=1)
+                    target = staging if target_kind == "staging" else staging / "2008.10579v1"
+                    displaced = (
+                        base / "staging-displaced"
+                        if target_kind == "staging"
+                        else staging / "item-displaced"
+                    )
+                    swapped = False
+                    try:
+                        os.rename(target, displaced)
+                    except OSError:
+                        # Windows retains the configured and item directories without delete
+                        # sharing. POSIX may rename them, but all file I/O remains descriptor-relative.
+                        pass
+                    else:
+                        swapped = True
+                        target.mkdir()
+                    finally:
+                        release.set()
+
+                    if swapped:
+                        with self.assertRaisesRegex(
+                            AcquisitionConflictError,
+                            "retained directory generation",
+                        ):
+                            await asyncio.wait_for(task, timeout=2)
+                        self.assertEqual(list(target.iterdir()), [])
+                    else:
+                        result = await asyncio.wait_for(task, timeout=2)
+                        self.assertEqual(result.outcomes[0].status, "acquired")
+
+        for target_kind in ("staging", "item"):
+            with self.subTest(target_kind=target_kind), tempfile.TemporaryDirectory() as root:
+                asyncio.run(exercise(Path(root), target_kind))
+
+    def test_store_lock_wait_does_not_block_the_event_loop(self) -> None:
+        plan = artifact_plan((planned_artifact("pdf"),))
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, content=PDF)
+
+        async def exercise(root: str) -> None:
+            with opened_acquisition_store(root, lock_timeout=2) as store:
+                entered = threading.Event()
+                release = threading.Event()
+
+                def hold_store_lease() -> None:
+                    with store.transaction(plan.deposit_slug):
+                        entered.set()
+                        release.wait(2)
+
+                holder = threading.Thread(target=hold_store_lease, daemon=True)
+                holder.start()
+                self.assertTrue(await asyncio.to_thread(entered.wait, 1))
+                try:
+                    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                        service, _ = acquisition_service(
+                            plan,
+                            HttpClient(raw, utc_now=lambda: NOW),
+                            store,
+                        )
+                        task = asyncio.create_task(
+                            service.acquire(
+                                ArtifactAcquisitionRequest(
+                                    provider="arxiv",
+                                    identifier="2008.10579v1",
+                                    artifacts=("pdf",),
+                                )
+                            )
+                        )
+                        await asyncio.sleep(0.05)
+                        self.assertFalse(task.done())
+                        release.set()
+                        result = await asyncio.wait_for(task, timeout=1)
+                    self.assertEqual(result.outcomes[0].status, "acquired")
+                finally:
                     release.set()
-                    result = await asyncio.wait_for(task, timeout=1)
-                self.assertEqual(result.outcomes[0].status, "acquired")
-            finally:
-                release.set()
-                await asyncio.to_thread(holder.join, 1)
+                    await asyncio.to_thread(holder.join, 1)
 
         with tempfile.TemporaryDirectory() as root:
             asyncio.run(exercise(root))
@@ -784,38 +931,39 @@ class TestAcquisitionService(unittest.TestCase):
             return httpx.Response(200, content=PDF)
 
         async def exercise(root: str) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                service, _ = acquisition_service(
-                    plan,
-                    HttpClient(raw, utc_now=lambda: NOW),
-                    root,
-                )
-                with mock.patch.object(AcquisitionItem, "publish_download", delayed_publish):
-                    task = asyncio.create_task(
-                        service.acquire(
-                            ArtifactAcquisitionRequest(
-                                provider="arxiv",
-                                identifier="2008.10579v1",
-                                artifacts=("pdf",),
+            with opened_acquisition_store(root) as store:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    service, _ = acquisition_service(
+                        plan,
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
+                    )
+                    with mock.patch.object(AcquisitionItem, "publish_download", delayed_publish):
+                        task = asyncio.create_task(
+                            service.acquire(
+                                ArtifactAcquisitionRequest(
+                                    provider="arxiv",
+                                    identifier="2008.10579v1",
+                                    artifacts=("pdf",),
+                                )
                             )
                         )
-                    )
-                    self.assertTrue(await asyncio.to_thread(entered.wait, 1))
-                    task.cancel()
-                    await asyncio.sleep(0)
-                    self.assertFalse(task.done())
-                    release.set()
-                    with self.assertRaises(asyncio.CancelledError):
-                        await task
+                        self.assertTrue(await asyncio.to_thread(entered.wait, 1))
+                        task.cancel()
+                        await asyncio.sleep(0)
+                        self.assertFalse(task.done())
+                        release.set()
+                        with self.assertRaises(asyncio.CancelledError):
+                            await task
 
-                manifest = await asyncio.to_thread(service.inspect, plan.deposit_slug)
-                self.assertEqual(tuple(form.kind for form in manifest.forms), ("pdf",))
-                self.assertFalse(
-                    any(
-                        path.name in {".download.part", ".acquisition-publish.json"}
-                        for path in (Path(root) / plan.deposit_slug).iterdir()
+                    manifest = await asyncio.to_thread(service.inspect, plan.deposit_slug)
+                    self.assertEqual(tuple(form.kind for form in manifest.forms), ("pdf",))
+                    self.assertFalse(
+                        any(
+                            path.name in {".download.part", ".acquisition-publish.json"}
+                            for path in (Path(root) / plan.deposit_slug).iterdir()
+                        )
                     )
-                )
 
         try:
             with tempfile.TemporaryDirectory() as root:
@@ -836,17 +984,18 @@ class TestAcquisitionService(unittest.TestCase):
             )
 
         async def exercise(root: str) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                service, planner = acquisition_service(
-                    artifact_plan((planned_artifact("pdf"),)),
-                    HttpClient(raw, utc_now=lambda: NOW),
-                    root,
-                )
-                request = ArtifactAcquisitionRequest(
-                    provider="arxiv", identifier="2008.10579v1", artifacts=("pdf",)
-                )
-                first = await service.acquire(request)
-                second = await service.acquire(request)
+            with opened_acquisition_store(root) as store:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    service, planner = acquisition_service(
+                        artifact_plan((planned_artifact("pdf"),)),
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
+                    )
+                    request = ArtifactAcquisitionRequest(
+                        provider="arxiv", identifier="2008.10579v1", artifacts=("pdf",)
+                    )
+                    first = await service.acquire(request)
+                    second = await service.acquire(request)
 
             self.assertEqual(first.outcomes[0].status, "acquired")
             self.assertEqual(second.outcomes[0].status, "already-present")
@@ -875,19 +1024,20 @@ class TestAcquisitionService(unittest.TestCase):
                 (planned_artifact("source"), planned_artifact("pdf")),
                 requested=("source", "pdf"),
             )
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                service, _ = acquisition_service(
-                    plan,
-                    HttpClient(raw, utc_now=lambda: NOW),
-                    root,
-                )
-                result = await service.acquire(
-                    ArtifactAcquisitionRequest(
-                        provider="arxiv",
-                        identifier="2008.10579v1",
-                        artifacts=("source", "pdf"),
+            with opened_acquisition_store(root) as store:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    service, _ = acquisition_service(
+                        plan,
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
                     )
-                )
+                    result = await service.acquire(
+                        ArtifactAcquisitionRequest(
+                            provider="arxiv",
+                            identifier="2008.10579v1",
+                            artifacts=("source", "pdf"),
+                        )
+                    )
 
             self.assertEqual(tuple(item.status for item in result.outcomes), ("error", "acquired"))
             self.assertIn("gzip payload", result.outcomes[0].error)
@@ -916,19 +1066,20 @@ class TestAcquisitionService(unittest.TestCase):
                 ),
                 requested=("source", "pdf"),
             )
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                service, _ = acquisition_service(
-                    plan,
-                    HttpClient(raw, utc_now=lambda: NOW),
-                    root,
-                )
-                result = await service.acquire(
-                    ArtifactAcquisitionRequest(
-                        provider="arxiv",
-                        identifier="2008.10579v1",
-                        artifacts=("source", "pdf"),
+            with opened_acquisition_store(root) as store:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    service, _ = acquisition_service(
+                        plan,
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
                     )
-                )
+                    result = await service.acquire(
+                        ArtifactAcquisitionRequest(
+                            provider="arxiv",
+                            identifier="2008.10579v1",
+                            artifacts=("source", "pdf"),
+                        )
+                    )
 
             self.assertEqual(tuple(item.status for item in result.outcomes), ("error", "error"))
             self.assertIn("provider checksum", result.outcomes[0].error)
@@ -946,29 +1097,30 @@ class TestAcquisitionService(unittest.TestCase):
         plan = artifact_plan((planned_artifact("pdf"),))
 
         async def exercise(root: str) -> None:
-            store = AcquisitionStore(root)
-            form = acquired_artifact("pdf", PDF)
-            with store.transaction("2008.10579v1") as item:
-                partial = item.private_download_path()
-                self.assertEqual(partial.name, ".download.part")
-                partial.write_bytes(PDF)
-                journal = item.write_journal(plan.artifact, partial, form)
-                self.assertEqual(journal.name, ".acquisition-publish.json")
+            with opened_acquisition_store(root) as store:
+                form = acquired_artifact("pdf", PDF)
+                with store.transaction("2008.10579v1") as item:
+                    partial = item.private_download_path()
+                    self.assertEqual(partial.name, ".download.part")
+                    with item.open_file(partial, "xb") as handle:
+                        handle.write(PDF)
+                    journal = item.write_journal(plan.artifact, partial, form)
+                    self.assertEqual(journal.name, ".acquisition-publish.json")
 
-            def forbidden(request: httpx.Request) -> httpx.Response:
-                raise AssertionError("recovery should satisfy the planned payload")
+                def forbidden(request: httpx.Request) -> httpx.Response:
+                    raise AssertionError("recovery should satisfy the planned payload")
 
-            async with httpx.AsyncClient(transport=httpx.MockTransport(forbidden)) as raw:
-                service, _ = acquisition_service(
-                    plan,
-                    HttpClient(raw, utc_now=lambda: NOW),
-                    root,
-                )
-                result = await service.acquire(
-                    ArtifactAcquisitionRequest(
-                        provider="arxiv", identifier="2008.10579v1", artifacts=("pdf",)
+                async with httpx.AsyncClient(transport=httpx.MockTransport(forbidden)) as raw:
+                    service, _ = acquisition_service(
+                        plan,
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
                     )
-                )
+                    result = await service.acquire(
+                        ArtifactAcquisitionRequest(
+                            provider="arxiv", identifier="2008.10579v1", artifacts=("pdf",)
+                        )
+                    )
 
             self.assertEqual(result.outcomes[0].status, "already-present")
             item_dir = Path(result.staging_directory)

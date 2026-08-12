@@ -13,6 +13,7 @@ from unittest import mock
 
 import httpx
 
+from jsonl_engine.publication import PinnedPublicationRoot
 import procurement.transport.http as procurement_http
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
 from procurement.transport.http import HttpClient, RateLimiter, RequestPolicy
@@ -55,16 +56,18 @@ class TestHttpClient(unittest.TestCase):
             original_write(sink, chunk)
 
         async def exercise(destination: Path) -> None:
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                result = await HttpClient(raw).download_to(
-                    "https://provider.example/payload",
-                    str(destination),
-                    allowed_hosts=("provider.example",),
-                    policy=RequestPolicy(
-                        max_attempts=1,
-                        max_decoded_body_bytes=len(payload),
-                    ),
-                )
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    result = await HttpClient(raw).download_to(
+                        "https://provider.example/payload",
+                        str(destination),
+                        publication_root=output_root,
+                        allowed_hosts=("provider.example",),
+                        policy=RequestPolicy(
+                            max_attempts=1,
+                            max_decoded_body_bytes=len(payload),
+                        ),
+                    )
             self.assertEqual(result.bytes, len(payload))
 
         with tempfile.TemporaryDirectory() as root, mock.patch.object(
@@ -95,20 +98,22 @@ class TestHttpClient(unittest.TestCase):
 
         async def exercise(destination: Path) -> None:
             loop_thread.append(threading.get_ident())
-            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
-                task = asyncio.create_task(
-                    HttpClient(raw).download_to(
-                        "https://provider.example/payload",
-                        str(destination),
-                        allowed_hosts=("provider.example",),
-                        policy=RequestPolicy(max_attempts=1),
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    task = asyncio.create_task(
+                        HttpClient(raw).download_to(
+                            "https://provider.example/payload",
+                            str(destination),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.example",),
+                            policy=RequestPolicy(max_attempts=1),
+                        )
                     )
-                )
-                self.assertTrue(await asyncio.to_thread(entered.wait, 1))
-                await asyncio.sleep(0)
-                self.assertFalse(task.done())
-                release.set()
-                result = await asyncio.wait_for(task, timeout=1)
+                    self.assertTrue(await asyncio.to_thread(entered.wait, 1))
+                    await asyncio.sleep(0)
+                    self.assertFalse(task.done())
+                    release.set()
+                    result = await asyncio.wait_for(task, timeout=1)
             self.assertEqual(result.bytes, len(b"bounded payload"))
 
         try:

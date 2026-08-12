@@ -1,4 +1,4 @@
-"""Provider-planned, path-confined artifact acquisition."""
+"""Provider-planned artifact acquisition through retained staging generations."""
 
 from __future__ import annotations
 
@@ -11,8 +11,9 @@ from dataclasses import replace
 from functools import partial
 from pathlib import Path
 from types import TracebackType
-from typing import TypeVar
+from typing import BinaryIO, TypeVar
 
+from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
 from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy
 from procurement.payloads import (
@@ -32,24 +33,38 @@ from procurement.storage.acquisitions import (
     AcquisitionStore,
     collate_acquisition,
     measure_artifact_file,
-    validate_form_file,
 )
 
 _T = TypeVar("_T")
 
 
-def validate_gzip_payload(path: str | Path, *, maximum_expanded_bytes: int) -> None:
+def _open_payload(
+    path: str | Path,
+    publication_root: PinnedPublicationRoot | None,
+) -> BinaryIO:
+    if publication_root is not None:
+        return publication_root.open_file(path, "rb")
+    return Path(path).open("rb")
+
+
+def validate_gzip_payload(
+    path: str | Path,
+    *,
+    maximum_expanded_bytes: int,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> None:
     """Validate one complete non-empty gzip stream within its expansion boundary."""
 
     expanded = 0
     try:
-        with gzip.open(Path(path), "rb") as stream:
-            while chunk := stream.read(1024 * 1024):
-                expanded += len(chunk)
-                if expanded > maximum_expanded_bytes:
-                    raise AcquisitionError(
-                        "gzip payload exceeds the configured expanded-byte limit"
-                    )
+        with _open_payload(path, publication_root) as handle:
+            with gzip.GzipFile(fileobj=handle, mode="rb") as stream:
+                while chunk := stream.read(1024 * 1024):
+                    expanded += len(chunk)
+                    if expanded > maximum_expanded_bytes:
+                        raise AcquisitionError(
+                            "gzip payload exceeds the configured expanded-byte limit"
+                        )
     except AcquisitionError:
         raise
     except (OSError, EOFError) as exc:
@@ -58,13 +73,17 @@ def validate_gzip_payload(path: str | Path, *, maximum_expanded_bytes: int) -> N
         raise AcquisitionError("gzip payload expands to an empty body")
 
 
-def validate_pdf_payload(path: str | Path) -> None:
+def validate_pdf_payload(
+    path: str | Path,
+    *,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> None:
     """Validate the required leading and trailing markers of one PDF payload."""
 
-    target = Path(path)
-    with target.open("rb") as handle:
+    with _open_payload(path, publication_root) as handle:
+        size = os.fstat(handle.fileno()).st_size
         prefix = handle.read(5)
-        handle.seek(max(0, target.stat().st_size - 4096))
+        handle.seek(max(0, size - 4096))
         suffix = handle.read()
     if prefix != b"%PDF-" or b"%%EOF" not in suffix:
         raise AcquisitionError("PDF payload lacks its required header or end marker")
@@ -204,7 +223,7 @@ class AcquisitionService:
                         raise AcquisitionConflictError(
                             f"existing {payload.kind!r} target disagrees with the provider plan"
                         )
-                    await transaction.run(validate_form_file, item.directory, existing)
+                    await transaction.run(item.validate_form, existing)
                     outcomes.append(
                         AcquisitionOutcome(
                             kind=payload.kind,
@@ -215,7 +234,7 @@ class AcquisitionService:
                     continue
 
                 target = item.artifact_path(payload.target_leaf)
-                if await transaction.run(os.path.lexists, target):
+                if await transaction.run(item.exists, target):
                     raise AcquisitionConflictError(
                         f"unreceipted artifact occupies the planned target: '{target}'"
                     )
@@ -251,7 +270,7 @@ class AcquisitionService:
                 )
 
             if manifest is not None:
-                await transaction.run(self._validate_manifest_forms, item.directory, manifest)
+                await transaction.run(self._validate_manifest_forms, item, manifest)
 
             ordered_outcomes = tuple(
                 next(outcome for outcome in outcomes if outcome.kind == requested)
@@ -274,7 +293,7 @@ class AcquisitionService:
                     f"no acquisition.json exists for staged item {deposit_slug!r}"
                 )
             for form in manifest.forms:
-                validate_form_file(item.directory, form)
+                item.validate_form(form)
             return manifest
 
     async def _acquire_payload(
@@ -299,13 +318,14 @@ class AcquisitionService:
                 download = await self._http.download_to(
                     candidate.url,
                     str(partial),
+                    publication_root=item.publication_root,
                     allowed_hosts=candidate.allowed_hosts,
                     headers=self._headers,
                     rate_key=plan.artifact.provider,
                     policy=policy,
                     hash_algorithms=algorithms,
                 )
-                await transaction.run(self._validate_download, partial, payload, download)
+                await transaction.run(self._validate_download, item, partial, payload, download)
                 form = AcquiredArtifact(
                     kind=payload.kind,
                     path=payload.target_leaf,
@@ -323,7 +343,7 @@ class AcquisitionService:
                 errors.append(f"{candidate.candidate_id}: {exc}")
             finally:
                 if not retained:
-                    await transaction.run(self._unlink_if_present, partial)
+                    await transaction.run(self._unlink_if_present, item, partial)
         return None, errors
 
     @staticmethod
@@ -331,14 +351,14 @@ class AcquisitionService:
         return item.recover(item.read_manifest())
 
     @staticmethod
-    def _validate_manifest_forms(directory: Path, manifest: AcquisitionManifest) -> None:
+    def _validate_manifest_forms(item: AcquisitionItem, manifest: AcquisitionManifest) -> None:
         for form in manifest.forms:
-            validate_form_file(directory, form)
+            item.validate_form(form)
 
     @staticmethod
-    def _unlink_if_present(path: Path) -> None:
+    def _unlink_if_present(item: AcquisitionItem, path: Path) -> None:
         try:
-            path.unlink()
+            item.unlink(path)
         except FileNotFoundError:
             pass
 
@@ -350,7 +370,7 @@ class AcquisitionService:
         partial: Path,
         form: AcquiredArtifact,
     ) -> AcquisitionManifest:
-        journal = item.write_journal(plan.artifact, partial, form)
+        item.write_journal(plan.artifact, partial, form)
         item.publish_download(partial, form)
         incoming = AcquisitionManifest(
             slug=plan.deposit_slug,
@@ -359,16 +379,20 @@ class AcquisitionService:
         )
         published = collate_acquisition(manifest, incoming)
         item.publish_manifest(published)
-        journal.unlink()
+        item.delete_journal()
         return published
 
     def _validate_download(
         self,
+        item: AcquisitionItem,
         path: Path,
         payload: PlannedArtifact,
         download: HttpDownload,
     ) -> None:
-        size, digest = measure_artifact_file(path)
+        size, digest = measure_artifact_file(
+            path,
+            publication_root=item.publication_root,
+        )
         if size != download.bytes or digest != download.sha256:
             raise AcquisitionError("downloaded file changed before payload validation")
         if size < payload.minimum_bytes:
@@ -390,16 +414,21 @@ class AcquisitionService:
             validate_gzip_payload(
                 path,
                 maximum_expanded_bytes=self._maximum_expanded_source_bytes,
+                publication_root=item.publication_root,
             )
         elif payload.payload_kind == "pdf":
-            validate_pdf_payload(path)
+            validate_pdf_payload(path, publication_root=item.publication_root)
         else:
-            self._validate_html(path)
+            self._validate_html(path, publication_root=item.publication_root)
 
     @staticmethod
-    def _validate_html(path: Path) -> None:
+    def _validate_html(
+        path: Path,
+        *,
+        publication_root: PinnedPublicationRoot | None = None,
+    ) -> None:
         try:
-            with path.open("rb") as handle:
+            with _open_payload(path, publication_root) as handle:
                 head = handle.read(8192).decode("utf-8", errors="strict").casefold()
         except UnicodeDecodeError as exc:
             raise AcquisitionError("HTML payload is not valid UTF-8") from exc

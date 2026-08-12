@@ -1,4 +1,4 @@
-"""Path-confined acquisition receipt storage and crash recovery."""
+"""Generation-pinned acquisition receipt storage and crash recovery."""
 
 from __future__ import annotations
 
@@ -7,17 +7,17 @@ import os
 import stat
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterator, Literal
+from typing import Iterator
 
 from filelock import FileLock, Timeout
-from pydantic import Field, field_validator, model_validator
 
-from jsonl_engine.sidecar import lock_path
-from jsonl_engine.writer import write_json
+from jsonl_engine.documents import JsonDocumentError, JsonDocumentStore
+from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import AcquisitionConflictError, AcquisitionError
-from procurement.limits import MAX_ACQUISITION_MANIFEST_BYTES
-from procurement.models import ArtifactReference, DomainModel, validate_deposit_slug
+from procurement.models import ArtifactReference, validate_deposit_slug
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
+from procurement.storage.documents import AcquisitionManifestDocument
+from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
 
 _JOURNAL_LEAF = ".acquisition-publish.json"
 _PARTIAL_LEAF = ".download.part"
@@ -28,64 +28,25 @@ def _is_reparse(info: os.stat_result) -> bool:
     return bool(getattr(info, "st_file_attributes", 0) & 0x400)
 
 
-def _require_plain_directory(path: Path, *, label: str) -> Path:
-    requested = path.absolute()
-    try:
-        info = requested.lstat()
-    except OSError as exc:
-        raise AcquisitionError(f"{label} is not accessible: '{requested}'") from exc
-    if not stat.S_ISDIR(info.st_mode) or stat.S_ISLNK(info.st_mode) or _is_reparse(info):
-        raise AcquisitionError(f"{label} must be a physical directory: '{requested}'")
-    resolved = requested.resolve(strict=True)
-    if os.path.normcase(str(requested)) != os.path.normcase(str(resolved)):
-        raise AcquisitionError(f"{label} must not traverse a link or reparse point: '{requested}'")
-    return resolved
+def _same_directory_generation(left: os.stat_result, right: os.stat_result) -> bool:
+    if left.st_ino or right.st_ino:
+        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
+    left_birth = getattr(left, "st_birthtime_ns", None)
+    right_birth = getattr(right, "st_birthtime_ns", None)
+    if left_birth is not None or right_birth is not None:
+        return left.st_dev == right.st_dev and left_birth == right_birth
+    return left.st_dev == right.st_dev and getattr(
+        left, "st_ctime_ns", None
+    ) == getattr(right, "st_ctime_ns", None)
 
 
-def _stable_bytes(path: Path, *, maximum: int) -> bytes:
+def _require_current(root: PinnedPublicationRoot, *, label: str) -> None:
     try:
-        with path.open("rb") as handle:
-            before = os.fstat(handle.fileno())
-            if not stat.S_ISREG(before.st_mode) or _is_reparse(before):
-                raise AcquisitionConflictError(f"receipt is not a regular file: '{path}'")
-            if before.st_size > maximum:
-                raise AcquisitionConflictError(
-                    f"receipt exceeds the {maximum}-byte boundary: '{path}'"
-                )
-            raw = handle.read(maximum + 1)
-            after = os.fstat(handle.fileno())
-    except AcquisitionConflictError:
-        raise
-    except OSError as exc:
-        raise AcquisitionConflictError(f"receipt cannot be read: '{path}'") from exc
-    if len(raw) > maximum or len(raw) != after.st_size:
-        raise AcquisitionConflictError(f"receipt changed while being read: '{path}'")
-    before_identity = (
-        before.st_dev,
-        before.st_ino,
-        before.st_size,
-        before.st_mtime_ns,
-        getattr(before, "st_ctime_ns", None),
-    )
-    after_identity = (
-        after.st_dev,
-        after.st_ino,
-        after.st_size,
-        after.st_mtime_ns,
-        getattr(after, "st_ctime_ns", None),
-    )
-    if before_identity != after_identity:
-        raise AcquisitionConflictError(f"receipt changed while being read: '{path}'")
-    current = path.lstat()
-    if (
-        not stat.S_ISREG(current.st_mode)
-        or _is_reparse(current)
-        or current.st_dev != after.st_dev
-        or current.st_ino != after.st_ino
-        or current.st_size != after.st_size
-    ):
-        raise AcquisitionConflictError(f"receipt path changed while being read: '{path}'")
-    return raw
+        root.assert_current()
+    except RuntimeError as exc:
+        raise AcquisitionConflictError(
+            f"{label} no longer names its retained directory generation"
+        ) from exc
 
 
 def _measure_file(path: Path) -> tuple[int, str]:
@@ -124,23 +85,74 @@ def _measure_file(path: Path) -> tuple[int, str]:
     return size, digest.hexdigest()
 
 
-def measure_artifact_file(path: str | Path) -> tuple[int, str]:
+def _measure_pinned_file(
+    root: PinnedPublicationRoot,
+    path: str | Path,
+) -> tuple[int, str]:
+    """Measure one direct leaf through an active directory generation."""
+
+    leaf = root.direct_leaf(path)
+    _require_current(root, label="artifact directory")
+    try:
+        named_before = root.stat_leaf(leaf)
+        if not stat.S_ISREG(named_before.st_mode) or _is_reparse(named_before):
+            raise AcquisitionConflictError(
+                f"artifact is not a regular file: '{root.absolute(leaf)}'"
+            )
+        digest = hashlib.sha256()
+        size = 0
+        with root.open_leaf(leaf, "rb") as handle:
+            opened_before = os.fstat(handle.fileno())
+            if (
+                not stat.S_ISREG(opened_before.st_mode)
+                or _is_reparse(opened_before)
+                or opened_before.st_dev != named_before.st_dev
+                or opened_before.st_ino != named_before.st_ino
+            ):
+                raise AcquisitionConflictError(
+                    f"artifact changed before it could be measured: '{root.absolute(leaf)}'"
+                )
+            while chunk := handle.read(1024 * 1024):
+                size += len(chunk)
+                digest.update(chunk)
+            opened_after = os.fstat(handle.fileno())
+        named_after = root.stat_leaf(leaf)
+    except AcquisitionConflictError:
+        raise
+    except OSError as exc:
+        raise AcquisitionConflictError(
+            f"artifact cannot be measured: '{root.absolute(leaf)}'"
+        ) from exc
+    if (
+        size != opened_after.st_size
+        or opened_before.st_dev != opened_after.st_dev
+        or opened_before.st_ino != opened_after.st_ino
+        or opened_before.st_mtime_ns != opened_after.st_mtime_ns
+        or getattr(opened_before, "st_ctime_ns", None)
+        != getattr(opened_after, "st_ctime_ns", None)
+        or not stat.S_ISREG(named_after.st_mode)
+        or _is_reparse(named_after)
+        or named_after.st_dev != opened_after.st_dev
+        or named_after.st_ino != opened_after.st_ino
+        or named_after.st_size != opened_after.st_size
+    ):
+        raise AcquisitionConflictError(
+            f"artifact changed while being measured: '{root.absolute(leaf)}'"
+        )
+    _require_current(root, label="artifact directory")
+    return size, digest.hexdigest()
+
+
+def measure_artifact_file(
+    path: str | Path,
+    *,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> tuple[int, str]:
     """Return stable byte count and SHA-256 for one physical artifact file."""
 
+    if publication_root is not None:
+        return _measure_pinned_file(publication_root, path)
     return _measure_file(Path(path))
-
-
-def validate_form_file(directory: Path, form: AcquiredArtifact) -> Path:
-    """Validate one receipt form against the physical file it names."""
-
-    leaf = validate_deposit_slug(form.path)
-    path = directory / leaf
-    size, digest = _measure_file(path)
-    if size != form.bytes or digest != form.sha256:
-        raise AcquisitionConflictError(
-            f"staged artifact no longer matches acquisition.json: '{path}'"
-        )
-    return path
 
 
 def collate_acquisition(
@@ -184,61 +196,72 @@ def collate_acquisition(
     )
 
 
-class _PublicationJournal(DomainModel):
-    schema_id: Literal["codex-scientiae/acquisition-publication/0.1"] = Field(
-        default="codex-scientiae/acquisition-publication/0.1",
-        alias="schema",
-    )
-    slug: str
-    artifact: ArtifactReference
-    partial_leaf: str
-    form: AcquiredArtifact
-
-    @field_validator("slug", mode="before")
-    @classmethod
-    def _portable_slug(cls, value: object) -> str:
-        return validate_deposit_slug(value)
-
-    @field_validator("partial_leaf", mode="before")
-    @classmethod
-    def _private_partial(cls, value: object) -> str:
-        if value != _PARTIAL_LEAF:
-            raise ValueError("publication journal partial_leaf is invalid")
-        return _PARTIAL_LEAF
-
-    @model_validator(mode="after")
-    def _canonical_identity(self) -> "_PublicationJournal":
-        AcquisitionManifest(slug=self.slug, artifact=self.artifact, forms=(self.form,))
-        return self
-
-
 class AcquisitionItem:
-    """One locked staging item transaction."""
+    """One locked and generation-pinned staging item transaction."""
 
-    def __init__(self, directory: Path) -> None:
-        self.directory = directory
-        self.manifest_path = directory / "acquisition.json"
+    def __init__(self, root: PinnedPublicationRoot, slug: str) -> None:
+        root.identity
+        self.publication_root = root
+        self.slug = validate_deposit_slug(slug)
+        self.directory = Path(root.path)
+        if self.directory.name != self.slug:
+            raise AcquisitionError("acquisition item pin does not match its deposit slug")
+        self.manifest_path = self.directory / "acquisition.json"
+        kind = AcquisitionManifestDocument()
+        self._manifest = JsonDocumentStore(root, self.manifest_path.name, kind)
+        # A journal is a schema-valid one-form receipt fragment. The private partial leaf is fixed
+        # by this transaction implementation rather than repeated in a second JSON contract.
+        self._journal = JsonDocumentStore(root, _JOURNAL_LEAF, kind)
+
+    def assert_current(self) -> None:
+        """Require the item path and its retained parent to name this generation."""
+
+        _require_current(self.publication_root, label="acquisition item")
+
+    def exists(self, path: str | Path) -> bool:
+        return self.publication_root.lexists(path)
+
+    def unlink(self, path: str | Path) -> None:
+        self.publication_root.unlink(path)
+
+    def open_file(self, path: str | Path, mode: str):
+        return self.publication_root.open_file(path, mode)
+
+    def measure_file(self, path: str | Path) -> tuple[int, str]:
+        return measure_artifact_file(path, publication_root=self.publication_root)
+
+    def validate_form(self, form: AcquiredArtifact) -> Path:
+        """Validate one receipt form against this pinned item generation."""
+
+        path = self.artifact_path(form.path)
+        size, digest = self.measure_file(path)
+        if size != form.bytes or digest != form.sha256:
+            raise AcquisitionConflictError(
+                f"staged artifact no longer matches acquisition.json: '{path}'"
+            )
+        return path
 
     def read_manifest(self) -> AcquisitionManifest | None:
-        if not os.path.lexists(self.manifest_path):
-            return None
-        raw = _stable_bytes(self.manifest_path, maximum=MAX_ACQUISITION_MANIFEST_BYTES)
         try:
-            return AcquisitionManifest.model_validate_json(raw)
-        except ValueError as exc:
+            return self._manifest.read()
+        except RuntimeError as exc:
+            raise AcquisitionConflictError(
+                "acquisition item changed while acquisition.json was read"
+            ) from exc
+        except (JsonDocumentError, ValueError) as exc:
             raise AcquisitionConflictError(
                 f"existing acquisition.json is invalid: '{self.manifest_path}': {exc}"
             ) from exc
 
     def publish_manifest(self, manifest: AcquisitionManifest) -> None:
-        if manifest.slug != self.directory.name:
+        if manifest.slug != self.slug:
             raise AcquisitionConflictError("acquisition receipt slug does not match its directory")
-        write_json(
-            str(self.manifest_path),
-            manifest.model_dump(mode="json", by_alias=True),
-            indent=2,
-            overwrite=os.path.lexists(self.manifest_path),
-        )
+        try:
+            self._manifest.publish(manifest, overwrite=self._manifest.exists())
+        except (JsonDocumentError, RuntimeError, ValueError, OSError) as exc:
+            raise AcquisitionConflictError(
+                f"acquisition.json could not be published: '{self.manifest_path}'"
+            ) from exc
 
     def private_download_path(self) -> Path:
         return self.directory / _PARTIAL_LEAF
@@ -249,117 +272,158 @@ class AcquisitionItem:
     def write_journal(self, artifact: ArtifactReference, partial: Path, form: AcquiredArtifact) -> Path:
         if partial.parent != self.directory or partial.name != _PARTIAL_LEAF:
             raise AcquisitionError("publication partial is outside the locked staging item")
-        journal = _PublicationJournal(
-            slug=self.directory.name,
+        journal = AcquisitionManifest(
+            slug=self.slug,
             artifact=artifact,
-            partial_leaf=partial.name,
-            form=form,
+            forms=(form,),
         )
-        path = self.directory / _JOURNAL_LEAF
-        write_json(
-            str(path),
-            journal.model_dump(mode="json", by_alias=True),
-            indent=2,
-            overwrite=False,
-        )
-        return path
+        try:
+            return Path(self._journal.publish(journal, overwrite=False))
+        except (JsonDocumentError, RuntimeError, ValueError, OSError) as exc:
+            raise AcquisitionConflictError(
+                f"acquisition publication journal could not be written: '{self._journal.path}'"
+            ) from exc
+
+    def delete_journal(self) -> None:
+        try:
+            self.publication_root.unlink(self._journal.path)
+        except FileNotFoundError:
+            pass
 
     def publish_download(self, partial: Path, form: AcquiredArtifact) -> Path:
         if partial.parent != self.directory or partial.name != _PARTIAL_LEAF:
             raise AcquisitionError("publication partial is outside the locked staging item")
         destination = self.artifact_path(form.path)
-        if os.path.lexists(destination):
+        if self.exists(destination):
             raise AcquisitionConflictError(f"refusing to overwrite staged artifact: '{destination}'")
         try:
-            os.link(partial, destination, follow_symlinks=False)
-            partial.unlink()
+            self.publication_root.publish(partial, destination, overwrite=False)
         except FileExistsError as exc:
             raise AcquisitionConflictError(
                 f"staged artifact appeared during publication: '{destination}'"
             ) from exc
         except OSError as exc:
             raise AcquisitionError(f"artifact publication failed: '{destination}'") from exc
-        validate_form_file(self.directory, form)
+        self.validate_form(form)
         return destination
 
     def recover(self, existing: AcquisitionManifest | None) -> AcquisitionManifest | None:
         """Finish journaled publications and remove abandoned private downloads."""
 
         manifest = existing
-        journal_path = self.directory / _JOURNAL_LEAF
-        journals = (journal_path,) if os.path.lexists(journal_path) else ()
-        for path in journals:
-            raw = _stable_bytes(path, maximum=MAX_ACQUISITION_MANIFEST_BYTES)
-            try:
-                journal = _PublicationJournal.model_validate_json(raw)
-            except ValueError as exc:
-                raise AcquisitionConflictError(f"invalid acquisition publication journal: '{path}'") from exc
-            if journal.slug != self.directory.name:
-                raise AcquisitionConflictError(f"publication journal targets another item: '{path}'")
-            partial = self.directory / journal.partial_leaf
-            destination = self.artifact_path(journal.form.path)
-            if os.path.lexists(destination):
-                validate_form_file(self.directory, journal.form)
-                if os.path.lexists(partial):
-                    size, digest = _measure_file(partial)
-                    if size != journal.form.bytes or digest != journal.form.sha256:
+        try:
+            journal = self._journal.read()
+        except RuntimeError as exc:
+            raise AcquisitionConflictError(
+                "acquisition item changed while its publication journal was read"
+            ) from exc
+        except (JsonDocumentError, ValueError) as exc:
+            raise AcquisitionConflictError(
+                f"invalid acquisition publication journal: '{self._journal.path}'"
+            ) from exc
+        if journal is not None:
+            if journal.slug != self.slug or len(journal.forms) != 1:
+                raise AcquisitionConflictError(
+                    f"publication journal is not one receipt fragment: '{self._journal.path}'"
+                )
+            form = journal.forms[0]
+            partial = self.private_download_path()
+            destination = self.artifact_path(form.path)
+            if self.exists(destination):
+                self.validate_form(form)
+                if self.exists(partial):
+                    size, digest = self.measure_file(partial)
+                    if size != form.bytes or digest != form.sha256:
                         raise AcquisitionConflictError(
                             f"publication partial conflicts with journal: '{partial}'"
                         )
-                    partial.unlink()
-            elif os.path.lexists(partial):
-                size, digest = _measure_file(partial)
-                if size != journal.form.bytes or digest != journal.form.sha256:
+                    self.unlink(partial)
+            elif self.exists(partial):
+                size, digest = self.measure_file(partial)
+                if size != form.bytes or digest != form.sha256:
                     raise AcquisitionConflictError(f"publication partial conflicts with journal: '{partial}'")
-                self.publish_download(partial, journal.form)
+                self.publish_download(partial, form)
             else:
-                path.unlink()
-                continue
-            incoming = AcquisitionManifest(
-                slug=journal.slug,
-                artifact=journal.artifact,
-                forms=(journal.form,),
-            )
-            manifest = collate_acquisition(manifest, incoming)
-            self.publish_manifest(manifest)
-            path.unlink()
+                self.delete_journal()
+                journal = None
+            if journal is not None:
+                manifest = collate_acquisition(manifest, journal)
+                self.publish_manifest(manifest)
+                self.delete_journal()
 
-        partial = self.directory / _PARTIAL_LEAF
-        if os.path.lexists(partial):
-            info = partial.lstat()
+        partial = self.private_download_path()
+        if self.exists(partial):
+            info = self.publication_root.stat_path(partial)
             if not stat.S_ISREG(info.st_mode) or _is_reparse(info):
                 raise AcquisitionConflictError(f"private download is not a regular file: '{partial}'")
-            partial.unlink()
+            self.unlink(partial)
         return manifest
 
 
 class AcquisitionStore:
-    """Configured staging collection with one lease per acquisition receipt."""
+    """Retained staging generation with one lease and child pin per receipt."""
 
-    def __init__(self, root: str | Path, *, lock_timeout: float = 60.0) -> None:
-        self.root = _require_plain_directory(Path(root), label="acquisition staging root")
+    def __init__(
+        self,
+        root: ConfiguredRootDescriptor,
+        *,
+        lock_timeout: float = 60.0,
+    ) -> None:
+        if not isinstance(root, ConfiguredRootDescriptor) or root.kind is not ConfiguredRootKind.STAGING:
+            raise TypeError("AcquisitionStore requires an active staging-root descriptor")
+        try:
+            active_identity = root.publication_root.identity
+        except RuntimeError as exc:
+            raise AcquisitionError("staging-root descriptor is no longer active") from exc
+        if active_identity != root.identity:
+            raise AcquisitionError("staging-root descriptor identity is no longer active")
+        self.descriptor = root
+        self.publication_root = root.publication_root
+        self.root = Path(root.path)
         self.lock_timeout = lock_timeout
 
     @contextmanager
     def transaction(self, slug: str, *, create: bool = True) -> Iterator[AcquisitionItem]:
         slug = validate_deposit_slug(slug)
-        directory = self.root / slug
-        item = AcquisitionItem(directory)
-        lease = FileLock(lock_path(str(item.manifest_path)), timeout=self.lock_timeout)
+        root = self.publication_root
+        _require_current(root, label="acquisition staging root")
+        directory = Path(root.absolute(slug))
+        lease = FileLock(root.lock_path(directory), timeout=self.lock_timeout)
         try:
             lease.acquire()
         except Timeout as exc:
             raise TimeoutError(
                 f"could not acquire acquisition receipt lease within {self.lock_timeout}s: "
-                f"'{item.manifest_path}'"
+                f"'{directory / 'acquisition.json'}'"
             ) from exc
         try:
-            if os.path.lexists(directory):
-                _require_plain_directory(directory, label="acquisition item directory")
+            _require_current(root, label="acquisition staging root")
+            collisions = [name for name in root.list_names() if name.casefold() == slug.casefold()]
+            if len(collisions) > 1 or (collisions and collisions[0] != slug):
+                raise AcquisitionConflictError(
+                    f"acquisition item name has a portable case collision: {slug!r}"
+                )
+            if collisions:
+                info = root.stat_leaf(slug)
+                if not stat.S_ISDIR(info.st_mode) or _is_reparse(info):
+                    raise AcquisitionError(
+                        f"acquisition item must be a physical directory: '{directory}'"
+                    )
             elif create:
-                directory.mkdir()
+                root.mkdir_leaf(slug)
+                info = root.stat_leaf(slug)
             else:
                 raise AcquisitionError(f"acquisition item does not exist: '{directory}'")
-            yield item
+            with root.pin_child(slug) as item_root:
+                opened = item_root.stat_root()
+                if not _same_directory_generation(info, opened):
+                    raise AcquisitionConflictError(
+                        f"acquisition item changed while its generation was pinned: '{directory}'"
+                    )
+                _require_current(item_root, label="acquisition item")
+                item = AcquisitionItem(item_root, slug)
+                yield item
+                item.assert_current()
+                _require_current(root, label="acquisition staging root")
         finally:
             lease.release()

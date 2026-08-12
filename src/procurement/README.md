@@ -73,20 +73,21 @@ The runtime catalog distinguishes metadata aggregators, scholarly repositories, 
 Sci-Hub is classified as access-only rather than as a repository or metadata authority.
 
 Filesystem trust boundary: composition captures and retains the physical identities of the staging root,
-local-import inboxes, and article catalogs for the application lifetime. Acquisition, local import, and
-source materialization have not yet routed every internal filesystem operation through those retained
-handles. Their transaction guarantees therefore still assume the named roots are not replaced while an
-operation runs, particularly on POSIX where retaining a descriptor does not freeze the lexical route. This
-remains a production-cutover blocker. Inventory rebuild separately uses descriptor-relative publication
-across sentinel reads and publication; the named catalog service supplies the application-retained catalog
-pin rather than reopening the configured pathname.
+local-import inboxes, and article catalogs for the application lifetime. Acquisition transactions pin each
+item below the retained staging root; HTTP and local-import byte transfer, hashing, recovery, receipt access,
+and publication are relative to those retained generations. Local import also reads through the retained
+inbox descriptor. A replacement route is either blocked or causes the operation to fail without writing to
+or reporting success against the replacement. Source materialization has not yet routed archive extraction,
+tree publication, and article publication through a complete pinned hierarchy and remains the filesystem
+production-cutover blocker. Inventory rebuild separately pins its catalog generation across sentinel reads
+and publication.
 
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are
 bounded, redirect-confined, content-checked, locally SHA-256 measured, and checked against provider-native
 integrity evidence when present. Non-loopback routes require HTTPS and cannot redirect to plaintext HTTP.
-Within an unchanged staging-root generation, successful forms are monotonically collated into
-`acquisition.json`. Lock, validation, hashing, and publication work runs outside the MCP event loop. That
+Successful forms are monotonically collated into schema-validated `acquisition.json` within the pinned item
+generation. Lock, validation, hashing, and publication work runs outside the MCP event loop. That
 receipt makes no unpacked or source-ready claim; `article.json` remains the canonical sentinel, currently
 published by the validated LaTeX-source profile.
 Background jobs remain deferred until the synchronous operations have a separate lifecycle contract.

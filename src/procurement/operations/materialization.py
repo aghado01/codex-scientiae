@@ -28,7 +28,7 @@ from procurement.models import DepositMetadataBundle, WorkIdentityAnchor
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 from procurement.operations.metadata import MetadataService
 from procurement.source.findings import build_source_findings
-from procurement.storage.acquisitions import AcquisitionStore, validate_form_file
+from procurement.storage.acquisitions import AcquisitionStore
 from procurement.storage.source_deposits import (
     SourceDepositItem,
     SourceDepositStore,
@@ -133,7 +133,7 @@ class SourceMaterializationService:
                 )
             self._forms(manifest)
             for form in manifest.forms:
-                validate_form_file(item.directory, form)
+                item.validate_form(form)
             return manifest
 
     @staticmethod
@@ -166,9 +166,9 @@ class SourceMaterializationService:
             if manifest.slug != expected_manifest.slug or manifest.artifact != expected_manifest.artifact:
                 raise SourceMaterializationError("acquisition identity changed before preparation")
             source_form, pdf_form = self._forms(manifest)
-            source_path = validate_form_file(staged.directory, source_form)
+            source_path = staged.validate_form(source_form)
             pdf_source = (
-                validate_form_file(staged.directory, pdf_form)
+                staged.validate_form(pdf_form)
                 if pdf_form is not None
                 else None
             )

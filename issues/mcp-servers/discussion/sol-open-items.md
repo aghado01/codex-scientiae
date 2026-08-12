@@ -1,4 +1,4 @@
-The package cut and root/store kernel are implemented without compatibility modules. The next milestone is acquisition and local-import pinning; transaction logic now has one retained-root and document-store substrate.
+The package cut, root/store kernel, and acquisition/local-import pinning are implemented without compatibility modules. The next milestone is source-materialization pinning.
 
 The earlier provider-catalog resumption notes are superseded. This file tracks the post-cut sequence.
 
@@ -18,7 +18,7 @@ The earlier provider-catalog resumption notes are superseded. This file tracks t
 flowchart LR
     A["Landed provider and hygiene foundation"] --> B["Hard package cut complete"]
     B --> C["Pinned-root and document-store kernel complete"]
-    C --> D["Acquisition and local-import pinning"]
+    C --> D["Acquisition and local-import pinning complete"]
     D --> E["Source-materialization pinning"]
     E --> F["Remaining domain and MCP decomposition"]
     F --> G["Providers, PDF profile, and live cutover"]
@@ -67,13 +67,13 @@ The engine and procurement storage layers now divide single-document ownership e
 - `defaults.json` remains ordinary configuration;
 - `acquisition.json` remains JSON rather than being forced into JSONL.
 
-The application root catalog is the lifetime substrate, not a claim that every existing transaction is already descriptor-relative. Acquisition/local import and source materialization still use pathname operations internally and are the next two vertical migrations.
+The application root catalog is the lifetime substrate. Acquisition and local import now consume its active descriptors; source materialization remains the transaction that is not fully descriptor-relative.
 
 `ArticleCatalogService` already passes the application-retained catalog pin into engine discovery and inventory publication. It cannot silently open a replacement generation from the same configured pathname.
 
-### 3. Acquisition pinning
+### 3. Acquisition and local-import pinning — implemented
 
-One transaction must hold:
+Each acquisition transaction now holds:
 
 ```text
 initialized staging-root pin
@@ -84,9 +84,11 @@ initialized staging-root pin
     -> closing generation verification
 ```
 
-Local import should land in the same milestone because the configured inbox has the analogous read-side root-replacement vulnerability.
+`AcquisitionStore` accepts only the active staging descriptor. Its generation-keyed slug lease encloses a child-directory pin, schema-backed receipt and journal access, artifact hashing, no-replace publication, recovery, and closing generation checks. The HTTP sink requires the item pin and performs create, write, flush, hash, cleanup, and retry against that generation.
 
-Acceptance criterion: replacing the staging root, inbox, or acquisition item may block or fail the operation, but the replacement generation must receive no writes and success must never name it.
+`LocalImportService` accepts only active local-inbox descriptors. It opens the direct-child source and private staged copy through the inbox and item pins, verifies the open file generation before and after copying, and checks both directory generations before success.
+
+Adversarial tests attempt replacement while HTTP and local bytes are in flight. Windows retained handles block the rename. POSIX descriptor-relative branches permit a rename only by continuing against the old generation and then refusing success; replacement generations receive no staged writes.
 
 ### 4. Source-materialization pinning
 
@@ -116,4 +118,4 @@ After the transactions are sound:
 
 One nuance: eliminating Python import compatibility does not mean silently weakening persisted evidence contracts. Schema changes should still be deliberate and versioned.
 
-Overall, the project is at a good architectural hinge. The next move is acquisition and local-import pinning through the landed kernel—not another provider or workflow feature.
+Overall, the project is at a good architectural hinge. The next move is source-materialization pinning through the landed kernel—not another provider or workflow feature.
