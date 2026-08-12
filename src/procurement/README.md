@@ -10,7 +10,7 @@ The package is divided by responsibility:
 application.py       owned runtime dependencies and lifecycle
 composition.py       configuration-to-application assembly
 configuration/       validated configuration models and data loading
-domain/              operation request and result contracts
+domain/              immutable work, discovery, provider, metadata, deposit, and operation contracts
 operations/          discovery, metadata, acquisition, materialization, and catalog use cases
 providers/           provider declarations and adapters
 source/              archive and LaTeX validation plus source findings
@@ -18,9 +18,10 @@ storage/             acquisition/deposit transactions, catalog roots, and schema
 transport/           HTTP policy and transport primitives
 ```
 
-The former flat `archive`, `http`, `settings`, `source`, `staging`, and `services` modules have no
-compatibility aliases. `models.py` and `payloads.py` remain top-level until their domain split follows the
-root-pinning work.
+The former flat `archive`, `http`, `models`, `settings`, `source`, `staging`, and `services` modules have no
+compatibility aliases. Shared model infrastructure, portable deposit validation, scholarly works,
+discovery envelopes, provider descriptors, and metadata evidence live in focused `domain` modules.
+`payloads.py` remains top-level until the acquisition-contract cut.
 
 The current discovery plane contains OpenAlex, Semantic Scholar, arXiv, and Zenodo adapters behind an
 explicit provider catalog. Each adapter owns one immutable descriptor containing its category, roles,
@@ -46,7 +47,7 @@ is LaTeX-backed. A future PDF profile will provide a second path into the same s
 import asyncio
 
 from procurement.composition import build_application
-from procurement.models import SearchRequest
+from procurement.domain.discovery import SearchRequest
 
 
 async def main() -> None:

@@ -7,10 +7,12 @@ from collections.abc import Mapping
 from typing import Any
 from urllib.parse import quote
 
+from procurement.domain.discovery import SearchPage, SearchRequest
+from procurement.domain.metadata import RetrievedMetadata
+from procurement.domain.works import SourceReference, WorkRecord
 from procurement.errors import ProviderHttpError, ProviderPayloadError
 from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.identifiers import extract_doi, is_doi, normalize_arxiv_id, normalize_doi
-from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
 from procurement.providers.base import (
     Capability,
     ProviderCategory,

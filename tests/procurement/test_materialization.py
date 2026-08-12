@@ -37,17 +37,19 @@ from procurement.source.archive import (
 )
 from procurement.source.findings import build_source_findings
 from procurement.errors import AcquisitionConflictError, SourceMaterializationError
-from procurement.models import (
+from procurement.domain.metadata import (
     ApiResponseEvidence,
     ArtifactReference,
     DepositMetadataBundle,
     MetadataAttempt,
     MetadataObservation,
+    project_article_metadata,
+    project_identifier_article_metadata,
+)
+from procurement.domain.works import (
     SourceReference,
     WorkIdentityAnchor,
     WorkRecord,
-    project_identifier_article_metadata,
-    project_article_metadata,
 )
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 from procurement.operations.catalogs import ArticleCatalogService

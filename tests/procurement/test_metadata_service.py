@@ -11,11 +11,13 @@ from datetime import datetime, timezone
 from pydantic import ValidationError
 
 from procurement.errors import MetadataUnavailableError, ProviderError
-from procurement.models import (
+from procurement.domain.metadata import (
     ApiResponseEvidence,
     ArtifactReference,
     DepositMetadataBundle,
     RetrievedMetadata,
+)
+from procurement.domain.works import (
     SourceReference,
     WorkRecord,
 )

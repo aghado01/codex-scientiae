@@ -21,15 +21,17 @@ from procurement.application import ProcurementApplication
 from procurement.errors import ProviderError
 from procurement.transport.http import HttpClient
 from procurement.limits import MAX_API_RESPONSE_BASE64_CHARS
-from procurement.models import (
-    PORTABLE_LEAF_PATTERN,
+from procurement.domain.deposits import PORTABLE_LEAF_PATTERN
+from procurement.domain.discovery import SearchPage, SearchRequest
+from procurement.domain.metadata import (
+    ApiResponseEvidence,
     ArtifactReference,
-    SearchPage,
-    SearchRequest,
+    RetrievedMetadata,
+)
+from procurement.domain.works import (
     SourceReference,
     WorkRecord,
 )
-from procurement.models import ApiResponseEvidence, RetrievedMetadata
 from procurement.payloads import (
     AcquiredArtifact,
     AcquisitionManifest,

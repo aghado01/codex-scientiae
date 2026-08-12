@@ -1,16 +1,16 @@
 """Scholarly discovery and acquisition capabilities."""
 
-from procurement.models import (
-    ApiResponseEvidence,
-    DepositMetadataBundle,
+from procurement.domain.discovery import (
     ProviderReport,
-    ProviderCatalogResponse,
-    ProviderDescriptor,
     RelatedResponse,
     ResolveResponse,
     SearchPage,
     SearchRequest,
     SearchResponse,
+)
+from procurement.domain.metadata import ApiResponseEvidence, DepositMetadataBundle
+from procurement.domain.providers import ProviderCatalogResponse, ProviderDescriptor
+from procurement.domain.works import (
     SourceReference,
     WorkIdentityAnchor,
     WorkRecord,

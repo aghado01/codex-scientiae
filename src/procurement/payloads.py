@@ -9,14 +9,14 @@ from urllib.parse import urlsplit
 
 from pydantic import ConfigDict, Field, field_validator, model_validator
 
-from procurement.identifiers import artifact_slug
-from procurement.models import (
-    ArtifactReference,
-    DomainModel,
+from procurement.domain.base import DomainModel
+from procurement.domain.deposits import (
     PORTABLE_LEAF_PATTERN,
     validate_artifact_deposit_reference,
     validate_deposit_slug,
 )
+from procurement.domain.metadata import ArtifactReference
+from procurement.identifiers import artifact_slug
 
 ArtifactKind = Literal["source", "pdf", "html"]
 PayloadKind = Literal["gzip", "pdf", "html"]

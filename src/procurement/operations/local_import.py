@@ -15,13 +15,10 @@ from typing import Literal, Self
 from pydantic import Field, field_validator, model_validator
 
 from jsonl_engine.publication import PinnedPublicationRoot
+from procurement.domain.base import DomainModel
+from procurement.domain.deposits import PORTABLE_LEAF_PATTERN, validate_deposit_slug
+from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
-from procurement.models import (
-    ArtifactReference,
-    DomainModel,
-    PORTABLE_LEAF_PATTERN,
-    validate_deposit_slug,
-)
 from procurement.payloads import (
     AcquiredArtifact,
     AcquisitionManifest,

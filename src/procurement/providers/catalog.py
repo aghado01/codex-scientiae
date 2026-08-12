@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from procurement.errors import ProviderNotFoundError, UnsupportedCapabilityError
-from procurement.models import ProviderDescriptor
+from procurement.domain.providers import ProviderDescriptor
 from procurement.providers.base import (
     Capability,
     ProviderCategory,

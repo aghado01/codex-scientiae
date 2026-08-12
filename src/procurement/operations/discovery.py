@@ -5,16 +5,15 @@ from __future__ import annotations
 import asyncio
 from typing import cast
 
-from procurement.models import (
+from procurement.domain.discovery import (
     ProviderReport,
     RelatedResponse,
     ResolveResponse,
     SearchPage,
     SearchRequest,
     SearchResponse,
-    WorkRecord,
-    merge_works,
 )
+from procurement.domain.works import WorkRecord, merge_works
 from procurement.providers.base import (
     Capability,
     RelatedKind,

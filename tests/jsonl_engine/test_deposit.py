@@ -26,7 +26,7 @@ from jsonl_engine import (
 )
 from jsonl_engine.reader import read_json
 from procurement.limits import MAX_API_RESPONSE_BASE64_CHARS
-from procurement.models import DepositMetadataBundle
+from procurement.domain.metadata import DepositMetadataBundle
 from procurement.storage.article import get_procurement_article_metadata_extension
 from procurement.storage.schemas import get_procurement_schema_catalog
 

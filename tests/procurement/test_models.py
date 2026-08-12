@@ -6,9 +6,9 @@ import unittest
 
 from pydantic import ValidationError
 
-from procurement.models import (
-    ArticleIdentifiers,
-    SearchRequest,
+from procurement.domain.discovery import SearchRequest
+from procurement.domain.metadata import ArticleIdentifiers
+from procurement.domain.works import (
     SourceReference,
     WorkRecord,
     merge_works,

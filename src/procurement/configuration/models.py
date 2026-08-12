@@ -7,7 +7,7 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator, model_validator
 
-from procurement.models import validate_deposit_slug
+from procurement.domain.deposits import validate_deposit_slug
 
 
 class ProviderHttpSettings(BaseModel):

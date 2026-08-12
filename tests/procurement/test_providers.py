@@ -10,7 +10,7 @@ import unittest
 import httpx
 
 from procurement.transport.http import HttpClient
-from procurement.models import SearchRequest
+from procurement.domain.discovery import SearchRequest
 from procurement.providers.arxiv import ArxivProvider, build_search_query
 from procurement.providers.openalex import OpenAlexProvider
 from procurement.providers.semanticscholar import SemanticScholarProvider

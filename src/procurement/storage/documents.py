@@ -11,7 +11,7 @@ from procurement.limits import (
     MAX_ACQUISITION_MANIFEST_BYTES,
     MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
 )
-from procurement.models import DepositMetadataBundle
+from procurement.domain.metadata import DepositMetadataBundle
 from procurement.payloads import AcquisitionManifest
 from procurement.storage.schemas import get_procurement_schema_catalog
 

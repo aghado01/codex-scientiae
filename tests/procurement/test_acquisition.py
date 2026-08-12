@@ -23,7 +23,7 @@ from pydantic import ValidationError
 from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import AcquisitionConflictError, ProviderHttpError, ProviderPayloadError
 from procurement.transport.http import HttpClient, RequestPolicy
-from procurement.models import ArtifactReference
+from procurement.domain.metadata import ArtifactReference
 from procurement.payloads import (
     AcquiredArtifact,
     AcquisitionManifest,

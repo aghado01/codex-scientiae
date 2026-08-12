@@ -17,7 +17,7 @@ from procurement.configuration import (
     load_settings,
 )
 from procurement.errors import ConfigurationError
-from procurement.models import SearchPage, SearchRequest
+from procurement.domain.discovery import SearchPage, SearchRequest
 from procurement.providers import (
     ArxivProvider,
     OpenAlexProvider,

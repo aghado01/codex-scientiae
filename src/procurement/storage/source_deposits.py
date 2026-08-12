@@ -20,14 +20,11 @@ from jsonl_engine.publication import (
 )
 from jsonl_engine.sidecar import is_transaction_scratch, temp_write_path
 
+from procurement.domain.deposits import validate_deposit_slug
 from procurement.domain.materialization import MetadataMode
+from procurement.domain.metadata import ArtifactReference, DepositMetadataBundle
+from procurement.domain.works import WorkIdentityAnchor
 from procurement.errors import SourceMaterializationError
-from procurement.models import (
-    ArtifactReference,
-    DepositMetadataBundle,
-    WorkIdentityAnchor,
-    validate_deposit_slug,
-)
 from procurement.source.archive import LatexSourceInspection, LatexSourceInspector
 from procurement.storage.catalogs import ArticleCatalogRoots
 from procurement.storage.documents import DepositMetadataDocument

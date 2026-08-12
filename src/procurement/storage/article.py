@@ -11,7 +11,7 @@ from jsonl_engine.deposit import DepositResult, deposit_article
 from jsonl_engine.kinds.article import ArticleMetadataContribution, ArticleMetadataExtension
 
 from procurement.limits import MAX_DEPOSIT_METADATA_BUNDLE_BYTES
-from procurement.models import DepositMetadataBundle
+from procurement.domain.metadata import DepositMetadataBundle
 from procurement.storage.schemas import ProcurementSchemaCatalog, get_procurement_schema_catalog
 
 _DEPOSIT_METADATA_SCHEMA = "deposit.metadata.schema.json"

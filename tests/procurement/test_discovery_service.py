@@ -5,7 +5,8 @@ from __future__ import annotations
 import asyncio
 import unittest
 
-from procurement.models import SearchPage, SearchRequest, SourceReference, WorkRecord
+from procurement.domain.discovery import SearchPage, SearchRequest
+from procurement.domain.works import SourceReference, WorkRecord
 from procurement.providers.base import Capability, RelatedKind
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 from procurement.operations.discovery import DiscoveryService

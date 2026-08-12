@@ -8,14 +8,10 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Literal, Protocol
 
+from procurement.domain.discovery import SearchPage, SearchRequest
+from procurement.domain.metadata import ApiResponseEvidence, RetrievedMetadata
+from procurement.domain.works import WorkRecord
 from procurement.transport.http import HttpDocument
-from procurement.models import (
-    ApiResponseEvidence,
-    RetrievedMetadata,
-    SearchPage,
-    SearchRequest,
-    WorkRecord,
-)
 from procurement.payloads import ArtifactAcquisitionRequest, ArtifactPlan
 
 RelatedKind = Literal["citations", "references", "recommendations"]

@@ -13,8 +13,9 @@ from filelock import FileLock, Timeout
 
 from jsonl_engine.documents import JsonDocumentError, JsonDocumentStore
 from jsonl_engine.publication import PinnedPublicationRoot
+from procurement.domain.deposits import validate_deposit_slug
+from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
-from procurement.models import ArtifactReference, validate_deposit_slug
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 from procurement.storage.documents import AcquisitionManifestDocument
 from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind

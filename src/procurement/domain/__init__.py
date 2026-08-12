@@ -1,4 +1,4 @@
-"""Procurement operation request and result models."""
+"""Procurement domain contracts."""
 
 from procurement.domain.materialization import (
     ArtifactIdentityMetadata,

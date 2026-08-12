@@ -17,6 +17,8 @@ from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
 )
+from procurement.domain.metadata import DepositMetadataBundle
+from procurement.domain.works import WorkIdentityAnchor
 from procurement.source.archive import (
     ArchiveLimits,
     LatexSourceInspection,
@@ -25,7 +27,6 @@ from procurement.source.archive import (
 )
 from procurement.errors import SourceMaterializationError
 from procurement.identifiers import is_doi, normalize_doi
-from procurement.models import DepositMetadataBundle, WorkIdentityAnchor
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 from procurement.operations.metadata import MetadataService
 from procurement.source.findings import build_source_findings

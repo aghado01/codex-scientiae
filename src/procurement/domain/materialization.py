@@ -6,15 +6,15 @@ from typing import Annotated, Literal, Self
 
 from pydantic import Field, field_validator, model_validator
 
-from procurement.identifiers import is_doi, normalize_doi
-from procurement.models import (
-    ArtifactReference,
-    DomainModel,
+from procurement.domain.base import DomainModel
+from procurement.domain.deposits import (
     PORTABLE_LEAF_PATTERN,
-    WorkIdentityAnchor,
     validate_artifact_deposit_reference,
     validate_deposit_slug,
 )
+from procurement.domain.metadata import ArtifactReference
+from procurement.domain.works import WorkIdentityAnchor
+from procurement.identifiers import is_doi, normalize_doi
 
 MetadataMode = Literal["required", "omit"]
 PORTABLE_RELATIVE_PATTERN = (

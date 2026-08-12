@@ -5,6 +5,19 @@ from __future__ import annotations
 import asyncio
 from typing import cast
 
+from procurement.domain.deposits import (
+    validate_artifact_deposit_reference,
+    validate_deposit_slug,
+)
+from procurement.domain.metadata import (
+    ArtifactReference,
+    DepositMetadataBundle,
+    MetadataAttempt,
+    MetadataObservation,
+    project_article_metadata,
+    project_identifier_article_metadata,
+)
+from procurement.domain.works import WorkIdentityAnchor, artifact_identity_aliases
 from procurement.errors import (
     MetadataError,
     MetadataIdentityError,
@@ -12,18 +25,6 @@ from procurement.errors import (
     ProviderError,
 )
 from procurement.identifiers import is_doi, normalize_doi, split_arxiv_id, split_zenodo_id
-from procurement.models import (
-    ArtifactReference,
-    DepositMetadataBundle,
-    MetadataAttempt,
-    MetadataObservation,
-    WorkIdentityAnchor,
-    artifact_identity_aliases,
-    project_article_metadata,
-    project_identifier_article_metadata,
-    validate_artifact_deposit_reference,
-    validate_deposit_slug,
-)
 from procurement.providers.base import Capability, MetadataProvider, ProviderRole
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 

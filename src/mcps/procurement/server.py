@@ -16,6 +16,14 @@ from pydantic import Field, StringConstraints, WithJsonSchema
 
 from procurement.application import ProcurementApplication
 from procurement.composition import build_application
+from procurement.domain.base import DomainModel
+from procurement.domain.deposits import PORTABLE_LEAF_PATTERN
+from procurement.domain.discovery import (
+    RelatedResponse,
+    ResolveResponse,
+    SearchRequest,
+    SearchResponse,
+)
 from procurement.domain.materialization import (
     ArtifactIdentityMetadata,
     PORTABLE_TEX_PATH_PATTERN,
@@ -23,17 +31,9 @@ from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
 )
-from procurement.models import (
-    DepositMetadataBundle,
-    ProviderCatalogResponse,
-    RelatedResponse,
-    ResolveResponse,
-    SearchRequest,
-    SearchResponse,
-    WorkRecord,
-    DomainModel,
-    PORTABLE_LEAF_PATTERN,
-)
+from procurement.domain.metadata import DepositMetadataBundle
+from procurement.domain.providers import ProviderCatalogResponse
+from procurement.domain.works import WorkRecord
 from procurement.payloads import (
     AcquisitionManifest,
     AcquisitionResult,

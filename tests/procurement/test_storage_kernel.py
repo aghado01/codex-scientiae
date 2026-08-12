@@ -12,15 +12,17 @@ from datetime import datetime, timezone
 
 from jsonl_engine.documents import JsonDocumentError, JsonDocumentStore
 
-from procurement.models import (
+from procurement.domain.metadata import (
     ApiResponseEvidence,
     ArtifactReference,
     DepositMetadataBundle,
     MetadataAttempt,
     MetadataObservation,
+    project_article_metadata,
+)
+from procurement.domain.works import (
     SourceReference,
     WorkRecord,
-    project_article_metadata,
 )
 from procurement.payloads import (
     AcquiredArtifact,
