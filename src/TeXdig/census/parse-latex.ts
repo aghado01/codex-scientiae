@@ -93,6 +93,12 @@ export interface WitnessResult {
   sourceId: SourceId;
   sightings: ParserSighting[];
   textRuns: SourceSpan[];
+  /**
+   * Trusted group-node extents (braces included). Groups are parser-witnessed
+   * fenced constructs; their spans claim as fence overlays so the braces of
+   * unattached arguments (unknown-signature macros) are never silent residue.
+   */
+  groupSpans: SourceSpan[];
   diagnostics: Diagnostic[];
 }
 
@@ -595,12 +601,13 @@ export function parseLatexWitness(
         severity: "defect",
         message: `unified-latex failed to parse this source: ${err2?.message || err2}`,
       });
-      return { sourceId, sightings: [], textRuns: [], diagnostics };
+      return { sourceId, sightings: [], textRuns: [], groupSpans: [], diagnostics };
     }
   }
 
   const sightings: ParserSighting[] = [];
   const textRuns: SourceSpan[] = [];
+  const groupSpans: SourceSpan[] = [];
 
   /**
    * unified-latex reparses some constructs (alignment environments like
@@ -653,6 +660,10 @@ export function parseLatexWitness(
         bodySpan: argContentSpan(sourceId, node, text),
         inMathMode: inMathMode || node.type === "mathenv",
       });
+    } else if (node.type === "verb") {
+      // unified-latex accepts verb forms the stratifier's conservative rule
+      // does not (space-delimited \verb in biblatex .bbl fields).
+      sightings.push({ nodeType: "verb", name: node.escape || "", span });
     } else if (node.type === "inlinemath") {
       sightings.push({ nodeType: "inlinemath", mode: "inline", span, inMathMode: true });
     } else if (node.type === "displaymath") {
@@ -661,8 +672,12 @@ export function parseLatexWitness(
       if (span && span.startUtf16 < span.endUtf16) {
         textRuns.push(span);
       }
+    } else if (node.type === "group") {
+      if (span && span.startUtf16 < span.endUtf16) {
+        groupSpans.push(span);
+      }
     }
   });
 
-  return { sourceId, sightings, textRuns, diagnostics };
+  return { sourceId, sightings, textRuns, groupSpans, diagnostics };
 }

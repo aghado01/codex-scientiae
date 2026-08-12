@@ -152,13 +152,15 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
     const containingDir = path.posix.dirname(fromSourceId);
     const candidates: string[] = [];
 
+    // Candidates are normalized (./sections/x → sections/x) — authors write
+    // ./-prefixed targets and the on-disk map is keyed by clean relative paths.
     // Candidate 1: relative to containing file
     const relToContaining = containingDir === "." ? trimmed : path.posix.join(containingDir, trimmed);
-    candidates.push(relToContaining);
+    candidates.push(path.posix.normalize(relToContaining));
 
     // Candidate 2: relative to root
     if (containingDir !== ".") {
-      candidates.push(trimmed);
+      candidates.push(path.posix.normalize(trimmed));
     }
 
     for (const cand of candidates) {

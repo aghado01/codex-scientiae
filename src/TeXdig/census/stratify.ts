@@ -109,8 +109,11 @@ export function stratify(sourceId: SourceId, rawText: string): StratificationRes
         }
         if (cursor < len) {
           const delim = rawText[cursor];
-          // Delimiter cannot be space, newline, or alphanumeric in LaTeX
-          if (delim !== " " && delim !== "\n" && delim !== "\r" && !/[a-zA-Z]/.test(delim)) {
+          // Delimiter cannot be space, newline, or alphanumeric — and never a
+          // brace: `{` opens a group in every real dialect, and biblatex-format
+          // .bbl files use `\verb{field} ... \endverb` as a FIELD construct
+          // that is not inline verbatim at all.
+          if (delim !== " " && delim !== "\n" && delim !== "\r" && delim !== "{" && !/[a-zA-Z]/.test(delim)) {
             const verbStart = i;
             cursor++;
             while (cursor < len && rawText[cursor] !== delim && rawText[cursor] !== "\n" && rawText[cursor] !== "\r") {

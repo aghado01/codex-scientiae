@@ -228,12 +228,33 @@ export async function runCensus(options: CliArgs) {
           ? "text-run"
           : "blank-run",
       }));
+      // Whitespace is positively knowable from the raw stream itself; claiming
+      // it keeps residue meaning "unexplained CONTENT" (the parser trims
+      // leading/parbreak whitespace runs, which would otherwise litter residue
+      // with newlines). This is a positive claim, not a complement.
+      const wsRegex = /\s+/g;
+      let wsMatch: RegExpExecArray | null;
+      while ((wsMatch = wsRegex.exec(rawText)) !== null) {
+        spineRuns.push({
+          span: {
+            sourceId: record.id,
+            startUtf16: wsMatch.index,
+            endUtf16: wsMatch.index + wsMatch[0].length,
+          },
+          role: "blank-run",
+        });
+      }
+
+      const extraClaims: PillarClaim[] = [...reconcileResult.extraClaims];
+      for (const g of witnessResult.groupSpans) {
+        extraClaims.push({ pillar: "fence", span: g, role: "group" });
+      }
 
       const claims = generatePillarClaims(
         record.id,
         reconcileResult.entities,
         spineRuns,
-        reconcileResult.extraClaims
+        extraClaims
       );
 
       const cov = computeSourceCoverage(record.id, record.lengthUtf16, claims);

@@ -175,6 +175,8 @@ export function reconcileLatex(
   //    they are masked from both downstream witnesses BY DESIGN, so a single
   //    stratify witness is complete evidence, not a disagreement.
   // -------------------------------------------------------------------------
+  const strataStarts = new Set<number>();
+  for (const s of strat.strata) strataStarts.add(s.span.startUtf16);
   for (const s of strat.strata) {
     if (s.kind === "comment") {
       entities.push({
@@ -529,6 +531,22 @@ export function reconcileLatex(
           });
         }
       }
+    } else if (ps.nodeType === "verb") {
+      // Verb forms the stratifier's conservative rule rejected (space-delimited
+      // \verb in biblatex .bbl fields). Strata keep authority where they fired.
+      const span = ps.span;
+      if (strataStarts.has(span.startUtf16)) continue;
+      const id = mintEntityId("verbatim-inline", span);
+      entities.push({
+        id,
+        kind: "verbatim-inline",
+        delimiter: ps.name || " ",
+        span,
+        spanProvenance: "parser",
+        witnesses: [parserWitness(span, "verb")],
+        agreement: "parser-only",
+      });
+      disagreementDiagnostic(id, "parser-only", span, "Inline verbatim (\\verb)");
     } else if (ps.nodeType === "inlinemath" || ps.nodeType === "displaymath") {
       const span = ps.span;
       const lexS = lex.math.get(span.startUtf16);
