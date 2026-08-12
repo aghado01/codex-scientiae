@@ -111,8 +111,35 @@ function nodeSpan(sourceId: SourceId, node: any): SourceSpan | undefined {
   return undefined;
 }
 
+/**
+ * Deep end of a node INCLUDING its attached arguments and their closing
+ * delimiters: a macro node's own position stops at the csname, so a body
+ * ending in `\mathsf{Ch}` would otherwise truncate before `{Ch}}`. Text-aware
+ * so each bracketed level consumes exactly its own closer.
+ */
+function deepNodeEnd(text: string, node: any): number | undefined {
+  const base = node?.position?.end?.offset;
+  if (base === undefined) return undefined;
+  let end = base;
+  if (Array.isArray(node.args)) {
+    for (const a of node.args) {
+      if (!a || !Array.isArray(a.content)) continue;
+      let argEnd: number | undefined;
+      for (const c of a.content) {
+        const e = deepNodeEnd(text, c);
+        if (e !== undefined && (argEnd === undefined || e > argEnd)) argEnd = e;
+      }
+      if (argEnd === undefined) continue;
+      const closer = a.openMark === "{" ? "}" : a.openMark === "[" ? "]" : undefined;
+      if (closer && text[argEnd] === closer) argEnd++;
+      if (argEnd > end) end = argEnd;
+    }
+  }
+  return end;
+}
+
 /** Hull over the positioned content of one argument (Argument nodes carry no position of their own). */
-function argContentSpan(sourceId: SourceId, arg: any): SourceSpan | undefined {
+function argContentSpan(sourceId: SourceId, arg: any, text?: string): SourceSpan | undefined {
   if (!arg || !Array.isArray(arg.content) || arg.content.length === 0) return undefined;
   let minStart = Infinity;
   let maxEnd = -Infinity;
@@ -120,7 +147,9 @@ function argContentSpan(sourceId: SourceId, arg: any): SourceSpan | undefined {
     const s = nodeSpan(sourceId, item);
     if (s) {
       if (s.startUtf16 < minStart) minStart = s.startUtf16;
-      if (s.endUtf16 > maxEnd) maxEnd = s.endUtf16;
+      const deep = text !== undefined ? deepNodeEnd(text, item) : undefined;
+      const e = deep !== undefined ? Math.max(s.endUtf16, deep) : s.endUtf16;
+      if (e > maxEnd) maxEnd = e;
     }
   }
   if (minStart === Infinity) return undefined;
@@ -181,7 +210,7 @@ function definitionHull(
   let end = commandSpan.endUtf16;
   for (const arg of args || []) {
     if (!isBracketed(arg)) continue;
-    const cs = argContentSpan(sourceId, arg);
+    const cs = argContentSpan(sourceId, arg, text);
     if (!cs) continue;
     let argEnd = cs.endUtf16;
     if (argEnd < text.length && (text[argEnd] === "}" || text[argEnd] === "]")) {
@@ -312,7 +341,7 @@ export function discoverDefinitions(
         if (!definedName) continue;
         const numArgs = parseInt(stringContentOfArg(bracketArgs[0]), 10) || 0;
         const hasOptional = bracketArgs.length > 1;
-        const bodySpan = argContentSpan(sourceId, braceArgs[1]);
+        const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
         const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
@@ -333,7 +362,7 @@ export function discoverDefinitions(
       if (name === "DeclareMathOperator") {
         const nameNode = firstMacroInArg(braceArgs[0]);
         if (!nameNode) continue;
-        const bodySpan = argContentSpan(sourceId, braceArgs[1]);
+        const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
         const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
@@ -351,8 +380,8 @@ export function discoverDefinitions(
       if (name === "DeclarePairedDelimiter") {
         const nameNode = firstMacroInArg(braceArgs[0]);
         if (!nameNode) continue;
-        const left = argContentSpan(sourceId, braceArgs[1]);
-        const right = argContentSpan(sourceId, braceArgs[2]);
+        const left = argContentSpan(sourceId, braceArgs[1], text);
+        const right = argContentSpan(sourceId, braceArgs[2], text);
         const bodySpan = left && right
           ? { sourceId, startUtf16: left.startUtf16, endUtf16: right.endUtf16 }
           : left || right;
@@ -376,11 +405,11 @@ export function discoverDefinitions(
       if (XPARSE_FAMILY.has(name)) {
         const nameNode = firstMacroInArg(braceArgs[0]);
         if (!nameNode) continue;
-        const specSpan = argContentSpan(sourceId, braceArgs[1]);
+        const specSpan = argContentSpan(sourceId, braceArgs[1], text);
         const signatureRaw = specSpan
           ? text.slice(specSpan.startUtf16, specSpan.endUtf16).trim()
           : undefined;
-        const bodySpan = argContentSpan(sourceId, braceArgs[2]);
+        const bodySpan = argContentSpan(sourceId, braceArgs[2], text);
         const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
@@ -493,7 +522,7 @@ export function discoverDefinitions(
         markDefinitionTokens(node, undefined);
 
         if (mechanism === "newtheorem") {
-          const counterSpan = argContentSpan(sourceId, bracketArgs[0]);
+          const counterSpan = argContentSpan(sourceId, bracketArgs[0], text);
           result.envDefs.push({
             definedName,
             mechanism,
@@ -508,7 +537,7 @@ export function discoverDefinitions(
         } else if (mechanism === "newenvironment") {
           const numArgs = parseInt(stringContentOfArg(bracketArgs[0]), 10) || 0;
           const hasOptional = bracketArgs.length > 1;
-          const bodySpan = argContentSpan(sourceId, braceArgs[1]);
+          const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
           result.envDefs.push({
             definedName,
             mechanism,
@@ -605,7 +634,7 @@ export function parseLatexWitness(
       const args: ParserArgSpan[] = [];
       if (Array.isArray(node.args)) {
         for (const arg of node.args) {
-          const cs = argContentSpan(sourceId, arg);
+          const cs = argContentSpan(sourceId, arg, text);
           if (cs) args.push({ span: cs, bracketed: isBracketed(arg) });
         }
       }
@@ -621,7 +650,7 @@ export function parseLatexWitness(
         nodeType: node.type,
         name: getEnvName(node.env),
         span,
-        bodySpan: argContentSpan(sourceId, node),
+        bodySpan: argContentSpan(sourceId, node, text),
         inMathMode: inMathMode || node.type === "mathenv",
       });
     } else if (node.type === "inlinemath") {

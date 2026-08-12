@@ -142,6 +142,11 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $edef.mechanism | Should -Be "newtheorem"
         }
 
+        It "hulls definition bodies through nested attached arguments" {
+            $wdef = $script:Entities | Where-Object { $_.kind -eq "macro-definition" -and $_.definedName -eq "wrap" }
+            $wdef.text | Should -Be '\newcommand{\wrap}{\mathsf{W}}'
+        }
+
         It "synthesizes the argument hull for \pair{x} and marks it" {
             $inv = $script:Entities | Where-Object { $_.kind -eq "macro-invocation" -and $_.name -eq "pair" }
             $inv | Should -Not -BeNullOrEmpty
