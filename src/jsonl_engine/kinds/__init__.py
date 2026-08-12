@@ -3,7 +3,12 @@
 from .base import BASE_HEADER_SCHEMA, BaseStore, StoreWriter
 from .catalog import KindCatalog
 from .registry import DuplicateEntry, Registry
-from .article import ArticleManifest, ArticleMetadataContribution, ArticleMetadataExtension
+from .article import (
+    MAX_ARTICLE_MANIFEST_BYTES,
+    ArticleManifest,
+    ArticleMetadataContribution,
+    ArticleMetadataExtension,
+)
 from .inventory import InventoryRegistry
 from .schema_registry import SchemaRegistry
 
@@ -17,6 +22,7 @@ __all__ = [
     "ArticleManifest",
     "ArticleMetadataContribution",
     "ArticleMetadataExtension",
+    "MAX_ARTICLE_MANIFEST_BYTES",
     "InventoryRegistry",
     "SchemaRegistry",
 ]

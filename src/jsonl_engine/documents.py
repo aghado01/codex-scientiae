@@ -2,52 +2,16 @@
 
 from __future__ import annotations
 
-import os
-import stat
 from abc import ABC
 from typing import Any, Generic, Mapping, TypeVar, cast
 
 from .policy import DEFAULT_ENCODING, Codec
-from .publication import PinnedPublicationRoot
+from .publication import PinnedPublicationRoot, PublicationError
 from .reader import loads
 from .schemas import SchemaCatalog, get_schema_catalog
 from .writer import serialize_json, write_bytes
 
 DocumentValue = TypeVar("DocumentValue")
-_REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
-
-
-def _is_reparse(info: os.stat_result) -> bool:
-    return stat.S_ISLNK(info.st_mode) or bool(
-        getattr(info, "st_file_attributes", 0) & _REPARSE_POINT
-    )
-
-
-def _same_open_snapshot(left: os.stat_result, right: os.stat_result) -> bool:
-    fields = ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
-    return all(getattr(left, field, None) == getattr(right, field, None) for field in fields)
-
-
-def _same_named_generation(left: os.stat_result, right: os.stat_result) -> bool:
-    if left.st_ino or right.st_ino:
-        return (
-            left.st_dev == right.st_dev
-            and left.st_ino == right.st_ino
-            and left.st_size == right.st_size
-        )
-    left_birth = getattr(left, "st_birthtime_ns", None)
-    right_birth = getattr(right, "st_birthtime_ns", None)
-    if left_birth is not None or right_birth is not None:
-        return (
-            left.st_dev == right.st_dev
-            and left_birth == right_birth
-            and left.st_size == right.st_size
-        )
-    return (
-        left.st_dev == right.st_dev
-        and left.st_size == right.st_size
-        and getattr(left, "st_ctime_ns", None) == getattr(right, "st_ctime_ns", None)
-    )
 
 
 class JsonDocumentError(ValueError):
@@ -209,48 +173,16 @@ class JsonDocumentStore(Generic[DocumentValue]):
 
     def _read_bytes(self) -> bytes | None:
         try:
-            named_before = self.root.stat_leaf(self.leaf)
+            if not self.root.lexists(self.path):
+                return None
+            return self.root.read_bytes(
+                self.path,
+                maximum_bytes=self.kind.MAXIMUM_BYTES,
+            )
         except FileNotFoundError:
             return None
-        if not stat.S_ISREG(named_before.st_mode) or _is_reparse(named_before):
-            raise JsonDocumentError("document path is not a physical regular file", path=self.path)
-        if named_before.st_size > self.kind.MAXIMUM_BYTES:
-            raise JsonDocumentError(
-                f"document exceeds the {self.kind.MAXIMUM_BYTES}-byte boundary",
-                path=self.path,
-            )
-        try:
-            with self.root.open_leaf(self.leaf, "rb") as handle:
-                opened_before = os.fstat(handle.fileno())
-                if not stat.S_ISREG(opened_before.st_mode) or not _same_named_generation(
-                    named_before, opened_before
-                ):
-                    raise JsonDocumentError(
-                        "document changed before it could be read",
-                        path=self.path,
-                    )
-                raw = handle.read(self.kind.MAXIMUM_BYTES + 1)
-                opened_after = os.fstat(handle.fileno())
-        except JsonDocumentError:
-            raise
-        except OSError as exc:
-            raise JsonDocumentError("document could not be read", path=self.path) from exc
-        if (
-            len(raw) > self.kind.MAXIMUM_BYTES
-            or len(raw) != opened_after.st_size
-            or not _same_open_snapshot(opened_before, opened_after)
-        ):
-            raise JsonDocumentError("document changed while it was read", path=self.path)
-        try:
-            named_after = self.root.stat_leaf(self.leaf)
-        except OSError as exc:
-            raise JsonDocumentError(
-                "document disappeared after it was read",
-                path=self.path,
-            ) from exc
-        if _is_reparse(named_after) or not _same_named_generation(opened_after, named_after):
-            raise JsonDocumentError("document path changed while it was read", path=self.path)
-        return raw
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise JsonDocumentError(f"document could not be read ({exc})", path=self.path) from exc
 
     def read(self) -> DocumentValue | None:
         """Return the validated document, or ``None`` when its leaf is absent."""

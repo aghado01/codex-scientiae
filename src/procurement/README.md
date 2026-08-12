@@ -79,8 +79,9 @@ and publication are relative to those retained generations. Local import also re
 inbox descriptor. A replacement route is either blocked or causes the operation to fail without writing to
 or reporting success against the replacement. Source materialization has not yet routed archive extraction,
 tree publication, and article publication through a complete pinned hierarchy and remains the filesystem
-production-cutover blocker. Inventory rebuild separately pins its catalog generation across sentinel reads
-and publication.
+production-cutover blocker. The engine now provides pinned stable-copy, exclusive directory-publication,
+source-tree fingerprint, and `article.json` publication contracts for that integration. Inventory rebuild
+separately pins its catalog generation across sentinel reads and publication.
 
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are

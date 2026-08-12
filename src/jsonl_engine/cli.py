@@ -379,7 +379,7 @@ def _cmd_deposit(args: argparse.Namespace) -> int:
         entrypoint=args.entrypoint,
         entrypoint_selection=args.entrypoint_selection,
         publication=args.publication,
-        findings_json=args.findings_json,
+        findings=read_json(args.findings_json),
         provider_json=args.provider_json,
         metadata_json=args.metadata_json,
         metadata_extension=_load_metadata_extension(args.metadata_extension),

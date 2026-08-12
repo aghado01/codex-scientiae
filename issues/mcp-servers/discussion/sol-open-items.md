@@ -1,4 +1,4 @@
-The package cut, root/store kernel, and acquisition/local-import pinning are implemented without compatibility modules. The next milestone is source-materialization pinning.
+The package cut, root/store kernel, acquisition/local-import pinning, and engine publication completion are implemented without compatibility modules. The next milestone is source-materialization pinning.
 
 The earlier provider-catalog resumption notes are superseded. This file tracks the post-cut sequence.
 
@@ -19,9 +19,10 @@ flowchart LR
     A["Landed provider and hygiene foundation"] --> B["Hard package cut complete"]
     B --> C["Pinned-root and document-store kernel complete"]
     C --> D["Acquisition and local-import pinning complete"]
-    D --> E["Source-materialization pinning"]
-    E --> F["Remaining domain and MCP decomposition"]
-    F --> G["Providers, PDF profile, and live cutover"]
+    D --> E["Engine publication completion complete"]
+    E --> F["Source-materialization pinning"]
+    F --> G["Remaining domain and MCP decomposition"]
+    G --> H["Providers, PDF profile, and live cutover"]
 ```
 
 ### 1. Hard package cut — implemented
@@ -90,7 +91,23 @@ initialized staging-root pin
 
 Adversarial tests attempt replacement while HTTP and local bytes are in flight. Windows retained handles block the rename. POSIX descriptor-relative branches permit a rename only by continuing against the old generation and then refusing success; replacement generations receive no staged writes.
 
-### 4. Source-materialization pinning
+### 4. Engine publication completion — implemented
+
+`PinnedPublicationRoot` now supplies the generic operations needed by source publication:
+
+- stable bounded reads through retained descendant routes;
+- stable measured create-only copies between pinned roots;
+- physical descendant creation and no-follow access;
+- atomic exclusive publication of a transaction-owned direct-child directory;
+- generation checks before and after every successful operation.
+
+The exclusive directory operation uses the host no-replace rename primitive and fails closed where no such primitive is available. File staging uses the repository PID-plus-process-serial scratch convention; it introduces no UUID leaves.
+
+`ArticleManifest` reads and publishes through a supplied document pin. `deposit_article` now accepts the same active pin, holds the exact source-tree generation through assembly and both fingerprint passes, uses a generation-keyed article lease, and publishes `article.json` last. Its in-process findings input is structured data; only the CLI adapter reads `--findings-json` from a file.
+
+The procurement materializer has adopted the structured findings call but does not yet pass its application-retained catalog/document pins or use the new copy and directory-publication primitives. That wiring belongs to the next vertical slice.
+
+### 5. Source-materialization pinning
 
 This remains a complete vertical slice, not a `SourceDepositStore` wrapper:
 
@@ -100,13 +117,13 @@ This remains a complete vertical slice, not a `SourceDepositStore` wrapper:
 - perform pinned archive/PDF copies;
 - publish metadata through the procurement document store;
 - atomically publish or recover the source tree;
-- call an article publisher that accepts the document pin;
+- pass the retained document pin into the article publisher;
 - publish `article.json` last;
 - define recovery for abandoned source-publication state.
 
 This should also settle whether source materialization needs an explicit journal. Root pinning alone does not address crashes between archive, tree, metadata, and final sentinel publication.
 
-### 5. Remaining organization
+### 6. Remaining organization
 
 After the transactions are sound:
 

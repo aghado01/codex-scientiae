@@ -19,6 +19,8 @@ from ..writer import write_json
 from .base import BaseStore
 from .catalog import KindCatalog
 
+MAX_ARTICLE_MANIFEST_BYTES = 4 * 1024 * 1024
+
 
 @dataclass(frozen=True, slots=True)
 class ArticleMetadataContribution:
@@ -64,14 +66,21 @@ class ArticleManifest(BaseStore):
         """
         record = self.validate_record(self.mint(values))
         out_path = self.get_output_path()
-        return write_json(
+        root = self.publication_root
+        if root is not None:
+            root.assert_current()
+        published = write_json(
             out_path,
             record,
             encoding=self.ENCODING,
             codec=self.CODEC,
             indent=2,
             overwrite=False,
+            publication_root=root,
         )
+        if root is not None:
+            root.assert_current()
+        return published
 
     def validate_record(self, record: Dict[str, Any]) -> Dict[str, Any]:
         """Validate article shape plus the relationships established by deposit assembly."""
@@ -193,10 +202,26 @@ class ArticleManifest(BaseStore):
 
     def read(self) -> Any:
         """Read one manifest back under this kind's declared policy and schema."""
-        from ..reader import read_json
+        from ..reader import loads, read_json
 
-        return read_json(
-            self.get_output_path(),
-            encoding=self.ENCODING,
-            validator=self,
-        )
+        path = self.get_output_path()
+        root = self.publication_root
+        if root is None:
+            return read_json(
+                path,
+                encoding=self.ENCODING,
+                validator=self,
+            )
+        root.assert_current()
+        raw = root.read_bytes(path, maximum_bytes=MAX_ARTICLE_MANIFEST_BYTES)
+        value = loads(raw, path=path, encoding=self.ENCODING, validator=self)
+        root.assert_current()
+        return value
+
+
+__all__ = [
+    "ArticleManifest",
+    "ArticleMetadataContribution",
+    "ArticleMetadataExtension",
+    "MAX_ARTICLE_MANIFEST_BYTES",
+]

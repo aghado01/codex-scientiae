@@ -21,6 +21,7 @@ from jsonl_engine import (
     ArticleManifest,
     DepositConflict,
     DepositError,
+    PinnedPublicationRoot,
     deposit_article,
 )
 from jsonl_engine.reader import read_json
@@ -180,7 +181,7 @@ def _metadata_bundle(
 
 def _run_cli(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, "-m", "jsonl_engine", *args],
+        [sys.executable, "-B", "-m", "jsonl_engine", *args],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         timeout=120,
@@ -327,7 +328,7 @@ class DepositFixture:
             "entrypoint": self.entrypoint,
             "entrypoint_selection": "single-candidate",
             "publication": "published-new-tree",
-            "findings_json": self.findings_path,
+            "findings": copy.deepcopy(self.findings),
         }
         if self.provider_name is not None:
             values["provider_json"] = self.provider_name
@@ -357,9 +358,9 @@ class DepositFixture:
             ("--entrypoint", "entrypoint"),
             ("--entrypoint-selection", "entrypoint_selection"),
             ("--publication", "publication"),
-            ("--findings-json", "findings_json"),
         ):
             arguments.extend((option, str(values[name])))
+        arguments.extend(("--findings-json", self.findings_path))
         if "provider_json" in values:
             arguments.extend(("--provider-json", values["provider_json"]))
         if "pdf" in values:
@@ -672,6 +673,23 @@ class TestDepositCreation(unittest.TestCase):
             frame = json.loads(proc.stdout)
             self.assertEqual("API title", frame["value"]["article"]["title"])
 
+    def test_cli_remains_the_file_adapter_for_malformed_findings_json(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            with open(fixture.findings_path, "wb") as handle:
+                handle.write(b'{"checks":')
+
+            proc = _run_cli("--framed", "deposit", *fixture.cli_arguments())
+
+            self.assertNotEqual(0, proc.returncode)
+            self.assertEqual(b"", proc.stdout)
+            failure = json.loads(proc.stderr)
+            self.assertEqual("error", failure["type"])
+            self.assertEqual("JsonReaderError", failure["error"])
+            self.assertIn("malformed JSON", failure["message"])
+            self.assertFalse(os.path.lexists(fixture.article_path))
+            self.assertEqual([], _article_scratch(fixture.document_dir))
+
     def test_retry_is_byte_and_mtime_idempotent_even_when_publication_changes(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             fixture = DepositFixture(tmpdir)
@@ -885,9 +903,9 @@ class TestDepositRefusals(unittest.TestCase):
             assert_witnesses = deposit_module._assert_file_witnesses
             replaced = False
 
-            def check_then_replace_source(witnesses):
+            def check_then_replace_source(witnesses, publication_root):
                 nonlocal replaced
-                assert_witnesses(witnesses)
+                assert_witnesses(witnesses, publication_root)
                 if not replaced:
                     with open(fixture.archive_path, "wb") as handle:
                         handle.write(replacement)
@@ -1015,18 +1033,15 @@ class TestDepositRefusals(unittest.TestCase):
     def test_malformed_and_unknown_findings_are_refused_without_a_sentinel(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             fixture = DepositFixture(tmpdir)
-            with open(fixture.findings_path, "wb") as handle:
-                handle.write(b'{"checks":')
-            with self.assertRaisesRegex(DepositError, "strict UTF-8 JSON object"):
-                deposit_article(**fixture.kwargs())
+            with self.assertRaisesRegex(DepositError, "one mapping"):
+                deposit_article(**fixture.kwargs(findings=["not", "a", "mapping"]))
             self.assertFalse(os.path.lexists(fixture.article_path))
             self.assertEqual([], _article_scratch(fixture.document_dir))
 
             unknown = copy.deepcopy(fixture.findings)
             unknown["invented"] = {"claim": True}
-            fixture.write_findings(unknown)
             with self.assertRaisesRegex(DepositError, "unexpected.*invented"):
-                deposit_article(**fixture.kwargs())
+                deposit_article(**fixture.kwargs(findings=unknown))
             self.assertFalse(os.path.lexists(fixture.article_path))
             self.assertEqual([], _article_scratch(fixture.document_dir))
 
@@ -1181,6 +1196,78 @@ class TestDepositConcurrency(unittest.TestCase):
             self.assertIsInstance(errors[0], FileExistsError)
             self.assertIn(read_json(os.path.join(tmpdir, "article.json")), (first, second))
             self.assertEqual([], _article_scratch(tmpdir))
+
+
+class TestPinnedDepositPublication(unittest.TestCase):
+    def test_caller_supplied_document_pin_owns_the_complete_deposit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            with PinnedPublicationRoot(fixture.document_dir) as document_root:
+                result = deposit_article(
+                    **fixture.kwargs(),
+                    publication_root=document_root,
+                )
+                self.assertTrue(document_root.is_active)
+                self.assertEqual("deposited", result.status)
+                self.assertEqual(result.article, read_json(fixture.article_path))
+
+    def test_inactive_or_mismatched_document_pin_is_rejected_before_publication(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            inactive = PinnedPublicationRoot(fixture.document_dir)
+            with self.assertRaisesRegex(DepositError, "must remain active"):
+                deposit_article(**fixture.kwargs(), publication_root=inactive)
+            with PinnedPublicationRoot(fixture.document_dir) as document_root:
+                with self.assertRaisesRegex(DepositError, "must exactly name"):
+                    deposit_article(
+                        **fixture.kwargs(document_dir=tmpdir),
+                        publication_root=document_root,
+                    )
+            self.assertFalse(os.path.lexists(fixture.article_path))
+
+    def test_root_replacement_is_blocked_or_refused_without_cross_generation_writes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            retired = os.path.join(tmpdir, "retired-document")
+            deposit_module = sys.modules["jsonl_engine.deposit"]
+            assemble_article = deposit_module._assemble_article
+            rename_blocked = False
+
+            def assemble_during_root_replacement(**kwargs):
+                nonlocal rename_blocked
+                candidate = assemble_article(**kwargs)
+                try:
+                    os.rename(fixture.document_dir, retired)
+                except OSError:
+                    rename_blocked = True
+                else:
+                    os.mkdir(fixture.document_dir)
+                return candidate
+
+            with PinnedPublicationRoot(fixture.document_dir) as document_root, mock.patch(
+                "jsonl_engine.deposit._assemble_article",
+                side_effect=assemble_during_root_replacement,
+            ):
+                if os.name == "nt":
+                    result = deposit_article(
+                        **fixture.kwargs(),
+                        publication_root=document_root,
+                    )
+                    self.assertTrue(rename_blocked)
+                    self.assertEqual("deposited", result.status)
+                else:
+                    with self.assertRaises(DepositError):
+                        deposit_article(
+                            **fixture.kwargs(),
+                            publication_root=document_root,
+                        )
+
+            if os.name == "nt":
+                self.assertFalse(os.path.lexists(retired))
+                self.assertTrue(os.path.isfile(fixture.article_path))
+            else:
+                self.assertEqual([], os.listdir(fixture.document_dir))
+                self.assertFalse(os.path.lexists(os.path.join(retired, "article.json")))
 
 
 if __name__ == "__main__":

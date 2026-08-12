@@ -10,7 +10,6 @@ from tempfile import TemporaryDirectory
 from typing import TypeVar
 
 from jsonl_engine.deposit import DepositResult
-from jsonl_engine.writer import write_json
 from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
@@ -290,13 +289,7 @@ class SourceMaterializationService:
                 inspector=self._inspector,
                 main_tex=main_tex,
             )
-            findings_path = temporary_root / "findings.json"
-            write_json(
-                str(findings_path),
-                build_source_findings(extraction, installed.inspection),
-                indent=2,
-                overwrite=False,
-            )
+            findings = build_source_findings(extraction, installed.inspection)
             deposit = self._article_deposit(
                 document_dir=str(item.directory),
                 slug=manifest.slug,
@@ -310,7 +303,7 @@ class SourceMaterializationService:
                 entrypoint=installed.inspection.entrypoint,
                 entrypoint_selection=installed.inspection.entrypoint_selection,
                 publication=installed.publication,
-                findings_json=str(findings_path),
+                findings=findings,
                 metadata_json=(item.metadata_path.name if metadata is not None else None),
                 pdf=pdf_leaf,
                 lock_timeout=self._lock_timeout,

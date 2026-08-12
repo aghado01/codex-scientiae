@@ -27,7 +27,14 @@ from .pointer import MISSING, PointerError, exists as pointer_exists, resolve as
 from .ordering import KeyComparison, SortField
 from .sidecar import StorePaths, get_file_dotnet_ticks, store_paths
 from .writer import JsonWriterError, serialize_json, write_bytes, write_json
-from .publication import PinnedPublicationRoot
+from .publication import (
+    PinnedFileCopy,
+    PinnedFileMeasurement,
+    PinnedPublicationRoot,
+    PublicationConflict,
+    PublicationError,
+    copy_file_no_clobber,
+)
 from .documents import JsonDocumentError, JsonDocumentKind, JsonDocumentStore
 from .reader import (
     Jidx,
@@ -42,6 +49,7 @@ from .engine import Discipline, JsonlEngine
 from .inspect import StoreInfo, complete_prefix, inspect_store, snapshot
 from .schemas import IDENTITY_KEYWORD, SchemaCatalog, get_schema_catalog
 from .kinds import (
+    MAX_ARTICLE_MANIFEST_BYTES,
     ArticleManifest,
     ArticleMetadataContribution,
     ArticleMetadataExtension,
@@ -79,7 +87,12 @@ __all__ = [
     "serialize_json",
     "write_bytes",
     "write_json",
+    "PinnedFileCopy",
+    "PinnedFileMeasurement",
     "PinnedPublicationRoot",
+    "PublicationConflict",
+    "PublicationError",
+    "copy_file_no_clobber",
     "JsonDocumentError",
     "JsonDocumentKind",
     "JsonDocumentStore",
@@ -102,6 +115,7 @@ __all__ = [
     "SchemaCatalog",
     "get_schema_catalog",
     # kinds
+    "MAX_ARTICLE_MANIFEST_BYTES",
     "BaseStore",
     "StoreWriter",
     "KindCatalog",

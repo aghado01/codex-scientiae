@@ -1,11 +1,8 @@
 """Article deposit assembly and immutable publication.
 
-The service accepts source facts established by the PowerShell LaTeX transaction. It resolves and
-fingerprints deposited files, projects optional provider metadata, validates the article schema,
-and creates ``article.json``. An existing compatible article is returned unchanged; an invalid or
-incompatible article is a visible conflict. The caller owns source-tree coordination for the whole
-call; the PowerShell orchestrator supplies that lock. File-generation witnesses are checked on both
-sides of publication, and a newly created article is rolled back if the closing check detects drift.
+The service fingerprints deposited forms, projects optional metadata, validates the article schema,
+and creates ``article.json``. Compatible existing articles are returned unchanged. The caller owns
+source-tree coordination for the complete call.
 """
 
 from __future__ import annotations
@@ -16,15 +13,21 @@ import ntpath
 import os
 import posixpath
 import stat
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Mapping, Optional, Tuple
 
 from filelock import FileLock, Timeout
 
-from .kinds.article import ArticleManifest, ArticleMetadataContribution, ArticleMetadataExtension
+from .kinds.article import (
+    MAX_ARTICLE_MANIFEST_BYTES,
+    ArticleManifest,
+    ArticleMetadataContribution,
+    ArticleMetadataExtension,
+)
+from .publication import PinnedPublicationRoot, PublicationError
 from .reader import loads
-from .sidecar import lock_path
 from .writer import serialize_json
 
 __all__ = ["DepositConflict", "DepositError", "DepositResult", "deposit_article"]
@@ -73,9 +76,16 @@ class _FileWitness:
     size: int
     mtime_ns: int
     ctime_ns: int
+    relative_path: str | None = None
 
     @classmethod
-    def capture(cls, path: str, info: os.stat_result) -> "_FileWitness":
+    def capture(
+        cls,
+        path: str,
+        info: os.stat_result,
+        *,
+        relative_path: str | None = None,
+    ) -> "_FileWitness":
         return cls(
             path=path,
             device=info.st_dev,
@@ -83,26 +93,12 @@ class _FileWitness:
             size=info.st_size,
             mtime_ns=getattr(info, "st_mtime_ns", int(info.st_mtime * 1_000_000_000)),
             ctime_ns=getattr(info, "st_ctime_ns", int(info.st_ctime * 1_000_000_000)),
+            relative_path=relative_path,
         )
 
     def matches(self, info: os.stat_result) -> bool:
-        current = type(self).capture(self.path, info)
+        current = type(self).capture(self.path, info, relative_path=self.relative_path)
         return current == self
-
-
-def _same_file_generation(left: os.stat_result, right: os.stat_result) -> bool:
-    """Compare an opened file with its pathname without relying on close-finalized timestamps."""
-    if left.st_ino or right.st_ino:
-        return (
-            left.st_dev == right.st_dev
-            and left.st_ino == right.st_ino
-            and left.st_size == right.st_size
-        )
-    return (
-        left.st_dev == right.st_dev
-        and left.st_size == right.st_size
-        and getattr(left, "st_ctime_ns", None) == getattr(right, "st_ctime_ns", None)
-    )
 
 
 _ARCHIVE_KINDS = frozenset(("tar+gzip", "single-tex+gzip"))
@@ -119,13 +115,6 @@ def _utc_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-def _within(root: str, candidate: str) -> bool:
-    try:
-        return os.path.normcase(os.path.commonpath((root, candidate))) == os.path.normcase(root)
-    except ValueError:
-        return False
-
-
 def _document_root(document_dir: str) -> Tuple[str, str]:
     requested = os.path.abspath(os.fspath(document_dir))
     if not os.path.isdir(requested):
@@ -138,6 +127,52 @@ def _document_root(document_dir: str) -> Tuple[str, str]:
             f"document deposit must not traverse a symbolic link or reparse point: '{requested}'"
         )
     return resolved, os.path.basename(os.path.normpath(requested))
+
+
+@contextmanager
+def _document_publication(
+    document_dir: str,
+    publication_root: PinnedPublicationRoot | None,
+) -> Iterator[tuple[PinnedPublicationRoot, str]]:
+    """Yield the exact document generation used for every deposit operation."""
+
+    if publication_root is None:
+        root_path, directory_leaf = _document_root(document_dir)
+        owned_root = PinnedPublicationRoot(root_path)
+        try:
+            owned_root.__enter__()
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise DepositError(
+                f"document deposit could not retain its directory generation: '{root_path}'"
+            ) from exc
+        try:
+            yield owned_root, directory_leaf
+        finally:
+            owned_root.__exit__(None, None, None)
+        return
+
+    if not isinstance(publication_root, PinnedPublicationRoot):
+        raise TypeError("publication_root must be an active PinnedPublicationRoot or None")
+    requested = os.path.abspath(os.fspath(document_dir))
+    if os.path.normpath(requested) != os.path.normpath(publication_root.path):
+        raise DepositError(
+            "document_dir must exactly name the supplied publication root: "
+            f"{requested!r} != {publication_root.path!r}"
+        )
+    if not publication_root.is_active:
+        raise DepositError("publication_root must remain active for the complete deposit")
+    try:
+        publication_root.assert_current()
+        info = publication_root.stat_root()
+    except (OSError, RuntimeError) as exc:
+        raise DepositError(
+            f"document deposit root is no longer current: '{publication_root.path}'"
+        ) from exc
+    if not stat.S_ISDIR(info.st_mode):
+        raise DepositError(
+            f"document deposit root is not a physical directory: '{publication_root.path}'"
+        )
+    yield publication_root, os.path.basename(os.path.normpath(publication_root.path))
 
 
 def _validate_slug(slug: str, *, directory_leaf: str) -> str:
@@ -160,7 +195,7 @@ def _is_portable_leaf(value: str) -> bool:
 
 
 def _resolve_relative(
-    root: str,
+    root: PinnedPublicationRoot,
     value: str,
     *,
     label: str,
@@ -181,30 +216,34 @@ def _resolve_relative(
     ):
         raise DepositError(f"{label} must be a normalized portable relative path: {value!r}")
 
-    lexical = os.path.abspath(os.path.join(root, *components))
-    actual = os.path.realpath(lexical)
-    if not _within(root, lexical) or not _within(root, actual):
-        raise DepositError(f"{label} escapes the document directory: {value!r}")
-    if os.path.normcase(os.path.normpath(lexical)) != os.path.normcase(
-        os.path.normpath(actual)
-    ):
-        raise DepositError(f"{label} must not traverse a symbolic link or reparse point: {value!r}")
-    if kind == "file" and not os.path.isfile(actual):
+    relative = "/".join(components)
+    lexical = root.absolute_relative(relative)
+    try:
+        info = root.stat_relative(relative)
+    except OSError as exc:
+        raise DepositError(f"{label} is not accessible: '{lexical}'") from exc
+    attributes = getattr(info, "st_file_attributes", 0)
+    if stat.S_ISLNK(info.st_mode) or attributes & 0x400:
+        raise DepositError(
+            f"{label} must not traverse a symbolic link or reparse point: {value!r}"
+        )
+    if kind == "file" and not stat.S_ISREG(info.st_mode):
         raise DepositError(f"{label} file not found: '{lexical}'")
-    if kind == "directory" and not os.path.isdir(actual):
+    if kind == "directory" and not stat.S_ISDIR(info.st_mode):
         raise DepositError(f"{label} directory not found: '{lexical}'")
-    return value, actual
+    return relative, lexical
 
 
 def _stable_read(
-    path: str,
+    root: PinnedPublicationRoot,
+    relative_path: str,
     *,
     max_bytes: int | None = None,
 ) -> Tuple[bytes, _FileWitness]:
-    with open(path, "rb") as handle:
+    path = root.absolute_relative(relative_path)
+    named_before = root.stat_relative(relative_path)
+    with root.open_stable_relative_file(relative_path) as handle:
         before = os.fstat(handle.fileno())
-        if not stat.S_ISREG(before.st_mode):
-            raise DepositError(f"source is not a regular file: '{path}'")
         if max_bytes is not None and before.st_size > max_bytes:
             raise DepositError(
                 f"source exceeds the {max_bytes}-byte read limit: '{path}'"
@@ -231,22 +270,32 @@ def _stable_read(
     )
     if identity_before != identity_after or len(raw) != after.st_size:
         raise DepositError(f"file changed while it was being read: '{path}'")
-    try:
-        current = os.stat(path, follow_symlinks=False)
-    except OSError as exc:
-        raise DepositError(f"file path changed while it was being read: '{path}'") from exc
-    if not stat.S_ISREG(current.st_mode) or not _same_file_generation(after, current):
+    named_after = root.stat_relative(relative_path)
+    witness_before = _FileWitness.capture(
+        path,
+        named_before,
+        relative_path=relative_path,
+    )
+    witness_after = _FileWitness.capture(
+        path,
+        named_after,
+        relative_path=relative_path,
+    )
+    if not stat.S_ISREG(named_after.st_mode) or witness_before != witness_after:
         raise DepositError(f"file path changed while it was being read: '{path}'")
-    return raw, _FileWitness.capture(path, current)
+    return raw, witness_after
 
 
-def _fingerprint(path: str) -> Tuple[int, str, _FileWitness]:
+def _fingerprint(
+    root: PinnedPublicationRoot,
+    relative_path: str,
+) -> Tuple[int, str, _FileWitness]:
+    path = root.absolute_relative(relative_path)
+    named_before = root.stat_relative(relative_path)
     digest = hashlib.sha256()
     size = 0
-    with open(path, "rb") as handle:
+    with root.open_stable_relative_file(relative_path) as handle:
         before = os.fstat(handle.fileno())
-        if not stat.S_ISREG(before.st_mode):
-            raise DepositError(f"source is not a regular file: '{path}'")
         while True:
             chunk = handle.read(1024 * 1024)
             if not chunk:
@@ -270,47 +319,52 @@ def _fingerprint(path: str) -> Tuple[int, str, _FileWitness]:
     )
     if identity_before != identity_after or size != after.st_size:
         raise DepositError(f"file changed while it was being fingerprinted: '{path}'")
-    try:
-        current = os.stat(path, follow_symlinks=False)
-    except OSError as exc:
-        raise DepositError(
-            f"file path changed while it was being fingerprinted: '{path}'"
-        ) from exc
-    if not stat.S_ISREG(current.st_mode) or not _same_file_generation(after, current):
+    named_after = root.stat_relative(relative_path)
+    witness_before = _FileWitness.capture(
+        path,
+        named_before,
+        relative_path=relative_path,
+    )
+    witness_after = _FileWitness.capture(
+        path,
+        named_after,
+        relative_path=relative_path,
+    )
+    if not stat.S_ISREG(named_after.st_mode) or witness_before != witness_after:
         raise DepositError(f"file path changed while it was being fingerprinted: '{path}'")
-    return size, digest.hexdigest(), _FileWitness.capture(path, current)
+    return (
+        size,
+        digest.hexdigest(),
+        witness_after,
+    )
 
 
-def _fingerprint_tree(root: str) -> Tuple[str, int, int]:
-    """Recompute the PowerShell source-tree fingerprint without following links."""
+def _same_directory_generation(left: os.stat_result, right: os.stat_result) -> bool:
+    if left.st_ino or right.st_ino:
+        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
+    return left.st_dev == right.st_dev and getattr(
+        left, "st_ctime_ns", None
+    ) == getattr(right, "st_ctime_ns", None)
 
-    records: List[Tuple[str, str]] = []
+
+def _fingerprint_pinned_tree(root: PinnedPublicationRoot) -> Tuple[str, int, int]:
+    """Fingerprint one retained physical tree without following links or reparses."""
+
+    records: List[Tuple[str, int, str]] = []
     portable_paths: set[str] = set()
-    pending = [root]
-    while pending:
-        directory = pending.pop()
+
+    def scan(directory: PinnedPublicationRoot, prefix: str) -> None:
+        directory.assert_current()
+        directory_before = directory.stat_root()
         try:
-            entries = list(os.scandir(directory))
+            entries = directory.list_names()
         except OSError as exc:
-            raise DepositError(f"source tree cannot be enumerated: '{directory}'") from exc
-        for entry in entries:
-            try:
-                info = entry.stat(follow_symlinks=False)
-            except OSError as exc:
-                raise DepositError(f"source tree entry cannot be measured: '{entry.path}'") from exc
-            attributes = getattr(info, "st_file_attributes", 0)
-            if stat.S_ISLNK(info.st_mode) or attributes & 0x400:
-                raise DepositError(
-                    f"source tree contains a symbolic link or reparse point: '{entry.path}'"
-                )
-            if stat.S_ISDIR(info.st_mode):
-                pending.append(entry.path)
-                continue
-            if not stat.S_ISREG(info.st_mode):
-                raise DepositError(f"source tree entry is not a regular file: '{entry.path}'")
-            relative = os.path.relpath(entry.path, root).replace(os.sep, "/")
-            parts = relative.split("/")
-            if any(not _is_portable_leaf(part) for part in parts):
+            raise DepositError(
+                f"source tree cannot be enumerated: '{directory.path}'"
+            ) from exc
+        for name in entries:
+            relative = f"{prefix}/{name}" if prefix else name
+            if any(not _is_portable_leaf(part) for part in relative.split("/")):
                 raise DepositError(f"source tree contains a non-portable path: {relative!r}")
             portable_key = relative.casefold()
             if portable_key in portable_paths:
@@ -318,20 +372,86 @@ def _fingerprint_tree(root: str) -> Tuple[str, int, int]:
                     f"source tree contains duplicate or case-colliding paths: {relative!r}"
                 )
             portable_paths.add(portable_key)
-            records.append((relative, entry.path))
+            try:
+                info = directory.stat_leaf(name)
+            except OSError as exc:
+                raise DepositError(
+                    f"source tree entry cannot be measured: '{directory.absolute(name)}'"
+                ) from exc
+            attributes = getattr(info, "st_file_attributes", 0)
+            if stat.S_ISLNK(info.st_mode) or attributes & 0x400:
+                raise DepositError(
+                    "source tree contains a symbolic link or reparse point: "
+                    f"'{directory.absolute(name)}'"
+                )
+            if stat.S_ISDIR(info.st_mode):
+                with directory.pin_child(name) as child:
+                    if not _same_directory_generation(info, child.stat_root()):
+                        raise DepositError(
+                            "source tree directory changed while it was pinned: "
+                            f"'{child.path}'"
+                        )
+                    scan(child, relative)
+                continue
+            if not stat.S_ISREG(info.st_mode):
+                raise DepositError(
+                    f"source tree entry is not a regular file: '{directory.absolute(name)}'"
+                )
+            size, digest, _ = _fingerprint(directory, name)
+            records.append((relative, size, digest))
+        directory_after = directory.stat_root()
+        directory.assert_current()
+        directory_fields = (
+            "st_dev",
+            "st_ino",
+            "st_size",
+            "st_mtime_ns",
+            "st_ctime_ns",
+        )
+        if any(
+            getattr(directory_before, field, None) != getattr(directory_after, field, None)
+            for field in directory_fields
+        ):
+            raise DepositError(
+                f"source tree directory changed while it was scanned: '{directory.path}'"
+            )
+
+    root.assert_current()
+    scan(root, "")
+    root.assert_current()
     if not records:
-        raise DepositError(f"source tree is empty: '{root}'")
+        raise DepositError(f"source tree is empty: '{root.path}'")
 
     records.sort(key=lambda item: item[0].encode("utf-16-be", "surrogatepass"))
     witnessed: List[bytes] = []
     tex_files = 0
-    for relative, path in records:
-        size, digest, _ = _fingerprint(path)
+    for relative, size, digest in records:
         witnessed.append(f"{relative}\0{size}\0{digest}\n".encode("utf-8"))
         if relative.casefold().endswith(".tex"):
             tex_files += 1
     tree_hash = hashlib.sha256(b"".join(witnessed)).hexdigest()
     return tree_hash, len(records), tex_files
+
+
+def _fingerprint_tree(
+    root: str,
+    *,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> Tuple[str, int, int]:
+    """Fingerprint one physical source tree through a retained directory generation."""
+
+    requested = os.path.abspath(os.fspath(root))
+    if publication_root is not None:
+        if os.path.normpath(requested) != os.path.normpath(publication_root.path):
+            raise DepositError("source tree path does not match its publication root")
+        return _fingerprint_pinned_tree(publication_root)
+    try:
+        with PinnedPublicationRoot(requested) as owned_root:
+            return _fingerprint_pinned_tree(owned_root)
+    except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+        if isinstance(exc, DepositError):
+            raise
+        raise DepositError(f"source tree could not be fingerprinted: '{requested}'") from exc
 
 
 def _assert_tree_snapshot(
@@ -340,8 +460,12 @@ def _assert_tree_snapshot(
     expected_sha256: str,
     expected_files: int,
     expected_tex_files: int,
+    publication_root: PinnedPublicationRoot | None = None,
 ) -> None:
-    actual_sha256, actual_files, actual_tex_files = _fingerprint_tree(root)
+    actual_sha256, actual_files, actual_tex_files = _fingerprint_tree(
+        root,
+        publication_root=publication_root,
+    )
     if actual_sha256 != expected_sha256:
         raise DepositConflict("published source tree does not match its supplied sha256")
     if actual_files != expected_files or actual_tex_files != expected_tex_files:
@@ -350,11 +474,16 @@ def _assert_tree_snapshot(
         )
 
 
-def _assert_file_witnesses(witnesses: Iterable[_FileWitness]) -> None:
+def _assert_file_witnesses(
+    witnesses: Iterable[_FileWitness],
+    publication_root: PinnedPublicationRoot,
+) -> None:
     """Refuse publication when a measured path no longer names the measured file generation."""
     for witness in witnesses:
+        if witness.relative_path is None:
+            raise DepositError(f"measured source has no pinned relative path: '{witness.path}'")
         try:
-            current = os.stat(witness.path, follow_symlinks=False)
+            current = publication_root.stat_relative(witness.relative_path)
         except OSError as exc:
             raise DepositError(
                 f"measured source disappeared before article publication: '{witness.path}'"
@@ -369,12 +498,13 @@ def _file_record(
     *,
     path: str,
     full_path: str,
+    publication_root: PinnedPublicationRoot,
     role: str,
     media_type: str,
     witnesses: List[_FileWitness],
     extra: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    size, digest, witness = _fingerprint(full_path)
+    size, digest, witness = _fingerprint(publication_root, path)
     witnesses.append(witness)
     record: Dict[str, Any] = {
         "role": role,
@@ -389,28 +519,31 @@ def _file_record(
 
 
 def _read_object_with_bytes(
+    root: PinnedPublicationRoot,
+    relative_path: str,
     path: str,
     *,
     label: str,
     max_bytes: int | None = None,
 ) -> Tuple[Dict[str, Any], bytes, _FileWitness]:
     try:
-        raw, witness = _stable_read(path, max_bytes=max_bytes)
+        raw, witness = _stable_read(root, relative_path, max_bytes=max_bytes)
         value = loads(raw, path=path)
     except DepositError:
         raise
+    except PublicationError as exc:
+        raise DepositError(
+            f"{label} changed while it was read through the retained generation: '{path}'"
+        ) from exc
     except Exception as exc:
         raise DepositError(f"{label} is not a strict UTF-8 JSON object: '{path}': {exc}") from exc
     return value, raw, witness
 
 
-def _read_object(path: str, *, label: str) -> Dict[str, Any]:
-    return _read_object_with_bytes(path, label=label)[0]
-
-
-def _read_findings(path: str) -> Dict[str, Any]:
-    full = os.path.abspath(os.fspath(path))
-    findings = _read_object(full, label="findings JSON")
+def _validate_findings(value: Mapping[str, Any]) -> Dict[str, Any]:
+    if not isinstance(value, Mapping):
+        raise DepositError("findings must be one mapping")
+    findings = dict(value)
     required = {"checks", "declarations", "package_control_files"}
     actual = set(findings)
     if actual != required:
@@ -421,8 +554,8 @@ def _read_findings(path: str) -> Dict[str, Any]:
             detail.append(f"missing {missing}")
         if unexpected:
             detail.append(f"unexpected {unexpected}")
-        raise DepositError("findings JSON fields are invalid: " + "; ".join(detail))
-    return findings
+        raise DepositError("findings fields are invalid: " + "; ".join(detail))
+    return copy.deepcopy(findings)
 
 
 def _provider_values(provider: Optional[Dict[str, Any]]) -> Dict[str, Any]:
@@ -457,6 +590,7 @@ def _provider_values(provider: Optional[Dict[str, Any]]) -> Dict[str, Any]:
 
 def _read_metadata_bundle(
     extension: ArticleMetadataExtension,
+    root: PinnedPublicationRoot,
     path: str,
     *,
     relative_path: str,
@@ -470,6 +604,8 @@ def _read_metadata_bundle(
     ):
         raise DepositError("article metadata extension maximum_bytes must be a positive integer")
     bundle, raw, witness = _read_object_with_bytes(
+        root,
+        relative_path,
         path,
         label="API metadata bundle",
         max_bytes=maximum_bytes,
@@ -493,6 +629,7 @@ def _read_metadata_bundle(
 def _assemble_article(
     *,
     kind: ArticleManifest,
+    publication_root: PinnedPublicationRoot,
     slug: str,
     archive: str,
     archive_full: str,
@@ -520,6 +657,8 @@ def _assemble_article(
     metadata = None
     if provider_full is not None:
         provider, provider_raw, provider_witness = _read_object_with_bytes(
+            publication_root,
+            provider_json or "",
             provider_full,
             label="provider metadata",
             max_bytes=32 * 1024 * 1024,
@@ -534,6 +673,7 @@ def _assemble_article(
             raise DepositError("metadata_json requires an article metadata extension")
         metadata, metadata_witness = _read_metadata_bundle(
             metadata_extension,
+            publication_root,
             metadata_full,
             relative_path=metadata_json or "",
             slug=slug,
@@ -543,6 +683,7 @@ def _assemble_article(
     archive_record = _file_record(
         path=archive,
         full_path=archive_full,
+        publication_root=publication_root,
         role="latex-source-archive",
         media_type="application/gzip",
         witnesses=witnesses,
@@ -569,6 +710,7 @@ def _assemble_article(
             _file_record(
                 path=pdf,
                 full_path=pdf_full,
+                publication_root=publication_root,
                 role="pdf-source",
                 media_type="application/pdf",
                 witnesses=witnesses,
@@ -659,29 +801,18 @@ def _first_difference(left: Any, right: Any, path: str = "$") -> Optional[str]:
     return None if left == right else path
 
 
-def _read_existing_article(kind: ArticleManifest, path: str) -> Tuple[Dict[str, Any], bytes]:
-    """Read one stable, no-follow regular article file through its opened generation."""
-    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
-    try:
-        descriptor = os.open(path, flags)
-    except OSError as exc:
-        raise DepositConflict(f"existing article.json is not a readable regular file: '{path}'") from exc
+def _read_existing_article(
+    kind: ArticleManifest,
+    path: str,
+    publication_root: PinnedPublicationRoot,
+) -> Tuple[Dict[str, Any], bytes]:
+    """Read one article through its retained document generation."""
 
     try:
-        with os.fdopen(descriptor, "rb") as handle:
-            before = os.fstat(handle.fileno())
-            if not stat.S_ISREG(before.st_mode):
-                raise DepositConflict(f"existing article.json is not a regular file: '{path}'")
-            raw = handle.read()
-            after = os.fstat(handle.fileno())
-        before_identity = _FileWitness.capture(path, before)
-        after_identity = _FileWitness.capture(path, after)
-        if before_identity != after_identity or len(raw) != after.st_size:
-            raise DepositConflict(f"existing article.json changed while being read: '{path}'")
-
-        current = os.stat(path, follow_symlinks=False)
-        if not stat.S_ISREG(current.st_mode) or not _same_file_generation(after, current):
-            raise DepositConflict(f"existing article.json path changed while being read: '{path}'")
+        raw = publication_root.read_bytes(
+            path,
+            maximum_bytes=MAX_ARTICLE_MANIFEST_BYTES,
+        )
         existing = kind.validate_record(loads(raw, path=path))
     except Exception as exc:
         if isinstance(exc, DepositConflict):
@@ -690,8 +821,13 @@ def _read_existing_article(kind: ArticleManifest, path: str) -> Tuple[Dict[str, 
     return existing, raw
 
 
-def _existing_article(kind: ArticleManifest, path: str, candidate: Dict[str, Any]) -> Dict[str, Any]:
-    existing, raw = _read_existing_article(kind, path)
+def _existing_article(
+    kind: ArticleManifest,
+    path: str,
+    candidate: Dict[str, Any],
+    publication_root: PinnedPublicationRoot,
+) -> Dict[str, Any]:
+    existing, raw = _read_existing_article(kind, path, publication_root)
 
     comparable = copy.deepcopy(candidate)
     comparable["initialized_utc"] = existing["initialized_utc"]
@@ -717,7 +853,10 @@ def _existing_article(kind: ArticleManifest, path: str, candidate: Dict[str, Any
 
 
 def _rollback_created_article(
-    kind: ArticleManifest, path: str, candidate: Dict[str, Any]
+    kind: ArticleManifest,
+    path: str,
+    candidate: Dict[str, Any],
+    publication_root: PinnedPublicationRoot,
 ) -> None:
     """Remove only the exact article this transaction just published.
 
@@ -725,7 +864,7 @@ def _rollback_created_article(
     writers and refuses a replacement already visible at the closing check. Uncoordinated writes
     are outside the lease contract.
     """
-    current, raw = _read_existing_article(kind, path)
+    current, raw = _read_existing_article(kind, path, publication_root)
     canonical = serialize_json(
         candidate,
         encoding=kind.ENCODING,
@@ -739,16 +878,147 @@ def _rollback_created_article(
             f"refusing rollback: '{path}'"
         )
     try:
-        os.remove(path)
+        publication_root.unlink(path)
     except OSError as exc:
         raise DepositConflict(
             f"measured source changed after publication and article.json rollback failed: '{path}'"
         ) from exc
 
 
-def deposit_article(
+def _publish_article_transaction(
     *,
-    document_dir: str,
+    publication_root: PinnedPublicationRoot,
+    tree_root: PinnedPublicationRoot,
+    slug: str,
+    archive: str,
+    archive_full: str,
+    archive_sha256: str,
+    archive_kind: str,
+    tree: str,
+    tree_full: str,
+    tree_sha256: str,
+    files: int,
+    tex_files: int,
+    entrypoint: str,
+    entrypoint_selection: str,
+    publication: str,
+    findings: Mapping[str, Any],
+    provider_json: Optional[str],
+    provider_full: Optional[str],
+    metadata_json: Optional[str],
+    metadata_full: Optional[str],
+    metadata_extension: Optional[ArticleMetadataExtension],
+    pdf: Optional[str],
+    pdf_full: Optional[str],
+    lock_timeout: float,
+) -> DepositResult:
+    kind = ArticleManifest(
+        target_dir=publication_root.path,
+        publication_root=publication_root,
+    )
+    article_path = kind.get_output_path()
+    lease = FileLock(publication_root.lock_path(article_path), timeout=lock_timeout)
+    try:
+        lease.acquire()
+    except Timeout as exc:
+        raise TimeoutError(
+            f"could not acquire the article write lease within {lock_timeout}s: '{article_path}'"
+        ) from exc
+    try:
+        validated_findings = _validate_findings(findings)
+        candidate, source_witnesses = _assemble_article(
+            kind=kind,
+            publication_root=publication_root,
+            slug=slug,
+            archive=archive,
+            archive_full=archive_full,
+            archive_sha256=archive_sha256,
+            archive_kind=archive_kind,
+            tree=tree,
+            tree_sha256=tree_sha256,
+            files=files,
+            tex_files=tex_files,
+            entrypoint=entrypoint,
+            entrypoint_selection=entrypoint_selection,
+            publication=publication,
+            findings=validated_findings,
+            provider_json=provider_json,
+            provider_full=provider_full,
+            metadata_json=metadata_json,
+            metadata_full=metadata_full,
+            metadata_extension=metadata_extension,
+            pdf=pdf,
+            pdf_full=pdf_full,
+        )
+        _assert_tree_snapshot(
+            tree_full,
+            expected_sha256=tree_sha256,
+            expected_files=files,
+            expected_tex_files=tex_files,
+            publication_root=tree_root,
+        )
+        _assert_file_witnesses(source_witnesses, publication_root)
+        publication_root.assert_current()
+        tree_root.assert_current()
+        created_here = False
+        if publication_root.lexists(article_path):
+            article = _existing_article(
+                kind,
+                article_path,
+                candidate,
+                publication_root,
+            )
+            status = "already-deposited"
+        else:
+            try:
+                kind.publish(candidate)
+                article = candidate
+                status = "deposited"
+                created_here = True
+            except FileExistsError:
+                article = _existing_article(
+                    kind,
+                    article_path,
+                    candidate,
+                    publication_root,
+                )
+                status = "already-deposited"
+        try:
+            _assert_file_witnesses(source_witnesses, publication_root)
+            _assert_tree_snapshot(
+                tree_full,
+                expected_sha256=tree_sha256,
+                expected_files=files,
+                expected_tex_files=tex_files,
+                publication_root=tree_root,
+            )
+            publication_root.assert_current()
+            tree_root.assert_current()
+        except BaseException:
+            if created_here:
+                _rollback_created_article(
+                    kind,
+                    article_path,
+                    candidate,
+                    publication_root,
+                )
+            raise
+    finally:
+        lease.release()
+
+    return DepositResult(
+        status=status,
+        article_path=article_path,
+        archive_path=archive_full,
+        source_path=tree_full,
+        article=article,
+    )
+
+
+def _deposit_article_pinned(
+    *,
+    publication_root: PinnedPublicationRoot,
+    directory_leaf: str,
     slug: str,
     archive: str,
     archive_sha256: str,
@@ -760,23 +1030,16 @@ def deposit_article(
     entrypoint: str,
     entrypoint_selection: str,
     publication: str,
-    findings_json: str,
+    findings: Mapping[str, Any],
     provider_json: Optional[str] = None,
     metadata_json: Optional[str] = None,
     metadata_extension: Optional[ArticleMetadataExtension] = None,
     pdf: Optional[str] = None,
     lock_timeout: float = 60.0,
 ) -> DepositResult:
-    """Create or validate one source-ready ``article.json`` deposit.
+    """Create or validate one article within an already retained document generation."""
 
-    Artifact paths are normalized forward-slash paths relative to ``document_dir``. The archive
-    digest is the expansion-time witness and is remeasured here. The tree digest and counts are
-    recomputed before and after publication. Entrypoint facts, declarations, package-control
-    fingerprints, and the probe ledger come from the LaTeX transaction; provider projections are
-    derived from deposited evidence. The caller must prevent concurrent mutation of the source tree
-    and deposited inputs for this call; ``New-LatexSourceDeposit`` holds that source lock.
-    """
-    root, directory_leaf = _document_root(document_dir)
+    publication_root.assert_current()
     slug = _validate_slug(slug, directory_leaf=directory_leaf)
     if archive_kind not in _ARCHIVE_KINDS:
         raise DepositError(
@@ -803,8 +1066,18 @@ def deposit_article(
     if not isinstance(entrypoint_selection, str) or not entrypoint_selection:
         raise DepositError("entrypoint_selection must be a non-empty string")
 
-    archive, archive_full = _resolve_relative(root, archive, label="archive", kind="file")
-    tree, tree_full = _resolve_relative(root, tree, label="tree", kind="directory")
+    archive, archive_full = _resolve_relative(
+        publication_root,
+        archive,
+        label="archive",
+        kind="file",
+    )
+    tree, tree_full = _resolve_relative(
+        publication_root,
+        tree,
+        label="tree",
+        kind="directory",
+    )
     if archive != f"{slug}.tar.gz":
         raise DepositError(
             f"archive must use the canonical deposit path {slug + '.tar.gz'!r}, got {archive!r}"
@@ -813,12 +1086,6 @@ def deposit_article(
         raise DepositError(
             f"tree must use the canonical deposit path {slug + '-tex'!r}, got {tree!r}"
         )
-    entrypoint, entrypoint_full = _resolve_relative(
-        tree_full, entrypoint, label="entrypoint", kind="file"
-    )
-    if not _within(tree_full, entrypoint_full):
-        raise DepositError(f"entrypoint escapes the source tree: {entrypoint!r}")
-
     if provider_json is not None and metadata_json is not None:
         raise DepositError("provider_json and metadata_json are mutually exclusive")
     if metadata_json is not None and metadata_extension is None:
@@ -829,36 +1096,45 @@ def deposit_article(
     provider_full = None
     if provider_json is not None:
         provider_json, provider_full = _resolve_relative(
-            root, provider_json, label="provider_json", kind="file"
+            publication_root,
+            provider_json,
+            label="provider_json",
+            kind="file",
         )
     metadata_full = None
     if metadata_json is not None:
         metadata_json, metadata_full = _resolve_relative(
-            root, metadata_json, label="metadata_json", kind="file"
+            publication_root,
+            metadata_json,
+            label="metadata_json",
+            kind="file",
         )
     pdf_full = None
     if pdf is not None:
-        pdf, pdf_full = _resolve_relative(root, pdf, label="pdf", kind="file")
+        pdf, pdf_full = _resolve_relative(
+            publication_root,
+            pdf,
+            label="pdf",
+            kind="file",
+        )
 
-    kind = ArticleManifest(target_dir=root)
-    article_path = kind.get_output_path()
-    lease = FileLock(lock_path(article_path), timeout=lock_timeout)
-    try:
-        lease.acquire()
-    except Timeout as exc:
-        raise TimeoutError(
-            f"could not acquire the article write lease within {lock_timeout}s: '{article_path}'"
-        ) from exc
-    try:
-        findings = _read_findings(findings_json)
-        candidate, source_witnesses = _assemble_article(
-            kind=kind,
+    with publication_root.pin_descendant(tree) as tree_root:
+        entrypoint, _ = _resolve_relative(
+            tree_root,
+            entrypoint,
+            label="entrypoint",
+            kind="file",
+        )
+        return _publish_article_transaction(
+            publication_root=publication_root,
+            tree_root=tree_root,
             slug=slug,
             archive=archive,
             archive_full=archive_full,
             archive_sha256=archive_sha256,
             archive_kind=archive_kind,
             tree=tree,
+            tree_full=tree_full,
             tree_sha256=tree_sha256,
             files=files,
             tex_files=tex_files,
@@ -873,49 +1149,69 @@ def deposit_article(
             metadata_extension=metadata_extension,
             pdf=pdf,
             pdf_full=pdf_full,
+            lock_timeout=lock_timeout,
         )
-        _assert_tree_snapshot(
-            tree_full,
-            expected_sha256=tree_sha256,
-            expected_files=files,
-            expected_tex_files=tex_files,
-        )
-        _assert_file_witnesses(source_witnesses)
-        created_here = False
-        if os.path.lexists(article_path):
-            article = _existing_article(kind, article_path, candidate)
-            status = "already-deposited"
-        else:
-            try:
-                kind.publish(candidate)
-                article = candidate
-                status = "deposited"
-                created_here = True
-            except FileExistsError:
-                article = _existing_article(kind, article_path, candidate)
-                status = "already-deposited"
-        try:
-            # The PowerShell orchestrator keeps its source lock through this call. This second
-            # check also protects direct service/CLI callers from a source replacement in the
-            # narrow interval between the pre-publication witness check and the atomic publish.
-            _assert_file_witnesses(source_witnesses)
-            _assert_tree_snapshot(
-                tree_full,
-                expected_sha256=tree_sha256,
-                expected_files=files,
-                expected_tex_files=tex_files,
-            )
-        except BaseException:
-            if created_here:
-                _rollback_created_article(kind, article_path, candidate)
-            raise
-    finally:
-        lease.release()
 
-    return DepositResult(
-        status=status,
-        article_path=article_path,
-        archive_path=archive_full,
-        source_path=tree_full,
-        article=article,
-    )
+
+def deposit_article(
+    *,
+    document_dir: str,
+    slug: str,
+    archive: str,
+    archive_sha256: str,
+    archive_kind: str,
+    tree: str,
+    tree_sha256: str,
+    files: int,
+    tex_files: int,
+    entrypoint: str,
+    entrypoint_selection: str,
+    publication: str,
+    findings: Mapping[str, Any],
+    provider_json: Optional[str] = None,
+    metadata_json: Optional[str] = None,
+    metadata_extension: Optional[ArticleMetadataExtension] = None,
+    pdf: Optional[str] = None,
+    lock_timeout: float = 60.0,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> DepositResult:
+    """Create or validate one source-ready ``article.json`` deposit.
+
+    The archive, source tree, evidence inputs, and sentinel are read or published through one
+    retained document generation. A caller may supply its active document pin; standalone callers
+    receive an operation-scoped pin. The source tree is retained independently through both
+    fingerprint passes and sentinel publication.
+    """
+
+    try:
+        with _document_publication(document_dir, publication_root) as (
+            retained_root,
+            directory_leaf,
+        ):
+            return _deposit_article_pinned(
+                publication_root=retained_root,
+                directory_leaf=directory_leaf,
+                slug=slug,
+                archive=archive,
+                archive_sha256=archive_sha256,
+                archive_kind=archive_kind,
+                tree=tree,
+                tree_sha256=tree_sha256,
+                files=files,
+                tex_files=tex_files,
+                entrypoint=entrypoint,
+                entrypoint_selection=entrypoint_selection,
+                publication=publication,
+                findings=findings,
+                provider_json=provider_json,
+                metadata_json=metadata_json,
+                metadata_extension=metadata_extension,
+                pdf=pdf,
+                lock_timeout=lock_timeout,
+            )
+    except (DepositError, TimeoutError):
+        raise
+    except (PublicationError, RuntimeError) as exc:
+        raise DepositError(
+            f"article deposit could not preserve its publication generation: '{document_dir}'"
+        ) from exc

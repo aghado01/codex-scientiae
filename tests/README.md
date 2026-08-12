@@ -233,11 +233,12 @@ the pytest job-local `json-scratch` empty under
 
 The earlier procurement Python migration snapshot contained 26 files and 357 collected methods; its full
 public pytest batch passed all 26 independent containers and native JUnit reported 495 observed outcomes.
-The pinned-root/document-store kernel brings the current JSONL-engine plus procurement closure to 28
-physical containers and 399 directly collected tests. Its repository-local direct gate passed 392 with seven
-platform/capability skips. The two new physical containers also passed through the public batch shell as
-two independent jobs: 18 passed and three platform/capability skips across 21 selected tests. The earlier
-multilingual 22-job witness remains historical rather than the current Python census.
+Engine publication completion brings the current JSONL-engine plus procurement closure to 29 physical
+containers and 419 directly collected tests. Its repository-local direct gate passed 410 with nine
+platform/capability skips. The publication, document, deposit, and materialization containers also passed
+through the public batch shell as four independent jobs: 77 passed and seven platform/capability skips
+across 84 selected tests. The earlier multilingual 22-job witness remains historical rather than the
+current Python census.
 
 ## Batchable Pester-container contract
 

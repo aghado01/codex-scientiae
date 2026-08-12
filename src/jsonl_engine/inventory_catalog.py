@@ -15,11 +15,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
+from .kinds.article import MAX_ARTICLE_MANIFEST_BYTES
 from .kinds.inventory import InventoryRegistry
 from .publication import PinnedPublicationRoot
 from .reader import loads
 
-MAX_ARTICLE_MANIFEST_BYTES = 4 * 1024 * 1024
 MAX_ARTICLE_PATHS_BYTES = 4 * 1024 * 1024
 MAX_CATALOG_CHILDREN = 100_000
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
