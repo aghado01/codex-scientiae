@@ -163,7 +163,7 @@ def scratch_glob(artifact_path: str) -> str:
     return f"{glob.escape(artifact_path)}.*.*.tmp"
 
 
-def _is_transaction_scratch(subject: str, candidate: str) -> bool:
+def is_transaction_scratch(subject: str, candidate: str) -> bool:
     """Whether `candidate` is exactly ``subject.PID.lower-hex-serial.tmp``."""
     prefix = subject + "."
     if not os.path.normcase(candidate).startswith(os.path.normcase(prefix)):
@@ -196,7 +196,7 @@ def find_stale_scratch(artifact_path: str) -> List[str]:
         found.update(
             candidate
             for candidate in glob.glob(scratch_glob(subject))
-            if _is_transaction_scratch(subject, candidate)
+            if is_transaction_scratch(subject, candidate)
         )
     return sorted(found)
 

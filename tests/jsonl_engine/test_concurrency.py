@@ -13,6 +13,7 @@ import unittest
 from unittest import mock
 
 from jsonl_engine import JsonlEngine, JsonlStore
+from jsonl_engine.publication import PinnedPublicationRoot
 from jsonl_engine.sidecar import (
     SCRATCH_ROOT_ENV,
     find_stale_scratch,
@@ -133,6 +134,16 @@ class TestScratchPaths(unittest.TestCase):
                 self.assertTrue(serial)
                 self.assertTrue(all(char in "0123456789abcdef" for char in serial))
                 self.assertLessEqual(len(serial), 4)
+
+    def test_pinned_publication_uses_the_shared_compact_scratch_grammar(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "inventory.jsonl")
+            orphan = temp_write_path(path)
+            with open(orphan, "wb") as handle:
+                handle.write(b'{"partial":true}\n')
+
+            with PinnedPublicationRoot(tmpdir) as publication_root:
+                self.assertEqual([orphan], publication_root.stale_scratch(path))
 
     @unittest.skipUnless(os.name == "nt", "Windows path identity is case-insensitive")
     def test_windows_case_aliases_share_one_lock(self):

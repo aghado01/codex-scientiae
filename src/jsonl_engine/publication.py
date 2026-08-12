@@ -17,7 +17,7 @@ from pathlib import Path
 from types import TracebackType
 from typing import BinaryIO
 
-from .sidecar import scratch_root
+from .sidecar import is_transaction_scratch, scratch_root
 from .writer import publish_staged_file
 
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
@@ -122,23 +122,6 @@ def _same_directory(left: os.stat_result, right: os.stat_result) -> bool:
     return left.st_dev == right.st_dev and getattr(
         left, "st_ctime_ns", None
     ) == getattr(right, "st_ctime_ns", None)
-
-
-def _is_transaction_scratch(subject: str, candidate: str) -> bool:
-    prefix = subject + "."
-    if not candidate.startswith(prefix):
-        return False
-    parts = candidate[len(prefix) :].split(".")
-    if len(parts) != 3:
-        return False
-    pid, token, extension = parts
-    return (
-        bool(pid)
-        and pid.isdecimal()
-        and len(token) == 12
-        and all(character in "0123456789abcdef" for character in token)
-        and extension == "tmp"
-    )
 
 
 class PinnedPublicationRoot:
@@ -528,7 +511,7 @@ class PinnedPublicationRoot:
         return [
             self.absolute(name)
             for name in self.list_names()
-            if any(_is_transaction_scratch(subject, name) for subject in leaves)
+            if any(is_transaction_scratch(subject, name) for subject in leaves)
         ]
 
     def lock_path(self, artifact_path: str | os.PathLike[str]) -> str:
