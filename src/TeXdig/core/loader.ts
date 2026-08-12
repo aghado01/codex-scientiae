@@ -52,6 +52,10 @@ export interface Dependencies {
       isAbbreviationValue(node: any): boolean;
       isConcatValue(node: any): boolean;
     };
+    /** Position-precise pegjs LaTeX parser — the census's backfill instrument. */
+    latexParser: {
+      parse(source: string, options?: any): any;
+    };
   };
 }
 

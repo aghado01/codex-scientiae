@@ -251,6 +251,20 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $sum = Get-Content -Raw (Join-Path $script:OutDir "summary.json") | ConvertFrom-Json
             $sum.agreementCounts.agreed | Should -Be $script:Entities.Count
         }
+
+        It "backfills cases-in-math interiors via the latex-utensils instrument" {
+            # unified-latex reparses `cases` nested inside math in a LOCAL
+            # coordinate frame (deterministic; probed 2026-08-12). Those
+            # interior sites reach agreement only through the third
+            # instrument's position-confirmed backfill.
+            $backfilled = $script:Entities | Where-Object {
+                $_.kind -eq "macro-invocation" -and
+                ($_.witnesses | Where-Object { $_.instrument -eq "latex-utensils" })
+            }
+            $backfilled | Should -Not -BeNullOrEmpty
+            ($backfilled | Where-Object { $_.name -eq "gamma" }) | Should -Not -BeNullOrEmpty
+            foreach ($ent in $backfilled) { $ent.agreement | Should -Be "agreed" }
+        }
     }
 
     Context "Summary & Coverage Gates" {
@@ -262,7 +276,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         It "conforms to schema and attributes slug" {
             $script:Summary.schema | Should -Be "texdig-census/0.1"
             $script:Summary.slug | Should -Be "mini_article"
-            $script:Summary.sourceCount | Should -Be 6
+            $script:Summary.sourceCount | Should -Be 7
         }
 
         It "declares emitted and deferred stores" {

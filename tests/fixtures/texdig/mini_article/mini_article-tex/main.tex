@@ -27,15 +27,20 @@ Here is \textcolor{red}{tinted} inline math $E=mc^2$ and display math:
 \pair{x} is valid.
 \end{lemma}
 
+\begin{eqnarray*}
+x_1 &=& y^2 \\
+\alpha_i &\sim& \beta^\top z
+\end{eqnarray*}
+
+\[ f(x)=\begin{cases} \mathrm{id}& \mbox{if} \gamma_i \\ 0&\mbox{else} \end{cases} \]
+
 \verb|inline_verb_test|
 
 \begin{verbatim}
 raw $math$ and \commands stay uncensused
 \end{verbatim}
 
-Unterminated math $x stays a finding
-
-\end{flushright}
+\input{defects}
 
 \bibliographystyle{plain}
 \bibliography{refs}

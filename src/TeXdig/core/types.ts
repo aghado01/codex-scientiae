@@ -371,6 +371,8 @@ export const DiagnosticCodes = {
   TreeManifestMismatch: "census/tree-manifest-mismatch",
   /** Summoned packages with no configured signature record — the curation queue for the configured channel, not an error. */
   ConfiguredGap: "census/configured-gap",
+  /** The latex-utensils backfill instrument could not parse this source; lexical-only sites stay single-witness. */
+  BackfillUnavailable: "census/backfill-unavailable",
   /** unified-latex threw on a parsed source: the parser witness is absent for the whole file, and every entity there is lexical-only by defect, not design. */
   LatexParseError: "census/latex-parse-error",
 } as const;

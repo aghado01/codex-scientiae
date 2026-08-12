@@ -44,8 +44,8 @@
       "derived_from": "mini_article.tar.gz",
       "entrypoint": "main.tex",
       "entrypoint_selection": "explicit",
-      "files": 6,
-      "tex_files": 3,
+      "files": 7,
+      "tex_files": 4,
       "sha256": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
     }
   ],

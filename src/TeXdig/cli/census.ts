@@ -21,6 +21,7 @@ import {
 import { parseBib } from "../census/parse-bib.ts";
 import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
 import { buildConfiguredChannel, mintConfiguredEntities } from "../census/configured.ts";
+import { buildUtensilsIndex, backfillLexicalOnly } from "../census/backfill-utensils.ts";
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
@@ -221,6 +222,21 @@ export async function runCensus(options: CliArgs) {
         edges
       );
       allDiagnostics.push(...scan.diagnostics);
+
+      // Third-instrument backfill: sites only the lexical scanner saw
+      // (alignment-environment interiors where unified-latex positions are
+      // untrusted) get typed confirmation from latex-utensils where its
+      // global positions independently agree.
+      if (reconcileResult.entities.some((e) => e.agreement === "lexical-only")) {
+        const { index, diagnostic } = buildUtensilsIndex(record.id, strat.stratifiedText, deps);
+        if (diagnostic) reconcileResult.diagnostics.push(diagnostic);
+        const backfilled = backfillLexicalOnly(
+          reconcileResult.entities,
+          reconcileResult.diagnostics,
+          index
+        );
+        reconcileResult.diagnostics = backfilled.diagnostics;
+      }
 
       const spineRuns: SpineRun[] = witnessResult.textRuns.map((span) => ({
         span,

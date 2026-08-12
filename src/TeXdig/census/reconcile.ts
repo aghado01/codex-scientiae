@@ -632,6 +632,7 @@ export function reconcileLatex(
         witness: "lexical",
       });
       lex.consumed.add(s);
+      mintUnmatchedFence(s, "end");
     }
   }
   for (const begin of openStack) {
@@ -643,6 +644,24 @@ export function reconcileLatex(
       witness: "lexical",
     });
     lex.consumed.add(begin);
+    mintUnmatchedFence(begin, "begin");
+  }
+
+  /** An unmatched fence is still a witnessed control-sequence SITE: the
+      diagnostic is the finding, the entity claims the bytes. */
+  function mintUnmatchedFence(s: LexicalSighting, csname: "begin" | "end") {
+    const ps = parserByStart.get(s.span.startUtf16);
+    const witnesses: WitnessRecord[] = [lexWitness(s)];
+    if (ps && ps.span) witnesses.push(parserWitness(ps.span, csname));
+    entities.push({
+      id: mintEntityId("macro-invocation", s.span),
+      kind: "macro-invocation",
+      name: csname,
+      span: s.span,
+      spanProvenance: "lexical",
+      witnesses,
+      agreement: ps ? "agreed" : "lexical-only",
+    });
   }
 
   // Sorted text runs for the script-operator yield rule below.
