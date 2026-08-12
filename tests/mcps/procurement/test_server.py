@@ -37,7 +37,7 @@ from procurement.payloads import (
     acquisition_manifest_schema,
 )
 from procurement.providers.base import Capability, ProviderRole
-from procurement.registry import ProviderBinding, ProviderRegistry
+from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 from procurement.services import DiscoveryService, MetadataService
 from procurement.source import SourceMaterializationResult
 from procurement.services.local_import import (
@@ -285,7 +285,7 @@ class TestProcurementMcp(unittest.TestCase):
         async def exercise() -> None:
             provider = StaticProvider()
             aggregator = AggregatorProvider()
-            registry = ProviderRegistry(
+            registry = ProviderCatalog(
                 [
                     ProviderBinding(
                         provider,
@@ -311,6 +311,7 @@ class TestProcurementMcp(unittest.TestCase):
             local_import = RecordingLocalImportService()
             async with httpx.AsyncClient(transport=httpx.MockTransport(lambda request: httpx.Response(500))) as raw:
                 application = ProcurementApplication(
+                    providers=registry,
                     discovery=service,
                     metadata=metadata,
                     http=HttpClient(raw),
@@ -446,6 +447,8 @@ class TestProcurementMcp(unittest.TestCase):
                     self.assertEqual(search_input["properties"]["query"]["minLength"], 1)
                     self.assertEqual(search_input["properties"]["start"]["minimum"], 0)
                     self.assertEqual(search_input["properties"]["max_results"]["maximum"], 100)
+                    self.assertEqual(search_input["properties"]["source"]["minLength"], 1)
+                    self.assertNotIn("enum", search_input["properties"]["source"])
 
                     related_tool = tools_by_name["discover_related"].model_dump(
                         mode="json", by_alias=True
@@ -661,9 +664,17 @@ class TestProcurementMcp(unittest.TestCase):
                         item["name"]: item["search_constraints"]
                         for item in catalog.structured_content["providers"]
                     }
+                    categories = {
+                        item["name"]: item["category"]
+                        for item in catalog.structured_content["providers"]
+                    }
                     self.assertIn("artifact-access", declared["arxiv"])
                     self.assertEqual(declared["openalex"], ["metadata-aggregator"])
                     self.assertEqual(constraints, {"arxiv": [], "openalex": []})
+                    self.assertEqual(
+                        categories,
+                        {"arxiv": "repository", "openalex": "aggregator"},
+                    )
 
                     prompt = await client.get_prompt("discovery_procedure")
                     self.assertIn("untrusted external text", prompt.messages[0].content.text)
@@ -690,7 +701,7 @@ class TestProcurementMcp(unittest.TestCase):
         async def exercise() -> None:
             authority = FailingAuthority()
             aggregator = RecordingAggregator()
-            registry = ProviderRegistry(
+            registry = ProviderCatalog(
                 [
                     ProviderBinding(
                         authority,
@@ -714,6 +725,7 @@ class TestProcurementMcp(unittest.TestCase):
                 transport=httpx.MockTransport(lambda request: httpx.Response(500))
             ) as raw:
                 application = ProcurementApplication(
+                    providers=registry,
                     discovery=DiscoveryService(registry, ("arxiv",)),
                     metadata=MetadataService(registry, ("semanticscholar",)),
                     http=HttpClient(raw),

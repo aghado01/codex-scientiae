@@ -21,7 +21,13 @@ from procurement.payloads import (
     PlannedArtifact,
     RetrievalCandidate,
 )
-from procurement.providers.base import retrieved_metadata
+from procurement.providers.base import (
+    Capability,
+    ProviderCategory,
+    ProviderDefinition,
+    ProviderRole,
+    retrieved_metadata,
+)
 from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
 from procurement.identifiers import artifact_slug
 
@@ -61,8 +67,28 @@ def build_search_query(request: SearchRequest) -> str:
 class ArxivProvider:
     """arXiv query API mapped onto procurement records."""
 
-    name = "arxiv"
-    search_constraints = frozenset({"categories", "date_from", "date_to", "sort"})
+    descriptor = ProviderDefinition(
+        name="arxiv",
+        category=ProviderCategory.REPOSITORY,
+        capabilities=frozenset(
+            {
+                Capability.SEARCH,
+                Capability.GET_WORK,
+                Capability.METADATA,
+                Capability.PLAN_ARTIFACT,
+            }
+        ),
+        roles=frozenset(
+            {
+                ProviderRole.ARTIFACT_ORIGIN,
+                ProviderRole.ARTIFACT_ACCESS,
+                ProviderRole.METADATA_AUTHORITY,
+            }
+        ),
+        search_constraints=frozenset({"categories", "date_from", "date_to", "sort"}),
+    )
+    name = descriptor.name
+    search_constraints = descriptor.search_constraints
 
     def __init__(
         self,

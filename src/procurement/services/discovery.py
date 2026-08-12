@@ -24,25 +24,25 @@ from procurement.providers.base import (
     SearchProvider,
     WorkProvider,
 )
-from procurement.registry import ProviderRegistry
+from procurement.providers.catalog import ProviderCatalog
 
 
 class DiscoveryService:
     """Provider-independent scholarly discovery workflows."""
 
-    def __init__(self, registry: ProviderRegistry, default_sources: tuple[str, ...]) -> None:
+    def __init__(self, catalog: ProviderCatalog, default_sources: tuple[str, ...]) -> None:
         if not default_sources:
             raise ValueError("at least one default discovery source is required")
-        self._registry = registry
+        self._catalog = catalog
         self._default_sources = default_sources
 
     @property
     def providers(self) -> tuple[str, ...]:
-        return self._registry.names()
+        return self._catalog.names()
 
     async def search(self, request: SearchRequest, *, source: str = "all") -> SearchResponse:
         if source.casefold() != "all":
-            provider = cast(SearchProvider, self._registry.get(source, Capability.SEARCH))
+            provider = cast(SearchProvider, self._catalog.get(source, Capability.SEARCH))
             page = await self._search_provider(provider, request)
             return SearchResponse(
                 source=provider.name,
@@ -51,7 +51,7 @@ class DiscoveryService:
             )
 
         providers = [
-            cast(SearchProvider, self._registry.get(name, Capability.SEARCH))
+            cast(SearchProvider, self._catalog.get(name, Capability.SEARCH))
             for name in self._default_sources
         ]
         outcomes = await asyncio.gather(
@@ -82,7 +82,7 @@ class DiscoveryService:
 
     async def get_work(self, identifier: str, *, source: str = "openalex") -> WorkRecord:
         identifier = self._nonblank(identifier, label="identifier")
-        provider = cast(WorkProvider, self._registry.get(source, Capability.GET_WORK))
+        provider = cast(WorkProvider, self._catalog.get(source, Capability.GET_WORK))
         return await provider.get_work(identifier)
 
     async def related(
@@ -98,13 +98,13 @@ class DiscoveryService:
             raise ValueError("related-work limit must be between 1 and 50")
         capability = Capability(kind)
         selected = source or ("semanticscholar" if kind == "recommendations" else "openalex")
-        provider = cast(RelatedProvider, self._registry.get(selected, capability))
+        provider = cast(RelatedProvider, self._catalog.get(selected, capability))
         works = await provider.related(identifier, kind, limit)
         return RelatedResponse(provider=provider.name, kind=kind, works=works)
 
     async def resolve(self, reference: str, *, source: str = "openalex") -> ResolveResponse:
         reference = self._nonblank(reference, label="reference")
-        provider = cast(ResolveProvider, self._registry.get(source, Capability.RESOLVE))
+        provider = cast(ResolveProvider, self._catalog.get(source, Capability.RESOLVE))
         works = await provider.resolve(reference)
         return ResolveResponse(provider=provider.name, reference=reference, works=works)
 

@@ -7,7 +7,7 @@ import unittest
 
 from procurement.models import SearchPage, SearchRequest, SourceReference, WorkRecord
 from procurement.providers.base import Capability, RelatedKind
-from procurement.registry import ProviderBinding, ProviderRegistry
+from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 from procurement.services import DiscoveryService
 
 
@@ -84,7 +84,7 @@ class TestDiscoveryService(unittest.TestCase):
             ),
         )
         broken = FakeProvider("arxiv", failure=RuntimeError("temporary outage"))
-        registry = ProviderRegistry(
+        registry = ProviderCatalog(
             [
                 ProviderBinding(openalex, ALL_DISCOVERY_CAPABILITIES),
                 ProviderBinding(semantic, ALL_DISCOVERY_CAPABILITIES),
@@ -102,7 +102,7 @@ class TestDiscoveryService(unittest.TestCase):
     def test_single_provider_failure_remains_a_tool_error(self) -> None:
         broken = FakeProvider("openalex", failure=RuntimeError("down"))
         service = DiscoveryService(
-            ProviderRegistry([ProviderBinding(broken, frozenset({Capability.SEARCH}))]),
+            ProviderCatalog([ProviderBinding(broken, frozenset({Capability.SEARCH}))]),
             ("openalex",),
         )
         with self.assertRaisesRegex(RuntimeError, "down"):
@@ -124,7 +124,7 @@ class TestDiscoveryService(unittest.TestCase):
             search_constraints=frozenset({"categories"}),
         )
         service = DiscoveryService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(openalex, frozenset({Capability.SEARCH})),
                     ProviderBinding(arxiv, frozenset({Capability.SEARCH})),
@@ -148,7 +148,7 @@ class TestDiscoveryService(unittest.TestCase):
             SearchPage(provider="semanticscholar", start=0),
         )
         service = DiscoveryService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [ProviderBinding(semantic, frozenset({Capability.SEARCH}))]
             ),
             ("semanticscholar",),
@@ -166,7 +166,7 @@ class TestDiscoveryService(unittest.TestCase):
     def test_fanout_propagates_cancellation(self) -> None:
         cancelled = CancelledProvider("openalex")
         service = DiscoveryService(
-            ProviderRegistry([ProviderBinding(cancelled, frozenset({Capability.SEARCH}))]),
+            ProviderCatalog([ProviderBinding(cancelled, frozenset({Capability.SEARCH}))]),
             ("openalex",),
         )
         with self.assertRaises(asyncio.CancelledError):
@@ -177,7 +177,7 @@ class TestDiscoveryService(unittest.TestCase):
             "semanticscholar",
             SearchPage(provider="semanticscholar", start=0, works=(record("semanticscholar", "P1"),)),
         )
-        registry = ProviderRegistry(
+        registry = ProviderCatalog(
             [ProviderBinding(semantic, ALL_DISCOVERY_CAPABILITIES)]
         )
         service = DiscoveryService(registry, ("semanticscholar",))

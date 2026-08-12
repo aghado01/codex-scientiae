@@ -121,7 +121,7 @@ def test_same_bytes_are_idempotent_and_changed_bytes_conflict(tmp_path: Path) ->
     with pytest.raises(AcquisitionConflictError, match="bytes conflict"):
         run_import(service, candidate.name)
     assert (staging / "manual-paper" / "acquisition.json").read_bytes() == before
-    assert not list((staging / "manual-paper").glob(".download-*.part"))
+    assert not (staging / "manual-paper" / ".download.part").exists()
 
 
 def test_invalid_kind_truncated_payload_and_kind_limits_publish_nothing(tmp_path: Path) -> None:
@@ -137,7 +137,7 @@ def test_invalid_kind_truncated_payload_and_kind_limits_publish_nothing(tmp_path
             run_import(service, leaf, slug=leaf.split(".", 1)[0])
 
     assert not list(staging.rglob("acquisition.json"))
-    assert not list(staging.rglob(".download-*.part"))
+    assert not list(staging.rglob(".download.part"))
 
 
 def test_request_and_physical_file_confinement(tmp_path: Path) -> None:
@@ -190,7 +190,7 @@ def test_detected_source_mutation_cleans_private_copy(tmp_path: Path) -> None:
             run_import(service, "source.gz")
 
     assert not list(staging.rglob("acquisition.json"))
-    assert not list(staging.rglob(".download-*.part"))
+    assert not list(staging.rglob(".download.part"))
 
 
 def test_inbox_catalog_exposes_logical_names_only(tmp_path: Path) -> None:

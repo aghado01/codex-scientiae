@@ -45,12 +45,7 @@ from procurement.services.local_import import (
     LocalImportRequest,
 )
 
-SourceName = Literal["all", "openalex", "semanticscholar", "arxiv", "zenodo"]
-GraphSourceName = Literal["openalex", "semanticscholar"]
 RelatedKind = Literal["citations", "references", "recommendations"]
-ArtifactProviderName = Literal["arxiv", "zenodo", "scihub"]
-MetadataAggregatorName = Literal["openalex", "semanticscholar"]
-AcquisitionProviderName = Literal["arxiv", "zenodo"]
 DepositSlug = Annotated[
     str,
     StringConstraints(min_length=1, pattern=r'^[^<>:"/\\|?*\x00-\x1f]+$'),
@@ -60,6 +55,7 @@ DepositSlug = Annotated[
     ),
 ]
 NonEmptyIdentifier = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+ProviderName = NonEmptyIdentifier
 MainTexPath = Annotated[
     str,
     StringConstraints(strip_whitespace=True, min_length=5),
@@ -162,7 +158,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
     async def discover_search(
         query: NonEmptyIdentifier,
         ctx: Context[AppContext],
-        source: SourceName = "all",
+        source: ProviderName = "all",
         filters: list[NonEmptyIdentifier] | None = None,
         categories: list[NonEmptyIdentifier] | None = None,
         date_from: date | None = None,
@@ -193,7 +189,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
         identifier: NonEmptyIdentifier,
         ctx: Context[AppContext],
         kind: RelatedKind = "citations",
-        source: GraphSourceName | None = None,
+        source: ProviderName | None = None,
         max_results: RelatedLimit = 25,
     ) -> RelatedResponse:
         """Traverse citations, references, or semantic recommendations from one work."""
@@ -205,7 +201,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
     async def resolve_reference(
         reference: NonEmptyIdentifier,
         ctx: Context[AppContext],
-        source: GraphSourceName = "openalex",
+        source: ProviderName = "openalex",
     ) -> ResolveResponse:
         """Resolve a DOI, arXiv identifier, title, or loose citation to ranked works."""
 
@@ -216,7 +212,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
     async def get_work(
         identifier: NonEmptyIdentifier,
         ctx: Context[AppContext],
-        source: Literal["openalex", "semanticscholar", "arxiv", "zenodo"] = "openalex",
+        source: ProviderName = "openalex",
     ) -> WorkRecord:
         """Return one normalized work while preserving its provider identity."""
 
@@ -226,10 +222,10 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
     @server.tool()
     async def prepare_source_deposit_metadata(
         deposit_slug: DepositSlug,
-        artifact_provider: ArtifactProviderName,
+        artifact_provider: ProviderName,
         identifier: NonEmptyIdentifier,
         ctx: Context[AppContext],
-        fallback_sources: list[MetadataAggregatorName] | None = None,
+        fallback_sources: list[ProviderName] | None = None,
     ) -> DepositMetadataBundle:
         """Build validated article metadata with exact decoded API evidence and fallback."""
 
@@ -248,7 +244,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
         acquisition_slug: DepositSlug,
         doi: NonEmptyIdentifier,
         ctx: Context[AppContext],
-        fallback_sources: list[MetadataAggregatorName] | None = None,
+        fallback_sources: list[ProviderName] | None = None,
     ) -> DepositMetadataBundle:
         """Resolve a caller-selected DOI for one existing acquisition receipt."""
 
@@ -268,7 +264,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
 
     @server.tool()
     async def plan_artifact_acquisition(
-        provider: AcquisitionProviderName,
+        provider: ProviderName,
         identifier: NonEmptyIdentifier,
         ctx: Context[AppContext],
         artifacts: list[ArtifactKind] | None = None,
@@ -288,7 +284,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
 
     @server.tool()
     async def acquire_artifact(
-        provider: AcquisitionProviderName,
+        provider: ProviderName,
         identifier: NonEmptyIdentifier,
         ctx: Context[AppContext],
         artifacts: list[ArtifactKind] | None = None,
@@ -431,8 +427,8 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
     async def list_procurement_providers(ctx: Context[AppContext]) -> ProviderCatalogResponse:
         """List non-exclusive artifact, authority, aggregator, and access roles."""
 
-        service = ctx.request_context.lifespan_context.application.metadata
-        return service.catalog()
+        catalog = ctx.request_context.lifespan_context.application.providers
+        return ProviderCatalogResponse(providers=catalog.describe())
 
     @server.prompt()
     def discovery_procedure() -> str:

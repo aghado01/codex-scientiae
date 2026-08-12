@@ -16,8 +16,8 @@ import zlib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterator, Literal, Sequence
-from uuid import uuid4
 
+from jsonl_engine.sidecar import temp_write_path
 from procurement.errors import SourceMaterializationError
 
 
@@ -928,7 +928,7 @@ class SourceArchiveExtractor:
                 f"source extraction destination could not be created: '{destination}'"
             ) from exc
 
-        payload = parent / f".payload-{uuid4().hex}"
+        payload = Path(temp_write_path(str(destination)))
         archive_digest = hashlib.sha256()
         payload_bytes = 0
         archive_before: os.stat_result | None = None

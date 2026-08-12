@@ -26,7 +26,7 @@ from procurement.payloads import (
     PlannedArtifact,
 )
 from procurement.providers.base import Capability
-from procurement.registry import ProviderRegistry
+from procurement.providers.catalog import ProviderCatalog
 from procurement.staging import (
     AcquisitionItem,
     AcquisitionStore,
@@ -142,7 +142,7 @@ class AcquisitionService:
 
     def __init__(
         self,
-        registry: ProviderRegistry,
+        catalog: ProviderCatalog,
         http: HttpClient,
         store: AcquisitionStore,
         *,
@@ -150,7 +150,7 @@ class AcquisitionService:
         user_agent: str = "codex-scientiae-procurement/0.1",
         maximum_expanded_source_bytes: int = 4 * 1024 * 1024 * 1024,
     ) -> None:
-        self._registry = registry
+        self._catalog = catalog
         self._http = http
         self._store = store
         self._policies = {
@@ -162,7 +162,7 @@ class AcquisitionService:
     async def plan(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
         """Return an internal server-produced plan; callers cannot supply candidate URLs."""
 
-        provider = self._registry.get(request.provider, Capability.PLAN_ARTIFACT)
+        provider = self._catalog.get(request.provider, Capability.PLAN_ARTIFACT)
         plan = await provider.plan_artifact(request)
         if plan.artifact.provider.casefold() != provider.name.casefold():
             raise AcquisitionError("artifact planner returned another provider's identity")

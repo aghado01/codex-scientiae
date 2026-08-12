@@ -19,7 +19,13 @@ from procurement.payloads import (
     RetrievalCandidate,
     UnavailableArtifact,
 )
-from procurement.providers.base import retrieved_metadata
+from procurement.providers.base import (
+    Capability,
+    ProviderCategory,
+    ProviderDefinition,
+    ProviderRole,
+    retrieved_metadata,
+)
 from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
 
 
@@ -79,8 +85,28 @@ def strip_html(value: object | None) -> str | None:
 class ZenodoProvider:
     """Zenodo records API mapped onto procurement records."""
 
-    name = "zenodo"
-    search_constraints = frozenset({"resource_type", "sort"})
+    descriptor = ProviderDefinition(
+        name="zenodo",
+        category=ProviderCategory.REPOSITORY,
+        capabilities=frozenset(
+            {
+                Capability.SEARCH,
+                Capability.GET_WORK,
+                Capability.METADATA,
+                Capability.PLAN_ARTIFACT,
+            }
+        ),
+        roles=frozenset(
+            {
+                ProviderRole.ARTIFACT_ORIGIN,
+                ProviderRole.ARTIFACT_ACCESS,
+                ProviderRole.METADATA_AUTHORITY,
+            }
+        ),
+        search_constraints=frozenset({"resource_type", "sort"}),
+    )
+    name = descriptor.name
+    search_constraints = descriptor.search_constraints
 
     def __init__(
         self,

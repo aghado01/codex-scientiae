@@ -4,8 +4,9 @@
 preparation. It has no MCP dependency in its implementation graph; the MCP SDK is consumed only by
 `src/mcps`.
 
-The current discovery plane contains OpenAlex, Semantic Scholar, arXiv, and Zenodo adapters behind explicit
-capability registration. `DiscoveryService` provides federated search, graph traversal, reference
+The current discovery plane contains OpenAlex, Semantic Scholar, arXiv, and Zenodo adapters behind an
+explicit provider catalog. Each adapter owns one immutable descriptor containing its category, roles,
+capabilities, and honored search constraints. `DiscoveryService` provides federated search, graph traversal, reference
 resolution, and provider lookup. Provider-specific search constraints are declared; federated search emits
 an explicit error report instead of silently weakening a constraint. `WorkRecord` preserves every provider
 identity participating in a merge.
@@ -42,11 +43,15 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-Provider endpoints, request floors, timeouts, attempts, and default sources live in
+Provider endpoints, request floors, timeouts, attempts, and default sources live in the version 2
 `configs/defaults.json`. That data also names the confined staging root, logical local-import inboxes, source catalogs, and payload and
 archive limits. `CODEX_SCIENTIAE_ROOT` can select the workspace explicitly. `CODEX_SCHOLAR_MAILTO` supplies a contact address and
 `OPENALEX_API_KEY` and `SEMANTIC_SCHOLAR_API_KEY` supply optional provider credentials.
-Provider groups distinguish metadata aggregators, scholarly repositories, and access-only sources.
+Provider categories and capabilities are adapter declarations rather than configuration data.
+`providers/builtin.py` is the built-in construction catalog; each entry binds an adapter descriptor,
+constructor shape, and any provider-specific config validation. Composition accepts an extended immutable
+factory catalog, so adding another adapter does not require a provider switch in `composition.py`.
+The runtime catalog distinguishes metadata aggregators, scholarly repositories, and access-only sources;
 Sci-Hub is classified as access-only rather than as a repository or metadata authority.
 
 Filesystem trust boundary: acquisition and source-materialization roots are pathname-confined but not yet

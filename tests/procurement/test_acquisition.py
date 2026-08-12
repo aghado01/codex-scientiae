@@ -37,7 +37,7 @@ from procurement.payloads import (
 from procurement.providers.arxiv import ArxivProvider
 from procurement.providers.base import Capability, ProviderRole
 from procurement.providers.zenodo import ZenodoProvider
-from procurement.registry import ProviderBinding, ProviderRegistry
+from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 from procurement.services.acquisition import AcquisitionService
 from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings
 from procurement.staging import (
@@ -156,7 +156,7 @@ def acquisition_service(
     store: AcquisitionStore | None = None,
 ) -> tuple[AcquisitionService, StaticPlanningProvider]:
     planner = StaticPlanningProvider(plan)
-    registry = ProviderRegistry(
+    registry = ProviderCatalog(
         [
             ProviderBinding(
                 planner,
@@ -812,7 +812,7 @@ class TestAcquisitionService(unittest.TestCase):
                 self.assertEqual(tuple(form.kind for form in manifest.forms), ("pdf",))
                 self.assertFalse(
                     any(
-                        path.name.startswith((".download-", ".acquisition-publish-"))
+                        path.name in {".download.part", ".acquisition-publish.json"}
                         for path in (Path(root) / plan.deposit_slug).iterdir()
                     )
                 )
@@ -859,7 +859,7 @@ class TestAcquisitionService(unittest.TestCase):
                 measure_artifact_file(Path(first.staging_directory) / first.outcomes[0].path),
                 (len(PDF), hashlib.sha256(PDF).hexdigest()),
             )
-            self.assertFalse(any(path.name.startswith(".download-") for path in manifest_path.parent.iterdir()))
+            self.assertFalse((manifest_path.parent / ".download.part").exists())
 
         with tempfile.TemporaryDirectory() as root:
             asyncio.run(exercise(root))
@@ -950,8 +950,10 @@ class TestAcquisitionService(unittest.TestCase):
             form = acquired_artifact("pdf", PDF)
             with store.transaction("2008.10579v1") as item:
                 partial = item.private_download_path()
+                self.assertEqual(partial.name, ".download.part")
                 partial.write_bytes(PDF)
-                item.write_journal(plan.artifact, partial, form)
+                journal = item.write_journal(plan.artifact, partial, form)
+                self.assertEqual(journal.name, ".acquisition-publish.json")
 
             def forbidden(request: httpx.Request) -> httpx.Response:
                 raise AssertionError("recovery should satisfy the planned payload")
@@ -972,8 +974,8 @@ class TestAcquisitionService(unittest.TestCase):
             item_dir = Path(result.staging_directory)
             self.assertTrue((item_dir / "2008.10579v1.pdf").is_file())
             self.assertTrue((item_dir / "acquisition.json").is_file())
-            self.assertFalse(any(path.name.startswith(".acquisition-publish-") for path in item_dir.iterdir()))
-            self.assertFalse(any(path.name.startswith(".download-") for path in item_dir.iterdir()))
+            self.assertFalse((item_dir / ".acquisition-publish.json").exists())
+            self.assertFalse((item_dir / ".download.part").exists())
 
         with tempfile.TemporaryDirectory() as root:
             asyncio.run(exercise(root))

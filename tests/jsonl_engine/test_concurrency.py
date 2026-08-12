@@ -109,15 +109,30 @@ class TestScratchPaths(unittest.TestCase):
             prefixed_artifact = temp_write_path(path + ".backup")
             malformed = [
                 path + ".worker.0123456789ab.tmp",
-                path + ".123.0123456789AB.tmp",
-                path + ".123.0123456789a.tmp",
-                path + ".123.0123456789ab.extra.tmp",
+                path + ".123.01AB.tmp",
+                path + ".123..tmp",
+                path + ".123.01ab.extra.tmp",
             ]
             for scratch in (*expected, prefixed_artifact, *malformed):
                 with open(scratch, "wb") as handle:
                     handle.write(b"{}\n")
 
             self.assertEqual(sorted(expected), find_stale_scratch(path))
+
+    def test_transaction_scratch_uses_compact_process_serials(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "doc.json")
+            first = temp_write_path(path)
+            second = temp_write_path(path)
+
+            self.assertNotEqual(first, second)
+            for candidate in (first, second):
+                suffix = candidate.removeprefix(path + ".").removesuffix(".tmp")
+                pid, serial = suffix.split(".")
+                self.assertEqual(str(os.getpid()), pid)
+                self.assertTrue(serial)
+                self.assertTrue(all(char in "0123456789abcdef" for char in serial))
+                self.assertLessEqual(len(serial), 4)
 
     @unittest.skipUnless(os.name == "nt", "Windows path identity is case-insensitive")
     def test_windows_case_aliases_share_one_lock(self):

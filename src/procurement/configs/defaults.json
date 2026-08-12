@@ -1,12 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "default_sources": ["openalex", "semanticscholar", "arxiv", "zenodo"],
   "metadata_fallback_sources": ["semanticscholar", "openalex"],
-  "provider_groups": {
-    "aggregators": ["openalex", "semanticscholar"],
-    "repositories": ["arxiv", "zenodo"],
-    "access_sources": ["scihub"]
-  },
   "providers": {
     "openalex": {
       "base_url": "https://api.openalex.org",

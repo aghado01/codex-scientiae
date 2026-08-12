@@ -11,15 +11,38 @@ from procurement.errors import ProviderHttpError, ProviderPayloadError
 from procurement.http import HttpClient, RequestPolicy
 from procurement.identifiers import extract_doi, is_doi, normalize_arxiv_id, normalize_doi
 from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
-from procurement.providers.base import RelatedKind, retrieved_metadata
+from procurement.providers.base import (
+    Capability,
+    ProviderCategory,
+    ProviderDefinition,
+    ProviderRole,
+    RelatedKind,
+    retrieved_metadata,
+)
 from procurement.settings import ProviderHttpSettings, RuntimeSecrets
 
 
 class SemanticScholarProvider:
     """Semantic Scholar Graph API mapped onto procurement records."""
 
-    name = "semanticscholar"
-    search_constraints = frozenset()
+    descriptor = ProviderDefinition(
+        name="semanticscholar",
+        category=ProviderCategory.AGGREGATOR,
+        capabilities=frozenset(
+            {
+                Capability.SEARCH,
+                Capability.GET_WORK,
+                Capability.CITATIONS,
+                Capability.REFERENCES,
+                Capability.RECOMMENDATIONS,
+                Capability.RESOLVE,
+                Capability.METADATA,
+            }
+        ),
+        roles=frozenset({ProviderRole.METADATA_AGGREGATOR}),
+    )
+    name = descriptor.name
+    search_constraints = descriptor.search_constraints
     _fields = ",".join(
         (
             "paperId",

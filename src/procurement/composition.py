@@ -10,9 +10,12 @@ from jsonl_engine.paths import find_repository_root
 from procurement.archive import ArchiveLimits
 from procurement.errors import ConfigurationError
 from procurement.http import HttpClient, RequestPolicy
-from procurement.providers import ArxivProvider, OpenAlexProvider, SemanticScholarProvider, ZenodoProvider
+from procurement.providers import (
+    ProviderFactoryCatalog,
+    get_builtin_provider_factory_catalog,
+)
 from procurement.providers.base import Capability, ProviderRole
-from procurement.registry import ProviderBinding, ProviderRegistry
+from procurement.providers.catalog import ProviderCatalog
 from procurement.services import (
     AcquisitionService,
     ArticleCatalogService,
@@ -30,6 +33,7 @@ from procurement.source import SourceDepositStore
 class ProcurementApplication:
     """Owned runtime dependencies and application services."""
 
+    providers: ProviderCatalog
     discovery: DiscoveryService
     metadata: MetadataService
     http: HttpClient
@@ -53,11 +57,17 @@ def build_application(
     secrets: RuntimeSecrets | None = None,
     http: HttpClient | None = None,
     workspace_root: str | Path | None = None,
+    provider_factories: ProviderFactoryCatalog | None = None,
 ) -> ProcurementApplication:
-    """Construct the default provider registry and discovery service."""
+    """Construct the configured provider catalog and application services."""
 
     settings = settings or DiscoverySettings.load()
-    _validate_composition_settings(settings)
+    factories = (
+        get_builtin_provider_factory_catalog()
+        if provider_factories is None
+        else provider_factories
+    )
+    _validate_composition_settings(settings, factories)
     root = _resolve_workspace_root(workspace_root)
     staging_root = _resolve_configured_directory(
         root,
@@ -87,111 +97,29 @@ def build_application(
     secrets = secrets or RuntimeSecrets.from_environment()
     http = http or HttpClient()
 
-    openalex = OpenAlexProvider(http, settings.providers["openalex"], secrets)
-    semantic_scholar = SemanticScholarProvider(http, settings.providers["semanticscholar"], secrets)
-    arxiv = ArxivProvider(
-        http,
-        settings.providers["arxiv"],
-        secrets,
-        settings.acquisition.limits,
+    catalog = factories.build(
+        settings.providers,
+        http=http,
+        secrets=secrets,
+        artifact_limits=settings.acquisition.limits,
     )
-    zenodo = ZenodoProvider(
-        http,
-        settings.providers["zenodo"],
-        secrets,
-        settings.acquisition.limits,
-    )
-
-    registry = ProviderRegistry(
-        [
-            ProviderBinding(
-                openalex,
-                frozenset(
-                    {
-                        Capability.SEARCH,
-                        Capability.GET_WORK,
-                        Capability.CITATIONS,
-                        Capability.REFERENCES,
-                        Capability.RESOLVE,
-                        Capability.METADATA,
-                    }
-                ),
-                frozenset({ProviderRole.METADATA_AGGREGATOR}),
-            ),
-            ProviderBinding(
-                semantic_scholar,
-                frozenset(
-                    {
-                        Capability.SEARCH,
-                        Capability.GET_WORK,
-                        Capability.CITATIONS,
-                        Capability.REFERENCES,
-                        Capability.RECOMMENDATIONS,
-                        Capability.RESOLVE,
-                        Capability.METADATA,
-                    }
-                ),
-                frozenset({ProviderRole.METADATA_AGGREGATOR}),
-            ),
-            ProviderBinding(
-                arxiv,
-                frozenset(
-                    {
-                        Capability.SEARCH,
-                        Capability.GET_WORK,
-                        Capability.METADATA,
-                        Capability.PLAN_ARTIFACT,
-                    }
-                ),
-                frozenset(
-                    {
-                        ProviderRole.ARTIFACT_ORIGIN,
-                        ProviderRole.ARTIFACT_ACCESS,
-                        ProviderRole.METADATA_AUTHORITY,
-                    }
-                ),
-            ),
-            ProviderBinding(
-                zenodo,
-                frozenset(
-                    {
-                        Capability.SEARCH,
-                        Capability.GET_WORK,
-                        Capability.METADATA,
-                        Capability.PLAN_ARTIFACT,
-                    }
-                ),
-                frozenset(
-                    {
-                        ProviderRole.ARTIFACT_ORIGIN,
-                        ProviderRole.ARTIFACT_ACCESS,
-                        ProviderRole.METADATA_AUTHORITY,
-                    }
-                ),
-            ),
-            ProviderBinding(
-                _DeclaredProvider("scihub"),
-                frozenset(),
-                frozenset({ProviderRole.ARTIFACT_ACCESS}),
-            ),
-        ]
-    )
-    metadata = MetadataService(registry, settings.metadata_fallback_sources)
-    policies = {
-        name: RequestPolicy(
-            min_interval_seconds=settings.providers[name].min_interval_seconds,
-            timeout_seconds=settings.providers[name].timeout_seconds,
-            max_attempts=settings.providers[name].max_attempts,
-        )
-        for name in ("arxiv", "zenodo")
-    }
+    metadata = MetadataService(catalog, settings.metadata_fallback_sources)
+    policies = {}
+    for binding in catalog.bindings(capability=Capability.PLAN_ARTIFACT):
+        provider_settings = settings.providers.get(binding.name)
+        if provider_settings is not None:
+            policies[binding.name] = RequestPolicy(
+                min_interval_seconds=provider_settings.min_interval_seconds,
+                timeout_seconds=provider_settings.timeout_seconds,
+                max_attempts=provider_settings.max_attempts,
+            )
     catalog_service = ArticleCatalogService(catalog_roots)
     acquisition_store = AcquisitionStore(
         staging_root,
         lock_timeout=settings.acquisition.lock_timeout_seconds,
     )
     acquisition_service = AcquisitionService(
-        registry,
+        catalog,
         http,
         acquisition_store,
         provider_policies=policies,
@@ -221,7 +149,8 @@ def build_application(
         lock_timeout=settings.acquisition.lock_timeout_seconds,
     )
     return ProcurementApplication(
-        discovery=DiscoveryService(registry, settings.default_sources),
+        providers=catalog,
+        discovery=DiscoveryService(catalog, settings.default_sources),
         metadata=metadata,
         http=http,
         acquisition=acquisition_service,
@@ -231,98 +160,73 @@ def build_application(
     )
 
 
-@dataclass(frozen=True, slots=True)
-class _DeclaredProvider:
-    """Provider identity with no callable implementation in this slice."""
-
-    name: str
-
-
-def _validate_composition_settings(settings: DiscoverySettings) -> None:
+def _validate_composition_settings(
+    settings: DiscoverySettings,
+    factories: ProviderFactoryCatalog,
+) -> None:
     """Fail before runtime allocation when composition data cannot form the application."""
 
-    required = {"openalex", "semanticscholar", "arxiv", "zenodo"}
-    supported = required | {"scihub"}
-    groups = settings.provider_groups
-    declared_groups = {
-        name: group
-        for group, names in (
-            ("aggregator", groups.aggregators),
-            ("repository", groups.repositories),
-            ("access-source", groups.access_sources),
-        )
-        for name in names
-    }
-    missing_declarations = supported.difference(declared_groups)
-    if missing_declarations:
+    configured = set(settings.providers)
+    noncanonical = sorted(
+        name for name in configured if not name or name != name.casefold()
+    )
+    if noncanonical:
         raise ConfigurationError(
-            "provider groups omit declarations: "
-            + ", ".join(sorted(missing_declarations))
+            "provider configuration keys must be canonical lowercase names: "
+            + ", ".join(noncanonical)
         )
-    unsupported_declarations = set(declared_groups).difference(supported)
-    if unsupported_declarations:
-        raise ConfigurationError(
-            "provider groups name providers without implementations: "
-            + ", ".join(sorted(unsupported_declarations))
-        )
-    expected_groups = {
-        "openalex": "aggregator",
-        "semanticscholar": "aggregator",
-        "arxiv": "repository",
-        "zenodo": "repository",
-        "scihub": "access-source",
-    }
-    misclassified = [
-        f"{name}={declared_groups[name]}"
-        for name, expected in expected_groups.items()
-        if declared_groups[name] != expected
-    ]
-    if misclassified:
-        raise ConfigurationError(
-            "provider groups conflict with implemented provider roles: "
-            + ", ".join(misclassified)
-        )
+    try:
+        factories.validate_settings(settings.providers)
+    except ValueError as exc:
+        raise ConfigurationError(str(exc)) from exc
 
-    missing = required.difference(settings.providers)
-    if missing:
-        raise ConfigurationError(
-            f"discovery settings omit providers: {', '.join(sorted(missing))}"
-        )
+    declared = {definition.name: definition for definition in factories.definitions()}
 
-    defaults = tuple(name.casefold() for name in settings.default_sources)
+    defaults = _canonical_provider_sequence(settings.default_sources, label="default_sources")
     if not defaults:
         raise ConfigurationError("default_sources must not be empty")
     if len(defaults) != len(set(defaults)):
         raise ConfigurationError("default_sources must not contain duplicates")
-    unknown_defaults = set(defaults).difference(groups.search_sources)
+    unknown_defaults = set(defaults).difference(declared)
     if unknown_defaults:
         raise ConfigurationError(
-            "default_sources contain non-search providers: "
+            "default_sources contain unknown providers: "
             + ", ".join(sorted(unknown_defaults))
         )
+    invalid_defaults = {
+        name
+        for name in defaults
+        if Capability.SEARCH not in declared[name].capabilities
+    }
+    if invalid_defaults:
+        raise ConfigurationError(
+            "default_sources contain non-search providers: "
+            + ", ".join(sorted(invalid_defaults))
+        )
 
-    fallbacks = tuple(name.casefold() for name in settings.metadata_fallback_sources)
+    fallbacks = _canonical_provider_sequence(
+        settings.metadata_fallback_sources,
+        label="metadata_fallback_sources",
+    )
     if not fallbacks:
         raise ConfigurationError("metadata_fallback_sources must not be empty")
     if len(fallbacks) != len(set(fallbacks)):
         raise ConfigurationError("metadata_fallback_sources must not contain duplicates")
-    invalid_fallbacks = set(fallbacks).difference(groups.aggregators)
+    unknown_fallbacks = set(fallbacks).difference(declared)
+    if unknown_fallbacks:
+        raise ConfigurationError(
+            "metadata_fallback_sources contain unknown providers: "
+            + ", ".join(sorted(unknown_fallbacks))
+        )
+    invalid_fallbacks = {
+        name
+        for name in fallbacks
+        if ProviderRole.METADATA_AGGREGATOR not in declared[name].roles
+    }
     if invalid_fallbacks:
         raise ConfigurationError(
             "metadata fallbacks must be metadata aggregators: "
             + ", ".join(sorted(invalid_fallbacks))
-        )
-
-    semantic = settings.providers.get("semanticscholar")
-    if semantic is None or not semantic.secondary_base_url:
-        raise ConfigurationError(
-            "Semantic Scholar settings require a recommendations secondary_base_url"
-        )
-
-    arxiv = settings.providers.get("arxiv")
-    if arxiv is None or not arxiv.artifact_base_url or not arxiv.secondary_artifact_base_url:
-        raise ConfigurationError(
-            "arXiv settings require primary and secondary artifact endpoints"
         )
 
     catalogs = [catalog.name.casefold() for catalog in settings.acquisition.catalogs]
@@ -336,6 +240,18 @@ def _validate_composition_settings(settings: DiscoverySettings) -> None:
         raise ConfigurationError("acquisition settings require at least one local inbox")
     if len(inboxes) != len(set(inboxes)):
         raise ConfigurationError("acquisition local inbox names must be unique")
+
+
+def _canonical_provider_sequence(values: tuple[str, ...], *, label: str) -> tuple[str, ...]:
+    """Validate ordered provider names without silently normalizing configuration."""
+
+    invalid = [name for name in values if not name or name != name.casefold()]
+    if invalid:
+        raise ConfigurationError(
+            f"{label} must contain canonical lowercase provider names: "
+            + ", ".join(repr(name) for name in invalid)
+        )
+    return values
 
 
 def _resolve_workspace_root(value: str | Path | None) -> Path:

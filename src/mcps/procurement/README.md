@@ -2,7 +2,9 @@
 
 `scientiae-procurement` is the Python MCP projection of the procurement discovery and metadata services. It
 owns SDK registration, tool schemas, prompts, and application lifespan. It does not own provider algorithms
-or cross-provider workflows.
+or cross-provider workflows. Provider arguments are names validated by the backend catalog; protocol
+schemas do not duplicate a fixed provider enum. `list_procurement_providers` reports the current category,
+roles, capabilities, and honored search constraints.
 
 Run the stdio server from the repository environment:
 

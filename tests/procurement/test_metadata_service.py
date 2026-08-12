@@ -20,7 +20,7 @@ from procurement.models import (
     WorkRecord,
 )
 from procurement.providers.base import Capability, ProviderRole
-from procurement.registry import ProviderBinding, ProviderRegistry
+from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 from procurement.services import MetadataService
 from procurement.storage.schemas import get_procurement_schema_catalog
 
@@ -117,7 +117,7 @@ class TestMetadataService(unittest.TestCase):
     def test_provider_cancellation_is_never_converted_to_a_fallback_attempt(self) -> None:
         cancelled = CancelledMetadataProvider()
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(
                         cancelled,
@@ -155,7 +155,7 @@ class TestMetadataService(unittest.TestCase):
         )
         openalex = FakeMetadataProvider("openalex", failure=AssertionError("must not run"))
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(arxiv, frozenset({Capability.METADATA}), AUTHORITY_ROLES),
                     ProviderBinding(
@@ -214,7 +214,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(arxiv, frozenset({Capability.METADATA}), AUTHORITY_ROLES),
                     ProviderBinding(
@@ -261,23 +261,21 @@ class TestMetadataService(unittest.TestCase):
                 b'{"paperId":"P1"}',
             ),
         )
-        service = MetadataService(
-            ProviderRegistry(
-                [
-                    ProviderBinding(
-                        scihub,
-                        frozenset(),
-                        frozenset({ProviderRole.ARTIFACT_ACCESS}),
-                    ),
-                    ProviderBinding(
-                        semantic,
-                        frozenset({Capability.METADATA}),
-                        AGGREGATOR_ROLES,
-                    ),
-                ]
-            ),
-            ("semanticscholar",),
+        catalog = ProviderCatalog(
+            [
+                ProviderBinding(
+                    scihub,
+                    frozenset(),
+                    frozenset({ProviderRole.ARTIFACT_ACCESS}),
+                ),
+                ProviderBinding(
+                    semantic,
+                    frozenset({Capability.METADATA}),
+                    AGGREGATOR_ROLES,
+                ),
+            ]
         )
+        service = MetadataService(catalog, ("semanticscholar",))
 
         result = asyncio.run(
             service.collect(
@@ -290,7 +288,7 @@ class TestMetadataService(unittest.TestCase):
         self.assertEqual(result.route, "aggregator-fallback")
         self.assertEqual([attempt.status for attempt in result.attempts], ["not-supported", "ok"])
         self.assertEqual(semantic.identifiers, ["doi:10.1000/example"])
-        roles = {provider.name: provider.roles for provider in service.catalog().providers}
+        roles = {provider.name: provider.roles for provider in catalog.describe()}
         self.assertEqual(roles["scihub"], ("artifact-access",))
         self.assertEqual(roles["semanticscholar"], ("metadata-aggregator",))
 
@@ -315,7 +313,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(
                         scihub,
@@ -352,7 +350,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(
                         scihub,
@@ -399,7 +397,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(arxiv, frozenset({Capability.METADATA}), AUTHORITY_ROLES),
                     ProviderBinding(
@@ -435,7 +433,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(arxiv, frozenset({Capability.METADATA}), AUTHORITY_ROLES),
                     ProviderBinding(
@@ -469,7 +467,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [ProviderBinding(arxiv, frozenset({Capability.METADATA}), AUTHORITY_ROLES)]
             ),
             ("missing-fallback-is-not-resolved-for-invalid-input",),
@@ -516,7 +514,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [ProviderBinding(zenodo, frozenset({Capability.METADATA}), AUTHORITY_ROLES)]
             ),
             ("unused",),
@@ -569,7 +567,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(
                         wrong,
@@ -634,7 +632,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(
                         authority,
@@ -687,7 +685,7 @@ class TestMetadataService(unittest.TestCase):
             ),
         )
         service = MetadataService(
-            ProviderRegistry(
+            ProviderCatalog(
                 [
                     ProviderBinding(
                         semantic,

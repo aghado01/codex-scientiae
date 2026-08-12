@@ -17,7 +17,6 @@ from procurement.models import (
     DepositMetadataBundle,
     MetadataAttempt,
     MetadataObservation,
-    ProviderCatalogResponse,
     WorkIdentityAnchor,
     artifact_identity_aliases,
     project_article_metadata,
@@ -26,22 +25,17 @@ from procurement.models import (
     validate_deposit_slug,
 )
 from procurement.providers.base import Capability, MetadataProvider, ProviderRole
-from procurement.registry import ProviderBinding, ProviderRegistry
+from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 
 
 class MetadataService:
     """Collect exact decoded API evidence and project it for an article deposit."""
 
-    def __init__(self, registry: ProviderRegistry, fallback_sources: tuple[str, ...]) -> None:
+    def __init__(self, catalog: ProviderCatalog, fallback_sources: tuple[str, ...]) -> None:
         if not fallback_sources:
             raise ValueError("at least one metadata fallback source is required")
-        self._registry = registry
+        self._catalog = catalog
         self._fallback_sources = fallback_sources
-
-    def catalog(self) -> ProviderCatalogResponse:
-        """Describe artifact and metadata roles without implying equivalence."""
-
-        return ProviderCatalogResponse(providers=self._registry.describe())
 
     async def collect(
         self,
@@ -54,7 +48,7 @@ class MetadataService:
         """Select authoritative metadata or an identity-checked aggregator fallback."""
 
         deposit_slug = validate_deposit_slug(deposit_slug)
-        artifact_binding = self._registry.binding(artifact_provider)
+        artifact_binding = self._catalog.binding(artifact_provider)
         if ProviderRole.ARTIFACT_ACCESS not in artifact_binding.roles:
             raise ValueError(f"provider {artifact_provider!r} is not an artifact-access provider")
         identifier = validate_artifact_deposit_reference(
@@ -67,7 +61,7 @@ class MetadataService:
         candidates = [artifact_binding]
         seen = {artifact_binding.name.casefold()}
         for name in fallbacks:
-            binding = self._registry.binding(name)
+            binding = self._catalog.binding(name)
             if ProviderRole.METADATA_AGGREGATOR not in binding.roles:
                 raise ValueError(f"fallback provider {name!r} is not a metadata aggregator")
             if binding.name.casefold() not in seen:
@@ -274,7 +268,7 @@ class MetadataService:
         selected: list[ProviderBinding] = []
         seen: set[str] = set()
         for name in names:
-            binding = self._registry.binding(name)
+            binding = self._catalog.binding(name)
             if ProviderRole.METADATA_AGGREGATOR not in binding.roles:
                 raise ValueError(f"fallback provider {name!r} is not a metadata aggregator")
             key = binding.name.casefold()

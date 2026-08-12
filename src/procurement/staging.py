@@ -4,12 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import os
-import re
 import stat
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator, Literal
-from uuid import uuid4
 
 from filelock import FileLock, Timeout
 from pydantic import Field, field_validator, model_validator
@@ -21,8 +19,8 @@ from procurement.models import ArtifactReference, DomainModel, validate_deposit_
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
 
 MAX_ACQUISITION_MANIFEST_BYTES = 1024 * 1024
-_JOURNAL_PATTERN = re.compile(r"^\.acquisition-publish-[0-9a-f]{32}\.json$")
-_PARTIAL_PATTERN = re.compile(r"^\.download-[0-9a-f]{32}\.part$")
+_JOURNAL_LEAF = ".acquisition-publish.json"
+_PARTIAL_LEAF = ".download.part"
 _FORM_ORDER = {"source": 0, "pdf": 1, "html": 2}
 
 
@@ -204,9 +202,9 @@ class _PublicationJournal(DomainModel):
     @field_validator("partial_leaf", mode="before")
     @classmethod
     def _private_partial(cls, value: object) -> str:
-        if not isinstance(value, str) or not _PARTIAL_PATTERN.fullmatch(value):
+        if value != _PARTIAL_LEAF:
             raise ValueError("publication journal partial_leaf is invalid")
-        return value
+        return _PARTIAL_LEAF
 
     @model_validator(mode="after")
     def _canonical_identity(self) -> "_PublicationJournal":
@@ -243,13 +241,13 @@ class AcquisitionItem:
         )
 
     def private_download_path(self) -> Path:
-        return self.directory / f".download-{uuid4().hex}.part"
+        return self.directory / _PARTIAL_LEAF
 
     def artifact_path(self, leaf: str) -> Path:
         return self.directory / validate_deposit_slug(leaf)
 
     def write_journal(self, artifact: ArtifactReference, partial: Path, form: AcquiredArtifact) -> Path:
-        if partial.parent != self.directory or not _PARTIAL_PATTERN.fullmatch(partial.name):
+        if partial.parent != self.directory or partial.name != _PARTIAL_LEAF:
             raise AcquisitionError("publication partial is outside the locked staging item")
         journal = _PublicationJournal(
             slug=self.directory.name,
@@ -257,7 +255,7 @@ class AcquisitionItem:
             partial_leaf=partial.name,
             form=form,
         )
-        path = self.directory / f".acquisition-publish-{uuid4().hex}.json"
+        path = self.directory / _JOURNAL_LEAF
         write_json(
             str(path),
             journal.model_dump(mode="json", by_alias=True),
@@ -267,7 +265,7 @@ class AcquisitionItem:
         return path
 
     def publish_download(self, partial: Path, form: AcquiredArtifact) -> Path:
-        if partial.parent != self.directory or not _PARTIAL_PATTERN.fullmatch(partial.name):
+        if partial.parent != self.directory or partial.name != _PARTIAL_LEAF:
             raise AcquisitionError("publication partial is outside the locked staging item")
         destination = self.artifact_path(form.path)
         if os.path.lexists(destination):
@@ -288,9 +286,8 @@ class AcquisitionItem:
         """Finish journaled publications and remove abandoned private downloads."""
 
         manifest = existing
-        journals = sorted(
-            entry for entry in self.directory.iterdir() if _JOURNAL_PATTERN.fullmatch(entry.name)
-        )
+        journal_path = self.directory / _JOURNAL_LEAF
+        journals = (journal_path,) if os.path.lexists(journal_path) else ()
         for path in journals:
             raw = _stable_bytes(path, maximum=MAX_ACQUISITION_MANIFEST_BYTES)
             try:
@@ -327,12 +324,12 @@ class AcquisitionItem:
             self.publish_manifest(manifest)
             path.unlink()
 
-        for entry in self.directory.iterdir():
-            if _PARTIAL_PATTERN.fullmatch(entry.name):
-                info = entry.lstat()
-                if not stat.S_ISREG(info.st_mode) or _is_reparse(info):
-                    raise AcquisitionConflictError(f"private download is not a regular file: '{entry}'")
-                entry.unlink()
+        partial = self.directory / _PARTIAL_LEAF
+        if os.path.lexists(partial):
+            info = partial.lstat()
+            if not stat.S_ISREG(info.st_mode) or _is_reparse(info):
+                raise AcquisitionConflictError(f"private download is not a regular file: '{partial}'")
+            partial.unlink()
         return manifest
 
 

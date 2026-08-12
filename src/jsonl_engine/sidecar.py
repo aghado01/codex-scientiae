@@ -7,10 +7,11 @@ from __future__ import annotations
 
 import glob
 import hashlib
+import itertools
 import json
 import os
 import tempfile
-import uuid
+import threading
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,6 +26,8 @@ SIG_SCHEMA_PATH = os.path.join(_PACKAGE_DIR, "schemas", "sig.schema.json")
 
 UTF8_BOM = b"\xef\xbb\xbf"
 _SIDECAR_EXTS = {".jidx", ".sig"}
+_TEMP_SERIALS = itertools.count()
+_TEMP_SERIAL_LOCK = threading.Lock()
 
 
 def get_ticks_offset() -> int:
@@ -134,14 +137,19 @@ def lock_path(artifact_path: str) -> str:
 
 
 def temp_write_path(artifact_path: str) -> str:
-    """A write-transaction scratch path unique to this call.
+    """Return an adjacent scratch path using the process write serial.
 
-    Unique, not derived from the artifact name alone: a deterministic '{artifact}.tmp' is shared by
-    every concurrent writer of that artifact, so two transactions interleave their records into one
-    scratch file. On Windows that surfaces as a sharing violation; on POSIX os.replace succeeds and
-    publishes a blend of both writers with a signature covering only one.
+    The process-wide counter separates concurrent threads. The PID separates live processes. A
+    pre-existing candidate belongs to an interrupted process generation whose PID was later reused;
+    advancing the serial preserves it for the lease-owned stale-scratch sweep.
     """
-    return f"{artifact_path}.{os.getpid()}.{uuid.uuid4().hex[:12]}.tmp"
+
+    while True:
+        with _TEMP_SERIAL_LOCK:
+            serial = next(_TEMP_SERIALS)
+        candidate = f"{artifact_path}.{os.getpid()}.{serial:x}.tmp"
+        if not os.path.lexists(candidate):
+            return candidate
 
 
 def scratch_glob(artifact_path: str) -> str:
@@ -156,7 +164,7 @@ def scratch_glob(artifact_path: str) -> str:
 
 
 def _is_transaction_scratch(subject: str, candidate: str) -> bool:
-    """Whether `candidate` is exactly ``subject.PID.12-lower-hex.tmp``."""
+    """Whether `candidate` is exactly ``subject.PID.lower-hex-serial.tmp``."""
     prefix = subject + "."
     if not os.path.normcase(candidate).startswith(os.path.normcase(prefix)):
         return False
@@ -168,7 +176,7 @@ def _is_transaction_scratch(subject: str, candidate: str) -> bool:
     return (
         bool(pid)
         and all("0" <= char <= "9" for char in pid)
-        and len(token) == 12
+        and bool(token)
         and all(char in "0123456789abcdef" for char in token)
         and extension == "tmp"
     )

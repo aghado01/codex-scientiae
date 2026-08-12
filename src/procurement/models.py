@@ -588,12 +588,19 @@ ProviderRoleName = Literal[
     "metadata-authority",
     "metadata-aggregator",
 ]
+ProviderCategoryName = Literal[
+    "aggregator",
+    "repository",
+    "access-source",
+    "service",
+]
 
 
 class ProviderDescriptor(DomainModel):
-    """Declared provider roles, operations, and honored search constraints."""
+    """Declared provider category, roles, operations, and search constraints."""
 
     name: str = Field(min_length=1)
+    category: ProviderCategoryName
     roles: tuple[ProviderRoleName, ...] = Field(json_schema_extra={"uniqueItems": True})
     capabilities: tuple[str, ...] = Field(json_schema_extra={"uniqueItems": True})
     search_constraints: tuple[str, ...] = Field(json_schema_extra={"uniqueItems": True})

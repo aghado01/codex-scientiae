@@ -7,8 +7,8 @@ import os
 import stat
 from dataclasses import dataclass
 from pathlib import Path
-from uuid import uuid4
 
+from jsonl_engine.sidecar import temp_write_path
 from procurement.errors import SourceMaterializationError
 
 _CHUNK_BYTES = 1024 * 1024
@@ -243,7 +243,7 @@ def stable_copy_no_clobber(
             )
         return StableCopyResult(path=str(target), created=False)
 
-    partial = parent / f".copy-{uuid4().hex}.part"
+    partial = Path(temp_write_path(str(target)))
     source_flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
     try:
         try:
