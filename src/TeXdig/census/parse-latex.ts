@@ -275,10 +275,14 @@ function isWhitespaceNode(n: any): boolean {
   return n && (n.type === "whitespace" || n.type === "parbreak" || n.type === "comment");
 }
 
-/** Signature string for n args with/without a leading optional (unified-latex vocabulary). */
-function buildSignature(numArgs: number, hasOptional: boolean): string {
+/**
+ * Signature string for n args (unified-latex/xparse vocabulary). An optional
+ * arg WITH a declared default becomes `O{default}` — plain `o` would lose the
+ * default and expansion of a default-taking macro would substitute emptiness.
+ */
+function buildSignature(numArgs: number, hasOptional: boolean, defaultRaw?: string): string {
   const parts: string[] = [];
-  if (hasOptional) parts.push("o");
+  if (hasOptional) parts.push(defaultRaw !== undefined ? `O{${defaultRaw}}` : "o");
   const mandatory = hasOptional ? numArgs - 1 : numArgs;
   for (let k = 0; k < mandatory; k++) parts.push("m");
   return parts.join(" ");
@@ -347,19 +351,23 @@ export function discoverDefinitions(
         if (!definedName) continue;
         const numArgs = parseInt(stringContentOfArg(bracketArgs[0]), 10) || 0;
         const hasOptional = bracketArgs.length > 1;
+        const defaultSpan = hasOptional ? argContentSpan(sourceId, bracketArgs[1], text) : undefined;
+        const defaultRaw = defaultSpan
+          ? text.slice(defaultSpan.startUtf16, defaultSpan.endUtf16)
+          : undefined;
         const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
         const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
         markDefinitionTokens(node, nameNode);
+        const sig = buildSignature(numArgs, hasOptional, defaultRaw);
         result.macroDefs.push({
           definedName,
           dialect: NEWCOMMAND_FAMILY[name],
-          signatureRaw: buildSignature(numArgs, hasOptional) || undefined,
+          signatureRaw: sig || undefined,
           bodySpan,
           span,
           spanSynthesized: synthesized,
           elaborable: true,
         });
-        const sig = buildSignature(numArgs, hasOptional);
         if (sig) result.registry.macros[definedName] = { signature: sig };
         continue;
       }
@@ -460,6 +468,11 @@ export function discoverDefinitions(
           const target = arr[k];
           const targetSpan = target ? nodeSpan(sourceId, target) : undefined;
           markDefinitionTokens(node, nameNode);
+          // The \let TARGET is part of the definition site too: leaving it to
+          // mint an invocation lets a registered arg-taking target swallow the
+          // NEXT construct as its argument (observed: \let\a\b before another
+          // \newcommand line).
+          if (target && target.type === "macro") markDefinitionTokens(target, undefined);
           result.macroDefs.push({
             definedName: getMacroName(nameNode),
             dialect: "let",

@@ -34,7 +34,16 @@ export interface Dependencies {
     group(node: any): boolean;
   };
   macros: {
-    listNewcommands(ast: any): any[];
+    listNewcommands(ast: any): { name: string; signature: string; body: any[]; definition: any }[];
+    expandMacrosExcludingDefinitions(tree: any, macros: { name: string; body: any[] }[]): void;
+    createMacroExpander(substitution: any[]): (macro: any) => any[];
+  };
+  /**
+   * Serializer for DERIVED content (expansion output has no raw stream to
+   * slice). Source slices stay raw-stream-only; printRaw never renders them.
+   */
+  printRaw: {
+    printRaw(node: any): string;
   };
   /** Per-package signature records from the pinned unified-latex-ctan module. */
   ctan: {
@@ -76,6 +85,7 @@ export function loadDependencies(depsRoot: string): Dependencies {
   const match = req("@unified-latex/unified-latex-util-match");
   const macros = req("@unified-latex/unified-latex-util-macros");
   const ctan = req("@unified-latex/unified-latex-ctan");
+  const printRaw = req("@unified-latex/unified-latex-util-print-raw");
   const utensils = req("latex-utensils");
 
   loadedDeps = {
@@ -84,6 +94,7 @@ export function loadDependencies(depsRoot: string): Dependencies {
     match,
     macros,
     ctan,
+    printRaw,
     utensils,
   };
   loadedDepsRoot = resolvedRoot;

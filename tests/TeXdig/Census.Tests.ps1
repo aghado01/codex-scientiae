@@ -267,6 +267,50 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         }
     }
 
+    Context "Expansion Elaboration" {
+        BeforeAll {
+            $expRaw = Get-Content -Raw (Join-Path $script:OutDir "expansion.jsonl")
+            $script:Expansions = @($expRaw.Trim().Split("`n") | Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
+        }
+
+        It "declares the elaboration store in the summary" {
+            $sum = Get-Content -Raw (Join-Path $script:OutDir "summary.json") | ConvertFrom-Json
+            $sum.stores.emitted | Should -Contain "expansion.jsonl"
+        }
+
+        It "applies optional-argument defaults during substitution" {
+            $pair = $script:Expansions | Where-Object { $_.definedName -eq "pair" }
+            $pair.sourceSlice | Should -Be '\pair{x}'
+            $pair.expandedText | Should -Be '(d,x)'
+            $pair.status | Should -Be "expanded"
+        }
+
+        It "synthesizes math-operator bodies" {
+            $rank = $script:Expansions | Where-Object { $_.definedName -eq "rank" }
+            $rank.expandedText | Should -Be '\operatorname{rank}'
+        }
+
+        It "drives nested chains to a bounded fixed point" {
+            $double = $script:Expansions | Where-Object { $_.definedName -eq "double" }
+            $double.expandedText | Should -Be '\mathsf{W}\mathsf{W}'
+            $double.rounds | Should -BeGreaterOrEqual 2
+            $double.status | Should -Be "expanded"
+        }
+
+        It "origin-chains every row to census entities (gate 3)" {
+            foreach ($row in $script:Expansions) {
+                $row.entityId | Should -Match '^ent:macro-invocation@'
+                $row.definitionEntityId | Should -Match '^ent:macro-definition@'
+                ($script:Entities | Where-Object { $_.id -eq $row.entityId }) | Should -Not -BeNullOrEmpty
+            }
+        }
+
+        It "leaves non-elaborable dialects out of the expansion table" {
+            # \def\zz and \let\also are detected-when-knowable; no expansion rows.
+            ($script:Expansions | Where-Object { $_.definedName -in @("zz", "also") }) | Should -BeNullOrEmpty
+        }
+    }
+
     Context "Summary & Coverage Gates" {
         BeforeAll {
             $sumRaw = Get-Content -Raw (Join-Path $script:OutDir "summary.json")
@@ -280,7 +324,8 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         }
 
         It "declares emitted and deferred stores" {
-            $script:Summary.stores.emitted.Count | Should -Be 6
+            $script:Summary.stores.emitted.Count | Should -Be 7
+            $script:Summary.stores.emitted | Should -Contain "expansion.jsonl"
             $script:Summary.stores.deferred | Should -Contain "walk.jsonl"
         }
 

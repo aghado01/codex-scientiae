@@ -375,6 +375,10 @@ export const DiagnosticCodes = {
   BackfillUnavailable: "census/backfill-unavailable",
   /** unified-latex threw on a parsed source: the parser witness is absent for the whole file, and every entity there is lexical-only by defect, not design. */
   LatexParseError: "census/latex-parse-error",
+  /** An expansion site retained expandable names after substitution — dangling parameters or unexpandable interior. */
+  ExpansionIncomplete: "elaborate/expansion-incomplete",
+  /** An expansion site failed to reach a fixed point within the round bound — self-referential or mutually recursive definitions. */
+  ExpansionNonConverging: "elaborate/expansion-non-converging",
 } as const;
 
 export type DiagnosticCode = (typeof DiagnosticCodes)[keyof typeof DiagnosticCodes];

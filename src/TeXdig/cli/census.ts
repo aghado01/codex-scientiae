@@ -22,6 +22,7 @@ import { parseBib } from "../census/parse-bib.ts";
 import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
 import { buildConfiguredChannel, mintConfiguredEntities } from "../census/configured.ts";
 import { buildUtensilsIndex, backfillLexicalOnly } from "../census/backfill-utensils.ts";
+import { expandDocument, type ExpandDocumentInput } from "../elaborate/expand.ts";
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
@@ -330,6 +331,23 @@ export async function runCensus(options: CliArgs) {
     )
   );
 
+  // ---------------------------------------------------------------------
+  // Elaboration: per-site macro expansion over the censused document. The
+  // census stays mechanical; this tier interprets, origin-chained to it.
+  // ---------------------------------------------------------------------
+  const expansionInputs: ExpandDocumentInput[] = [];
+  for (const record of graph.sources) {
+    if (!record.parsed || record.language !== "latex") continue;
+    const strat = graph.stratifications.get(record.id);
+    expansionInputs.push({
+      sourceId: record.id,
+      stratifiedText: strat ? strat.stratifiedText : graph.rawContents.get(record.id) || "",
+      rawText: graph.rawContents.get(record.id) || "",
+    });
+  }
+  const expansion = expandDocument(expansionInputs, deps, registry, allEntities);
+  allDiagnostics.push(...expansion.diagnostics);
+
   // Emit bundle (entrypoint reported with on-disk casing when it resolved)
   const summary = emitCensusBundle(
     {
@@ -342,6 +360,7 @@ export async function runCensus(options: CliArgs) {
       coverage: allCoverage,
       diagnostics: allDiagnostics,
       rawContents: graph.rawContents,
+      expansionRows: expansion.rows,
     },
     options.outDir
   );
@@ -350,6 +369,7 @@ export async function runCensus(options: CliArgs) {
   console.log(`Sources: ${summary.sourceCount} (parsed: ${allCoverage.length})`);
   console.log(`Entities: ${allEntities.length}`);
   console.log(`Claims: ${allClaims.length}`);
+  console.log(`Expansion sites: ${expansion.rows.length}`);
   console.log(`Coverage: claimed ${summary.coverage.claimedUtf16} / ${summary.coverage.totalUtf16} UTF-16 units (${summary.coverage.residueSegments} residue segments)`);
   console.log(`Diagnostics: ${allDiagnostics.length} total (${summary.diagnosticCounts.defect || 0} defects, ${summary.diagnosticCounts.warning || 0} warnings, ${summary.diagnosticCounts.info || 0} info)`);
 

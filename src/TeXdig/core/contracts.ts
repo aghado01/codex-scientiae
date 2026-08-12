@@ -47,6 +47,8 @@ export const ID_CLASSES = {
   refitem: "references.jsonl",
   ptr: "pointers.jsonl",
   fm: "frontmatter.jsonl",
+  /** Elaboration tier: per-site macro expansions, origin-chained to ent: ids. */
+  exp: "expansion.jsonl",
 } as const;
 
 export type IdClass = keyof typeof ID_CLASSES;

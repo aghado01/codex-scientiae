@@ -31,6 +31,8 @@ export interface EmitBundle {
   coverage: SourceCoverage[];
   diagnostics: Diagnostic[];
   rawContents: Map<SourceId, string>;
+  /** Elaboration tier: per-site macro expansions (rows shaped by elaborate/expand.ts). */
+  expansionRows?: object[];
 }
 
 export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSummary {
@@ -74,6 +76,14 @@ export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSumm
   const diagContent = bundle.diagnostics.map(d => JSON.stringify(d)).join("\n") + (bundle.diagnostics.length > 0 ? "\n" : "");
   fs.writeFileSync(diagnosticsPath, diagContent, { encoding: "utf-8" });
 
+  // 5b. expansion.jsonl (elaboration tier, when the lane ran)
+  if (bundle.expansionRows) {
+    const expansionPath = path.join(resolvedOutDir, "expansion.jsonl");
+    const expansionContent = bundle.expansionRows.map(r => JSON.stringify(r)).join("\n") +
+      (bundle.expansionRows.length > 0 ? "\n" : "");
+    fs.writeFileSync(expansionPath, expansionContent, { encoding: "utf-8" });
+  }
+
   // 6. summary.json
   let totalUtf16 = 0;
   let claimedUtf16 = 0;
@@ -115,6 +125,7 @@ export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSumm
         "coverage.json",
         "diagnostics.jsonl",
         "summary.json",
+        ...(bundle.expansionRows ? ["expansion.jsonl"] : []),
       ],
       // Contract tier lands in cuts 2–3; declared so absence is a statement.
       deferred: [
