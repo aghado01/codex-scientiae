@@ -20,6 +20,7 @@ param(
     [string] $DepsRoot = '',
     [string] $OutRoot = '',
     [string] $Stamp = '',
+    [string] $OutDirectory = '',
     [switch] $SkipValidation
 )
 
@@ -124,6 +125,9 @@ function Invoke-TeXdigCensus {
         [string] $DepsRoot = '',
         [string] $OutRoot = '',
         [string] $Stamp = '',
+        # Exact container override: the batch adapter passes the job container,
+        # which IS the document container. Wins over OutRoot/Stamp composition.
+        [string] $OutDirectory = '',
         [switch] $SkipValidation
     )
 
@@ -131,7 +135,7 @@ function Invoke-TeXdigCensus {
 
     if ($DepsRoot -eq '') { $DepsRoot = Join-Path $script:RepoRoot 'packages/node/node_modules' }
     if ($OutRoot -eq '') { $OutRoot = Join-Path $script:RepoRoot 'artifacts/texdig-runs' }
-    if ($Stamp -eq '') { $Stamp = Get-Date -Format 'yyyyMMdd_HHmmss' }
+    if ($Stamp -eq '' -and $OutDirectory -eq '') { $Stamp = Get-Date -Format 'yyyyMMdd_HHmmss' }
 
     if (-not (Test-Path -LiteralPath (Join-Path $DepsRoot '@unified-latex'))) {
         throw "TeXdig: pinned node dependencies not found under '$DepsRoot' (packages/ is untracked; refresh the local pins)"
@@ -145,7 +149,11 @@ function Invoke-TeXdigCensus {
         Test-TeXdigArticleManifest -ArticleJson $resolved.ArticleJson
     }
 
-    $runDir = Join-Path (Join-Path $OutRoot $Stamp) $resolved.Slug
+    $runDir = if ($OutDirectory -ne '') {
+        if ([System.IO.Path]::IsPathRooted($OutDirectory)) { $OutDirectory } else { Join-Path $script:RepoRoot $OutDirectory }
+    } else {
+        Join-Path (Join-Path $OutRoot $Stamp) $resolved.Slug
+    }
     if (-not (Test-Path -LiteralPath $runDir)) {
         $null = New-Item -ItemType Directory -Path $runDir -Force
     }
@@ -202,7 +210,8 @@ function Invoke-TeXdigCensus {
 # Direct-run mode: pwsh -File src/TeXdig/run-census.ps1 <slug-or-path>
 if ($MyInvocation.InvocationName -ne '.') {
     if ($Article -eq '') {
-        throw 'usage: run-census.ps1 <slug | article-dir | article.json> [-DepsRoot <dir>] [-OutRoot <dir>] [-Stamp <stamp>] [-SkipValidation]'
+        throw 'usage: run-census.ps1 <slug | article-dir | article.json> [-DepsRoot <dir>] [-OutRoot <dir>] [-Stamp <stamp>] [-OutDirectory <dir>] [-SkipValidation]'
     }
-    Invoke-TeXdigCensus -Article $Article -DepsRoot $DepsRoot -OutRoot $OutRoot -Stamp $Stamp -SkipValidation:$SkipValidation
+    Invoke-TeXdigCensus -Article $Article -DepsRoot $DepsRoot -OutRoot $OutRoot -Stamp $Stamp `
+        -OutDirectory $OutDirectory -SkipValidation:$SkipValidation
 }

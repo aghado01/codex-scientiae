@@ -78,6 +78,26 @@ BEX-604 evolved `tests/parallel.ps1` into the one multilingual repository shell;
 shell exists. It combines the adapters' domain-neutral jobs into one plan while
 keeping framework selectors, observations, job IDs, address roots, and native reports distinct.
 
+## TeXdig adapter
+
+`Get-TeXdigBatchJob` accepts deposited article directories, `article.json` files, or collection
+directories (expanded one level to their article children) plus an existing absolute `RunDirectory`.
+One document per job; the job container IS the document container: the census worker emits its six
+stores directly at `RunDirectory/texdig-jobs/<slug>-<digest>/`, declared as the job's `Writes` root.
+
+Planning resolves and freezes:
+
+- a stable `texdig:<repository-relative-article-dir>#<digest>` id from the article address plus the
+  deposit's frozen `treeSha256` (a re-deposit changes the id; a re-run over the same tree does not);
+- the `src/TeXdig/run-census.ps1` worker entrypoint, the pinned node dependency root, and node
+  itself (a whole plan refuses before any child spawns when either is absent);
+- a tree-byte cost hint; and
+- the job container address (`-OutDirectory` to the worker).
+
+The child worker owns the `validate-json` shape check through the jsonl_engine-client seam; planning
+only reads the manifest for identity and refuses unreadable ones. Bare-slug convenience stays in the
+interactive runner; the adapter is path-based.
+
 ## Ownership boundary
 
 The exported commands only interpret domain input and emit `BatchJob` records. Callers compile and invoke

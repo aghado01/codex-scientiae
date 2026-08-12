@@ -17,8 +17,12 @@ $hostFiles = @(
     'private/pytest-address.ps1'
     'private/pytest-discovery.ps1'
     'private/pytest-dependency.ps1'
+    'private/texdig-address.ps1'
+    'private/texdig-discovery.ps1'
+    'private/texdig-dependency.ps1'
     'public/Get-PesterBatchJob.ps1'
     'public/Get-PytestBatchJob.ps1'
+    'public/Get-TeXdigBatchJob.ps1'
 )
 foreach ($relativePath in $hostFiles) {
     $path = Join-Path $script:AdaptersModuleRoot $relativePath
@@ -28,4 +32,4 @@ foreach ($relativePath in $hostFiles) {
     . $path
 }
 
-Export-ModuleMember -Function 'Get-PesterBatchJob', 'Get-PytestBatchJob'
+Export-ModuleMember -Function 'Get-PesterBatchJob', 'Get-PytestBatchJob', 'Get-TeXdigBatchJob'
