@@ -26,16 +26,15 @@ export function scanBib(sourceId: SourceId, rawText: string): BibLexicalSighting
 
   while (i < len) {
     if (rawText[i] === "@") {
-      // Record any inter-entry text between lastEntryEnd and i as implicit comment
+      // Record any inter-entry run: text becomes an implicit comment, pure
+      // whitespace is still SEEN (coverage must claim every code unit).
       if (i > lastEntryEnd) {
         const interText = rawText.slice(lastEntryEnd, i);
-        if (interText.trim().length > 0) {
-          sightings.push({
-            kind: "bib-comment",
-            span: { sourceId, startUtf16: lastEntryEnd, endUtf16: i },
-            detail: "implicit-comment",
-          });
-        }
+        sightings.push({
+          kind: "bib-comment",
+          span: { sourceId, startUtf16: lastEntryEnd, endUtf16: i },
+          detail: interText.trim().length > 0 ? "implicit-comment" : "implicit-blank",
+        });
       }
 
       const start = i;
@@ -100,16 +99,14 @@ export function scanBib(sourceId: SourceId, rawText: string): BibLexicalSighting
     i++;
   }
 
-  // Any trailing inter-entry text
+  // Any trailing inter-entry run
   if (lastEntryEnd < len) {
     const trailingText = rawText.slice(lastEntryEnd);
-    if (trailingText.trim().length > 0) {
-      sightings.push({
-        kind: "bib-comment",
-        span: { sourceId, startUtf16: lastEntryEnd, endUtf16: len },
-        detail: "implicit-comment",
-      });
-    }
+    sightings.push({
+      kind: "bib-comment",
+      span: { sourceId, startUtf16: lastEntryEnd, endUtf16: len },
+      detail: trailingText.trim().length > 0 ? "implicit-comment" : "implicit-blank",
+    });
   }
 
   return sightings;

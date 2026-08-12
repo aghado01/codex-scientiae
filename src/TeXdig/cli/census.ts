@@ -12,10 +12,15 @@ import { loadDependencies } from "../core/loader.ts";
 import { buildSourceGraph } from "../census/source-graph.ts";
 import { scanLatex } from "../census/scan-latex.ts";
 import { scanBib } from "../census/scan-bib.ts";
-import { parseLatex } from "../census/parse-latex.ts";
+import {
+  discoverDefinitions,
+  parseLatexWitness,
+  type DiscoveryResult,
+  type SignatureRegistry,
+} from "../census/parse-latex.ts";
 import { parseBib } from "../census/parse-bib.ts";
 import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
-import { generatePillarClaims } from "../census/claims.ts";
+import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
 import type {
@@ -83,6 +88,7 @@ export async function runCensus(options: CliArgs) {
   let treeRelPath = `${slug}-tex`;
   let treeSha256 = "";
   let entrypoint = "";
+  let manifestFileCount: number | undefined;
 
   if (article.source_forms && Array.isArray(article.source_forms)) {
     const treeForm = article.source_forms.find(
@@ -92,6 +98,7 @@ export async function runCensus(options: CliArgs) {
       treeRelPath = treeForm.path || treeRelPath;
       treeSha256 = treeForm.sha256 || "";
       entrypoint = treeForm.entrypoint || "";
+      if (typeof treeForm.files === "number") manifestFileCount = treeForm.files;
     }
   }
 
@@ -99,8 +106,13 @@ export async function runCensus(options: CliArgs) {
     entrypoint = article.evidence.latex_source.entrypoint;
   }
 
+  // No entrypoint in the manifest is a refusal, never a guess: the deposit
+  // owns entrypoint selection, and a census attributed to a guessed
+  // entrypoint would assert without provenance.
   if (!entrypoint) {
-    entrypoint = "main.tex";
+    throw new Error(
+      `article.json for '${slug}' carries no entrypoint (source_forms or evidence.latex_source); refusing to guess`
+    );
   }
 
   const treeDir = path.join(docDir, treeRelPath);
@@ -111,7 +123,7 @@ export async function runCensus(options: CliArgs) {
   // Load dependencies
   const deps = loadDependencies(options.depsDir);
 
-  // Build source graph
+  // Build source graph (stratification happens inside, before include scanning)
   const graph = buildSourceGraph(treeDir, entrypoint);
 
   const allEntities: CensusEntity[] = [];
@@ -119,7 +131,40 @@ export async function runCensus(options: CliArgs) {
   const allCoverage: SourceCoverage[] = [];
   const allDiagnostics: Diagnostic[] = [...graph.diagnostics];
 
-  // Process all files
+  // Attribution guard: the deposit is supposed to be FROZEN. If the manifest's
+  // file count no longer matches the walked tree, the tree was modified after
+  // deposit and the recorded sha256 does not describe what we are censusing.
+  if (manifestFileCount !== undefined && manifestFileCount !== graph.sources.length) {
+    allDiagnostics.push({
+      code: "census/tree-manifest-mismatch",
+      severity: "defect",
+      message: `Manifest declares ${manifestFileCount} files but the deposited tree holds ${graph.sources.length}; the tree was modified after deposit and treeSha256 attribution is stale`,
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Pass 1 — definition discovery across ALL parsed LaTeX sources, merged
+  // into one document-global signature registry: a preamble \newcommand must
+  // inform argument attachment in every included file. Cross-file name
+  // collisions resolve last-wins here; true shadowing is a cut-2 join.
+  // ---------------------------------------------------------------------
+  const discoveries = new Map<string, DiscoveryResult>();
+  const registry: SignatureRegistry = { macros: {}, environments: {} };
+  for (const record of graph.sources) {
+    if (!record.parsed || record.language !== "latex") continue;
+    const strat = graph.stratifications.get(record.id);
+    const text = strat ? strat.stratifiedText : graph.rawContents.get(record.id) || "";
+    const discovery = discoverDefinitions(record.id, text, deps);
+    discoveries.set(record.id, discovery);
+    Object.assign(registry.macros, discovery.registry.macros);
+    Object.assign(registry.environments, discovery.registry.environments);
+  }
+
+  // ---------------------------------------------------------------------
+  // Pass 2 — witness parse + fusion per file. Both witnesses consume the
+  // STRATIFIED text: stratification precedes everything, and verbatim
+  // interiors must never be censused as LaTeX.
+  // ---------------------------------------------------------------------
   for (const record of graph.sources) {
     if (!record.parsed) continue;
 
@@ -129,22 +174,42 @@ export async function runCensus(options: CliArgs) {
         sourceId: record.id,
         strata: [],
         stratifiedText: rawText,
+        diagnostics: [],
+      };
+      const discovery = discoveries.get(record.id) || {
+        sourceId: record.id,
+        macroDefs: [],
+        envDefs: [],
+        registry: { macros: {}, environments: {} },
+        definitionTokenStarts: new Set<number>(),
       };
 
-      const lexSightings = scanLatex(record.id, rawText);
-      const parseResult = parseLatex(record.id, rawText, deps);
+      const scan = scanLatex(record.id, strat.stratifiedText);
+      const witnessResult = parseLatexWitness(record.id, strat.stratifiedText, deps, registry);
+      const edges = graph.includeEdges.filter((e) => e.fromSourceId === record.id);
       const reconcileResult = reconcileLatex(
         record.id,
         rawText,
         strat,
-        lexSightings,
-        parseResult
+        scan.sightings,
+        discovery,
+        witnessResult,
+        edges
       );
+      allDiagnostics.push(...scan.diagnostics);
+
+      const spineRuns: SpineRun[] = witnessResult.textRuns.map((span) => ({
+        span,
+        role: rawText.slice(span.startUtf16, span.endUtf16).trim().length > 0
+          ? "text-run"
+          : "blank-run",
+      }));
 
       const claims = generatePillarClaims(
         record.id,
         reconcileResult.entities,
-        parseResult.textRuns
+        spineRuns,
+        reconcileResult.extraClaims
       );
 
       const cov = computeSourceCoverage(record.id, record.lengthUtf16, claims);
@@ -166,7 +231,8 @@ export async function runCensus(options: CliArgs) {
       const claims = generatePillarClaims(
         record.id,
         reconcileResult.entities,
-        []
+        [],
+        reconcileResult.extraClaims
       );
 
       const cov = computeSourceCoverage(record.id, record.lengthUtf16, claims);
@@ -178,12 +244,12 @@ export async function runCensus(options: CliArgs) {
     }
   }
 
-  // Emit bundle
+  // Emit bundle (entrypoint reported with on-disk casing when it resolved)
   const summary = emitCensusBundle(
     {
       slug,
       treeSha256,
-      entrypoint,
+      entrypoint: graph.entrypointResolved ?? entrypoint,
       sources: graph.sources,
       entities: allEntities,
       claims: allClaims,

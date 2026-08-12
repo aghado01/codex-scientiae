@@ -1,0 +1,49 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "mini_article",
+  "initialized_utc": "2026-08-12T00:00:00Z",
+  "title": "Mini Article Test",
+  "authors": [],
+  "abstract": null,
+  "identifiers": {
+    "arxiv": null,
+    "arxiv_versioned": null,
+    "doi": null
+  },
+  "categories": [],
+  "primary_category": null,
+  "published": null,
+  "updated": null,
+  "evidence": {
+    "provider_metadata": [],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "explicit",
+      "declarations": {
+        "title_tex": "Mini Article Test",
+        "authors_tex": ["Author One"],
+        "doi": null
+      }
+    },
+    "package_control_files": []
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-tree",
+      "path": "mini_article-tex",
+      "format": "application/x-latex-source-tree",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "explicit",
+      "files": 5,
+      "tex_files": 3,
+      "sha256": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-12T00:00:00Z",
+    "publication": "published-new-tree",
+    "checks": []
+  }
+}

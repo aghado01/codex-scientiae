@@ -8,7 +8,8 @@
  * Erasable-syntax TypeScript only (Node 26 native type stripping).
  */
 
-import type { SourceId, SourceSpan, WitnessRecord } from "../core/types.ts";
+import type { Diagnostic, SourceId, SourceSpan, WitnessRecord } from "../core/types.ts";
+import { DiagnosticCodes } from "../core/types.ts";
 
 export type LexicalSightingKind =
   | "macro-invocation"
@@ -31,18 +32,15 @@ export interface LexicalSighting {
   delimiter?: string;
 }
 
+// Starred variants are covered by the base csname: the scanner records the
+// star as content, matching the parser witness (star = s-type argument).
 const ENVELOPE_COMMANDS = new Set([
   "documentclass",
   "section",
-  "section*",
   "subsection",
-  "subsection*",
   "subsubsection",
-  "subsubsection*",
   "paragraph",
-  "paragraph*",
   "subparagraph",
-  "subparagraph*",
   "appendix",
   "title",
   "author",
@@ -53,13 +51,10 @@ const ENVELOPE_COMMANDS = new Set([
 
 const DEFINITION_COMMANDS = new Set([
   "newcommand",
-  "newcommand*",
   "renewcommand",
-  "renewcommand*",
   "providecommand",
-  "providecommand*",
   "DeclareMathOperator",
-  "DeclareMathOperator*",
+  "DeclarePairedDelimiter",
   "NewDocumentCommand",
   "RenewDocumentCommand",
   "ProvideDocumentCommand",
@@ -72,11 +67,8 @@ const DEFINITION_COMMANDS = new Set([
 
 const ENV_DEF_COMMANDS = new Set([
   "newtheorem",
-  "newtheorem*",
   "newenvironment",
-  "newenvironment*",
   "renewenvironment",
-  "renewenvironment*",
   "newfloat",
 ]);
 
@@ -89,12 +81,29 @@ const INCLUDE_COMMANDS = new Set([
   "bibliographystyle",
 ]);
 
-export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[] {
+export interface ScanLatexResult {
+  sightings: LexicalSighting[];
+  diagnostics: Diagnostic[];
+}
+
+export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult {
   const sightings: LexicalSighting[] = [];
+  const diagnostics: Diagnostic[] = [];
   const len = rawText.length;
   let i = 0;
 
+  // Math carriers are sighted as spans, but the scan STEPS INTO the interior —
+  // control sequences and scripts inside math must be lexically witnessed too.
+  // Only the closing delimiter itself is skipped (offset -> delimiter length).
+  const skipAt = new Map<number, number>();
+
   while (i < len) {
+    const skip = skipAt.get(i);
+    if (skip !== undefined) {
+      skipAt.delete(i);
+      i += skip;
+      continue;
+    }
     const ch = rawText[i];
 
     // 1. Comments
@@ -141,9 +150,17 @@ export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[
               span: { sourceId, startUtf16: start, endUtf16: end },
               detail: "double-dollar",
             });
-            i = end;
+            skipAt.set(closeIdx, 2);
+            i = start + 2;
             continue;
           }
+          diagnostics.push({
+            code: DiagnosticCodes.UnterminatedMath,
+            severity: "warning",
+            message: "Display math '$$' opened without a closing '$$'",
+            span: { sourceId, startUtf16: start, endUtf16: Math.min(start + 2, len) },
+            witness: "lexical",
+          });
         } else {
           // Inline math $...$
           const start = i;
@@ -177,14 +194,36 @@ export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[
               span: { sourceId, startUtf16: start, endUtf16: end },
               detail: "dollar",
             });
-            i = end;
+            skipAt.set(cursor, 1);
+            i = start + 1;
             continue;
           }
+          diagnostics.push({
+            code: DiagnosticCodes.UnterminatedMath,
+            severity: "warning",
+            message: "Inline math '$' not closed before paragraph break or end of file",
+            span: { sourceId, startUtf16: start, endUtf16: start + 1 },
+            witness: "lexical",
+          });
         }
       }
     }
 
-    // 3. Control sequences starting with backslash \
+    // 3. Sub/superscript operators: not control sequences, but the parser
+    // witness emits them as macro nodes `^`/`_`, so the lexical witness must
+    // sight them too or every script site would be parser-only noise.
+    if (ch === "^" || ch === "_") {
+      sightings.push({
+        kind: "macro-invocation",
+        name: ch,
+        span: { sourceId, startUtf16: i, endUtf16: i + 1 },
+        detail: ch,
+      });
+      i++;
+      continue;
+    }
+
+    // 4. Control sequences starting with backslash \
     if (ch === "\\") {
       let backslashes = 0;
       let b = i - 1;
@@ -206,9 +245,17 @@ export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[
               span: { sourceId, startUtf16: start, endUtf16: end },
               detail: "paren",
             });
-            i = end;
+            skipAt.set(closeIdx, 2);
+            i = start + 2;
             continue;
           }
+          diagnostics.push({
+            code: DiagnosticCodes.UnterminatedMath,
+            severity: "warning",
+            message: "Inline math '\\(' opened without a closing '\\)'",
+            span: { sourceId, startUtf16: start, endUtf16: start + 2 },
+            witness: "lexical",
+          });
         }
         if (i + 1 < len && rawText[i + 1] === "[") {
           const start = i;
@@ -222,9 +269,17 @@ export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[
               span: { sourceId, startUtf16: start, endUtf16: end },
               detail: "bracket",
             });
-            i = end;
+            skipAt.set(closeIdx, 2);
+            i = start + 2;
             continue;
           }
+          diagnostics.push({
+            code: DiagnosticCodes.UnterminatedMath,
+            severity: "warning",
+            message: "Display math '\\[' opened without a closing '\\]'",
+            span: { sourceId, startUtf16: start, endUtf16: start + 2 },
+            witness: "lexical",
+          });
         }
 
         // Check for \begin{...} or \end{...}
@@ -261,15 +316,15 @@ export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[
           }
         }
 
-        // General control sequence: \letters or \singleNonLetter
+        // General control sequence: \letters or \singleNonLetter.
+        // The `*` after a starred command is NOT part of the csname — gluing it
+        // on would corrupt byte-exact join keys and disagree with the parser
+        // witness, which records `\section*` as macro `section` + star argument.
         const csStart = i;
         let csEnd = i + 1;
         if (csEnd < len && /[a-zA-Z@]/.test(rawText[csEnd])) {
           while (csEnd < len && /[a-zA-Z@]/.test(rawText[csEnd])) {
             csEnd++;
-          }
-          if (csEnd < len && rawText[csEnd] === "*") {
-            csEnd++; // Handle starred variants e.g. \section*, \newcommand*
           }
         } else if (csEnd < len) {
           csEnd++; // Single non-letter character (e.g. \1, \%, \\, \ )
@@ -323,7 +378,7 @@ export function scanLatex(sourceId: SourceId, rawText: string): LexicalSighting[
     i++;
   }
 
-  return sightings;
+  return { sightings, diagnostics };
 }
 
 export function toWitnessRecord(sighting: LexicalSighting): WitnessRecord {

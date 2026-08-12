@@ -28,7 +28,10 @@ export interface IncludeEdge {
   toSourceId?: SourceId;
   directive: IncludeDirective;
   targetRaw: string;
+  /** Full directive site: csname through closing brace / bare-word target. */
   span: SourceSpan;
+  /** The individual target token — distinct from `span` for comma lists. */
+  targetSpan: SourceSpan;
 }
 
 export interface SourceGraphResult {
@@ -38,6 +41,8 @@ export interface SourceGraphResult {
   stratifications: Map<SourceId, StratificationResult>;
   includeEdges: IncludeEdge[];
   diagnostics: Diagnostic[];
+  /** On-disk-cased entrypoint id, when the manifest entrypoint resolved. */
+  entrypointResolved?: SourceId;
 }
 
 function normalizePosix(p: string): string {
@@ -110,7 +115,9 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
         rawContents.set(f.relPath, text);
         lengthUtf16 = text.length;
         if (f.ext.toLowerCase() === ".tex" || f.ext.toLowerCase() === ".bbl") {
-          stratifications.set(f.relPath, stratify(f.relPath, text));
+          const strat = stratify(f.relPath, text);
+          stratifications.set(f.relPath, strat);
+          diagnostics.push(...strat.diagnostics);
         }
       } catch (err) {
         // Fallback length
@@ -176,9 +183,8 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
     return { caseMismatch: false };
   }
 
-  // Regex patterns for include directives over stratified text
   // Matches: \input{foo}, \input foo, \include{foo}, \subfile{foo}, \bibliography{foo,bar}, \addbibresource{foo.bib}, \bibliographystyle{plain}
-  const DIRECTIVE_REGEX = /\\(input|include|subfile|bibliography|addbibresource|bibliographystyle)(?:\{([^}]+)\}|\s+([a-zA-Z0-9_./\-]+))/g;
+  const DIRECTIVE_PATTERN = /\\(input|include|subfile|bibliography|addbibresource|bibliographystyle)(?:\{([^}]+)\}|\s+([a-zA-Z0-9_./\-]+))/g;
 
   function scanIncludes(sourceId: SourceId) {
     if (reachableTex.has(sourceId)) return;
@@ -188,10 +194,13 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
     const textToScan = strat ? strat.stratifiedText : rawContents.get(sourceId);
     if (!textToScan) return;
 
-    DIRECTIVE_REGEX.lastIndex = 0;
+    // A fresh regex per call: scanIncludes recurses into included files, and a
+    // shared lastIndex would be clobbered by the nested scan, rescanning the
+    // parent from position 0 and duplicating every edge and diagnostic.
+    const directiveRegex = new RegExp(DIRECTIVE_PATTERN.source, "g");
     let match: RegExpExecArray | null;
 
-    while ((match = DIRECTIVE_REGEX.exec(textToScan)) !== null) {
+    while ((match = directiveRegex.exec(textToScan)) !== null) {
       const dirName = match[1];
       const targetPayload = match[2] || match[3] || "";
       const matchStart = match.index;
@@ -201,6 +210,11 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
         startUtf16: matchStart,
         endUtf16: matchEnd,
       };
+      // Offset of the payload within the match: after "{" for the braced form,
+      // at the tail for the bare-word form.
+      const payloadStart = match[2] !== undefined
+        ? matchStart + match[0].indexOf("{") + 1
+        : matchEnd - targetPayload.length;
 
       let directive: IncludeDirective;
       if (dirName === "input") directive = "input";
@@ -210,10 +224,28 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
       else if (dirName === "bibliographystyle") directive = "bibliographystyle";
       else continue;
 
-      // Handle multiple comma-separated targets (e.g. \bibliography{main,extra})
-      const rawTargets = targetPayload.split(",").map(s => s.trim()).filter(Boolean);
+      // Comma-separated targets (e.g. \bibliography{main,extra}), each with its
+      // own token span inside the payload.
+      const rawTargets: { targetRaw: string; targetSpan: SourceSpan }[] = [];
+      let cursor = 0;
+      for (const piece of targetPayload.split(",")) {
+        const leading = piece.length - piece.trimStart().length;
+        const targetRaw = piece.trim();
+        if (targetRaw) {
+          const tokenStart = payloadStart + cursor + leading;
+          rawTargets.push({
+            targetRaw,
+            targetSpan: {
+              sourceId,
+              startUtf16: tokenStart,
+              endUtf16: tokenStart + targetRaw.length,
+            },
+          });
+        }
+        cursor += piece.length + 1; // +1 for the comma
+      }
 
-      for (const targetRaw of rawTargets) {
+      for (const { targetRaw, targetSpan } of rawTargets) {
         let allowedExts: string[] = [];
         if (directive === "input" || directive === "include") {
           allowedExts = [".tex"];
@@ -249,6 +281,7 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
           directive,
           targetRaw,
           span,
+          targetSpan,
         });
 
         if (resolvedId) {
@@ -264,10 +297,25 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
     }
   }
 
-  // Ensure entrypoint exists
+  // Resolve the entrypoint. A missing entrypoint is a defect that stops the
+  // census from meaning anything — never a silent no-op; a casing mismatch is
+  // the same finding class as any include-case mismatch.
   const entrypointActual = lowerToActualPath.get(normalizedEntrypoint.toLowerCase());
   if (entrypointActual) {
+    if (entrypointActual !== normalizedEntrypoint) {
+      diagnostics.push({
+        code: DiagnosticCodes.IncludeCaseMismatch,
+        severity: "warning",
+        message: `Manifest entrypoint '${normalizedEntrypoint}' resolved with case mismatch to on-disk file '${entrypointActual}'`,
+      });
+    }
     scanIncludes(entrypointActual);
+  } else {
+    diagnostics.push({
+      code: DiagnosticCodes.EntrypointMissing,
+      severity: "defect",
+      message: `Manifest entrypoint '${normalizedEntrypoint}' does not resolve to any file in the deposited tree`,
+    });
   }
 
   // 3. Classify Roles for all discovered files
@@ -313,5 +361,6 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
     stratifications,
     includeEdges,
     diagnostics,
+    entrypointResolved: entrypointActual,
   };
 }

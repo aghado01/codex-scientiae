@@ -8,7 +8,8 @@
  * Erasable-syntax TypeScript only (Node 26 native type stripping).
  */
 
-import type { SourceId, SourceSpan } from "../core/types.ts";
+import type { Diagnostic, SourceId, SourceSpan } from "../core/types.ts";
+import { DiagnosticCodes } from "../core/types.ts";
 
 export type StratumKind = "comment" | "verbatim-inline" | "verbatim";
 
@@ -26,6 +27,7 @@ export interface StratificationResult {
   strata: Stratum[];
   /** Stratified text with comments and verbatims blanked out (spaces + newlines). */
   stratifiedText: string;
+  diagnostics: Diagnostic[];
 }
 
 const VERBATIM_ENVS = new Set([
@@ -41,7 +43,7 @@ const VERBATIM_ENVS = new Set([
 
 export function stratify(sourceId: SourceId, rawText: string): StratificationResult {
   const strata: Stratum[] = [];
-  const chars = Array.from(rawText); // Note: for UTF-16 index tracking, we index into rawText directly
+  const diagnostics: Diagnostic[] = [];
   const len = rawText.length;
   let i = 0;
 
@@ -116,20 +118,30 @@ export function stratify(sourceId: SourceId, rawText: string): StratificationRes
             }
             if (cursor < len && rawText[cursor] === delim) {
               cursor++; // include closing delim
-              const verbEnd = cursor;
-              strata.push({
-                kind: "verbatim-inline",
-                delimiter: delim,
-                span: {
-                  sourceId,
-                  startUtf16: verbStart,
-                  endUtf16: verbEnd,
-                },
+            } else {
+              // Delimiter never closed before EOL/EOF: TeX would error here.
+              // Stratify what we saw and name the defect rather than letting
+              // the fragment leak into the LaTeX census.
+              diagnostics.push({
+                code: DiagnosticCodes.UnterminatedVerbatim,
+                severity: "defect",
+                message: `\\verb delimiter '${delim}' not closed before end of line`,
+                span: { sourceId, startUtf16: verbStart, endUtf16: cursor },
               });
-              blankOut(verbStart, verbEnd);
-              i = cursor;
-              continue;
             }
+            const verbEnd = cursor;
+            strata.push({
+              kind: "verbatim-inline",
+              delimiter: delim,
+              span: {
+                sourceId,
+                startUtf16: verbStart,
+                endUtf16: verbEnd,
+              },
+            });
+            blankOut(verbStart, verbEnd);
+            i = cursor;
+            continue;
           }
         }
       }
@@ -153,21 +165,29 @@ export function stratify(sourceId: SourceId, rawText: string): StratificationRes
             const blockStart = i;
             const endMarker = `\\end{${envName}}`;
             const endIdx = rawText.indexOf(endMarker, envNameEnd + 1);
-            if (endIdx !== -1) {
-              const blockEnd = endIdx + endMarker.length;
-              strata.push({
-                kind: "verbatim",
-                envName,
-                span: {
-                  sourceId,
-                  startUtf16: blockStart,
-                  endUtf16: blockEnd,
-                },
+            const blockEnd = endIdx !== -1 ? endIdx + endMarker.length : len;
+            if (endIdx === -1) {
+              // Unclosed verbatim swallows the rest of the file in TeX; mask
+              // to EOF so nothing downstream parses the interior as LaTeX.
+              diagnostics.push({
+                code: DiagnosticCodes.UnterminatedVerbatim,
+                severity: "defect",
+                message: `\\begin{${envName}} without matching ${endMarker}; stratified to end of file`,
+                span: { sourceId, startUtf16: blockStart, endUtf16: blockEnd },
               });
-              blankOut(blockStart, blockEnd);
-              i = blockEnd;
-              continue;
             }
+            strata.push({
+              kind: "verbatim",
+              envName,
+              span: {
+                sourceId,
+                startUtf16: blockStart,
+                endUtf16: blockEnd,
+              },
+            });
+            blankOut(blockStart, blockEnd);
+            i = blockEnd;
+            continue;
           }
         }
       }
@@ -180,5 +200,6 @@ export function stratify(sourceId: SourceId, rawText: string): StratificationRes
     sourceId,
     strata,
     stratifiedText: maskBuffer.join(""),
+    diagnostics,
   };
 }

@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\newcommand{\pair}[2][d]{(#1,#2)}
+\newtheorem{lemma}{Lemma}
+\def\zz{42}
+\let\also\zz
+\DeclareMathOperator{\rank}{rank}
+
+\begin{document}
+
+\title{Mini Article Test}
+\author{Author One}
+\maketitle
+
+% \input{nonexistent_file_should_not_cause_diagnostic}
+
+\input{Intro}
+
+Here is inline math $E=mc^2$ and display math:
+\[ \sum_{i=1}^n x_i \]
+
+\begin{lemma}[Key Lemma]
+\pair{x} is valid.
+\end{lemma}
+
+\verb|inline_verb_test|
+
+\begin{verbatim}
+raw $math$ and \commands stay uncensused
+\end{verbatim}
+
+Unterminated math $x stays a finding
+
+\end{flushright}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

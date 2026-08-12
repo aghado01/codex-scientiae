@@ -107,6 +107,26 @@ export function emitCensusBundle(bundle: EmitBundle, outDir: string): CensusSumm
     slug: bundle.slug,
     treeSha256: bundle.treeSha256,
     entrypoint: bundle.entrypoint,
+    stores: {
+      emitted: [
+        "sources.jsonl",
+        "entities.jsonl",
+        "claims.jsonl",
+        "coverage.json",
+        "diagnostics.jsonl",
+        "summary.json",
+      ],
+      // Contract tier lands in cuts 2–3; declared so absence is a statement.
+      deferred: [
+        "walk.jsonl",
+        "zones.jsonl",
+        "macros.jsonl",
+        "references.jsonl",
+        "pointers.jsonl",
+        "frontmatter.jsonl",
+        "graph.jsonl",
+      ],
+    },
     sourceCount: bundle.sources.length,
     entityCounts,
     agreementCounts,

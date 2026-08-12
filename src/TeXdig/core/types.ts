@@ -358,6 +358,12 @@ export const DiagnosticCodes = {
   /** \input{Introduction} resolving to introduction.tex: on-disk casing wins, and the paper does not build on Linux — a finding, not something to smooth over. */
   IncludeCaseMismatch: "census/include-case-mismatch",
   OrdinalLabelMismatch: "census/ordinal-label-mismatch",
+  /** The manifest entrypoint does not resolve to a file in the deposited tree — the census cannot start; nothing is smoothed over with a guess. */
+  EntrypointMissing: "census/entrypoint-missing",
+  /** The deposited tree no longer matches its manifest (file count drift): the frozen tree was modified after deposit, and attribution to the recorded sha256 would be a lie. */
+  TreeManifestMismatch: "census/tree-manifest-mismatch",
+  /** unified-latex threw on a parsed source: the parser witness is absent for the whole file, and every entity there is lexical-only by defect, not design. */
+  LatexParseError: "census/latex-parse-error",
 } as const;
 
 export type DiagnosticCode = (typeof DiagnosticCodes)[keyof typeof DiagnosticCodes];
@@ -381,6 +387,11 @@ export interface CensusSummary {
   /** The deposit's frozen tree fingerprint this census is attributed to. */
   treeSha256: string;
   entrypoint: SourceId;
+  /**
+   * Which stores this run emitted and which the cut deliberately defers —
+   * absence of a contract-tier store is a statement, not an accident.
+   */
+  stores: { emitted: string[]; deferred: string[] };
   sourceCount: number;
   entityCounts: Partial<Record<CensusKind, number>>;
   agreementCounts: Partial<Record<AgreementState, number>>;

@@ -18,12 +18,19 @@ import type {
   Pillar,
 } from "../core/types.ts";
 
+export interface SpineRun {
+  span: SourceSpan;
+  /** `text-run` for content, `blank-run` for pure whitespace. */
+  role: "text-run" | "blank-run";
+}
+
 export function generatePillarClaims(
   sourceId: SourceId,
   entities: CensusEntity[],
-  textRuns: SourceSpan[]
+  spineRuns: SpineRun[],
+  extraClaims: PillarClaim[]
 ): PillarClaim[] {
-  const claims: PillarClaim[] = [];
+  const claims: PillarClaim[] = [...extraClaims];
 
   // 1. Claims from Census Entities
   for (const ent of entities) {
@@ -98,11 +105,11 @@ export function generatePillarClaims(
   }
 
   // 2. Positive Spine Claims from Text Runs
-  for (const tr of textRuns) {
+  for (const tr of spineRuns) {
     claims.push({
       pillar: "spine",
-      span: tr,
-      role: "text-run",
+      span: tr.span,
+      role: tr.role,
     });
   }
 
