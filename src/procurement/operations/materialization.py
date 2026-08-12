@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import asyncio
-import os
 from collections.abc import Callable
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from typing import TypeVar
 
 from jsonl_engine.deposit import DepositResult
+from jsonl_engine.publication import (
+    PinnedPublicationRoot,
+    PublicationError,
+    copy_file_no_clobber,
+)
 from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
@@ -21,7 +24,6 @@ from procurement.source.archive import (
     SourceArchiveExtractor,
 )
 from procurement.errors import SourceMaterializationError
-from procurement.filesystem import stable_copy_no_clobber
 from procurement.identifiers import is_doi, normalize_doi
 from procurement.models import DepositMetadataBundle, WorkIdentityAnchor
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
@@ -161,8 +163,13 @@ class SourceMaterializationService:
             manifest = staged.read_manifest()
             manifest = staged.recover(manifest)
             if manifest is None:
-                raise SourceMaterializationError("acquisition receipt disappeared before preparation")
-            if manifest.slug != expected_manifest.slug or manifest.artifact != expected_manifest.artifact:
+                raise SourceMaterializationError(
+                    "acquisition receipt disappeared before preparation"
+                )
+            if (
+                manifest.slug != expected_manifest.slug
+                or manifest.artifact != expected_manifest.artifact
+            ):
                 raise SourceMaterializationError("acquisition identity changed before preparation")
             source_form, pdf_form = self._forms(manifest)
             source_path = staged.validate_form(source_form)
@@ -205,6 +212,8 @@ class SourceMaterializationService:
 
                 return self._publish(
                     item,
+                    staged.publication_root,
+                    staged.manifest_path,
                     manifest,
                     source_form,
                     source_path,
@@ -218,6 +227,8 @@ class SourceMaterializationService:
     def _publish(
         self,
         item: SourceDepositItem,
+        acquisition_root: PinnedPublicationRoot,
+        acquisition_manifest_path: Path,
         manifest: AcquisitionManifest,
         source_form: AcquiredArtifact,
         source_path: Path,
@@ -228,48 +239,63 @@ class SourceMaterializationService:
         identity_anchor: WorkIdentityAnchor | None,
         main_tex: str,
     ) -> SourceMaterializationResult:
-        with TemporaryDirectory(
-            prefix=".source-",
-            dir=item.catalog_root,
-        ) as temporary:
-            temporary_root = Path(temporary)
-            candidate = temporary_root / "tree"
-            extraction = self._extractor.extract(source_path, candidate)
+        candidate = item.new_tree_stage()
+        try:
+            with item.pin_tree_stage(candidate) as candidate_root:
+                extraction = self._extractor.extract_pinned(
+                    acquisition_root,
+                    source_path,
+                    candidate_root,
+                )
+                candidate_inspection = self._inspector.inspect(
+                    candidate,
+                    slug=manifest.slug,
+                    main_tex=main_tex,
+                    publication_root=candidate_root,
+                )
             if extraction.archive_sha256 != source_form.sha256:
                 raise SourceMaterializationError(
                     "expanded source archive does not match its acquisition receipt"
                 )
-            candidate_inspection = self._inspector.inspect(
-                candidate,
-                slug=manifest.slug,
-                main_tex=main_tex,
-            )
             self._assert_declared_identity(candidate_inspection, metadata)
 
             archive_leaf = f"{manifest.slug}.tar.gz"
-            archive_copy = stable_copy_no_clobber(
-                source_path,
-                item.directory / archive_leaf,
-                expected_bytes=source_form.bytes,
-                expected_sha256=source_form.sha256,
-            )
+            try:
+                archive_copy = copy_file_no_clobber(
+                    acquisition_root,
+                    source_path,
+                    item.publication_root,
+                    item.archive_path,
+                    expected_bytes=source_form.bytes,
+                    expected_sha256=source_form.sha256,
+                )
+            except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+                raise SourceMaterializationError(
+                    f"source archive conflicts with its deposit destination: '{item.archive_path}'"
+                ) from exc
 
             pdf_path: str | None = None
             pdf_leaf: str | None = None
             if pdf_form is not None and pdf_source is not None:
                 pdf_leaf = f"{manifest.slug}.pdf"
-                pdf_copy = stable_copy_no_clobber(
-                    pdf_source,
-                    item.directory / pdf_leaf,
-                    expected_bytes=pdf_form.bytes,
-                    expected_sha256=pdf_form.sha256,
-                )
+                try:
+                    pdf_copy = copy_file_no_clobber(
+                        acquisition_root,
+                        pdf_source,
+                        item.publication_root,
+                        item.pdf_path,
+                        expected_bytes=pdf_form.bytes,
+                        expected_sha256=pdf_form.sha256,
+                    )
+                except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+                    raise SourceMaterializationError(
+                        f"PDF conflicts with its deposit destination: '{item.pdf_path}'"
+                    ) from exc
                 pdf_path = pdf_copy.path
             else:
-                unexpected_pdf = item.directory / f"{manifest.slug}.pdf"
-                if os.path.lexists(unexpected_pdf):
+                if item.exists(item.pdf_path):
                     raise SourceMaterializationError(
-                        f"unreceipted PDF occupies the source deposit: '{unexpected_pdf}'"
+                        f"unreceipted PDF occupies the source deposit: '{item.pdf_path}'"
                     )
 
             metadata_path: str | None = None
@@ -307,16 +333,17 @@ class SourceMaterializationService:
                 metadata_json=(item.metadata_path.name if metadata is not None else None),
                 pdf=pdf_leaf,
                 lock_timeout=self._lock_timeout,
+                publication_root=item.publication_root,
             )
+            item.assert_current()
+            acquisition_root.assert_current()
             return SourceMaterializationResult(
                 catalog=item.catalog,
                 slug=manifest.slug,
                 status=deposit.status,
                 created=deposit.created,
                 artifact=manifest.artifact,
-                acquisition_manifest_path=str(
-                    self._acquisitions.root / manifest.slug / "acquisition.json"
-                ),
+                acquisition_manifest_path=str(acquisition_manifest_path),
                 document_directory=str(item.directory),
                 article_path=deposit.article_path,
                 archive_path=archive_copy.path,
@@ -329,6 +356,8 @@ class SourceMaterializationService:
                 entrypoint=installed.inspection.entrypoint,
                 metadata_route=metadata_route,
             )
+        finally:
+            item.discard_tree_stage(candidate)
 
     @staticmethod
     def _assert_declared_identity(

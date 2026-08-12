@@ -1,4 +1,4 @@
-The package cut, root/store kernel, acquisition/local-import pinning, and engine publication completion are implemented without compatibility modules. The next milestone is source-materialization pinning.
+The package cut, root/store kernel, acquisition/local-import pinning, engine publication completion, and source-materialization pinning are implemented without compatibility modules. The next milestone is the remaining domain and MCP decomposition.
 
 The earlier provider-catalog resumption notes are superseded. This file tracks the post-cut sequence.
 
@@ -20,7 +20,7 @@ flowchart LR
     B --> C["Pinned-root and document-store kernel complete"]
     C --> D["Acquisition and local-import pinning complete"]
     D --> E["Engine publication completion complete"]
-    E --> F["Source-materialization pinning"]
+    E --> F["Source-materialization pinning complete"]
     F --> G["Remaining domain and MCP decomposition"]
     G --> H["Providers, PDF profile, and live cutover"]
 ```
@@ -68,7 +68,7 @@ The engine and procurement storage layers now divide single-document ownership e
 - `defaults.json` remains ordinary configuration;
 - `acquisition.json` remains JSON rather than being forced into JSONL.
 
-The application root catalog is the lifetime substrate. Acquisition and local import now consume its active descriptors; source materialization remains the transaction that is not fully descriptor-relative.
+The application root catalog is the lifetime substrate. Acquisition, local import, source materialization, and catalog rebuild consume its active descriptors and retain their selected child generations.
 
 `ArticleCatalogService` already passes the application-retained catalog pin into engine discovery and inventory publication. It cannot silently open a replacement generation from the same configured pathname.
 
@@ -105,11 +105,11 @@ The exclusive directory operation uses the host no-replace rename primitive and 
 
 `ArticleManifest` reads and publishes through a supplied document pin. `deposit_article` now accepts the same active pin, holds the exact source-tree generation through assembly and both fingerprint passes, uses a generation-keyed article lease, and publishes `article.json` last. Its in-process findings input is structured data; only the CLI adapter reads `--findings-json` from a file.
 
-The procurement materializer has adopted the structured findings call but does not yet pass its application-retained catalog/document pins or use the new copy and directory-publication primitives. That wiring belongs to the next vertical slice.
+The procurement materializer passes its retained document generation into the structured article publication call and uses the engine copy, tree-publication, and private-tree cleanup primitives.
 
-### 5. Source-materialization pinning
+### 5. Source-materialization pinning — implemented
 
-This remains a complete vertical slice, not a `SourceDepositStore` wrapper:
+The completed transaction holds:
 
 - hold the acquisition item pin through source reads;
 - hold catalog and document pins;
@@ -119,9 +119,11 @@ This remains a complete vertical slice, not a `SourceDepositStore` wrapper:
 - atomically publish or recover the source tree;
 - pass the retained document pin into the article publisher;
 - publish `article.json` last;
-- define recovery for abandoned source-publication state.
+- recover abandoned source-publication state.
 
-This should also settle whether source materialization needs an explicit journal. Root pinning alone does not address crashes between archive, tree, metadata, and final sentinel publication.
+Archive reads and extraction writes are handle/descriptor relative throughout the retained acquisition and private-tree generations. Archive and PDF copies are stable and create-only. Metadata uses the procurement `DepositMetadataDocument` through `JsonDocumentStore`. The final source tree is an exclusive no-replace directory publication, and the same pinned document generation reaches `deposit_article`, which retains the tree and publishes `article.json` last.
+
+Source materialization does not need a second journal. Its persistent pre-sentinel components are immutable and independently validated, so a retry adopts only matching archive, PDF, metadata, and final-tree state. The sole mutable intermediate is exact PID-plus-process-serial private tree scratch; the source lease owns its recursive no-follow sweep. An interruption immediately before the sentinel has a regression proving byte- and mtime-stable recovery without a second metadata request.
 
 ### 6. Remaining organization
 
@@ -135,4 +137,4 @@ After the transactions are sound:
 
 One nuance: eliminating Python import compatibility does not mean silently weakening persisted evidence contracts. Schema changes should still be deliberate and versioned.
 
-Overall, the project is at a good architectural hinge. The next move is source-materialization pinning through the landed kernel—not another provider or workflow feature.
+Overall, the filesystem transaction foundation is now coherent from configured roots through acquisition, source publication, article sentinel, and inventory rebuild. The next move is the remaining domain/MCP decomposition before adding providers or a PDF-backed article profile.

@@ -333,6 +333,32 @@ class TestPinnedDirectoryPublication(unittest.TestCase):
             self.assertEqual(b"candidate", Path(staged, "main.tex").read_bytes())
             self.assertEqual(b"peer", Path(destination, "peer.txt").read_bytes())
 
+    def test_owned_private_tree_cleanup_is_recursive(self) -> None:
+        with tempfile.TemporaryDirectory() as root_path:
+            staged = self._tree(root_path, "paper-tex.123.1.tmp", b"candidate")
+            nested = Path(staged, "chapters")
+            nested.mkdir()
+            Path(nested, "one.tex").write_bytes(b"chapter")
+            with PinnedPublicationRoot(root_path) as root:
+                root.remove_owned_tree(staged)
+                self.assertFalse(os.path.lexists(staged))
+
+    def test_owned_private_tree_cleanup_rejects_links(self) -> None:
+        with tempfile.TemporaryDirectory() as root_path:
+            with PinnedPublicationRoot(root_path) as root:
+                unsafe = os.path.join(root_path, "paper-tex.123.2.tmp")
+                os.mkdir(unsafe)
+                target = os.path.join(root_path, "outside.txt")
+                Path(target).write_bytes(b"outside")
+                link = os.path.join(unsafe, "redirect")
+                try:
+                    os.symlink(target, link)
+                except (OSError, NotImplementedError) as exc:
+                    self.skipTest(f"symbolic links are unavailable: {exc}")
+                with self.assertRaisesRegex(PublicationConflict, "link, reparse point"):
+                    root.remove_owned_tree(unsafe)
+                self.assertEqual(b"outside", Path(target).read_bytes())
+
 
 class TestPinnedArticleManifest(unittest.TestCase):
     def test_article_read_and_publish_use_the_supplied_directory_generation(self) -> None:

@@ -1178,6 +1178,50 @@ class PinnedPublicationRoot:
             ) from exc
         return self.absolute(destination_leaf)
 
+    def remove_owned_tree(self, path: str | os.PathLike[str]) -> None:
+        """Remove one transaction-owned physical tree without following links.
+
+        This operation is for private publication scratch only. Every directory is pinned while
+        its contents are inspected and removed; links, reparse points, and special files fail
+        closed. A concurrent addition causes the final directory removal to fail instead of being
+        traversed through an unretained route.
+        """
+
+        leaf = self.direct_leaf(path)
+        self.assert_current()
+        named_before = self.stat_leaf(leaf)
+        if not stat.S_ISDIR(named_before.st_mode) or _is_reparse(named_before):
+            raise PublicationConflict(
+                f"owned publication scratch is not a physical directory: '{self.absolute(leaf)}'"
+            )
+        with self.pin_child(leaf) as child:
+            opened = child.stat_root()
+            if not _same_directory(named_before, opened):
+                raise PublicationConflict(
+                    "owned publication scratch changed while it was pinned: "
+                    f"'{self.absolute(leaf)}'"
+                )
+            for name in child.list_names():
+                info = child.stat_leaf(name)
+                nested = child.absolute(name)
+                if stat.S_ISDIR(info.st_mode) and not _is_reparse(info):
+                    child.remove_owned_tree(nested)
+                elif stat.S_ISREG(info.st_mode) and not _is_reparse(info):
+                    child.unlink(nested)
+                else:
+                    raise PublicationConflict(
+                        "owned publication scratch contains a link, reparse point, or special "
+                        f"entry: '{nested}'"
+                    )
+            child.assert_current()
+        named_after = self.stat_leaf(leaf)
+        if not _same_directory(named_before, named_after):
+            raise PublicationConflict(
+                f"owned publication scratch changed before removal: '{self.absolute(leaf)}'"
+            )
+        self.rmdir_leaf(leaf)
+        self.assert_current()
+
     def stale_scratch(self, *subjects: str | os.PathLike[str]) -> list[str]:
         leaves = tuple(self.direct_leaf(subject) for subject in subjects)
         return [

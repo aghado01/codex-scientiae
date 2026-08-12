@@ -1,4 +1,4 @@
-"""Named source-deposit filesystem transactions."""
+"""Generation-pinned source-deposit transactions and immutable components."""
 
 from __future__ import annotations
 
@@ -9,23 +9,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterator, Literal
 
+import jsonschema
 from filelock import FileLock, Timeout
-from jsonl_engine.inventory_catalog import (
-    MAX_ARTICLE_MANIFEST_BYTES,
-    MAX_CATALOG_CHILDREN,
-)
+from jsonl_engine.documents import JsonDocumentError, JsonDocumentStore
+from jsonl_engine.inventory_catalog import MAX_CATALOG_CHILDREN
 from jsonl_engine.kinds.article import ArticleManifest
-from jsonl_engine.reader import loads
-from jsonl_engine.sidecar import lock_path
-from jsonl_engine.writer import write_json
+from jsonl_engine.publication import (
+    PinnedPublicationRoot,
+    PublicationError,
+)
+from jsonl_engine.sidecar import is_transaction_scratch, temp_write_path
+
 from procurement.domain.materialization import MetadataMode
 from procurement.errors import SourceMaterializationError
-from procurement.filesystem import (
-    is_link_or_reparse,
-    read_bounded_regular_file,
-    require_physical_directory,
-)
-from procurement.limits import MAX_DEPOSIT_METADATA_BUNDLE_BYTES
 from procurement.models import (
     ArtifactReference,
     DepositMetadataBundle,
@@ -34,9 +30,29 @@ from procurement.models import (
 )
 from procurement.source.archive import LatexSourceInspection, LatexSourceInspector
 from procurement.storage.catalogs import ArticleCatalogRoots
-from procurement.storage.schemas import get_procurement_schema_catalog
+from procurement.storage.documents import DepositMetadataDocument
 
 SourcePublication = Literal["published-new-tree", "recovered-existing-tree"]
+
+
+def _is_reparse(info: os.stat_result) -> bool:
+    return stat.S_ISLNK(info.st_mode) or bool(
+        getattr(info, "st_file_attributes", 0) & 0x400
+    )
+
+
+def _same_directory(left: os.stat_result, right: os.stat_result) -> bool:
+    if left.st_ino or right.st_ino:
+        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
+    left_birth = getattr(left, "st_birthtime_ns", None)
+    right_birth = getattr(right, "st_birthtime_ns", None)
+    if left_birth is not None or right_birth is not None:
+        return left.st_dev == right.st_dev and left_birth == right_birth
+    return left.st_dev == right.st_dev and getattr(
+        left,
+        "st_ctime_ns",
+        None,
+    ) == getattr(right, "st_ctime_ns", None)
 
 
 def _same_artifact(left: ArtifactReference, right: ArtifactReference) -> bool:
@@ -45,6 +61,15 @@ def _same_artifact(left: ArtifactReference, right: ArtifactReference) -> bool:
         and left.identifier.casefold() == right.identifier.casefold()
         and frozenset(left.provider_roles) == frozenset(right.provider_roles)
     )
+
+
+def _require_current(root: PinnedPublicationRoot, *, label: str) -> None:
+    try:
+        root.assert_current()
+    except RuntimeError as exc:
+        raise SourceMaterializationError(
+            f"{label} no longer names its retained directory generation"
+        ) from exc
 
 
 @dataclass(frozen=True, slots=True)
@@ -66,32 +91,69 @@ class InstalledSourceTree:
 
 
 class SourceDepositItem:
-    """One source-materialization transaction beneath a named catalog."""
+    """One locked document generation beneath a retained article catalog."""
 
-    def __init__(self, catalog: str, catalog_root: Path, directory: Path) -> None:
+    def __init__(
+        self,
+        catalog: str,
+        catalog_root: PinnedPublicationRoot,
+        publication_root: PinnedPublicationRoot,
+        slug: str,
+    ) -> None:
+        catalog_root.identity
+        publication_root.identity
         self.catalog = catalog
         self.catalog_root = catalog_root
-        self.directory = directory
-        self.slug = directory.name
-        self.article_path = directory / "article.json"
-        self.metadata_path = directory / f"{self.slug}.api-metadata.json"
+        self.publication_root = publication_root
+        self.slug = validate_deposit_slug(slug)
+        self.directory = Path(publication_root.path)
+        if self.directory.name != self.slug:
+            raise SourceMaterializationError(
+                "source-deposit pin does not match its deposit slug"
+            )
+        self.article_path = self.directory / "article.json"
+        self.metadata_path = self.directory / f"{self.slug}.api-metadata.json"
+        self.archive_path = self.directory / f"{self.slug}.tar.gz"
+        self.pdf_path = self.directory / f"{self.slug}.pdf"
+        self.tree_path = self.directory / f"{self.slug}-tex"
+        self._article = ArticleManifest(
+            target_dir=str(self.directory),
+            publication_root=publication_root,
+        )
+        self._metadata = JsonDocumentStore(
+            publication_root,
+            self.metadata_path.name,
+            DepositMetadataDocument(),
+        )
+
+    def assert_current(self) -> None:
+        """Require both catalog and document paths to retain their generations."""
+
+        _require_current(self.publication_root, label="source deposit")
+        _require_current(self.catalog_root, label=f"article catalog {self.catalog!r}")
+
+    def exists(self, path: str | Path) -> bool:
+        return self.publication_root.lexists(path)
 
     def read_article(self) -> dict[str, Any] | None:
         """Return one validated article sentinel without accepting malformed occupancy."""
 
-        if not os.path.lexists(self.article_path):
+        if not self.exists(self.article_path):
             return None
-        raw = read_bounded_regular_file(
-            self.article_path,
-            label="article.json",
-            maximum_bytes=MAX_ARTICLE_MANIFEST_BYTES,
-        )
         try:
-            value = loads(raw, path=str(self.article_path))
+            value = self._article.read()
             if not isinstance(value, dict):
                 raise ValueError("article.json must contain one object")
-            return ArticleManifest(target_dir=str(self.directory)).validate_record(value)
-        except Exception as exc:
+            return value
+        except (
+            jsonschema.ValidationError,
+            KeyError,
+            OSError,
+            RuntimeError,
+            StopIteration,
+            TypeError,
+            ValueError,
+        ) as exc:
             raise SourceMaterializationError(
                 f"existing article.json is invalid: '{self.article_path}': {exc}"
             ) from exc
@@ -102,27 +164,16 @@ class SourceDepositItem:
         artifact: ArtifactReference,
         identity_anchor: WorkIdentityAnchor | None = None,
     ) -> DepositMetadataBundle | None:
-        """Return the canonical API bundle after validating deposit and artifact identity."""
+        """Return canonical API evidence after validating deposit and work identity."""
 
-        if not os.path.lexists(self.metadata_path):
-            return None
-        raw = read_bounded_regular_file(
-            self.metadata_path,
-            label="API metadata bundle",
-            maximum_bytes=MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
-        )
         try:
-            value = loads(raw, path=str(self.metadata_path))
-            if not isinstance(value, dict):
-                raise ValueError("API metadata bundle must contain one object")
-            get_procurement_schema_catalog().get_validator(
-                "deposit.metadata.schema.json"
-            ).validate(value)
-            bundle = DepositMetadataBundle.model_validate(value)
-        except Exception as exc:
+            bundle = self._metadata.read()
+        except (JsonDocumentError, OSError, RuntimeError, ValueError) as exc:
             raise SourceMaterializationError(
                 f"existing API metadata bundle is invalid: '{self.metadata_path}': {exc}"
             ) from exc
+        if bundle is None:
+            return None
         if (
             bundle.deposit_slug != self.slug
             or not _same_artifact(bundle.artifact, artifact)
@@ -146,7 +197,7 @@ class SourceDepositItem:
 
         if type(receipt_has_pdf) is not bool:
             raise TypeError("receipt_has_pdf must be a boolean")
-
+        self.assert_current()
         article = self.read_article()
         bundle = self.read_metadata(
             artifact=artifact,
@@ -189,6 +240,7 @@ class SourceDepositItem:
                 "article.json freezes PDF inclusion at first publication: "
                 f"the sentinel {frozen} a PDF but the acquisition receipt would {requested} it"
             )
+        self.assert_current()
         return ExistingSourceDeposit(
             article_present=True,
             metadata_mode=article_mode,
@@ -219,24 +271,14 @@ class SourceDepositItem:
                 "collected API metadata bundle does not identify the acquired artifact "
                 "and requested bibliographic identity"
             )
-        payload = bundle.model_dump(mode="json", by_alias=True)
         try:
-            get_procurement_schema_catalog().get_validator(
-                "deposit.metadata.schema.json"
-            ).validate(payload)
-        except Exception as exc:
-            raise SourceMaterializationError(
-                f"collected API metadata bundle does not satisfy the deposit schema: {exc}"
-            ) from exc
-        try:
-            write_json(
-                str(self.metadata_path),
-                payload,
-                indent=2,
-                overwrite=False,
-            )
+            self._metadata.publish(bundle, overwrite=False)
         except FileExistsError:
             pass
+        except (JsonDocumentError, OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise SourceMaterializationError(
+                f"API metadata bundle could not be published: '{self.metadata_path}'"
+            ) from exc
         published = self.read_metadata(
             artifact=artifact,
             identity_anchor=identity_anchor,
@@ -247,6 +289,80 @@ class SourceDepositItem:
             )
         return published
 
+    def _require_tree_stage(self, candidate: str | Path) -> Path:
+        path = Path(candidate).absolute()
+        if (
+            path.parent != self.directory
+            or not is_transaction_scratch(self.tree_path.name, path.name)
+        ):
+            raise SourceMaterializationError(
+                f"source tree stage is not transaction-owned scratch: '{path}'"
+            )
+        return path
+
+    def sweep_tree_stages(self) -> None:
+        """Remove abandoned private source-tree stages under the source lease."""
+
+        for candidate in self.publication_root.stale_scratch(self.tree_path):
+            try:
+                self.publication_root.remove_owned_tree(candidate)
+            except FileNotFoundError:
+                continue
+            except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+                raise SourceMaterializationError(
+                    f"abandoned source tree stage could not be removed: '{candidate}'"
+                ) from exc
+
+    def new_tree_stage(self) -> Path:
+        """Create one empty private tree using the process write serial convention."""
+
+        self.sweep_tree_stages()
+        candidate = Path(temp_write_path(str(self.tree_path))).absolute()
+        try:
+            self.publication_root.mkdir_leaf(candidate.name)
+        except OSError as exc:
+            raise SourceMaterializationError(
+                f"private source tree stage could not be created: '{candidate}'"
+            ) from exc
+        return self._require_tree_stage(candidate)
+
+    @contextmanager
+    def pin_tree_stage(self, candidate: str | Path) -> Iterator[PinnedPublicationRoot]:
+        """Retain one private source-tree stage while it is populated and inspected."""
+
+        candidate_path = self._require_tree_stage(candidate)
+        try:
+            named = self.publication_root.stat_leaf(candidate_path.name)
+            if not stat.S_ISDIR(named.st_mode) or _is_reparse(named):
+                raise SourceMaterializationError(
+                    f"private source tree stage is not a physical directory: '{candidate_path}'"
+                )
+            with self.publication_root.pin_child(candidate_path.name) as tree_root:
+                if not _same_directory(named, tree_root.stat_root()):
+                    raise SourceMaterializationError(
+                        f"private source tree stage changed while pinned: '{candidate_path}'"
+                    )
+                yield tree_root
+                _require_current(tree_root, label="private source tree stage")
+        except SourceMaterializationError:
+            raise
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise SourceMaterializationError(
+                f"private source tree stage could not be retained: '{candidate_path}'"
+            ) from exc
+
+    def discard_tree_stage(self, candidate: str | Path) -> None:
+        """Remove one still-private tree after success or failure."""
+
+        candidate_path = self._require_tree_stage(candidate)
+        try:
+            if self.publication_root.lexists(candidate_path):
+                self.publication_root.remove_owned_tree(candidate_path)
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise SourceMaterializationError(
+                f"private source tree stage could not be removed: '{candidate_path}'"
+            ) from exc
+
     def install_tree(
         self,
         candidate: Path,
@@ -255,62 +371,59 @@ class SourceDepositItem:
         inspector: LatexSourceInspector,
         main_tex: str,
     ) -> InstalledSourceTree:
-        """Publish a canonical tree or recover a byte-identical existing tree."""
+        """Atomically publish a tree or recover a byte-identical existing tree."""
 
-        destination = self.directory / f"{self.slug}-tex"
-        if os.path.lexists(destination):
-            existing_root = require_physical_directory(
-                destination,
-                label="existing source tree",
-            )
-            existing = inspector.inspect(existing_root, slug=self.slug, main_tex=main_tex)
-            if existing.tree_sha256 != candidate_inspection.tree_sha256:
+        candidate = self._require_tree_stage(candidate)
+        publication: SourcePublication = "published-new-tree"
+        if not self.publication_root.lexists(self.tree_path):
+            try:
+                self.publication_root.publish_directory(candidate, self.tree_path)
+            except FileExistsError:
+                publication = "recovered-existing-tree"
+            except (OSError, PublicationError, RuntimeError, ValueError) as exc:
                 raise SourceMaterializationError(
-                    f"existing source tree conflicts with the acquired archive: '{destination}'"
-                )
-            return InstalledSourceTree(
-                path=str(existing_root),
-                inspection=existing,
-                publication="recovered-existing-tree",
-            )
+                    f"source tree publication failed: '{self.tree_path}'"
+                ) from exc
+        else:
+            publication = "recovered-existing-tree"
 
         try:
-            os.rename(candidate, destination)
-        except OSError as exc:
-            if not os.path.lexists(destination):
+            named = self.publication_root.stat_leaf(self.tree_path.name)
+            if not stat.S_ISDIR(named.st_mode) or _is_reparse(named):
                 raise SourceMaterializationError(
-                    f"source tree publication failed: '{destination}'"
-                ) from exc
-            existing_root = require_physical_directory(
-                destination,
-                label="concurrently published source tree",
-            )
-            existing = inspector.inspect(existing_root, slug=self.slug, main_tex=main_tex)
-            if existing.tree_sha256 != candidate_inspection.tree_sha256:
-                raise SourceMaterializationError(
-                    f"concurrently published source tree conflicts: '{destination}'"
-                ) from exc
-            return InstalledSourceTree(
-                path=str(existing_root),
-                inspection=existing,
-                publication="recovered-existing-tree",
-            )
-
-        installed_root = require_physical_directory(destination, label="published source tree")
-        installed = inspector.inspect(installed_root, slug=self.slug, main_tex=main_tex)
-        if installed.tree_sha256 != candidate_inspection.tree_sha256:
+                    f"existing source tree is not a physical directory: '{self.tree_path}'"
+                )
+            with self.publication_root.pin_child(self.tree_path.name) as tree_root:
+                if not _same_directory(named, tree_root.stat_root()):
+                    raise SourceMaterializationError(
+                        f"source tree changed while its generation was pinned: '{self.tree_path}'"
+                    )
+                inspection = inspector.inspect(
+                    self.tree_path,
+                    slug=self.slug,
+                    main_tex=main_tex,
+                    publication_root=tree_root,
+                )
+                if inspection.tree_sha256 != candidate_inspection.tree_sha256:
+                    raise SourceMaterializationError(
+                        "existing source tree conflicts with the acquired archive: "
+                        f"'{self.tree_path}'"
+                    )
+        except SourceMaterializationError:
+            raise
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
             raise SourceMaterializationError(
-                f"published source tree changed during installation: '{destination}'"
-            )
+                f"published source tree could not be validated: '{self.tree_path}'"
+            ) from exc
         return InstalledSourceTree(
-            path=str(installed_root),
-            inspection=installed,
-            publication="published-new-tree",
+            path=str(self.tree_path),
+            inspection=inspection,
+            publication=publication,
         )
 
 
 class SourceDepositStore:
-    """Coordinate direct-child source deposits beneath configured catalog roots."""
+    """Retain catalog and document generations for source materialization."""
 
     def __init__(
         self,
@@ -323,79 +436,6 @@ class SourceDepositStore:
         self._catalogs = catalogs
         self.lock_timeout = lock_timeout
 
-    def _catalog_root(self, catalog: str) -> tuple[str, Path]:
-        descriptor = self._catalogs.resolve(catalog)
-        root = require_physical_directory(
-            descriptor.catalog_dir,
-            label=f"article catalog {descriptor.name!r}",
-        )
-        return descriptor.name, root
-
-    def _locate_document(
-        self,
-        catalog: str,
-        slug: str,
-        *,
-        create: bool,
-    ) -> tuple[str, Path, Path | None, bool]:
-        name, root = self._catalog_root(catalog)
-        slug = validate_deposit_slug(slug)
-        catalog_lease = FileLock(
-            lock_path(str(root / ".source-materialization-catalog")),
-            timeout=self.lock_timeout,
-        )
-        try:
-            catalog_lease.acquire()
-        except Timeout as exc:
-            raise TimeoutError(
-                f"could not acquire the catalog source lease within {self.lock_timeout}s: '{root}'"
-            ) from exc
-        try:
-            try:
-                entries = list(os.scandir(root))
-            except OSError as exc:
-                raise SourceMaterializationError(
-                    f"article catalog could not be enumerated: '{root}'"
-                ) from exc
-            if len(entries) > MAX_CATALOG_CHILDREN:
-                raise SourceMaterializationError(
-                    f"article catalog exceeds the {MAX_CATALOG_CHILDREN}-child boundary: '{root}'"
-                )
-            matches = [entry for entry in entries if entry.name.casefold() == slug.casefold()]
-            if len(matches) > 1 or (matches and matches[0].name != slug):
-                names = sorted(entry.name for entry in matches)
-                raise SourceMaterializationError(
-                    f"source deposit slug {slug!r} has a portable case collision: {names}"
-                )
-            created = False
-            if matches:
-                entry = matches[0]
-                try:
-                    info = entry.stat(follow_symlinks=False)
-                except OSError as exc:
-                    raise SourceMaterializationError(
-                        f"source deposit path could not be inspected: '{entry.path}'"
-                    ) from exc
-                if is_link_or_reparse(info) or not stat.S_ISDIR(info.st_mode):
-                    raise SourceMaterializationError(
-                        f"source deposit path is not a physical directory: '{entry.path}'"
-                    )
-                directory: Path | None = Path(entry.path).absolute()
-            elif create:
-                directory = root / slug
-                try:
-                    directory.mkdir(mode=0o700)
-                except OSError as exc:
-                    raise SourceMaterializationError(
-                        f"source deposit directory could not be created: '{directory}'"
-                    ) from exc
-                created = True
-            else:
-                directory = None
-            return name, root, directory, created
-        finally:
-            catalog_lease.release()
-
     @contextmanager
     def transaction(
         self,
@@ -404,52 +444,98 @@ class SourceDepositStore:
         *,
         create: bool = True,
     ) -> Iterator[SourceDepositItem | None]:
-        """Hold one source lease without nesting the article publication lease."""
+        """Hold the catalog generation, source lease, and document generation."""
 
-        name, root, directory, created = self._locate_document(
-            catalog,
-            slug,
-            create=create,
-        )
-        if directory is None:
-            yield None
-            return
-        lease = FileLock(
-            lock_path(str(directory / ".source-materialization")),
-            timeout=self.lock_timeout,
-        )
+        descriptor = self._catalogs.resolve(catalog)
+        root = descriptor.publication_root
+        try:
+            active_identity = root.identity
+        except RuntimeError as exc:
+            raise SourceMaterializationError(
+                f"article catalog {descriptor.name!r} descriptor is no longer active"
+            ) from exc
+        if active_identity != descriptor.identity:
+            raise SourceMaterializationError(
+                f"article catalog {descriptor.name!r} descriptor is not active"
+            )
+        slug = validate_deposit_slug(slug)
+        directory = Path(root.absolute(slug))
+        lease = FileLock(root.lock_path(directory), timeout=self.lock_timeout)
         try:
             lease.acquire()
         except Timeout as exc:
-            if created:
-                try:
-                    directory.rmdir()
-                except OSError:
-                    pass
             raise TimeoutError(
-                f"could not acquire the source-materialization lease within "
+                "could not acquire the source-materialization lease within "
                 f"{self.lock_timeout}s: '{directory}'"
             ) from exc
+
+        created = False
         failed = False
+        created_generation: os.stat_result | None = None
         try:
-            current_root = require_physical_directory(root, label=f"article catalog {name!r}")
-            current_directory = require_physical_directory(
-                directory,
-                label="source deposit directory",
-            )
-            if current_root != root or current_directory.parent != root or current_directory.name != slug:
-                raise SourceMaterializationError("source deposit directory escaped its named catalog")
-            yield SourceDepositItem(name, root, current_directory)
+            _require_current(root, label=f"article catalog {descriptor.name!r}")
+            names = root.list_names()
+            if len(names) > MAX_CATALOG_CHILDREN:
+                raise SourceMaterializationError(
+                    "article catalog exceeds the "
+                    f"{MAX_CATALOG_CHILDREN}-child boundary: '{root.path}'"
+                )
+            matches = [name for name in names if name.casefold() == slug.casefold()]
+            if len(matches) > 1 or (matches and matches[0] != slug):
+                raise SourceMaterializationError(
+                    f"source deposit slug {slug!r} has a portable case collision: {sorted(matches)}"
+                )
+            if not matches:
+                if not create:
+                    yield None
+                    return
+                try:
+                    root.mkdir_leaf(slug)
+                except OSError as exc:
+                    raise SourceMaterializationError(
+                        f"source deposit directory could not be created: '{directory}'"
+                    ) from exc
+                created = True
+            named = root.stat_leaf(slug)
+            if created:
+                created_generation = named
+            if not stat.S_ISDIR(named.st_mode) or _is_reparse(named):
+                raise SourceMaterializationError(
+                    f"source deposit path is not a physical directory: '{directory}'"
+                )
+            with root.pin_child(slug) as document_root:
+                if not _same_directory(named, document_root.stat_root()):
+                    raise SourceMaterializationError(
+                        f"source deposit changed while its generation was pinned: '{directory}'"
+                    )
+                item = SourceDepositItem(
+                    descriptor.name,
+                    root,
+                    document_root,
+                    slug,
+                )
+                try:
+                    yield item
+                    item.assert_current()
+                except BaseException:
+                    failed = True
+                    raise
+            _require_current(root, label=f"article catalog {descriptor.name!r}")
         except BaseException:
             failed = True
             raise
         finally:
-            lease.release()
             if failed and created:
                 try:
-                    directory.rmdir()
+                    current = root.stat_leaf(slug)
+                    if created_generation is not None and _same_directory(
+                        created_generation,
+                        current,
+                    ):
+                        root.rmdir_leaf(slug)
                 except OSError:
                     pass
+            lease.release()
 
     def inspect_existing(
         self,
@@ -461,7 +547,7 @@ class SourceDepositStore:
         requested_mode: MetadataMode,
         receipt_has_pdf: bool,
     ) -> ExistingSourceDeposit | None:
-        """Inspect existing immutable forms and evidence without creating a catalog child."""
+        """Inspect immutable evidence without creating a document directory."""
 
         with self.transaction(catalog, slug, create=False) as item:
             if item is None:

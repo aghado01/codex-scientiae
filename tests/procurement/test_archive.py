@@ -12,10 +12,13 @@ import unittest
 from pathlib import Path
 
 from jsonl_engine.deposit import _fingerprint_tree as deposit_fingerprint_tree
+from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.source.archive import (
     ArchiveLimits,
     LatexSourceError,
+    LatexSourceInspector,
     SourceArchiveError,
+    SourceArchiveExtractor,
     extract_source_archive,
     fingerprint_source_tree,
     inspect_latex_source_tree,
@@ -145,6 +148,34 @@ class SourceArchiveTests(unittest.TestCase):
         self.assertEqual(deposit_hash, fingerprint.sha256)
         self.assertEqual((deposit_files, deposit_tex), (fingerprint.count, fingerprint.tex_count))
         self.assertEqual(fingerprint.sha256, inspection.tree_sha256)
+
+    def test_retained_extraction_and_inspection_use_the_pinned_tree_generation(self) -> None:
+        source = b"\\documentclass{article}\n\\begin{document}Pinned\\end{document}\n"
+        archive = self._write_archive(
+            "retained.tar.gz",
+            _tar_gzip([_regular("main.tex", source)]),
+        )
+        destination = self.root / "retained-tree"
+        with PinnedPublicationRoot(self.root) as root:
+            root.mkdir_leaf(destination.name)
+            with root.pin_child(destination.name) as tree_root:
+                extraction = SourceArchiveExtractor().extract_pinned(
+                    root,
+                    archive,
+                    tree_root,
+                )
+                inspection = LatexSourceInspector().inspect(
+                    destination,
+                    publication_root=tree_root,
+                )
+
+        self.assertEqual("tar+gzip", extraction.archive_kind)
+        self.assertEqual(
+            hashlib.sha256(archive.read_bytes()).hexdigest(),
+            extraction.archive_sha256,
+        )
+        self.assertEqual("main.tex", inspection.entrypoint)
+        self.assertEqual(source, (destination / "main.tex").read_bytes())
 
     def test_tar_extracts_nested_source_and_resolves_literal_inputs(self) -> None:
         main = (

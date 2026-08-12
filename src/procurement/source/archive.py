@@ -9,14 +9,19 @@ import ntpath
 import os
 import posixpath
 import re
-import shutil
 import stat
 import tarfile
 import zlib
+from contextlib import nullcontext
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator, Literal, Sequence
+from typing import BinaryIO, Callable, ContextManager, Iterator, Literal, Sequence
 
+from jsonl_engine.publication import (
+    PinnedPublicationRoot,
+    PublicationConflict,
+    PublicationError,
+)
 from jsonl_engine.sidecar import temp_write_path
 from procurement.errors import SourceMaterializationError
 
@@ -147,6 +152,7 @@ class _TreeEntry:
     relative: str
     path: Path
     info: os.stat_result
+    publication_root: PinnedPublicationRoot
 
 
 def _is_reparse(info: os.stat_result) -> bool:
@@ -171,6 +177,20 @@ def _same_path_generation(handle: os.stat_result, path: os.stat_result) -> bool:
     ):
         return False
     return handle.st_size == path.st_size and handle.st_mtime_ns == path.st_mtime_ns
+
+
+def _same_directory_generation(left: os.stat_result, right: os.stat_result) -> bool:
+    if left.st_ino or right.st_ino:
+        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
+    left_birth = getattr(left, "st_birthtime_ns", None)
+    right_birth = getattr(right, "st_birthtime_ns", None)
+    if left_birth is not None or right_birth is not None:
+        return left.st_dev == right.st_dev and left_birth == right_birth
+    return left.st_dev == right.st_dev and getattr(
+        left,
+        "st_ctime_ns",
+        None,
+    ) == getattr(right, "st_ctime_ns", None)
 
 
 def _same_path(left: Path, right: Path) -> bool:
@@ -301,16 +321,13 @@ class _PortablePathRegistry:
             self._members[key] = relative
 
 
-def _safe_remove_private_directory(path: Path, *, parent: Path) -> None:
-    if path.parent != parent or not path.name:
-        raise SourceArchiveError(f"refusing to remove an unscoped extraction path: '{path}'")
-    if os.path.lexists(path):
-        shutil.rmtree(path)
+_OpenMember = Callable[[str], ContextManager[BinaryIO]]
 
 
-def _has_tar_header(path: Path) -> bool:
-    with path.open("rb") as handle:
-        header = handle.read(512)
+def _has_tar_header(handle: BinaryIO) -> bool:
+    handle.seek(0)
+    header = handle.read(tarfile.BLOCKSIZE)
+    handle.seek(0)
     if len(header) < 512 or not any(header):
         return False
     field = header[148:156].strip(b"\x00 ")
@@ -324,14 +341,14 @@ def _has_tar_header(path: Path) -> bool:
     return actual == expected
 
 
-def _is_tar_payload(path: Path) -> bool:
+def _is_tar_payload_handle(handle: BinaryIO) -> bool:
     looks_like_tar = False
     try:
-        looks_like_tar = _has_tar_header(path)
-        with tarfile.open(path, mode="r:") as archive:
+        looks_like_tar = _has_tar_header(handle)
+        with tarfile.open(fileobj=handle, mode="r:") as archive:
             archive.next()
         return True
-    except (tarfile.ReadError, EOFError, OSError) as exc:
+    except (tarfile.ReadError, EOFError, OSError, PublicationError, RuntimeError) as exc:
         if looks_like_tar:
             raise SourceArchiveError(
                 "gzip payload has a tar header but is not a readable tar archive"
@@ -339,39 +356,43 @@ def _is_tar_payload(path: Path) -> bool:
         return False
 
 
-def _assert_tar_zero_tail(path: Path, *, terminator_offset: int) -> None:
+def _assert_tar_zero_tail(handle: BinaryIO, *, terminator_offset: int) -> None:
     """Require a two-block tar terminator followed only by zero padding."""
 
     if terminator_offset < 0 or terminator_offset % tarfile.BLOCKSIZE:
         raise SourceArchiveError("source tar terminator is not block-aligned")
     try:
-        with path.open("rb") as handle:
-            handle.seek(terminator_offset)
-            terminator = handle.read(2 * tarfile.BLOCKSIZE)
-            if len(terminator) != 2 * tarfile.BLOCKSIZE or any(terminator):
+        handle.seek(terminator_offset)
+        terminator = handle.read(2 * tarfile.BLOCKSIZE)
+        if len(terminator) != 2 * tarfile.BLOCKSIZE or any(terminator):
+            raise SourceArchiveError(
+                "source tar archive lacks a canonical two-zero-block terminator"
+            )
+        while chunk := handle.read(_CHUNK_BYTES):
+            if any(chunk):
                 raise SourceArchiveError(
-                    "source tar archive lacks a canonical two-zero-block terminator"
+                    "source tar archive contains nonzero data after its first "
+                    "canonical terminator"
                 )
-            while chunk := handle.read(_CHUNK_BYTES):
-                if any(chunk):
-                    raise SourceArchiveError(
-                        "source tar archive contains nonzero data after its first "
-                        "canonical terminator"
-                    )
     except SourceArchiveError:
         raise
     except OSError as exc:
         raise SourceArchiveError("source tar tail cannot be validated") from exc
 
 
-def _plan_tar(path: Path, *, limits: ArchiveLimits) -> tuple[tuple[_TarMemberPlan, ...], int]:
+def _plan_tar_handle(
+    handle: BinaryIO,
+    *,
+    limits: ArchiveLimits,
+) -> tuple[tuple[_TarMemberPlan, ...], int]:
     plans: list[_TarMemberPlan] = []
     registry = _PortablePathRegistry()
     extracted_bytes = 0
     regular_files = 0
     terminator_offset = 0
     try:
-        with tarfile.open(path, mode="r:") as archive:
+        handle.seek(0)
+        with tarfile.open(fileobj=handle, mode="r:") as archive:
             for member in archive:
                 if len(plans) >= limits.max_entries:
                     raise SourceArchiveError(
@@ -383,19 +404,20 @@ def _plan_tar(path: Path, *, limits: ArchiveLimits) -> tuple[tuple[_TarMemberPla
                     is_directory = False
                     if member.size < 0 or member.size > limits.max_member_bytes:
                         raise SourceArchiveError(
-                            f"source archive member exceeds the {limits.max_member_bytes}-byte "
-                            f"boundary: {member.name!r}"
+                            "source archive member exceeds the "
+                            f"{limits.max_member_bytes}-byte boundary: {member.name!r}"
                         )
                     if member.size > limits.max_extracted_bytes - extracted_bytes:
                         raise SourceArchiveError(
-                            f"source archive exceeds the {limits.max_extracted_bytes}-byte "
-                            "extraction boundary"
+                            "source archive exceeds the "
+                            f"{limits.max_extracted_bytes}-byte extraction boundary"
                         )
                     extracted_bytes += member.size
                     regular_files += 1
                 else:
                     raise SourceArchiveError(
-                        f"source archive contains an unsafe link or special member: {member.name!r}"
+                        "source archive contains an unsafe link or special member: "
+                        f"{member.name!r}"
                     )
                 try:
                     relative = _portable_relative(
@@ -409,7 +431,8 @@ def _plan_tar(path: Path, *, limits: ArchiveLimits) -> tuple[tuple[_TarMemberPla
                     raise SourceArchiveError(str(exc)) from exc
                 if is_directory and member.size not in (0,):
                     raise SourceArchiveError(
-                        f"source archive directory has a nonzero payload size: {member.name!r}"
+                        "source archive directory has a nonzero payload size: "
+                        f"{member.name!r}"
                     )
                 plans.append(
                     _TarMemberPlan(
@@ -420,20 +443,27 @@ def _plan_tar(path: Path, *, limits: ArchiveLimits) -> tuple[tuple[_TarMemberPla
                     )
                 )
             terminator_offset = archive.offset
+        _assert_tar_zero_tail(handle, terminator_offset=terminator_offset)
     except SourceArchiveError:
         raise
-    except (tarfile.TarError, EOFError, OSError) as exc:
+    except (tarfile.TarError, EOFError, OSError, PublicationError, RuntimeError) as exc:
         raise SourceArchiveError("gzip payload is not a complete readable tar archive") from exc
     if not plans or not regular_files:
         raise SourceArchiveError("source tar archive contains no regular files")
-    _assert_tar_zero_tail(path, terminator_offset=terminator_offset)
     return tuple(plans), extracted_bytes
 
 
-def _extract_tar(path: Path, destination: Path, plans: Sequence[_TarMemberPlan]) -> None:
+def _extract_tar_handle(
+    handle: BinaryIO,
+    plans: Sequence[_TarMemberPlan],
+    *,
+    ensure_directory: Callable[[str], None],
+    open_member: _OpenMember,
+) -> None:
     terminator_offset = 0
     try:
-        with tarfile.open(path, mode="r:") as archive:
+        handle.seek(0)
+        with tarfile.open(fileobj=handle, mode="r:") as archive:
             iterator = iter(archive)
             for expected in plans:
                 try:
@@ -447,12 +477,15 @@ def _extract_tar(path: Path, destination: Path, plans: Sequence[_TarMemberPlan])
                     or member.isdir() != expected.is_directory
                     or member.size != expected.size
                 ):
-                    raise SourceArchiveError("source tar changed between validation and extraction")
-                target = destination.joinpath(*expected.relative.split("/"))
+                    raise SourceArchiveError(
+                        "source tar changed between validation and extraction"
+                    )
                 if expected.is_directory:
-                    target.mkdir(parents=True, exist_ok=True)
+                    ensure_directory(expected.relative)
                     continue
-                target.parent.mkdir(parents=True, exist_ok=True)
+                parent = posixpath.dirname(expected.relative)
+                if parent:
+                    ensure_directory(parent)
                 source = archive.extractfile(member)
                 if source is None:
                     raise SourceArchiveError(
@@ -460,15 +493,22 @@ def _extract_tar(path: Path, destination: Path, plans: Sequence[_TarMemberPlan])
                     )
                 written = 0
                 try:
-                    with target.open("xb") as output:
+                    with open_member(expected.relative) as output:
                         while written < expected.size:
-                            chunk = source.read(min(_CHUNK_BYTES, expected.size - written))
+                            chunk = source.read(
+                                min(_CHUNK_BYTES, expected.size - written)
+                            )
                             if not chunk:
                                 raise SourceArchiveError(
                                     f"source tar member is truncated: {expected.relative!r}"
                                 )
-                            output.write(chunk)
-                            written += len(chunk)
+                            count = output.write(chunk)
+                            if count != len(chunk):
+                                raise OSError(
+                                    "short write while extracting source tar member "
+                                    f"({count} of {len(chunk)} bytes)"
+                                )
+                            written += count
                         output.flush()
                         os.fsync(output.fileno())
                 finally:
@@ -478,96 +518,119 @@ def _extract_tar(path: Path, destination: Path, plans: Sequence[_TarMemberPlan])
             except StopIteration:
                 terminator_offset = archive.offset
             else:
-                raise SourceArchiveError("source tar changed between validation and extraction")
+                raise SourceArchiveError(
+                    "source tar changed between validation and extraction"
+                )
+        _assert_tar_zero_tail(handle, terminator_offset=terminator_offset)
     except SourceArchiveError:
         raise
-    except (tarfile.TarError, EOFError, OSError) as exc:
+    except (tarfile.TarError, EOFError, OSError, PublicationError, RuntimeError) as exc:
         raise SourceArchiveError("source tar extraction failed") from exc
-    _assert_tar_zero_tail(path, terminator_offset=terminator_offset)
 
 
-def _tree_inventory(root: Path, *, limits: ArchiveLimits) -> tuple[_TreeEntry, ...]:
+def _tree_inventory(
+    root: Path,
+    *,
+    limits: ArchiveLimits,
+    publication_root: PinnedPublicationRoot,
+) -> tuple[_TreeEntry, ...]:
+    """Inventory one tree through retained directory routes."""
+
+    if not _same_path(root.absolute(), Path(publication_root.path).absolute()):
+        raise LatexSourceError("LaTeX source root does not match its retained directory")
     entries: list[_TreeEntry] = []
     registry = _PortablePathRegistry()
-    pending = [root]
+    pending = [""]
     total_bytes = 0
     seen_entries = 0
     while pending:
-        directory = pending.pop()
+        relative_directory = pending.pop()
+        context = (
+            publication_root.pin_descendant(relative_directory)
+            if relative_directory
+            else nullcontext(publication_root)
+        )
         try:
-            directory_before = os.stat(directory, follow_symlinks=False)
-            if not stat.S_ISDIR(directory_before.st_mode) or _is_reparse(directory_before):
-                raise LatexSourceError(
-                    f"source tree contains a symbolic link or reparse point: '{directory}'"
-                )
-            children = list(os.scandir(directory))
-            directory_after = os.stat(directory, follow_symlinks=False)
-            if _stat_identity(directory_before) != _stat_identity(directory_after):
-                raise LatexSourceError(
-                    f"source tree directory changed while it was enumerated: '{directory}'"
-                )
+            with context as directory:
+                directory_before = directory.stat_root()
+                names = directory.list_names()
+                directory_after = directory.stat_root()
+                if _stat_identity(directory_before) != _stat_identity(directory_after):
+                    display = directory.path
+                    raise LatexSourceError(
+                        f"source tree directory changed while it was enumerated: '{display}'"
+                    )
+                for name in names:
+                    seen_entries += 1
+                    if seen_entries > limits.max_entries:
+                        raise LatexSourceError(
+                            f"source tree exceeds the {limits.max_entries} entry boundary"
+                        )
+                    info = directory.stat_leaf(name)
+                    relative = f"{relative_directory}/{name}" if relative_directory else name
+                    try:
+                        relative = _portable_relative(
+                            relative,
+                            limits=limits,
+                            label="source tree path",
+                            directory_member=False,
+                        )
+                    except SourceMaterializationError as exc:
+                        raise LatexSourceError(str(exc)) from exc
+                    display = publication_root.absolute_relative(relative)
+                    if stat.S_ISLNK(info.st_mode) or _is_reparse(info):
+                        raise LatexSourceError(
+                            "source tree contains a symbolic link or reparse point: "
+                            f"'{display}'"
+                        )
+                    if stat.S_ISDIR(info.st_mode):
+                        try:
+                            registry.add(relative, is_directory=True, member=False)
+                        except SourceMaterializationError as exc:
+                            raise LatexSourceError(str(exc)) from exc
+                        pending.append(relative)
+                        continue
+                    if not stat.S_ISREG(info.st_mode):
+                        raise LatexSourceError(
+                            f"source tree entry is not a regular file: '{display}'"
+                        )
+                    if info.st_size < 0 or info.st_size > limits.max_member_bytes:
+                        raise LatexSourceError(
+                            "source tree file exceeds the "
+                            f"{limits.max_member_bytes}-byte boundary: {relative!r}"
+                        )
+                    if info.st_size > limits.max_extracted_bytes - total_bytes:
+                        raise LatexSourceError(
+                            f"source tree exceeds the {limits.max_extracted_bytes}-byte boundary"
+                        )
+                    total_bytes += info.st_size
+                    try:
+                        registry.add(relative, is_directory=False, member=False)
+                    except SourceMaterializationError as exc:
+                        raise LatexSourceError(str(exc)) from exc
+                    entries.append(
+                        _TreeEntry(
+                            relative=relative,
+                            path=Path(display),
+                            info=info,
+                            publication_root=publication_root,
+                        )
+                    )
         except LatexSourceError:
             raise
-        except OSError as exc:
-            raise LatexSourceError(f"source tree cannot be enumerated: '{directory}'") from exc
-        for child in children:
-            seen_entries += 1
-            if seen_entries > limits.max_entries:
-                raise LatexSourceError(
-                    f"source tree exceeds the {limits.max_entries} entry boundary"
-                )
-            try:
-                # ``DirEntry.stat`` returns zero device/inode fields on Windows even
-                # when ``stat`` and ``fstat`` expose a stable file ID.  Capture the
-                # pathname witness through ``os.stat`` so later handle comparisons
-                # do not reject every unchanged file on that platform.
-                info = os.stat(child.path, follow_symlinks=False)
-            except OSError as exc:
-                raise LatexSourceError(
-                    f"source tree entry cannot be measured: '{child.path}'"
-                ) from exc
-            if stat.S_ISLNK(info.st_mode) or _is_reparse(info):
-                raise LatexSourceError(
-                    f"source tree contains a symbolic link or reparse point: '{child.path}'"
-                )
-            relative_native = os.path.relpath(child.path, root)
-            if os.sep != "/" and "/" in relative_native:
-                # A literal slash cannot occur in a Windows leaf; separators are converted below.
-                raise LatexSourceError(f"source tree contains an invalid path: {relative_native!r}")
-            relative = relative_native.replace(os.sep, "/")
-            try:
-                relative = _portable_relative(
-                    relative,
-                    limits=limits,
-                    label="source tree path",
-                    directory_member=False,
-                )
-            except SourceMaterializationError as exc:
-                raise LatexSourceError(str(exc)) from exc
-            if stat.S_ISDIR(info.st_mode):
-                try:
-                    registry.add(relative, is_directory=True, member=False)
-                except SourceMaterializationError as exc:
-                    raise LatexSourceError(str(exc)) from exc
-                pending.append(Path(child.path))
-                continue
-            if not stat.S_ISREG(info.st_mode):
-                raise LatexSourceError(f"source tree entry is not a regular file: '{child.path}'")
-            if info.st_size < 0 or info.st_size > limits.max_member_bytes:
-                raise LatexSourceError(
-                    f"source tree file exceeds the {limits.max_member_bytes}-byte boundary: "
-                    f"{relative!r}"
-                )
-            if info.st_size > limits.max_extracted_bytes - total_bytes:
-                raise LatexSourceError(
-                    f"source tree exceeds the {limits.max_extracted_bytes}-byte boundary"
-                )
-            total_bytes += info.st_size
-            try:
-                registry.add(relative, is_directory=False, member=False)
-            except SourceMaterializationError as exc:
-                raise LatexSourceError(str(exc)) from exc
-            entries.append(_TreeEntry(relative=relative, path=Path(child.path), info=info))
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            display = (
+                publication_root.absolute_relative(relative_directory)
+                if relative_directory
+                else publication_root.path
+            )
+            raise LatexSourceError(f"source tree cannot be enumerated: '{display}'") from exc
+    try:
+        publication_root.assert_current()
+    except RuntimeError as exc:
+        raise LatexSourceError(
+            "source tree no longer names its retained directory generation"
+        ) from exc
     if not entries:
         raise LatexSourceError(f"source tree is empty: '{root}'")
     entries.sort(key=lambda item: item.relative.encode("utf-16-be", "surrogatepass"))
@@ -578,7 +641,7 @@ def _stable_hash(entry: _TreeEntry) -> tuple[int, str]:
     digest = hashlib.sha256()
     size = 0
     try:
-        with entry.path.open("rb") as handle:
+        with entry.publication_root.open_stable_relative_file(entry.relative) as handle:
             before = os.fstat(handle.fileno())
             if (
                 not stat.S_ISREG(before.st_mode)
@@ -594,13 +657,13 @@ def _stable_hash(entry: _TreeEntry) -> tuple[int, str]:
             after = os.fstat(handle.fileno())
     except LatexSourceError:
         raise
-    except OSError as exc:
+    except (OSError, PublicationError, RuntimeError, ValueError) as exc:
         raise LatexSourceError(f"source tree file cannot be read: '{entry.path}'") from exc
     if _stat_identity(before) != _stat_identity(after) or size != after.st_size:
         raise LatexSourceError(f"source tree file changed while being measured: '{entry.path}'")
     try:
-        current = entry.path.lstat()
-    except OSError as exc:
+        current = entry.publication_root.stat_relative(entry.relative)
+    except (OSError, PublicationError, RuntimeError, ValueError) as exc:
         raise LatexSourceError(f"source tree file path changed: '{entry.path}'") from exc
     if (
         not stat.S_ISREG(current.st_mode)
@@ -624,6 +687,7 @@ def _fingerprint_inventory(
     entries: Sequence[_TreeEntry],
     *,
     limits: ArchiveLimits,
+    publication_root: PinnedPublicationRoot,
 ) -> TreeFingerprint:
     records: list[TreeFile] = []
     tree_digest = hashlib.sha256()
@@ -635,7 +699,7 @@ def _fingerprint_inventory(
         tree_digest.update(f"{entry.relative}\0{size}\0{digest}\n".encode("utf-8", "strict"))
         if entry.relative.casefold().endswith(".tex"):
             tex_count += 1
-    current = _tree_inventory(root, limits=limits)
+    current = _tree_inventory(root, limits=limits, publication_root=publication_root)
     if not _same_inventory(entries, current):
         raise LatexSourceError("source tree changed while it was being fingerprinted")
     return TreeFingerprint(
@@ -650,18 +714,52 @@ def fingerprint_source_tree(
     root_path: str | os.PathLike[str],
     *,
     limits: ArchiveLimits | None = None,
+    publication_root: PinnedPublicationRoot | None = None,
 ) -> TreeFingerprint:
     """Return the canonical source-tree fingerprint without following links."""
 
     selected_limits = ArchiveLimits() if limits is None else limits
     if not isinstance(selected_limits, ArchiveLimits):
         raise TypeError("limits must be an ArchiveLimits instance")
-    try:
-        root = _plain_directory(Path(root_path), label="LaTeX source root")
-    except SourceMaterializationError as exc:
-        raise LatexSourceError(str(exc)) from exc
-    entries = _tree_inventory(root, limits=selected_limits)
-    return _fingerprint_inventory(root, entries, limits=selected_limits)
+    if publication_root is None:
+        try:
+            root = _plain_directory(Path(root_path), label="LaTeX source root")
+        except SourceMaterializationError as exc:
+            raise LatexSourceError(str(exc)) from exc
+        try:
+            with PinnedPublicationRoot(str(root)) as retained:
+                return fingerprint_source_tree(
+                    root,
+                    limits=selected_limits,
+                    publication_root=retained,
+                )
+        except LatexSourceError:
+            raise
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise LatexSourceError(
+                f"LaTeX source root could not be retained: '{root}'"
+            ) from exc
+    else:
+        try:
+            publication_root.assert_current()
+        except RuntimeError as exc:
+            raise LatexSourceError(
+                "LaTeX source root no longer names its retained directory"
+            ) from exc
+        root = Path(publication_root.path)
+        if not _same_path(Path(root_path).absolute(), root.absolute()):
+            raise LatexSourceError("LaTeX source root does not match its retained directory")
+    entries = _tree_inventory(
+        root,
+        limits=selected_limits,
+        publication_root=publication_root,
+    )
+    return _fingerprint_inventory(
+        root,
+        entries,
+        limits=selected_limits,
+        publication_root=publication_root,
+    )
 
 
 def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
@@ -670,7 +768,7 @@ def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
             f"LaTeX input exceeds the {maximum}-byte read boundary: {entry.relative!r}"
         )
     try:
-        with entry.path.open("rb") as handle:
+        with entry.publication_root.open_stable_relative_file(entry.relative) as handle:
             before = os.fstat(handle.fileno())
             if not _same_path_generation(before, entry.info):
                 raise LatexSourceError(
@@ -680,7 +778,7 @@ def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
             after = os.fstat(handle.fileno())
     except LatexSourceError:
         raise
-    except OSError as exc:
+    except (OSError, PublicationError, RuntimeError, ValueError) as exc:
         raise LatexSourceError(f"LaTeX input cannot be read: {entry.relative!r}") from exc
     if (
         len(raw) > maximum
@@ -689,8 +787,8 @@ def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
     ):
         raise LatexSourceError(f"LaTeX input changed while it was read: {entry.relative!r}")
     try:
-        current = entry.path.lstat()
-    except OSError as exc:
+        current = entry.publication_root.stat_relative(entry.relative)
+    except (OSError, PublicationError, RuntimeError, ValueError) as exc:
         raise LatexSourceError(f"LaTeX input path changed: {entry.relative!r}") from exc
     if (
         not stat.S_ISREG(current.st_mode)
@@ -917,26 +1015,83 @@ class SourceArchiveExtractor:
             raise SourceArchiveError(
                 "source extraction destination must be one child of its physical parent"
             )
-        if os.path.lexists(destination):
-            raise SourceArchiveError(
-                f"source extraction destination already exists: '{destination}'"
-            )
         try:
-            destination.mkdir(mode=0o700)
-        except OSError as exc:
-            raise SourceArchiveError(
-                f"source extraction destination could not be created: '{destination}'"
-            ) from exc
+            with PinnedPublicationRoot(str(archive.parent)) as archive_root:
+                with PinnedPublicationRoot(str(parent)) as parent_root:
+                    if parent_root.lexists(destination):
+                        raise SourceArchiveError(
+                            f"source extraction destination already exists: '{destination}'"
+                        )
+                    try:
+                        parent_root.mkdir_leaf(destination.name)
+                    except OSError as exc:
+                        raise SourceArchiveError(
+                            "source extraction destination could not be created: "
+                            f"'{destination}'"
+                        ) from exc
+                    created = parent_root.stat_leaf(destination.name)
+                    try:
+                        with parent_root.pin_child(destination.name) as destination_root:
+                            if not _same_directory_generation(
+                                created,
+                                destination_root.stat_root(),
+                            ):
+                                raise SourceArchiveError(
+                                    "source extraction destination changed while it was retained"
+                                )
+                            return self.extract_pinned(
+                                archive_root,
+                                archive,
+                                destination_root,
+                            )
+                    except BaseException:
+                        try:
+                            current = parent_root.stat_leaf(destination.name)
+                            if _same_directory_generation(created, current):
+                                parent_root.remove_owned_tree(destination)
+                        except (FileNotFoundError, PublicationConflict):
+                            pass
+                        raise
+        except SourceArchiveError:
+            raise
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise SourceArchiveError("source archive extraction transaction failed") from exc
 
-        payload = Path(temp_write_path(str(destination)))
+    def extract_pinned(
+        self,
+        archive_root: PinnedPublicationRoot,
+        archive_path: str | os.PathLike[str],
+        destination_root: PinnedPublicationRoot,
+    ) -> ArchiveExtraction:
+        """Populate an empty retained destination from one retained gzip archive."""
+
+        if not isinstance(archive_root, PinnedPublicationRoot) or not isinstance(
+            destination_root,
+            PinnedPublicationRoot,
+        ):
+            raise TypeError("extract_pinned requires retained archive and destination roots")
+        try:
+            archive_root.assert_current()
+            destination_root.assert_current()
+            archive = Path(archive_root.absolute(archive_root.direct_leaf(archive_path)))
+            destination = Path(destination_root.path)
+            if destination_root.list_names():
+                raise SourceArchiveError(
+                    f"source extraction destination is not empty: '{destination}'"
+                )
+        except SourceArchiveError:
+            raise
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise SourceArchiveError("retained source extraction roots are not available") from exc
+
+        payload = Path(temp_write_path(destination_root.absolute(".gzip-payload")))
         archive_digest = hashlib.sha256()
         payload_bytes = 0
-        archive_before: os.stat_result | None = None
         try:
             try:
-                with archive.open("rb") as input_handle:
-                    archive_before = os.fstat(input_handle.fileno())
-                    if archive_before.st_size > self.limits.max_archive_bytes:
+                with archive_root.open_stable_file(archive) as input_handle:
+                    archive_size = os.fstat(input_handle.fileno()).st_size
+                    if archive_size > self.limits.max_archive_bytes:
                         raise SourceArchiveError(
                             "source archive exceeds the "
                             f"{self.limits.max_archive_bytes}-byte boundary"
@@ -948,74 +1103,111 @@ class SourceArchiveExtractor:
                         raise SourceArchiveError("source archive is not a gzip stream")
                     input_handle.seek(0)
                     with gzip.GzipFile(fileobj=input_handle, mode="rb") as compressed:
-                        with payload.open("xb") as output:
+                        with destination_root.open_file(payload, "xb") as output:
                             while chunk := compressed.read(_CHUNK_BYTES):
-                                if len(chunk) > self.limits.max_gzip_payload_bytes - payload_bytes:
+                                if (
+                                    len(chunk)
+                                    > self.limits.max_gzip_payload_bytes - payload_bytes
+                                ):
                                     raise SourceArchiveError(
                                         "source gzip exceeds the "
-                                        f"{self.limits.max_gzip_payload_bytes}-byte "
-                                        "expansion boundary"
+                                        f"{self.limits.max_gzip_payload_bytes}-byte expansion "
+                                        "boundary"
                                     )
                                 payload_bytes += len(chunk)
-                                output.write(chunk)
+                                count = output.write(chunk)
+                                if count != len(chunk):
+                                    raise OSError(
+                                        "short write while expanding source gzip "
+                                        f"({count} of {len(chunk)} bytes)"
+                                    )
                             output.flush()
                             os.fsync(output.fileno())
-                    archive_after = os.fstat(input_handle.fileno())
             except SourceArchiveError:
                 raise
-            except (gzip.BadGzipFile, EOFError, zlib.error, OSError) as exc:
+            except (
+                gzip.BadGzipFile,
+                EOFError,
+                zlib.error,
+                OSError,
+                PublicationError,
+                RuntimeError,
+            ) as exc:
                 raise SourceArchiveError(
                     "source archive is not a complete readable gzip stream"
                 ) from exc
-            if archive_before is None or (
-                _stat_identity(archive_before) != _stat_identity(archive_after)
-            ):
-                raise SourceArchiveError("source archive changed while it was being expanded")
-            try:
-                current = archive.lstat()
-            except OSError as exc:
-                raise SourceArchiveError(
-                    "source archive path changed while it was being expanded"
-                ) from exc
-            if (
-                not stat.S_ISREG(current.st_mode)
-                or _is_reparse(current)
-                or not _same_path_generation(archive_after, current)
-            ):
-                raise SourceArchiveError("source archive path changed while it was being expanded")
             if payload_bytes == 0:
                 raise SourceArchiveError("source gzip expands to an empty payload")
 
-            if _is_tar_payload(payload):
-                plans, extracted_bytes = _plan_tar(payload, limits=self.limits)
-                _extract_tar(payload, destination, plans)
-                archive_kind: Literal["tar+gzip", "single-tex+gzip"] = "tar+gzip"
-                entry_count = len(plans)
-            else:
-                if payload_bytes > self.limits.max_member_bytes:
-                    raise SourceArchiveError(
-                        "single-TeX payload exceeds the "
-                        f"{self.limits.max_member_bytes}-byte boundary"
+            with destination_root.open_stable_file(payload) as payload_handle:
+                if _is_tar_payload_handle(payload_handle):
+                    plans, extracted_bytes = _plan_tar_handle(
+                        payload_handle,
+                        limits=self.limits,
                     )
-                target = destination / "main.tex"
-                decoder = codecs.getincrementaldecoder("utf-8")("strict")
-                try:
-                    with payload.open("rb") as source, target.open("xb") as output:
-                        while chunk := source.read(_CHUNK_BYTES):
-                            if "\x00" in decoder.decode(chunk, final=False):
-                                raise SourceArchiveError("single-TeX gzip payload contains NUL")
-                            output.write(chunk)
-                        if "\x00" in decoder.decode(b"", final=True):
-                            raise SourceArchiveError("single-TeX gzip payload contains NUL")
-                        output.flush()
-                        os.fsync(output.fileno())
-                except UnicodeDecodeError as exc:
-                    raise SourceArchiveError("single-TeX gzip payload is not valid UTF-8") from exc
-                archive_kind = "single-tex+gzip"
-                entry_count = 1
-                extracted_bytes = payload_bytes
 
-            _tree_inventory(destination, limits=self.limits)
+                    def ensure_directory(relative: str) -> None:
+                        destination_root.mkdir_relative(
+                            relative,
+                            parents=True,
+                            exist_ok=True,
+                        )
+
+                    def open_member(relative: str) -> ContextManager[BinaryIO]:
+                        return destination_root.open_relative_file(relative, "xb")
+
+                    _extract_tar_handle(
+                        payload_handle,
+                        plans,
+                        ensure_directory=ensure_directory,
+                        open_member=open_member,
+                    )
+                    archive_kind: Literal["tar+gzip", "single-tex+gzip"] = "tar+gzip"
+                    entry_count = len(plans)
+                else:
+                    if payload_bytes > self.limits.max_member_bytes:
+                        raise SourceArchiveError(
+                            "single-TeX payload exceeds the "
+                            f"{self.limits.max_member_bytes}-byte boundary"
+                        )
+                    decoder = codecs.getincrementaldecoder("utf-8")("strict")
+                    target = Path(destination_root.absolute("main.tex"))
+                    payload_handle.seek(0)
+                    try:
+                        with destination_root.open_file(target, "xb") as output:
+                            while chunk := payload_handle.read(_CHUNK_BYTES):
+                                if "\x00" in decoder.decode(chunk, final=False):
+                                    raise SourceArchiveError(
+                                        "single-TeX gzip payload contains NUL"
+                                    )
+                                count = output.write(chunk)
+                                if count != len(chunk):
+                                    raise OSError(
+                                        "short write while extracting single-TeX payload "
+                                        f"({count} of {len(chunk)} bytes)"
+                                    )
+                            if "\x00" in decoder.decode(b"", final=True):
+                                raise SourceArchiveError(
+                                    "single-TeX gzip payload contains NUL"
+                                )
+                            output.flush()
+                            os.fsync(output.fileno())
+                    except UnicodeDecodeError as exc:
+                        raise SourceArchiveError(
+                            "single-TeX gzip payload is not valid UTF-8"
+                        ) from exc
+                    archive_kind = "single-tex+gzip"
+                    entry_count = 1
+                    extracted_bytes = payload_bytes
+
+            destination_root.unlink(payload)
+            _tree_inventory(
+                destination,
+                limits=self.limits,
+                publication_root=destination_root,
+            )
+            archive_root.assert_current()
+            destination_root.assert_current()
             return ArchiveExtraction(
                 archive_path=str(archive),
                 destination_path=str(destination),
@@ -1025,15 +1217,16 @@ class SourceArchiveExtractor:
                 gzip_payload_bytes=payload_bytes,
                 extracted_bytes=extracted_bytes,
             )
-        except Exception:
-            _safe_remove_private_directory(destination, parent=parent)
+        except SourceArchiveError:
             raise
+        except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+            raise SourceArchiveError("retained source extraction failed") from exc
         finally:
-            if os.path.lexists(payload):
-                try:
-                    payload.unlink()
-                except OSError:
-                    pass
+            try:
+                if destination_root.lexists(payload):
+                    destination_root.unlink(payload)
+            except (OSError, PublicationError, RuntimeError, ValueError):
+                pass
 
 
 class LatexSourceInspector:
@@ -1050,22 +1243,52 @@ class LatexSourceInspector:
         *,
         slug: str | None = None,
         main_tex: str | None = None,
+        publication_root: PinnedPublicationRoot | None = None,
     ) -> LatexSourceInspection:
         """Validate UTF-8 source closure, entrypoint, document marker, and tree identity."""
 
-        try:
-            root = _plain_directory(Path(root_path), label="LaTeX source root")
-        except SourceMaterializationError as exc:
-            raise LatexSourceError(str(exc)) from exc
         if slug is not None and not isinstance(slug, str):
             raise LatexSourceError("slug must be a string or None")
         if main_tex is not None and not isinstance(main_tex, str):
             raise LatexSourceError("main_tex must be a string or None")
+        if publication_root is None:
+            try:
+                root = _plain_directory(Path(root_path), label="LaTeX source root")
+            except SourceMaterializationError as exc:
+                raise LatexSourceError(str(exc)) from exc
+            try:
+                with PinnedPublicationRoot(str(root)) as retained:
+                    return self.inspect(
+                        root,
+                        slug=slug,
+                        main_tex=main_tex,
+                        publication_root=retained,
+                    )
+            except LatexSourceError:
+                raise
+            except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+                raise LatexSourceError(
+                    f"LaTeX source root could not be retained: '{root}'"
+                ) from exc
+        else:
+            try:
+                publication_root.assert_current()
+            except RuntimeError as exc:
+                raise LatexSourceError(
+                    "LaTeX source root no longer names its retained directory"
+                ) from exc
+            root = Path(publication_root.path)
+            if not _same_path(Path(root_path).absolute(), root.absolute()):
+                raise LatexSourceError("LaTeX source root does not match its retained directory")
         selected_slug = slug or ""
         selected_main_tex = main_tex or ""
         if selected_slug and not _portable_leaf(selected_slug, limits=self.limits):
             raise LatexSourceError(f"slug is not a portable leaf: {selected_slug!r}")
-        entries = _tree_inventory(root, limits=self.limits)
+        entries = _tree_inventory(
+            root,
+            limits=self.limits,
+            publication_root=publication_root,
+        )
         decoded_digests: dict[str, str] = {}
         document_class_candidates: list[str] = []
         for entry in entries:
@@ -1094,7 +1317,12 @@ class LatexSourceInspector:
             raise LatexSourceError(
                 f"resolved LaTeX entrypoint has no document environment: {entrypoint!r}"
             )
-        fingerprint = _fingerprint_inventory(root, entries, limits=self.limits)
+        fingerprint = _fingerprint_inventory(
+            root,
+            entries,
+            limits=self.limits,
+            publication_root=publication_root,
+        )
         by_path = {record.path: record for record in fingerprint.files}
         for relative, digest in decoded_digests.items():
             if by_path[relative].sha256 != digest:

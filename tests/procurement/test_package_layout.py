@@ -24,6 +24,7 @@ def _imports(module_path: Path) -> set[str]:
 def test_removed_flat_namespaces_have_no_compatibility_modules() -> None:
     for name in (
         "procurement.archive",
+        "procurement.filesystem",
         "procurement.http",
         "procurement.services",
         "procurement.settings",

@@ -77,11 +77,11 @@ local-import inboxes, and article catalogs for the application lifetime. Acquisi
 item below the retained staging root; HTTP and local-import byte transfer, hashing, recovery, receipt access,
 and publication are relative to those retained generations. Local import also reads through the retained
 inbox descriptor. A replacement route is either blocked or causes the operation to fail without writing to
-or reporting success against the replacement. Source materialization has not yet routed archive extraction,
-tree publication, and article publication through a complete pinned hierarchy and remains the filesystem
-production-cutover blocker. The engine now provides pinned stable-copy, exclusive directory-publication,
-source-tree fingerprint, and `article.json` publication contracts for that integration. Inventory rebuild
-separately pins its catalog generation across sentinel reads and publication.
+or reporting success against the replacement. Source materialization retains the acquisition item, catalog,
+document, private extraction tree, and final source tree for their complete transaction intervals. Archive
+expansion, source inspection, archive/PDF copies, metadata publication, tree installation, and
+`article.json` publication use those retained generations. Inventory rebuild separately pins its catalog
+generation across sentinel reads and publication.
 
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are
@@ -99,8 +99,7 @@ path or URL. The service sniffs and validates gzip source or PDF bytes, makes an
 publishes the same `acquisition.json` contract with `local-import` custody. It does not claim that a DOI or
 arXiv identity proves the origin of those bytes.
 
-Within an unchanged source-catalog generation, `SourceMaterializationService` consumes an existing
-`acquisition.json`; it never downloads an artifact.
+`SourceMaterializationService` consumes an existing `acquisition.json`; it never downloads an artifact.
 It requires exactly one receipted source form, copies staged bytes into an independent inode, safely expands
 gzip-wrapped tar or single-TeX source, validates the complete LaTeX closure, publishes the canonical
 `{slug}.tar.gz` and `{slug}-tex/` forms without replacement, and calls `jsonl_engine` to publish
@@ -111,6 +110,13 @@ that could permanently mint an accidentally metadata-free sentinel. Tar input re
 terminator and zero-only padding. The first sentinel freezes PDF inclusion, so a later receipt cannot mutate
 an existing article or leave an orphan PDF. The fixed seven-probe ledger remains independent evidence of
 source integrity.
+
+The materialization transaction publishes `article.json` last. It uses no separate source journal because
+every persistent pre-sentinel component is immutable and independently validated: exact archive, PDF,
+metadata, and source-tree state is adopted on retry, while a conflict fails without replacement. Exact
+PID-plus-process-serial private tree scratch is the only mutable intermediate and is swept recursively under
+the generation-keyed source lease. An interrupted retry therefore preserves established bytes and mtimes
+and does not repeat a metadata request whose validated bundle already exists.
 
 `ArticleCatalogService` resolves configured catalog names, inspects safe direct-child `article.json`
 sentinels, and independently rebuilds `inventory.jsonl`. Rebuild pins one physical catalog generation from

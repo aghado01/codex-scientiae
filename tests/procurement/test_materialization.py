@@ -32,11 +32,11 @@ from procurement.source.archive import (
     ArchiveExtraction,
     EmbeddedLatexMetadata,
     LatexSourceInspection,
+    SourceArchiveExtractor,
     TreeFile,
 )
 from procurement.source.findings import build_source_findings
 from procurement.errors import AcquisitionConflictError, SourceMaterializationError
-from procurement.filesystem import stable_copy_no_clobber
 from procurement.models import (
     ApiResponseEvidence,
     ArtifactReference,
@@ -54,6 +54,7 @@ from procurement.operations.catalogs import ArticleCatalogService
 from procurement.operations.local_import import LocalImportRequest, LocalImportService
 from procurement.operations.materialization import SourceMaterializationService
 from procurement.storage.acquisitions import AcquisitionStore
+from procurement.storage.article import deposit_procurement_article
 from procurement.storage.catalogs import ArticleCatalogRoots
 from procurement.storage.roots import ProcurementRootCatalog
 from procurement.storage.source_deposits import SourceDepositStore
@@ -402,6 +403,180 @@ def test_required_metadata_is_persisted_reused_and_article_is_byte_idempotent(
     assert article["title"] == "API title"
 
 
+def test_interrupted_article_last_publication_recovers_immutable_components(
+    layout: Layout,
+) -> None:
+    stage_source(layout, tar_gzip_source())
+    metadata = StaticMetadataService(metadata_bundle())
+
+    class FailFirstArticlePublication:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def __call__(self, **kwargs: object):
+            self.calls += 1
+            if self.calls == 1:
+                raise RuntimeError("injected article-last interruption")
+            return deposit_procurement_article(**kwargs)
+
+    article_publication = FailFirstArticlePublication()
+    materializer = SourceMaterializationService(
+        metadata,  # type: ignore[arg-type]
+        layout.acquisitions,
+        layout.deposits,
+        article_deposit=article_publication,
+        lock_timeout=2,
+    )
+    materialize_request = request(metadata_mode="required")
+
+    with pytest.raises(RuntimeError, match="article-last interruption"):
+        asyncio.run(materializer.materialize(materialize_request))
+
+    document = layout.catalog_root / SLUG
+    archive = document / f"{SLUG}.tar.gz"
+    metadata_path = document / f"{SLUG}.api-metadata.json"
+    tree_main = document / f"{SLUG}-tex" / "main.tex"
+    assert archive.is_file()
+    assert metadata_path.is_file()
+    assert tree_main.is_file()
+    assert not (document / "article.json").exists()
+    assert not [name for name in os.listdir(document) if name.endswith(".tmp")]
+    frozen = {
+        path: (path.read_bytes(), path.stat().st_mtime_ns)
+        for path in (archive, metadata_path, tree_main)
+    }
+
+    result = asyncio.run(materializer.materialize(materialize_request))
+
+    assert result.status == "deposited"
+    assert result.created is True
+    assert len(metadata.calls) == 1
+    assert article_publication.calls == 2
+    for path, (raw, modified) in frozen.items():
+        assert path.read_bytes() == raw
+        assert path.stat().st_mtime_ns == modified
+    article = json.loads(Path(result.article_path).read_bytes())
+    assert article["validation"]["publication"] == "recovered-existing-tree"
+    assert not [name for name in os.listdir(document) if name.endswith(".tmp")]
+
+
+def test_abandoned_private_tree_is_swept_under_the_source_lease(layout: Layout) -> None:
+    stage_source(layout, tar_gzip_source())
+    document = layout.catalog_root / SLUG
+    document.mkdir()
+    abandoned = document / f"{SLUG}-tex.9876.a.tmp"
+    (abandoned / "nested").mkdir(parents=True)
+    (abandoned / "nested" / "partial.tex").write_bytes(b"partial")
+
+    result = asyncio.run(
+        service(layout, RejectingMetadataService()).materialize(request())
+    )
+
+    assert result.status == "deposited"
+    assert not abandoned.exists()
+    assert not [name for name in os.listdir(document) if name.endswith(".tmp")]
+
+
+def test_document_generation_is_retained_through_article_publication(
+    layout: Layout,
+) -> None:
+    stage_source(layout, tar_gzip_source())
+
+    class AttemptDocumentReplacement:
+        def __init__(self) -> None:
+            self.blocked = False
+            self.swapped = False
+
+        def __call__(self, **kwargs: object):
+            document = Path(str(kwargs["document_dir"]))
+            retired = document.parent / "retired-document"
+            try:
+                os.rename(document, retired)
+            except OSError:
+                self.blocked = True
+            else:
+                self.swapped = True
+                document.mkdir()
+                (document / "replacement.marker").write_bytes(b"replacement")
+            return deposit_procurement_article(**kwargs)
+
+    replacement = AttemptDocumentReplacement()
+    materializer = SourceMaterializationService(
+        RejectingMetadataService(),  # type: ignore[arg-type]
+        layout.acquisitions,
+        layout.deposits,
+        article_deposit=replacement,
+        lock_timeout=2,
+    )
+
+    if os.name == "nt":
+        result = asyncio.run(materializer.materialize(request()))
+        assert result.status == "deposited"
+        assert replacement.blocked is True
+        assert replacement.swapped is False
+        assert not (layout.catalog_root / "retired-document").exists()
+    else:
+        with pytest.raises(RuntimeError, match="no longer names"):
+            asyncio.run(materializer.materialize(request()))
+        replacement_document = layout.catalog_root / SLUG
+        assert replacement.swapped is True
+        assert (replacement_document / "replacement.marker").read_bytes() == b"replacement"
+        assert not (replacement_document / "article.json").exists()
+        assert not (layout.catalog_root / "retired-document" / "article.json").exists()
+
+
+def test_document_replacement_during_extraction_never_receives_source_writes(
+    layout: Layout,
+) -> None:
+    stage_source(layout, tar_gzip_source())
+
+    class AttemptReplacementDuringExtraction:
+        def __init__(self) -> None:
+            self.actual = SourceArchiveExtractor()
+            self.blocked = False
+            self.swapped = False
+
+        def extract_pinned(self, archive_root, archive_path, destination_root):
+            document = Path(destination_root.path).parent
+            retired = document.parent / "retired-during-extraction"
+            try:
+                os.rename(document, retired)
+            except OSError:
+                self.blocked = True
+            else:
+                self.swapped = True
+                document.mkdir()
+                (document / "replacement.marker").write_bytes(b"replacement")
+            return self.actual.extract_pinned(
+                archive_root,
+                archive_path,
+                destination_root,
+            )
+
+    replacement = AttemptReplacementDuringExtraction()
+    materializer = service(layout, RejectingMetadataService())
+    materializer._extractor = replacement  # type: ignore[assignment]
+
+    if os.name == "nt":
+        result = asyncio.run(materializer.materialize(request()))
+        assert result.status == "deposited"
+        assert replacement.blocked is True
+        assert replacement.swapped is False
+        assert not (layout.catalog_root / "retired-during-extraction").exists()
+    else:
+        with pytest.raises(SourceMaterializationError, match="retained"):
+            asyncio.run(materializer.materialize(request()))
+        replacement_document = layout.catalog_root / SLUG
+        assert replacement.swapped is True
+        assert (replacement_document / "replacement.marker").read_bytes() == b"replacement"
+        assert sorted(path.name for path in replacement_document.iterdir()) == [
+            "replacement.marker"
+        ]
+        retired = layout.catalog_root / "retired-during-extraction"
+        assert not [name for name in os.listdir(retired) if name.endswith(".tmp")]
+        assert not (retired / "article.json").exists()
+
+
 def test_explicit_doi_metadata_is_independent_of_artifact_provenance_and_reused(
     layout: Layout,
 ) -> None:
@@ -745,46 +920,6 @@ def test_findings_are_a_closed_seven_probe_ledger(
         if check["outcome"] != "passed":
             assert check["reason"]
     assert findings["declarations"]["title_tex"] == "A title"
-
-
-def test_stable_copy_is_independent_idempotent_and_no_clobber(tmp_path: Path) -> None:
-    source = tmp_path / "source.bin"
-    destination_parent = tmp_path / "deposit"
-    destination_parent.mkdir()
-    destination = destination_parent / "source.bin"
-    body = b"independent immutable copy"
-    digest = hashlib.sha256(body).hexdigest()
-    source.write_bytes(body)
-
-    first = stable_copy_no_clobber(
-        source,
-        destination,
-        expected_bytes=len(body),
-        expected_sha256=digest,
-    )
-    first_mtime = destination.stat().st_mtime_ns
-    second = stable_copy_no_clobber(
-        source,
-        destination,
-        expected_bytes=len(body),
-        expected_sha256=digest,
-    )
-
-    assert first.created is True
-    assert second.created is False
-    assert destination.read_bytes() == body
-    assert destination.stat().st_mtime_ns == first_mtime
-    assert not os.path.samefile(source, destination)
-
-    destination.write_bytes(b"conflicting occupied value")
-    with pytest.raises(SourceMaterializationError, match="conflict"):
-        stable_copy_no_clobber(
-            source,
-            destination,
-            expected_bytes=len(body),
-            expected_sha256=digest,
-        )
-    assert destination.read_bytes() == b"conflicting occupied value"
 
 
 @pytest.mark.parametrize(
