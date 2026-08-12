@@ -13,9 +13,9 @@ from unittest import mock
 
 import httpx
 
-import procurement.http as procurement_http
+import procurement.transport.http as procurement_http
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
-from procurement.http import HttpClient, RateLimiter, RequestPolicy
+from procurement.transport.http import HttpClient, RateLimiter, RequestPolicy
 
 
 class TestRateLimiter(unittest.TestCase):
@@ -113,7 +113,7 @@ class TestHttpClient(unittest.TestCase):
 
         try:
             with tempfile.TemporaryDirectory() as root, mock.patch(
-                "procurement.http.os.fsync", side_effect=blocking_fsync
+                "procurement.transport.http.os.fsync", side_effect=blocking_fsync
             ):
                 asyncio.run(exercise(Path(root) / "payload.part"))
         finally:

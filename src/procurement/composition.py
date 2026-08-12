@@ -3,53 +3,28 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
 from pathlib import Path
 
 from jsonl_engine.paths import find_repository_root
-from procurement.archive import ArchiveLimits
+from procurement.application import ProcurementApplication
+from procurement.configuration import DiscoverySettings, RuntimeSecrets, load_settings
 from procurement.errors import ConfigurationError
-from procurement.http import HttpClient, RequestPolicy
+from procurement.operations.acquisition import AcquisitionService
+from procurement.operations.catalogs import ArticleCatalogService
+from procurement.operations.discovery import DiscoveryService
+from procurement.operations.local_import import LocalImportService
+from procurement.operations.materialization import SourceMaterializationService
+from procurement.operations.metadata import MetadataService
 from procurement.providers import (
     ProviderFactoryCatalog,
     get_builtin_provider_factory_catalog,
 )
 from procurement.providers.base import Capability, ProviderRole
-from procurement.providers.catalog import ProviderCatalog
-from procurement.services import (
-    AcquisitionService,
-    ArticleCatalogService,
-    DiscoveryService,
-    LocalImportService,
-    MetadataService,
-    SourceMaterializationService,
-)
-from procurement.settings import DiscoverySettings, RuntimeSecrets
-from procurement.staging import AcquisitionStore
-from procurement.source import SourceDepositStore
-
-
-@dataclass(slots=True)
-class ProcurementApplication:
-    """Owned runtime dependencies and application services."""
-
-    providers: ProviderCatalog
-    discovery: DiscoveryService
-    metadata: MetadataService
-    http: HttpClient
-    acquisition: AcquisitionService | None = None
-    local_import: LocalImportService | None = None
-    catalogs: ArticleCatalogService | None = None
-    materialization: SourceMaterializationService | None = None
-
-    async def close(self) -> None:
-        await self.http.close()
-
-    async def __aenter__(self) -> "ProcurementApplication":
-        return self
-
-    async def __aexit__(self, exc_type: object, exc: object, traceback: object) -> None:
-        await self.close()
+from procurement.source.archive import ArchiveLimits
+from procurement.storage.acquisitions import AcquisitionStore
+from procurement.storage.catalogs import ArticleCatalogRoots
+from procurement.storage.source_deposits import SourceDepositStore
+from procurement.transport.http import HttpClient, RequestPolicy
 
 
 def build_application(
@@ -61,7 +36,7 @@ def build_application(
 ) -> ProcurementApplication:
     """Construct the configured provider catalog and application services."""
 
-    settings = settings or DiscoverySettings.load()
+    settings = settings or load_settings()
     factories = (
         get_builtin_provider_factory_catalog()
         if provider_factories is None
@@ -113,7 +88,8 @@ def build_application(
                 timeout_seconds=provider_settings.timeout_seconds,
                 max_attempts=provider_settings.max_attempts,
             )
-    catalog_service = ArticleCatalogService(catalog_roots)
+    article_catalog_roots = ArticleCatalogRoots(catalog_roots)
+    catalog_service = ArticleCatalogService(article_catalog_roots)
     acquisition_store = AcquisitionStore(
         staging_root,
         lock_timeout=settings.acquisition.lock_timeout_seconds,
@@ -132,7 +108,7 @@ def build_application(
         settings.acquisition.limits,
     )
     source_store = SourceDepositStore(
-        catalog_service,
+        article_catalog_roots,
         lock_timeout=settings.acquisition.lock_timeout_seconds,
     )
     materialization_service = SourceMaterializationService(

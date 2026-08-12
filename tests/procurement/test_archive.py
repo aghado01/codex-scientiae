@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 from jsonl_engine.deposit import _fingerprint_tree as deposit_fingerprint_tree
-from procurement.archive import (
+from procurement.source.archive import (
     ArchiveLimits,
     LatexSourceError,
     SourceArchiveError,

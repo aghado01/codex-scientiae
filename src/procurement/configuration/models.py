@@ -2,15 +2,11 @@
 
 from __future__ import annotations
 
-import json
 import os
-from importlib.resources import files
-from pathlib import Path
 from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator, model_validator
 
-from procurement.errors import ConfigurationError
 from procurement.models import validate_deposit_slug
 
 
@@ -94,15 +90,6 @@ class DiscoverySettings(BaseModel):
     metadata_fallback_sources: tuple[str, ...]
     providers: dict[str, ProviderHttpSettings]
     acquisition: AcquisitionSettings
-
-    @classmethod
-    def load(cls, path: str | Path | None = None) -> "DiscoverySettings":
-        source = Path(path) if path else files("procurement").joinpath("configs/defaults.json")
-        try:
-            payload = json.loads(source.read_text(encoding="utf-8"))
-            return cls.model_validate(payload)
-        except (OSError, ValueError) as exc:
-            raise ConfigurationError(f"invalid discovery settings at {source}: {exc}") from exc
 
 
 class RuntimeSecrets(BaseModel):

@@ -19,12 +19,21 @@ import jsonschema
 from pydantic import ValidationError
 
 from jsonl_engine.kinds.article import ArticleManifest
-from procurement.archive import (
+from procurement.configuration import ArtifactLimitSettings
+from procurement.domain.materialization import (
+    ArtifactIdentityMetadata,
+    ExplicitDoiMetadata,
+    OmitArticleMetadata,
+    SourceMaterializationRequest,
+    SourceMaterializationResult,
+)
+from procurement.source.archive import (
     ArchiveExtraction,
     EmbeddedLatexMetadata,
     LatexSourceInspection,
     TreeFile,
 )
+from procurement.source.findings import build_source_findings
 from procurement.errors import AcquisitionConflictError, SourceMaterializationError
 from procurement.filesystem import stable_copy_no_clobber
 from procurement.models import (
@@ -40,20 +49,12 @@ from procurement.models import (
     project_article_metadata,
 )
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
-from procurement.services.catalog import ArticleCatalogService
-from procurement.services.local_import import LocalImportRequest, LocalImportService
-from procurement.services.materialization import SourceMaterializationService
-from procurement.settings import ArtifactLimitSettings
-from procurement.source import (
-    ArtifactIdentityMetadata,
-    ExplicitDoiMetadata,
-    OmitArticleMetadata,
-    SourceDepositStore,
-    SourceMaterializationRequest,
-    SourceMaterializationResult,
-    build_source_findings,
-)
-from procurement.staging import AcquisitionStore
+from procurement.operations.catalogs import ArticleCatalogService
+from procurement.operations.local_import import LocalImportRequest, LocalImportService
+from procurement.operations.materialization import SourceMaterializationService
+from procurement.storage.acquisitions import AcquisitionStore
+from procurement.storage.catalogs import ArticleCatalogRoots
+from procurement.storage.source_deposits import SourceDepositStore
 
 
 NOW = datetime(2026, 8, 11, 12, 0, tzinfo=timezone.utc)
@@ -112,12 +113,12 @@ def layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Layout:
     catalog_root = tmp_path / "catalog"
     staging_root.mkdir()
     catalog_root.mkdir()
-    catalogs = ArticleCatalogService({"primary": str(catalog_root)})
+    catalog_roots = ArticleCatalogRoots({"primary": str(catalog_root)})
     return Layout(
         staging_root=staging_root,
         catalog_root=catalog_root,
         acquisitions=AcquisitionStore(staging_root, lock_timeout=2),
-        deposits=SourceDepositStore(catalogs, lock_timeout=2),
+        deposits=SourceDepositStore(catalog_roots, lock_timeout=2),
     )
 
 

@@ -4,6 +4,24 @@
 preparation. It has no MCP dependency in its implementation graph; the MCP SDK is consumed only by
 `src/mcps`.
 
+The package is divided by responsibility:
+
+```text
+application.py       owned runtime dependencies and lifecycle
+composition.py       configuration-to-application assembly
+configuration/       validated configuration models and data loading
+domain/              operation request and result contracts
+operations/          discovery, metadata, acquisition, materialization, and catalog use cases
+providers/           provider declarations and adapters
+source/              archive and LaTeX validation plus source findings
+storage/             acquisition/deposit transactions, catalog roots, and schema-backed persistence
+transport/           HTTP policy and transport primitives
+```
+
+The former flat `archive`, `http`, `settings`, `source`, `staging`, and `services` modules have no
+compatibility aliases. `models.py` and `payloads.py` remain top-level until their domain split follows the
+root-pinning work.
+
 The current discovery plane contains OpenAlex, Semantic Scholar, arXiv, and Zenodo adapters behind an
 explicit provider catalog. Each adapter owns one immutable descriptor containing its category, roles,
 capabilities, and honored search constraints. `DiscoveryService` provides federated search, graph traversal, reference

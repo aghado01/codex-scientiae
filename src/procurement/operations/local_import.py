@@ -28,9 +28,14 @@ from procurement.payloads import (
     AcquisitionResult,
     LocalImportProvenance,
 )
-from procurement.services.acquisition import validate_gzip_payload, validate_pdf_payload
-from procurement.settings import ArtifactLimitSettings
-from procurement.staging import AcquisitionItem, AcquisitionStore, collate_acquisition, validate_form_file
+from procurement.configuration import ArtifactLimitSettings
+from procurement.operations.acquisition import validate_gzip_payload, validate_pdf_payload
+from procurement.storage.acquisitions import (
+    AcquisitionItem,
+    AcquisitionStore,
+    collate_acquisition,
+    validate_form_file,
+)
 
 _COPY_CHUNK_BYTES = 1024 * 1024
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)

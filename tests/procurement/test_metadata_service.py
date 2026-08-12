@@ -21,7 +21,7 @@ from procurement.models import (
 )
 from procurement.providers.base import Capability, ProviderRole
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
-from procurement.services import MetadataService
+from procurement.operations.metadata import MetadataService
 from procurement.storage.schemas import get_procurement_schema_catalog
 
 

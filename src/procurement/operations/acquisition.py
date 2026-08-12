@@ -14,7 +14,7 @@ from types import TracebackType
 from typing import TypeVar
 
 from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
-from procurement.http import HttpClient, HttpDownload, RequestPolicy
+from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy
 from procurement.payloads import (
     AcquiredArtifact,
     AcquisitionManifest,
@@ -27,7 +27,7 @@ from procurement.payloads import (
 )
 from procurement.providers.base import Capability
 from procurement.providers.catalog import ProviderCatalog
-from procurement.staging import (
+from procurement.storage.acquisitions import (
     AcquisitionItem,
     AcquisitionStore,
     collate_acquisition,

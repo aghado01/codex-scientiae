@@ -17,7 +17,7 @@ from procurement.providers.base import (
     ProviderRole,
 )
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
-from procurement.settings import (
+from procurement.configuration import (
     ArtifactLimitSettings,
     ProviderHttpSettings,
     RuntimeSecrets,

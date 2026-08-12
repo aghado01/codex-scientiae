@@ -7,10 +7,10 @@ from dataclasses import dataclass, field
 from types import MappingProxyType
 from typing import Any
 
-from procurement.http import HttpClient
+from procurement.transport.http import HttpClient
 from procurement.providers.base import ProviderDefinition
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
-from procurement.settings import (
+from procurement.configuration import (
     ArtifactLimitSettings,
     ProviderHttpSettings,
     RuntimeSecrets,

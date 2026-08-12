@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import quote, urlparse
 
 from procurement.errors import ProviderHttpError, ProviderPayloadError
-from procurement.http import HttpClient, RequestPolicy
+from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.identifiers import extract_doi, normalize_doi
 from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
 from procurement.providers.base import (
@@ -19,7 +19,7 @@ from procurement.providers.base import (
     RelatedKind,
     retrieved_metadata,
 )
-from procurement.settings import ProviderHttpSettings, RuntimeSecrets
+from procurement.configuration import ProviderHttpSettings, RuntimeSecrets
 
 
 class OpenAlexProvider:

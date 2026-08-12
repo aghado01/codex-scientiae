@@ -15,9 +15,9 @@ import jsonschema
 from mcp import Client
 
 from mcps.procurement.server import create_server
-from procurement.composition import ProcurementApplication
+from procurement.application import ProcurementApplication
 from procurement.errors import ProviderError
-from procurement.http import HttpClient
+from procurement.transport.http import HttpClient
 from procurement.limits import MAX_API_RESPONSE_BASE64_CHARS
 from procurement.models import (
     PORTABLE_LEAF_PATTERN,
@@ -38,12 +38,13 @@ from procurement.payloads import (
 )
 from procurement.providers.base import Capability, ProviderRole
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
-from procurement.services import DiscoveryService, MetadataService
-from procurement.source import SourceMaterializationResult
-from procurement.services.local_import import (
+from procurement.domain.materialization import SourceMaterializationResult
+from procurement.operations.discovery import DiscoveryService
+from procurement.operations.local_import import (
     LocalImportInbox,
     LocalImportInboxCatalog,
 )
+from procurement.operations.metadata import MetadataService
 
 
 class StaticCatalogService:

@@ -15,9 +15,9 @@ from pydantic import ValidationError
 
 from procurement.errors import AcquisitionConflictError, AcquisitionError
 from procurement.payloads import acquisition_manifest_schema
-from procurement.services.local_import import LocalImportRequest, LocalImportService
-from procurement.settings import ArtifactLimitSettings
-from procurement.staging import AcquisitionStore
+from procurement.configuration import ArtifactLimitSettings
+from procurement.operations.local_import import LocalImportRequest, LocalImportService
+from procurement.storage.acquisitions import AcquisitionStore
 
 PDF = b"%PDF-1.7\n1 0 obj\n<<>>\nendobj\n%%EOF\n"
 SOURCE = gzip.compress(
@@ -183,7 +183,7 @@ def test_detected_source_mutation_cleans_private_copy(tmp_path: Path) -> None:
     (inbox / "source.gz").write_bytes(SOURCE)
 
     with mock.patch(
-        "procurement.services.local_import._same_open_snapshot",
+        "procurement.operations.local_import._same_open_snapshot",
         return_value=False,
     ):
         with pytest.raises(AcquisitionConflictError, match="changed while copying"):

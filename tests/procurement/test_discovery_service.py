@@ -8,7 +8,7 @@ import unittest
 from procurement.models import SearchPage, SearchRequest, SourceReference, WorkRecord
 from procurement.providers.base import Capability, RelatedKind
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
-from procurement.services import DiscoveryService
+from procurement.operations.discovery import DiscoveryService
 
 
 def record(provider: str, identifier: str, *, doi: str | None = None, arxiv_id: str | None = None) -> WorkRecord:

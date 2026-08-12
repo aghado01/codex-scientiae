@@ -8,9 +8,10 @@ import unittest
 from unittest import mock
 
 from jsonl_engine.inventory_catalog import InventoryCatalogResult
-from procurement.services.catalog import (
+from procurement.operations.catalogs import ArticleCatalogService
+from procurement.storage.catalogs import (
     ArticleCatalogConfigurationError,
-    ArticleCatalogService,
+    ArticleCatalogRoots,
 )
 
 
@@ -26,7 +27,7 @@ class TestArticleCatalogService(unittest.TestCase):
         with tempfile.TemporaryDirectory() as catalog:
             _touch_article(catalog, "b.0001v1")
             _touch_article(catalog, "a.0001v1")
-            service = ArticleCatalogService({"Research": catalog})
+            service = ArticleCatalogService(ArticleCatalogRoots({"Research": catalog}))
 
             self.assertEqual(
                 os.path.abspath(catalog), service.resolve("RESEARCH").catalog_dir
@@ -39,7 +40,7 @@ class TestArticleCatalogService(unittest.TestCase):
                 catalog, "inventory.jsonl", 2, list(snapshot.slugs)
             )
             with mock.patch(
-                "procurement.services.catalog.build_inventory", return_value=expected
+                "procurement.operations.catalogs.build_inventory", return_value=expected
             ) as build:
                 self.assertIs(expected, service.rebuild("RESEARCH", force=True))
             build.assert_called_once_with(catalog_dir=os.path.abspath(catalog), force=True)
@@ -49,7 +50,7 @@ class TestArticleCatalogService(unittest.TestCase):
 
     def test_rebuild_requires_explicit_force_for_an_existing_inventory(self):
         with tempfile.TemporaryDirectory() as catalog:
-            service = ArticleCatalogService({"inventory": catalog})
+            service = ArticleCatalogService(ArticleCatalogRoots({"inventory": catalog}))
             service.rebuild("inventory")
             with self.assertRaisesRegex(ValueError, "force=True"):
                 service.rebuild("inventory")
@@ -57,7 +58,7 @@ class TestArticleCatalogService(unittest.TestCase):
 
     def test_configuration_rejects_case_colliding_names(self):
         with self.assertRaisesRegex(ArticleCatalogConfigurationError, "case collision"):
-            ArticleCatalogService({"Corpus": "one", "corpus": "two"})
+            ArticleCatalogRoots({"Corpus": "one", "corpus": "two"})
 
 
 if __name__ == "__main__":

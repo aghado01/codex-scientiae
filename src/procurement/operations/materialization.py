@@ -11,7 +11,11 @@ from typing import TypeVar
 
 from jsonl_engine.deposit import DepositResult
 from jsonl_engine.writer import write_json
-from procurement.archive import (
+from procurement.domain.materialization import (
+    SourceMaterializationRequest,
+    SourceMaterializationResult,
+)
+from procurement.source.archive import (
     ArchiveLimits,
     LatexSourceInspection,
     LatexSourceInspector,
@@ -22,15 +26,13 @@ from procurement.filesystem import stable_copy_no_clobber
 from procurement.identifiers import is_doi, normalize_doi
 from procurement.models import DepositMetadataBundle, WorkIdentityAnchor
 from procurement.payloads import AcquiredArtifact, AcquisitionManifest
-from procurement.services.metadata import MetadataService
-from procurement.source import (
+from procurement.operations.metadata import MetadataService
+from procurement.source.findings import build_source_findings
+from procurement.storage.acquisitions import AcquisitionStore, validate_form_file
+from procurement.storage.source_deposits import (
     SourceDepositItem,
     SourceDepositStore,
-    SourceMaterializationRequest,
-    SourceMaterializationResult,
-    build_source_findings,
 )
-from procurement.staging import AcquisitionStore, validate_form_file
 from procurement.storage.article import deposit_procurement_article
 
 _T = TypeVar("_T")

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Literal, Protocol
 
-from procurement.http import HttpDocument
+from procurement.transport.http import HttpDocument
 from procurement.models import (
     ApiResponseEvidence,
     RetrievedMetadata,

@@ -20,7 +20,7 @@ import jsonschema
 from pydantic import ValidationError
 
 from procurement.errors import AcquisitionConflictError, ProviderHttpError, ProviderPayloadError
-from procurement.http import HttpClient, RequestPolicy
+from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.models import ArtifactReference
 from procurement.payloads import (
     AcquiredArtifact,
@@ -38,9 +38,9 @@ from procurement.providers.arxiv import ArxivProvider
 from procurement.providers.base import Capability, ProviderRole
 from procurement.providers.zenodo import ZenodoProvider
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
-from procurement.services.acquisition import AcquisitionService
-from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings
-from procurement.staging import (
+from procurement.configuration import ArtifactLimitSettings, ProviderHttpSettings
+from procurement.operations.acquisition import AcquisitionService
+from procurement.storage.acquisitions import (
     AcquisitionItem,
     AcquisitionStore,
     collate_acquisition,

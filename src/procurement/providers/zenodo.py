@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from procurement.errors import ProviderPayloadError
-from procurement.http import HttpClient, HttpDocument, RequestPolicy
+from procurement.transport.http import HttpClient, HttpDocument, RequestPolicy
 from procurement.identifiers import artifact_slug, split_zenodo_id
 from procurement.models import ArtifactReference, RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
 from procurement.payloads import (
@@ -26,7 +26,7 @@ from procurement.providers.base import (
     ProviderRole,
     retrieved_metadata,
 )
-from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
+from procurement.configuration import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
 
 
 class _TextExtractor(HTMLParser):

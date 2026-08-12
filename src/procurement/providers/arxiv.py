@@ -11,7 +11,7 @@ from urllib.parse import quote, urlsplit
 from defusedxml import ElementTree
 
 from procurement.errors import IdentifierError, ProviderPayloadError, ProviderRecordNotFoundError
-from procurement.http import HttpClient, RequestPolicy
+from procurement.transport.http import HttpClient, RequestPolicy
 from procurement.identifiers import normalize_doi, split_arxiv_id
 from procurement.models import RetrievedMetadata, SearchPage, SearchRequest, SourceReference, WorkRecord
 from procurement.models import ArtifactReference
@@ -28,7 +28,7 @@ from procurement.providers.base import (
     ProviderRole,
     retrieved_metadata,
 )
-from procurement.settings import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
+from procurement.configuration import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
 from procurement.identifiers import artifact_slug
 
 _ATOM = "http://www.w3.org/2005/Atom"

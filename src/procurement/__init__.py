@@ -22,11 +22,10 @@ from procurement.payloads import (
     ArtifactAcquisitionRequest,
     ArtifactPlanSummary,
 )
-from procurement.source import (
+from procurement.domain.materialization import (
     ArtifactIdentityMetadata,
     ExplicitDoiMetadata,
     OmitArticleMetadata,
-    SourceDepositStore,
     SourceMaterializationRequest,
     SourceMaterializationResult,
 )
@@ -49,7 +48,6 @@ __all__ = [
     "SearchPage",
     "SearchRequest",
     "SearchResponse",
-    "SourceDepositStore",
     "SourceMaterializationRequest",
     "SourceMaterializationResult",
     "SourceReference",

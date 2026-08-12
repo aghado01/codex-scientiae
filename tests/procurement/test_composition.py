@@ -10,6 +10,12 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from procurement.composition import build_application
+from procurement.configuration import (
+    DiscoverySettings,
+    ProviderHttpSettings,
+    RuntimeSecrets,
+    load_settings,
+)
 from procurement.errors import ConfigurationError
 from procurement.models import SearchPage, SearchRequest
 from procurement.providers import (
@@ -27,7 +33,6 @@ from procurement.providers.base import (
     ProviderDefinition,
     ProviderRole,
 )
-from procurement.settings import DiscoverySettings, ProviderHttpSettings, RuntimeSecrets
 
 
 class BioRxivProvider:
@@ -61,7 +66,7 @@ class BioRxivProvider:
 
 
 def changed_settings(**changes: object) -> DiscoverySettings:
-    payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+    payload = copy.deepcopy(load_settings().model_dump())
     payload.update(changes)
     return DiscoverySettings.model_validate(payload)
 
@@ -122,7 +127,7 @@ class TestCompositionValidation(unittest.TestCase):
             asyncio.run(application.close())
 
     def test_factory_catalog_extension_adds_repository_without_composition_branch(self) -> None:
-        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload = copy.deepcopy(load_settings().model_dump())
         payload["providers"]["biorxiv"] = {
             "base_url": "https://api.biorxiv.org",
             "min_interval_seconds": 1.0,
@@ -170,7 +175,7 @@ class TestCompositionValidation(unittest.TestCase):
             build_application(settings=settings)
 
     def test_semantic_scholar_recommendation_endpoint_is_required(self) -> None:
-        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload = copy.deepcopy(load_settings().model_dump())
         payload["providers"]["semanticscholar"]["secondary_base_url"] = None
         settings = DiscoverySettings.model_validate(payload)
 
@@ -178,7 +183,7 @@ class TestCompositionValidation(unittest.TestCase):
             build_application(settings=settings)
 
     def test_arxiv_artifact_endpoints_are_required(self) -> None:
-        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload = copy.deepcopy(load_settings().model_dump())
         payload["providers"]["arxiv"]["secondary_artifact_base_url"] = None
         settings = DiscoverySettings.model_validate(payload)
 
@@ -186,7 +191,7 @@ class TestCompositionValidation(unittest.TestCase):
             build_application(settings=settings)
 
     def test_provider_configuration_keys_are_canonical(self) -> None:
-        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload = copy.deepcopy(load_settings().model_dump())
         payload["providers"]["OpenAlex"] = payload["providers"].pop("openalex")
         settings = DiscoverySettings.model_validate(payload)
 
@@ -194,7 +199,7 @@ class TestCompositionValidation(unittest.TestCase):
             build_application(settings=settings)
 
     def test_legacy_provider_groups_are_not_configuration(self) -> None:
-        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload = copy.deepcopy(load_settings().model_dump())
         payload["provider_groups"] = {
             "aggregators": ("openalex", "semanticscholar"),
             "repositories": ("arxiv", "zenodo"),
@@ -208,7 +213,7 @@ class TestCompositionValidation(unittest.TestCase):
             DiscoverySettings.model_validate(payload)
 
     def test_legacy_config_version_is_rejected(self) -> None:
-        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload = copy.deepcopy(load_settings().model_dump())
         payload["version"] = 1
 
         with self.assertRaisesRegex(ValidationError, "Input should be 2"):

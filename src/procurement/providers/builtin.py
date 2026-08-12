@@ -8,7 +8,7 @@ from procurement.providers.openalex import OpenAlexProvider
 from procurement.providers.scihub import SciHubProvider
 from procurement.providers.semanticscholar import SemanticScholarProvider
 from procurement.providers.zenodo import ZenodoProvider
-from procurement.settings import ProviderHttpSettings
+from procurement.configuration import ProviderHttpSettings
 
 
 def _validate_semantic_scholar_settings(settings: ProviderHttpSettings) -> None:

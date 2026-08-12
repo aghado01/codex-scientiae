@@ -14,7 +14,15 @@ from mcp.server import MCPServer
 from mcp.server.mcpserver import Context
 from pydantic import Field, StringConstraints, WithJsonSchema
 
-from procurement.composition import ProcurementApplication, build_application
+from procurement.application import ProcurementApplication
+from procurement.composition import build_application
+from procurement.domain.materialization import (
+    ArtifactIdentityMetadata,
+    PORTABLE_TEX_PATH_PATTERN,
+    SourceMetadataInput,
+    SourceMaterializationRequest,
+    SourceMaterializationResult,
+)
 from procurement.models import (
     DepositMetadataBundle,
     ProviderCatalogResponse,
@@ -33,14 +41,7 @@ from procurement.payloads import (
     ArtifactKind,
     ArtifactPlanSummary,
 )
-from procurement.source import (
-    ArtifactIdentityMetadata,
-    PORTABLE_TEX_PATH_PATTERN,
-    SourceMetadataInput,
-    SourceMaterializationRequest,
-    SourceMaterializationResult,
-)
-from procurement.services.local_import import (
+from procurement.operations.local_import import (
     LocalImportInboxCatalog,
     LocalImportRequest,
 )

@@ -9,13 +9,13 @@ import unittest
 
 import httpx
 
-from procurement.http import HttpClient
+from procurement.transport.http import HttpClient
 from procurement.models import SearchRequest
 from procurement.providers.arxiv import ArxivProvider, build_search_query
 from procurement.providers.openalex import OpenAlexProvider
 from procurement.providers.semanticscholar import SemanticScholarProvider
 from procurement.providers.zenodo import ZenodoProvider, strip_html
-from procurement.settings import ProviderHttpSettings, RuntimeSecrets
+from procurement.configuration import ProviderHttpSettings, RuntimeSecrets
 
 OPENALEX_WORK = {
     "id": "https://openalex.org/W2144044408",
