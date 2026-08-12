@@ -39,6 +39,8 @@ from .inspect import StoreInfo, complete_prefix, inspect_store, snapshot
 from .schemas import IDENTITY_KEYWORD, SchemaCatalog, get_schema_catalog
 from .kinds import (
     ArticleManifest,
+    ArticleMetadataContribution,
+    ArticleMetadataExtension,
     BaseStore,
     DuplicateEntry,
     InventoryRegistry,
@@ -97,6 +99,8 @@ __all__ = [
     "Registry",
     "DuplicateEntry",
     "ArticleManifest",
+    "ArticleMetadataContribution",
+    "ArticleMetadataExtension",
     "InventoryRegistry",
     "SchemaRegistry",
     # article deposits

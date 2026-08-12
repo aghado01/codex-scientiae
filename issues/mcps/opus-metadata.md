@@ -17,7 +17,7 @@ scihub-get.ps1     Invoke-ScihubFetch
 
 A script dot-sources `scholar-core.ps1`, `openalex.ps1`, `arxiv.ps1`, `arxiv-adapter.ps1` and calls exactly what the server calls. No MCP, no agent.
 
-**The one gap:** `resolve_doi` has no library function. It's a six-line switch inline at [scholar-server.ps1:153](src/procurement/scholar-server.ps1:153) picking between `OpenAlex-Resolve` and `SemanticScholar-Resolve`. Same for `acquire`'s route selection. So the cascade logic lives in the server, where a script can't reach it. Lift it into `scholar-core.ps1` and both callers share one implementation.
+**The one gap:** `resolve_doi` has no library function. It's a six-line switch inline at [scholar-server.ps1:153](D:/aghado01/graveyard/codex-scientiae/src/mcp-servers/procurement/scholar-server.ps1:153) picking between `OpenAlex-Resolve` and `SemanticScholar-Resolve`. Same for `acquire`'s route selection. So the cascade logic lives in the server, where a script can't reach it. Lift it into `scholar-core.ps1` and both callers share one implementation.
 
 ## The lossiness that shapes the cascade
 

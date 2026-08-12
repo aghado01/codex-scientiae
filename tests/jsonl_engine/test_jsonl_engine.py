@@ -4,6 +4,8 @@ tests/jsonl_engine/test_jsonl_engine.py - Unit Tests for Python JSONL Core Engin
 
 import os
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -31,6 +33,29 @@ class DeclaredMissingSchemaRegistry(BaseStore):
 
 
 class TestJsonlEngineV7(unittest.TestCase):
+
+    def test_engine_import_does_not_load_procurement(self):
+        environment = os.environ.copy()
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                (
+                    "import jsonl_engine,sys; "
+                    "raise SystemExit(any(name == 'procurement' or "
+                    "name.startswith('procurement.') for name in sys.modules))"
+                ),
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=30,
+            env=environment,
+        )
+        self.assertEqual(0, process.returncode, process.stderr.decode("utf-8"))
+
+    def test_engine_catalog_excludes_application_schemas(self):
+        self.assertFalse(get_schema_catalog().has_schema("deposit.metadata.schema.json"))
 
     def test_fail_fast_on_declared_missing_schema(self):
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -4,10 +4,10 @@ Yes, it makes sense — and your own [ingestion/TODO.md](ingestion/TODO.md) alre
 
 The literal appears in exactly four places that matter:
 
-- [arxiv-staging.json:11](src/procurement/arxiv-staging.json:11) — `"staging_root": "ingestion/_inbox"`
-- [arxiv.ps1:83](src/procurement/arxiv.ps1:83) — in-code default fallback
-- [zenodo-staging.json:9](src/procurement/zenodo-staging.json:9)
-- [zenodo.ps1:17](src/procurement/zenodo.ps1:17)
+- [arxiv-staging.json:11](D:/aghado01/graveyard/codex-scientiae/src/procurement/arxiv-staging.json:11) — `"staging_root": "ingestion/_inbox"`
+- [arxiv.ps1:83](D:/aghado01/graveyard/codex-scientiae/src/procurement/arxiv.ps1:83) — in-code default fallback
+- [zenodo-staging.json:9](D:/aghado01/graveyard/codex-scientiae/src/procurement/zenodo-staging.json:9)
+- [zenodo.ps1:17](D:/aghado01/graveyard/codex-scientiae/src/procurement/zenodo.ps1:17)
 
 `scholar-server.ps1` reads arxiv's config, and `scihub-get.ps1` takes `StagingRoot` as a param — both inherit the fix for free. Everything else is prose in tool descriptions plus the `list_inbox` tool name. So the repoint to `ingestion/staging` is four strings, exactly as the config's own `description` promised.
 
@@ -29,4 +29,4 @@ Worth noting the inventory is fully at square one — no `metadata.json`, no `{s
 - [corpus-audit.ps1:28](src/audits/corpus-audit.ps1:28) defaults `-Roots` to `bibliotecha/{compendia,codices,corpora}`; `bibliotecha/` is now an empty dir. That tool currently has nothing to audit.
 - `.runs/` and `bibliotecha/` are both empty directories at root.
 
-Want me to start with the mechanical repoint (four strings + the server prose, plus [tests/procurement/arxiv.Tests.ps1](tests/procurement/arxiv.Tests.ps1)), and settle the archive-alias question as part of it? The PDF→manifest extractor is the substantial piece and deserves its own pass.
+Want me to start with the mechanical repoint (four strings + the server prose, plus [tests/procurement/arxiv.Tests.ps1](D:/aghado01/graveyard/codex-scientiae/tests/procurement/arxiv.Tests.ps1)), and settle the archive-alias question as part of it? The PDF→manifest extractor is the substantial piece and deserves its own pass.

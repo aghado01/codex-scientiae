@@ -17,6 +17,13 @@ def changed_settings(**changes: object) -> DiscoverySettings:
 
 
 class TestCompositionValidation(unittest.TestCase):
+    def test_defaults_distinguish_aggregators_repositories_and_access_sources(self) -> None:
+        groups = DiscoverySettings.load().provider_groups
+
+        self.assertEqual(("openalex", "semanticscholar"), groups.aggregators)
+        self.assertEqual(("arxiv", "zenodo"), groups.repositories)
+        self.assertEqual(("scihub",), groups.access_sources)
+
     def test_unknown_default_source_fails_before_runtime_construction(self) -> None:
         settings = changed_settings(default_sources=("openalex", "unknown"))
 
@@ -43,4 +50,16 @@ class TestCompositionValidation(unittest.TestCase):
         settings = DiscoverySettings.model_validate(payload)
 
         with self.assertRaisesRegex(ConfigurationError, "omit providers: openalex"):
+            build_application(settings=settings)
+
+    def test_provider_role_misclassification_fails_before_runtime_construction(self) -> None:
+        payload = copy.deepcopy(DiscoverySettings.load().model_dump())
+        payload["provider_groups"]["aggregators"] = ("semanticscholar", "arxiv")
+        payload["provider_groups"]["repositories"] = ("openalex", "zenodo")
+        settings = DiscoverySettings.model_validate(payload)
+
+        with self.assertRaisesRegex(
+            ConfigurationError,
+            "provider groups conflict with implemented provider roles",
+        ):
             build_application(settings=settings)

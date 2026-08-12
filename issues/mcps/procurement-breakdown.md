@@ -5,10 +5,10 @@ The procurement tree has strong natural seams, but they are flattened and incons
 The biggest findings:
 
 - Three MCP servers contain 666 lines altogether, with substantially duplicated protocol framing, catalogues, dispatch, logging, and JSON-RPC loops.
-- [scholar-server.ps1](D:/aghado01/codex-scientiae/src/procurement/scholar-server.ps1:107) embeds real operations inside its MCP dispatcher: cross-source fan-out, failure isolation, merging, graph routing, DOI resolution, and acquisition routing.
-- [scholar-core.ps1](D:/aghado01/codex-scientiae/src/procurement/scholar-core.ps1:33) combines at least four domains: rate-limited HTTP, retry classification, DOI identity, and normalized-work modeling/merging/pagination.
-- [arxiv.ps1](D:/aghado01/codex-scientiae/src/procurement/arxiv.ps1:45) is an 837-line aggregate containing identifiers, staging templates, payload inspection, API access, Atom parsing, search, downloads, inbox management, and job control.
-- [zenodo.ps1](D:/aghado01/codex-scientiae/src/procurement/zenodo.ps1:287) repeats the same broad shape.
+- [scholar-server.ps1](D:/aghado01/graveyard/codex-scientiae/src/mcp-servers/procurement/scholar-server.ps1:107) embeds real operations inside its MCP dispatcher: cross-source fan-out, failure isolation, merging, graph routing, DOI resolution, and acquisition routing.
+- [scholar-core.ps1](D:/aghado01/graveyard/codex-scientiae/src/procurement/scholar-core.ps1:33) combines at least four domains: rate-limited HTTP, retry classification, DOI identity, and normalized-work modeling/merging/pagination.
+- [arxiv.ps1](D:/aghado01/graveyard/codex-scientiae/src/procurement/arxiv.ps1:45) is an 837-line aggregate containing identifiers, staging templates, payload inspection, API access, Atom parsing, search, downloads, inbox management, and job control.
+- [zenodo.ps1](D:/aghado01/graveyard/codex-scientiae/src/procurement/zenodo.ps1:287) repeats the same broad shape.
 - Zenodo’s advertised “non-blocking” fetch is currently synchronous: `Start-ZenodoFetchJob` performs the download before returning. That implementation should not become the shared job primitive.
 - OpenAlex and Semantic Scholar are already relatively close to provider-shaped operations, though they depend on the overloaded scholar core.
 

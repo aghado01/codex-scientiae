@@ -9,7 +9,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TypeVar
 
-from jsonl_engine.deposit import DepositResult, deposit_article
+from jsonl_engine.deposit import DepositResult
 from jsonl_engine.writer import write_json
 from procurement.archive import (
     ArchiveLimits,
@@ -31,6 +31,7 @@ from procurement.source import (
     build_source_findings,
 )
 from procurement.staging import AcquisitionStore, validate_form_file
+from procurement.storage.article import deposit_procurement_article
 
 _T = TypeVar("_T")
 
@@ -45,7 +46,7 @@ class SourceMaterializationService:
         deposits: SourceDepositStore,
         *,
         archive_limits: ArchiveLimits | None = None,
-        article_deposit: Callable[..., DepositResult] = deposit_article,
+        article_deposit: Callable[..., DepositResult] = deposit_procurement_article,
         lock_timeout: float = 60.0,
     ) -> None:
         if lock_timeout <= 0:

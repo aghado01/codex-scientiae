@@ -2,7 +2,7 @@
 
 Status: discovery, API metadata, synchronous acquisition, source materialization, and catalog rebuild are
 functionally implemented. Staging and source-deposit root-identity pinning, background job lifecycle, and
-legacy cutover remain deferred.
+the package decomposition described below remain deferred.
 
 This document reconciles `procurement-breakdown.md`, `opus-metadata.md`,
 `mcp-separation-of-concerns.md`, `claude-procurement-refactor.md`, and
@@ -11,20 +11,20 @@ design evidence. This document records the current target.
 
 ## Repository reality
 
-- The legacy PowerShell MCP shells are under `src/mcp-servers/procurement`; their provider libraries now
-  coexist temporarily with the Python package under `src/procurement`.
-- The legacy procurement data directories are `schemas/` and `store/`, alongside the Python `stores/`
-  directory. The legacy files under `schemas/` are layout configuration instances rather than JSON
-  Schemas.
-- `scholar-server.ps1` owns fan-out, graph routing, DOI resolution, and acquisition routing in its MCP
-  dispatch switch.
-- `scholar-core.ps1` combines HTTP lifecycle, rate state, retry classification, identifier policy, records,
-  merging, and paging.
-- arXiv and Zenodo combine discovery, acquisition, staging, and job state. The Zenodo job operation is
-  synchronous despite its background-job contract.
+- The evicted PowerShell provider libraries are under
+  `D:/aghado01/graveyard/codex-scientiae/src/procurement`; their MCP shells are under the graveyard's
+  `src/mcp-servers/procurement` directory.
+- Active non-secret settings are in `src/procurement/configs/defaults.json`. Files under the active
+  `schemas/` directory are JSON Schema documents.
+- The graveyard `scholar-server.ps1` owned fan-out, graph routing, DOI resolution, and acquisition routing
+  in its MCP dispatch switch.
+- The graveyard `scholar-core.ps1` combined HTTP lifecycle, rate state, retry classification, identifier
+  policy, records, merging, and paging.
+- The graveyard arXiv and Zenodo implementations combined discovery, acquisition, staging, and job state.
+  The Zenodo job operation was synchronous despite its background-job contract.
 
-The Python target is introduced alongside the PowerShell implementation. `src/mcp-servers` is a legacy
-island until explicit parity gates permit deletion. The target MCP package is `src/mcps`.
+The Python package and `src/mcps/procurement` are the active implementation. The graveyard copy remains
+available for behavioral archaeology.
 
 ## Decisions
 
@@ -46,16 +46,14 @@ mcps.procurement
 
 `procurement` does not import MCP. Scripts, tests, and orchestrators call the Python application services
 directly. The source-materialization and catalog services call the existing `jsonl_engine` article and
-inventory adapters rather than duplicating their storage rules. The optional API-metadata path in
-`jsonl_engine.deposit` imports the procurement evidence-bundle model so persisted sentinels and MCP output
-share one behavioral validator. This feature-level shared-contract bridge is the remaining bidirectional
-package seam; the generic JSONL reader, writer, and registry layers do not acquire procurement behavior.
+inventory adapters rather than duplicating their storage rules. `jsonl_engine` declares an application
+metadata-extension contract and owns article assembly and validation. Procurement owns its evidence-bundle
+schema, behavioral model, and projection extension. Importing `jsonl_engine` does not import procurement.
 
 ### One agent-facing procurement MCP
 
 The target is one `scientiae-procurement` composition root. Provider selection remains an operation
-argument; it does not create duplicated servers or protocol runtimes. Separate legacy arXiv, Zenodo, and
-Scholar shells remain only during migration.
+argument; it does not create duplicated servers or protocol runtimes.
 
 ### Capabilities instead of a universal provider base class
 
@@ -130,10 +128,11 @@ canonical DOI match. The MCP projection resolves the named acquisition receipt f
 work identity remains bound to the actual custody record rather than to client-supplied provenance. A future authority cross-walk may replace that selected projection only when every
 bridge response is retained and DOI/arXiv concordance is proved.
 
-The bundle is stored inside the document deposit as `{slug}.api-metadata.json` and passed to
-`New-LatexSourceDeposit -MetadataBundlePath` or `jsonl_engine deposit --metadata-json`. The deposit engine
-validates its structural schema and the shared procurement model before projecting bibliographic fields
-into `article.json` and fingerprinting the bundle as evidence. The shared model checks artifact identity,
+The bundle is stored inside the document deposit as `{slug}.api-metadata.json`. Procurement materialization
+passes its metadata extension directly; the generic CLI receives the same extension explicitly with
+`jsonl_engine deposit --metadata-json ... --metadata-extension module:factory`. Procurement validates the
+structural schema and behavioral model before the engine validates and publishes `article.json` and
+fingerprints the bundle as evidence. The shared model checks artifact identity,
 canonical slug/identifier forms, route-specific attempt order, exact response digest, selected-work
 identity, an optional independent work-identity anchor, and deterministic article projection.
 
@@ -212,21 +211,77 @@ restart semantics must be chosen explicitly when this slice begins.
 Sci-Hub, if retained, is an optional explicitly configured acquisition provider. It is not a default DOI
 route and does not own DOI identity or general acquisition policy.
 
+## Configuration boundary
+
+The graveyard JSON files did not all represent the same category. `scholar-config.json` contained
+application defaults and environment-variable documentation. `arxiv-staging.json` and
+`zenodo-staging.json` were layout configuration, not JSON Schemas. `scihub-mirrors.json` was an endpoint
+pool and request policy for an adapter that has not been ported.
+
+`configs/defaults.json` is the consolidated non-secret deployment document. It owns provider endpoints,
+request timing, provider ordering and grouping, configured roots, and byte/count limits. Credentials and
+contact values remain environment inputs. Files under `schemas/` are actual JSON Schema documents.
+
+Provider response mapping, identifier grammar, canonical deposit naming, payload validation, redirect
+confinement, and role/capability truth are executable contracts rather than editable configuration. A
+configured ordering may select among compatible providers, but configuration cannot turn an access-only
+provider into a metadata authority or make an adapter advertise a method it does not implement. The current
+composition preflight enforces that distinction; a later provider-descriptor registry should derive the
+validation from registered bindings instead of duplicating an expected-provider table.
+
+The legacy `per_page` setting has no successor because request models own their defaults and bounds. The
+legacy Sci-Hub mirror pool has no active successor because Sci-Hub currently has only an access-role
+declaration, not a callable adapter. If that adapter is retained, its endpoint pool, cooldown, and request
+policy belong in configuration while its HTML interpretation and PDF validation remain adapter code.
+
 ## Target packages
 
 ```text
 src/
   procurement/
-    identifiers.py        canonical DOI, arXiv, and Zenodo identities
-    models.py             immutable records and operation envelopes
-    errors.py             domain/provider failure taxonomy
-    http.py               owned async HTTP, rate state, bounded retry
-    registry.py           provider/capability registration
-    settings.py           validated configuration and environment inputs
     composition.py        application construction and lifecycle
-    providers/            provider payload adapters
-    services/             cross-provider workflows
-    stores/               non-secret configuration data
+    errors.py             public failure taxonomy
+
+    configuration/
+      models.py           validated non-secret settings and secret references
+      loader.py           package-resource and caller-selected config loading
+    configs/              non-secret configuration data
+
+    domain/
+      identifiers.py      canonical DOI, arXiv, Zenodo, and future repository identities
+      works.py            normalized works, sources, merge and identity rules
+      metadata.py         API evidence and article-metadata bundles
+      acquisition.py      artifact plans, forms, receipts, and collation values
+      source.py           source-materialization requests and results
+
+    providers/
+      base.py             capability ports, roles, and provider descriptors
+      registry.py         provider/capability registration
+      aggregators/        OpenAlex and Semantic Scholar
+      repositories/       arXiv, Zenodo, and future bioRxiv
+      access/             optional access-only adapters such as Sci-Hub
+
+    operations/
+      discovery.py        federated search and graph operations
+      metadata.py         authority and identifier-based metadata resolution
+      acquisition.py      execute provider-produced artifact plans
+      local_import.py     configured local custody route
+      materialization.py  validate source and publish article.json
+      catalogs.py         named adapter over engine-owned article inventories
+
+    infrastructure/
+      http.py             owned async HTTP, rate state, bounded retry
+      filesystem.py       confined and no-replace filesystem primitives
+      archive/            extraction, LaTeX inspection, and tree fingerprints
+
+    storage/
+      base.py             procurement BaseStore defaults and local kind catalog
+      schemas.py          schema catalog layered over jsonl_engine
+      acquisition.py      acquisition.json kind and store
+      metadata.py         API-metadata document kind and store
+      source.py           source-deposit storage transactions
+      article.py          procurement projection into engine-owned article publication
+
     schemas/              actual schemas only
 
   mcps/
@@ -235,9 +290,17 @@ src/
       prompts/            agent-facing procedures
 ```
 
-The implemented acquisition and source lanes use cohesive `payloads.py`, `staging.py`, `archive.py`,
-`source.py`, and service modules. `jobs.py` remains an expected seam only after its lifecycle contract is
-accepted.
+This is a migration target, not a requirement to move every file at once. The safe sequence is to extract
+domain values first, then procurement-owned stores, then operation modules, while compatibility imports keep
+the MCP and tests stable. The large current `archive.py`, `models.py`, `source.py`, `payloads.py`, and
+`http.py` files are the primary split candidates. `jobs.py` remains an expected seam only after its lifecycle
+contract is accepted.
+
+`ProcurementSchemaCatalog` is the first storage extension: it layers procurement schemas over the engine
+catalog without registering them globally. The next storage slice should add a procurement `BaseStore`
+default and a procurement-local kind catalog, then move `acquisition.json` and API-metadata publication onto
+those kinds. Current static configuration remains a validated package resource; it should not be forced into
+a JSONL registry unless it becomes a keyed, published population with actual registry semantics.
 
 ## Migration sequence
 

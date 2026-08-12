@@ -43,9 +43,11 @@ asyncio.run(main())
 ```
 
 Provider endpoints, request floors, timeouts, attempts, and default sources live in
-`stores/discovery.json`. That data also names the confined staging root, logical local-import inboxes, source catalogs, and payload and
+`configs/defaults.json`. That data also names the confined staging root, logical local-import inboxes, source catalogs, and payload and
 archive limits. `CODEX_SCIENTIAE_ROOT` can select the workspace explicitly. `CODEX_SCHOLAR_MAILTO` supplies a contact address and
 `OPENALEX_API_KEY` and `SEMANTIC_SCHOLAR_API_KEY` supply optional provider credentials.
+Provider groups distinguish metadata aggregators, scholarly repositories, and access-only sources.
+Sci-Hub is classified as access-only rather than as a repository or metadata authority.
 
 Filesystem trust boundary: acquisition and source-materialization roots are pathname-confined but not yet
 pinned to their initialized directory identities. Their mutation and immutability guarantees assume those

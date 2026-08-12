@@ -63,6 +63,45 @@ class ArtifactLimitSettings(BaseModel):
     archive_entries: int = Field(default=100_000, gt=0)
 
 
+class ProviderGroupSettings(BaseModel):
+    """Composition categories for aggregation, repository, and access providers."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    aggregators: tuple[str, ...]
+    repositories: tuple[str, ...]
+    access_sources: tuple[str, ...]
+
+    @model_validator(mode="after")
+    def _distinct_canonical_names(self) -> Self:
+        groups = {
+            "aggregators": self.aggregators,
+            "repositories": self.repositories,
+            "access_sources": self.access_sources,
+        }
+        occupied: dict[str, str] = {}
+        for group, names in groups.items():
+            if not names:
+                raise ValueError(f"provider group {group!r} must not be empty")
+            for name in names:
+                if not isinstance(name, str) or not name or name != name.casefold():
+                    raise ValueError("provider group names must be canonical lowercase strings")
+                prior = occupied.setdefault(name, group)
+                if prior != group:
+                    raise ValueError(
+                        f"provider {name!r} belongs to both {prior!r} and {group!r}"
+                    )
+            if len(names) != len(set(names)):
+                raise ValueError(f"provider group {group!r} contains duplicates")
+        return self
+
+    @property
+    def search_sources(self) -> frozenset[str]:
+        """Return providers admitted to the federated discovery surface."""
+
+        return frozenset((*self.aggregators, *self.repositories))
+
+
 class AcquisitionSettings(BaseModel):
     """Configured storage names and bounded acquisition policy."""
 
@@ -92,12 +131,13 @@ class DiscoverySettings(BaseModel):
     version: int = Field(ge=1)
     default_sources: tuple[str, ...]
     metadata_fallback_sources: tuple[str, ...]
+    provider_groups: ProviderGroupSettings
     providers: dict[str, ProviderHttpSettings]
     acquisition: AcquisitionSettings
 
     @classmethod
     def load(cls, path: str | Path | None = None) -> "DiscoverySettings":
-        source = Path(path) if path else files("procurement").joinpath("stores/discovery.json")
+        source = Path(path) if path else files("procurement").joinpath("configs/defaults.json")
         try:
             payload = json.loads(source.read_text(encoding="utf-8"))
             return cls.model_validate(payload)

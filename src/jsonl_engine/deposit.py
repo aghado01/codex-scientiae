@@ -21,11 +21,8 @@ from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from filelock import FileLock, Timeout
-from pydantic import ValidationError
-from procurement.limits import MAX_DEPOSIT_METADATA_BUNDLE_BYTES
-from procurement.models import DepositMetadataBundle
 
-from .kinds.article import ArticleManifest
+from .kinds.article import ArticleManifest, ArticleMetadataContribution, ArticleMetadataExtension
 from .reader import loads
 from .sidecar import lock_path
 from .writer import serialize_json
@@ -459,34 +456,38 @@ def _provider_values(provider: Optional[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def _read_metadata_bundle(
-    kind: ArticleManifest,
+    extension: ArticleMetadataExtension,
     path: str,
     *,
+    relative_path: str,
     slug: str,
-) -> Tuple[Dict[str, Any], bytes, _FileWitness]:
+) -> Tuple[ArticleMetadataContribution, _FileWitness]:
+    maximum_bytes = extension.maximum_bytes
+    if (
+        isinstance(maximum_bytes, bool)
+        or not isinstance(maximum_bytes, int)
+        or maximum_bytes < 1
+    ):
+        raise DepositError("article metadata extension maximum_bytes must be a positive integer")
     bundle, raw, witness = _read_object_with_bytes(
         path,
         label="API metadata bundle",
-        max_bytes=MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
+        max_bytes=maximum_bytes,
     )
     try:
-        kind.schemas.get_validator("deposit.metadata.schema.json").validate(bundle)
-    except Exception as exc:
-        raise DepositError(f"API metadata bundle does not satisfy its schema: '{path}': {exc}") from exc
-
-    try:
-        DepositMetadataBundle.model_validate(bundle)
-    except ValidationError as exc:
-        raise DepositError(
-            f"API metadata bundle does not satisfy the shared procurement contract: "
-            f"'{path}': {exc}"
-        ) from exc
-
-    if bundle["deposit_slug"] != slug:
-        raise DepositError(
-            f"API metadata bundle slug {bundle['deposit_slug']!r} does not match deposit slug {slug!r}"
+        contribution = extension.project(
+            bundle,
+            raw=raw,
+            path=relative_path,
+            slug=slug,
         )
-    return bundle, raw, witness
+    except Exception as exc:
+        raise DepositError(
+            f"API metadata bundle does not satisfy its application contract: '{path}': {exc}"
+        ) from exc
+    if not isinstance(contribution, ArticleMetadataContribution):
+        raise DepositError("article metadata extension returned an invalid contribution")
+    return contribution, witness
 
 
 def _assemble_article(
@@ -509,6 +510,7 @@ def _assemble_article(
     provider_full: Optional[str],
     metadata_json: Optional[str],
     metadata_full: Optional[str],
+    metadata_extension: Optional[ArticleMetadataExtension],
     pdf: Optional[str],
     pdf_full: Optional[str],
 ) -> Tuple[Dict[str, Any], Tuple[_FileWitness, ...]]:
@@ -516,12 +518,11 @@ def _assemble_article(
     provider = None
     provider_raw = None
     metadata = None
-    metadata_raw = None
     if provider_full is not None:
         provider, provider_raw, provider_witness = _read_object_with_bytes(
             provider_full,
             label="provider metadata",
-            max_bytes=MAX_DEPOSIT_METADATA_BUNDLE_BYTES,
+            max_bytes=32 * 1024 * 1024,
         )
         witnesses.append(provider_witness)
     if provider is not None and provider.get("idv") and provider.get("idv") != slug:
@@ -529,9 +530,12 @@ def _assemble_article(
             f"provider metadata idv {provider.get('idv')!r} does not match deposit slug {slug!r}"
         )
     if metadata_full is not None:
-        metadata, metadata_raw, metadata_witness = _read_metadata_bundle(
-            kind,
+        if metadata_extension is None:  # closed by deposit_article before filesystem work
+            raise DepositError("metadata_json requires an article metadata extension")
+        metadata, metadata_witness = _read_metadata_bundle(
+            metadata_extension,
             metadata_full,
+            relative_path=metadata_json or "",
             slug=slug,
         )
         witnesses.append(metadata_witness)
@@ -592,43 +596,13 @@ def _assemble_article(
         )
 
     metadata_resolution = None
-    if metadata is not None and metadata_raw is not None and metadata_json is not None:
-        selected = metadata["selected"]
-        response = selected["response"]
-        artifact = metadata["artifact"]
-        provider_evidence.append(
-            {
-                "role": "api-metadata-bundle",
-                "path": metadata_json,
-                "format": "application/vnd.codex-scientiae.deposit-metadata+json",
-                "bytes": len(metadata_raw),
-                "sha256": hashlib.sha256(metadata_raw).hexdigest(),
-                "provider": selected["provider"],
-                "provider_roles": copy.deepcopy(selected["provider_roles"]),
-                "artifact_provider": artifact["provider"],
-                "artifact_provider_roles": copy.deepcopy(artifact["provider_roles"]),
-                "route": metadata["route"],
-                "fetched_at": response["fetched_at"],
-                "response_url": response["url"],
-                "response_format": response["media_type"],
-                "response_sha256": response["sha256"],
-            }
-        )
-        metadata_resolution = {
-            "route": metadata["route"],
-            "artifact": copy.deepcopy(artifact),
-            "selected_provider": selected["provider"],
-            "selected_provider_roles": copy.deepcopy(selected["provider_roles"]),
-            "attempts": copy.deepcopy(metadata["attempts"]),
-        }
-        if metadata.get("identity_anchor") is not None:
-            metadata_resolution["identity_anchor"] = copy.deepcopy(
-                metadata["identity_anchor"]
-            )
+    if metadata is not None:
+        provider_evidence.append(copy.deepcopy(metadata.evidence))
+        metadata_resolution = copy.deepcopy(metadata.resolution)
 
     timestamp = _utc_timestamp()
     bibliographic = (
-        copy.deepcopy(metadata["article"])
+        copy.deepcopy(metadata.article)
         if metadata is not None
         else _provider_values(provider)
     )
@@ -789,6 +763,7 @@ def deposit_article(
     findings_json: str,
     provider_json: Optional[str] = None,
     metadata_json: Optional[str] = None,
+    metadata_extension: Optional[ArticleMetadataExtension] = None,
     pdf: Optional[str] = None,
     lock_timeout: float = 60.0,
 ) -> DepositResult:
@@ -846,6 +821,10 @@ def deposit_article(
 
     if provider_json is not None and metadata_json is not None:
         raise DepositError("provider_json and metadata_json are mutually exclusive")
+    if metadata_json is not None and metadata_extension is None:
+        raise DepositError("metadata_json requires an article metadata extension")
+    if metadata_json is None and metadata_extension is not None:
+        raise DepositError("article metadata extension requires metadata_json")
 
     provider_full = None
     if provider_json is not None:
@@ -891,6 +870,7 @@ def deposit_article(
             provider_full=provider_full,
             metadata_json=metadata_json,
             metadata_full=metadata_full,
+            metadata_extension=metadata_extension,
             pdf=pdf,
             pdf_full=pdf_full,
         )

@@ -242,6 +242,47 @@ def _validate_composition_settings(settings: DiscoverySettings) -> None:
     """Fail before runtime allocation when composition data cannot form the application."""
 
     required = {"openalex", "semanticscholar", "arxiv", "zenodo"}
+    supported = required | {"scihub"}
+    groups = settings.provider_groups
+    declared_groups = {
+        name: group
+        for group, names in (
+            ("aggregator", groups.aggregators),
+            ("repository", groups.repositories),
+            ("access-source", groups.access_sources),
+        )
+        for name in names
+    }
+    missing_declarations = supported.difference(declared_groups)
+    if missing_declarations:
+        raise ConfigurationError(
+            "provider groups omit declarations: "
+            + ", ".join(sorted(missing_declarations))
+        )
+    unsupported_declarations = set(declared_groups).difference(supported)
+    if unsupported_declarations:
+        raise ConfigurationError(
+            "provider groups name providers without implementations: "
+            + ", ".join(sorted(unsupported_declarations))
+        )
+    expected_groups = {
+        "openalex": "aggregator",
+        "semanticscholar": "aggregator",
+        "arxiv": "repository",
+        "zenodo": "repository",
+        "scihub": "access-source",
+    }
+    misclassified = [
+        f"{name}={declared_groups[name]}"
+        for name, expected in expected_groups.items()
+        if declared_groups[name] != expected
+    ]
+    if misclassified:
+        raise ConfigurationError(
+            "provider groups conflict with implemented provider roles: "
+            + ", ".join(misclassified)
+        )
+
     missing = required.difference(settings.providers)
     if missing:
         raise ConfigurationError(
@@ -253,7 +294,7 @@ def _validate_composition_settings(settings: DiscoverySettings) -> None:
         raise ConfigurationError("default_sources must not be empty")
     if len(defaults) != len(set(defaults)):
         raise ConfigurationError("default_sources must not contain duplicates")
-    unknown_defaults = set(defaults).difference(required)
+    unknown_defaults = set(defaults).difference(groups.search_sources)
     if unknown_defaults:
         raise ConfigurationError(
             "default_sources contain non-search providers: "
@@ -265,7 +306,7 @@ def _validate_composition_settings(settings: DiscoverySettings) -> None:
         raise ConfigurationError("metadata_fallback_sources must not be empty")
     if len(fallbacks) != len(set(fallbacks)):
         raise ConfigurationError("metadata_fallback_sources must not contain duplicates")
-    invalid_fallbacks = set(fallbacks).difference({"openalex", "semanticscholar"})
+    invalid_fallbacks = set(fallbacks).difference(groups.aggregators)
     if invalid_fallbacks:
         raise ConfigurationError(
             "metadata fallbacks must be metadata aggregators: "

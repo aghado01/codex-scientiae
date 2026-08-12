@@ -19,6 +19,7 @@ declared knob here for the same reason it is everywhere else in this engine.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import sys
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional
@@ -26,7 +27,7 @@ from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional
 from .deposit import deposit_article
 from .inspect import inspect_store, snapshot
 from .inventory_catalog import build_inventory, load_article_paths_json
-from .kinds.article import ArticleManifest
+from .kinds.article import ArticleManifest, ArticleMetadataExtension
 from .policy import Eol
 from .pointer import MISSING, resolve
 from .reader import JsonlStore, read_json, read_json_or_none
@@ -348,6 +349,22 @@ def _cmd_capabilities(args: argparse.Namespace) -> int:
     return 0
 
 
+def _load_metadata_extension(specification: str | None) -> ArticleMetadataExtension | None:
+    """Load one caller-selected article metadata extension factory."""
+
+    if specification is None:
+        return None
+    module_name, separator, attribute_name = specification.partition(":")
+    if not separator or not module_name or not attribute_name:
+        raise ValueError("metadata extension must use the form 'module:factory'")
+    module = importlib.import_module(module_name)
+    target = getattr(module, attribute_name)
+    extension = target() if callable(target) else target
+    if not isinstance(extension, ArticleMetadataExtension):
+        raise TypeError("metadata extension factory returned an incompatible object")
+    return extension
+
+
 def _cmd_deposit(args: argparse.Namespace) -> int:
     result = deposit_article(
         document_dir=args.document_dir,
@@ -365,6 +382,7 @@ def _cmd_deposit(args: argparse.Namespace) -> int:
         findings_json=args.findings_json,
         provider_json=args.provider_json,
         metadata_json=args.metadata_json,
+        metadata_extension=_load_metadata_extension(args.metadata_extension),
         pdf=args.pdf,
     )
     _emit_for(args, [result.as_dict()])
@@ -503,6 +521,10 @@ def _build_parser() -> argparse.ArgumentParser:
     metadata = deposit.add_mutually_exclusive_group()
     metadata.add_argument("--provider-json")
     metadata.add_argument("--metadata-json")
+    deposit.add_argument(
+        "--metadata-extension",
+        help="application metadata extension as module:factory; required with --metadata-json",
+    )
     deposit.add_argument("--pdf")
     deposit.set_defaults(handler=_cmd_deposit)
 

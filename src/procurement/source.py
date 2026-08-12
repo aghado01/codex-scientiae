@@ -38,6 +38,7 @@ from procurement.models import (
     validate_artifact_deposit_reference,
     validate_deposit_slug,
 )
+from procurement.storage.schemas import get_procurement_schema_catalog
 
 if TYPE_CHECKING:
     from procurement.services.catalog import ArticleCatalogService
@@ -405,7 +406,7 @@ class SourceDepositItem:
             value = loads(raw, path=str(self.metadata_path))
             if not isinstance(value, dict):
                 raise ValueError("API metadata bundle must contain one object")
-            ArticleManifest(target_dir=str(self.directory)).schemas.get_validator(
+            get_procurement_schema_catalog().get_validator(
                 "deposit.metadata.schema.json"
             ).validate(value)
             bundle = DepositMetadataBundle.model_validate(value)
@@ -511,7 +512,7 @@ class SourceDepositItem:
             )
         payload = bundle.model_dump(mode="json", by_alias=True)
         try:
-            ArticleManifest(target_dir=str(self.directory)).schemas.get_validator(
+            get_procurement_schema_catalog().get_validator(
                 "deposit.metadata.schema.json"
             ).validate(payload)
         except Exception as exc:

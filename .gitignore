@@ -50,9 +50,11 @@ dist/
 **/.work/
 **/__pycache__/
 
-# codex-arxiv acquisition inbox: staged PDFs + metadata sidecars, pre-ingestion working output.
-# Tracks the default staging_root in src/procurement/arxiv-staging.json — update if you re-point it.
-ingestion/_inbox/
+# Procurement acquisition and manual-import roots from src/procurement/configs/defaults.json.
+ingestion/staging/**
+!ingestion/staging/README.md
+ingestion/imports/**
+!ingestion/imports/.gitkeep
 
 # pig / pdfdig IR-lane staging (belt-and-suspenders). The converter's regenerable IR belongs under
 # {slug}/.runs/{stamp}/pig/ (already ignored above via **/.runs/); these ingestion-scoped extension

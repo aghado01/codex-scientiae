@@ -10,7 +10,6 @@ from datetime import datetime, timezone
 
 from pydantic import ValidationError
 
-from jsonl_engine.schemas import get_schema_catalog
 from procurement.errors import MetadataUnavailableError, ProviderError
 from procurement.models import (
     ApiResponseEvidence,
@@ -23,6 +22,7 @@ from procurement.models import (
 from procurement.providers.base import Capability, ProviderRole
 from procurement.registry import ProviderBinding, ProviderRegistry
 from procurement.services import MetadataService
+from procurement.storage.schemas import get_procurement_schema_catalog
 
 
 def metadata_result(provider: str, work: WorkRecord, body: bytes) -> RetrievedMetadata:
@@ -107,6 +107,13 @@ AGGREGATOR_ROLES = frozenset({ProviderRole.METADATA_AGGREGATOR})
 
 
 class TestMetadataService(unittest.TestCase):
+    def test_procurement_catalog_layers_application_schemas_over_engine_schemas(self) -> None:
+        catalog = get_procurement_schema_catalog()
+
+        self.assertTrue(catalog.has_schema("article.schema.json"))
+        self.assertTrue(catalog.has_schema("acquisition.schema.json"))
+        self.assertTrue(catalog.has_schema("deposit.metadata.schema.json"))
+
     def test_provider_cancellation_is_never_converted_to_a_fallback_attempt(self) -> None:
         cancelled = CancelledMetadataProvider()
         service = MetadataService(
@@ -607,7 +614,9 @@ class TestMetadataService(unittest.TestCase):
         self.assertEqual(result.article.identifiers.arxiv, "2008.10579")
         self.assertEqual(result.article.categories, ())
         self.assertEqual(result.article.concepts, ("Optimization",))
-        get_schema_catalog().get_validator("deposit.metadata.schema.json").validate(
+        get_procurement_schema_catalog().get_validator(
+            "deposit.metadata.schema.json"
+        ).validate(
             result.model_dump(mode="json", by_alias=True)
         )
 

@@ -1239,6 +1239,8 @@ function Invoke-JsonlEngineArticleDeposit {
         }
         if ($Facts.MetadataJson) {
             $argument.Add('--metadata-json'); $argument.Add($Facts.MetadataJson)
+            $argument.Add('--metadata-extension')
+            $argument.Add('procurement.storage.article:get_procurement_article_metadata_extension')
         }
         if ($Facts.Pdf) { $argument.Add('--pdf'); $argument.Add($Facts.Pdf) }
 

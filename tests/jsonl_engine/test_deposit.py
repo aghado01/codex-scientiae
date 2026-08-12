@@ -26,6 +26,8 @@ from jsonl_engine import (
 from jsonl_engine.reader import read_json
 from procurement.limits import MAX_API_RESPONSE_BASE64_CHARS
 from procurement.models import DepositMetadataBundle
+from procurement.storage.article import get_procurement_article_metadata_extension
+from procurement.storage.schemas import get_procurement_schema_catalog
 
 from jsonl_test_support import article as article_record
 
@@ -332,6 +334,11 @@ class DepositFixture:
         if self.pdf_name is not None:
             values["pdf"] = self.pdf_name
         values.update(overrides)
+        if values.get("metadata_json") is not None:
+            values.setdefault(
+                "metadata_extension",
+                get_procurement_article_metadata_extension(),
+            )
         return values
 
     def cli_arguments(self):
@@ -363,7 +370,7 @@ class DepositFixture:
 class TestDepositCreation(unittest.TestCase):
     def test_metadata_wire_schema_tracks_the_shared_output_model(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            wire = ArticleManifest(tmpdir).schemas.get_schema(
+            wire = get_procurement_schema_catalog().get_schema(
                 "deposit.metadata.schema.json"
             )
         generated = DepositMetadataBundle.model_json_schema(by_alias=True)
@@ -641,6 +648,29 @@ class TestDepositCreation(unittest.TestCase):
             self.assertIs(True, frame["value"]["created"])
             self.assertEqual(os.path.abspath(fixture.article_path), frame["value"]["article_path"])
             self.assertEqual(read_json(fixture.article_path), frame["value"]["article"])
+
+    def test_framed_cli_loads_caller_selected_metadata_extension(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            bundle_name = f"{fixture.slug}.api-metadata.json"
+            _write_json(
+                os.path.join(fixture.document_dir, bundle_name),
+                _metadata_bundle(fixture.slug),
+            )
+
+            proc = _run_cli(
+                "--framed",
+                "deposit",
+                *fixture.cli_arguments(),
+                "--metadata-json",
+                bundle_name,
+                "--metadata-extension",
+                "procurement.storage.article:get_procurement_article_metadata_extension",
+            )
+
+            self.assertEqual(0, proc.returncode, proc.stderr.decode("utf-8"))
+            frame = json.loads(proc.stdout)
+            self.assertEqual("API title", frame["value"]["article"]["title"])
 
     def test_retry_is_byte_and_mtime_idempotent_even_when_publication_changes(self):
         with tempfile.TemporaryDirectory() as tmpdir:

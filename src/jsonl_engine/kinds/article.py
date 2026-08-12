@@ -9,6 +9,8 @@ Assembling an article is mint()'s job, from one data structure. The schema decla
 copy of article.schema.json that goes stale the moment the schema moves.
 """
 
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Any, Dict
 
 import jsonschema
@@ -16,6 +18,35 @@ import jsonschema
 from ..writer import write_json
 from .base import BaseStore
 from .catalog import KindCatalog
+
+
+@dataclass(frozen=True, slots=True)
+class ArticleMetadataContribution:
+    """Validated bibliographic and evidence values contributed by an application extension."""
+
+    article: Dict[str, Any]
+    evidence: Dict[str, Any]
+    resolution: Dict[str, Any]
+
+
+class ArticleMetadataExtension(ABC):
+    """Application-owned validator and projector for one external metadata document."""
+
+    @property
+    @abstractmethod
+    def maximum_bytes(self) -> int:
+        """Return the maximum accepted encoded document size."""
+
+    @abstractmethod
+    def project(
+        self,
+        value: Dict[str, Any],
+        *,
+        raw: bytes,
+        path: str,
+        slug: str,
+    ) -> ArticleMetadataContribution:
+        """Validate one document and return article-schema values derived from it."""
 
 
 @KindCatalog.register

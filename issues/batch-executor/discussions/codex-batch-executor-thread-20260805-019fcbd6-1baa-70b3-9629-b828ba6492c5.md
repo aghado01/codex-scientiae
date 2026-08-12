@@ -74,7 +74,7 @@ I would place the primitive at `src/core/batch.ps1`, consistent with the project
 
 Then keep `Invoke-IngestBatch` and a future `Invoke-TestBatch` as thin domain adapters. They must own unique work/log paths because process isolation alone does not prevent filesystem collisions.
 
-One other boundary: the long-lived arXiv background queue at [src/procurement/arxiv.ps1](D:/aghado01/codex-scientiae/src/procurement/arxiv.ps1:663) is service infrastructure, not a finite batch. I would not force it through this primitive.
+One other boundary: the long-lived arXiv background queue at [src/procurement/arxiv.ps1](D:/aghado01/graveyard/codex-scientiae/src/procurement/arxiv.ps1:663) is service infrastructure, not a finite batch. I would not force it through this primitive.
 
 No files were changed during this pass.
 
