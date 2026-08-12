@@ -154,6 +154,11 @@ and `Invoke-BatchPlan` once. Pester and pytest keep separate selectors, runners,
 addresses, and native XML. Both lanes share one worker budget, cancellation path, failure policy, and result
 order.
 
+Caller-owned repository run directories belong under
+`artifacts/test-runs/YYYYDDMM_HHmmss[_NN]`. The repository `.codex/` tree is client-owned state and is not
+a test-run or scratch destination. Direct successful runs remove their caller-owned root after accepting
+the outcome; retained failed-run evidence remains under the same `artifacts/test-runs/` tier.
+
 One concise Information-stream line reports total, succeeded, failed, timed-out, cancelled,
 infrastructure-error, and duration values. The shell writes the exact in-memory executor record to the
 success output stream. If plan validation fails, it throws before execution; if any executed job is not

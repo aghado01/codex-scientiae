@@ -1,6 +1,6 @@
 # Infrastructure brief — owned artifact writing and lifecycle housekeeping
 
-Status: follow-up design brief; implementation and collection are deferred.
+Status: repository test-root ownership corrected; allocator and pressure-collection implementation deferred.
 
 Snapshot: 2026-08-11, local runstamp `20261108_224907`.
 
@@ -40,7 +40,7 @@ The snapshot is small in bytes but already expensive in namespace entries:
 | Root | Files | Directories | Bytes | Observation |
 |---|---:|---:|---:|---|
 | `artifacts/` | 1,911 | 1,755 | 239,930,382 | Mixed build output, caches, test runs, and run products. |
-| `.codex/` | 531 | 233 | 94,928,784 | Mixed agent scratch, chat exports, and older batch runs. |
+| `.codex/` | 531 | 233 | 94,928,784 | Client-owned state and historical residue; not an admissible project run destination. |
 | `artifacts/test-runs/` | 97 | 315 | 283,809 | All 97 files are XML reports; 102 descendant directories are empty. |
 
 The test-run subtree is the clearest example of the problem. Its directory count is more than three times
@@ -95,11 +95,10 @@ One caller allocates the run root before parallel planning. The house runstamp i
 YYYYDDMM_HHmmss
 ```
 
-The compact repository-local forms are:
+The compact repository-local form is:
 
 ```text
 artifacts/test-runs/20261108_224907/
-.codex/test-runs/20261108_224907/
 ```
 
 Use `_02`, `_03`, and so on for same-second collisions when one sequential allocator is producing the
@@ -265,8 +264,8 @@ antivirus scanner, backup tool, or recursive diagnostic command.
 
 The repository should therefore:
 
-- concentrate ephemeral work beneath `.codex/test-runs/` or `artifacts/test-runs/`, not scattered system
-  temp and source-tree locations;
+- concentrate repository test work beneath `artifacts/test-runs/`, not client-owned `.codex/`, scattered
+  system temp, or source-tree locations;
 - configure editor/indexing exclusions for those known ephemeral roots where the client supports them;
 - prune empty directories during run close;
 - avoid a single flat global scratch directory with unbounded file enumeration;

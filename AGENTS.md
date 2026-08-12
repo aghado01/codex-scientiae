@@ -12,6 +12,10 @@ This document is intentionally vague in order not to overspecify or otherwise bl
 
 3. See `tests/README.md` for guidance on adding new tests and running test batches via the batch-executor entrypoint.
 
+4. Repository test runs and test scratch belong under `artifacts/test-runs/YYYYDDMM_HHmmss[_NN]`.
+   The repository `.codex/` tree is client-owned state and is not a project write boundary. Non-repository
+   scratch may use the separately authorized global `~/.Codex/tmp` location.
+
 ## Codex-Scientiae MCPs
 
 This project develops several distinct MCP concepts relating to procurement, document ingestion, asset management and reader/consumer of codex-scientiae materials, and continue to evolve.
