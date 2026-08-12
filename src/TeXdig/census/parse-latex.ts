@@ -64,6 +64,12 @@ export interface DiscoveryResult {
    * name token is a mention, not a use).
    */
   definitionTokenStarts: Set<number>;
+  /**
+   * Packages/classes this file summons (\usepackage, \RequirePackage,
+   * \documentclass), each with the requesting site's span — the anchor for
+   * configured-dialect declarations resolved from the ctan records.
+   */
+  requestedPackages: Map<string, SourceSpan>;
 }
 
 export interface ParserArgSpan {
@@ -254,6 +260,7 @@ export function discoverDefinitions(
     envDefs: [],
     registry: { macros: {}, environments: {} },
     definitionTokenStarts: new Set(),
+    requestedPackages: new Map(),
   };
 
   let ast: any;
@@ -282,6 +289,21 @@ export function discoverDefinitions(
       const args: any[] = Array.isArray(node.args) ? node.args : [];
       const braceArgs = args.filter((a) => a && a.openMark === "{");
       const bracketArgs = args.filter((a) => a && a.openMark === "[");
+
+      // --- Package/class summons (configured-channel anchors) -------------
+      if (name === "usepackage" || name === "RequirePackage" || name === "documentclass") {
+        const payload = stringContentOfArg(braceArgs[0]);
+        if (payload) {
+          const { span } = definitionHull(sourceId, text, cmdSpan, args);
+          for (const pkg of payload.split(",")) {
+            const trimmed = pkg.trim();
+            if (trimmed && !result.requestedPackages.has(trimmed)) {
+              result.requestedPackages.set(trimmed, span);
+            }
+          }
+        }
+        continue;
+      }
 
       // --- \newcommand family (parser-attached args) ---------------------
       if (name in NEWCOMMAND_FAMILY) {

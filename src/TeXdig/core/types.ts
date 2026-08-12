@@ -72,13 +72,19 @@ export interface SourceFileRecord {
 // Witnesses and agreement
 // ---------------------------------------------------------------------------
 
-export type WitnessKind = "lexical" | "parser";
+/**
+ * `configured` marks declared evidence: a signature injected from lane
+ * configuration (e.g. the pinned unified-latex-ctan package records) rather
+ * than sighted by an instrument. Its span anchors the in-document site that
+ * summoned the declaration (the \usepackage/\documentclass invocation).
+ */
+export type WitnessKind = "lexical" | "parser" | "configured";
 
 export interface WitnessRecord {
   witness: WitnessKind;
   span: SourceSpan;
-  /** Which parser produced a `parser` sighting: unified-latex for LaTeX/.bbl, latex-utensils for .bib. */
-  instrument?: "unified-latex" | "latex-utensils";
+  /** Which instrument produced the sighting: unified-latex for LaTeX/.bbl, latex-utensils for .bib, unified-latex-ctan for configured declarations. */
+  instrument?: "unified-latex" | "latex-utensils" | "unified-latex-ctan";
   /** Scanner rule or parser node type that produced this sighting. */
   detail?: string;
 }
@@ -215,7 +221,8 @@ export type CensusEntity =
       kind: "environment-definition";
       /** The DEFINED environment's name (e.g. `lemma` for \newtheorem{lemma}...). */
       definedName: string;
-      mechanism: "newtheorem" | "newenvironment" | "newfloat";
+      /** `configured` = declared by lane configuration (package/class records), not defined in parsed source. */
+      mechanism: "newtheorem" | "newenvironment" | "newfloat" | "configured";
       signatureRaw?: string;
       /** Counter/numbering argument as written, for newtheorem. */
       counterRaw?: string;
@@ -362,6 +369,8 @@ export const DiagnosticCodes = {
   EntrypointMissing: "census/entrypoint-missing",
   /** The deposited tree no longer matches its manifest (file count drift): the frozen tree was modified after deposit, and attribution to the recorded sha256 would be a lie. */
   TreeManifestMismatch: "census/tree-manifest-mismatch",
+  /** Summoned packages with no configured signature record — the curation queue for the configured channel, not an error. */
+  ConfiguredGap: "census/configured-gap",
   /** unified-latex threw on a parsed source: the parser witness is absent for the whole file, and every entity there is lexical-only by defect, not design. */
   LatexParseError: "census/latex-parse-error",
 } as const;

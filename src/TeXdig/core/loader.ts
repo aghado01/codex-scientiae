@@ -36,6 +36,11 @@ export interface Dependencies {
   macros: {
     listNewcommands(ast: any): any[];
   };
+  /** Per-package signature records from the pinned unified-latex-ctan module. */
+  ctan: {
+    macroInfo: Record<string, Record<string, { signature?: string }>>;
+    environmentInfo: Record<string, Record<string, { signature?: string }>>;
+  };
   utensils: {
     bibtexParser: {
       parse(source: string): any;
@@ -66,6 +71,7 @@ export function loadDependencies(depsRoot: string): Dependencies {
   const visit = req("@unified-latex/unified-latex-util-visit");
   const match = req("@unified-latex/unified-latex-util-match");
   const macros = req("@unified-latex/unified-latex-util-macros");
+  const ctan = req("@unified-latex/unified-latex-ctan");
   const utensils = req("latex-utensils");
 
   loadedDeps = {
@@ -73,6 +79,7 @@ export function loadDependencies(depsRoot: string): Dependencies {
     visit,
     match,
     macros,
+    ctan,
     utensils,
   };
   loadedDepsRoot = resolvedRoot;

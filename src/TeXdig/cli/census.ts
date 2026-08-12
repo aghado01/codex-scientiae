@@ -20,6 +20,7 @@ import {
 } from "../census/parse-latex.ts";
 import { parseBib } from "../census/parse-bib.ts";
 import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
+import { buildConfiguredChannel, mintConfiguredEntities } from "../census/configured.ts";
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
@@ -27,6 +28,7 @@ import type {
   CensusEntity,
   PillarClaim,
   SourceCoverage,
+  SourceSpan,
   Diagnostic,
 } from "../core/types.ts";
 
@@ -145,17 +147,38 @@ export async function runCensus(options: CliArgs) {
   // ---------------------------------------------------------------------
   // Pass 1 — definition discovery across ALL parsed LaTeX sources, merged
   // into one document-global signature registry: a preamble \newcommand must
-  // inform argument attachment in every included file. Cross-file name
-  // collisions resolve last-wins here; true shadowing is a cut-2 join.
+  // inform argument attachment in every included file. The configured layer
+  // (ctan records for the packages the document summons) merges FIRST;
+  // document-discovered definitions overwrite it — the paper always wins.
+  // Cross-file name collisions resolve last-wins; true shadowing is a cut-2
+  // join.
   // ---------------------------------------------------------------------
   const discoveries = new Map<string, DiscoveryResult>();
-  const registry: SignatureRegistry = { macros: {}, environments: {} };
+  const requestedPackages = new Map<string, SourceSpan>();
   for (const record of graph.sources) {
     if (!record.parsed || record.language !== "latex") continue;
     const strat = graph.stratifications.get(record.id);
     const text = strat ? strat.stratifiedText : graph.rawContents.get(record.id) || "";
     const discovery = discoverDefinitions(record.id, text, deps);
     discoveries.set(record.id, discovery);
+    for (const [pkg, site] of discovery.requestedPackages) {
+      if (!requestedPackages.has(pkg)) requestedPackages.set(pkg, site);
+    }
+  }
+
+  const configured = buildConfiguredChannel(requestedPackages, deps);
+  if (configured.unresolvedPackages.length > 0) {
+    allDiagnostics.push({
+      code: "census/configured-gap",
+      severity: "info",
+      message: `Summoned packages with no configured signature record: ${configured.unresolvedPackages.join(", ")}`,
+    });
+  }
+  const registry: SignatureRegistry = {
+    macros: { ...configured.registry.macros },
+    environments: { ...configured.registry.environments },
+  };
+  for (const discovery of discoveries.values()) {
     Object.assign(registry.macros, discovery.registry.macros);
     Object.assign(registry.environments, discovery.registry.environments);
   }
@@ -182,6 +205,7 @@ export async function runCensus(options: CliArgs) {
         envDefs: [],
         registry: { macros: {}, environments: {} },
         definitionTokenStarts: new Set<number>(),
+        requestedPackages: new Map<string, SourceSpan>(),
       };
 
       const scan = scanLatex(record.id, strat.stratifiedText);
@@ -243,6 +267,31 @@ export async function runCensus(options: CliArgs) {
       allDiagnostics.push(...reconcileResult.diagnostics, ...cov.diagnostics);
     }
   }
+
+  // ---------------------------------------------------------------------
+  // Configured-dialect minting: declared signatures the document actually
+  // used, minus names the paper defined itself. Declaration entities are
+  // coverage-neutral (their anchor sites are already claimed).
+  // ---------------------------------------------------------------------
+  const usedMacroNames = new Set<string>();
+  const usedEnvNames = new Set<string>();
+  const documentDefinedMacros = new Set<string>();
+  const documentDefinedEnvs = new Set<string>();
+  for (const ent of allEntities) {
+    if (ent.kind === "macro-invocation") usedMacroNames.add(ent.name);
+    else if (ent.kind === "environment") usedEnvNames.add(ent.name);
+    else if (ent.kind === "macro-definition") documentDefinedMacros.add(ent.definedName);
+    else if (ent.kind === "environment-definition") documentDefinedEnvs.add(ent.definedName);
+  }
+  allEntities.push(
+    ...mintConfiguredEntities(
+      configured,
+      usedMacroNames,
+      usedEnvNames,
+      documentDefinedMacros,
+      documentDefinedEnvs
+    )
+  );
 
   // Emit bundle (entrypoint reported with on-disk casing when it resolved)
   const summary = emitCensusBundle(

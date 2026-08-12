@@ -106,6 +106,12 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             ($script:Diagnostics | Where-Object { $_.code -eq "census/unterminated-math" }) | Should -Not -BeNullOrEmpty
             ($script:Diagnostics | Where-Object { $_.code -eq "census/unmatched-end" }) | Should -Not -BeNullOrEmpty
         }
+
+        It "queues summoned-but-unconfigured packages as a configured-gap" {
+            $gap = $script:Diagnostics | Where-Object { $_.code -eq "census/configured-gap" }
+            $gap | Should -Not -BeNullOrEmpty
+            $gap.message | Should -Match "amsthm"
+        }
     }
 
     Context "Entities & Reconciliation" {
@@ -186,6 +192,24 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         It "emits begin-document and end-document envelope markers" {
             ($script:Entities | Where-Object { $_.marker -eq "begin-document" }) | Should -Not -BeNullOrEmpty
             ($script:Entities | Where-Object { $_.marker -eq "end-document" }) | Should -Not -BeNullOrEmpty
+        }
+
+        It "mints configured-dialect declarations for used package signatures" {
+            $conf = $script:Entities | Where-Object { $_.kind -eq "macro-definition" -and $_.dialect -eq "configured" -and $_.definedName -eq "textcolor" }
+            $conf | Should -Not -BeNullOrEmpty
+            $conf.id | Should -Be "ent:macro-definition@configured/xcolor:textcolor"
+            $conf.signatureRaw | Should -Be "o m m"
+            $conf.witnesses[0].witness | Should -Be "configured"
+            $conf.witnesses[0].instrument | Should -Be "unified-latex-ctan"
+
+            # The injected signature must actually drive argument attachment.
+            $inv = $script:Entities | Where-Object { $_.kind -eq "macro-invocation" -and $_.name -eq "textcolor" }
+            $inv.text | Should -Be '\textcolor{red}{tinted}'
+            $inv.spanProvenance | Should -Be "synthesized-hull"
+
+            # Unused declarations from the same package must NOT mint.
+            $unused = $script:Entities | Where-Object { $_.dialect -eq "configured" -and $_.definedName -eq "pagecolor" }
+            $unused | Should -BeNullOrEmpty
         }
 
         It "identifies BibTeX entries and @string definitions" {
