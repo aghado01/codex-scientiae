@@ -250,7 +250,7 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
         if (directive === "input" || directive === "include") {
           allowedExts = [".tex"];
         } else if (directive === "bibliography" || directive === "addbibresource") {
-          allowedExts = [".bib", ".tex"];
+          allowedExts = [".bib"];
         } else if (directive === "bibliographystyle") {
           allowedExts = [".bst"];
         }
@@ -329,14 +329,45 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
       record.role = "included";
       record.parsed = true;
     } else if (ext === ".bbl") {
+      // Symmetric reachability: the compiler reads exactly {jobname}.bbl, so
+      // only the entrypoint-stem sidecar parses. Anything else is inventoried
+      // sha-attested with a diagnostic — a stray .bbl is a finding.
       record.role = "bbl-sidecar";
-      record.parsed = true;
+      const expectedBbl = entrypointActual
+        ? entrypointActual.replace(/\.tex$/i, ".bbl")
+        : undefined;
+      if (expectedBbl && record.id.toLowerCase() === expectedBbl.toLowerCase()) {
+        record.parsed = true;
+      } else {
+        record.parsed = false;
+        diagnostics.push({
+          code: DiagnosticCodes.UnreachableSource,
+          severity: "warning",
+          message: `.bbl '${record.id}' does not match the entrypoint jobname sidecar ('${expectedBbl ?? "no entrypoint"}'); the compiler would not read it — inventoried unparsed`,
+        });
+      }
     } else if (ext === ".bib") {
       record.role = "bibliography-resource";
-      record.parsed = true;
+      if (referencedBibs.has(record.id)) {
+        record.parsed = true;
+      } else {
+        record.parsed = false;
+        diagnostics.push({
+          code: DiagnosticCodes.UnreachableSource,
+          severity: "warning",
+          message: `.bib '${record.id}' is not referenced by any \\bibliography/\\addbibresource directive — inventoried unparsed`,
+        });
+      }
     } else if (ext === ".bst") {
       record.role = "bibliography-style";
       record.parsed = false;
+      if (!referencedBsts.has(record.id)) {
+        diagnostics.push({
+          code: DiagnosticCodes.UnreachableSource,
+          severity: "warning",
+          message: `.bst '${record.id}' is not referenced by any \\bibliographystyle directive`,
+        });
+      }
     } else if (ext === ".cls" || ext === ".sty" || ext === ".clo") {
       record.role = "class-or-style";
       record.parsed = false;

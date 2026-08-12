@@ -58,7 +58,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $included.role | Should -Be "included"
             $included.parsed | Should -BeTrue
 
-            $bbl = $script:Sources | Where-Object { $_.id -eq "refs.bbl" }
+            $bbl = $script:Sources | Where-Object { $_.id -eq "main.bbl" }
             $bbl.role | Should -Be "bbl-sidecar"
             $bbl.parsed | Should -BeTrue
 
@@ -69,6 +69,13 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $unreach = $script:Sources | Where-Object { $_.id -eq "unreachable.tex" }
             $unreach.role | Should -Be "unreachable-tex"
             $unreach.parsed | Should -BeFalse
+        }
+
+        It "inventories the unreferenced bib without parsing (symmetric reachability)" {
+            $extra = $script:Sources | Where-Object { $_.id -eq "extra.bib" }
+            $extra.role | Should -Be "bibliography-resource"
+            $extra.parsed | Should -BeFalse
+            $extra.sha256 | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -84,10 +91,10 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $caseMismatch[0].message | Should -Match "intro.tex"
         }
 
-        It "records unreachable-source diagnostic for unreachable.tex" {
-            $unreach = $script:Diagnostics | Where-Object { $_.code -eq "census/unreachable-source" }
-            $unreach | Should -Not -BeNullOrEmpty
-            $unreach.message | Should -Match "unreachable.tex"
+        It "records unreachable-source diagnostics for unreachable.tex and extra.bib" {
+            $unreach = @($script:Diagnostics | Where-Object { $_.code -eq "census/unreachable-source" })
+            ($unreach.message -match "unreachable.tex") | Should -Not -BeNullOrEmpty
+            ($unreach.message -match "extra.bib") | Should -Not -BeNullOrEmpty
         }
 
         It "does NOT emit unresolved-include for commented-out include" {
@@ -225,7 +232,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         It "conforms to schema and attributes slug" {
             $script:Summary.schema | Should -Be "texdig-census/0.1"
             $script:Summary.slug | Should -Be "mini_article"
-            $script:Summary.sourceCount | Should -Be 5
+            $script:Summary.sourceCount | Should -Be 6
         }
 
         It "declares emitted and deferred stores" {

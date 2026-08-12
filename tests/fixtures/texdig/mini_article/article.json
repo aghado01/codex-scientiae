@@ -35,7 +35,7 @@
       "format": "application/x-latex-source-tree",
       "entrypoint": "main.tex",
       "entrypoint_selection": "explicit",
-      "files": 5,
+      "files": 6,
       "tex_files": 3,
       "sha256": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
     }
