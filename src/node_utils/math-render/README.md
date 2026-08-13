@@ -17,7 +17,7 @@ PowerShell and JavaScript live here; the third-party dependency is declared by
 ## Interface
 
 ```powershell
-. ./src/math-channel/math-render/math-render.ps1
+. ./src/node_utils/math-render/math-render.ps1
 
 Invoke-MathRenderAudit -Path ./paper.md -Strict
 Invoke-MathRenderAudit -Path ./paper.md -Strict -OutputPath ./artifacts/example/audits/math-render.json

@@ -331,19 +331,43 @@ Describe 'source path topology' {
                 $fileIndexes = @(for ($i = 0; $i -lt $argsList.Count; $i++) {
                         if ($argsList[$i] -ieq '-File') { $i }
                     })
-                if ($fileIndexes.Count -ne 1 -or $fileIndexes[0] -ge ($argsList.Count - 1)) {
-                    $failures.Add(".codex/config.toml:$name requires exactly one -File target")
+                $moduleIndexes = @(for ($i = 0; $i -lt $argsList.Count; $i++) {
+                        if ($argsList[$i] -ceq '-m') { $i }
+                    })
+                if (($fileIndexes.Count + $moduleIndexes.Count) -ne 1) {
+                    $failures.Add(
+                        ".codex/config.toml:$name requires exactly one -File or -m target")
                     continue
                 }
-                $scriptArg = $argsList[$fileIndexes[0] + 1]
-                $scriptPath = if ([System.IO.Path]::IsPathRooted($scriptArg)) {
-                    $scriptArg
+                if ($fileIndexes.Count -eq 1) {
+                    if ($fileIndexes[0] -ge ($argsList.Count - 1)) {
+                        $failures.Add(".codex/config.toml:$name has no -File target")
+                        continue
+                    }
+                    $scriptArg = $argsList[$fileIndexes[0] + 1]
+                    $scriptPath = if ([System.IO.Path]::IsPathRooted($scriptArg)) {
+                        $scriptArg
+                    }
+                    else { Join-Path $script:RepoRoot $scriptArg }
+                    if (-not [System.IO.File]::Exists($scriptPath)) {
+                        $failures.Add(".codex/config.toml:$name script -> $scriptArg")
+                    }
+                    continue
                 }
-                else {
-                    Join-Path $script:RepoRoot $scriptArg
+
+                if ($moduleIndexes[0] -ge ($argsList.Count - 1)) {
+                    $failures.Add(".codex/config.toml:$name has no -m target")
+                    continue
                 }
-                if (-not [System.IO.File]::Exists($scriptPath)) {
-                    $failures.Add(".codex/config.toml:$name script -> $scriptArg")
+                $module = $argsList[$moduleIndexes[0] + 1]
+                $modulePath = $module.Replace('.', [System.IO.Path]::DirectorySeparatorChar)
+                $moduleCandidates = @(
+                    [System.IO.Path]::Combine($script:RepoRoot, 'src', $modulePath, '__main__.py')
+                    [System.IO.Path]::Combine(
+                        $script:RepoRoot, 'src', 'mcp-servers', $modulePath, '__main__.py')
+                )
+                if (-not ($moduleCandidates | Where-Object { [System.IO.File]::Exists($_) })) {
+                    $failures.Add(".codex/config.toml:$name module -> $module")
                 }
             }
         }
