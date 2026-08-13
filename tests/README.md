@@ -52,7 +52,7 @@ At minimum, verify the file through the public batch entrypoint (the batch run d
 
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss) -MaxWorkers 1
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss) -MaxWorkers 1
 ```
 
 A compliant file selects the expected tests by exact path, reports real failures as nonzero, cleans its
@@ -89,7 +89,7 @@ inherit an ambient machine temp directory:
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/<owner>/test_<behavior>.py `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss) -MaxWorkers 1
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss) -MaxWorkers 1
 ```
 
 The admitted contract requires an exact-file container, native JUnit, declared
@@ -139,12 +139,12 @@ freeze this ownership boundary.
 
 ```pwsh
 pwsh -File tests/parallel.ps1 `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss)
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss)
 pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/jsonl_engine `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss_01) -MaxWorkers 4
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss_01) -MaxWorkers 4
 pwsh -File tests/parallel.ps1 -Framework All `
   -PesterPath tests/jsonl_engine-client/jsonl_engine-client-module.Tests.ps1 -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss_02) -MaxWorkers 2
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss_02) -MaxWorkers 2
 ```
 
 The shell imports the canonical `batch-adapters` (`adapters.psd1`) and `batch-executor` manifests, asks the
@@ -154,7 +154,7 @@ addresses, and native XML. Both lanes share one worker budget, cancellation path
 order.
 
 Caller-owned repository run directories belong under
-`artifacts/test-runs/YYYYDDMM_HHmmss[_NN]`. The repository `.codex/` tree is client-owned state and is not
+`artifacts/test-runs/YYYYMMDD_HHmmss[_NN]`. The repository `.codex/` tree is client-owned state and is not
 a test-run or scratch destination. Direct successful runs remove their caller-owned root after accepting
 the outcome; retained failed-run evidence remains under the same `artifacts/test-runs/` tier.
 
@@ -200,7 +200,7 @@ caller-owned runstamp in `artifacts/test-runs/`. The public batch shell supplies
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss)
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss)
 ```
 
 The cache provider is disabled in repository configuration because `.pytest_cache` is neither evidence nor

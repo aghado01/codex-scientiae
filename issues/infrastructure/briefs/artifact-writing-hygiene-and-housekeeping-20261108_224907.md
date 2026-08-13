@@ -4,6 +4,13 @@ Status: repository test-root ownership corrected; allocator and pressure-collect
 
 Snapshot: 2026-08-11, local runstamp `20261108_224907`.
 
+> CORRIGENDUM (owner ruling, 2026-08-13): every `YYYYDDMM_HHmmss` runstamp prescription in this
+> brief transposed day and month; it leaked into `AGENTS.md` rule 4 and `tests/README.md` and
+> spawned mis-stamped `artifacts/test-runs/` directories. The house convention is
+> `YYYYMMDD_HHmmss[_NN]` — ISO date order, chosen so directory names sort chronologically —
+> which the stamping code paths (`run-paths.ps1`, shared logger, `run-census.ps1`) already emit.
+> Read this brief's stamp prescriptions accordingly, including its own filename stamp.
+
 Scope: active `codex-scientiae` code and current repository-local working trees. The graveyard and
 historical material under `issues/` were excluded from the code scan except where linked as prior design
 work. This brief does not authorize deletion of any existing path.

@@ -12,7 +12,8 @@ This document is intentionally vague in order not to overspecify or otherwise bl
 
 3. See `tests/README.md` for guidance on adding new tests and running test batches via the batch-executor entrypoint.
 
-4. Repository test runs and test scratch belong under `artifacts/test-runs/YYYYDDMM_HHmmss[_NN]`.
+4. Repository test runs and test scratch belong under `artifacts/test-runs/YYYYMMDD_HHmmss[_NN]`
+   (ISO-ordered date so directory names sort chronologically).
    The repository `.codex/` tree is client-owned state and is not a project write boundary. Non-repository
    scratch may use the separately authorized global `~/.Codex/tmp` location.
 
