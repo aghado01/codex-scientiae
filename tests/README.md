@@ -244,6 +244,12 @@ eight independent jobs: all 51 selected tests passed. Including the six-test pro
 the integrated direct gate passed 421 with ten skips across 431 collected tests. The earlier multilingual
 22-job witness remains historical rather than the current Python census.
 
+The 2026-08-12 procurement-review remediation brings this closure to 34 physical containers and 440
+collected tests. Its repository-local integrated gate passed 430 with ten platform/capability skips. The
+seven changed containers passed all 70 selected tests in one bounded process and then passed 7/7 through
+the public batch shell with no infrastructure errors. Protocol calls now execute all sixteen procurement
+MCP tools.
+
 ## Batchable Pester-container contract
 
 This is the canonical BEX-502 authoring and review contract. The supporting

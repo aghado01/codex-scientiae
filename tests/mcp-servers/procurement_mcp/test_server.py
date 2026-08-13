@@ -36,7 +36,10 @@ from procurement.domain.acquisition.planning import (
     RetrievalCandidate,
     UnavailableArtifact,
 )
-from procurement.domain.deposits import PORTABLE_LEAF_PATTERN
+from procurement.domain.deposits import (
+    PORTABLE_LEAF_MAX_UTF16_UNITS,
+    PORTABLE_LEAF_PATTERN,
+)
 from procurement.domain.discovery import SearchPage, SearchRequest
 from procurement.domain.metadata import (
     ApiResponseEvidence,
@@ -585,6 +588,10 @@ class TestProcurementMcp(unittest.TestCase):
                         metadata_input["properties"]["deposit_slug"]["pattern"],
                         PORTABLE_LEAF_PATTERN,
                     )
+                    self.assertEqual(
+                        metadata_input["properties"]["deposit_slug"]["maxLength"],
+                        PORTABLE_LEAF_MAX_UTF16_UNITS,
+                    )
                     metadata_output = metadata_tool["outputSchema"]
                     self.assertEqual(
                         set(metadata_output["required"]),
@@ -684,6 +691,12 @@ class TestProcurementMcp(unittest.TestCase):
                                 "pattern"
                             ],
                             PORTABLE_LEAF_PATTERN,
+                        )
+                        self.assertEqual(
+                            local_import_tool["inputSchema"]["properties"][field][
+                                "maxLength"
+                            ],
+                            PORTABLE_LEAF_MAX_UTF16_UNITS,
                         )
 
                     catalog_list = await client.call_tool("list_article_catalogs", {})

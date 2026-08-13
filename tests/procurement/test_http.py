@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import gzip
+import os
 import tempfile
 import threading
 import unittest
@@ -215,11 +216,15 @@ class TestHttpClient(unittest.TestCase):
                 RequestPolicy(**values)
 
     def test_download_refuses_content_encoding_without_residue(self) -> None:
+        class EncodedBody(httpx.AsyncByteStream):
+            async def __aiter__(self):
+                yield gzip.compress(b"encoded artifact")
+
         def handler(request: httpx.Request) -> httpx.Response:
             return httpx.Response(
                 200,
-                content=b"encoded artifact",
-                headers={"content-encoding": "gzip", "content-length": "99"},
+                stream=EncodedBody(),
+                headers={"content-encoding": "gzip", "content-length": "36"},
             )
 
         async def exercise(destination: Path) -> None:

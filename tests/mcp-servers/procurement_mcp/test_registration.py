@@ -103,11 +103,11 @@ EXPECTED_TOOL_SCHEMA_FINGERPRINTS = {
         "358fa9d40645cbc69e978cdce201e2d464cc69fe1a1359801100823515c7ceaa",
     ),
     "prepare_source_deposit_metadata": (
-        "1324ae3f3235c6b58365357bc0dbbfb8b1e34e158bb10d9bfc77c667bd6f8a9f",
+        "75f3cc4e7e3eb782c6e99b1af2c1c3099ed471d41fb16283ebde840eab5017b4",
         "126e73bee9d56850692293a801bd1384d21011e02dc4e6250423b27e3ba0a918",
     ),
     "prepare_article_metadata_by_doi": (
-        "1f7c0438e1c567ac77c5f12b038620a542885bf3cdffd55fa5e0063a281d4e54",
+        "11611d9ad51069d196fd9c7306cb770f053d3883593390e1ae063adfa292a7eb",
         "126e73bee9d56850692293a801bd1384d21011e02dc4e6250423b27e3ba0a918",
     ),
     "plan_artifact_acquisition": (
@@ -119,7 +119,7 @@ EXPECTED_TOOL_SCHEMA_FINGERPRINTS = {
         "22055189a8e472069a57ef5ac69659cf8e9a7996859e951232f417fecb47e5d9",
     ),
     "get_acquisition_receipt": (
-        "1ba812e9de4679c41b91591a456e1bd1709f0062c53c289ec695e54dafaa8e4c",
+        "e6a6cf7c22e4a23df3804f0980c75e79b61b6e3e4ede1dbc5546d6650df6e3ea",
         "8e4855dcd86b6b0b2d504727b6f2eb1d00a88117cbbc2e969e719224eae94358",
     ),
     "list_local_import_inboxes": (
@@ -127,11 +127,11 @@ EXPECTED_TOOL_SCHEMA_FINGERPRINTS = {
         "33b0654bf63661baf0e945f5021c2a1bcc7feb891f1f0789823789831748e4ae",
     ),
     "import_local_artifact": (
-        "843eb62908f9a1f60a650dd5901bbf3231cc7875f370da26e45434fb914de589",
+        "65f97bf89643cad7a1e208a9a6de5ce55c02669151d72154b14440ff4a84180f",
         "22055189a8e472069a57ef5ac69659cf8e9a7996859e951232f417fecb47e5d9",
     ),
     "materialize_source_deposit": (
-        "33f20344bfab51ed065ae520a23af8c88526115cf621e32c04206d83fa4bbec3",
+        "49a3becdd600516e17ce26292ec771403d6448d228c6b6fe990ca974fd110faa",
         "61df49265c2edce3f75fd58a6dd3d1f87506b1fdd057436e38d3dc5b2f3e35d8",
     ),
     "list_article_catalogs": (
