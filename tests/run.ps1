@@ -6,11 +6,9 @@
   Pester >=5 lives in the portable PowerShell module tree, not on the default module path while the
   portable-env integration is degraded, so we import it by explicit path anchored on $env:PORTABLE_ROOT
   (falls back to a normally-installed >=5 if that anchor isn't set). Throws on any test failure, a missing
-  path, OR an empty run, so direct child processes exit non-zero and nested callers can observe the failure.
-
-    pwsh -File tests/run.ps1
-    pwsh -File tests/run.ps1 -Path tests/latex-ingest       # one module
-    pwsh -File tests/run.ps1 -Path tests/shared/masks.Tests.ps1
+  path, OR an empty run, so child processes exit non-zero and nested callers can observe the failure.
+  This exact-container entrypoint requires TEMP, TMP, and TMPDIR to identify one directory below the
+  repository artifacts root. The public batch adapter supplies that boundary.
 #>
 [CmdletBinding()]
 param(
@@ -25,6 +23,14 @@ param(
     [AllowEmptyCollection()] [string[]] $Tag = @(),
     [AllowEmptyCollection()] [string[]] $ExcludeTag = @()
 )
+
+$artifactBoundary = Join-Path $PSScriptRoot 'artifact-boundary.ps1'
+if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
+    throw "run.ps1: artifact boundary helper not found: '$artifactBoundary'"
+}
+. $artifactBoundary
+$repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
+$null = Assert-TestHarnessTempEnvironment -RepositoryRoot $repositoryRoot
 
 if (-not (Get-Module Pester | Where-Object { $_.Version -ge [version]'5.0' })) {
     $manifest = $null
@@ -60,10 +66,9 @@ if ($Tag.Count -gt 0) { $cfg.Filter.Tag = [string[]]@($Tag) }
 if ($ExcludeTag.Count -gt 0) { $cfg.Filter.ExcludeTag = [string[]]@($ExcludeTag) }
 $resolvedResultPath = $null
 if (-not [string]::IsNullOrWhiteSpace($ResultPath)) {
-    $resolvedResultPath = if ([System.IO.Path]::IsPathFullyQualified($ResultPath)) {
-        [System.IO.Path]::GetFullPath($ResultPath)
-    }
-    else { [System.IO.Path]::GetFullPath($ResultPath, (Get-Location).Path) }
+    $resolvedResultPath = Resolve-TestHarnessArtifactPath -Value $ResultPath `
+        -RepositoryRoot $repositoryRoot -Role 'run.ps1 ResultPath' `
+        -BasePath (Get-Location).Path
     $resultDirectory = [System.IO.Path]::GetDirectoryName($resolvedResultPath)
     if (-not [string]::IsNullOrWhiteSpace($resultDirectory)) {
         [void][System.IO.Directory]::CreateDirectory($resultDirectory)

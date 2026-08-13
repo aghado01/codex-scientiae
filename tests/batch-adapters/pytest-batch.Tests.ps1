@@ -4,6 +4,8 @@ BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
     $script:AdaptersManifest = Join-Path $script:RepositoryRoot 'src/batch-adapters/adapters.psd1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
+    $script:RepositoryArtifactBoundary = Join-Path $script:RepositoryRoot `
+        'tests/artifact-boundary.ps1'
     $pythonCandidate = Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe'
     $script:PythonPath = if (Test-Path -LiteralPath $pythonCandidate -PathType Leaf) {
         (Resolve-Path -LiteralPath $pythonCandidate).Path
@@ -15,11 +17,13 @@ BeforeAll {
         param([Parameter(Mandatory)] [string] $Root)
 
         $tests = Join-Path $Root 'tests'
-        $run = Join-Path $Root 'run'
+        $run = Join-Path $Root 'artifacts/20261208_000000'
         [void][System.IO.Directory]::CreateDirectory($tests)
         [void][System.IO.Directory]::CreateDirectory($run)
         Copy-Item -LiteralPath $script:RepositoryPytestRunner `
             -Destination (Join-Path $tests 'pytest.ps1')
+        Copy-Item -LiteralPath $script:RepositoryArtifactBoundary `
+            -Destination (Join-Path $tests 'artifact-boundary.ps1')
         Set-Content -LiteralPath (Join-Path $Root 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]
@@ -174,6 +178,8 @@ Describe 'Get-PytestBatchJob planning' {
         $empty = Join-Path $fixture.Root 'empty'
         [void][System.IO.Directory]::CreateDirectory($empty)
         $missingRun = Join-Path $fixture.Root 'missing-run'
+        $outsideRun = Join-Path (Split-Path -Parent $fixture.Root) 'outside-run'
+        [void][System.IO.Directory]::CreateDirectory($outsideRun)
         $missingPython = Join-Path $fixture.Root 'missing-python.exe'
 
         $common = @{
@@ -194,6 +200,10 @@ Describe 'Get-PytestBatchJob planning' {
                 -RepositoryRoot $fixture.Root -PythonPath $fakePython `
                 -PowerShellPath $script:PowerShellPath } |
             Should -Throw '*RunDirectory must be an existing absolute path*'
+        { Get-PytestBatchJob -Path $valid -RunDirectory $outsideRun `
+                -RepositoryRoot $fixture.Root -PythonPath $fakePython `
+                -PowerShellPath $script:PowerShellPath } |
+            Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
         { Get-PytestBatchJob @common -Path $valid -PythonPath $missingPython } |
             Should -Throw '*Python interpreter not found*'
         { Get-PytestBatchJob -Path $valid -RunDirectory $fixture.RunDirectory `
@@ -205,6 +215,28 @@ Describe 'Get-PytestBatchJob planning' {
 }
 
 Describe 'pytest-batch execution integration' {
+    It 'rejects direct result and temp paths outside repository artifacts' {
+        $fixture = New-PytestBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-boundary')
+        $testPath = Write-PytestBatchFixture (Join-Path $fixture.Tests 'test_boundary.py')
+        $fakePython = Join-Path $fixture.Root 'fake-python.exe'
+        Set-Content -LiteralPath $fakePython -Encoding utf8 -Value 'must not execute'
+        $validResult = Join-Path $fixture.RunDirectory 'direct/pytest.xml'
+        $validTemp = Join-Path $fixture.RunDirectory 'direct/temp'
+        $outside = Join-Path $fixture.Root 'outside'
+
+        { & $fixture.Runner -Path $testPath -ResultPath (Join-Path $outside 'pytest.xml') `
+                -RepositoryRoot $fixture.Root -PythonPath $fakePython `
+                -PytestConfig $fixture.Config -TestSuiteName 'result-boundary' `
+                -TempPath $validTemp -OutputVerbosity Quiet } |
+            Should -Throw '*ResultPath must be a descendant of RepositoryRoot/artifacts*'
+        { & $fixture.Runner -Path $testPath -ResultPath $validResult `
+                -RepositoryRoot $fixture.Root -PythonPath $fakePython `
+                -PytestConfig $fixture.Config -TestSuiteName 'temp-boundary' `
+                -TempPath $outside -OutputVerbosity Quiet } |
+            Should -Throw '*TempPath must be a descendant of RepositoryRoot/artifacts*'
+        Test-Path -LiteralPath $outside | Should -BeFalse
+    }
+
     It 'enforces nested-Python isolation when the runner is called directly' {
         if (-not $script:PythonPath) {
             Set-ItResult -Skipped -Because 'repository Python environment is unavailable'
@@ -214,6 +246,7 @@ Describe 'pytest-batch execution integration' {
         $testPath = Write-PytestBatchFixture (Join-Path $fixture.Tests 'test_environment.py') `
             -Content @'
 import os
+import tempfile
 from pathlib import Path
 
 def test_runner_environment():
@@ -225,6 +258,7 @@ def test_runner_environment():
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
     assert os.environ["TMP"] == os.environ["TEMP"] == os.environ["TMPDIR"]
+    assert Path(tempfile.gettempdir()) == Path(os.environ["TEMP"])
     assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
 '@
         $resultPath = Join-Path $fixture.RunDirectory 'direct/pytest.xml'
@@ -276,6 +310,7 @@ def test_runner_environment():
         $fixture = New-PytestBatchFixtureRepository -Root (Join-Path $TestDrive 'execution')
         $passPath = Write-PytestBatchFixture (Join-Path $fixture.Tests 'test_pass.py') -Content @'
 import os
+import tempfile
 from pathlib import Path
 
 def test_pass(tmp_path):
@@ -284,6 +319,7 @@ def test_pass(tmp_path):
     (artifact / "pass.txt").write_text("retained", encoding="utf-8")
     assert Path(os.environ["TMP"]).is_absolute()
     assert os.environ["TMP"] == os.environ["TEMP"] == os.environ["TMPDIR"]
+    assert Path(tempfile.gettempdir()) == Path(os.environ["TEMP"])
     assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
@@ -326,7 +362,18 @@ def test_fail():
         }
 
         @($execution.Results.Id) | Should -Be @($passJob.Id, $failJob.Id, $emptyJob.Id)
-        @($execution.Results.State) | Should -Be @('Succeeded', 'Failed', 'Failed')
+        $stateDiagnostics = @($execution.Results | ForEach-Object {
+                [ordered]@{
+                    id = $_.Id
+                    state = $_.State
+                    exit_code = $_.ExitCode
+                    error = $_.Error
+                    stdout = @($_.StdOut)
+                    stderr = @($_.StdErr)
+                }
+            }) | ConvertTo-Json -Depth 8 -Compress
+        @($execution.Results.State) | Should -Be @('Succeeded', 'Failed', 'Failed') `
+            -Because $stateDiagnostics
         $execution.Summary.Total | Should -Be 3
         $execution.Summary.Succeeded | Should -Be 1
         $execution.Summary.Failed | Should -Be 2

@@ -39,7 +39,10 @@ function Resolve-TeXdigBatchJobAddress {
     # The only adapter-owned run-relative composition. One document per job;
     # the job container IS the document container: the census worker emits its
     # six stores directly at this root (Writes root).
+    $tempRoot = [System.IO.Path]::Combine($RunDirectory, 'texdig-temp', $AddressLeaf)
     return [pscustomobject]@{
         JobDirectory = [System.IO.Path]::Combine($RunDirectory, 'texdig-jobs', $AddressLeaf)
+        TempRoot = $tempRoot
+        JsonScratchRoot = [System.IO.Path]::Combine($tempRoot, 'json-scratch')
     }
 }

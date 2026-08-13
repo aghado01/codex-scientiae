@@ -14,8 +14,9 @@ function Get-TeXdigBatchJob {
         [switch] $SkipValidation
     )
 
-    $repository = [System.IO.Path]::GetFullPath($RepositoryRoot)
-    $run = Resolve-TeXdigBatchRunDirectory -RunDirectory $RunDirectory
+    $repository = Resolve-TeXdigBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
+    $run = Resolve-TeXdigBatchRunDirectory -RunDirectory $RunDirectory `
+        -RepositoryRoot $repository
     $worker = Resolve-TeXdigBatchWorker -RepositoryRoot $repository -DepsRoot $DepsRoot
     $childPowerShell = Resolve-TeXdigBatchPowerShellPath -PowerShellPath $PowerShellPath
     $articles = @(Find-TeXdigBatchArticle -Path $Path -RepositoryRoot $repository)
@@ -54,6 +55,8 @@ function Get-TeXdigBatchJob {
             TreeSha256 = $manifest.TreeSha256
             RunDirectory = $run
             JobDirectory = $address.JobDirectory
+            TempRoot = $address.TempRoot
+            JsonScratchRoot = $address.JsonScratchRoot
             DepsRoot = $worker.DepsRoot
             NodePath = $worker.NodePath
         }
@@ -63,9 +66,15 @@ function Get-TeXdigBatchJob {
             -ProcessSpec @{
                 PowerShellPath = $childPowerShell
                 WorkingDirectory = $repository
+                Environment = @{
+                    CODEX_JSON_SCRATCH_ROOT = $address.JsonScratchRoot
+                    TEMP = $address.TempRoot
+                    TMP = $address.TempRoot
+                    TMPDIR = $address.TempRoot
+                }
             } `
             -EstimatedCost ([math]::Max(1, [double]$manifest.TreeBytes)) `
-            -Writes @($address.JobDirectory) `
+            -Writes @($address.JobDirectory, $address.TempRoot) `
             -WorkingDirectory $repository -Metadata $metadata
     }
 }

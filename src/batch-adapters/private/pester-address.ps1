@@ -47,5 +47,6 @@ function Resolve-PesterBatchJobAddress {
         JobDirectory = $jobDirectory
         ResultPath = $resultPath
         ArtifactRoot = [System.IO.Path]::Combine($jobDirectory, 'artifacts')
+        TempRoot = [System.IO.Path]::Combine($jobDirectory, 'temp')
     }
 }

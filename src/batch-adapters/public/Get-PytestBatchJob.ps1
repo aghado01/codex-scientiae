@@ -15,10 +15,14 @@ function Get-PytestBatchJob {
     )
 
     $repository = Resolve-PytestBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
-    $run = Resolve-PytestBatchRunDirectory -RunDirectory $RunDirectory
+    $run = Resolve-PytestBatchRunDirectory -RunDirectory $RunDirectory `
+        -RepositoryRoot $repository
     $runner = Resolve-PytestBatchFileDependency -Path (
         [System.IO.Path]::Combine($repository, 'tests', 'pytest.ps1')) `
         -RepositoryRoot $repository -Role 'runner'
+    $null = Resolve-PytestBatchFileDependency -Path (
+        [System.IO.Path]::Combine($repository, 'tests', 'artifact-boundary.ps1')) `
+        -RepositoryRoot $repository -Role 'runner support'
     $python = Resolve-PytestBatchPythonPath -PythonPath $PythonPath -RepositoryRoot $repository
     $childPowerShell = Resolve-PytestBatchPowerShellPath -PowerShellPath $PowerShellPath
     $configInput = if ([string]::IsNullOrWhiteSpace($PytestConfig)) {

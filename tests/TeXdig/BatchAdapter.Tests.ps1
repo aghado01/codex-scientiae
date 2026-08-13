@@ -30,12 +30,20 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
         It "addresses one job container under texdig-jobs and declares it in Writes" {
             $jobDir = $script:Jobs[0].Metadata.JobDirectory
             $jobDir | Should -Match ([regex]::Escape((Join-Path $script:RunDirectory "texdig-jobs")))
-            $script:Jobs[0].Writes | Should -Contain $jobDir
+            $script:Jobs[0].Writes | Should -Be @($jobDir, $script:Jobs[0].Metadata.TempRoot)
             $script:Jobs[0].Parameters.OutDirectory | Should -Be $jobDir
+            $environment = $script:Jobs[0].ProcessSpec.Environment
+            @($environment.TEMP, $environment.TMP, $environment.TMPDIR) | Should -Be @(
+                $script:Jobs[0].Metadata.TempRoot,
+                $script:Jobs[0].Metadata.TempRoot,
+                $script:Jobs[0].Metadata.TempRoot)
+            $environment.CODEX_JSON_SCRATCH_ROOT |
+                Should -Be $script:Jobs[0].Metadata.JsonScratchRoot
         }
 
         It "creates no directories at planning time" {
             Test-Path -LiteralPath $script:Jobs[0].Metadata.JobDirectory | Should -BeFalse
+            Test-Path -LiteralPath $script:Jobs[0].Metadata.TempRoot | Should -BeFalse
         }
 
         It "freezes worker inputs and identity metadata" {
@@ -57,6 +65,12 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
         It "refuses paths holding no deposited article" {
             { Get-TeXdigBatchJob -Path (Join-Path $script:RepositoryRoot "src/TeXdig/core") `
                 -RunDirectory $script:RunDirectory } | Should -Throw "*no deposited articles*"
+        }
+
+        It "refuses a run directory outside the repository artifacts root" {
+            { Get-TeXdigBatchJob -Path $script:FixtureDir `
+                    -RunDirectory (Join-Path $script:RepositoryRoot 'src') } |
+                Should -Throw "*RunDirectory must be a descendant of RepositoryRoot/artifacts*"
         }
     }
 

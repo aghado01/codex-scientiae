@@ -21,6 +21,12 @@ param(
     [string] $OutputVerbosity = 'Normal'
 )
 
+$artifactBoundary = Join-Path $PSScriptRoot 'artifact-boundary.ps1'
+if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
+    throw "pytest.ps1: artifact boundary helper not found: '$artifactBoundary'"
+}
+. $artifactBoundary
+
 function Resolve-PytestRunnerPath {
     param(
         [Parameter(Mandatory)] [string] $Value,
@@ -152,14 +158,10 @@ $python = Resolve-PytestRunnerPath -Value $PythonPath -BasePath $repository `
     -Role 'Python interpreter' -PathType Leaf
 $config = Resolve-PytestRunnerPath -Value $PytestConfig -BasePath $repository `
     -Role 'pytest config' -PathType Leaf
-$resolvedResultPath = if ([System.IO.Path]::IsPathFullyQualified($ResultPath)) {
-    [System.IO.Path]::GetFullPath($ResultPath)
-}
-else { [System.IO.Path]::GetFullPath($ResultPath, $repository) }
-$resolvedTempPath = if ([System.IO.Path]::IsPathFullyQualified($TempPath)) {
-    [System.IO.Path]::GetFullPath($TempPath)
-}
-else { [System.IO.Path]::GetFullPath($TempPath, $repository) }
+$resolvedResultPath = Resolve-TestHarnessArtifactPath -Value $ResultPath `
+    -RepositoryRoot $repository -Role 'pytest.ps1 ResultPath' -BasePath $repository
+$resolvedTempPath = Resolve-TestHarnessArtifactPath -Value $TempPath `
+    -RepositoryRoot $repository -Role 'pytest.ps1 TempPath' -BasePath $repository
 
 $resultDirectory = [System.IO.Path]::GetDirectoryName($resolvedResultPath)
 if ([string]::IsNullOrWhiteSpace($resultDirectory)) {

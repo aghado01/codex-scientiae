@@ -1,10 +1,13 @@
 # Batch adapters
 
 `batch-adapters` contains the domain planners for the finite-batch executor. Import the canonical module
-through `adapters.psd1`. It exports two commands while leaving the executor's four-command public surface
-unchanged: `Get-PesterBatchJob` for repository Pester work and `Get-PytestBatchJob` for repository pytest
-work. These are public files in one module, not one PowerShell module per adapter; no unitary adapter
-module or compatibility alias is introduced.
+through `adapters.psd1`. It exports `Get-PesterBatchJob`, `Get-PytestBatchJob`, and
+`Get-TeXdigBatchJob` while leaving the executor's four-command public surface unchanged. These are public
+files in one module, not one PowerShell module per adapter; no unitary adapter module or compatibility alias
+is introduced.
+
+Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts`. Child processes receive
+repository-local `TEMP`, `TMP`, and `TMPDIR`; the operating-system user temp tree is not a fallback.
 
 A successor LaTeX conversion planner can rejoin this module later under the same job-emission contract
 (`New-BatchJob` only; caller owns `New-BatchPlan` / `Invoke-BatchPlan`). The retired latex-ingest adapter
@@ -13,7 +16,8 @@ surface lives in the graveyard archive.
 ## Pester adapter
 
 `Get-PesterBatchJob` accepts caller-selected `*.Tests.ps1` files or directories and an existing absolute
-`RunDirectory`. Directories expand recursively to one `PowerShellProcess` job per test file. Optional Pester
+`RunDirectory` below `RepositoryRoot/artifacts`. Directories expand recursively to one
+`PowerShellProcess` job per test file. Optional Pester
 full-name and tag filters select cases inside each file without loading Pester or suite code in the planning
 process.
 
@@ -24,15 +28,15 @@ Planning resolves and freezes:
 - the exact Pester 5-or-newer manifest imported by the child;
 - the PowerShell executable, repository working directory, and runner entrypoint;
 - a file-size cost hint; and
-- one container address beneath `RunDirectory/pester-jobs/`, with a Pester-native `pester.xml` result and
-  sibling `artifacts/` root.
+- one container address beneath `RunDirectory/pester-jobs/`, with a Pester-native `pester.xml` result,
+  retained `artifacts/`, and ephemeral `temp/` root.
 
 One private pure resolver owns all run-relative address composition. Planning creates no directories or
-files. The job declares both the XML path and container artifact root in `Writes`, and its
-`ProcessSpec.Environment` transports the absolute artifact root to the child as
-`CODEX_TEST_ARTIFACT_ROOT`. Pester's XML is an explicit runner-native artifact; retained suite evidence
-stays below the container artifact root; and the generic batch execution result remains the in-memory
-return from `Invoke-BatchPlan`.
+files. The job declares the XML, retained artifact, and temporary roots in `Writes`.
+`ProcessSpec.Environment` transports `CODEX_TEST_ARTIFACT_ROOT`, a job-local
+`CODEX_JSON_SCRATCH_ROOT`, and identical `TEMP`, `TMP`, and `TMPDIR` values. Pester's XML is an explicit
+runner-native artifact; retained suite evidence stays below the container artifact root; and the generic
+batch execution result remains the in-memory return from `Invoke-BatchPlan`.
 
 `Get-PesterBatchJob` only plans work. The caller imports the batch-executor module separately, passes the
 emitted jobs to `New-BatchPlan`, and invokes a valid plan through `Invoke-BatchPlan`. This keeps adapters
@@ -47,7 +51,8 @@ process policy.
 ## Pytest adapter
 
 `Get-PytestBatchJob` accepts caller-selected `test_*.py` files or directories and an existing absolute
-`RunDirectory`. Directory discovery produces one `PowerShellProcess` job per physical file without
+`RunDirectory` below `RepositoryRoot/artifacts`. Directory discovery produces one `PowerShellProcess` job
+per physical file without
 importing pytest or test code. Pytest methods, node IDs, parameter rows, and `unittest.subTest` contexts stay
 inside the file job; the adapter does not add method-level scheduling or pytest-xdist.
 
@@ -81,9 +86,10 @@ keeping framework selectors, observations, job IDs, address roots, and native re
 ## TeXdig adapter
 
 `Get-TeXdigBatchJob` accepts deposited article directories, `article.json` files, or collection
-directories (expanded one level to their article children) plus an existing absolute `RunDirectory`.
-One document per job; the job container IS the document container: the census worker emits its six
-stores directly at `RunDirectory/texdig-jobs/<slug>-<digest>/`, declared as the job's `Writes` root.
+directories (expanded one level to their article children) plus an existing absolute `RunDirectory` below
+`RepositoryRoot/artifacts`. One document per job; the job container IS the document container: the census
+worker emits its six stores directly at `RunDirectory/texdig-jobs/<slug>-<digest>/`. Temporary and JSON
+coordination state uses the distinct declared root `RunDirectory/texdig-temp/<slug>-<digest>/`.
 
 Planning resolves and freezes:
 

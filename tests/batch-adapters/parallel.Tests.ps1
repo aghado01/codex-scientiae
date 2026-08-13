@@ -5,6 +5,8 @@ BeforeAll {
     $script:ParallelShell = Join-Path $script:RepositoryRoot 'tests/parallel.ps1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
+    $script:RepositoryArtifactBoundary = Join-Path $script:RepositoryRoot `
+        'tests/artifact-boundary.ps1'
     $script:PythonPath = (Resolve-Path `
         (Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe')).Path
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
@@ -15,13 +17,15 @@ BeforeAll {
 
         $repository = Join-Path $Root 'repository'
         $tests = Join-Path $repository 'tests'
-        $runDirectory = Join-Path $Root 'caller-run'
+        $runDirectory = Join-Path $repository 'artifacts/20261208_000000'
         foreach ($directory in @($repository, $tests, $runDirectory)) {
             [void][System.IO.Directory]::CreateDirectory($directory)
         }
         Copy-Item -LiteralPath $script:RepositoryRunner -Destination (Join-Path $tests 'run.ps1')
         Copy-Item -LiteralPath $script:RepositoryPytestRunner `
             -Destination (Join-Path $tests 'pytest.ps1')
+        Copy-Item -LiteralPath $script:RepositoryArtifactBoundary `
+            -Destination (Join-Path $tests 'artifact-boundary.ps1')
         Set-Content -LiteralPath (Join-Path $repository 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]
@@ -190,7 +194,8 @@ Describe 'beta parallel fixture' {
             if ($stem.EndsWith('.Tests')) { $stem = $stem.Substring(0, $stem.Length - 6) }
             Test-Path -LiteralPath (Join-Path $metadata.ArtifactRoot "$stem/witness.txt") `
                 -PathType Leaf | Should -BeTrue
-            @($result.Input.Writes) | Should -Be @($metadata.ResultPath, $metadata.ArtifactRoot)
+            @($result.Input.Writes) | Should -Be @(
+                $metadata.ResultPath, $metadata.ArtifactRoot, $metadata.TempRoot)
             Get-Process -Id $result.ProcessId -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         }
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File |
@@ -363,7 +368,7 @@ Describe 'failing sibling fixture' {
         Test-Path -LiteralPath (Join-Path $execution.Results[1].Input.Metadata.ArtifactRoot `
                 'failure/witness.txt') -PathType Leaf | Should -BeTrue
 
-        $cliRunDirectory = Join-Path $TestDrive 'failure-cli-run'
+        $cliRunDirectory = Join-Path $fixture.Root 'artifacts/20261208_000000_01'
         [void][System.IO.Directory]::CreateDirectory($cliRunDirectory)
         $cliOutput = @(& ([System.Environment]::ProcessPath) -NoProfile -File $script:ParallelShell `
                 -Framework Pester -Path $fixture.Tests -RunDirectory $cliRunDirectory `

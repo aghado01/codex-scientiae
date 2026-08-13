@@ -17,12 +17,18 @@ function Get-PesterBatchJob {
     )
 
     $repository = Resolve-PesterBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
-    $run = Resolve-PesterBatchRunDirectory -RunDirectory $RunDirectory
+    $run = Resolve-PesterBatchRunDirectory -RunDirectory $RunDirectory `
+        -RepositoryRoot $repository
     $runner = [System.IO.Path]::Combine($repository, 'tests', 'run.ps1')
     if (-not (Test-Path -LiteralPath $runner -PathType Leaf)) {
         throw "pester-batch runner not found: '$runner'"
     }
     $runner = (Resolve-Path -LiteralPath $runner).Path
+    $artifactBoundary = [System.IO.Path]::Combine(
+        $repository, 'tests', 'artifact-boundary.ps1')
+    if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
+        throw "pester-batch runner support not found: '$artifactBoundary'"
+    }
     $pester = Resolve-PesterBatchDependency -PesterManifest $PesterManifest `
         -RepositoryRoot $repository
     $childPowerShell = Resolve-PesterBatchPowerShellPath -PowerShellPath $PowerShellPath
@@ -43,6 +49,7 @@ function Get-PesterBatchJob {
         $id = "pester:$relativePath#$digest"
         $addressLeaf = ConvertTo-PesterBatchAddressLeaf -TestPath $file -Digest $digest
         $address = Resolve-PesterBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
+        $jsonScratchRoot = [System.IO.Path]::Combine($address.TempRoot, 'json-scratch')
 
         $parameters = @{
             Path = $file
@@ -68,7 +75,10 @@ function Get-PesterBatchJob {
             JobDirectory = $address.JobDirectory
             ResultPath = $address.ResultPath
             ArtifactRoot = $address.ArtifactRoot
+            TempRoot = $address.TempRoot
+            JsonScratchRoot = $jsonScratchRoot
             ArtifactEnvironment = 'CODEX_TEST_ARTIFACT_ROOT'
+            ScratchEnvironment = 'CODEX_JSON_SCRATCH_ROOT'
             ResultFormat = $ResultFormat
             PesterManifest = $pester.Path
             PesterVersion = $pester.Version.ToString()
@@ -82,10 +92,18 @@ function Get-PesterBatchJob {
             -ProcessSpec @{
                 PowerShellPath = $childPowerShell
                 WorkingDirectory = $repository
-                Environment = @{ CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot }
+                Environment = @{
+                    CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
+                    CODEX_JSON_SCRATCH_ROOT = $jsonScratchRoot
+                    TEMP = $address.TempRoot
+                    TMP = $address.TempRoot
+                    TMPDIR = $address.TempRoot
+                    PYTHONDONTWRITEBYTECODE = '1'
+                }
             } `
             -EstimatedCost ([math]::Max(1, [double]$fileInfo.Length)) `
-            -Writes @($address.ResultPath, $address.ArtifactRoot) -ModulePath $pester.Path `
+            -Writes @($address.ResultPath, $address.ArtifactRoot, $address.TempRoot) `
+            -ModulePath $pester.Path `
             -WorkingDirectory $repository -Metadata $metadata
     }
 }

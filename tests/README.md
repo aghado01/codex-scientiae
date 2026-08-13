@@ -48,12 +48,11 @@ For every new or changed test file:
   reset `$LASTEXITCODE` so it cannot contaminate the runner result.
 - Do not add per-file manifests, sidecars, workload profiles, scheduler locks, or custom batch logic.
 
-At minimum, verify the file through both public entry points (the batch run directory must already exist):
+At minimum, verify the file through the public batch entrypoint (the batch run directory must already exist):
 
 ```pwsh
-pwsh -File tests/run.ps1 -Path tests/<owner>/<behavior>.Tests.ps1
 pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 `
-  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss -MaxWorkers 1
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss) -MaxWorkers 1
 ```
 
 A compliant file selects the expected tests by exact path, reports real failures as nonzero, cleans its
@@ -90,7 +89,7 @@ inherit an ambient machine temp directory:
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/<owner>/test_<behavior>.py `
-  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss -MaxWorkers 1
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss) -MaxWorkers 1
 ```
 
 The admitted contract requires an exact-file container, native JUnit, declared
@@ -108,11 +107,9 @@ only this shelf and never fall back to use-case-local installations:
 ./brewery/node/restore-node.ps1
 ```
 
-```pwsh
-pwsh -File tests/run.ps1
-pwsh -File tests/run.ps1 -Path tests/batch-adapters
-pwsh -File tests/run.ps1 -Path tests/shared/masks.Tests.ps1
-```
+`run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It refuses ambient temp:
+`TEMP`, `TMP`, and `TMPDIR` must name the same job-local directory below the repository `artifacts` root.
+Use `tests/parallel.ps1` for repository-facing execution.
 
 `run.ps1` imports Pester 5 or newer from the portable PowerShell module tree
 when available, falls back to the normal module path, exits non-zero on test
@@ -133,19 +130,21 @@ runner's only durable runner-owned artifact. `selected` is the sum of pass/fail/
 ### Multilingual batch execution
 
 `parallel.ps1` is the repository-facing multilingual shell. Its mandatory `RunDirectory` must already exist
-and belong to the caller; the shell never allocates or timestamps a run. `Framework` explicitly selects
+as an absolute descendant of `RepositoryRoot/artifacts` and belong to the caller; the shell never allocates
+or timestamps a run. `Framework` explicitly selects
 `All`, `Pester`, or `Pytest` and defaults to `All`. `Path` supplies the common selection and defaults to the
 repository `tests/` directory; optional `PesterPath` and `PytestPath` override it per framework. There is no
 separate workload profile. Architecture decisions [D24 and D27](../issues/batch-executor/planning/decisions.md)
 freeze this ownership boundary.
 
 ```pwsh
-pwsh -File tests/parallel.ps1 -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss
+pwsh -File tests/parallel.ps1 `
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss)
 pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/jsonl_engine `
-  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss_01 -MaxWorkers 4
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss_01) -MaxWorkers 4
 pwsh -File tests/parallel.ps1 -Framework All `
   -PesterPath tests/jsonl_engine-client/jsonl_engine-client-module.Tests.ps1 -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss_02 -MaxWorkers 2
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss_02) -MaxWorkers 2
 ```
 
 The shell imports the canonical `batch-adapters` (`adapters.psd1`) and `batch-executor` manifests, asks the
@@ -201,7 +200,7 @@ caller-owned runstamp in `artifacts/test-runs/`. The public batch shell supplies
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss
+  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYDDMM_HHmmss)
 ```
 
 The cache provider is disabled in repository configuration because `.pytest_cache` is neither evidence nor
@@ -297,14 +296,15 @@ The frozen batch address is conceptually:
     pester.xml
     artifacts/
         <suite-owned layout>
+    temp/
 ~~~
 
-The adapter provides the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT` and
-declares that root as a job write. Planning creates nothing; execution may create the assigned root. A suite
+The adapter provides the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT`, supplies
+job-local `TEMP`, `TMP`, `TMPDIR`, and JSON scratch values, and declares every address class as a job write.
+Planning creates nothing; execution may create the assigned roots. A suite
 that retains evidence validates this value as an absolute path and writes only beneath it. It does not fall
 back to repository-global `artifacts/`, a timestamp allocator, its source tree, the current directory, or a
-fixed user-machine path. Direct callers that want retained evidence set the same environment value before
-calling `tests/run.ps1`; otherwise the suite keeps scratch work in `$TestDrive`.
+fixed user-machine path. `$TestDrive` is therefore also rooted below the assigned job temp directory.
 
 The container is the minimum isolation boundary. Topology below its artifact root remains suite-owned:
 fixture, capability, output, audit, or evidence subdirectories may be introduced when they express real

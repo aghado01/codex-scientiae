@@ -10,6 +10,38 @@ if (-not (Test-Path -LiteralPath $script:AdaptersExecutorManifest -PathType Leaf
 }
 Import-Module $script:AdaptersExecutorManifest -Scope Local -ErrorAction Stop
 
+function Resolve-BatchAdapterRunDirectory {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Adapter,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
+    )
+
+    if (-not [System.IO.Path]::IsPathFullyQualified($RunDirectory)) {
+        throw "$Adapter RunDirectory must be an existing absolute path: '$RunDirectory'"
+    }
+    $candidate = [System.IO.Path]::GetFullPath($RunDirectory)
+    if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
+        throw "$Adapter RunDirectory must be an existing absolute path: '$RunDirectory'"
+    }
+
+    $artifactCandidate = [System.IO.Path]::Combine($RepositoryRoot, 'artifacts')
+    if (-not (Test-Path -LiteralPath $artifactCandidate -PathType Container)) {
+        throw "$Adapter repository artifacts root not found: '$artifactCandidate'"
+    }
+    $artifactRoot = (Resolve-Path -LiteralPath $artifactCandidate).Path
+    $run = (Resolve-Path -LiteralPath $candidate).Path
+    $relative = [System.IO.Path]::GetRelativePath($artifactRoot, $run)
+    $parentPrefix = '..' + [System.IO.Path]::DirectorySeparatorChar
+    if ($relative -eq '.' -or $relative -eq '..' -or
+            [System.IO.Path]::IsPathFullyQualified($relative) -or
+            $relative.StartsWith($parentPrefix, [System.StringComparison]::Ordinal)) {
+        throw "$Adapter RunDirectory must be a descendant of RepositoryRoot/artifacts: '$RunDirectory'"
+    }
+    return $run
+}
+
 $hostFiles = @(
     'private/pester-address.ps1'
     'private/pester-discovery.ps1'

@@ -19,17 +19,12 @@ function Resolve-PytestBatchRepositoryRoot {
 function Resolve-PytestBatchRunDirectory {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
     )
 
-    if (-not [System.IO.Path]::IsPathFullyQualified($RunDirectory)) {
-        throw "pytest-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
-    }
-    $candidate = [System.IO.Path]::GetFullPath($RunDirectory)
-    if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "pytest-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
-    }
-    return (Resolve-Path -LiteralPath $candidate).Path
+    Resolve-BatchAdapterRunDirectory -Adapter 'pytest-batch' -RunDirectory $RunDirectory `
+        -RepositoryRoot $RepositoryRoot
 }
 
 function Test-PytestBatchPathWithinRoot {

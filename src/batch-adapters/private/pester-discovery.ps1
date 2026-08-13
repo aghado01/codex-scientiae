@@ -19,17 +19,12 @@ function Resolve-PesterBatchRepositoryRoot {
 function Resolve-PesterBatchRunDirectory {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
     )
 
-    if (-not [System.IO.Path]::IsPathFullyQualified($RunDirectory)) {
-        throw "pester-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
-    }
-    $candidate = [System.IO.Path]::GetFullPath($RunDirectory)
-    if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "pester-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
-    }
-    return (Resolve-Path -LiteralPath $candidate).Path
+    Resolve-BatchAdapterRunDirectory -Adapter 'pester-batch' -RunDirectory $RunDirectory `
+        -RepositoryRoot $RepositoryRoot
 }
 
 function Test-PesterBatchPathWithinRoot {

@@ -1,18 +1,30 @@
 # TeXdig adapter discovery helpers.
 
+function Resolve-TeXdigBatchRepositoryRoot {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
+    )
+
+    $candidate = if ([System.IO.Path]::IsPathFullyQualified($RepositoryRoot)) {
+        [System.IO.Path]::GetFullPath($RepositoryRoot)
+    }
+    else { [System.IO.Path]::GetFullPath($RepositoryRoot, (Get-Location).Path) }
+    if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
+        throw "texdig-batch repository root not found: '$RepositoryRoot'"
+    }
+    return (Resolve-Path -LiteralPath $candidate).Path
+}
+
 function Resolve-TeXdigBatchRunDirectory {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
     )
 
-    if (-not [System.IO.Path]::IsPathFullyQualified($RunDirectory)) {
-        throw "texdig-batch RunDirectory must be an absolute path: '$RunDirectory'"
-    }
-    if (-not (Test-Path -LiteralPath $RunDirectory -PathType Container)) {
-        throw "texdig-batch RunDirectory does not exist: '$RunDirectory'"
-    }
-    return (Resolve-Path -LiteralPath $RunDirectory).Path
+    Resolve-BatchAdapterRunDirectory -Adapter 'texdig-batch' -RunDirectory $RunDirectory `
+        -RepositoryRoot $RepositoryRoot
 }
 
 function Find-TeXdigBatchArticle {

@@ -7,6 +7,8 @@ BeforeAll {
     $script:BatchExecutorManifest = Join-Path $script:RepositoryRoot `
         'src/batch-executor/batch-executor.psd1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
+    $script:RepositoryArtifactBoundary = Join-Path $script:RepositoryRoot `
+        'tests/artifact-boundary.ps1'
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
     $script:LivePesterManifest = Join-Path $livePester.ModuleBase 'Pester.psd1'
 
@@ -19,7 +21,7 @@ BeforeAll {
 
         $repository = Join-Path $Root 'repository'
         $tests = Join-Path $repository 'tests'
-        $run = Join-Path $Root 'caller-run'
+        $run = Join-Path $repository 'artifacts/20261208_000000'
         $pesterRoot = Join-Path $Root "dependencies/Pester/$PesterVersion"
         foreach ($directory in @($repository, $tests, $run, $pesterRoot)) {
             [void][System.IO.Directory]::CreateDirectory($directory)
@@ -31,6 +33,8 @@ BeforeAll {
         else {
             Set-Content -LiteralPath $runner -Encoding utf8 -Value 'param()'
         }
+        Copy-Item -LiteralPath $script:RepositoryArtifactBoundary `
+            -Destination (Join-Path $tests 'artifact-boundary.ps1')
         Set-Content -LiteralPath (Join-Path $pesterRoot 'Pester.psm1') `
             -Encoding utf8 -Value '# fixture Pester module'
         $manifest = Join-Path $pesterRoot 'Pester.psd1'
@@ -72,8 +76,15 @@ param(
     [Parameter(Mandatory)] [string] $TestPath,
     [Parameter(Mandatory)] [string] $ResultPath,
     [Parameter(Mandatory)] [string] $TestSuiteName,
+    [Parameter(Mandatory)] [string] $TempPath,
+    [Parameter(Mandatory)] [string] $ArtifactRoot,
     [string] $FullNameFilter = ''
 )
+$env:TEMP = $TempPath
+$env:TMP = $TempPath
+$env:TMPDIR = $TempPath
+$env:CODEX_TEST_ARTIFACT_ROOT = $ArtifactRoot
+$env:CODEX_JSON_SCRATCH_ROOT = Join-Path $TempPath 'json-scratch'
 Import-Module -Name $PesterManifest -Force
 $invoke = @{
     Path = $TestPath
@@ -107,7 +118,9 @@ if (-not [string]::IsNullOrWhiteSpace($FullNameFilter)) {
             '-Runner', $Runner,
             '-TestPath', $TestPath,
             '-ResultPath', $ResultPath,
-            '-TestSuiteName', $TestSuiteName
+            '-TestSuiteName', $TestSuiteName,
+            '-TempPath', (Join-Path (Split-Path -Parent $ResultPath) 'temp'),
+            '-ArtifactRoot', (Join-Path (Split-Path -Parent $ResultPath) 'artifacts')
         )
         if (-not [string]::IsNullOrWhiteSpace($FullNameFilter)) {
             $arguments += @('-FullNameFilter', $FullNameFilter)
@@ -154,7 +167,7 @@ Describe 'adapters module surface for pester-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-PesterBatchJob', 'Get-PytestBatchJob')
+            'Get-PesterBatchJob', 'Get-PytestBatchJob', 'Get-TeXdigBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         Get-Command Get-TestBatchJob -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         foreach ($oldPath in @(
@@ -260,11 +273,16 @@ Describe 'Get-PesterBatchJob planning' {
             $job.WorkingDirectory | Should -Be $fixture.Root
             $job.ModulePath | Should -Be @($fixture.PesterManifest)
             $job.Id | Should -Match '^pester:'
-            $job.Writes | Should -Be @($job.Metadata.ResultPath, $job.Metadata.ArtifactRoot)
+            $job.Writes | Should -Be @(
+                $job.Metadata.ResultPath, $job.Metadata.ArtifactRoot, $job.Metadata.TempRoot)
             $job.Parameters.ResultPath | Should -Be $job.Metadata.ResultPath
-            $job.ProcessSpec.Environment.CODEX_TEST_ARTIFACT_ROOT |
-                Should -Be $job.Metadata.ArtifactRoot
-            foreach ($write in @($job.Metadata.ResultPath, $job.Metadata.ArtifactRoot)) {
+            $environment = $job.ProcessSpec.Environment
+            $environment.CODEX_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
+            $environment.CODEX_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
+            @($environment.TEMP, $environment.TMP, $environment.TMPDIR) |
+                Should -Be @($job.Metadata.TempRoot, $job.Metadata.TempRoot, $job.Metadata.TempRoot)
+            foreach ($write in @(
+                    $job.Metadata.ResultPath, $job.Metadata.ArtifactRoot, $job.Metadata.TempRoot)) {
                 $relativeWrite = [System.IO.Path]::GetRelativePath($fixture.RunDirectory, $write)
                 $relativeWrite | Should -Not -Be '..'
                 $relativeWrite | Should -Not -Match '^\.\.[\\/]'
@@ -272,10 +290,12 @@ Describe 'Get-PesterBatchJob planning' {
             $job.Metadata.AddressingContract | Should -Be 'D19/RunDirectory'
             $job.Metadata.ArtifactContract | Should -Be 'D23/ContainerRoot'
             $job.Metadata.ArtifactEnvironment | Should -Be 'CODEX_TEST_ARTIFACT_ROOT'
+            $job.Metadata.ScratchEnvironment | Should -Be 'CODEX_JSON_SCRATCH_ROOT'
             $job.Metadata.ResultPersistence | Should -Be 'PesterNative'
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.ResultPath | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.ArtifactRoot | Should -BeFalse
+            Test-Path -LiteralPath $job.Metadata.TempRoot | Should -BeFalse
         }
         $jobs[1].EstimatedCost | Should -BeGreaterThan $jobs[0].EstimatedCost
 
@@ -319,6 +339,8 @@ Describe 'Get-PesterBatchJob planning' {
         $emptyDirectory = Join-Path $fixture.Root 'empty-tests'
         [void][System.IO.Directory]::CreateDirectory($emptyDirectory)
         $missingRun = Join-Path $fixture.Root 'missing-run'
+        $outsideRun = Join-Path (Split-Path -Parent $fixture.Root) 'outside-run'
+        [void][System.IO.Directory]::CreateDirectory($outsideRun)
 
         { Get-PesterBatchJob -Path $testFile -RunDirectory 'relative-run' `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
@@ -326,6 +348,9 @@ Describe 'Get-PesterBatchJob planning' {
         { Get-PesterBatchJob -Path $testFile -RunDirectory $missingRun `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
             Should -Throw '*RunDirectory must be an existing absolute path*'
+        { Get-PesterBatchJob -Path $testFile -RunDirectory $outsideRun `
+                -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
+            Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
         Test-Path -LiteralPath $missingRun | Should -BeFalse
         { Get-PesterBatchJob -Path $outside -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
@@ -368,6 +393,19 @@ Describe 'Get-PesterBatchJob planning' {
 }
 
 Describe 'repository Pester runner contract' {
+    It 'rejects an ambient temp route outside its repository artifacts root' {
+        $fixture = New-PesterBatchFixtureRepository `
+            -Root (Join-Path $TestDrive 'runner-temp-boundary') -UseRepositoryRunner
+        $selected = Write-PesterBatchFixture (Join-Path $fixture.Tests 'selected.Tests.ps1')
+
+        $output = @(& ([System.Environment]::ProcessPath) -NoProfile -File $fixture.Runner `
+                -Path $selected -OutputVerbosity None 2>&1)
+        $LASTEXITCODE | Should -Not -Be 0
+        (@($output | ForEach-Object ToString) -join "`n") |
+            Should -Match 'TEMP must be a descendant of RepositoryRoot/artifacts'
+        $global:LASTEXITCODE = 0
+    }
+
     It 'keeps one exact-container invocation boundary and owns no batch infrastructure' {
         $tokens = $null
         $parseErrors = $null
@@ -497,6 +535,10 @@ Describe 'filtered integration fixture' {
     It 'selected pass' {
         $env:CODEX_BATCH_JOB_ID | Should -Match '^pester:'
         [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        [System.IO.Path]::TrimEndingDirectorySeparator(
+            [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())) |
+            Should -Be ([System.IO.Path]::TrimEndingDirectorySeparator(
+                [System.IO.Path]::GetFullPath($env:TEMP)))
         $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'selected-pass'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'pass artifact'
@@ -535,7 +577,25 @@ Describe 'failing integration fixture' {
         }
 
         @($execution.Results.Id) | Should -Be @($passJob.Id, $failJob.Id)
-        @($execution.Results.State) | Should -Be @('Succeeded', 'Failed')
+        $stateDiagnostics = @($execution.Results | ForEach-Object {
+                $resultPath = $_.Input.Metadata.ResultPath
+                $failureMessages = if (Test-Path -LiteralPath $resultPath -PathType Leaf) {
+                    [xml]$nestedResult = Get-Content -LiteralPath $resultPath -Raw
+                    @($nestedResult.SelectNodes('//failure/message') | ForEach-Object InnerText)
+                }
+                else { @('result missing') }
+                [ordered]@{
+                    id = $_.Id
+                    state = $_.State
+                    exit_code = $_.ExitCode
+                    error = $_.Error
+                    failures = $failureMessages
+                    stdout = @($_.StdOut)
+                    stderr = @($_.StdErr)
+                }
+            }) | ConvertTo-Json -Depth 8 -Compress
+        @($execution.Results.State) | Should -Be @('Succeeded', 'Failed') `
+            -Because $stateDiagnostics
         $execution.Summary.Succeeded | Should -Be 1
         $execution.Summary.Failed | Should -Be 1
         Test-Path -LiteralPath $passJob.Metadata.ResultPath -PathType Leaf | Should -BeTrue
