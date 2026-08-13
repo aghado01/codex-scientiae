@@ -1,6 +1,7 @@
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path "$PSScriptRoot/../..").Path
     $script:FixtureDir = Join-Path $script:RepositoryRoot "tests/fixtures/texdig/mini_article"
+    $script:FixtureTree = Join-Path $script:FixtureDir "mini_article-tex"
 
     # The runner IS the worker contract: validate-json gate + stamped
     # container + census invocation + typed run record. Dot-sourcing brings
@@ -22,16 +23,21 @@ BeforeAll {
 
 Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
     Context "Runner & Worker Contract" {
-        It "returns a typed run record with full fixture agreement" {
+        It "returns a typed 0.2 physical-census run record" {
             $script:Run.PSObject.TypeNames | Should -Contain "TeXdig.CensusRun"
             $script:Run.Slug | Should -Be "mini_article"
-            $script:Run.Agreed | Should -Be $script:Run.Entities
+            $script:Run.Conflict | Should -Be 0
             $script:Run.Defects | Should -Be 0
+            $script:Run.NodePath | Should -Not -BeNullOrEmpty
+            $script:Run.NodeVersion | Should -Match '^v\d+\.\d+\.\d+'
         }
 
-        It "claims the fixture completely" {
-            $script:Run.ResidueUtf16 | Should -Be 0
-            $script:Run.ClaimedUtf16 | Should -Be $script:Run.TotalUtf16
+        It "partitions the full decoded corpus into physical claims and residue" {
+            ($script:Run.ClaimedUtf16 + $script:Run.ResidueUtf16) |
+                Should -Be $script:Run.TotalUtf16
+            # Argument delimiters are not absorbed into token-only macro
+            # invocation carriers in the physical census.
+            $script:Run.ResidueUtf16 | Should -Be 12
         }
 
         It "emits all 6 evidence and audit tier stores" {
@@ -41,6 +47,11 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             Test-Path (Join-Path $script:OutDir "coverage.json") | Should -BeTrue
             Test-Path (Join-Path $script:OutDir "diagnostics.jsonl") | Should -BeTrue
             Test-Path (Join-Path $script:OutDir "summary.json") | Should -BeTrue
+        }
+
+        It "does not publish the withdrawn 0.1 binding-derived stores" {
+            Test-Path (Join-Path $script:OutDir "expansion.jsonl") | Should -BeFalse
+            Test-Path (Join-Path $script:OutDir "macros.jsonl") | Should -BeFalse
         }
     }
 
@@ -77,6 +88,22 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $extra.role | Should -Be "bibliography-resource"
             $extra.parsed | Should -BeFalse
             $extra.sha256 | Should -Not -BeNullOrEmpty
+        }
+
+        It "records exact bytes for every source and UTF-16 lengths only for parsed text" {
+            foreach ($source in $script:Sources) {
+                $physicalPath = Join-Path $script:FixtureTree $source.id
+                $rawBytes = [System.IO.File]::ReadAllBytes($physicalPath)
+
+                $source.bytes | Should -Be $rawBytes.Length
+                if ($source.parsed) {
+                    $decoded = [System.Text.UTF8Encoding]::new($false, $true).GetString($rawBytes)
+                    $source.PSObject.Properties['lengthUtf16'] | Should -Not -BeNullOrEmpty
+                    $source.lengthUtf16 | Should -Be $decoded.Length
+                } else {
+                    $source.PSObject.Properties['lengthUtf16'] | Should -BeNullOrEmpty
+                }
+            }
         }
     }
 
@@ -143,16 +170,19 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $edef.mechanism | Should -Be "newtheorem"
         }
 
-        It "hulls definition bodies through nested attached arguments" {
+        It "retains the exact physical macro declaration span" {
             $wdef = $script:Entities | Where-Object { $_.kind -eq "macro-definition" -and $_.definedName -eq "wrap" -and $_.dialect -eq "newcommand" }
             $wdef.text | Should -Be '\newcommand{\wrap}{\mathsf{W}}'
         }
 
-        It "synthesizes the argument hull for \pair{x} and marks it" {
+        It "keeps \pair{x} as a physical control-sequence token without a binding hull" {
             $inv = $script:Entities | Where-Object { $_.kind -eq "macro-invocation" -and $_.name -eq "pair" }
             $inv | Should -Not -BeNullOrEmpty
-            $inv.spanProvenance | Should -Be "synthesized-hull"
-            $inv.text | Should -Be '\pair{x}'
+            $inv.spanProvenance | Should -Not -Be "synthesized-hull"
+            $inv.text | Should -Be '\pair'
+            ($inv.span.endUtf16 - $inv.span.startUtf16) | Should -Be '\pair'.Length
+            $inv.PSObject.Properties['argumentSpans'] | Should -BeNullOrEmpty
+            $inv.id | Should -Be "ent:macro-invocation@$($inv.span.sourceId):$($inv.span.startUtf16)-$($inv.span.endUtf16)"
         }
 
         It "identifies math carriers and inline verbatim" {
@@ -204,14 +234,17 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $conf = $script:Entities | Where-Object { $_.kind -eq "macro-definition" -and $_.dialect -eq "configured" -and $_.definedName -eq "textcolor" }
             $conf | Should -Not -BeNullOrEmpty
             $conf.id | Should -Be "ent:macro-definition@configured/xcolor:textcolor"
-            $conf.signatureRaw | Should -Be "o m m"
+            $conf.argumentSpec | Should -Be "o m m"
+            $conf.PSObject.Properties['signatureRaw'] | Should -BeNullOrEmpty
             $conf.witnesses[0].witness | Should -Be "configured"
             $conf.witnesses[0].instrument | Should -Be "unified-latex-ctan"
 
-            # The injected signature must actually drive argument attachment.
+            # The physical census records the control-sequence token only;
+            # configured signatures become binding inputs in a later store.
             $inv = $script:Entities | Where-Object { $_.kind -eq "macro-invocation" -and $_.name -eq "textcolor" }
-            $inv.text | Should -Be '\textcolor{red}{tinted}'
-            $inv.spanProvenance | Should -Be "synthesized-hull"
+            $inv.text | Should -Be '\textcolor'
+            $inv.spanProvenance | Should -Not -Be "synthesized-hull"
+            $inv.PSObject.Properties['argumentSpans'] | Should -BeNullOrEmpty
 
             # Unused declarations from the same package must NOT mint.
             $unused = $script:Entities | Where-Object { $_.dialect -eq "configured" -and $_.definedName -eq "pagecolor" }
@@ -238,18 +271,44 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $bare | Should -BeNullOrEmpty
         }
 
-        It "agreed control-sequence and math entities are genuinely two-witness" {
-            $suspect = $script:Entities | Where-Object {
-                $_.agreement -eq "agreed" -and
-                $_.kind -in @("macro-invocation", "math", "include", "envelope-marker") -and
-                $_.witnesses.Count -lt 2
-            }
+        It "backs every two-instrument agreement with two witness records" {
+            $twoInstrument = @($script:Entities | Where-Object agreementBasis -eq 'two-instrument')
+            $twoInstrument | Should -Not -BeNullOrEmpty
+            $suspect = @($twoInstrument | Where-Object { $_.witnesses.Count -lt 2 })
             $suspect | Should -BeNullOrEmpty
         }
 
-        It "reaches full agreement on the clean fixture through real fusion" {
+        It "accounts the fixture's honest mixed-authority witness distribution" {
             $sum = Get-Content -Raw (Join-Path $script:OutDir "summary.json") | ConvertFrom-Json
-            $sum.agreementCounts.agreed | Should -Be $script:Entities.Count
+            $accounted = ($sum.agreementCounts.PSObject.Properties | Measure-Object -Sum Value).Sum
+            $accounted | Should -Be $script:Entities.Count
+            $accounted | Should -Be 95
+            $sum.agreementCounts.agreed | Should -Be 90
+            $sum.agreementCounts.'parser-only' | Should -Be 4
+            $sum.agreementCounts.'lexical-only' | Should -Be 1
+            $sum.agreementCounts.PSObject.Properties['conflict'] | Should -BeNullOrEmpty
+        }
+
+        It "marks parser-only Bib fields as an explicit single-authority boundary" {
+            $fields = @($script:Entities | Where-Object kind -eq 'bib-field')
+            $fields.Count | Should -Be 4
+            foreach ($field in $fields) {
+                $field.agreement | Should -Be 'parser-only'
+                $field.agreementBasis | Should -Be 'single-authority'
+                @($field.witnesses).Count | Should -Be 1
+                $field.witnesses[0].instrument | Should -Be 'latex-utensils'
+            }
+        }
+
+        It "retains the math-script underscore as explicit lexical-only evidence" {
+            $lexicalOnly = @($script:Entities | Where-Object agreement -eq 'lexical-only')
+            $lexicalOnly.Count | Should -Be 1
+            $lexicalOnly[0].kind | Should -Be 'macro-invocation'
+            $lexicalOnly[0].name | Should -Be '_'
+            $lexicalOnly[0].text | Should -Be '_'
+            $lexicalOnly[0].agreementBasis | Should -Be 'single-authority'
+            @($lexicalOnly[0].witnesses).Count | Should -Be 1
+            $lexicalOnly[0].witnesses[0].witness | Should -Be 'lexical'
         }
 
         It "backfills cases-in-math interiors via the latex-utensils instrument" {
@@ -264,102 +323,6 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $backfilled | Should -Not -BeNullOrEmpty
             ($backfilled | Where-Object { $_.name -eq "gamma" }) | Should -Not -BeNullOrEmpty
             foreach ($ent in $backfilled) { $ent.agreement | Should -Be "agreed" }
-        }
-    }
-
-    Context "Expansion Elaboration" {
-        BeforeAll {
-            $expRaw = Get-Content -Raw (Join-Path $script:OutDir "expansion.jsonl")
-            $script:Expansions = @($expRaw.Trim().Split("`n") | Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
-        }
-
-        It "declares the elaboration store in the summary" {
-            $sum = Get-Content -Raw (Join-Path $script:OutDir "summary.json") | ConvertFrom-Json
-            $sum.stores.emitted | Should -Contain "expansion.jsonl"
-        }
-
-        It "applies optional-argument defaults during substitution" {
-            $pair = $script:Expansions | Where-Object { $_.definedName -eq "pair" }
-            $pair.sourceSlice | Should -Be '\pair{x}'
-            $pair.expandedText | Should -Be '(d,x)'
-            $pair.status | Should -Be "expanded"
-        }
-
-        It "synthesizes math-operator bodies" {
-            $rank = $script:Expansions | Where-Object { $_.definedName -eq "rank" }
-            $rank.expandedText | Should -Be '\operatorname{rank}'
-        }
-
-        It "drives nested chains to a bounded fixed point" {
-            $double = $script:Expansions | Where-Object { $_.definedName -eq "double" }
-            $double.expandedText | Should -Be '\mathsf{W}\mathsf{W}'
-            $double.rounds | Should -BeGreaterOrEqual 2
-            $double.status | Should -Be "expanded"
-        }
-
-        It "origin-chains every row to census entities (gate 3)" {
-            foreach ($row in $script:Expansions) {
-                $row.entityId | Should -Match '^ent:macro-invocation@'
-                $row.definitionEntityId | Should -Match '^ent:macro-definition@'
-                ($script:Entities | Where-Object { $_.id -eq $row.entityId }) | Should -Not -BeNullOrEmpty
-            }
-        }
-
-        It "leaves non-elaborable dialects out of the expansion table" {
-            # \def\zz is detected-when-knowable; no expansion rows.
-            ($script:Expansions | Where-Object { $_.definedName -eq "zz" }) | Should -BeNullOrEmpty
-        }
-
-        It "resolves \let aliases to their governing definitions" {
-            $alias = $script:Expansions | Where-Object { $_.definedName -eq "alias" }
-            $alias.expandedText | Should -Be '\mathsf{W}'
-            $alias.viaAliases | Should -Contain "alias"
-            $alias.definitionEntityId | Should -Match '^ent:macro-definition@'
-        }
-
-        It "shadows on the shared seq scale: pre-renew W, post-renew V" {
-            $wraps = @($script:Expansions | Where-Object { $_.definedName -eq "wrap" } | Sort-Object seq)
-            $wraps.Count | Should -Be 2
-            $wraps[0].expandedText | Should -Be '\mathsf{W}'
-            $wraps[1].expandedText | Should -Be '\mathsf{V}'
-        }
-    }
-
-    Context "Compiled Macro Store (macros.jsonl)" {
-        BeforeAll {
-            $macRaw = Get-Content -Raw (Join-Path $script:OutDir "macros.jsonl")
-            $script:Macros = @($macRaw.Trim().Split("`n") | Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
-        }
-
-        It "compiles one record per census definition with def: ids and fingerprints" {
-            foreach ($rec in $script:Macros) {
-                $rec.id | Should -Match '^def:'
-                $rec.fingerprint | Should -Match '^[0-9a-f]{64}$'
-                $rec.entityId | Should -Match '^ent:macro-definition@'
-            }
-        }
-
-        It "orders redefinitions on the shared seq scale with distinct fingerprints" {
-            $wraps = @($script:Macros | Where-Object { $_.definedName -eq "wrap" } | Sort-Object seq)
-            $wraps.Count | Should -Be 2
-            $wraps[0].dialect | Should -Be "newcommand"
-            $wraps[1].dialect | Should -Be "renewcommand"
-            $wraps[0].seq | Should -BeLessThan $wraps[1].seq
-            $wraps[0].fingerprint | Should -Not -Be $wraps[1].fingerprint
-        }
-
-        It "scopes direct deps at the definition's own position" {
-            $double = $script:Macros | Where-Object { $_.definedName -eq "double" }
-            $wrapFirst = @($script:Macros | Where-Object { $_.definedName -eq "wrap" } | Sort-Object seq)[0]
-            $double.deps | Should -Contain $wrapFirst.id
-            $also = $script:Macros | Where-Object { $_.definedName -eq "also" }
-            $zz = $script:Macros | Where-Object { $_.definedName -eq "zz" }
-            $also.deps | Should -Contain $zz.id
-        }
-
-        It "keeps non-elaborable and configured records with bodies where knowable" {
-            ($script:Macros | Where-Object { $_.dialect -eq "def" }).bodyText | Should -Be "42"
-            ($script:Macros | Where-Object { $_.dialect -eq "configured" }) | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -388,18 +351,43 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $script:Summary = ConvertFrom-Json $sumRaw
         }
 
-        It "conforms to schema and attributes slug" {
-            $script:Summary.schema | Should -Be "texdig-census/0.1"
+        It "conforms to the 0.2 summary, source identity, and runtime contract" {
+            $script:Summary.schema | Should -Be "texdig-census/0.2"
             $script:Summary.slug | Should -Be "mini_article"
             $script:Summary.sourceCount | Should -Be 7
+
+            $manifest = Get-Content -LiteralPath (Join-Path $script:FixtureDir 'article.json') -Raw | ConvertFrom-Json
+            $treeForm = $manifest.source_forms | Where-Object role -eq 'latex-source-tree'
+            $script:Summary.treeSha256 | Should -Be $treeForm.sha256
+            $script:Run.TreeSha256 | Should -Be $treeForm.sha256
+            $script:Summary.runtime.node | Should -Be $script:Run.NodeVersion
         }
 
-        It "declares emitted and deferred stores" {
-            $script:Summary.stores.emitted.Count | Should -Be 8
-            $script:Summary.stores.emitted | Should -Contain "expansion.jsonl"
-            $script:Summary.stores.emitted | Should -Contain "macros.jsonl"
+        It "declares exactly the six physical stores and their normative schemas" {
+            $expectedSchemas = [ordered]@{
+                'sources.jsonl'     = 'codex-scientiae/texdig-sources/0.2'
+                'entities.jsonl'    = 'codex-scientiae/texdig-entities/0.2'
+                'claims.jsonl'      = 'codex-scientiae/texdig-claims/0.2'
+                'coverage.json'     = 'codex-scientiae/texdig-coverage/0.2'
+                'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.2'
+                'summary.json'      = 'codex-scientiae/texdig-summary/0.2'
+            }
+
+            @($script:Summary.stores.emitted).Count | Should -Be $expectedSchemas.Count
+            @($script:Summary.storeSchemas.PSObject.Properties).Count | Should -Be $expectedSchemas.Count
+            foreach ($store in $expectedSchemas.Keys) {
+                $script:Summary.stores.emitted | Should -Contain $store
+                $script:Summary.storeSchemas.PSObject.Properties[$store].Value |
+                    Should -Be $expectedSchemas[$store]
+            }
+        }
+
+        It "explicitly defers the withdrawn binding-derived stores" {
+            $script:Summary.stores.emitted | Should -Not -Contain "expansion.jsonl"
+            $script:Summary.stores.emitted | Should -Not -Contain "macros.jsonl"
+            $script:Summary.stores.deferred | Should -Contain "expansion.jsonl"
+            $script:Summary.stores.deferred | Should -Contain "macros.jsonl"
             $script:Summary.stores.deferred | Should -Contain "walk.jsonl"
-            $script:Summary.stores.deferred | Should -Not -Contain "macros.jsonl"
         }
 
         It "reports coverage accounting where claimed + residue equals total" {
@@ -410,6 +398,15 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         It "claims the bib file completely (blank runs included)" {
             $covRows = Get-Content -Raw (Join-Path $script:OutDir "coverage.json") | ConvertFrom-Json
             ($covRows | Where-Object { $_.sourceId -eq "refs.bib" }).residueUtf16 | Should -Be 0
+        }
+
+        It "emits exactly one coverage row for every parsed source" {
+            $covRows = @(Get-Content -Raw (Join-Path $script:OutDir "coverage.json") | ConvertFrom-Json)
+            $parsedIds = @($script:Sources | Where-Object parsed | ForEach-Object id | Sort-Object)
+            $coverageIds = @($covRows | ForEach-Object sourceId | Sort-Object)
+
+            $coverageIds.Count | Should -Be $parsedIds.Count
+            ($coverageIds -join '|') | Should -Be ($parsedIds -join '|')
         }
     }
 }

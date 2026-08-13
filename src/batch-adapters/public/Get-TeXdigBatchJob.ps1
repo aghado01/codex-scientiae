@@ -40,6 +40,7 @@ function Get-TeXdigBatchJob {
             Article = $articleDirectory
             OutDirectory = $address.JobDirectory
             DepsRoot = $worker.DepsRoot
+            NodePath = $worker.NodePath
         }
         if ($SkipValidation) { $parameters['SkipValidation'] = $true }
 
@@ -48,7 +49,7 @@ function Get-TeXdigBatchJob {
             Adapter = 'texdig-batch'
             AddressingContract = 'RunDirectory/texdig-jobs'
             ContainerContract = 'JobContainerIsDocumentContainer'
-            StoreSchema = 'texdig-census/0.1'
+            StoreSchema = 'texdig-census/0.2'
             Slug = $manifest.Slug
             RepositoryRelativePath = $relativePath
             ArticleDirectory = $articleDirectory

@@ -10,7 +10,32 @@
  * stripping (unions and const objects, no enums/namespaces).
  */
 
-export const CENSUS_SCHEMA_VERSION = "texdig-census/0.1" as const;
+export const CENSUS_SCHEMA_VERSION = "texdig-census/0.2" as const;
+
+/** Normative schema identities for every store emitted by the 0.2 census. */
+export const CENSUS_STORE_SCHEMAS = {
+  "sources.jsonl": "codex-scientiae/texdig-sources/0.2",
+  "entities.jsonl": "codex-scientiae/texdig-entities/0.2",
+  "claims.jsonl": "codex-scientiae/texdig-claims/0.2",
+  "coverage.json": "codex-scientiae/texdig-coverage/0.2",
+  "diagnostics.jsonl": "codex-scientiae/texdig-diagnostics/0.2",
+  "summary.json": "codex-scientiae/texdig-summary/0.2",
+} as const;
+
+/** Contract-tier stores that 0.2 explicitly does not emit yet. */
+export const CENSUS_DEFERRED_STORES = [
+  "occurrences.jsonl",
+  "bindings.jsonl",
+  "invocations.jsonl",
+  "expansion.jsonl",
+  "walk.jsonl",
+  "zones.jsonl",
+  "macros.jsonl",
+  "references.jsonl",
+  "pointers.jsonl",
+  "frontmatter.jsonl",
+  "graph.jsonl",
+] as const;
 
 // ---------------------------------------------------------------------------
 // Source addressing
@@ -36,10 +61,11 @@ export type SourceLanguage = "latex" | "bibtex" | "asset";
 
 /**
  * Engine classification of each file in the deposited tree. The census parses
- * include-graph-reachable LaTeX, bibliography resources, and the .bbl sidecar;
- * class/style/asset files are inventoried (sha, length) but not parsed in
- * stage 1. A .tex file reachable by no include edge is a diagnostic, not a
- * silent omission.
+ * include-graph-reachable LaTeX, bibliography resources, and the .bbl sidecar.
+ * Explicitly included class/style or extensionless targets acquire an
+ * effective language and are parsed; unreached class/style/asset files remain
+ * byte-inventoried. A .tex file reachable by no include edge is a diagnostic,
+ * not a silent omission.
  */
 export type SourceRole =
   | "entrypoint"
@@ -61,7 +87,10 @@ export type SourceRole =
 export interface SourceFileRecord {
   id: SourceId;
   sha256: string;
-  lengthUtf16: number;
+  /** Exact deposited byte length. */
+  bytes: number;
+  /** Defined only when the byte stream was decoded as text. */
+  lengthUtf16?: number;
   language: SourceLanguage;
   role: SourceRole;
   /** True when stage 1 actually parsed and coverage-audited this file. */
@@ -80,9 +109,20 @@ export interface SourceFileRecord {
  */
 export type WitnessKind = "lexical" | "parser" | "configured";
 
+/** Which extent a witness span claims. */
+export type WitnessSpanRole =
+  | "token"
+  | "construct"
+  | "begin-fence"
+  | "end-fence"
+  | "content"
+  | "value"
+  | "summon-anchor";
+
 export interface WitnessRecord {
   witness: WitnessKind;
   span: SourceSpan;
+  spanRole: WitnessSpanRole;
   /** Which instrument produced the sighting: unified-latex for LaTeX/.bbl, latex-utensils for .bib, unified-latex-ctan for configured declarations. */
   instrument?: "unified-latex" | "latex-utensils" | "unified-latex-ctan";
   /** Scanner rule or parser node type that produced this sighting. */
@@ -94,6 +134,12 @@ export interface WitnessRecord {
  * than `agreed` must be accompanied by a diagnostic naming the discrepancy.
  */
 export type AgreementState = "agreed" | "lexical-only" | "parser-only" | "conflict";
+
+/** Evidence policy under which an agreement state was assigned. */
+export type AgreementBasis =
+  | "two-instrument"
+  | "single-authority"
+  | "configured-declaration";
 
 /**
  * Parser macro-node positions exclude attached arguments and Argument wrappers
@@ -109,11 +155,14 @@ export type SpanProvenance = "parser" | "lexical" | "synthesized-hull";
 
 /**
  * Deterministic address string under the shared id grammar (see contracts.ts
- * ID_CLASSES): `ent:{kind}@{sourceId}:{startUtf16}-{endUtf16}`. Because the
- * deposited tree is frozen and fingerprinted, span-addressed IDs are stable
- * across runs over the same tree, and the id string is the verbatim join key
- * everywhere. Later stages mint derived entities under their own classes,
- * chaining back to these via Origin.
+ * ID_CLASSES): physical sites use
+ * `ent:{kind}@{sourceId}:{startUtf16}-{endUtf16}`. Configured declarations use
+ * `ent:{definition-kind}@configured/{package}:{name}` because several package
+ * declarations may share one in-document summon anchor. Because the deposited
+ * tree is frozen and fingerprinted, span-addressed IDs are stable across runs
+ * over the same tree, and the id string is the verbatim join key everywhere.
+ * Later stages mint derived entities under their own classes, chaining back to
+ * these via Origin.
  */
 export type EntityId = string;
 
@@ -127,6 +176,7 @@ interface CensusEntityBase {
   spanProvenance: SpanProvenance;
   witnesses: WitnessRecord[];
   agreement: AgreementState;
+  agreementBasis: AgreementBasis;
 }
 
 /**
@@ -143,7 +193,22 @@ export type DefinitionDialect =
   | "paired-delimiter"
   | "let"
   | "def"
+  | "gdef"
+  | "edef"
+  | "xdef"
   | "configured";
+
+/** Lexical execution context. `unknown` is used until ancestry proves a narrower claim. */
+export type DeclarationContext =
+  | "document-flow"
+  | "definition-body"
+  | "group-local"
+  | "conditional"
+  | "argument-body"
+  | "unknown";
+
+/** Execution-time status; `unknown` prevents a physical sighting from asserting binding semantics. */
+export type DeclarationActivation = "immediate" | "deferred" | "configured" | "unknown";
 
 /** Delimiter identity of a math carrier — `display` alone loses env identity. */
 export type MathCarrier =
@@ -193,8 +258,10 @@ export type CensusEntity =
       /** Control-sequence name without the backslash. */
       name: string;
       inMathMode?: boolean;
-      /** Parser-witnessed attachments where signatures were known; hull completion is a later pass. */
-      argumentSpans?: SourceSpan[];
+      /**
+       * `span` is the physical control-sequence token only. Binding-dependent
+       * hulls and arguments belong to invocation occurrences in contracts.ts.
+       */
     })
   | (CensusEntityBase & {
       kind: "macro-definition";
@@ -208,6 +275,8 @@ export type CensusEntity =
       dialect: DefinitionDialect;
       /** Raw signature text as written, e.g. `[2][d]` or an xparse spec. */
       signatureRaw?: string;
+      /** Normalized argument specification used by the argument grammar. */
+      argumentSpec?: string;
       /**
        * Body extent is knowable even when expansion is not: \def/\let bodies
        * carry spans so pointer-hood and dependencies can be derived from
@@ -216,6 +285,9 @@ export type CensusEntity =
       bodySpan?: SourceSpan;
       /** False for dialects the elaborator cannot expand (e.g. `def`): detected-when-knowable, elaborated later or never. */
       elaborable: boolean;
+      context: DeclarationContext;
+      activation: DeclarationActivation;
+      definedWithin?: EntityId;
     })
   | (CensusEntityBase & {
       kind: "environment-definition";
@@ -224,9 +296,15 @@ export type CensusEntity =
       /** `configured` = declared by lane configuration (package/class records), not defined in parsed source. */
       mechanism: "newtheorem" | "newenvironment" | "newfloat" | "configured";
       signatureRaw?: string;
+      argumentSpec?: string;
       /** Counter/numbering argument as written, for newtheorem. */
       counterRaw?: string;
-      bodySpan?: SourceSpan;
+      /** Beginning and ending programs of a newenvironment declaration. */
+      beginBodySpan?: SourceSpan;
+      endBodySpan?: SourceSpan;
+      context: DeclarationContext;
+      activation: DeclarationActivation;
+      definedWithin?: EntityId;
     })
   | (CensusEntityBase & {
       kind: "environment";
@@ -252,6 +330,7 @@ export type CensusEntity =
       delimiter: string;
     })
   | (CensusEntityBase & { kind: "comment" })
+  | (CensusEntityBase & { kind: "paragraph-break" })
   | (CensusEntityBase & {
       kind: "include";
       directive: IncludeDirective;
@@ -264,7 +343,6 @@ export type CensusEntity =
       marker: EnvelopeMarkerKind;
       /** Sectioning command name (`section`, `subsection*`, ...) when marker is `section`. */
       name?: string;
-      titleSpan?: SourceSpan;
     })
   // --- BibTeX census entities (parser witness: latex-utensils) -------------
   // The bib language mirrors the LaTeX census: @string is its macro-definition,
@@ -287,7 +365,10 @@ export type CensusEntity =
     })
   | (CensusEntityBase & { kind: "bib-preamble" })
   /** Explicit @comment blocks and implicit inter-entry text (BibTeX ignores it; coverage must not). */
-  | (CensusEntityBase & { kind: "bib-comment" })
+  | (CensusEntityBase & {
+      kind: "bib-comment";
+      commentForm: "explicit" | "implicit";
+    })
   | (CensusEntityBase & {
       kind: "bib-field";
       /** The owning `bib-entry` (or `bib-string`) entity. */
@@ -369,6 +450,10 @@ export const DiagnosticCodes = {
   EntrypointMissing: "census/entrypoint-missing",
   /** The deposited tree no longer matches its manifest (file count drift): the frozen tree was modified after deposit, and attribution to the recorded sha256 would be a lie. */
   TreeManifestMismatch: "census/tree-manifest-mismatch",
+  SourceDecodeError: "census/source-decode-error",
+  InvalidSpan: "census/invalid-span",
+  UntrustedParserSpan: "census/untrusted-parser-span",
+  InvalidClaim: "census/invalid-claim",
   /** Summoned packages with no configured signature record — the curation queue for the configured channel, not an error. */
   ConfiguredGap: "census/configured-gap",
   /** The latex-utensils backfill instrument could not parse this source; lexical-only sites stay single-witness. */
@@ -389,6 +474,8 @@ export interface Diagnostic {
   code: DiagnosticCode;
   severity: DiagnosticSeverity;
   message: string;
+  /** Structured file identity for source-local diagnostics without a usable span. */
+  sourceId?: SourceId;
   span?: SourceSpan;
   entityId?: EntityId;
   witness?: WitnessKind;
@@ -408,7 +495,15 @@ export interface CensusSummary {
    * Which stores this run emitted and which the cut deliberately defers —
    * absence of a contract-tier store is a statement, not an accident.
    */
-  stores: { emitted: string[]; deferred: string[] };
+  stores: {
+    emitted: string[];
+    deferred: (typeof CENSUS_DEFERRED_STORES)[number][];
+  };
+  /** Per-store normative schema identities. */
+  storeSchemas: Record<string, string>;
+  runtime: {
+    node: string;
+  };
   sourceCount: number;
   entityCounts: Partial<Record<CensusKind, number>>;
   agreementCounts: Partial<Record<AgreementState, number>>;

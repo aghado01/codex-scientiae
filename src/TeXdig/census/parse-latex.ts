@@ -4,10 +4,10 @@
  * Two entry points, wired by the CLI:
  *   1. discoverDefinitions — pass 1 over ONE file: find macro and environment
  *      definitions across all knowable dialects, contribute signatures.
- *   2. parseLatexWitness — pass 2 over one file with the DOCUMENT-GLOBAL
- *      signature registry merged from every parsed file's discovery: a
- *      preamble definition must inform argument attachment in every included
- *      file, not just the file that declared it.
+ *   2. parseLatexWitness — pass 2 over one file without document-final
+ *      signature injection. Census macro entities are physical control-
+ *      sequence tokens; binding-dependent argument attachment belongs to the
+ *      occurrence/elaboration tier and cannot use a last-definition-wins map.
  *
  * Both passes consume STRATIFIED text (comments and verbatim masked to
  * whitespace, offsets preserved): stratification precedes everything, and the
@@ -20,30 +20,44 @@ import type {
   SourceId,
   SourceSpan,
   DefinitionDialect,
+  DeclarationActivation,
+  DeclarationContext,
   Diagnostic,
 } from "../core/types.ts";
 import { DiagnosticCodes } from "../core/types.ts";
+import { isValidSourceSpan, sourceSpanContains } from "../core/spans.ts";
 import type { Dependencies } from "../core/loader.ts";
 
 export interface ParserMacroDef {
+  commandName: string;
   definedName: string;
   dialect: DefinitionDialect;
   signatureRaw?: string;
+  argumentSpec?: string;
   bodySpan?: SourceSpan;
   /** Full definition site; a hull over attached args when the parser's macro node stops at the csname. */
   span: SourceSpan;
   spanSynthesized: boolean;
   elaborable: boolean;
+  context: DeclarationContext;
+  activation: DeclarationActivation;
+  definedWithin?: { kind: "macro-definition" | "environment-definition"; span: SourceSpan };
 }
 
 export interface ParserEnvDef {
+  commandName: string;
   definedName: string;
   mechanism: "newtheorem" | "newenvironment" | "newfloat";
   signatureRaw?: string;
+  argumentSpec?: string;
   counterRaw?: string;
-  bodySpan?: SourceSpan;
+  beginBodySpan?: SourceSpan;
+  endBodySpan?: SourceSpan;
   span: SourceSpan;
   spanSynthesized: boolean;
+  context: DeclarationContext;
+  activation: DeclarationActivation;
+  definedWithin?: { kind: "macro-definition" | "environment-definition"; span: SourceSpan };
 }
 
 export interface SignatureRegistry {
@@ -73,9 +87,11 @@ export interface DiscoveryResult {
 }
 
 export interface ParserArgSpan {
+  /** Full explicit source extent including delimiters. */
   span: SourceSpan;
-  /** True for real `{...}`/`[...]` args; false for implicit attachments (star tokens, list-item bodies) which must never stretch a hull. */
-  bracketed: boolean;
+  /** Interior source extent; explicit empty arguments are zero-length spans. */
+  contentSpan: SourceSpan;
+  delimiter: "brace" | "bracket";
 }
 
 export interface ParserSighting {
@@ -166,6 +182,80 @@ function isBracketed(arg: any): boolean {
   return arg && (arg.openMark === "{" || arg.openMark === "[");
 }
 
+interface ArgumentEvidence {
+  span: SourceSpan;
+  contentSpan: SourceSpan;
+  delimiter: "brace" | "bracket";
+  raw: string;
+  contentRaw: string;
+}
+
+function escapedAt(text: string, offset: number): boolean {
+  let count = 0;
+  for (let i = offset - 1; i >= 0 && text[i] === "\\"; i--) count++;
+  return count % 2 === 1;
+}
+
+function closingDelimiterOffset(text: string, openAt: number, open: string, close: string): number | undefined {
+  let depth = 1;
+  for (let i = openAt + 1; i < text.length; i++) {
+    if (escapedAt(text, i)) continue;
+    if (text[i] === open) depth++;
+    else if (text[i] === close) {
+      depth--;
+      if (depth === 0) return i;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Recover full and interior extents from the immutable source stream. Unified-
+ * latex Argument wrappers are positionless, including explicit empty `{}` and
+ * `[]` arguments, so positioned child hulls alone cannot represent them.
+ */
+function collectArgumentEvidence(
+  sourceId: SourceId,
+  text: string,
+  node: any
+): Map<any, ArgumentEvidence> {
+  const evidence = new Map<any, ArgumentEvidence>();
+  const args: any[] = Array.isArray(node?.args) ? node.args : [];
+  let cursor = node?.position?.end?.offset;
+  if (!Number.isInteger(cursor)) return evidence;
+
+  for (const arg of args) {
+    if (!isBracketed(arg)) continue;
+    const open = arg.openMark as "{" | "[";
+    const close = open === "{" ? "}" : "]";
+    const childSpan = argContentSpan(sourceId, arg, text);
+    const adjacentOpen = childSpan ? childSpan.startUtf16 - 1 : -1;
+    const openAt = adjacentOpen >= cursor && text[adjacentOpen] === open
+      ? adjacentOpen
+      : childSpan
+        ? -1
+        : text.indexOf(open, cursor);
+    if (openAt < 0) continue;
+    const closeAt = closingDelimiterOffset(text, openAt, open, close);
+    if (closeAt === undefined) continue;
+    const span: SourceSpan = { sourceId, startUtf16: openAt, endUtf16: closeAt + 1 };
+    const contentSpan: SourceSpan = {
+      sourceId,
+      startUtf16: openAt + 1,
+      endUtf16: closeAt,
+    };
+    evidence.set(arg, {
+      span,
+      contentSpan,
+      delimiter: open === "{" ? "brace" : "bracket",
+      raw: text.slice(span.startUtf16, span.endUtf16),
+      contentRaw: text.slice(contentSpan.startUtf16, contentSpan.endUtf16),
+    });
+    cursor = closeAt + 1;
+  }
+  return evidence;
+}
+
 /** First macro node in an argument's content, if any (the `\pair` of `{\pair}`). */
 function firstMacroInArg(arg: any): any | undefined {
   if (!arg || !Array.isArray(arg.content)) return undefined;
@@ -209,20 +299,12 @@ export function getEnvName(env: any): string {
  */
 function definitionHull(
   sourceId: SourceId,
-  text: string,
   commandSpan: SourceSpan,
-  args: any[]
+  evidence: Map<any, ArgumentEvidence>
 ): { span: SourceSpan; synthesized: boolean } {
   let end = commandSpan.endUtf16;
-  for (const arg of args || []) {
-    if (!isBracketed(arg)) continue;
-    const cs = argContentSpan(sourceId, arg, text);
-    if (!cs) continue;
-    let argEnd = cs.endUtf16;
-    if (argEnd < text.length && (text[argEnd] === "}" || text[argEnd] === "]")) {
-      argEnd++;
-    }
-    if (argEnd > end) end = argEnd;
+  for (const arg of evidence.values()) {
+    if (arg.span.endUtf16 > end) end = arg.span.endUtf16;
   }
   const synthesized = end > commandSpan.endUtf16;
   return {
@@ -328,12 +410,14 @@ export function discoverDefinitions(
       const args: any[] = Array.isArray(node.args) ? node.args : [];
       const braceArgs = args.filter((a) => a && a.openMark === "{");
       const bracketArgs = args.filter((a) => a && a.openMark === "[");
+      const argumentEvidence = collectArgumentEvidence(sourceId, text, node);
+      const evidenceFor = (arg: any): ArgumentEvidence | undefined => argumentEvidence.get(arg);
 
       // --- Package/class summons (configured-channel anchors) -------------
       if (name === "usepackage" || name === "RequirePackage" || name === "documentclass") {
         const payload = stringContentOfArg(braceArgs[0]);
         if (payload) {
-          const { span } = definitionHull(sourceId, text, cmdSpan, args);
+          const { span } = definitionHull(sourceId, cmdSpan, argumentEvidence);
           for (const pkg of payload.split(",")) {
             const trimmed = pkg.trim();
             if (trimmed && !result.requestedPackages.has(trimmed)) {
@@ -349,24 +433,28 @@ export function discoverDefinitions(
         const nameNode = firstMacroInArg(braceArgs[0]);
         const definedName = nameNode ? getMacroName(nameNode) : stringContentOfArg(braceArgs[0]);
         if (!definedName) continue;
-        const numArgs = parseInt(stringContentOfArg(bracketArgs[0]), 10) || 0;
+        const numArgs = parseInt(evidenceFor(bracketArgs[0])?.contentRaw.trim() || "", 10) || 0;
         const hasOptional = bracketArgs.length > 1;
-        const defaultSpan = hasOptional ? argContentSpan(sourceId, bracketArgs[1], text) : undefined;
-        const defaultRaw = defaultSpan
-          ? text.slice(defaultSpan.startUtf16, defaultSpan.endUtf16)
-          : undefined;
-        const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
-        const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
+        const defaultRaw = hasOptional ? evidenceFor(bracketArgs[1])?.contentRaw : undefined;
+        const bodySpan = evidenceFor(braceArgs[1])?.contentSpan;
+        const { span, synthesized } = definitionHull(sourceId, cmdSpan, argumentEvidence);
         markDefinitionTokens(node, nameNode);
         const sig = buildSignature(numArgs, hasOptional, defaultRaw);
+        const signatureRaw = bracketArgs
+          .map((arg) => evidenceFor(arg)?.raw || "")
+          .join("") || undefined;
         result.macroDefs.push({
+          commandName: name,
           definedName,
           dialect: NEWCOMMAND_FAMILY[name],
-          signatureRaw: sig || undefined,
+          signatureRaw,
+          argumentSpec: sig || undefined,
           bodySpan,
           span,
           spanSynthesized: synthesized,
           elaborable: true,
+          context: "unknown",
+          activation: "unknown",
         });
         if (sig) result.registry.macros[definedName] = { signature: sig };
         continue;
@@ -376,16 +464,19 @@ export function discoverDefinitions(
       if (name === "DeclareMathOperator") {
         const nameNode = firstMacroInArg(braceArgs[0]);
         if (!nameNode) continue;
-        const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
-        const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
+        const bodySpan = evidenceFor(braceArgs[1])?.contentSpan;
+        const { span, synthesized } = definitionHull(sourceId, cmdSpan, argumentEvidence);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
+          commandName: name,
           definedName: getMacroName(nameNode),
           dialect: "math-operator",
           bodySpan,
           span,
           spanSynthesized: synthesized,
           elaborable: true,
+          context: "unknown",
+          activation: "unknown",
         });
         continue;
       }
@@ -394,24 +485,26 @@ export function discoverDefinitions(
       if (name === "DeclarePairedDelimiter") {
         const nameNode = firstMacroInArg(braceArgs[0]);
         if (!nameNode) continue;
-        const left = argContentSpan(sourceId, braceArgs[1], text);
-        const right = argContentSpan(sourceId, braceArgs[2], text);
+        const left = evidenceFor(braceArgs[1])?.contentSpan;
+        const right = evidenceFor(braceArgs[2])?.contentSpan;
         const bodySpan = left && right
           ? { sourceId, startUtf16: left.startUtf16, endUtf16: right.endUtf16 }
           : left || right;
-        const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
+        const { span, synthesized } = definitionHull(sourceId, cmdSpan, argumentEvidence);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
+          commandName: name,
           definedName: getMacroName(nameNode),
           dialect: "paired-delimiter",
+          argumentSpec: "s o m",
           bodySpan,
           span,
           spanSynthesized: synthesized,
           elaborable: true,
+          context: "unknown",
+          activation: "unknown",
         });
-        // Paired delimiters take one starred/sized use form; registering `o m`
-        // would misparse common `\ceil{x}` and `\ceil*{x}` alike — leave
-        // attachment to the generic path.
+        result.registry.macros[getMacroName(nameNode)] = { signature: "s o m" };
         continue;
       }
 
@@ -419,29 +512,32 @@ export function discoverDefinitions(
       if (XPARSE_FAMILY.has(name)) {
         const nameNode = firstMacroInArg(braceArgs[0]);
         if (!nameNode) continue;
-        const specSpan = argContentSpan(sourceId, braceArgs[1], text);
-        const signatureRaw = specSpan
-          ? text.slice(specSpan.startUtf16, specSpan.endUtf16).trim()
-          : undefined;
-        const bodySpan = argContentSpan(sourceId, braceArgs[2], text);
-        const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
+        const specEvidence = evidenceFor(braceArgs[1]);
+        const signatureRaw = specEvidence?.contentRaw;
+        const argumentSpec = signatureRaw?.replace(/\s+/g, " ").trim();
+        const bodySpan = evidenceFor(braceArgs[2])?.contentSpan;
+        const { span, synthesized } = definitionHull(sourceId, cmdSpan, argumentEvidence);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
+          commandName: name,
           definedName: getMacroName(nameNode),
           dialect: "xparse",
           signatureRaw,
+          argumentSpec: argumentSpec || undefined,
           bodySpan,
           span,
           spanSynthesized: synthesized,
           elaborable: true,
+          context: "unknown",
+          activation: "unknown",
         });
         // xparse specs use the same letter vocabulary unified-latex signatures
         // do; simple specs register directly, exotic ones are skipped.
-        if (signatureRaw && /^[somO\s{}\w]*$/.test(signatureRaw)) {
-          const simple = signatureRaw.replace(/\s+/g, " ").trim();
-          if (/^[som]( [som])*$/.test(simple)) {
-            result.registry.macros[getMacroName(nameNode)] = { signature: simple };
-          }
+        if (
+          argumentSpec &&
+          /^[somO](?:\{[^{}]*\})?(?:\s+[somO](?:\{[^{}]*\})?)*$/.test(argumentSpec)
+        ) {
+          result.registry.macros[getMacroName(nameNode)] = { signature: argumentSpec };
         }
         continue;
       }
@@ -474,6 +570,7 @@ export function discoverDefinitions(
           // \newcommand line).
           if (target && target.type === "macro") markDefinitionTokens(target, undefined);
           result.macroDefs.push({
+            commandName: name,
             definedName: getMacroName(nameNode),
             dialect: "let",
             bodySpan: targetSpan,
@@ -484,6 +581,8 @@ export function discoverDefinitions(
             },
             spanSynthesized: false,
             elaborable: false,
+            context: "unknown",
+            activation: "unknown",
           });
           continue;
         }
@@ -507,8 +606,8 @@ export function discoverDefinitions(
           const g = nodeSpan(sourceId, bodyNode)!;
           bodySpan = { sourceId, startUtf16: g.startUtf16 + 1, endUtf16: g.endUtf16 - 1 };
           endUtf16 = g.endUtf16;
-          const paramText = text.slice(nameSpan.endUtf16, g.startUtf16).trim();
-          if (paramText) signatureRaw = paramText;
+          const paramText = text.slice(nameSpan.endUtf16, g.startUtf16);
+          if (paramText.length > 0) signatureRaw = paramText;
         } else {
           // Single-token body (\def\x\y): the next non-whitespace node.
           let m = j + 1;
@@ -521,13 +620,16 @@ export function discoverDefinitions(
         }
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
+          commandName: name,
           definedName: getMacroName(nameNode),
-          dialect: "def",
+          dialect: name as "def" | "gdef" | "edef" | "xdef",
           signatureRaw,
           bodySpan,
           span: { sourceId, startUtf16: cmdSpan.startUtf16, endUtf16 },
           spanSynthesized: false,
           elaborable: false,
+          context: "unknown",
+          activation: "unknown",
         });
         continue;
       }
@@ -537,42 +639,54 @@ export function discoverDefinitions(
         const definedName = stringContentOfArg(braceArgs[0]);
         if (!definedName) continue;
         const mechanism = ENVDEF_MECHANISMS[name];
-        const { span, synthesized } = definitionHull(sourceId, text, cmdSpan, args);
+        const { span, synthesized } = definitionHull(sourceId, cmdSpan, argumentEvidence);
         markDefinitionTokens(node, undefined);
 
         if (mechanism === "newtheorem") {
-          const counterSpan = argContentSpan(sourceId, bracketArgs[0], text);
+          const counterEvidence = evidenceFor(bracketArgs[0]);
           result.envDefs.push({
+            commandName: name,
             definedName,
             mechanism,
-            counterRaw: counterSpan
-              ? text.slice(counterSpan.startUtf16, counterSpan.endUtf16)
-              : undefined,
+            counterRaw: counterEvidence?.contentRaw,
             span,
             spanSynthesized: synthesized,
+            context: "unknown",
+            activation: "unknown",
           });
           // Theorem-like environments take one optional [Title].
           result.registry.environments[definedName] = { signature: "o" };
         } else if (mechanism === "newenvironment") {
-          const numArgs = parseInt(stringContentOfArg(bracketArgs[0]), 10) || 0;
+          const numArgs = parseInt(evidenceFor(bracketArgs[0])?.contentRaw.trim() || "", 10) || 0;
           const hasOptional = bracketArgs.length > 1;
-          const bodySpan = argContentSpan(sourceId, braceArgs[1], text);
+          const defaultRaw = hasOptional ? evidenceFor(bracketArgs[1])?.contentRaw : undefined;
+          const sig = buildSignature(numArgs, hasOptional, defaultRaw);
+          const signatureRaw = bracketArgs
+            .map((arg) => evidenceFor(arg)?.raw || "")
+            .join("") || undefined;
           result.envDefs.push({
+            commandName: name,
             definedName,
             mechanism,
-            signatureRaw: buildSignature(numArgs, hasOptional) || undefined,
-            bodySpan,
+            signatureRaw,
+            argumentSpec: sig || undefined,
+            beginBodySpan: evidenceFor(braceArgs[1])?.contentSpan,
+            endBodySpan: evidenceFor(braceArgs[2])?.contentSpan,
             span,
             spanSynthesized: synthesized,
+            context: "unknown",
+            activation: "unknown",
           });
-          const sig = buildSignature(numArgs, hasOptional);
           if (sig) result.registry.environments[definedName] = { signature: sig };
         } else {
           result.envDefs.push({
+            commandName: name,
             definedName,
             mechanism,
             span,
             spanSynthesized: synthesized,
+            context: "unknown",
+            activation: "unknown",
           });
         }
         continue;
@@ -580,47 +694,87 @@ export function discoverDefinitions(
     }
   });
 
+  // A declaration physically nested in another declaration's program is not
+  // active while the outer definition is merely read. Record the nearest
+  // containing definition so later occurrence compilation can activate it at
+  // execution time instead of installing it document-globally.
+  type DefinitionRef = {
+    kind: "macro-definition" | "environment-definition";
+    value: ParserMacroDef | ParserEnvDef;
+    bodies: SourceSpan[];
+  };
+  const definitionRefs: DefinitionRef[] = [
+    ...result.macroDefs.map((value) => ({
+      kind: "macro-definition" as const,
+      value,
+      bodies: value.bodySpan ? [value.bodySpan] : [],
+    })),
+    ...result.envDefs.map((value) => ({
+      kind: "environment-definition" as const,
+      value,
+      bodies: [value.beginBodySpan, value.endBodySpan].filter(
+        (span): span is SourceSpan => span !== undefined
+      ),
+    })),
+  ];
+  for (const child of definitionRefs) {
+    let parent: DefinitionRef | undefined;
+    let parentWidth = Infinity;
+    for (const candidate of definitionRefs) {
+      if (candidate === child) continue;
+      for (const body of candidate.bodies) {
+        if (!sourceSpanContains(body, child.value.span)) continue;
+        const width = body.endUtf16 - body.startUtf16;
+        if (width < parentWidth) {
+          parent = candidate;
+          parentWidth = width;
+        }
+      }
+    }
+    if (parent) {
+      child.value.context = "definition-body";
+      child.value.activation = "deferred";
+      child.value.definedWithin = { kind: parent.kind, span: parent.value.span };
+    }
+  }
+
   return result;
 }
 
 // ---------------------------------------------------------------------------
-// Pass 2: witness parse with the document-global registry
+// Pass 2: physical witness parse
 // ---------------------------------------------------------------------------
 
 export function parseLatexWitness(
   sourceId: SourceId,
   text: string,
   deps: Dependencies,
-  registry: SignatureRegistry
+  _registry: SignatureRegistry
 ): WitnessResult {
   const diagnostics: Diagnostic[] = [];
   let ast: any = null;
 
   try {
-    ast = deps.parse
-      .getParser({ macros: registry.macros, environments: registry.environments })
-      .parse(text);
+    // A document-final registry cannot represent redefinition order, include
+    // occurrences, or scope. Injecting it here lets a later signature rewrite
+    // the AST shape of an earlier invocation. The census therefore parses the
+    // physical token stream with the baseline grammar only.
+    ast = deps.parse.getParser().parse(text);
   } catch (err: any) {
     diagnostics.push({
       code: DiagnosticCodes.LatexParseError,
-      severity: "warning",
-      message: `Parse with document signature registry failed (${err?.message || err}); retrying without registry`,
+      severity: "defect",
+      message: `unified-latex failed to parse this source: ${err?.message || err}`,
+      sourceId,
+      witness: "parser",
     });
-    try {
-      ast = deps.parse.getParser().parse(text);
-    } catch (err2: any) {
-      diagnostics.push({
-        code: DiagnosticCodes.LatexParseError,
-        severity: "defect",
-        message: `unified-latex failed to parse this source: ${err2?.message || err2}`,
-      });
-      return { sourceId, sightings: [], textRuns: [], groupSpans: [], diagnostics };
-    }
+    return { sourceId, sightings: [], textRuns: [], groupSpans: [], diagnostics };
   }
 
   const sightings: ParserSighting[] = [];
   const textRuns: SourceSpan[] = [];
   const groupSpans: SourceSpan[] = [];
+  let reportedUntrustedParserSpan = false;
 
   /**
    * unified-latex reparses some constructs (alignment environments like
@@ -634,6 +788,8 @@ export function parseLatexWitness(
     if (!node.position) return false;
     const ns = node.position.start.offset;
     const ne = node.position.end.offset;
+    const candidate: SourceSpan = { sourceId, startUtf16: ns, endUtf16: ne };
+    if (!isValidSourceSpan(candidate, text.length)) return false;
     const chain = Array.isArray(parents) ? parents : [];
     for (const p of chain) {
       // Macro ancestors are exempt: their positions exclude attached
@@ -649,13 +805,22 @@ export function parseLatexWitness(
     const trusted = spanTrusted(node, info?.parents);
     const span = trusted ? nodeSpan(sourceId, node) : undefined;
     const inMathMode = info?.context?.inMathMode || false;
+    if (node.position && !trusted && !reportedUntrustedParserSpan) {
+      reportedUntrustedParserSpan = true;
+      diagnostics.push({
+        code: DiagnosticCodes.UntrustedParserSpan,
+        severity: "warning",
+        message: `Discarded one or more containment-inconsistent unified-latex positions (first node: ${String(node.type || "node")})`,
+        sourceId,
+        witness: "parser",
+      });
+    }
 
     if (node.type === "macro") {
       const args: ParserArgSpan[] = [];
-      if (Array.isArray(node.args)) {
-        for (const arg of node.args) {
-          const cs = argContentSpan(sourceId, arg, text);
-          if (cs) args.push({ span: cs, bracketed: isBracketed(arg) });
+      for (const arg of collectArgumentEvidence(sourceId, text, node).values()) {
+        if (isValidSourceSpan(arg.span, text.length)) {
+          args.push({ span: arg.span, contentSpan: arg.contentSpan, delimiter: arg.delimiter });
         }
       }
       sightings.push({
@@ -670,7 +835,6 @@ export function parseLatexWitness(
         nodeType: node.type,
         name: getEnvName(node.env),
         span,
-        bodySpan: argContentSpan(sourceId, node, text),
         inMathMode: inMathMode || node.type === "mathenv",
       });
     } else if (node.type === "verb") {
@@ -681,7 +845,9 @@ export function parseLatexWitness(
       sightings.push({ nodeType: "inlinemath", mode: "inline", span, inMathMode: true });
     } else if (node.type === "displaymath") {
       sightings.push({ nodeType: "displaymath", mode: "display", span, inMathMode: true });
-    } else if (node.type === "string" || node.type === "whitespace" || node.type === "parbreak") {
+    } else if (node.type === "parbreak") {
+      sightings.push({ nodeType: "paragraph-break", span });
+    } else if (node.type === "string" || node.type === "whitespace") {
       if (span && span.startUtf16 < span.endUtf16) {
         textRuns.push(span);
       }

@@ -14,6 +14,7 @@ import type {
   Diagnostic,
 } from "../core/types.ts";
 import { DiagnosticCodes } from "../core/types.ts";
+import { isValidSourceSpan, sourceSpanContains } from "../core/spans.ts";
 import type { Dependencies } from "../core/loader.ts";
 
 export interface ParsedBibField {
@@ -81,30 +82,50 @@ export function parseBib(
       code: DiagnosticCodes.BibParseError,
       severity: "defect",
       message: `BibTeX parse error: ${err.message || String(err)}`,
+      sourceId,
+      witness: "parser",
     });
     return { sourceId, entries, strings, preambles, comments, diagnostics };
   }
 
   const seenKeys = new Set<string>();
 
+  function locationSpan(value: any, label: string): SourceSpan | undefined {
+    const start = value?.location?.start?.offset;
+    const end = value?.location?.end?.offset;
+    const span: SourceSpan = { sourceId, startUtf16: start, endUtf16: end };
+    if (isValidSourceSpan(span, rawText.length)) return span;
+    diagnostics.push({
+      code: DiagnosticCodes.InvalidSpan,
+      severity: "defect",
+      message: `Discarded invalid latex-utensils ${label} span`,
+      sourceId,
+      witness: "parser",
+    });
+    return undefined;
+  }
+
+  function constructBodySpan(span: SourceSpan): SourceSpan | undefined {
+    const brace = rawText.indexOf("{", span.startUtf16);
+    const paren = rawText.indexOf("(", span.startUtf16);
+    const openAt = brace < 0 ? paren : paren < 0 ? brace : Math.min(brace, paren);
+    if (openAt < span.startUtf16 || openAt >= span.endUtf16) return undefined;
+    const closeAt = span.endUtf16 - 1;
+    const expected = rawText[openAt] === "{" ? "}" : ")";
+    if (rawText[closeAt] !== expected) return undefined;
+    const body: SourceSpan = { sourceId, startUtf16: openAt + 1, endUtf16: closeAt };
+    return sourceSpanContains(span, body) ? body : undefined;
+  }
+
   if (ast && ast.content && Array.isArray(ast.content)) {
     for (const item of ast.content) {
       if (!item || !item.location) continue;
 
-      const itemSpan: SourceSpan = {
-        sourceId,
-        startUtf16: item.location.start.offset,
-        endUtf16: item.location.end.offset,
-      };
+      const itemSpan = locationSpan(item, `@${String(item.entryType || "construct")}`);
+      if (!itemSpan) continue;
 
       if (item.entryType === "string") {
-        const valSpan: SourceSpan | undefined = item.value?.location
-          ? {
-              sourceId,
-              startUtf16: item.value.location.start.offset,
-              endUtf16: item.value.location.end.offset,
-            }
-          : undefined;
+        const valSpan = item.value?.location ? locationSpan(item.value, "@string value") : undefined;
 
         strings.push({
           abbreviationName: item.abbreviation || "",
@@ -126,6 +147,7 @@ export function parseBib(
               code: DiagnosticCodes.BibDuplicateKey,
               severity: "warning",
               message: `Duplicate BibTeX cite key '${citeKey}'`,
+              sourceId,
               span: itemSpan,
             });
           } else {
@@ -138,11 +160,19 @@ export function parseBib(
           for (const field of item.content) {
             if (!field || !field.name || !field.value || !field.value.location) continue;
 
-            const fValSpan: SourceSpan = {
-              sourceId,
-              startUtf16: field.value.location.start.offset,
-              endUtf16: field.value.location.end.offset,
-            };
+            const fValSpan = locationSpan(field.value, `Bib field '${String(field.name)}' value`);
+            if (!fValSpan || !sourceSpanContains(itemSpan, fValSpan)) {
+              if (fValSpan) {
+                diagnostics.push({
+                  code: DiagnosticCodes.UntrustedParserSpan,
+                  severity: "defect",
+                  message: `Discarded Bib field '${String(field.name)}' span outside its entry`,
+                  sourceId,
+                  witness: "parser",
+                });
+              }
+              continue;
+            }
             const fShape = mapValueShape(field.value.kind);
 
             let parts: { span: SourceSpan; shape: Exclude<BibValueShape, "concat"> }[] | undefined;
@@ -150,12 +180,10 @@ export function parseBib(
               parts = [];
               for (const part of field.value.content) {
                 if (part && part.location) {
+                  const partSpan = locationSpan(part, `Bib field '${String(field.name)}' concat part`);
+                  if (!partSpan || !sourceSpanContains(fValSpan, partSpan)) continue;
                   parts.push({
-                    span: {
-                      sourceId,
-                      startUtf16: part.location.start.offset,
-                      endUtf16: part.location.end.offset,
-                    },
+                    span: partSpan,
                     shape: mapValueShape(part.kind) as Exclude<BibValueShape, "concat">,
                   });
                 }
@@ -175,6 +203,7 @@ export function parseBib(
           entryType,
           citeKey,
           span: itemSpan,
+          bodySpan: constructBodySpan(itemSpan),
           fields,
         });
       }

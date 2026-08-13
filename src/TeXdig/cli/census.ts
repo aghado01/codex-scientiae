@@ -7,6 +7,7 @@
  */
 
 import fs from "node:fs";
+import type { Stats } from "node:fs";
 import path from "node:path";
 import { loadDependencies } from "../core/loader.ts";
 import { buildSourceGraph } from "../census/source-graph.ts";
@@ -16,15 +17,11 @@ import {
   discoverDefinitions,
   parseLatexWitness,
   type DiscoveryResult,
-  type SignatureRegistry,
 } from "../census/parse-latex.ts";
 import { parseBib } from "../census/parse-bib.ts";
 import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
 import { buildConfiguredChannel, mintConfiguredEntities } from "../census/configured.ts";
 import { buildUtensilsIndex, backfillLexicalOnly } from "../census/backfill-utensils.ts";
-import { expandDocument, type ExpandDocumentInput } from "../elaborate/expand.ts";
-import { buildTraversalOrder } from "../compile/traversal.ts";
-import { compileMacroRecords } from "../compile/macros.ts";
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
@@ -40,6 +37,79 @@ interface CliArgs {
   articleDir: string;
   depsDir: string;
   outDir: string;
+}
+
+function isStrictPathDescendant(root: string, candidate: string): boolean {
+  const relative = path.relative(root, candidate);
+  return (
+    relative.length > 0 &&
+    relative !== ".." &&
+    !relative.startsWith(`..${path.sep}`) &&
+    !path.isAbsolute(relative)
+  );
+}
+
+/**
+ * Resolve the manifest's source-tree address without trusting prior schema
+ * validation. This guard is worker-owned and therefore remains active for
+ * direct CLI calls and the PowerShell runner's -SkipValidation path.
+ */
+export function resolveManifestSourceTree(
+  documentDirectory: string,
+  treeRelativePath: unknown
+): string {
+  if (
+    typeof treeRelativePath !== "string" ||
+    treeRelativePath.length === 0 ||
+    treeRelativePath.includes("\0") ||
+    treeRelativePath.includes("\\") ||
+    /[<>:"|?*\u0000-\u001F]/.test(treeRelativePath) ||
+    path.posix.isAbsolute(treeRelativePath) ||
+    path.win32.isAbsolute(treeRelativePath)
+  ) {
+    throw new Error("Manifest source-tree path must be a portable relative descendant");
+  }
+
+  const parts = treeRelativePath.split("/");
+  if (parts.some((part) => !part || part === "." || part === ".." || /[ .]$/.test(part))) {
+    throw new Error("Manifest source-tree path must be a portable relative descendant");
+  }
+
+  const resolvedDocumentDirectory = path.resolve(documentDirectory);
+  const lexicalTreeDirectory = path.resolve(resolvedDocumentDirectory, ...parts);
+  if (!isStrictPathDescendant(resolvedDocumentDirectory, lexicalTreeDirectory)) {
+    throw new Error("Manifest source-tree path must remain within the article directory");
+  }
+
+  let cursor = resolvedDocumentDirectory;
+  for (const part of parts) {
+    cursor = path.join(cursor, part);
+    let status: Stats;
+    try {
+      status = fs.lstatSync(cursor);
+    } catch {
+      throw new Error(`Source tree directory not found at '${lexicalTreeDirectory}'`);
+    }
+    // Node reports Windows directory junctions through the symbolic-link bit
+    // as well as ordinary POSIX/Windows symlinks.
+    if (status.isSymbolicLink()) {
+      throw new Error(`Manifest source-tree path contains a reparse point (symlink/junction) at '${cursor}'`);
+    }
+    if (!status.isDirectory() && cursor !== lexicalTreeDirectory) {
+      throw new Error(`Manifest source-tree path crosses a non-directory at '${cursor}'`);
+    }
+  }
+
+  if (!fs.lstatSync(lexicalTreeDirectory).isDirectory()) {
+    throw new Error(`Source tree path is not a directory: '${lexicalTreeDirectory}'`);
+  }
+
+  const canonicalDocumentDirectory = fs.realpathSync.native(resolvedDocumentDirectory);
+  const canonicalTreeDirectory = fs.realpathSync.native(lexicalTreeDirectory);
+  if (!isStrictPathDescendant(canonicalDocumentDirectory, canonicalTreeDirectory)) {
+    throw new Error("Manifest source-tree path resolves outside the article directory");
+  }
+  return canonicalTreeDirectory;
 }
 
 function parseArgs(): CliArgs {
@@ -91,21 +161,30 @@ export async function runCensus(options: CliArgs) {
   const docDir = path.dirname(articleJsonPath);
 
   // Locate source tree
-  let treeRelPath = `${slug}-tex`;
+  let treeRelPath: unknown;
   let treeSha256 = "";
   let entrypoint = "";
   let manifestFileCount: number | undefined;
 
+  let treeForm: any;
   if (article.source_forms && Array.isArray(article.source_forms)) {
-    const treeForm = article.source_forms.find(
+    treeForm = article.source_forms.find(
       (f: any) => f.role === "latex-source-tree"
     );
     if (treeForm) {
-      treeRelPath = treeForm.path || treeRelPath;
+      // Preserve the manifest value verbatim. A missing/falsey path is invalid
+      // provenance and must reach the worker-owned path guard, never trigger a
+      // conventional `${slug}-tex` guess under -SkipValidation.
+      treeRelPath = treeForm.path;
       treeSha256 = treeForm.sha256 || "";
       entrypoint = treeForm.entrypoint || "";
       if (typeof treeForm.files === "number") manifestFileCount = treeForm.files;
     }
+  }
+  if (!treeForm) {
+    throw new Error(
+      `article.json for '${slug}' carries no latex-source-tree source form; refusing to guess`
+    );
   }
 
   if (!entrypoint && article.evidence?.latex_source?.entrypoint) {
@@ -121,10 +200,7 @@ export async function runCensus(options: CliArgs) {
     );
   }
 
-  const treeDir = path.join(docDir, treeRelPath);
-  if (!fs.existsSync(treeDir)) {
-    throw new Error(`Source tree directory not found at '${treeDir}'`);
-  }
+  const treeDir = resolveManifestSourceTree(docDir, treeRelPath);
 
   // Load dependencies
   const deps = loadDependencies(options.depsDir);
@@ -132,30 +208,40 @@ export async function runCensus(options: CliArgs) {
   // Build source graph (stratification happens inside, before include scanning)
   const graph = buildSourceGraph(treeDir, entrypoint);
 
+  // Attribution is a hard precondition. The graph fingerprint is computed from
+  // the exact buffers used below; a stale or absent manifest identity must not
+  // yield an apparently attested census plus a diagnostic nobody reads.
+  if (!/^[0-9a-f]{64}$/.test(treeSha256)) {
+    throw new Error(
+      `Manifest for '${slug}' has no valid lowercase SHA-256 source-tree fingerprint`
+    );
+  }
+  if (!Number.isSafeInteger(manifestFileCount) || manifestFileCount < 1) {
+    throw new Error(
+      `Manifest for '${slug}' has no valid positive source-tree file count`
+    );
+  }
+  if (manifestFileCount !== graph.sources.length) {
+    throw new Error(
+      `Manifest declares ${manifestFileCount} files but the deposited tree holds ${graph.sources.length}; refusing stale source attribution`
+    );
+  }
+  if (treeSha256 !== graph.treeSha256) {
+    throw new Error(
+      `Manifest source-tree fingerprint ${treeSha256} does not match the censused buffers ${graph.treeSha256}; refusing stale source attribution`
+    );
+  }
+
   const allEntities: CensusEntity[] = [];
   const allClaims: PillarClaim[] = [];
   const allCoverage: SourceCoverage[] = [];
   const allDiagnostics: Diagnostic[] = [...graph.diagnostics];
 
-  // Attribution guard: the deposit is supposed to be FROZEN. If the manifest's
-  // file count no longer matches the walked tree, the tree was modified after
-  // deposit and the recorded sha256 does not describe what we are censusing.
-  if (manifestFileCount !== undefined && manifestFileCount !== graph.sources.length) {
-    allDiagnostics.push({
-      code: "census/tree-manifest-mismatch",
-      severity: "defect",
-      message: `Manifest declares ${manifestFileCount} files but the deposited tree holds ${graph.sources.length}; the tree was modified after deposit and treeSha256 attribution is stale`,
-    });
-  }
-
   // ---------------------------------------------------------------------
-  // Pass 1 — definition discovery across ALL parsed LaTeX sources, merged
-  // into one document-global signature registry: a preamble \newcommand must
-  // inform argument attachment in every included file. The configured layer
-  // (ctan records for the packages the document summons) merges FIRST;
-  // document-discovered definitions overwrite it — the paper always wins.
-  // Cross-file name collisions resolve last-wins; true shadowing is a cut-2
-  // join.
+  // Pass 1 — physical definition discovery across parsed LaTeX sources.
+  // Signatures remain facts on definition sites. They are not merged into a
+  // document-final parser registry: doing so lets a later redefinition rewrite
+  // the physical shape of an earlier control-sequence occurrence.
   // ---------------------------------------------------------------------
   const discoveries = new Map<string, DiscoveryResult>();
   const requestedPackages = new Map<string, SourceSpan>();
@@ -170,21 +256,6 @@ export async function runCensus(options: CliArgs) {
     }
   }
 
-  // \let-alias signature propagation: an alias of a signature-bearing macro
-  // takes that signature, so alias sites attach arguments like their targets
-  // (and expansion receives complete invocations). Bounded chain walk.
-  const aliasPairs: { alias: string; target: string }[] = [];
-  for (const discovery of discoveries.values()) {
-    const raw = graph.rawContents.get(discovery.sourceId) || "";
-    for (const def of discovery.macroDefs) {
-      if (def.dialect !== "let" || !def.bodySpan) continue;
-      const targetSlice = raw.slice(def.bodySpan.startUtf16, def.bodySpan.endUtf16).trim();
-      if (targetSlice.startsWith("\\")) {
-        aliasPairs.push({ alias: def.definedName, target: targetSlice.slice(1) });
-      }
-    }
-  }
-
   const configured = buildConfiguredChannel(requestedPackages, deps);
   if (configured.unresolvedPackages.length > 0) {
     allDiagnostics.push({
@@ -193,24 +264,7 @@ export async function runCensus(options: CliArgs) {
       message: `Summoned packages with no configured signature record: ${configured.unresolvedPackages.join(", ")}`,
     });
   }
-  const registry: SignatureRegistry = {
-    macros: { ...configured.registry.macros },
-    environments: { ...configured.registry.environments },
-  };
-  for (const discovery of discoveries.values()) {
-    Object.assign(registry.macros, discovery.registry.macros);
-    Object.assign(registry.environments, discovery.registry.environments);
-  }
-  for (let round = 0; round < 4; round++) {
-    let changed = false;
-    for (const { alias, target } of aliasPairs) {
-      if (!registry.macros[alias] && registry.macros[target]) {
-        registry.macros[alias] = registry.macros[target];
-        changed = true;
-      }
-    }
-    if (!changed) break;
-  }
+  const physicalParseRegistry = { macros: {}, environments: {} };
 
   // ---------------------------------------------------------------------
   // Pass 2 — witness parse + fusion per file. Both witnesses consume the
@@ -238,7 +292,12 @@ export async function runCensus(options: CliArgs) {
       };
 
       const scan = scanLatex(record.id, strat.stratifiedText);
-      const witnessResult = parseLatexWitness(record.id, strat.stratifiedText, deps, registry);
+      const witnessResult = parseLatexWitness(
+        record.id,
+        strat.stratifiedText,
+        deps,
+        physicalParseRegistry
+      );
       const edges = graph.includeEdges.filter((e) => e.fromSourceId === record.id);
       const reconcileResult = reconcileLatex(
         record.id,
@@ -301,6 +360,9 @@ export async function runCensus(options: CliArgs) {
         extraClaims
       );
 
+      if (record.lengthUtf16 === undefined) {
+        throw new Error(`Parsed source '${record.id}' has no decoded UTF-16 length`);
+      }
       const cov = computeSourceCoverage(record.id, record.lengthUtf16, claims);
 
       allEntities.push(...reconcileResult.entities);
@@ -324,6 +386,9 @@ export async function runCensus(options: CliArgs) {
         reconcileResult.extraClaims
       );
 
+      if (record.lengthUtf16 === undefined) {
+        throw new Error(`Parsed source '${record.id}' has no decoded UTF-16 length`);
+      }
       const cov = computeSourceCoverage(record.id, record.lengthUtf16, claims);
 
       allEntities.push(...reconcileResult.entities);
@@ -335,89 +400,38 @@ export async function runCensus(options: CliArgs) {
 
   // ---------------------------------------------------------------------
   // Configured-dialect minting: declared signatures the document actually
-  // used, minus names the paper defined itself. Declaration entities are
-  // coverage-neutral (their anchor sites are already claimed).
+  // uses. Same-name document declarations remain separate physical evidence;
+  // the occurrence-aware binding cut decides shadowing. Declaration entities
+  // are coverage-neutral because their summon anchors are already claimed.
   // ---------------------------------------------------------------------
   const usedMacroNames = new Set<string>();
   const usedEnvNames = new Set<string>();
-  const documentDefinedMacros = new Set<string>();
-  const documentDefinedEnvs = new Set<string>();
   for (const ent of allEntities) {
     if (ent.kind === "macro-invocation") usedMacroNames.add(ent.name);
     else if (ent.kind === "environment") usedEnvNames.add(ent.name);
-    else if (ent.kind === "macro-definition") documentDefinedMacros.add(ent.definedName);
-    else if (ent.kind === "environment-definition") documentDefinedEnvs.add(ent.definedName);
   }
   allEntities.push(
     ...mintConfiguredEntities(
       configured,
       usedMacroNames,
-      usedEnvNames,
-      documentDefinedMacros,
-      documentDefinedEnvs
+      usedEnvNames
     )
   );
-
-  // ---------------------------------------------------------------------
-  // Compile tier: the shared seq order space (entrypoint traversal across
-  // includes) and macros.jsonl, the first contract-tier store.
-  // ---------------------------------------------------------------------
-  const latexSourceIds = new Set(
-    graph.sources.filter((r) => r.parsed && r.language === "latex").map((r) => r.id)
-  );
-  const startsBySource = new Map<string, number[]>();
-  for (const ent of allEntities) {
-    if (!latexSourceIds.has(ent.span.sourceId)) continue;
-    const list = startsBySource.get(ent.span.sourceId) || [];
-    list.push(ent.span.startUtf16);
-    startsBySource.set(ent.span.sourceId, list);
-  }
-  const traversal = buildTraversalOrder(
-    graph.entrypointResolved ?? entrypoint,
-    startsBySource,
-    graph.includeEdges
-  );
-  const macroRecords = compileMacroRecords(allEntities, graph.rawContents, traversal.seqByAddress);
-
-  // ---------------------------------------------------------------------
-  // Elaboration: per-site macro expansion over the censused document. The
-  // census stays mechanical; this tier interprets, origin-chained to it.
-  // Shadowing resolves on the shared seq scale; \let aliases resolve
-  // transitively to their governing definitions.
-  // ---------------------------------------------------------------------
-  const expansionInputs: ExpandDocumentInput[] = [];
-  for (const record of graph.sources) {
-    if (!record.parsed || record.language !== "latex") continue;
-    const strat = graph.stratifications.get(record.id);
-    expansionInputs.push({
-      sourceId: record.id,
-      stratifiedText: strat ? strat.stratifiedText : graph.rawContents.get(record.id) || "",
-      rawText: graph.rawContents.get(record.id) || "",
-    });
-  }
-  const expansion = expandDocument(
-    expansionInputs,
-    deps,
-    registry,
-    allEntities,
-    traversal.seqByAddress
-  );
-  allDiagnostics.push(...expansion.diagnostics);
 
   // Emit bundle (entrypoint reported with on-disk casing when it resolved)
   const summary = emitCensusBundle(
     {
       slug,
-      treeSha256,
+      treeSha256: graph.treeSha256,
       entrypoint: graph.entrypointResolved ?? entrypoint,
       sources: graph.sources,
       entities: allEntities,
       claims: allClaims,
       coverage: allCoverage,
       diagnostics: allDiagnostics,
+      rawBuffers: graph.rawBuffers,
       rawContents: graph.rawContents,
-      expansionRows: expansion.rows,
-      macroRecords,
+      runtimeNode: process.version,
     },
     options.outDir
   );
@@ -426,7 +440,7 @@ export async function runCensus(options: CliArgs) {
   console.log(`Sources: ${summary.sourceCount} (parsed: ${allCoverage.length})`);
   console.log(`Entities: ${allEntities.length}`);
   console.log(`Claims: ${allClaims.length}`);
-  console.log(`Expansion sites: ${expansion.rows.length}`);
+  console.log("Binding-dependent stores: deferred to the occurrence-aware cut");
   console.log(`Coverage: claimed ${summary.coverage.claimedUtf16} / ${summary.coverage.totalUtf16} UTF-16 units (${summary.coverage.residueSegments} residue segments)`);
   console.log(`Diagnostics: ${allDiagnostics.length} total (${summary.diagnosticCounts.defect || 0} defects, ${summary.diagnosticCounts.warning || 0} warnings, ${summary.diagnosticCounts.info || 0} info)`);
 

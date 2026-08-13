@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-summary/0.2",
+  "title": "TeXdig 0.2 bundle summary",
+  "type": "object",
+  "required": ["schema", "slug", "treeSha256", "entrypoint", "stores", "storeSchemas", "runtime", "sourceCount", "entityCounts", "agreementCounts", "diagnosticCounts", "coverage"],
+  "properties": {
+    "schema": { "const": "texdig-census/0.2" },
+    "slug": { "type": "string", "minLength": 1 },
+    "treeSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "entrypoint": { "type": "string", "minLength": 1 },
+    "stores": {
+      "type": "object",
+      "required": ["emitted", "deferred"],
+      "properties": {
+        "emitted": {
+          "const": ["sources.jsonl", "entities.jsonl", "claims.jsonl", "coverage.json", "diagnostics.jsonl", "summary.json"]
+        },
+        "deferred": {
+          "const": [
+            "occurrences.jsonl",
+            "bindings.jsonl",
+            "invocations.jsonl",
+            "expansion.jsonl",
+            "walk.jsonl",
+            "zones.jsonl",
+            "macros.jsonl",
+            "references.jsonl",
+            "pointers.jsonl",
+            "frontmatter.jsonl",
+            "graph.jsonl"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "storeSchemas": {
+      "type": "object",
+      "required": ["sources.jsonl", "entities.jsonl", "claims.jsonl", "coverage.json", "diagnostics.jsonl", "summary.json"],
+      "properties": {
+        "sources.jsonl": { "const": "codex-scientiae/texdig-sources/0.2" },
+        "entities.jsonl": { "const": "codex-scientiae/texdig-entities/0.2" },
+        "claims.jsonl": { "const": "codex-scientiae/texdig-claims/0.2" },
+        "coverage.json": { "const": "codex-scientiae/texdig-coverage/0.2" },
+        "diagnostics.jsonl": { "const": "codex-scientiae/texdig-diagnostics/0.2" },
+        "summary.json": { "const": "codex-scientiae/texdig-summary/0.2" }
+      },
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["node"],
+      "properties": { "node": { "type": "string", "pattern": "^v[0-9]+\\." } },
+      "additionalProperties": false
+    },
+    "sourceCount": { "type": "integer", "minimum": 1 },
+    "entityCounts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "agreementCounts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "diagnosticCounts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "coverage": {
+      "type": "object",
+      "required": ["totalUtf16", "claimedUtf16", "residueUtf16", "residueSegments"],
+      "properties": {
+        "totalUtf16": { "type": "integer", "minimum": 0 },
+        "claimedUtf16": { "type": "integer", "minimum": 0 },
+        "residueUtf16": { "type": "integer", "minimum": 0 },
+        "residueSegments": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

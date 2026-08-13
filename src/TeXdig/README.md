@@ -10,18 +10,18 @@ structure from the stream.
 
 Input is a deposited article per [`ingestion/inventory/CONVENTION.md`](../../ingestion/inventory/CONVENTION.md):
 a frozen `{slug}-tex/` tree plus the `article.json` sentinel carrying the resolved entrypoint and the
-tree `sha256`. The deposit owns validation; the stage-1 worker performs only the precedented
-lightweight `validate-json` shape check before consuming the manifest. Census results are permanently
-attributed to the tree fingerprint via the job identity digest.
+tree `sha256`. The worker validates the manifest shape, reads one buffered byte snapshot, recomputes
+the canonical tree fingerprint from that snapshot, and refuses a mismatch before analysis. Census
+results are attributed to the verified fingerprint; a manifest value alone is not provenance.
 
 ## Stage-1 exit gates
 
 1. **Coverage** — every UTF-16 unit of every **parsed** source file is claimed by an entity or
    reported as residue. Zero silent bytes; residue is a defect signal with an address, not an
-   absence. Unparsed inventoried files (class/style, `.bst`, binary assets) sit outside this gate:
-   they are sha-attested in `sources.jsonl`, nothing more.
-2. **Agreement** — every inventoried entity is witness-reconciled (lexical scanner and parser agree)
-   or carries a named, attributed defect.
+   absence. Binary assets and unsupported source dialects sit outside this gate and remain byte-inventoried.
+2. **Agreement** — every inventoried entity carries a named evidence basis. Two-instrument agreement
+   uses a construct-specific equivalence policy; configured and single-authority evidence are not
+   reported as two-witness corroboration. Every conflict or one-sided sighting carries an attributed diagnostic.
 3. **Closure** — every entity minted after stage 1 must carry an origin chain that terminates in this
    inventory (or declared configuration). Downstream discovery that cannot cite an inventoried site
    is a stage-1 bug. Applies to frontmatter too: declared metadata is span-anchored rows, not flat
@@ -32,9 +32,10 @@ attributed to the tree fingerprint via the job identity digest.
 
 ## Model
 
-- **Complete source**: the census covers every file of the deposited tree — the entrypoint and
-  include-reachable `.tex`, bibliography resources (`.bib`), and the `.bbl` sidecar are parsed and
-  coverage-audited; class/style/asset files are inventoried unparsed. Bibliography material is a
+- **Complete source**: the census byte-inventories every deposited file. The entrypoint, every
+   statically include-reachable text target regardless of suffix, bibliography resources (`.bib`),
+   and the `.bbl` sidecar are parsed and coverage-audited. Unreached classes/styles remain byte-inventoried;
+   an explicitly included in-tree class/style is treated as an effective LaTeX input. Bibliography material is a
   first-class census subject, not a later lane: `@string` is the bib language's macro-definition,
   `crossref` its inheritance, and field values re-enter unified-latex as LaTeX fragments in cut 2.
 - **Three pillars as overlays**: document envelope (structural markers, floats), prose spine
@@ -42,10 +43,16 @@ attributed to the tree fingerprint via the job identity digest.
   carriers, verbatim, comments; in `.bib`, entries/@string/@preamble). Claims may overlap (a float is
   both fence and envelope); the union must cover. Exclusivity violations are not errors; unclaimed
   residue is.
-- **Two witnesses, two instruments**: a dumb lexical scanner (complete positions, shallow typing)
+- **Witness policies**: a dumb lexical scanner (complete positions, shallow typing)
   against the parser witness — unified-latex for LaTeX and `.bbl`, latex-utensils for `.bib` (both
   rich typing, known position gaps). Reconciliation fills parser gaps from the raw stream and
-  surfaces disagreement as findings. Original source is always a slice, never `printRaw`.
+  surfaces disagreement as findings. Configured declarations and explicitly single-authority rows
+  retain their distinct evidence basis. Original source is always a slice, never `printRaw`.
+- **Physical evidence versus execution occurrences**: census entities describe physical source
+  tokens and declarations. `occurrences.jsonl` describes executions of physical sources,
+  `bindings.jsonl` describes chronological binding effects, and `invocations.jsonl` describes
+  binding-dependent invocation hulls and arguments. Repeated inclusion never duplicates or mutates
+  the physical census entity.
 - **Ordering**: comment/verbatim stratification precedes **everything** — including include-graph
   construction (a commented-out `\input` of a nonexistent file exists in the corpus and must not
   produce a diagnostic). Then fence census, then control-sequence census. This supersedes the
@@ -56,7 +63,7 @@ attributed to the tree fingerprint via the job identity digest.
 One runstamped container per document — one document per batch-executor job, the job container is
 the document container (`Writes` root). UTF-8 without BOM, LF rows. Three tiers:
 
-**Contract tier** — downstream consumes only this; every row downstream interprets carries its exact
+**Planned contract tier** — downstream will consume only this; every row downstream interprets carries its exact
 source slice inline (self-contained; the deposit tree is evidence substrate, not part of the
 contract):
 
@@ -64,22 +71,26 @@ contract):
 | --- | --- |
 | `walk.jsonl` | Traversal-serialized structure: sections, paragraphs, anchors in reading order; content as text-run/ref arrays; `includeChain` context |
 | `zones.jsonl` | Compiled closure-sealed units (math, diagrams, verbatim, floats, theorem-like): slice, closure, per-name binding verdicts, isolability, validation |
-| `macros.jsonl` | Compiled definition store: signature, body slice/span (non-elaborable dialects included), deps, normalized-body `fingerprint` |
+| `macros.jsonl` | Physical declaration/specimen store: exact signature, normalized argument spec, body evidence, lexical `nameRefs`, body fingerprint |
+| `occurrences.jsonl` | Execution occurrences of physical sources, including repeated includes and explicit cycle cuts |
+| `bindings.jsonl` | Chronological definition operations, outcomes, scopes, and captured meanings |
+| `invocations.jsonl` | Per-occurrence binding resolution, exact invocation hull, and typed argument attachments |
 | `references.jsonl` | Canonical reference items: appearance-normalized ordinal + basis, source label register, per-field provenance |
 | `pointers.jsonl` | Label declarations and pointer sites (pointer-hood derived transitively from definition bodies, never a fixed vocabulary), resolution edges |
 | `frontmatter.jsonl` | Span-anchored declared metadata (title, author blob, date, abstract) |
 | `graph.jsonl` | Relational projection of all stores; graph-primitive/0.1-aligned node/edge rows, both ends anchored, address-valued ids; to be registered |
 
-**Evidence tier**: `sources.jsonl` (with language/role/parsed classification), `entities.jsonl`
-(two-witness census), `claims.jsonl` (pillar claims).
+**Evidence tier (emitted in 0.2)**: `sources.jsonl` (with language/role/parsed classification),
+`entities.jsonl` (physical census with an explicit evidence basis), `claims.jsonl` (pillar claims).
 
-**Audit tier**: `coverage.json`, `diagnostics.jsonl`, `summary.json` (gate outcomes, counts,
-`treeSha256`, schema versions).
+**Audit tier (emitted in 0.2)**: `coverage.json`, `diagnostics.jsonl`, `summary.json` (gate outcomes, counts,
+verified `treeSha256`, runtime identity, per-store schema identities).
 
-Schema ownership: the jsonl_engine registry is the normative contract authority. `core/contracts.ts`
-is the in-language DTO layer; when emission lands, store shapes are minted as registered schemas
-under `src/jsonl_engine/schemas/` and golden-fixture `validate-json` conformance keeps the two in
-agreement.
+The six emitted stores have normative 0.2 schemas in the jsonl_engine registry. `core/types.ts` is
+their in-language DTO layer; schema and fixture validation keep the two in agreement. Planned
+contract-tier DTOs live in `core/contracts.ts`; they do not become runtime contract merely by having
+a TypeScript interface, and remain listed under `summary.stores.deferred` until their schemas and
+occurrence-aware producers land.
 
 ## Linking conventions
 
@@ -88,8 +99,15 @@ agreement.
 - Content references use the array form (text runs alternating with refs) as the ONLY stored form.
   Masked text is a debug rendering, never an artifact — sentinel-token leakage was a shipped-defect
   class in the previous lane and the mechanism is not carried forward.
-- One shared `seq` order space (entrypoint traversal across includes) covers walk nodes, zones,
-  macro records, and pointer sites; macro shadowing resolves on the same scale.
+- One bundle-local `seq` order space covers occurrence-bearing runtime rows. Physical declarations
+  do not acquire one universally meaningful execution position; repeated occurrences receive their
+  own binding events.
+
+## Versioning
+
+`texdig-census/0.2` is a source-regenerated contract. `0.1` bundles remain immutable historical
+evidence. No JSONL-only conversion can recover omitted empty arguments, exact raw signatures,
+occurrence identity, binding history, or rejected local-frame coordinates.
 
 ## Reference canon
 
@@ -105,15 +123,15 @@ paper's own register (alpha labels, list position) is preserved beside the ordin
 
 ## Later cuts
 
-Cut 2: relation joins (binding, attachment, support closure, purity verdicts) filling the zone and
-macro stores. Cut 3: isolated evaluation and render + differential-alignment validation.
+Cut 2: occurrence-aware binding and invocation attachment, followed by relation joins, support
+closure, and purity verdicts. Cut 3: isolated evaluation and render + differential-alignment validation.
 Orchestration joins `batch-adapters` as `Get-TeXdigBatchJob` under the standard job-emission
 contract; the census CLI stays a pure worker (tree + entrypoint in, stores out). PDF-only deposits
 are refused at planning, not failed at the worker.
 
 ## Runtime
 
-Erasable-syntax TypeScript executed directly by the ambient Node (v26, native type stripping): no
+Erasable-syntax TypeScript executed directly by an explicitly resolved Node (v26, native type stripping): no
 enums or namespaces, explicit `.ts` import extensions. Dependencies are injected by explicit
 directory (`--deps <repo>/packages/node/node_modules`, the dependency-neutral house pattern); the
 core never relies on ambient resolution. `typescript` joins the brewery pins later as a dev-time

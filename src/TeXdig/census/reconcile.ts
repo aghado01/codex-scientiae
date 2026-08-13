@@ -16,7 +16,9 @@ import type {
   SourceSpan,
   CensusEntity,
   WitnessRecord,
+  WitnessSpanRole,
   AgreementState,
+  AgreementBasis,
   SpanProvenance,
   Diagnostic,
   EnvironmentRole,
@@ -30,6 +32,16 @@ import type { ParseBibResult } from "./parse-bib.ts";
 import type { StratificationResult } from "./stratify.ts";
 import type { BibLexicalSighting } from "./scan-bib.ts";
 import type { IncludeEdge } from "./source-graph.ts";
+import {
+  compareEnvironmentWitnesses,
+  compareWitnesses,
+} from "./witness-equivalence.ts";
+import type {
+  WitnessEquivalencePolicy,
+  WitnessEquivalenceReason,
+  WitnessSemantics,
+} from "./witness-equivalence.ts";
+import { sourceSpanContains } from "../core/spans.ts";
 
 export interface ReconcileResult {
   sourceId: SourceId;
@@ -49,6 +61,8 @@ const KNOWN_FLOAT_ENVS = new Set(["figure", "figure*", "table", "table*", "algor
 const KNOWN_MATH_ENVS = new Set([
   "equation", "equation*", "align", "align*", "gather", "gather*",
   "multline", "multline*", "flalign", "flalign*", "eqnarray", "eqnarray*",
+  "alignat", "alignat*", "xalignat", "xalignat*", "xxalignat", "split",
+  "aligned", "alignedat", "gathered", "multlined", "cases", "dcases", "dcases*",
 ]);
 const KNOWN_VERBATIM_ENVS = new Set(["verbatim", "verbatim*", "lstlisting", "minted", "alltt"]);
 
@@ -93,6 +107,21 @@ interface LexIndex {
   consumed: Set<LexicalSighting>;
 }
 
+function lexicalTokenSpan(rawText: string, sighting: LexicalSighting): SourceSpan {
+  if (sighting.span.startUtf16 >= sighting.span.endUtf16) return sighting.span;
+  const startUtf16 = sighting.span.startUtf16;
+  if (rawText[startUtf16] !== "\\") return sighting.span;
+  let endUtf16 = startUtf16 + 1;
+  const atName = Boolean(sighting.name?.includes("@"));
+  const isLetter = (ch: string) => /[A-Za-z]/.test(ch) || (atName && ch === "@");
+  if (endUtf16 < rawText.length && isLetter(rawText[endUtf16])) {
+    while (endUtf16 < rawText.length && isLetter(rawText[endUtf16])) endUtf16++;
+  } else if (endUtf16 < rawText.length) {
+    endUtf16++;
+  }
+  return { sourceId: sighting.span.sourceId, startUtf16, endUtf16 };
+}
+
 function indexLexical(sightings: LexicalSighting[]): LexIndex {
   const idx: LexIndex = {
     cs: new Map(),
@@ -121,12 +150,23 @@ function indexLexical(sightings: LexicalSighting[]): LexIndex {
   return idx;
 }
 
-function lexWitness(s: LexicalSighting): WitnessRecord {
-  return { witness: "lexical", span: s.span, detail: s.detail || s.name };
+function lexicalSpanRole(s: LexicalSighting): WitnessSpanRole {
+  if (s.detail?.startsWith("begin:")) return "begin-fence";
+  if (s.detail?.startsWith("end:")) return "end-fence";
+  if (s.kind === "math" || s.kind === "comment" || s.kind === "verbatim") return "construct";
+  return "token";
 }
 
-function parserWitness(span: SourceSpan, detail: string): WitnessRecord {
-  return { witness: "parser", instrument: "unified-latex", span, detail };
+function lexWitness(s: LexicalSighting, spanRole: WitnessSpanRole = lexicalSpanRole(s)): WitnessRecord {
+  return { witness: "lexical", span: s.span, spanRole, detail: s.detail || s.name };
+}
+
+function parserWitness(
+  span: SourceSpan,
+  detail: string,
+  spanRole: WitnessSpanRole = "token"
+): WitnessRecord {
+  return { witness: "parser", instrument: "unified-latex", span, spanRole, detail };
 }
 
 export function reconcileLatex(
@@ -143,27 +183,89 @@ export function reconcileLatex(
   const extraClaims: PillarClaim[] = [];
   const lex = indexLexical(lexSightings);
 
+  function tokenWitness(s: LexicalSighting): WitnessRecord {
+    return {
+      witness: "lexical",
+      span: lexicalTokenSpan(rawText, s),
+      spanRole: "token",
+      detail: s.detail || s.name,
+    };
+  }
+
+  function containedDerivedSpan(
+    owner: SourceSpan,
+    candidate: SourceSpan | undefined,
+    label: string,
+    entityId: string
+  ): SourceSpan | undefined {
+    if (!candidate || sourceSpanContains(owner, candidate)) return candidate;
+    diagnostics.push({
+      code: DiagnosticCodes.InvalidSpan,
+      severity: "defect",
+      message: `Discarded ${label} span outside its owning entity`,
+      sourceId,
+      entityId,
+      witness: "parser",
+    });
+    return undefined;
+  }
+
   /** Record the fusion outcome for one entity and its side diagnostic. */
   function fuse(
     parserW: WitnessRecord | undefined,
-    lexS: LexicalSighting | undefined
-  ): { witnesses: WitnessRecord[]; agreement: AgreementState } {
+    lexS: LexicalSighting | undefined,
+    policy: Exclude<WitnessEquivalencePolicy, "environment-fences">,
+    parserSemantics?: WitnessSemantics,
+    lexicalSemantics?: WitnessSemantics
+  ): {
+    witnesses: WitnessRecord[];
+    agreement: AgreementState;
+    agreementBasis: AgreementBasis;
+    reason?: WitnessEquivalenceReason;
+  } {
     const witnesses: WitnessRecord[] = [];
     if (parserW) witnesses.push(parserW);
+    let lexicalW: WitnessRecord | undefined;
     if (lexS) {
-      witnesses.push(lexWitness(lexS));
+      lexicalW = policy === "control-sequence-token" || policy === "include-command-token"
+        ? tokenWitness(lexS)
+        : lexWitness(lexS);
+      witnesses.push(lexicalW);
       lex.consumed.add(lexS);
     }
-    const agreement: AgreementState = parserW && lexS ? "agreed" : parserW ? "parser-only" : "lexical-only";
-    return { witnesses, agreement };
+    if (parserW && lexicalW) {
+      const comparison = compareWitnesses(
+        policy,
+        { ...parserW, semantics: parserSemantics },
+        { ...lexicalW, semantics: lexicalSemantics }
+      );
+      return {
+        witnesses,
+        agreement: comparison.equivalent ? "agreed" : "conflict",
+        agreementBasis: "two-instrument",
+        reason: comparison.reason,
+      };
+    }
+    return {
+      witnesses,
+      agreement: parserW ? "parser-only" : "lexical-only",
+      agreementBasis: "single-authority",
+    };
   }
 
-  function disagreementDiagnostic(entityId: string, agreement: AgreementState, span: SourceSpan, what: string) {
+  function disagreementDiagnostic(
+    entityId: string,
+    agreement: AgreementState,
+    span: SourceSpan,
+    what: string,
+    reason?: WitnessEquivalenceReason
+  ) {
     if (agreement === "agreed") return;
     diagnostics.push({
       code: DiagnosticCodes.WitnessDisagreement,
       severity: agreement === "conflict" ? "warning" : "info",
-      message: `${what} witnessed ${agreement === "parser-only" ? "by the parser only" : agreement === "lexical-only" ? "by the lexical scanner only" : "with conflicting evidence"}`,
+      message: `${what} witnessed ${agreement === "parser-only" ? "by the parser only" : agreement === "lexical-only" ? "by the lexical scanner only" : `with conflicting evidence (${reason || "policy mismatch"})`}`,
+      sourceId,
       span,
       entityId,
       witness: agreement === "parser-only" ? "parser" : "lexical",
@@ -184,8 +286,9 @@ export function reconcileLatex(
         kind: "comment",
         span: s.span,
         spanProvenance: "lexical",
-        witnesses: [{ witness: "lexical", span: s.span, detail: "stratify:comment" }],
+        witnesses: [{ witness: "lexical", span: s.span, spanRole: "construct", detail: "stratify:comment" }],
         agreement: "agreed",
+        agreementBasis: "single-authority",
       });
     } else if (s.kind === "verbatim-inline") {
       entities.push({
@@ -194,8 +297,9 @@ export function reconcileLatex(
         delimiter: s.delimiter || "|",
         span: s.span,
         spanProvenance: "lexical",
-        witnesses: [{ witness: "lexical", span: s.span, detail: "stratify:verbatim-inline" }],
+        witnesses: [{ witness: "lexical", span: s.span, spanRole: "construct", detail: "stratify:verbatim-inline" }],
         agreement: "agreed",
+        agreementBasis: "single-authority",
       });
     } else if (s.kind === "verbatim") {
       const envName = s.envName || "verbatim";
@@ -208,13 +312,14 @@ export function reconcileLatex(
         kind: "environment",
         name: envName,
         role: "verbatim",
-        bodySpan: interiorEnd > interiorStart
+        bodySpan: interiorEnd >= interiorStart
           ? { sourceId, startUtf16: interiorStart, endUtf16: interiorEnd }
           : undefined,
         span: s.span,
         spanProvenance: "lexical",
-        witnesses: [{ witness: "lexical", span: s.span, detail: `stratify:verbatim:${envName}` }],
+        witnesses: [{ witness: "lexical", span: s.span, spanRole: "construct", detail: `stratify:verbatim:${envName}` }],
         agreement: "agreed",
+        agreementBasis: "single-authority",
       });
     }
   }
@@ -233,13 +338,20 @@ export function reconcileLatex(
   for (const mdef of discovery.macroDefs) {
     const spanProv: SpanProvenance = mdef.spanSynthesized ? "synthesized-hull" : "parser";
     const lexS = lex.cs.get(mdef.span.startUtf16);
-    const { witnesses, agreement } = fuse(parserWitness(mdef.span, mdef.dialect), lexS);
+    const { witnesses, agreement, agreementBasis, reason } = fuse(
+      parserWitness(mdef.span, mdef.dialect, "construct"),
+      lexS,
+      "definition-anchor",
+      { name: mdef.commandName },
+      { name: lexS?.name }
+    );
     const id = mintEntityId("macro-definition", mdef.span);
     if (mdef.spanSynthesized) {
       diagnostics.push({
         code: DiagnosticCodes.SpanSynthesized,
         severity: "info",
         message: `Synthesized definition hull for \\${mdef.definedName}`,
+        sourceId,
         span: mdef.span,
         entityId: id,
       });
@@ -250,26 +362,40 @@ export function reconcileLatex(
       definedName: mdef.definedName,
       dialect: mdef.dialect,
       signatureRaw: mdef.signatureRaw,
-      bodySpan: mdef.bodySpan,
+      argumentSpec: mdef.argumentSpec,
+      bodySpan: containedDerivedSpan(mdef.span, mdef.bodySpan, "macro body", id),
       elaborable: mdef.elaborable,
+      context: mdef.context,
+      activation: mdef.activation,
+      definedWithin: mdef.definedWithin
+        ? mintEntityId(mdef.definedWithin.kind, mdef.definedWithin.span)
+        : undefined,
       span: mdef.span,
       spanProvenance: spanProv,
       witnesses,
       agreement,
+      agreementBasis,
     });
-    disagreementDiagnostic(id, agreement, mdef.span, `Macro definition \\${mdef.definedName}`);
+    disagreementDiagnostic(id, agreement, mdef.span, `Macro definition \\${mdef.definedName}`, reason);
   }
 
   for (const edef of discovery.envDefs) {
     const spanProv: SpanProvenance = edef.spanSynthesized ? "synthesized-hull" : "parser";
     const lexS = lex.cs.get(edef.span.startUtf16);
-    const { witnesses, agreement } = fuse(parserWitness(edef.span, edef.mechanism), lexS);
+    const { witnesses, agreement, agreementBasis, reason } = fuse(
+      parserWitness(edef.span, edef.mechanism, "construct"),
+      lexS,
+      "definition-anchor",
+      { name: edef.commandName },
+      { name: lexS?.name }
+    );
     const id = mintEntityId("environment-definition", edef.span);
     if (edef.spanSynthesized) {
       diagnostics.push({
         code: DiagnosticCodes.SpanSynthesized,
         severity: "info",
         message: `Synthesized definition hull for environment '${edef.definedName}'`,
+        sourceId,
         span: edef.span,
         entityId: id,
       });
@@ -280,14 +406,22 @@ export function reconcileLatex(
       definedName: edef.definedName,
       mechanism: edef.mechanism,
       signatureRaw: edef.signatureRaw,
+      argumentSpec: edef.argumentSpec,
       counterRaw: edef.counterRaw,
-      bodySpan: edef.bodySpan,
+      beginBodySpan: containedDerivedSpan(edef.span, edef.beginBodySpan, "environment begin body", id),
+      endBodySpan: containedDerivedSpan(edef.span, edef.endBodySpan, "environment end body", id),
+      context: edef.context,
+      activation: edef.activation,
+      definedWithin: edef.definedWithin
+        ? mintEntityId(edef.definedWithin.kind, edef.definedWithin.span)
+        : undefined,
       span: edef.span,
       spanProvenance: spanProv,
       witnesses,
       agreement,
+      agreementBasis,
     });
-    disagreementDiagnostic(id, agreement, edef.span, `Environment definition '${edef.definedName}'`);
+    disagreementDiagnostic(id, agreement, edef.span, `Environment definition '${edef.definedName}'`, reason);
   }
 
   // -------------------------------------------------------------------------
@@ -315,10 +449,21 @@ export function reconcileLatex(
     const multi = edges.length > 1;
     for (const edge of edges) {
       const span = multi ? edge.targetSpan : edge.span;
-      const { witnesses, agreement } = fuse(
-        ps && ps.span ? parserWitness(ps.span, edge.directive) : undefined,
-        lexS
-      );
+      const parserW = ps?.span ? parserWitness(ps.span, edge.directive) : undefined;
+      const lexicalW = lexS ? tokenWitness(lexS) : undefined;
+      const comparison = parserW && lexicalW
+        ? compareWitnesses(
+            "include-command-token",
+            { ...parserW, semantics: { name: ps?.name, construct: edge.directive } },
+            { ...lexicalW, semantics: { name: lexS.name, construct: edge.directive } }
+          )
+        : undefined;
+      const witnesses = [parserW, lexicalW].filter((w): w is WitnessRecord => w !== undefined);
+      const agreement: AgreementState = comparison
+        ? comparison.equivalent ? "agreed" : "conflict"
+        : parserW ? "parser-only" : "lexical-only";
+      const agreementBasis: AgreementBasis = parserW && lexicalW ? "two-instrument" : "single-authority";
+      const reason = comparison?.reason;
       const id = mintEntityId("include", span);
       entities.push({
         id,
@@ -330,9 +475,11 @@ export function reconcileLatex(
         spanProvenance: ps ? "parser" : "lexical",
         witnesses,
         agreement,
+        agreementBasis,
       });
-      disagreementDiagnostic(id, agreement, span, `Include directive \\${edge.directive}`);
+      disagreementDiagnostic(id, agreement, span, `Include directive \\${edge.directive}`, reason);
     }
+    if (lexS) lex.consumed.add(lexS);
     if (multi) {
       // Per-target entities carry token spans; one entity-less claim keeps the
       // directive's own characters covered.
@@ -346,10 +493,20 @@ export function reconcileLatex(
     // not a partition.
     if (edges[0].directive === "bibliography") {
       const span = edges[0].span;
-      const { witnesses, agreement } = fuse(
-        ps && ps.span ? parserWitness(ps.span, "bibliography") : undefined,
-        lexS
-      );
+      const parserW = ps?.span ? parserWitness(ps.span, "bibliography") : undefined;
+      const lexicalW = lexS ? tokenWitness(lexS) : undefined;
+      const comparison = parserW && lexicalW
+        ? compareWitnesses(
+            "include-command-token",
+            { ...parserW, semantics: { name: ps?.name, construct: "bibliography" } },
+            { ...lexicalW, semantics: { name: lexS.name, construct: "bibliography" } }
+          )
+        : undefined;
+      const witnesses = [parserW, lexicalW].filter((w): w is WitnessRecord => w !== undefined);
+      const agreement: AgreementState = comparison
+        ? comparison.equivalent ? "agreed" : "conflict"
+        : parserW ? "parser-only" : "lexical-only";
+      const agreementBasis: AgreementBasis = parserW && lexicalW ? "two-instrument" : "single-authority";
       const id = mintEntityId("envelope-marker", span);
       entities.push({
         id,
@@ -360,7 +517,15 @@ export function reconcileLatex(
         spanProvenance: ps ? "parser" : "lexical",
         witnesses,
         agreement,
+        agreementBasis,
       });
+      disagreementDiagnostic(
+        id,
+        agreement,
+        span,
+        "Bibliography envelope marker",
+        comparison?.reason
+      );
     }
   }
 
@@ -370,7 +535,17 @@ export function reconcileLatex(
   for (const ps of witness.sightings) {
     if (!ps.span) continue;
 
-    if (ps.nodeType === "macro") {
+    if (ps.nodeType === "paragraph-break") {
+      entities.push({
+        id: mintEntityId("paragraph-break", ps.span),
+        kind: "paragraph-break",
+        span: ps.span,
+        spanProvenance: "parser",
+        witnesses: [parserWitness(ps.span, "parbreak", "construct")],
+        agreement: "agreed",
+        agreementBasis: "single-authority",
+      });
+    } else if (ps.nodeType === "macro") {
       const name = ps.name || "";
       const start = ps.span.startUtf16;
       // Definition sites and include sites are already censused above; bare
@@ -379,85 +554,52 @@ export function reconcileLatex(
       if (includeSiteStarts.has(start)) continue;
       if (name === "begin" || name === "end") continue;
 
-      // Hull: bracketed args only — implicit attachments (star tokens,
-      // list-item bodies) must never stretch an invocation's extent.
-      let span = ps.span;
-      let spanProv: SpanProvenance = "parser";
-      if (ps.args && ps.args.length > 0) {
-        let end = span.endUtf16;
-        for (const a of ps.args) {
-          if (!a.bracketed) continue;
-          let argEnd = a.span.endUtf16;
-          if (argEnd < rawText.length && (rawText[argEnd] === "}" || rawText[argEnd] === "]")) {
-            argEnd++;
-          }
-          if (argEnd > end) end = argEnd;
-        }
-        if (end > span.endUtf16) {
-          span = { sourceId, startUtf16: span.startUtf16, endUtf16: end };
-          spanProv = "synthesized-hull";
-        }
-      }
+      // Physical census identity is the control-sequence token. Arguments are
+      // binding-dependent occurrence data and never stretch this entity span.
+      const span = ps.span;
+      const spanProv: SpanProvenance = "parser";
 
       const lexS = lex.cs.get(start);
-      const nameAgrees = !lexS || lexS.name === name;
-      const { witnesses, agreement: baseAgreement } = fuse(parserWitness(ps.span, name), lexS);
-      const agreement: AgreementState = nameAgrees ? baseAgreement : "conflict";
+      const { witnesses, agreement, agreementBasis, reason } = fuse(
+        parserWitness(ps.span, name, "token"),
+        lexS,
+        "control-sequence-token",
+        { name },
+        { name: lexS?.name }
+      );
 
       const envMarker = classifyEnvelopeMarker(name);
       if (envMarker) {
         // Starred sectioning keeps its star in the recorded command name.
         const starred = rawText[ps.span.endUtf16] === "*";
         const markerName = starred ? `${name}*` : name;
-        const bracketedArgs = (ps.args || []).filter((a) => a.bracketed);
-        const titleSpan = envMarker === "section" && bracketedArgs.length > 0
-          ? bracketedArgs[bracketedArgs.length - 1].span
-          : undefined;
         const id = mintEntityId("envelope-marker", span);
-        if (spanProv === "synthesized-hull") {
-          diagnostics.push({
-            code: DiagnosticCodes.SpanSynthesized,
-            severity: "info",
-            message: `Synthesized argument hull for \\${markerName}`,
-            span,
-            entityId: id,
-          });
-        }
         entities.push({
           id,
           kind: "envelope-marker",
           marker: envMarker,
           name: markerName,
-          titleSpan,
           span,
           spanProvenance: spanProv,
           witnesses,
           agreement,
+          agreementBasis,
         });
-        disagreementDiagnostic(id, agreement, span, `Envelope marker \\${markerName}`);
+        disagreementDiagnostic(id, agreement, span, `Envelope marker \\${markerName}`, reason);
       } else {
         const id = mintEntityId("macro-invocation", span);
-        if (spanProv === "synthesized-hull") {
-          diagnostics.push({
-            code: DiagnosticCodes.SpanSynthesized,
-            severity: "info",
-            message: `Synthesized argument hull for \\${name}`,
-            span,
-            entityId: id,
-          });
-        }
         entities.push({
           id,
           kind: "macro-invocation",
           name,
           inMathMode: ps.inMathMode,
-          argumentSpans: ps.args ? ps.args.map((a) => a.span) : undefined,
           span,
           spanProvenance: spanProv,
           witnesses,
           agreement,
+          agreementBasis,
         });
-        disagreementDiagnostic(id, agreement, span, `Control sequence \\${name}`);
+        disagreementDiagnostic(id, agreement, span, `Control sequence \\${name}`, reason);
       }
     } else if (ps.nodeType === "environment" || ps.nodeType === "mathenv") {
       const name = ps.name || "";
@@ -466,30 +608,59 @@ export function reconcileLatex(
 
       const beginS = lex.envBegin.get(span.startUtf16);
       const endS = lex.envEndByEnd.get(span.endUtf16);
-      const witnesses: WitnessRecord[] = [parserWitness(span, `${ps.nodeType}:${name}`)];
+      const parserW = parserWitness(span, `${ps.nodeType}:${name}`, "construct");
+      const witnesses: WitnessRecord[] = [parserW];
       if (beginS) {
-        witnesses.push(lexWitness(beginS));
+        witnesses.push(lexWitness(beginS, "begin-fence"));
         lex.consumed.add(beginS);
       }
       if (endS) {
-        witnesses.push(lexWitness(endS));
+        witnesses.push(lexWitness(endS, "end-fence"));
         lex.consumed.add(endS);
       }
-      const agreement: AgreementState = beginS && endS ? "agreed" : "parser-only";
+      let agreement: AgreementState;
+      let agreementReason: WitnessEquivalenceReason | undefined;
+      if (beginS && endS) {
+        const comparison = compareEnvironmentWitnesses(
+          { ...parserW, semantics: { name } },
+          { ...lexWitness(beginS, "begin-fence"), semantics: { name: beginS.name } },
+          { ...lexWitness(endS, "end-fence"), semantics: { name: endS.name } }
+        );
+        agreement = comparison.equivalent ? "agreed" : "conflict";
+        agreementReason = comparison.reason;
+      } else {
+        agreement = beginS || endS ? "conflict" : "parser-only";
+        agreementReason = beginS || endS ? "extent-mismatch" : undefined;
+      }
+      const agreementBasis: AgreementBasis = beginS || endS ? "two-instrument" : "single-authority";
 
       const envId = mintEntityId("environment", span);
+      const bodySpan = beginS && endS && beginS.name === name && endS.name === name &&
+          beginS.span.endUtf16 <= endS.span.startUtf16
+        ? containedDerivedSpan(
+            span,
+            {
+              sourceId,
+              startUtf16: beginS.span.endUtf16,
+              endUtf16: endS.span.startUtf16,
+            },
+            "environment body",
+            envId
+          )
+        : undefined;
       entities.push({
         id: envId,
         kind: "environment",
         name,
         role,
-        bodySpan: ps.bodySpan,
+        bodySpan,
         span,
         spanProvenance: "parser",
         witnesses,
         agreement,
+        agreementBasis,
       });
-      disagreementDiagnostic(envId, agreement, span, `Environment '${name}'`);
+      disagreementDiagnostic(envId, agreement, span, `Environment '${name}'`, agreementReason);
 
       if (role === "math" || ps.nodeType === "mathenv") {
         const mathId = mintEntityId("math", span);
@@ -503,32 +674,74 @@ export function reconcileLatex(
           spanProvenance: "parser",
           witnesses,
           agreement,
+          agreementBasis,
         });
+        disagreementDiagnostic(
+          mathId,
+          agreement,
+          span,
+          `Math environment carrier '${name}'`,
+          agreementReason
+        );
       }
 
       if (name === "document") {
         // The document fences are envelope markers in their own right.
         if (beginS) {
+          const markerParserW = parserWitness(span, "environment:document", "construct");
+          const markerLexW = lexWitness(beginS, "begin-fence");
+          const comparison = compareWitnesses(
+            "begin-fence-anchor",
+            { ...markerParserW, semantics: { name } },
+            { ...markerLexW, semantics: { name: beginS.name } }
+          );
+          const markerId = mintEntityId("envelope-marker", beginS.span);
+          const markerAgreement = comparison.equivalent ? "agreed" as const : "conflict" as const;
           entities.push({
-            id: mintEntityId("envelope-marker", beginS.span),
+            id: markerId,
             kind: "envelope-marker",
             marker: "begin-document",
             span: beginS.span,
             spanProvenance: "lexical",
-            witnesses: [parserWitness(span, "environment:document"), lexWitness(beginS)],
-            agreement: "agreed",
+            witnesses: [markerParserW, markerLexW],
+            agreement: markerAgreement,
+            agreementBasis: "two-instrument",
           });
+          disagreementDiagnostic(
+            markerId,
+            markerAgreement,
+            beginS.span,
+            "Begin-document envelope marker",
+            comparison.reason
+          );
         }
         if (endS) {
+          const markerParserW = parserWitness(span, "environment:document", "construct");
+          const markerLexW = lexWitness(endS, "end-fence");
+          const comparison = compareWitnesses(
+            "end-fence-anchor",
+            { ...markerParserW, semantics: { name } },
+            { ...markerLexW, semantics: { name: endS.name } }
+          );
+          const markerId = mintEntityId("envelope-marker", endS.span);
+          const markerAgreement = comparison.equivalent ? "agreed" as const : "conflict" as const;
           entities.push({
-            id: mintEntityId("envelope-marker", endS.span),
+            id: markerId,
             kind: "envelope-marker",
             marker: "end-document",
             span: endS.span,
             spanProvenance: "lexical",
-            witnesses: [parserWitness(span, "environment:document"), lexWitness(endS)],
-            agreement: "agreed",
+            witnesses: [markerParserW, markerLexW],
+            agreement: markerAgreement,
+            agreementBasis: "two-instrument",
           });
+          disagreementDiagnostic(
+            markerId,
+            markerAgreement,
+            endS.span,
+            "End-document envelope marker",
+            comparison.reason
+          );
         }
       }
     } else if (ps.nodeType === "verb") {
@@ -543,30 +756,43 @@ export function reconcileLatex(
         delimiter: ps.name || " ",
         span,
         spanProvenance: "parser",
-        witnesses: [parserWitness(span, "verb")],
+        witnesses: [parserWitness(span, "verb", "construct")],
         agreement: "parser-only",
+        agreementBasis: "single-authority",
       });
       disagreementDiagnostic(id, "parser-only", span, "Inline verbatim (\\verb)");
     } else if (ps.nodeType === "inlinemath" || ps.nodeType === "displaymath") {
       const span = ps.span;
       const lexS = lex.math.get(span.startUtf16);
-      const { witnesses, agreement } = fuse(parserWitness(span, ps.nodeType), lexS);
       const rawSlice = rawText.slice(span.startUtf16, span.endUtf16);
       const form = ps.nodeType === "inlinemath"
         ? (rawSlice.startsWith("\\(") ? "paren" as const : "dollar" as const)
         : (rawSlice.startsWith("\\[") ? "bracket" as const : "double-dollar" as const);
+      const lexicalForm = lexS?.detail === "double-dollar" ? "double-dollar" as const
+        : lexS?.detail === "paren" ? "paren" as const
+        : lexS?.detail === "bracket" ? "bracket" as const
+        : "dollar" as const;
+      const mode = ps.nodeType === "inlinemath" ? "inline" as const : "display" as const;
+      const { witnesses, agreement, agreementBasis, reason } = fuse(
+        parserWitness(span, ps.nodeType, "construct"),
+        lexS,
+        "math-carrier",
+        { mode, carrier: { form } },
+        { mode: lexS?.mode, carrier: { form: lexicalForm } }
+      );
       const id = mintEntityId("math", span);
       entities.push({
         id,
         kind: "math",
-        mode: ps.nodeType === "inlinemath" ? "inline" : "display",
+        mode,
         carrier: { form },
         span,
         spanProvenance: "parser",
         witnesses,
         agreement,
+        agreementBasis,
       });
-      disagreementDiagnostic(id, agreement, span, `Math carrier (${form})`);
+      disagreementDiagnostic(id, agreement, span, `Math carrier (${form})`, reason);
     }
   }
 
@@ -608,16 +834,44 @@ export function reconcileLatex(
           endUtf16: s.span.endUtf16,
         };
         const id = mintEntityId("environment", span);
+        const bodySpan: SourceSpan | undefined = begin.span.endUtf16 <= s.span.startUtf16
+          ? { sourceId, startUtf16: begin.span.endUtf16, endUtf16: s.span.startUtf16 }
+          : undefined;
+        const role = classifyEnvRole(begin.name || "");
+        const lexicalWitnesses = [lexWitness(begin), lexWitness(s)];
         entities.push({
           id,
           kind: "environment",
           name: begin.name || "",
-          role: classifyEnvRole(begin.name || ""),
+          role,
+          bodySpan,
           span,
           spanProvenance: "lexical",
-          witnesses: [lexWitness(begin), lexWitness(s)],
+          witnesses: lexicalWitnesses,
           agreement: "lexical-only",
+          agreementBasis: "single-authority",
         });
+        if (role === "math") {
+          const mathId = mintEntityId("math", span);
+          entities.push({
+            id: mathId,
+            kind: "math",
+            mode: "display",
+            carrier: { form: "env", name: begin.name || "" },
+            fenceEntityId: id,
+            span,
+            spanProvenance: "lexical",
+            witnesses: lexicalWitnesses,
+            agreement: "lexical-only",
+            agreementBasis: "single-authority",
+          });
+          disagreementDiagnostic(
+            mathId,
+            "lexical-only",
+            span,
+            `Math environment carrier '${begin.name}'`
+          );
+        }
         disagreementDiagnostic(id, "lexical-only", span, `Environment '${begin.name}'`);
         matched = true;
         break;
@@ -628,6 +882,7 @@ export function reconcileLatex(
         code: DiagnosticCodes.UnmatchedEnd,
         severity: "warning",
         message: `\\end{${s.name}} without a witnessed \\begin`,
+        sourceId,
         span: s.span,
         witness: "lexical",
       });
@@ -640,6 +895,7 @@ export function reconcileLatex(
       code: DiagnosticCodes.UnmatchedBegin,
       severity: "warning",
       message: `\\begin{${begin.name}} without a witnessed \\end`,
+      sourceId,
       span: begin.span,
       witness: "lexical",
     });
@@ -651,17 +907,42 @@ export function reconcileLatex(
       diagnostic is the finding, the entity claims the bytes. */
   function mintUnmatchedFence(s: LexicalSighting, csname: "begin" | "end") {
     const ps = parserByStart.get(s.span.startUtf16);
-    const witnesses: WitnessRecord[] = [lexWitness(s)];
-    if (ps && ps.span) witnesses.push(parserWitness(ps.span, csname));
+    const tokenSpan: SourceSpan = {
+      sourceId,
+      startUtf16: s.span.startUtf16,
+      endUtf16: s.span.startUtf16 + csname.length + 1,
+    };
+    const lexicalW: WitnessRecord = {
+      witness: "lexical",
+      span: tokenSpan,
+      spanRole: "token",
+      detail: csname,
+    };
+    const parserW = ps?.span ? parserWitness(ps.span, csname, "token") : undefined;
+    const witnesses: WitnessRecord[] = [lexicalW];
+    if (parserW) witnesses.unshift(parserW);
+    const comparison = parserW
+      ? compareWitnesses(
+          "control-sequence-token",
+          { ...parserW, semantics: { name: ps?.name } },
+          { ...lexicalW, semantics: { name: csname } }
+        )
+      : undefined;
+    const agreement: AgreementState = comparison
+      ? comparison.equivalent ? "agreed" : "conflict"
+      : "lexical-only";
+    const id = mintEntityId("macro-invocation", tokenSpan);
     entities.push({
-      id: mintEntityId("macro-invocation", s.span),
+      id,
       kind: "macro-invocation",
       name: csname,
-      span: s.span,
+      span: tokenSpan,
       spanProvenance: "lexical",
       witnesses,
-      agreement: ps ? "agreed" : "lexical-only",
+      agreement,
+      agreementBasis: parserW ? "two-instrument" : "single-authority",
     });
+    disagreementDiagnostic(id, agreement, tokenSpan, `Unmatched \\${csname} fence`, comparison?.reason);
   }
 
   // Sorted text runs for the script-operator yield rule below.
@@ -700,6 +981,7 @@ export function reconcileLatex(
         spanProvenance: "lexical",
         witnesses: [lexWitness(s)],
         agreement: "lexical-only",
+        agreementBasis: "single-authority",
       });
       disagreementDiagnostic(id, "lexical-only", s.span, `Control sequence \\${s.name}`);
     } else if (s.kind === "math") {
@@ -717,6 +999,7 @@ export function reconcileLatex(
         spanProvenance: "lexical",
         witnesses: [lexWitness(s)],
         agreement: "lexical-only",
+        agreementBasis: "single-authority",
       });
       disagreementDiagnostic(id, "lexical-only", s.span, `Math carrier (${form})`);
     }
@@ -726,8 +1009,8 @@ export function reconcileLatex(
 
   // -------------------------------------------------------------------------
   // 6. Catcode arbitration. Between \makeatletter and \makeatother, `@` IS a
-  //    letter: the lexical scanner (which always treats it as one) reads
-  //    @-names correctly there, while unified-latex tokenizes catcode-naively
+  //    letter: the stateful lexical scanner reads @-names correctly there,
+  //    while unified-latex tokenizes catcode-naively
   //    (\m@th → \m + "@th"). A name conflict inside such a region where the
   //    lexical reading extends the parser reading across an `@` is resolved
   //    FOR the lexical witness — by region evidence, not preference.
@@ -775,13 +1058,14 @@ export function reconcileLatex(
       ent.name = lexName;
       ent.span = lexW.span;
       ent.spanProvenance = "lexical";
-      ent.argumentSpans = undefined; // parsed under the wrong tokenization
       ent.agreement = "agreed";
+      ent.agreementBasis = "two-instrument";
       ent.id = mintEntityId("macro-invocation", ent.span);
       diagnostics.push({
         code: DiagnosticCodes.CatcodeArbitrated,
         severity: "info",
         message: `\\${lexName}: catcode-naive parser tokenization yielded to the lexical reading inside a \\makeatletter region`,
+        sourceId,
         span: ent.span,
         entityId: ent.id,
       });
@@ -827,26 +1111,60 @@ export function reconcileBib(
 
   function fuseBib(
     span: SourceSpan,
-    detail: string
-  ): { witnesses: WitnessRecord[]; agreement: AgreementState } {
-    const witnesses: WitnessRecord[] = [
-      { witness: "parser", instrument: "latex-utensils", span, detail },
-    ];
+    detail: string,
+    construct: string
+  ): {
+    witnesses: WitnessRecord[];
+    agreement: AgreementState;
+    agreementBasis: AgreementBasis;
+    reason?: WitnessEquivalenceReason;
+  } {
+    const parserW: WitnessRecord = {
+      witness: "parser",
+      instrument: "latex-utensils",
+      span,
+      spanRole: "construct",
+      detail,
+    };
+    const witnesses: WitnessRecord[] = [parserW];
     const lexS = lexByStart.get(span.startUtf16);
     if (lexS) {
-      witnesses.push({ witness: "lexical", span: lexS.span, detail: lexS.detail || lexS.kind });
+      const lexicalW: WitnessRecord = {
+        witness: "lexical",
+        span: lexS.span,
+        spanRole: "construct",
+        detail: lexS.detail || lexS.kind,
+      };
+      witnesses.push(lexicalW);
       consumed.add(lexS);
-      return { witnesses, agreement: "agreed" };
+      const comparison = compareWitnesses(
+        "bib-construct",
+        { ...parserW, semantics: { construct } },
+        { ...lexicalW, semantics: { construct: lexS.kind === "bib-entry" ? `entry:${lexS.entryType}` : lexS.kind } }
+      );
+      return {
+        witnesses,
+        agreement: comparison.equivalent ? "agreed" : "conflict",
+        agreementBasis: "two-instrument",
+        reason: comparison.reason,
+      };
     }
-    return { witnesses, agreement: "parser-only" };
+    return { witnesses, agreement: "parser-only", agreementBasis: "single-authority" };
   }
 
-  function bibDisagreement(entityId: string, agreement: AgreementState, span: SourceSpan, what: string) {
+  function bibDisagreement(
+    entityId: string,
+    agreement: AgreementState,
+    span: SourceSpan,
+    what: string,
+    reason?: WitnessEquivalenceReason
+  ) {
     if (agreement === "agreed") return;
     diagnostics.push({
       code: DiagnosticCodes.WitnessDisagreement,
       severity: "info",
-      message: `${what} witnessed ${agreement === "parser-only" ? "by the parser only" : "by the lexical scanner only"}`,
+      message: `${what} witnessed ${agreement === "parser-only" ? "by the parser only" : agreement === "lexical-only" ? "by the lexical scanner only" : `with conflicting evidence (${reason || "policy mismatch"})`}`,
+      sourceId,
       span,
       entityId,
       witness: agreement === "parser-only" ? "parser" : "lexical",
@@ -854,7 +1172,11 @@ export function reconcileBib(
   }
 
   for (const entry of parseResult.entries) {
-    const { witnesses, agreement } = fuseBib(entry.span, `bib-entry:${entry.entryType}`);
+    const { witnesses, agreement, agreementBasis, reason } = fuseBib(
+      entry.span,
+      `bib-entry:${entry.entryType}`,
+      `entry:${entry.entryType}`
+    );
     const entryId = mintEntityId("bib-entry", entry.span);
     entities.push({
       id: entryId,
@@ -866,14 +1188,16 @@ export function reconcileBib(
       spanProvenance: "parser",
       witnesses,
       agreement,
+      agreementBasis,
     });
-    bibDisagreement(entryId, agreement, entry.span, `Bib entry @${entry.entryType}`);
+    bibDisagreement(entryId, agreement, entry.span, `Bib entry @${entry.entryType}`, reason);
 
-    // Fields live inside their entry: latex-utensils is the only instrument
-    // that types them, and the entry's own two-witness fusion covers the site.
+    // Fields are independently evidenced rows. A parent entry's lexical
+    // witness cannot be inherited as field agreement.
     for (const field of entry.fields) {
+      const fieldId = mintEntityId("bib-field", field.valueSpan);
       entities.push({
-        id: mintEntityId("bib-field", field.valueSpan),
+        id: fieldId,
         kind: "bib-field",
         entryId,
         fieldName: field.fieldName,
@@ -883,15 +1207,23 @@ export function reconcileBib(
         span: field.valueSpan,
         spanProvenance: "parser",
         witnesses: [
-          { witness: "parser", instrument: "latex-utensils", span: field.valueSpan, detail: `bib-field:${field.fieldName}` },
+          {
+            witness: "parser",
+            instrument: "latex-utensils",
+            span: field.valueSpan,
+            spanRole: "value",
+            detail: `bib-field:${field.fieldName}`,
+          },
         ],
-        agreement,
+        agreement: "parser-only",
+        agreementBasis: "single-authority",
       });
+      bibDisagreement(fieldId, "parser-only", field.valueSpan, `Bib field '${field.fieldName}'`);
     }
   }
 
   for (const str of parseResult.strings) {
-    const { witnesses, agreement } = fuseBib(str.span, "bib-string");
+    const { witnesses, agreement, agreementBasis, reason } = fuseBib(str.span, "bib-string", "bib-string");
     const id = mintEntityId("bib-string", str.span);
     entities.push({
       id,
@@ -902,12 +1234,13 @@ export function reconcileBib(
       spanProvenance: "parser",
       witnesses,
       agreement,
+      agreementBasis,
     });
-    bibDisagreement(id, agreement, str.span, "Bib @string");
+    bibDisagreement(id, agreement, str.span, "Bib @string", reason);
   }
 
   for (const pre of parseResult.preambles) {
-    const { witnesses, agreement } = fuseBib(pre.span, "bib-preamble");
+    const { witnesses, agreement, agreementBasis, reason } = fuseBib(pre.span, "bib-preamble", "bib-preamble");
     const id = mintEntityId("bib-preamble", pre.span);
     entities.push({
       id,
@@ -916,22 +1249,25 @@ export function reconcileBib(
       spanProvenance: "parser",
       witnesses,
       agreement,
+      agreementBasis,
     });
-    bibDisagreement(id, agreement, pre.span, "Bib @preamble");
+    bibDisagreement(id, agreement, pre.span, "Bib @preamble", reason);
   }
 
   for (const comm of parseResult.comments) {
-    const { witnesses, agreement } = fuseBib(comm.span, "bib-comment");
+    const { witnesses, agreement, agreementBasis, reason } = fuseBib(comm.span, "bib-comment", "bib-comment");
     const id = mintEntityId("bib-comment", comm.span);
     entities.push({
       id,
       kind: "bib-comment",
+      commentForm: "explicit",
       span: comm.span,
       spanProvenance: "parser",
       witnesses,
       agreement,
+      agreementBasis,
     });
-    bibDisagreement(id, agreement, comm.span, "Bib @comment");
+    bibDisagreement(id, agreement, comm.span, "Bib @comment", reason);
   }
 
   for (const lexS of lexSightings) {
@@ -941,10 +1277,12 @@ export function reconcileBib(
       entities.push({
         id: mintEntityId("bib-comment", lexS.span),
         kind: "bib-comment",
+        commentForm: "implicit",
         span: lexS.span,
         spanProvenance: "lexical",
-        witnesses: [{ witness: "lexical", span: lexS.span, detail: "implicit-comment" }],
+        witnesses: [{ witness: "lexical", span: lexS.span, spanRole: "construct", detail: "implicit-comment" }],
         agreement: "agreed",
+        agreementBasis: "single-authority",
       });
     } else if (lexS.detail === "implicit-blank") {
       // Whitespace between entries: claimed, never an entity.
@@ -960,8 +1298,9 @@ export function reconcileBib(
           citeKey: lexS.citeKey,
           span: lexS.span,
           spanProvenance: "lexical",
-          witnesses: [{ witness: "lexical", span: lexS.span, detail: lexS.detail || "bib-entry" }],
+          witnesses: [{ witness: "lexical", span: lexS.span, spanRole: "construct", detail: lexS.detail || "bib-entry" }],
           agreement: "lexical-only",
+          agreementBasis: "single-authority",
         });
       } else if (lexS.kind === "bib-string") {
         entities.push({
@@ -970,8 +1309,9 @@ export function reconcileBib(
           abbreviationName: lexS.abbreviationName || "",
           span: lexS.span,
           spanProvenance: "lexical",
-          witnesses: [{ witness: "lexical", span: lexS.span, detail: "bib-string" }],
+          witnesses: [{ witness: "lexical", span: lexS.span, spanRole: "construct", detail: "bib-string" }],
           agreement: "lexical-only",
+          agreementBasis: "single-authority",
         });
       } else if (lexS.kind === "bib-preamble") {
         entities.push({
@@ -979,17 +1319,20 @@ export function reconcileBib(
           kind: "bib-preamble",
           span: lexS.span,
           spanProvenance: "lexical",
-          witnesses: [{ witness: "lexical", span: lexS.span, detail: "bib-preamble" }],
+          witnesses: [{ witness: "lexical", span: lexS.span, spanRole: "construct", detail: "bib-preamble" }],
           agreement: "lexical-only",
+          agreementBasis: "single-authority",
         });
       } else {
         entities.push({
           id,
           kind: "bib-comment",
+          commentForm: lexS.commentForm || "explicit",
           span: lexS.span,
           spanProvenance: "lexical",
-          witnesses: [{ witness: "lexical", span: lexS.span, detail: lexS.detail || "bib-comment" }],
+          witnesses: [{ witness: "lexical", span: lexS.span, spanRole: "construct", detail: lexS.detail || "bib-comment" }],
           agreement: "lexical-only",
+          agreementBasis: "single-authority",
         });
       }
       bibDisagreement(id, "lexical-only", lexS.span, `Bib construct @${lexS.entryType || lexS.kind}`);

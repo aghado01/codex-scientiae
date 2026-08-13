@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-entities/0.2",
+  "title": "TeXdig 0.2 physical census entity",
+  "$defs": {
+    "span": {
+      "type": "object",
+      "required": ["sourceId", "startUtf16", "endUtf16"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "startUtf16": { "type": "integer", "minimum": 0 },
+        "endUtf16": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "witness": {
+      "type": "object",
+      "required": ["witness", "span", "spanRole"],
+      "properties": {
+        "witness": { "enum": ["lexical", "parser", "configured"] },
+        "span": { "$ref": "#/$defs/span" },
+        "spanRole": { "enum": ["token", "construct", "begin-fence", "end-fence", "content", "value", "summon-anchor"] },
+        "instrument": { "enum": ["unified-latex", "latex-utensils", "unified-latex-ctan"] },
+        "detail": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "mathCarrier": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["form"],
+          "properties": { "form": { "enum": ["dollar", "double-dollar", "paren", "bracket"] } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["form", "name"],
+          "properties": {
+            "form": { "const": "env" },
+            "name": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "bibPart": {
+      "type": "object",
+      "required": ["span", "shape"],
+      "properties": {
+        "span": { "$ref": "#/$defs/span" },
+        "shape": { "enum": ["text", "number", "abbreviation"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["id", "kind", "span", "spanProvenance", "witnesses", "agreement", "agreementBasis", "text"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^ent:" },
+    "kind": {
+      "enum": [
+        "macro-invocation", "macro-definition", "environment-definition", "environment",
+        "math", "verbatim-inline", "comment", "paragraph-break", "include",
+        "envelope-marker", "bib-entry", "bib-string", "bib-preamble", "bib-comment", "bib-field"
+      ]
+    },
+    "span": { "$ref": "#/$defs/span" },
+    "spanProvenance": { "enum": ["parser", "lexical", "synthesized-hull"] },
+    "witnesses": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/witness" } },
+    "agreement": { "enum": ["agreed", "lexical-only", "parser-only", "conflict"] },
+    "agreementBasis": { "enum": ["two-instrument", "single-authority", "configured-declaration"] },
+    "text": { "type": "string" }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "kind": { "const": "macro-invocation" },
+        "name": { "type": "string", "minLength": 1 },
+        "inMathMode": { "type": "boolean" }
+      },
+      "required": ["name"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "macro-definition" },
+        "definedName": { "type": "string", "minLength": 1 },
+        "dialect": { "enum": ["newcommand", "renewcommand", "providecommand", "xparse", "math-operator", "paired-delimiter", "let", "def", "gdef", "edef", "xdef", "configured"] },
+        "signatureRaw": { "type": "string" },
+        "argumentSpec": { "type": "string" },
+        "bodySpan": { "$ref": "#/$defs/span" },
+        "elaborable": { "type": "boolean" },
+        "context": { "enum": ["document-flow", "definition-body", "group-local", "conditional", "argument-body", "unknown"] },
+        "activation": { "enum": ["immediate", "deferred", "configured", "unknown"] },
+        "definedWithin": { "type": "string", "pattern": "^ent:" }
+      },
+      "required": ["definedName", "dialect", "elaborable", "context", "activation"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "environment-definition" },
+        "definedName": { "type": "string", "minLength": 1 },
+        "mechanism": { "enum": ["newtheorem", "newenvironment", "newfloat", "configured"] },
+        "signatureRaw": { "type": "string" },
+        "argumentSpec": { "type": "string" },
+        "counterRaw": { "type": "string" },
+        "beginBodySpan": { "$ref": "#/$defs/span" },
+        "endBodySpan": { "$ref": "#/$defs/span" },
+        "context": { "enum": ["document-flow", "definition-body", "group-local", "conditional", "argument-body", "unknown"] },
+        "activation": { "enum": ["immediate", "deferred", "configured", "unknown"] },
+        "definedWithin": { "type": "string", "pattern": "^ent:" }
+      },
+      "required": ["definedName", "mechanism", "context", "activation"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "environment" },
+        "name": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["float", "math", "verbatim", "bibliography", "generic"] },
+        "bodySpan": { "$ref": "#/$defs/span" }
+      },
+      "required": ["name", "role"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "math" },
+        "mode": { "enum": ["inline", "display"] },
+        "carrier": { "$ref": "#/$defs/mathCarrier" },
+        "fenceEntityId": { "type": "string", "pattern": "^ent:" }
+      },
+      "required": ["mode", "carrier"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "verbatim-inline" },
+        "delimiter": { "type": "string", "minLength": 1 }
+      },
+      "required": ["delimiter"]
+    },
+    { "properties": { "kind": { "const": "comment" } } },
+    { "properties": { "kind": { "const": "paragraph-break" } } },
+    {
+      "properties": {
+        "kind": { "const": "include" },
+        "directive": { "enum": ["input", "include", "bibliography", "addbibresource", "bibliographystyle"] },
+        "targetRaw": { "type": "string" },
+        "resolvedSourceId": { "type": "string", "minLength": 1 }
+      },
+      "required": ["directive", "targetRaw"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "envelope-marker" },
+        "marker": { "enum": ["documentclass", "begin-document", "end-document", "section", "appendix", "bibliography"] },
+        "name": { "type": "string" }
+      },
+      "required": ["marker"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "bib-entry" },
+        "entryType": { "type": "string", "minLength": 1 },
+        "citeKey": { "type": "string" },
+        "bodySpan": { "$ref": "#/$defs/span" }
+      },
+      "required": ["entryType"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "bib-string" },
+        "abbreviationName": { "type": "string", "minLength": 1 },
+        "valueSpan": { "$ref": "#/$defs/span" }
+      },
+      "required": ["abbreviationName"]
+    },
+    { "properties": { "kind": { "const": "bib-preamble" } } },
+    {
+      "properties": {
+        "kind": { "const": "bib-comment" },
+        "commentForm": { "enum": ["explicit", "implicit"] }
+      },
+      "required": ["commentForm"]
+    },
+    {
+      "properties": {
+        "kind": { "const": "bib-field" },
+        "entryId": { "type": "string", "pattern": "^ent:" },
+        "fieldName": { "type": "string", "minLength": 1 },
+        "valueSpan": { "$ref": "#/$defs/span" },
+        "valueShape": { "enum": ["text", "number", "abbreviation", "concat"] },
+        "parts": { "type": "array", "items": { "$ref": "#/$defs/bibPart" } }
+      },
+      "required": ["entryId", "fieldName", "valueSpan", "valueShape"]
+    }
+  ],
+  "allOf": [
+    {
+      "if": { "properties": { "agreementBasis": { "const": "two-instrument" } }, "required": ["agreementBasis"] },
+      "then": {
+        "properties": {
+          "witnesses": {
+            "minItems": 2,
+            "allOf": [
+              { "contains": { "properties": { "witness": { "const": "lexical" } }, "required": ["witness"] } },
+              { "contains": { "properties": { "witness": { "const": "parser" } }, "required": ["witness"] } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "agreementBasis": { "const": "configured-declaration" } }, "required": ["agreementBasis"] },
+      "then": {
+        "properties": {
+          "agreement": { "const": "agreed" },
+          "witnesses": {
+            "contains": { "properties": { "witness": { "const": "configured" } }, "required": ["witness"] }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

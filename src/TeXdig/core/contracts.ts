@@ -20,6 +20,8 @@
  */
 
 import type {
+  DeclarationActivation,
+  DeclarationContext,
   EntityId,
   SourceId,
   SourceSpan,
@@ -27,7 +29,7 @@ import type {
   MathCarrier,
 } from "./types.ts";
 
-export const CONTRACT_SCHEMA_VERSION = "texdig-contract/0.1" as const;
+export const CONTRACT_SCHEMA_VERSION = "texdig-contract/0.2" as const;
 
 // ---------------------------------------------------------------------------
 // ID grammar
@@ -49,6 +51,12 @@ export const ID_CLASSES = {
   fm: "frontmatter.jsonl",
   /** Elaboration tier: per-site macro expansions, origin-chained to ent: ids. */
   exp: "expansion.jsonl",
+  /** One execution occurrence of a physical source. */
+  occ: "occurrences.jsonl",
+  /** One chronological definition/binding event. */
+  bind: "bindings.jsonl",
+  /** One binding-dependent invocation occurrence. */
+  inv: "invocations.jsonl",
 } as const;
 
 export type IdClass = keyof typeof ID_CLASSES;
@@ -58,16 +66,106 @@ export type IdClass = keyof typeof ID_CLASSES;
 // ---------------------------------------------------------------------------
 
 /**
- * `seq` is one shared order space assigned during entrypoint traversal across
- * includes, covering walk nodes, zones, macro records, and pointer sites alike
- * — any two discrete objects are order-comparable by a field they carry.
- * Macro shadowing resolution uses the same scale; a second scale would drift.
+ * `seq` is one bundle-local order space assigned over source occurrences.
+ * Runtime rows are order-comparable inside one bundle; the integer is never a
+ * persistent identity and may be regenerated when requested addresses change.
  *
  * seq is a derived integer over span addresses: rows also carry enough
  * traversal context (includeChain on walk nodes) that ordering is
  * reconstructible without trusting the integer.
  */
 export type Seq = number;
+
+// ---------------------------------------------------------------------------
+// occurrences.jsonl — execution occurrences of physical sources
+// ---------------------------------------------------------------------------
+
+export interface SourceOccurrence {
+  id: string; // occ:...
+  sourceId: SourceId;
+  parentOccurrenceId?: string;
+  includeEntityId?: EntityId;
+  includeChain: SourceId[];
+  state: "entered" | "cycle-cut" | "deferred-context";
+}
+
+export type BindingMeaning =
+  | { kind: "definition"; declarationId: string; elaborable: boolean }
+  | { kind: "opaque-definition"; declarationId: string }
+  | { kind: "configured"; declarationId: string }
+  | { kind: "primitive"; name: string }
+  | { kind: "character-token"; text: string }
+  | { kind: "unresolved"; name: string };
+
+export interface BindingEvent {
+  id: string; // bind:...
+  seq: Seq;
+  occurrenceId: string;
+  declarationId: string; // def:...
+  entityId: EntityId;
+  definedName: string;
+  operation:
+    | "new"
+    | "renew"
+    | "provide"
+    | "assign"
+    | "let"
+    | "global-assign"
+    | "expanded-assign";
+  scopeId: string;
+  outcome:
+    | "installed"
+    | "skipped-existing"
+    | "invalid-precondition"
+    | "deferred"
+    | "unsupported"
+    | "opaque";
+  previousBindingEventId?: string;
+  capturedMeaning?: BindingMeaning;
+}
+
+export type ArgumentKind =
+  | "mandatory"
+  | "optional"
+  | "star"
+  | "token"
+  | "embellishment"
+  | "until";
+
+export type ArgumentDelimiter =
+  | "brace"
+  | "bracket"
+  | "bare-token"
+  | "implicit-token"
+  | "none";
+
+export interface ArgumentAttachment {
+  slot: number;
+  kind: ArgumentKind;
+  source: "explicit" | "omitted" | "default";
+  delimiter: ArgumentDelimiter;
+  /** Full source extent including delimiters, when source syntax exists. */
+  span?: SourceSpan;
+  /** Interior extent; may be zero-length for an explicit empty argument. */
+  contentSpan?: SourceSpan;
+  defaultText?: string;
+}
+
+export interface InvocationOccurrence {
+  id: string; // inv:...
+  seq: Seq;
+  occurrenceId: string;
+  entityId: EntityId;
+  name: string;
+  binding:
+    | { state: "bound"; bindingEventId: string }
+    | { state: "bound-out-of-scope"; detail: string }
+    | { state: "unbound" }
+    | { state: "deferred"; detail: string };
+  /** Binding-dependent syntax hull at this occurrence. */
+  span: SourceSpan;
+  arguments: ArgumentAttachment[];
+}
 
 /** Content is stored ONLY in this array form. Refs are verbatim ids. */
 export type ContentPart = { text: string } | { ref: string };
@@ -171,22 +269,26 @@ export interface Zone {
 
 export interface MacroRecord {
   id: string; // def:...
-  seq: Seq;
+  defines: "macro" | "environment";
   definedName: string;
   dialect: string; // DefinitionDialect from the census entity
   signatureRaw?: string;
+  argumentSpec?: string;
   /** Body extent and slice are knowable even when expansion is not (\def, \let). */
   bodySpan?: SourceSpan;
   bodyText?: string;
   elaborable: boolean;
-  /** Direct definition dependencies (def: ids), for support-closure computation. */
-  deps: string[];
+  /** Lexical control-sequence names in the body; bindings resolve per use. */
+  nameRefs: string[];
   /**
    * sha256 of the normalized body — the document-independent identity a
    * cross-corpus specimen store needs; stamped at emission because it is
    * impossible to backfill consistently later.
    */
-  fingerprint: string;
+  bodyFingerprint?: string;
+  context: DeclarationContext;
+  activation: DeclarationActivation;
+  definedWithin?: EntityId;
   entityId: EntityId;
 }
 

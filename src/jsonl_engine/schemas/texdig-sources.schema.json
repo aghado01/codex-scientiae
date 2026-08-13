@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-sources/0.2",
+  "title": "TeXdig 0.2 source record",
+  "type": "object",
+  "required": ["id", "sha256", "bytes", "language", "role", "parsed"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "bytes": { "type": "integer", "minimum": 0 },
+    "lengthUtf16": { "type": "integer", "minimum": 0 },
+    "language": { "enum": ["latex", "bibtex", "asset"] },
+    "role": {
+      "enum": ["entrypoint", "included", "bibliography-resource", "bbl-sidecar", "bibliography-style", "class-or-style", "asset", "unreachable-tex"]
+    },
+    "parsed": { "type": "boolean" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "parsed": { "const": true } }, "required": ["parsed"] },
+      "then": {
+        "required": ["lengthUtf16"],
+        "properties": { "language": { "enum": ["latex", "bibtex"] } }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

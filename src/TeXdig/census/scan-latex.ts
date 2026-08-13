@@ -91,6 +91,7 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
   const diagnostics: Diagnostic[] = [];
   const len = rawText.length;
   let i = 0;
+  let atIsLetter = false;
 
   // Math carriers are sighted as spans, but the scan STEPS INTO the interior —
   // control sequences and scripts inside math must be lexically witnessed too.
@@ -158,6 +159,7 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
             code: DiagnosticCodes.UnterminatedMath,
             severity: "warning",
             message: "Display math '$$' opened without a closing '$$'",
+            sourceId,
             span: { sourceId, startUtf16: start, endUtf16: Math.min(start + 2, len) },
             witness: "lexical",
           });
@@ -202,6 +204,7 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
             code: DiagnosticCodes.UnterminatedMath,
             severity: "warning",
             message: "Inline math '$' not closed before paragraph break or end of file",
+            sourceId,
             span: { sourceId, startUtf16: start, endUtf16: start + 1 },
             witness: "lexical",
           });
@@ -253,6 +256,7 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
             code: DiagnosticCodes.UnterminatedMath,
             severity: "warning",
             message: "Inline math '\\(' opened without a closing '\\)'",
+            sourceId,
             span: { sourceId, startUtf16: start, endUtf16: start + 2 },
             witness: "lexical",
           });
@@ -277,6 +281,7 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
             code: DiagnosticCodes.UnterminatedMath,
             severity: "warning",
             message: "Display math '\\[' opened without a closing '\\]'",
+            sourceId,
             span: { sourceId, startUtf16: start, endUtf16: start + 2 },
             witness: "lexical",
           });
@@ -322,8 +327,10 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
         // witness, which records `\section*` as macro `section` + star argument.
         const csStart = i;
         let csEnd = i + 1;
-        if (csEnd < len && /[a-zA-Z@]/.test(rawText[csEnd])) {
-          while (csEnd < len && /[a-zA-Z@]/.test(rawText[csEnd])) {
+        const isControlLetter = (value: string) =>
+          /[a-zA-Z]/.test(value) || (atIsLetter && value === "@");
+        if (csEnd < len && isControlLetter(rawText[csEnd])) {
+          while (csEnd < len && isControlLetter(rawText[csEnd])) {
             csEnd++;
           }
         } else if (csEnd < len) {
@@ -332,6 +339,28 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
 
         const csName = rawText.slice(csStart + 1, csEnd);
         const csSpan: SourceSpan = { sourceId, startUtf16: csStart, endUtf16: csEnd };
+
+        // TeX permits whitespace between \begin/\end and the mandatory group.
+        // Fence identity includes the whole written fence, including that gap.
+        if (csName === "begin" || csName === "end") {
+          let envOpen = csEnd;
+          while (envOpen < len && /\s/.test(rawText[envOpen])) envOpen++;
+          if (rawText[envOpen] === "{") {
+            const envEnd = rawText.indexOf("}", envOpen + 1);
+            if (envEnd !== -1) {
+              const envName = rawText.slice(envOpen + 1, envEnd).trim();
+              const totalEnd = envEnd + 1;
+              sightings.push({
+                kind: envName === "document" ? "envelope-marker" : csName === "begin" ? "environment-begin" : "environment-end",
+                name: envName,
+                span: { sourceId, startUtf16: csStart, endUtf16: totalEnd },
+                detail: `${csName}:${envName}`,
+              });
+              i = totalEnd;
+              continue;
+            }
+          }
+        }
 
         if (DEFINITION_COMMANDS.has(csName)) {
           sightings.push({
@@ -370,6 +399,9 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
           });
         }
 
+        if (csName === "makeatletter") atIsLetter = true;
+        else if (csName === "makeatother") atIsLetter = false;
+
         i = csEnd;
         continue;
       }
@@ -382,9 +414,19 @@ export function scanLatex(sourceId: SourceId, rawText: string): ScanLatexResult 
 }
 
 export function toWitnessRecord(sighting: LexicalSighting): WitnessRecord {
+  const spanRole = sighting.kind === "environment-begin"
+    ? "begin-fence"
+    : sighting.kind === "environment-end"
+      ? "end-fence"
+      : sighting.kind === "macro-invocation" || sighting.kind === "macro-definition" ||
+          sighting.kind === "environment-definition" || sighting.kind === "envelope-marker" ||
+          sighting.kind === "include"
+        ? "token"
+        : "construct";
   return {
     witness: "lexical",
     span: sighting.span,
+    spanRole,
     detail: sighting.detail || sighting.name,
   };
 }

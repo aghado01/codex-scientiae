@@ -2,7 +2,7 @@
  * TeXdig pillar claims overlay generator.
  *
  * Emits positive claims across the three pillars:
- * - envelope: document structure and structural markers
+ * - envelope: document structure and structural markers, including float carriers
  * - spine: positive text runs and prose stream
  * - fence: environments, math carriers, verbatim, comments, and bib entries
  *
@@ -45,6 +45,14 @@ export function generatePillarClaims(
       case "environment":
         pillar = "fence";
         role = ent.role;
+        if (ent.role === "float") {
+          claims.push({
+            pillar: "envelope",
+            entityId: ent.id,
+            span: ent.span,
+            role: "float",
+          });
+        }
         break;
       case "math":
         pillar = "fence";
@@ -57,6 +65,10 @@ export function generatePillarClaims(
       case "comment":
         pillar = "fence";
         role = "comment";
+        break;
+      case "paragraph-break":
+        pillar = "spine";
+        role = "paragraph-break";
         break;
       case "macro-definition":
         pillar = "envelope";

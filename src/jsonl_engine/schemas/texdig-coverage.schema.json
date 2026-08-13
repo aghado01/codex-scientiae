@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-coverage/0.2",
+  "title": "TeXdig 0.2 coverage store",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["sourceId", "lengthUtf16", "claimedUtf16", "residueUtf16", "residue"],
+    "properties": {
+      "sourceId": { "type": "string", "minLength": 1 },
+      "lengthUtf16": { "type": "integer", "minimum": 0 },
+      "claimedUtf16": { "type": "integer", "minimum": 0 },
+      "residueUtf16": { "type": "integer", "minimum": 0 },
+      "residue": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["sourceId", "startUtf16", "endUtf16"],
+          "properties": {
+            "sourceId": { "type": "string" },
+            "startUtf16": { "type": "integer", "minimum": 0 },
+            "endUtf16": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  }
+}

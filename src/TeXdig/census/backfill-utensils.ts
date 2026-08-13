@@ -50,6 +50,8 @@ export function buildUtensilsIndex(
         code: DiagnosticCodes.BackfillUnavailable,
         severity: "info",
         message: `latex-utensils could not parse '${sourceId}' (${err?.message || err}); lexical-only sites stay single-witness`,
+        sourceId,
+        witness: "parser",
       },
     };
   }
@@ -64,7 +66,9 @@ export function buildUtensilsIndex(
     const kind = String(node.kind || "");
 
     if (kind.startsWith("command") && typeof node.name === "string") {
-      index.csByStart.set(start, { name: node.name, endUtf16: end });
+      const tokenText = `\\${node.name}`;
+      const tokenEnd = text.startsWith(tokenText, start) ? start + tokenText.length : end;
+      index.csByStart.set(start, { name: node.name, endUtf16: tokenEnd });
     } else if (kind === "subscript") {
       index.csByStart.set(start, { name: "_", endUtf16: end });
     } else if (kind === "superscript") {
@@ -123,7 +127,7 @@ export function backfillLexicalOnly(
       continue;
     }
 
-    if (!hit || hit.name !== expected) continue;
+    if (!hit || hit.name !== expected || hit.endUtf16 !== entity.span.endUtf16) continue;
     entity.witnesses.push({
       witness: "parser",
       instrument: "latex-utensils",
@@ -132,9 +136,11 @@ export function backfillLexicalOnly(
         startUtf16: entity.span.startUtf16,
         endUtf16: hit.endUtf16,
       },
+      spanRole: entity.kind === "environment" ? "construct" : "token",
       detail: `backfill:${hit.name}`,
     });
     entity.agreement = "agreed";
+    entity.agreementBasis = "two-instrument";
     upgradedIds.add(entity.id);
   }
 

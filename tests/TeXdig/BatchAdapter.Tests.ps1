@@ -49,7 +49,10 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
         It "freezes worker inputs and identity metadata" {
             $script:Jobs[0].Parameters.Article | Should -Be $script:FixtureDir
             $script:Jobs[0].Parameters.DepsRoot | Should -Match "node_modules"
+            $script:Jobs[0].Parameters.NodePath | Should -Be $script:Jobs[0].Metadata.NodePath
+            Test-Path -LiteralPath $script:Jobs[0].Parameters.NodePath -PathType Leaf | Should -BeTrue
             $script:Jobs[0].Metadata.Slug | Should -Be "mini_article"
+            $script:Jobs[0].Metadata.StoreSchema | Should -Be "texdig-census/0.2"
             $script:Jobs[0].Metadata.TreeSha256 | Should -Not -BeNullOrEmpty
             $script:Jobs[0].Metadata.ContainerContract | Should -Be "JobContainerIsDocumentContainer"
             $script:Jobs[0].EstimatedCost | Should -BeGreaterThan 1
@@ -100,7 +103,8 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
         It "produces the same census the direct runner produces" {
             $summary = Get-Content -Raw (Join-Path $script:JobDirectory "summary.json") | ConvertFrom-Json
             $summary.slug | Should -Be "mini_article"
-            $summary.coverage.residueUtf16 | Should -Be 0
+            $summary.schema | Should -Be "texdig-census/0.2"
+            $summary.coverage.residueUtf16 | Should -Be 12
         }
     }
 }
