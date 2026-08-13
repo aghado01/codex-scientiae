@@ -5,8 +5,8 @@ from __future__ import annotations
 from mcp.server import MCPServer
 from mcp.server.mcpserver import Context
 
-from mcps.procurement.contracts import DepositSlug, NonEmptyIdentifier, ProviderName
-from mcps.procurement.runtime import AppContext, finish_sync
+from procurement_mcp.contracts import DepositSlug, NonEmptyIdentifier, ProviderName
+from procurement_mcp.runtime import AppContext, finish_sync
 from procurement.domain.acquisition.planning import (
     ArtifactAcquisitionRequest,
     ArtifactKind,

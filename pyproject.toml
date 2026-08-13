@@ -30,10 +30,19 @@ description = "Codex Scientiae — Python lane for artifact registries and schol
 requires-python = ">=3.12"
 
 [project.scripts]
-scientiae-procurement = "mcps.procurement.server:main"
+scientiae-procurement = "procurement_mcp.server:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/jsonl_engine", "src/procurement", "src/mcps"]
+only-include = [
+    "src/jsonl_engine",
+    "src/procurement",
+    "src/mcp-servers/procurement_mcp",
+]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/jsonl_engine" = "jsonl_engine"
+"src/procurement" = "procurement"
+"src/mcp-servers/procurement_mcp" = "procurement_mcp"
 
 [tool.pytest.ini_options]
 # Anchors rootdir at the repository root so `pytest` and `python -m pytest` agree. Import resolution

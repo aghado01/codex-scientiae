@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import importlib.util
 import json
 import unittest
 from importlib.resources import files
+from pathlib import Path
 from unittest.mock import patch
 
 from mcp import Client
 
-from mcps.procurement.server import create_server
+from procurement_mcp.server import create_server
 from procurement.operations.local_import import LocalImportInbox, LocalImportInboxCatalog
 
 EXPECTED_TOOLS = (
@@ -194,6 +196,15 @@ class RecordingApplication:
 
 
 class TestProcurementMcpRegistration(unittest.TestCase):
+    def test_package_has_one_canonical_import_identity(self) -> None:
+        self.assertIsNone(importlib.util.find_spec("mcps"))
+        spec = importlib.util.find_spec("procurement_mcp")
+        self.assertIsNotNone(spec)
+        assert spec is not None and spec.origin is not None
+        package = Path(spec.origin).resolve().parent
+        self.assertEqual(package.name, "procurement_mcp")
+        self.assertEqual(package.parent.name, "mcp-servers")
+
     def test_exact_tool_and_prompt_registration_contract(self) -> None:
         async def exercise() -> None:
             application = RecordingApplication("manual")
@@ -237,7 +248,7 @@ class TestProcurementMcpRegistration(unittest.TestCase):
 
                 rendered = await client.get_prompt("discovery_procedure")
                 expected_body = (
-                    files("mcps.procurement")
+                    files("procurement_mcp")
                     .joinpath("prompts/discovery.md")
                     .read_text(encoding="utf-8")
                 )
@@ -295,7 +306,7 @@ class TestProcurementMcpRegistration(unittest.TestCase):
         async def exercise() -> None:
             application = RecordingApplication("owned")
             with patch(
-                "mcps.procurement.server.build_application",
+                "procurement_mcp.server.build_application",
                 return_value=application,
             ):
                 async with Client(create_server()) as client:

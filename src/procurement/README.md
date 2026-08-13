@@ -2,7 +2,7 @@
 
 `procurement` is the reusable Python capability layer for scholarly discovery, acquisition, and source
 preparation. It has no MCP dependency in its implementation graph; the MCP SDK is consumed only by
-`src/mcps`.
+`src/mcp-servers/procurement_mcp`.
 
 The package is divided by responsibility:
 

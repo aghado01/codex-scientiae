@@ -7,7 +7,7 @@ from datetime import date
 from mcp.server import MCPServer
 from mcp.server.mcpserver import Context
 
-from mcps.procurement.contracts import (
+from procurement_mcp.contracts import (
     NonEmptyIdentifier,
     ProviderName,
     RelatedKind,
@@ -15,7 +15,7 @@ from mcps.procurement.contracts import (
     SearchLimit,
     StartOffset,
 )
-from mcps.procurement.runtime import AppContext
+from procurement_mcp.runtime import AppContext
 from procurement.domain.discovery import (
     RelatedResponse,
     ResolveResponse,

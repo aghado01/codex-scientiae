@@ -14,7 +14,7 @@ services only through the active MCP request context.
 Run the stdio server from the repository environment:
 
 ```pwsh
-.venv/Scripts/python.exe -m mcps.procurement
+.venv/Scripts/python.exe -m procurement_mcp
 ```
 
 The installed script name is `scientiae-procurement`. Discovery uses `discover_search`,

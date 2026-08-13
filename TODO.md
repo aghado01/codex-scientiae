@@ -15,7 +15,7 @@ Not in any particular order:
 - identifying systemic design and implementation failures in old code
 - quarantine retired initiatives' code such as codex-membrane and pdf-converter, retain elsewhere for post-mortem analysis and next-gen planning and design
 - clean up tests and reoganize into modular `tests/{module}` layout that parallels emerging `src/{module}` structure
-- consolidate and organize MCP implementation code under something like src/mcps, apart from the algorithmic implementation code that uses them. mcp code can import freely from other src code and across modules and this consolidation is about separation of concerns/hygiene
+- keep MCP presentation code under `src/mcp-servers`, apart from the algorithmic implementation code it projects
 - still havent decided the taxonomy/breakdown of different project-related MCPs
 - arvix/zenodo/scihub/scholar etc all remain together under umbrella of one MCP in the project that serves the procurement capabilities to agents
 - latex-ingest will get its own mcp, later pdfdig will likely as well, and perhaps both will be subsumed by an umbrella as well

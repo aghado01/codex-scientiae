@@ -16,7 +16,7 @@ import httpx
 import jsonschema
 from mcp import Client
 
-from mcps.procurement.server import create_server
+from procurement_mcp.server import create_server
 from procurement.application import ProcurementApplication
 from procurement.errors import ProviderError
 from procurement.transport.http import HttpClient

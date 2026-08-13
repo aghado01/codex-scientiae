@@ -5,14 +5,14 @@ from __future__ import annotations
 from mcp.server import MCPServer
 from mcp.server.mcpserver import Context
 
-from mcps.procurement.contracts import (
+from procurement_mcp.contracts import (
     ArticleCatalogDescriptorResponse,
     ArticleCatalogListResponse,
     ArticleCatalogSnapshotResponse,
     ArticleInventoryResultResponse,
     NonEmptyIdentifier,
 )
-from mcps.procurement.runtime import AppContext, finish_sync
+from procurement_mcp.runtime import AppContext, finish_sync
 
 
 def register_catalog_tools(server: MCPServer) -> None:

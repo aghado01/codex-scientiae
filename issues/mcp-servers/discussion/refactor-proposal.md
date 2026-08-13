@@ -16,7 +16,8 @@ The actual “config in code” problems are visible in [composition.py](D:/agha
 - It centrally restates every provider’s capabilities and roles.
 - It hardcodes which providers must exist.
 - It hardcodes which providers count as metadata aggregators.
-- MCP repeats overlapping provider lists as `Literal` types in [server.py](D:/aghado01/codex-scientiae/src/mcps/procurement/server.py:48).
+- Before the provider-catalog cut, the MCP repeated overlapping provider lists as `Literal` types; the
+  current presentation layer resolves provider names through the backend catalog.
 - Pydantic supplies defaults for values also explicitly present in JSON, creating two possible authorities.
 
 Each adapter should expose an immutable descriptor:
@@ -93,7 +94,7 @@ This avoids reorganizing every provider into a directory merely for symmetry. Op
 The MCP can similarly become:
 
 ```text
-src/mcps/procurement/
+src/mcp-servers/procurement_mcp/
   server.py                    construction and lifespan only
   tools/
     discovery.py

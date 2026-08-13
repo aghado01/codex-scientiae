@@ -237,8 +237,8 @@ The procurement package decomposition brings the current JSONL-engine plus procu
 physical containers and 425 directly collected tests. Its repository-local direct gate passed 415 with
 ten platform/capability skips. The changed source-contract, extraction, tree, LaTeX, materialization,
 package-layout, MCP-registration, and MCP-server containers also passed through the public batch shell as
-eight independent jobs: all 50 selected tests passed. Including the five-test procurement MCP projection,
-the integrated direct gate passed 420 with ten skips across 430 collected tests. The earlier multilingual
+eight independent jobs: all 51 selected tests passed. Including the six-test procurement MCP projection,
+the integrated direct gate passed 421 with ten skips across 431 collected tests. The earlier multilingual
 22-job witness remains historical rather than the current Python census.
 
 ## Batchable Pester-container contract
@@ -405,8 +405,7 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | `math-channel/` | Mathematical register normalization and math-render audit |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
 | `procurement/` | Scholarly discovery and acquisition adapters (libraries; MCP shells under `mcp-servers/`) |
-| `mcps/` | Python MCP presentation adapters and protocol-level tests. |
-| `mcp-servers/` | Legacy PowerShell MCP shells retained during migration. |
+| `mcp-servers/` | Python and PowerShell MCP servers plus protocol-level tests. |
 | `node_utils/` | Node-backed utilities (md-lint, pdf-raster, tikz-render) |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
 | `logistics/` | Shared logistics primitives (run paths, portable paths, latex-source deposit) |

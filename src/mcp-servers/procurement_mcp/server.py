@@ -8,8 +8,8 @@ from importlib.resources import files
 
 from mcp.server import MCPServer
 
-from mcps.procurement.runtime import AppContext
-from mcps.procurement.tools import register_tools
+from procurement_mcp.runtime import AppContext
+from procurement_mcp.tools import register_tools
 from procurement.application import ProcurementApplication
 from procurement.composition import build_application
 
@@ -53,7 +53,7 @@ def create_server(application: ProcurementApplication | None = None) -> MCPServe
         """Return the cross-source literature discovery procedure."""
 
         return (
-            files("mcps.procurement")
+            files("procurement_mcp")
             .joinpath("prompts/discovery.md")
             .read_text(encoding="utf-8")
         )

@@ -5,8 +5,8 @@ from __future__ import annotations
 from mcp.server import MCPServer
 from mcp.server.mcpserver import Context
 
-from mcps.procurement.contracts import DepositSlug, MainTexPath, NonEmptyIdentifier
-from mcps.procurement.runtime import AppContext
+from procurement_mcp.contracts import DepositSlug, MainTexPath, NonEmptyIdentifier
+from procurement_mcp.runtime import AppContext
 from procurement.domain.materialization import (
     ArtifactIdentityMetadata,
     SourceMaterializationRequest,
