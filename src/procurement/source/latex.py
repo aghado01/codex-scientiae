@@ -15,7 +15,6 @@ from jsonl_engine.publication import PinnedPublicationRoot, PublicationError
 
 from procurement.errors import SourceMaterializationError
 from procurement.source._safety import (
-    _is_reparse,
     _plain_directory,
     _portable_leaf,
     _portable_relative,
@@ -23,6 +22,7 @@ from procurement.source._safety import (
     _same_path_generation,
     _stat_identity,
 )
+from procurement.storage.safety import is_link_or_reparse
 from procurement.source.contracts import ArchiveLimits, LatexSourceError
 from procurement.source.tree import (
     TreeFile,
@@ -91,7 +91,7 @@ def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
         raise LatexSourceError(f"LaTeX input path changed: {entry.relative!r}") from exc
     if (
         not stat.S_ISREG(current.st_mode)
-        or _is_reparse(current)
+        or is_link_or_reparse(current)
         or not _same_path_generation(after, current)
     ):
         raise LatexSourceError(f"LaTeX input path changed: {entry.relative!r}")

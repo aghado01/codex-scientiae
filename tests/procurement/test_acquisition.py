@@ -839,29 +839,33 @@ class TestAcquisitionService(unittest.TestCase):
                         else staging / "item-displaced"
                     )
                     swapped = False
+                    blocked = False
                     try:
                         os.rename(target, displaced)
                     except OSError:
                         # Windows retains the configured and item directories without delete
                         # sharing. POSIX may rename them, but all file I/O remains descriptor-relative.
-                        pass
+                        blocked = True
                     else:
                         swapped = True
                         target.mkdir()
                     finally:
                         release.set()
 
-                    if swapped:
+                    if os.name == "nt":
+                        self.assertTrue(blocked)
+                        self.assertFalse(swapped)
+                        result = await asyncio.wait_for(task, timeout=2)
+                        self.assertEqual(result.outcomes[0].status, "acquired")
+                        self.assertFalse(displaced.exists())
+                    else:
+                        self.assertTrue(swapped)
                         with self.assertRaisesRegex(
                             AcquisitionConflictError,
                             "retained directory generation",
                         ):
                             await asyncio.wait_for(task, timeout=2)
                         self.assertEqual(list(target.iterdir()), [])
-                    else:
-                        result = await asyncio.wait_for(task, timeout=2)
-                        self.assertEqual(result.outcomes[0].status, "acquired")
-
         for target_kind in ("staging", "item"):
             with self.subTest(target_kind=target_kind), tempfile.TemporaryDirectory() as root:
                 asyncio.run(exercise(Path(root), target_kind))

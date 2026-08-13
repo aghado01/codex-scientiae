@@ -19,35 +19,15 @@ from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
 from procurement.storage.documents import AcquisitionManifestDocument
 from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
+from procurement.storage.safety import (
+    is_link_or_reparse,
+    require_current,
+    same_directory_generation,
+)
 
 _JOURNAL_LEAF = ".acquisition-publish.json"
 _PARTIAL_LEAF = ".download.part"
 _FORM_ORDER = {"source": 0, "pdf": 1, "html": 2}
-
-
-def _is_reparse(info: os.stat_result) -> bool:
-    return bool(getattr(info, "st_file_attributes", 0) & 0x400)
-
-
-def _same_directory_generation(left: os.stat_result, right: os.stat_result) -> bool:
-    if left.st_ino or right.st_ino:
-        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
-    left_birth = getattr(left, "st_birthtime_ns", None)
-    right_birth = getattr(right, "st_birthtime_ns", None)
-    if left_birth is not None or right_birth is not None:
-        return left.st_dev == right.st_dev and left_birth == right_birth
-    return left.st_dev == right.st_dev and getattr(
-        left, "st_ctime_ns", None
-    ) == getattr(right, "st_ctime_ns", None)
-
-
-def _require_current(root: PinnedPublicationRoot, *, label: str) -> None:
-    try:
-        root.assert_current()
-    except RuntimeError as exc:
-        raise AcquisitionConflictError(
-            f"{label} no longer names its retained directory generation"
-        ) from exc
 
 
 def _measure_file(path: Path) -> tuple[int, str]:
@@ -56,7 +36,7 @@ def _measure_file(path: Path) -> tuple[int, str]:
     try:
         with path.open("rb") as handle:
             before = os.fstat(handle.fileno())
-            if not stat.S_ISREG(before.st_mode) or _is_reparse(before):
+            if not stat.S_ISREG(before.st_mode) or is_link_or_reparse(before):
                 raise AcquisitionConflictError(f"artifact is not a regular file: '{path}'")
             while chunk := handle.read(1024 * 1024):
                 size += len(chunk)
@@ -77,7 +57,7 @@ def _measure_file(path: Path) -> tuple[int, str]:
     current = path.lstat()
     if (
         not stat.S_ISREG(current.st_mode)
-        or _is_reparse(current)
+        or is_link_or_reparse(current)
         or current.st_dev != after.st_dev
         or current.st_ino != after.st_ino
         or current.st_size != after.st_size
@@ -93,10 +73,10 @@ def _measure_pinned_file(
     """Measure one direct leaf through an active directory generation."""
 
     leaf = root.direct_leaf(path)
-    _require_current(root, label="artifact directory")
+    require_current(root, label="artifact directory", error=AcquisitionConflictError)
     try:
         named_before = root.stat_leaf(leaf)
-        if not stat.S_ISREG(named_before.st_mode) or _is_reparse(named_before):
+        if not stat.S_ISREG(named_before.st_mode) or is_link_or_reparse(named_before):
             raise AcquisitionConflictError(
                 f"artifact is not a regular file: '{root.absolute(leaf)}'"
             )
@@ -106,7 +86,7 @@ def _measure_pinned_file(
             opened_before = os.fstat(handle.fileno())
             if (
                 not stat.S_ISREG(opened_before.st_mode)
-                or _is_reparse(opened_before)
+                or is_link_or_reparse(opened_before)
                 or opened_before.st_dev != named_before.st_dev
                 or opened_before.st_ino != named_before.st_ino
             ):
@@ -132,7 +112,7 @@ def _measure_pinned_file(
         or getattr(opened_before, "st_ctime_ns", None)
         != getattr(opened_after, "st_ctime_ns", None)
         or not stat.S_ISREG(named_after.st_mode)
-        or _is_reparse(named_after)
+        or is_link_or_reparse(named_after)
         or named_after.st_dev != opened_after.st_dev
         or named_after.st_ino != opened_after.st_ino
         or named_after.st_size != opened_after.st_size
@@ -140,7 +120,7 @@ def _measure_pinned_file(
         raise AcquisitionConflictError(
             f"artifact changed while being measured: '{root.absolute(leaf)}'"
         )
-    _require_current(root, label="artifact directory")
+    require_current(root, label="artifact directory", error=AcquisitionConflictError)
     return size, digest.hexdigest()
 
 
@@ -217,7 +197,11 @@ class AcquisitionItem:
     def assert_current(self) -> None:
         """Require the item path and its retained parent to name this generation."""
 
-        _require_current(self.publication_root, label="acquisition item")
+        require_current(
+            self.publication_root,
+            label="acquisition item",
+            error=AcquisitionConflictError,
+        )
 
     def exists(self, path: str | Path) -> bool:
         return self.publication_root.lexists(path)
@@ -355,7 +339,7 @@ class AcquisitionItem:
         partial = self.private_download_path()
         if self.exists(partial):
             info = self.publication_root.stat_path(partial)
-            if not stat.S_ISREG(info.st_mode) or _is_reparse(info):
+            if not stat.S_ISREG(info.st_mode) or is_link_or_reparse(info):
                 raise AcquisitionConflictError(f"private download is not a regular file: '{partial}'")
             self.unlink(partial)
         return manifest
@@ -387,7 +371,7 @@ class AcquisitionStore:
     def transaction(self, slug: str, *, create: bool = True) -> Iterator[AcquisitionItem]:
         slug = validate_deposit_slug(slug)
         root = self.publication_root
-        _require_current(root, label="acquisition staging root")
+        require_current(root, label="acquisition staging root", error=AcquisitionConflictError)
         directory = Path(root.absolute(slug))
         lease = FileLock(root.lock_path(directory), timeout=self.lock_timeout)
         try:
@@ -398,7 +382,11 @@ class AcquisitionStore:
                 f"'{directory / 'acquisition.json'}'"
             ) from exc
         try:
-            _require_current(root, label="acquisition staging root")
+            require_current(
+                root,
+                label="acquisition staging root",
+                error=AcquisitionConflictError,
+            )
             collisions = [name for name in root.list_names() if name.casefold() == slug.casefold()]
             if len(collisions) > 1 or (collisions and collisions[0] != slug):
                 raise AcquisitionConflictError(
@@ -406,7 +394,7 @@ class AcquisitionStore:
                 )
             if collisions:
                 info = root.stat_leaf(slug)
-                if not stat.S_ISDIR(info.st_mode) or _is_reparse(info):
+                if not stat.S_ISDIR(info.st_mode) or is_link_or_reparse(info):
                     raise AcquisitionError(
                         f"acquisition item must be a physical directory: '{directory}'"
                     )
@@ -417,14 +405,22 @@ class AcquisitionStore:
                 raise AcquisitionError(f"acquisition item does not exist: '{directory}'")
             with root.pin_child(slug) as item_root:
                 opened = item_root.stat_root()
-                if not _same_directory_generation(info, opened):
+                if not same_directory_generation(info, opened):
                     raise AcquisitionConflictError(
                         f"acquisition item changed while its generation was pinned: '{directory}'"
                     )
-                _require_current(item_root, label="acquisition item")
+                require_current(
+                    item_root,
+                    label="acquisition item",
+                    error=AcquisitionConflictError,
+                )
                 item = AcquisitionItem(item_root, slug)
                 yield item
                 item.assert_current()
-                _require_current(root, label="acquisition staging root")
+                require_current(
+                    root,
+                    label="acquisition staging root",
+                    error=AcquisitionConflictError,
+                )
         finally:
             lease.release()

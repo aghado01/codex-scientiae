@@ -7,6 +7,7 @@ import unittest
 from pydantic import ValidationError
 
 from procurement.domain.discovery import SearchRequest
+from procurement.domain.deposits import is_portable_leaf, validate_deposit_slug
 from procurement.domain.metadata import ArticleIdentifiers
 from procurement.domain.works import (
     SourceReference,
@@ -154,3 +155,35 @@ class TestSearchRequest(unittest.TestCase):
         for query in (None, "", "   "):
             with self.subTest(query=query), self.assertRaises(ValidationError):
                 SearchRequest(query=query)
+
+
+class TestDepositSlug(unittest.TestCase):
+    def test_accepts_bounded_portable_unicode_leaves(self) -> None:
+        for slug in ("paper", "résumé-v1", "a" * 255):
+            with self.subTest(slug=slug):
+                self.assertTrue(is_portable_leaf(slug))
+                self.assertEqual(validate_deposit_slug(slug), slug)
+
+    def test_rejects_every_nonportable_leaf_class(self) -> None:
+        invalid = (
+            None,
+            "",
+            ".",
+            "..",
+            "CON",
+            "con.txt",
+            "nested/paper",
+            "nested\\paper",
+            "paper.",
+            "paper ",
+            "paper\x00",
+            "paper\x1f",
+            "\ud800",
+            "a" * 256,
+            "é" * 128,
+        )
+        for slug in invalid:
+            with self.subTest(slug=slug):
+                self.assertFalse(is_portable_leaf(slug))
+                with self.assertRaises(ValueError):
+                    validate_deposit_slug(slug)

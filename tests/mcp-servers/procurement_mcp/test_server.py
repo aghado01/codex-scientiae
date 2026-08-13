@@ -29,6 +29,13 @@ from procurement.domain.acquisition.receipts import (
     LocalImportProvenance,
     acquisition_manifest_schema,
 )
+from procurement.domain.acquisition.planning import (
+    ArtifactAcquisitionRequest,
+    ArtifactPlan,
+    PlannedArtifact,
+    RetrievalCandidate,
+    UnavailableArtifact,
+)
 from procurement.domain.deposits import PORTABLE_LEAF_PATTERN
 from procurement.domain.discovery import SearchPage, SearchRequest
 from procurement.domain.metadata import (
@@ -44,12 +51,15 @@ from procurement.providers.base import Capability, ProviderRole
 from procurement.providers.catalog import ProviderBinding, ProviderCatalog
 from procurement.domain.materialization import SourceMaterializationResult
 from procurement.operations.discovery import DiscoveryService
+from procurement.operations.acquisition import AcquisitionService
 from procurement.operations.local_import import (
     LocalImportInbox,
     LocalImportInboxCatalog,
 )
 from procurement.operations.metadata import MetadataService
 from procurement.storage.roots import ProcurementRootCatalog
+from procurement.storage.acquisitions import AcquisitionStore
+from procurement.transport.http import RequestPolicy
 
 
 def application_roots(parent: str) -> ProcurementRootCatalog:
@@ -250,6 +260,62 @@ class StaticProvider:
             ),
         )
 
+    async def get_work(self, identifier: str) -> WorkRecord:
+        return WorkRecord(
+            title="A paper",
+            doi="10.1/X",
+            sources=(
+                SourceReference(provider=self.name, identifier=identifier, doi="10.1/X"),
+            ),
+        )
+
+    async def related(self, identifier: str, kind: str, limit: int) -> tuple[WorkRecord, ...]:
+        del kind, limit
+        return (await self.get_work(f"related:{identifier}"),)
+
+    async def resolve(self, reference: str) -> tuple[WorkRecord, ...]:
+        return (await self.get_work(f"resolved:{reference}"),)
+
+    async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
+        payloads = tuple(
+            PlannedArtifact(
+                kind="pdf",
+                target_leaf="2008.10579v1.pdf",
+                media_type="application/pdf",
+                payload_kind="pdf",
+                maximum_bytes=1024,
+                candidates=(
+                    RetrievalCandidate(
+                        candidate_id="protocol-pdf",
+                        url="https://provider.test/pdf",
+                        allowed_hosts=("provider.test",),
+                    ),
+                ),
+            )
+            for kind in request.artifacts
+            if kind == "pdf"
+        )
+        unavailable = tuple(
+            UnavailableArtifact(kind=kind, reason="not used by the protocol fixture")
+            for kind in request.artifacts
+            if kind != "pdf"
+        )
+        return ArtifactPlan(
+            artifact=ArtifactReference(
+                provider="arxiv",
+                identifier="2008.10579v1",
+                provider_roles=(
+                    "artifact-origin",
+                    "artifact-access",
+                    "metadata-authority",
+                ),
+            ),
+            deposit_slug="2008.10579v1",
+            requested=request.artifacts,
+            payloads=payloads,
+            unavailable=unavailable,
+        )
+
 
 class AggregatorProvider:
     name = "openalex"
@@ -310,7 +376,18 @@ class TestProcurementMcp(unittest.TestCase):
                 [
                     ProviderBinding(
                         provider,
-                        frozenset({Capability.SEARCH, Capability.METADATA}),
+                        frozenset(
+                            {
+                                Capability.SEARCH,
+                                Capability.GET_WORK,
+                                Capability.CITATIONS,
+                                Capability.REFERENCES,
+                                Capability.RECOMMENDATIONS,
+                                Capability.RESOLVE,
+                                Capability.METADATA,
+                                Capability.PLAN_ARTIFACT,
+                            }
+                        ),
                         frozenset(
                             {
                                 ProviderRole.ARTIFACT_ORIGIN,
@@ -330,14 +407,34 @@ class TestProcurementMcp(unittest.TestCase):
             metadata = MetadataService(registry, ("openalex",))
             materialization = RecordingMaterializationService()
             local_import = RecordingLocalImportService()
-            async with httpx.AsyncClient(transport=httpx.MockTransport(lambda request: httpx.Response(500))) as raw:
+            def handler(request: httpx.Request) -> httpx.Response:
+                if request.url.host == "provider.test" and request.url.path == "/pdf":
+                    return httpx.Response(
+                        200,
+                        content=b"%PDF-1.7\nprotocol\n%%EOF\n",
+                        headers={"content-type": "application/pdf"},
+                    )
+                return httpx.Response(500)
+
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                http = HttpClient(raw, utc_now=lambda: datetime(2026, 8, 11, tzinfo=timezone.utc))
                 application = ProcurementApplication(
                     providers=registry,
                     discovery=service,
                     metadata=metadata,
-                    http=HttpClient(raw),
+                    http=http,
                     roots=roots,
-                    acquisition=StaticAcquisitionService(),
+                    acquisition=AcquisitionService(
+                        registry,
+                        http,
+                        AcquisitionStore(roots.staging, lock_timeout=2),
+                        provider_policies={
+                            "arxiv": RequestPolicy(
+                                max_attempts=1,
+                                max_decoded_body_bytes=1024,
+                            )
+                        },
+                    ),
                     catalogs=StaticCatalogService(),
                     local_import=local_import,
                     materialization=materialization,
@@ -645,6 +742,63 @@ class TestProcurementMcp(unittest.TestCase):
                         materialization.requests[0].metadata_fallback_sources,
                         (),
                     )
+                    related = await client.call_tool(
+                        "discover_related",
+                        {
+                            "identifier": "W1",
+                            "kind": "citations",
+                            "source": "arxiv",
+                            "max_results": 3,
+                        },
+                    )
+                    self.assertFalse(related.is_error)
+                    self.assertEqual(related.structured_content["kind"], "citations")
+
+                    resolved = await client.call_tool(
+                        "resolve_reference",
+                        {"reference": "10.1/X", "source": "arxiv"},
+                    )
+                    self.assertFalse(resolved.is_error)
+                    self.assertEqual(resolved.structured_content["provider"], "arxiv")
+
+                    work = await client.call_tool(
+                        "get_work",
+                        {"identifier": "W1", "source": "arxiv"},
+                    )
+                    self.assertFalse(work.is_error)
+                    self.assertEqual(work.structured_content["doi"], "10.1/x")
+
+                    plan = await client.call_tool(
+                        "plan_artifact_acquisition",
+                        {
+                            "provider": "arxiv",
+                            "identifier": "2008.10579v1",
+                            "artifacts": ["pdf"],
+                        },
+                    )
+                    self.assertFalse(plan.is_error)
+                    self.assertEqual(plan.structured_content["deposit_slug"], "2008.10579v1")
+                    self.assertEqual(plan.structured_content["payloads"][0]["kind"], "pdf")
+                    self.assertNotIn("url", plan.structured_content["payloads"][0])
+
+                    acquired = await client.call_tool(
+                        "acquire_artifact",
+                        {
+                            "provider": "arxiv",
+                            "identifier": "2008.10579v1",
+                            "artifacts": ["pdf"],
+                        },
+                    )
+                    self.assertFalse(acquired.is_error)
+                    self.assertEqual(acquired.structured_content["outcomes"][0]["status"], "acquired")
+
+                    staged_receipt = await client.call_tool(
+                        "get_acquisition_receipt",
+                        {"deposit_slug": "2008.10579v1"},
+                    )
+                    self.assertFalse(staged_receipt.is_error)
+                    self.assertEqual(staged_receipt.structured_content["forms"][0]["kind"], "pdf")
+
                     result = await client.call_tool(
                         "discover_search",
                         {"query": "persistent homology", "source": "arxiv", "max_results": 5},

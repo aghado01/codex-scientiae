@@ -6,6 +6,7 @@ import asyncio
 import gzip
 import json
 import os
+import subprocess
 import threading
 from pathlib import Path
 from unittest import mock
@@ -21,12 +22,41 @@ from procurement.configuration import ArtifactLimitSettings
 from procurement.operations.local_import import LocalImportRequest, LocalImportService
 from procurement.storage.acquisitions import AcquisitionStore
 from procurement.storage.roots import ConfiguredRootKind, ProcurementRootCatalog
+from procurement.storage.safety import is_link_or_reparse
 
 PDF = b"%PDF-1.7\n1 0 obj\n<<>>\nendobj\n%%EOF\n"
 SOURCE = gzip.compress(
     b"\\documentclass{article}\n\\begin{document}x\\end{document}\n",
     mtime=0,
 )
+
+
+def _create_directory_link(link: Path, target: Path) -> None:
+    """Create one directory link, using a privilege-free junction on Windows."""
+
+    if os.name != "nt":
+        link.symlink_to(target, target_is_directory=True)
+        return
+    command = os.environ.get("ComSpec", "cmd.exe")
+    result = subprocess.run(
+        [command, "/d", "/c", "mklink", "/J", str(link), str(target)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=10,
+        check=False,
+    )
+    if result.returncode != 0 or not os.path.lexists(link):
+        reason = (result.stderr or result.stdout).decode("utf-8", errors="replace").strip()
+        pytest.skip(f"directory links are unavailable: {reason}")
+
+
+def _remove_directory_link(link: Path) -> None:
+    if not os.path.lexists(link):
+        return
+    if os.name == "nt":
+        link.rmdir()
+    else:
+        link.unlink()
 
 
 @pytest.fixture
@@ -180,23 +210,27 @@ def test_request_and_physical_file_confinement(
     with pytest.raises(AcquisitionError, match="physical regular file"):
         run_import(service, "directory.pdf")
 
-    outside = tmp_path / "outside.pdf"
-    outside.write_bytes(PDF)
+    outside = tmp_path / "outside-artifact"
+    if os.name == "nt":
+        outside.mkdir()
+    else:
+        outside.write_bytes(PDF)
     linked = inbox / "linked.pdf"
     try:
-        linked.symlink_to(outside)
-    except OSError:
-        pass
-    else:
+        if os.name == "nt":
+            _create_directory_link(linked, outside)
+            assert is_link_or_reparse(linked.lstat())
+        else:
+            linked.symlink_to(outside)
         with pytest.raises(AcquisitionError, match="physical regular file"):
             run_import(service, linked.name)
+    finally:
+        _remove_directory_link(linked)
 
     alias = tmp_path / "inbox-alias"
     try:
-        alias.symlink_to(inbox, target_is_directory=True)
-    except OSError:
-        pass
-    else:
+        _create_directory_link(alias, inbox)
+        assert is_link_or_reparse(alias.lstat())
         staging = tmp_path / "other-staging"
         catalog = tmp_path / "other-catalog"
         staging.mkdir()
@@ -207,6 +241,8 @@ def test_request_and_physical_file_confinement(
                 local_inboxes={"manual": alias},
                 article_catalogs={"primary": catalog},
             ).open()
+    finally:
+        _remove_directory_link(alias)
 
 
 def test_detected_source_mutation_cleans_private_copy(service_layout) -> None:
@@ -313,13 +349,14 @@ def test_local_copy_cannot_be_redirected_to_replaced_inbox_or_item(service_layou
                 else staging / "item-displaced"
             )
             swapped = False
+            blocked = False
             replacement_body = b"%PDF-1.7\nreplacement\n%%EOF\n"
             try:
                 os.rename(target, displaced)
             except OSError:
                 # Windows directory pins deny the rename. POSIX pins keep both endpoints
                 # descriptor-relative and reject success when the lexical generation changes.
-                pass
+                blocked = True
             else:
                 swapped = True
                 target.mkdir()
@@ -328,7 +365,14 @@ def test_local_copy_cannot_be_redirected_to_replaced_inbox_or_item(service_layou
             finally:
                 release.set()
 
-            if swapped:
+            if os.name == "nt":
+                assert blocked is True
+                assert swapped is False
+                result = await asyncio.wait_for(task, timeout=2)
+                assert result.outcomes[0].status == "acquired"
+                assert not displaced.exists()
+            else:
+                assert swapped is True
                 with pytest.raises(
                     AcquisitionConflictError,
                     match="retained directory generation",
@@ -340,10 +384,6 @@ def test_local_copy_cannot_be_redirected_to_replaced_inbox_or_item(service_layou
                     assert (target / "paper.pdf").read_bytes() == replacement_body
                 else:
                     assert list(target.iterdir()) == []
-            else:
-                result = await asyncio.wait_for(task, timeout=2)
-                assert result.outcomes[0].status == "acquired"
-
     for target_kind in ("inbox", "item"):
         asyncio.run(exercise(target_kind))
 

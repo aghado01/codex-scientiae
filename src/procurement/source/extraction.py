@@ -27,8 +27,8 @@ from procurement.source._safety import (
     _plain_directory,
     _portable_relative,
     _regular_file,
-    _same_directory_generation,
 )
+from procurement.storage.safety import same_directory_generation
 from procurement.source.contracts import ArchiveLimits, SourceArchiveError
 from procurement.source.tree import _tree_inventory
 
@@ -301,7 +301,7 @@ class SourceArchiveExtractor:
                     created = parent_root.stat_leaf(destination.name)
                     try:
                         with parent_root.pin_child(destination.name) as destination_root:
-                            if not _same_directory_generation(
+                            if not same_directory_generation(
                                 created,
                                 destination_root.stat_root(),
                             ):
@@ -316,7 +316,7 @@ class SourceArchiveExtractor:
                     except BaseException:
                         try:
                             current = parent_root.stat_leaf(destination.name)
-                            if _same_directory_generation(created, current):
+                            if same_directory_generation(created, current):
                                 parent_root.remove_owned_tree(destination)
                         except (FileNotFoundError, PublicationConflict):
                             pass

@@ -28,28 +28,13 @@ from procurement.errors import SourceMaterializationError
 from procurement.source.latex import LatexSourceInspection, LatexSourceInspector
 from procurement.storage.catalogs import ArticleCatalogRoots
 from procurement.storage.documents import DepositMetadataDocument
+from procurement.storage.safety import (
+    is_link_or_reparse,
+    require_current,
+    same_directory_generation,
+)
 
 SourcePublication = Literal["published-new-tree", "recovered-existing-tree"]
-
-
-def _is_reparse(info: os.stat_result) -> bool:
-    return stat.S_ISLNK(info.st_mode) or bool(
-        getattr(info, "st_file_attributes", 0) & 0x400
-    )
-
-
-def _same_directory(left: os.stat_result, right: os.stat_result) -> bool:
-    if left.st_ino or right.st_ino:
-        return left.st_dev == right.st_dev and left.st_ino == right.st_ino
-    left_birth = getattr(left, "st_birthtime_ns", None)
-    right_birth = getattr(right, "st_birthtime_ns", None)
-    if left_birth is not None or right_birth is not None:
-        return left.st_dev == right.st_dev and left_birth == right_birth
-    return left.st_dev == right.st_dev and getattr(
-        left,
-        "st_ctime_ns",
-        None,
-    ) == getattr(right, "st_ctime_ns", None)
 
 
 def _same_artifact(left: ArtifactReference, right: ArtifactReference) -> bool:
@@ -58,15 +43,6 @@ def _same_artifact(left: ArtifactReference, right: ArtifactReference) -> bool:
         and left.identifier.casefold() == right.identifier.casefold()
         and frozenset(left.provider_roles) == frozenset(right.provider_roles)
     )
-
-
-def _require_current(root: PinnedPublicationRoot, *, label: str) -> None:
-    try:
-        root.assert_current()
-    except RuntimeError as exc:
-        raise SourceMaterializationError(
-            f"{label} no longer names its retained directory generation"
-        ) from exc
 
 
 @dataclass(frozen=True, slots=True)
@@ -126,8 +102,16 @@ class SourceDepositItem:
     def assert_current(self) -> None:
         """Require both catalog and document paths to retain their generations."""
 
-        _require_current(self.publication_root, label="source deposit")
-        _require_current(self.catalog_root, label=f"article catalog {self.catalog!r}")
+        require_current(
+            self.publication_root,
+            label="source deposit",
+            error=SourceMaterializationError,
+        )
+        require_current(
+            self.catalog_root,
+            label=f"article catalog {self.catalog!r}",
+            error=SourceMaterializationError,
+        )
 
     def exists(self, path: str | Path) -> bool:
         return self.publication_root.lexists(path)
@@ -330,17 +314,21 @@ class SourceDepositItem:
         candidate_path = self._require_tree_stage(candidate)
         try:
             named = self.publication_root.stat_leaf(candidate_path.name)
-            if not stat.S_ISDIR(named.st_mode) or _is_reparse(named):
+            if not stat.S_ISDIR(named.st_mode) or is_link_or_reparse(named):
                 raise SourceMaterializationError(
                     f"private source tree stage is not a physical directory: '{candidate_path}'"
                 )
             with self.publication_root.pin_child(candidate_path.name) as tree_root:
-                if not _same_directory(named, tree_root.stat_root()):
+                if not same_directory_generation(named, tree_root.stat_root()):
                     raise SourceMaterializationError(
                         f"private source tree stage changed while pinned: '{candidate_path}'"
                     )
                 yield tree_root
-                _require_current(tree_root, label="private source tree stage")
+                require_current(
+                    tree_root,
+                    label="private source tree stage",
+                    error=SourceMaterializationError,
+                )
         except SourceMaterializationError:
             raise
         except (OSError, PublicationError, RuntimeError, ValueError) as exc:
@@ -386,12 +374,12 @@ class SourceDepositItem:
 
         try:
             named = self.publication_root.stat_leaf(self.tree_path.name)
-            if not stat.S_ISDIR(named.st_mode) or _is_reparse(named):
+            if not stat.S_ISDIR(named.st_mode) or is_link_or_reparse(named):
                 raise SourceMaterializationError(
                     f"existing source tree is not a physical directory: '{self.tree_path}'"
                 )
             with self.publication_root.pin_child(self.tree_path.name) as tree_root:
-                if not _same_directory(named, tree_root.stat_root()):
+                if not same_directory_generation(named, tree_root.stat_root()):
                     raise SourceMaterializationError(
                         f"source tree changed while its generation was pinned: '{self.tree_path}'"
                     )
@@ -470,7 +458,11 @@ class SourceDepositStore:
         failed = False
         created_generation: os.stat_result | None = None
         try:
-            _require_current(root, label=f"article catalog {descriptor.name!r}")
+            require_current(
+                root,
+                label=f"article catalog {descriptor.name!r}",
+                error=SourceMaterializationError,
+            )
             names = root.list_names()
             if len(names) > MAX_CATALOG_CHILDREN:
                 raise SourceMaterializationError(
@@ -496,12 +488,12 @@ class SourceDepositStore:
             named = root.stat_leaf(slug)
             if created:
                 created_generation = named
-            if not stat.S_ISDIR(named.st_mode) or _is_reparse(named):
+            if not stat.S_ISDIR(named.st_mode) or is_link_or_reparse(named):
                 raise SourceMaterializationError(
                     f"source deposit path is not a physical directory: '{directory}'"
                 )
             with root.pin_child(slug) as document_root:
-                if not _same_directory(named, document_root.stat_root()):
+                if not same_directory_generation(named, document_root.stat_root()):
                     raise SourceMaterializationError(
                         f"source deposit changed while its generation was pinned: '{directory}'"
                     )
@@ -517,7 +509,11 @@ class SourceDepositStore:
                 except BaseException:
                     failed = True
                     raise
-            _require_current(root, label=f"article catalog {descriptor.name!r}")
+            require_current(
+                root,
+                label=f"article catalog {descriptor.name!r}",
+                error=SourceMaterializationError,
+            )
         except BaseException:
             failed = True
             raise
@@ -525,7 +521,7 @@ class SourceDepositStore:
             if failed and created:
                 try:
                     current = root.stat_leaf(slug)
-                    if created_generation is not None and _same_directory(
+                    if created_generation is not None and same_directory_generation(
                         created_generation,
                         current,
                     ):

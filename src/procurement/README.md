@@ -88,11 +88,16 @@ generation across sentinel reads and publication.
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are
 bounded, redirect-confined, content-checked, locally SHA-256 measured, and checked against provider-native
-integrity evidence when present. Non-loopback routes require HTTPS and cannot redirect to plaintext HTTP.
+integrity evidence when present. Artifact responses with content encoding are refused so declared and stored
+lengths remain directly comparable. Non-loopback artifact routes require HTTPS and cannot redirect to
+plaintext HTTP. Metadata requests likewise require HTTPS or loopback HTTP and may follow only bounded
+same-host redirects.
 Successful forms are monotonically collated into schema-validated `acquisition.json` within the pinned item
 generation. Lock, validation, hashing, and publication work runs outside the MCP event loop. That
 receipt makes no unpacked or source-ready claim; `article.json` remains the canonical sentinel, currently
 published by the validated LaTeX-source profile.
+HTML is a staged acquisition form reserved for a future source-profile consumer; current materialization
+consumes gzip source and optional PDF forms only.
 Background jobs remain deferred until the synchronous operations have a separate lifecycle contract.
 
 `LocalImportService` is the parallel custody route for files already downloaded by a human or another tool.

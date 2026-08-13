@@ -21,6 +21,8 @@ from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
 from procurement.limits import MAX_API_RESPONSE_BYTES
 from procurement.domain.acquisition.planning import is_safe_artifact_url
+from procurement.runtime.concurrency import await_boundary
+from procurement.storage.safety import require_current
 
 Clock = Callable[[], float]
 Sleeper = Callable[[float], Awaitable[None]]
@@ -30,15 +32,6 @@ _DOWNLOAD_CHUNK_BYTES = 1024 * 1024
 _SENSITIVE_QUERY_PARAMETERS = frozenset(
     {"access_token", "api-key", "api_key", "apikey", "key", "mailto", "token"}
 )
-
-
-def _require_download_root(root: PinnedPublicationRoot) -> None:
-    try:
-        root.assert_current()
-    except RuntimeError as exc:
-        raise ProviderPayloadError(
-            "artifact destination no longer names its retained directory generation"
-        ) from exc
 
 
 @dataclass(frozen=True, slots=True)
@@ -123,26 +116,7 @@ class _WorkerDownloadSink:
         """Settle one worker operation before propagating any cancellation."""
 
         future = self._submit(function, *args)
-        cancelled = False
-        while True:
-            try:
-                result = await asyncio.shield(future)
-            except asyncio.CancelledError:
-                cancelled = True
-                if future.done():
-                    try:
-                        future.result()
-                    except BaseException:
-                        pass
-                    raise
-                continue
-            except BaseException:
-                if cancelled:
-                    raise asyncio.CancelledError()
-                raise
-            if cancelled:
-                raise asyncio.CancelledError()
-            return result
+        return await await_boundary(future)
 
     def _open(self) -> None:
         self._handle = self._publication_root.open_file(self._destination, "xb")
@@ -239,7 +213,7 @@ class HttpClient:
         sleep: Sleeper = asyncio.sleep,
         utc_now: UtcNow = lambda: datetime.now(timezone.utc),
     ) -> None:
-        self._client = client or httpx.AsyncClient(follow_redirects=True)
+        self._client = client or httpx.AsyncClient(follow_redirects=False)
         self._owns_client = client is None
         self._limiter = rate_limiter or RateLimiter(sleep=sleep)
         self._sleep = sleep
@@ -257,20 +231,83 @@ class HttpClient:
         headers: Mapping[str, str] | None = None,
         rate_key: str | None = None,
         policy: RequestPolicy = RequestPolicy(),
+        allowed_hosts: tuple[str, ...] | None = None,
+        max_redirects: int = 5,
     ) -> httpx.Response:
-        key = rate_key or httpx.URL(url).host
+        if max_redirects < 0:
+            raise ValueError("max_redirects must not be negative")
+        seed_request = self._client.build_request(
+            "GET",
+            url,
+            params=params,
+            headers=headers,
+            timeout=policy.timeout_seconds,
+        )
+        seed_url = seed_request.url
+        seed_host = (seed_url.host or "").casefold().strip(".")
+        allowed = frozenset(
+            host.casefold().strip(".")
+            for host in (allowed_hosts if allowed_hosts is not None else (seed_host,))
+        )
+        if not allowed:
+            raise ValueError("provider request requires at least one allowed host")
+        if not is_safe_artifact_url(str(seed_url)) or seed_host not in allowed:
+            raise ProviderHttpError(
+                "provider route requires HTTPS or loopback HTTP on an allowed host at "
+                f"{self._evidence_url(seed_url)}"
+            )
+        key = rate_key or seed_host
         last_error: Exception | None = None
         for attempt in range(1, policy.max_attempts + 1):
-            await self._limiter.wait(key, policy.min_interval_seconds)
+            current_url = seed_url
+            previous_scheme: str | None = None
+            response: httpx.Response | None = None
             try:
-                request = self._client.build_request(
-                    "GET",
-                    url,
-                    params=params,
-                    headers=headers,
-                    timeout=policy.timeout_seconds,
-                )
-                response = await self._client.send(request, stream=True)
+                for redirect_count in range(max_redirects + 1):
+                    host = (current_url.host or "").casefold().strip(".")
+                    scheme = current_url.scheme.casefold()
+                    if previous_scheme == "https" and scheme == "http":
+                        raise ProviderHttpError(
+                            "provider redirect attempted an HTTPS-to-HTTP downgrade at "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    if not is_safe_artifact_url(str(current_url)) or host not in allowed:
+                        raise ProviderHttpError(
+                            "provider route left its allowed hosts or safe transport at "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    await self._limiter.wait(
+                        rate_key or host,
+                        policy.min_interval_seconds,
+                    )
+                    request = self._client.build_request(
+                        "GET",
+                        current_url,
+                        headers=headers,
+                        timeout=policy.timeout_seconds,
+                    )
+                    response = await self._client.send(
+                        request,
+                        stream=True,
+                        follow_redirects=False,
+                    )
+                    if response.status_code not in {301, 302, 303, 307, 308}:
+                        break
+                    location = response.headers.get("location")
+                    await response.aclose()
+                    response = None
+                    if not location:
+                        raise ProviderHttpError(
+                            "provider redirect omitted Location for "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    if redirect_count == max_redirects:
+                        raise ProviderHttpError(
+                            f"provider route exceeded {max_redirects} redirects for "
+                            f"{self._evidence_url(current_url)}"
+                        )
+                    previous_scheme = scheme
+                    current_url = current_url.join(location)
             except httpx.TransportError as exc:
                 last_error = exc
                 if attempt == policy.max_attempts:
@@ -278,6 +315,8 @@ class HttpClient:
                         f"network request failed for {key}: {type(exc).__name__}"
                     ) from exc
             else:
+                if response is None:
+                    raise ProviderHttpError("provider route produced no response")
                 if 200 <= response.status_code < 300:
                     return await self._bounded_response(response, policy)
                 await response.aclose()
@@ -407,7 +446,11 @@ class HttpClient:
 
         if not isinstance(publication_root, PinnedPublicationRoot):
             raise TypeError("download_to requires an active PinnedPublicationRoot")
-        _require_download_root(publication_root)
+        require_current(
+            publication_root,
+            label="artifact destination",
+            error=ProviderPayloadError,
+        )
         publication_root.direct_leaf(destination)
         allowed = frozenset(host.casefold().strip(".") for host in allowed_hosts)
         if not allowed:
@@ -499,12 +542,17 @@ class HttpClient:
                     await self._sleep(delay)
                     continue
 
-                declared_length: int | None = None
-                if "content-encoding" not in response.headers:
-                    try:
-                        declared_length = int(response.headers.get("content-length", ""))
-                    except ValueError:
-                        declared_length = None
+                if "content-encoding" in response.headers:
+                    raise ProviderPayloadError(
+                        "artifact response must not use content encoding for "
+                        f"{self._evidence_url(response.url)}"
+                    )
+                try:
+                    declared_length: int | None = int(
+                        response.headers.get("content-length", "")
+                    )
+                except ValueError:
+                    declared_length = None
                 if declared_length is not None and declared_length > policy.max_decoded_body_bytes:
                     raise ProviderPayloadError(
                         "artifact response exceeds the decoded-body limit for "
@@ -533,7 +581,11 @@ class HttpClient:
                     raise ProviderPayloadError(
                         f"artifact response was truncated for {self._evidence_url(response.url)}"
                     )
-                _require_download_root(publication_root)
+                require_current(
+                    publication_root,
+                    label="artifact destination",
+                    error=ProviderPayloadError,
+                )
                 media_type = response.headers.get("content-type", "application/octet-stream")
                 media_type = media_type.split(";", 1)[0].strip().casefold()
                 completed = True

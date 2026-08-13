@@ -39,6 +39,208 @@ class TestRateLimiter(unittest.TestCase):
 
 
 class TestHttpClient(unittest.TestCase):
+    def test_get_follows_only_bounded_same_host_safe_redirects(self) -> None:
+        calls: list[str] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            calls.append(str(request.url))
+            if request.url.path == "/start":
+                return httpx.Response(302, headers={"location": "/result"})
+            return httpx.Response(200, json={"ok": True})
+
+        async def exercise() -> object:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                return await HttpClient(raw).get_json("https://provider.example/start")
+
+        self.assertEqual(asyncio.run(exercise()), {"ok": True})
+        self.assertEqual(
+            calls,
+            ["https://provider.example/start", "https://provider.example/result"],
+        )
+
+    def test_get_rejects_off_host_and_plaintext_routes_before_requesting_them(self) -> None:
+        calls: list[str] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            calls.append(str(request.url))
+            return httpx.Response(
+                302,
+                headers={"location": "https://other.example/result?api_key=secret"},
+            )
+
+        async def off_host() -> None:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                await HttpClient(raw).get_json(
+                    "https://provider.example/start",
+                    params={"api_key": "secret"},
+                )
+
+        with self.assertRaisesRegex(ProviderHttpError, "left its allowed hosts") as raised:
+            asyncio.run(off_host())
+        self.assertEqual(calls, ["https://provider.example/start?api_key=secret"])
+        self.assertNotIn("secret", str(raised.exception))
+
+        calls.clear()
+
+        async def plaintext() -> None:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                await HttpClient(raw).get_json("http://provider.example/start")
+
+        with self.assertRaisesRegex(ProviderHttpError, "HTTPS or loopback HTTP"):
+            asyncio.run(plaintext())
+        self.assertEqual(calls, [])
+
+    def test_get_rejects_downgrade_missing_location_and_redirect_exhaustion(self) -> None:
+        cases = (
+            (
+                "downgrade",
+                lambda request: httpx.Response(
+                    302,
+                    headers={"location": "http://provider.example/plaintext"},
+                ),
+                5,
+                "HTTPS-to-HTTP downgrade",
+                1,
+            ),
+            (
+                "missing-location",
+                lambda request: httpx.Response(302),
+                5,
+                "omitted Location",
+                1,
+            ),
+            (
+                "exhausted",
+                lambda request: httpx.Response(302, headers={"location": "/again"}),
+                1,
+                "exceeded 1 redirects",
+                2,
+            ),
+        )
+
+        for name, handler, maximum, pattern, expected_calls in cases:
+            with self.subTest(name=name):
+                calls = 0
+
+                def counted(request: httpx.Request) -> httpx.Response:
+                    nonlocal calls
+                    calls += 1
+                    return handler(request)
+
+                async def exercise() -> None:
+                    async with httpx.AsyncClient(
+                        transport=httpx.MockTransport(counted)
+                    ) as raw:
+                        await HttpClient(raw).get_json(
+                            "https://provider.example/start",
+                            max_redirects=maximum,
+                        )
+
+                with self.assertRaisesRegex(ProviderHttpError, pattern):
+                    asyncio.run(exercise())
+                self.assertEqual(calls, expected_calls)
+
+    def test_download_preflight_guards_fail_before_network_or_file_mutation(self) -> None:
+        calls = 0
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            nonlocal calls
+            calls += 1
+            return httpx.Response(200, content=b"unused")
+
+        async def exercise(root: Path) -> None:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                client = HttpClient(raw)
+                with self.assertRaisesRegex(TypeError, "active PinnedPublicationRoot"):
+                    await client.download_to(
+                        "https://provider.example/payload",
+                        "payload.part",
+                        publication_root=object(),  # type: ignore[arg-type]
+                        allowed_hosts=("provider.example",),
+                    )
+
+                inactive = PinnedPublicationRoot(root)
+                with self.assertRaisesRegex(ProviderPayloadError, "retained directory"):
+                    await client.download_to(
+                        "https://provider.example/payload",
+                        "inactive.part",
+                        publication_root=inactive,
+                        allowed_hosts=("provider.example",),
+                    )
+
+                with PinnedPublicationRoot(root) as output_root:
+                    with self.assertRaisesRegex(ValueError, "at least one allowed host"):
+                        await client.download_to(
+                        "https://provider.example/payload",
+                        str(root / "empty-host.part"),
+                            publication_root=output_root,
+                            allowed_hosts=(),
+                        )
+
+                    occupied = root / "occupied.part"
+                    occupied.write_bytes(b"occupant")
+                    with self.assertRaisesRegex(FileExistsError, "already exists"):
+                        await client.download_to(
+                            "https://provider.example/payload",
+                            str(occupied),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.example",),
+                        )
+                    self.assertEqual(occupied.read_bytes(), b"occupant")
+
+                    with self.assertRaisesRegex(ValueError, "unsupported download hash"):
+                        await client.download_to(
+                            "https://provider.example/payload",
+                            str(root / "unsupported.part"),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.example",),
+                            hash_algorithms=("not-a-hash",),
+                        )
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(Path(root)))
+        self.assertEqual(calls, 0)
+
+    def test_request_policy_rejects_nonsensical_boundaries(self) -> None:
+        invalid = (
+            {"min_interval_seconds": -1},
+            {"timeout_seconds": 0},
+            {"max_attempts": 0},
+            {"backoff_seconds": -1},
+            {"max_retry_after_seconds": -1},
+            {"max_decoded_body_bytes": 0},
+        )
+        for values in invalid:
+            with self.subTest(values=values), self.assertRaises(ValueError):
+                RequestPolicy(**values)
+
+    def test_download_refuses_content_encoding_without_residue(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(
+                200,
+                content=b"encoded artifact",
+                headers={"content-encoding": "gzip", "content-length": "99"},
+            )
+
+        async def exercise(destination: Path) -> None:
+            with PinnedPublicationRoot(destination.parent) as output_root:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    with self.assertRaisesRegex(
+                        ProviderPayloadError,
+                        "must not use content encoding",
+                    ):
+                        await HttpClient(raw).download_to(
+                            "https://provider.example/payload",
+                            str(destination),
+                            publication_root=output_root,
+                            allowed_hosts=("provider.example",),
+                            policy=RequestPolicy(max_attempts=1),
+                        )
+            self.assertFalse(os.path.lexists(destination))
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(Path(root) / "encoded.part"))
+
     def test_download_bounds_each_worker_write_even_for_one_giant_transport_chunk(self) -> None:
         payload = b"x" * (2 * procurement_http._DOWNLOAD_CHUNK_BYTES + 17)
         write_sizes: list[int] = []

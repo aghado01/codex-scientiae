@@ -28,26 +28,16 @@ from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
 from procurement.configuration import ArtifactLimitSettings
 from procurement.operations.acquisition import validate_gzip_payload, validate_pdf_payload
+from procurement.runtime.concurrency import await_boundary
 from procurement.storage.acquisitions import (
     AcquisitionItem,
     AcquisitionStore,
     collate_acquisition,
 )
 from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
+from procurement.storage.safety import is_link_or_reparse, require_current
 
 _COPY_CHUNK_BYTES = 1024 * 1024
-_REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
-
-
-def _require_current(root: PinnedPublicationRoot, *, label: str) -> None:
-    try:
-        root.assert_current()
-    except RuntimeError as exc:
-        raise AcquisitionConflictError(
-            f"{label} no longer names its retained directory generation"
-        ) from exc
-
-
 class LocalImportRequest(DomainModel):
     """Logical local-inbox item to transfer into one staged acquisition."""
 
@@ -145,14 +135,7 @@ class LocalImportService:
 
         loop = asyncio.get_running_loop()
         future = loop.run_in_executor(None, partial(self._import_artifact, request))
-        try:
-            return await asyncio.shield(future)
-        except asyncio.CancelledError:
-            try:
-                await future
-            except BaseException:
-                pass
-            raise
+        return await await_boundary(future)
 
     def _import_artifact(self, request: LocalImportRequest) -> AcquisitionResult:
         inbox = self._inboxes.get(request.inbox.casefold())
@@ -163,7 +146,11 @@ class LocalImportService:
             )
         inbox_name = inbox.name
         inbox_root = inbox.publication_root
-        _require_current(inbox_root, label="local-import inbox")
+        require_current(
+            inbox_root,
+            label="local-import inbox",
+            error=AcquisitionConflictError,
+        )
         source = Path(inbox_root.absolute(request.leaf))
 
         artifact = ArtifactReference(
@@ -229,7 +216,11 @@ class LocalImportService:
                         raise AcquisitionConflictError(
                             f"local {kind!r} bytes conflict with the existing receipt"
                         )
-                    _require_current(inbox_root, label="local-import inbox")
+                    require_current(
+                        inbox_root,
+                        label="local-import inbox",
+                        error=AcquisitionConflictError,
+                    )
                     return _result(
                         item,
                         manifest,
@@ -258,7 +249,11 @@ class LocalImportService:
                 item.delete_journal()
                 for value in manifest.forms:
                     item.validate_form(value)
-                _require_current(inbox_root, label="local-import inbox")
+                require_current(
+                    inbox_root,
+                    label="local-import inbox",
+                    error=AcquisitionConflictError,
+                )
                 return _result(
                     item,
                     manifest,
@@ -282,12 +277,6 @@ def _result(
         manifest_path=str(item.manifest_path),
         manifest=manifest,
         outcomes=(outcome,),
-    )
-
-
-def _is_link_or_reparse(info: os.stat_result) -> bool:
-    return stat.S_ISLNK(info.st_mode) or bool(
-        getattr(info, "st_file_attributes", 0) & _REPARSE_POINT
     )
 
 
@@ -331,13 +320,21 @@ def _copy_import_candidate(
 
     source_root.direct_leaf(source)
     destination_root.direct_leaf(destination)
-    _require_current(source_root, label="local-import inbox")
-    _require_current(destination_root, label="acquisition item")
+    require_current(
+        source_root,
+        label="local-import inbox",
+        error=AcquisitionConflictError,
+    )
+    require_current(
+        destination_root,
+        label="acquisition item",
+        error=AcquisitionConflictError,
+    )
     try:
         named_before = source_root.stat_path(source)
     except OSError as exc:
         raise AcquisitionError(f"local-import file is not readable: '{source}'") from exc
-    if not stat.S_ISREG(named_before.st_mode) or _is_link_or_reparse(named_before):
+    if not stat.S_ISREG(named_before.st_mode) or is_link_or_reparse(named_before):
         raise AcquisitionError(f"local-import file must be a physical regular file: '{source}'")
     maximum = max(source_maximum, pdf_maximum)
     if named_before.st_size < 1:
@@ -392,10 +389,18 @@ def _copy_import_candidate(
         raise AcquisitionConflictError(
             f"local-import file disappeared after copying: '{source}'"
         ) from exc
-    if _is_link_or_reparse(named_after) or not _same_named_generation(opened_after, named_after):
+    if is_link_or_reparse(named_after) or not _same_named_generation(opened_after, named_after):
         raise AcquisitionConflictError(f"local-import path changed while copying: '{source}'")
-    _require_current(source_root, label="local-import inbox")
-    _require_current(destination_root, label="acquisition item")
+    require_current(
+        source_root,
+        label="local-import inbox",
+        error=AcquisitionConflictError,
+    )
+    require_current(
+        destination_root,
+        label="acquisition item",
+        error=AcquisitionConflictError,
+    )
     return kind, size, digest.hexdigest()
 
 

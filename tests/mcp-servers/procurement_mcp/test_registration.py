@@ -6,6 +6,7 @@ import asyncio
 import hashlib
 import importlib.util
 import json
+import threading
 import unittest
 from importlib.resources import files
 from pathlib import Path
@@ -14,6 +15,7 @@ from unittest.mock import patch
 from mcp import Client
 
 from procurement_mcp.server import create_server
+from procurement_mcp.runtime import finish_sync
 from procurement.operations.local_import import LocalImportInbox, LocalImportInboxCatalog
 
 EXPECTED_TOOLS = (
@@ -196,6 +198,33 @@ class RecordingApplication:
 
 
 class TestProcurementMcpRegistration(unittest.TestCase):
+    def test_finish_sync_settles_worker_before_propagating_cancellation(self) -> None:
+        entered = threading.Event()
+        release = threading.Event()
+        finished = threading.Event()
+
+        def operation() -> None:
+            entered.set()
+            if not release.wait(2):
+                raise AssertionError("test did not release the synchronous operation")
+            finished.set()
+
+        async def exercise() -> None:
+            task = asyncio.create_task(finish_sync(operation))
+            self.assertTrue(await asyncio.to_thread(entered.wait, 1))
+            task.cancel()
+            await asyncio.sleep(0)
+            self.assertFalse(task.done())
+            release.set()
+            with self.assertRaises(asyncio.CancelledError):
+                await task
+            self.assertTrue(finished.is_set())
+
+        try:
+            asyncio.run(exercise())
+        finally:
+            release.set()
+
     def test_package_has_one_canonical_import_identity(self) -> None:
         self.assertIsNone(importlib.util.find_spec("mcps"))
         spec = importlib.util.find_spec("procurement_mcp")

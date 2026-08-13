@@ -6,20 +6,14 @@ import asyncio
 from dataclasses import dataclass
 
 from procurement.application import ProcurementApplication
+from procurement.runtime.concurrency import await_boundary
 
 
 async def finish_sync(function, *args, **kwargs):
     """Reach the synchronous operation boundary before propagating cancellation."""
 
     task = asyncio.create_task(asyncio.to_thread(function, *args, **kwargs))
-    try:
-        return await asyncio.shield(task)
-    except asyncio.CancelledError:
-        try:
-            await task
-        except Exception:
-            pass
-        raise
+    return await await_boundary(task)
 
 
 @dataclass(slots=True)

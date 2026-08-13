@@ -11,3 +11,7 @@ Disguise the client or rotate identities
 Semantic Scholar’s automatic 350 ms interval to infer faster grants
 
 A future rate-policy model can expose interval, concurrency ceiling, backoff, bounded cooldown, endpoint failover, and any explicitly granted credential rate. Background job lifecycle remains a separate milestone.
+
+Deferrals are untracked: Sci-Hub (declaration-only) and Crossref (entirely silent) have no briefs — the three under issues/procurement/ all describe the retired PS MCP. Also: html is acquirable and receipted but nothing consumes it, and the README never mentions it.
+
+Integration notes: scientiae-procurement isn't registered in any .mcp.json yet (flagging as a checklist item, presumed deliberate); old-lane retirement is verified complete (no \_inbox, no PS fetcher residue).

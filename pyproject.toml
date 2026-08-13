@@ -53,3 +53,4 @@ only-include = [
 # collects that subtree instead, which is its intended behaviour.
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+addopts = ["-p", "no:cacheprovider"]

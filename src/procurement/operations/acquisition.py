@@ -27,6 +27,7 @@ from procurement.domain.acquisition.receipts import (
     AcquisitionResult,
 )
 from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
+from procurement.runtime.concurrency import await_boundary
 from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy
 from procurement.providers.base import Capability
 from procurement.providers.catalog import ProviderCatalog
@@ -115,22 +116,15 @@ class _AsyncAcquisitionTransaction:
         """Finish an in-flight filesystem boundary before propagating cancellation."""
 
         future = self._submit(function, *args, **kwargs)
-        try:
-            return await asyncio.shield(future)
-        except asyncio.CancelledError:
-            try:
-                await future
-            except BaseException:
-                pass
-            raise
+        return await await_boundary(future)
 
     async def __aenter__(self) -> "_AsyncAcquisitionTransaction":
         future = self._submit(self._context.__enter__)
         try:
-            self.item = await asyncio.shield(future)
+            self.item = await await_boundary(future)
         except asyncio.CancelledError:
             try:
-                self.item = await future
+                self.item = future.result()
             except BaseException:
                 pass
             else:

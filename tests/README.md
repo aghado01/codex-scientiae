@@ -53,7 +53,7 @@ At minimum, verify the file through both public entry points (the batch run dire
 ```pwsh
 pwsh -File tests/run.ps1 -Path tests/<owner>/<behavior>.Tests.ps1
 pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 `
-  -RunDirectory D:/runs/codex-scientiae-tests/new-test -MaxWorkers 1
+  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss -MaxWorkers 1
 ```
 
 A compliant file selects the expected tests by exact path, reports real failures as nonzero, cleans its
@@ -84,18 +84,18 @@ For every new or changed Python test file:
   contaminate the file runner's result.
 - Do not add pytest-xdist, per-file manifests or sidecars, scheduler locks, or custom batch loops.
 
-At minimum, verify Python files through both the native convenience surface and the public batch shell:
+At minimum, verify Python files through the public batch shell. Bare pytest is prohibited because it can
+inherit an ambient machine temp directory:
 
 ```pwsh
-.venv/Scripts/python.exe -m pytest -p no:cacheprovider tests/<owner>/test_<behavior>.py
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/<owner>/test_<behavior>.py `
-  -RunDirectory D:/runs/codex-scientiae-tests/new-python-test -MaxWorkers 1
+  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss -MaxWorkers 1
 ```
 
-The admitted contract requires exact-file sequential/batch parity, native JUnit, declared
+The admitted contract requires an exact-file container, native JUnit, declared
 `pytest.xml`/`artifacts`/`temp` addresses, zero cache or bytecode writes, and no surviving descendants. A
-green direct file is necessary evidence, not by itself a `Batchable` classification.
+green focused container is necessary evidence, not by itself a `Batchable` classification.
 
 ## Running
 
@@ -140,12 +140,12 @@ separate workload profile. Architecture decisions [D24 and D27](../issues/batch-
 freeze this ownership boundary.
 
 ```pwsh
-pwsh -File tests/parallel.ps1 -RunDirectory D:/runs/codex-scientiae-tests/run-001
+pwsh -File tests/parallel.ps1 -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss
 pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/jsonl_engine `
-  -RunDirectory D:/runs/codex-scientiae-tests/run-002 -MaxWorkers 4
+  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss_01 -MaxWorkers 4
 pwsh -File tests/parallel.ps1 -Framework All `
   -PesterPath tests/jsonl_engine-client/jsonl_engine-client-module.Tests.ps1 -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory D:/runs/codex-scientiae-tests/run-003 -MaxWorkers 2
+  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss_02 -MaxWorkers 2
 ```
 
 The shell imports the canonical `batch-adapters` (`adapters.psd1`) and `batch-executor` manifests, asks the
@@ -195,16 +195,19 @@ Restore the repository Python environment before testing; test execution does no
 .venv/Scripts/python.exe -m pip install -e .
 ```
 
-Run the complete or exact-file direct suite with the pinned environment interpreter:
+Pytest processes require an explicit `--basetemp` plus `TEMP`, `TMP`, and `TMPDIR` beneath a compact
+caller-owned runstamp in `artifacts/test-runs/`. The public batch shell supplies those boundaries:
 
 ```pwsh
-.venv/Scripts/python.exe -m pytest -p no:cacheprovider
-.venv/Scripts/python.exe -m pytest -p no:cacheprovider tests/jsonl_engine/test_reader.py
+pwsh -File tests/parallel.ps1 -Framework Pytest `
+  -PytestPath tests/jsonl_engine/test_reader.py `
+  -RunDirectory artifacts/test-runs/YYYYDDMM_HHmmss
 ```
 
-The cache provider is disabled because repository `.pytest_cache` is a shared write and is not test
-evidence. The batch runner also disables bytecode and gives pytest temporary state and JSON-engine
-coordination scratch a job-local `temp/` address.
+The cache provider is disabled in repository configuration because `.pytest_cache` is neither evidence nor
+an allowed write location. The batch runner also disables bytecode and gives pytest temporary state and
+JSON-engine coordination scratch a job-local `temp/` address. Successful caller-owned run roots are removed
+after accepting their result; failed roots retain bounded evidence for diagnosis.
 
 `tests/pytest.ps1` is the authoritative one-file runner and `Get-PytestBatchJob` is the discovery and
 addressing owner. Each batch job uses this address:

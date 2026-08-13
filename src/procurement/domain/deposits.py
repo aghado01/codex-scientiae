@@ -21,6 +21,37 @@ PORTABLE_LEAF_PATTERN = (
     r"[Cc][Oo][Mm][1-9]|[Ll][Pp][Tt][1-9])(?:\.|$))(?!\.{1,2}$)"
     r"(?!.*[ .]$)[^<>:\"/\\|?*\u0000-\u001F]+$"
 )
+PORTABLE_LEAF_MAX_BYTES = 255
+PORTABLE_LEAF_MAX_UTF16_UNITS = 255
+
+
+def is_portable_leaf(
+    value: object,
+    *,
+    max_utf8_bytes: int = PORTABLE_LEAF_MAX_BYTES,
+    max_utf16_units: int = PORTABLE_LEAF_MAX_UTF16_UNITS,
+) -> bool:
+    """Return whether a value is one bounded cross-platform filesystem leaf."""
+
+    if not isinstance(value, str):
+        return False
+    if not value or value in (".", "..") or value[-1] in (" ", "."):
+        return False
+    if any(
+        ord(char) < 32
+        or 0xD800 <= ord(char) <= 0xDFFF
+        or char in _INVALID_PORTABLE_LEAF
+        for char in value
+    ):
+        return False
+    if value.split(".", 1)[0].upper() in _WINDOWS_RESERVED_LEAVES:
+        return False
+    try:
+        utf8_length = len(value.encode("utf-8", "strict"))
+        utf16_units = len(value.encode("utf-16-le", "strict")) // 2
+    except UnicodeError:
+        return False
+    return utf8_length <= max_utf8_bytes and utf16_units <= max_utf16_units
 
 
 def validate_deposit_slug(value: object) -> str:
@@ -28,12 +59,10 @@ def validate_deposit_slug(value: object) -> str:
 
     if not isinstance(value, str):
         raise ValueError("deposit_slug must be a string")
-    if not value or value in (".", "..") or value[-1] in (" ", "."):
-        raise ValueError("deposit_slug must be one non-empty portable directory leaf")
-    if any(ord(char) < 32 or char in _INVALID_PORTABLE_LEAF for char in value):
-        raise ValueError("deposit_slug must be one non-empty portable directory leaf")
     if value.split(".", 1)[0].upper() in _WINDOWS_RESERVED_LEAVES:
         raise ValueError("deposit_slug uses a reserved Windows directory name")
+    if not is_portable_leaf(value):
+        raise ValueError("deposit_slug must be one non-empty portable directory leaf")
     return value
 
 
@@ -73,7 +102,10 @@ def validate_artifact_deposit_reference(
 
 
 __all__ = [
+    "PORTABLE_LEAF_MAX_BYTES",
+    "PORTABLE_LEAF_MAX_UTF16_UNITS",
     "PORTABLE_LEAF_PATTERN",
+    "is_portable_leaf",
     "validate_artifact_deposit_reference",
     "validate_deposit_slug",
 ]

@@ -26,6 +26,7 @@ from procurement.source.latex import LatexSourceInspection, LatexSourceInspector
 from procurement.errors import SourceMaterializationError
 from procurement.identifiers import is_doi, normalize_doi
 from procurement.operations.metadata import MetadataService
+from procurement.runtime.concurrency import await_boundary
 from procurement.source.findings import build_source_findings
 from procurement.storage.acquisitions import AcquisitionStore
 from procurement.storage.source_deposits import (
@@ -113,14 +114,7 @@ class SourceMaterializationService:
         """Wait for a mutating worker to reach its transaction boundary before cancellation."""
 
         task = asyncio.create_task(asyncio.to_thread(function, *args, **kwargs))
-        try:
-            return await asyncio.shield(task)
-        except asyncio.CancelledError:
-            try:
-                await task
-            except Exception:
-                pass
-            raise
+        return await await_boundary(task)
 
     def _read_acquisition(self, slug: str) -> AcquisitionManifest:
         with self._acquisitions.transaction(slug, create=False) as item:

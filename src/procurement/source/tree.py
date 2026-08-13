@@ -16,13 +16,13 @@ from procurement.errors import SourceMaterializationError
 from procurement.source._safety import (
     _CHUNK_BYTES,
     _PortablePathRegistry,
-    _is_reparse,
     _plain_directory,
     _portable_relative,
     _same_path,
     _same_path_generation,
     _stat_identity,
 )
+from procurement.storage.safety import is_link_or_reparse
 from procurement.source.contracts import ArchiveLimits, LatexSourceError
 
 
@@ -103,7 +103,7 @@ def _tree_inventory(
                     except SourceMaterializationError as exc:
                         raise LatexSourceError(str(exc)) from exc
                     display = publication_root.absolute_relative(relative)
-                    if stat.S_ISLNK(info.st_mode) or _is_reparse(info):
+                    if is_link_or_reparse(info):
                         raise LatexSourceError(
                             "source tree contains a symbolic link or reparse point: "
                             f"'{display}'"
@@ -170,7 +170,7 @@ def _stable_hash(entry: _TreeEntry) -> tuple[int, str]:
             before = os.fstat(handle.fileno())
             if (
                 not stat.S_ISREG(before.st_mode)
-                or _is_reparse(before)
+                or is_link_or_reparse(before)
                 or not _same_path_generation(before, entry.info)
             ):
                 raise LatexSourceError(
@@ -192,7 +192,7 @@ def _stable_hash(entry: _TreeEntry) -> tuple[int, str]:
         raise LatexSourceError(f"source tree file path changed: '{entry.path}'") from exc
     if (
         not stat.S_ISREG(current.st_mode)
-        or _is_reparse(current)
+        or is_link_or_reparse(current)
         or not _same_path_generation(after, current)
     ):
         raise LatexSourceError(f"source tree file path changed: '{entry.path}'")

@@ -4,18 +4,32 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import Field, StringConstraints, WithJsonSchema
+from pydantic import BeforeValidator, Field, StringConstraints, WithJsonSchema
 
 from procurement.domain.base import DomainModel
-from procurement.domain.deposits import PORTABLE_LEAF_PATTERN
+from procurement.domain.deposits import (
+    PORTABLE_LEAF_MAX_UTF16_UNITS,
+    PORTABLE_LEAF_PATTERN,
+    validate_deposit_slug,
+)
 from procurement.domain.materialization import PORTABLE_TEX_PATH_PATTERN
 
 RelatedKind = Literal["citations", "references", "recommendations"]
 DepositSlug = Annotated[
     str,
-    StringConstraints(min_length=1, pattern=r'^[^<>:"/\\|?*\x00-\x1f]+$'),
+    StringConstraints(
+        min_length=1,
+        max_length=PORTABLE_LEAF_MAX_UTF16_UNITS,
+        pattern=r'^[^<>:"/\\|?*\x00-\x1f]+$',
+    ),
+    BeforeValidator(validate_deposit_slug),
     WithJsonSchema(
-        {"type": "string", "minLength": 1, "pattern": PORTABLE_LEAF_PATTERN},
+        {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": PORTABLE_LEAF_MAX_UTF16_UNITS,
+            "pattern": PORTABLE_LEAF_PATTERN,
+        },
         mode="validation",
     ),
 ]
