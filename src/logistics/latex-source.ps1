@@ -472,21 +472,28 @@ function Resolve-LatexSourceInputs {
         if (-not $active.Add($full)) { throw "cyclic LaTeX input detected at '$full'" }
         try {
             $text = Remove-LatexLineComments (Read-LatexSourceText $full)
-            $dir = Split-Path -Parent $full
-            return [regex]::Replace($text, '\\(?:input|include)\s*\{([^{}]+)\}', {
+            return [regex]::Replace($text, '\\(?<command>input|include|subfile)(?![A-Za-z])(?:\s*\{(?<braced>[^{}]+)\}|\s*(?<bare>[^\s\\{}\[\]\x25][^\s\\{}%]*))', {
                     param($match)
-                    $name = $match.Groups[1].Value.Trim()
+                    $command = $match.Groups['command'].Value
+                    $captured = if ($match.Groups['braced'].Success) {
+                        $match.Groups['braced'].Value
+                    } else {
+                        $match.Groups['bare'].Value
+                    }
+                    $name = $captured.Trim()
                     if (-not $name -or $name.IndexOf([char]0) -ge 0) {
-                        throw "empty or invalid LaTeX input in '$full'"
+                        throw "empty or invalid LaTeX $command target in '$full'"
                     }
                     $candidates = @($name, "$name.tex") | Select-Object -Unique | ForEach-Object {
-                        [System.IO.Path]::GetFullPath((Join-Path $dir $_))
+                        # TeX keeps the compile root as its working directory
+                        # while processing nested inputs.
+                        [System.IO.Path]::GetFullPath((Join-Path $root $_))
                     }
                     $inputPath = $candidates | Where-Object {
                         (Test-LatexPathWithinRoot -Path $_ -Root $root) -and [System.IO.File]::Exists($_)
                     } | Select-Object -First 1
                     if (-not $inputPath) {
-                        $message = "unresolved or out-of-root LaTeX input '$name' referenced by '$full'"
+                        $message = "unresolved or out-of-root LaTeX $command target '$name' referenced by '$full'"
                         if ($UnresolvedInputAction -eq 'Stop') { throw $message }
                         Write-Warning $message
                         if ($UnresolvedInputAction -eq 'Keep') { return $match.Value }

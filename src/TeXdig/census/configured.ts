@@ -1,147 +1,165 @@
 /**
- * TeXdig configured-signature channel.
+ * Configured declaration evidence from pinned unified-latex-ctan records.
  *
- * The document names its packages and class (\usepackage, \documentclass);
- * the pinned unified-latex-ctan records declare what those packages define.
- * Matching records provide declaration evidence for later occurrence-level
- * attachment. They are not injected into the physical census parser: binding
- * order, scope, and source occurrences cannot be represented by one final
- * signature map. A configured declaration the document uses is minted as a
- * summon-anchored entity; an unused declaration mints no entity. Same-name
- * document declarations do not suppress configured evidence here: shadowing
- * is chronological and scope-sensitive, so it belongs to the occurrence-aware
- * binding cut.
- *
- * `latex2e` is the parser's baseline vocabulary, not a package summons.
+ * Physical summons and provider candidates remain ordered, many-valued facts.
+ * Chronological load/idempotence and collision handling belong to the binding
+ * interpreter; this module never collapses them into a final name map.
  *
  * Erasable-syntax TypeScript only (Node 26 native type stripping).
  */
 
-import type { SourceSpan, CensusEntity } from "../core/types.ts";
+import type { CensusEntity, SignatureEvidence, SourceSpan } from "../core/types.ts";
 import type { Dependencies } from "../core/loader.ts";
-import type { SignatureRegistry } from "./parse-latex.ts";
+import type { ConfiguredSummonSite } from "./parse-latex.ts";
 
-interface ConfiguredDecl {
+export interface ConfiguredDecl {
   package: string;
-  signature?: string;
+  namespace: "control-sequence" | "environment";
+  name: string;
+  signature: SignatureEvidence;
   site: SourceSpan;
 }
 
 export interface ConfiguredChannel {
-  /** Signature evidence retained for occurrence-level attachment. */
-  registry: SignatureRegistry;
-  /** Declared macro signatures by defined name, for post-parse minting. */
-  macroDecls: Map<string, ConfiguredDecl>;
-  /** Declared environment signatures by environment name. */
-  envDecls: Map<string, ConfiguredDecl>;
-  /** Requested packages with no ctan record — knowable-later, recorded for the summary. */
+  /** Every physical summon target, including repeats, in source inventory order. */
+  summons: ConfiguredSummonSite[];
+  /** Provider-qualified declaration candidates; same-name providers coexist. */
+  declarations: ConfiguredDecl[];
+  /** Distinct requested packages with no pinned record, in first-sighting order. */
   unresolvedPackages: string[];
 }
 
+export function ctanSignatureEvidence(
+  pkg: string,
+  name: string,
+  info: { signature?: string; argumentParser?: unknown } | undefined
+): SignatureEvidence {
+  if (info?.argumentParser !== undefined) {
+    return {
+      state: "custom-parser",
+      detail: `unified-latex-ctan/${pkg}/${name}`,
+    };
+  }
+  // In the pinned CTAN records, an entry without either a signature or a
+  // custom parser is the package's declaration of a zero-argument construct.
+  return { state: "known", spec: info?.signature ?? "" };
+}
+
 export function buildConfiguredChannel(
-  requestedPackages: Map<string, SourceSpan>,
+  summons: readonly ConfiguredSummonSite[],
   deps: Dependencies
 ): ConfiguredChannel {
-  const channel: ConfiguredChannel = {
-    registry: { macros: {}, environments: {} },
-    macroDecls: new Map(),
-    envDecls: new Map(),
-    unresolvedPackages: [],
-  };
+  const declarations: ConfiguredDecl[] = [];
+  const unresolvedPackages: string[] = [];
+  const seenPackages = new Set<string>();
 
-  for (const [pkg, site] of requestedPackages) {
-    if (pkg === "latex2e") continue; // baseline vocabulary, not a summons
+  for (const summon of summons) {
+    const pkg = summon.packageName;
+    if (pkg === "latex2e" || seenPackages.has(pkg)) continue;
+    seenPackages.add(pkg);
+
     const macroRecord = deps.ctan.macroInfo[pkg];
     const envRecord = deps.ctan.environmentInfo[pkg];
     if (!macroRecord && !envRecord) {
-      channel.unresolvedPackages.push(pkg);
+      unresolvedPackages.push(pkg);
       continue;
     }
-    if (macroRecord) {
-      for (const [name, info] of Object.entries(macroRecord)) {
-        if (info && info.signature) {
-          channel.registry.macros[name] = { signature: info.signature };
-        }
-        channel.macroDecls.set(name, { package: pkg, signature: info?.signature, site });
-      }
+
+    for (const name of Object.keys(macroRecord || {}).sort()) {
+      declarations.push({
+        package: pkg,
+        namespace: "control-sequence",
+        name,
+        signature: ctanSignatureEvidence(pkg, name, macroRecord?.[name]),
+        site: summon.siteSpan,
+      });
     }
-    if (envRecord) {
-      for (const [name, info] of Object.entries(envRecord)) {
-        if (info && info.signature) {
-          channel.registry.environments[name] = { signature: info.signature };
-        }
-        channel.envDecls.set(name, { package: pkg, signature: info?.signature, site });
-      }
+    for (const name of Object.keys(envRecord || {}).sort()) {
+      declarations.push({
+        package: pkg,
+        namespace: "environment",
+        name,
+        signature: ctanSignatureEvidence(pkg, name, envRecord?.[name]),
+        site: summon.siteSpan,
+      });
     }
   }
 
-  return channel;
+  declarations.sort((left, right) =>
+    left.package < right.package ? -1 : left.package > right.package ? 1
+      : left.namespace < right.namespace ? -1 : left.namespace > right.namespace ? 1
+        : left.name < right.name ? -1 : left.name > right.name ? 1 : 0
+  );
+  return { summons: [...summons], declarations, unresolvedPackages };
 }
 
-/**
- * Mint configured-dialect definition entities for the declared names the
- * census actually witnessed in use. Ids use the `configured/{package}` pseudo-
- * source locator (span addresses do not identify declarations that have no
- * span of their own); the entity span anchors the summoning site.
- */
+/** Mint provider-qualified physical/configuration evidence for used names. */
 export function mintConfiguredEntities(
   channel: ConfiguredChannel,
-  usedMacroNames: Set<string>,
-  usedEnvNames: Set<string>
+  usedMacroNames: ReadonlySet<string>,
+  usedEnvNames: ReadonlySet<string>
 ): CensusEntity[] {
   const entities: CensusEntity[] = [];
 
-  for (const [name, decl] of channel.macroDecls) {
-    if (!usedMacroNames.has(name)) continue;
-    entities.push({
-      id: `ent:macro-definition@configured/${decl.package}:${name}`,
-      kind: "macro-definition",
-      definedName: name,
-      dialect: "configured",
-      argumentSpec: decl.signature || undefined,
-      elaborable: false,
-      context: "unknown",
-      activation: "configured",
-      span: decl.site,
-      spanProvenance: "parser",
-      witnesses: [
-        {
-          witness: "configured",
-          instrument: "unified-latex-ctan",
-          span: decl.site,
-          spanRole: "summon-anchor",
-          detail: decl.package,
-        },
-      ],
-      agreement: "agreed",
-      agreementBasis: "configured-declaration",
-    });
-  }
+  for (const declaration of channel.declarations) {
+    const used = declaration.namespace === "control-sequence"
+      ? usedMacroNames.has(declaration.name)
+      : usedEnvNames.has(declaration.name);
+    if (!used) continue;
 
-  for (const [name, decl] of channel.envDecls) {
-    if (!usedEnvNames.has(name)) continue;
-    entities.push({
-      id: `ent:environment-definition@configured/${decl.package}:${name}`,
-      kind: "environment-definition",
-      definedName: name,
-      mechanism: "configured",
-      argumentSpec: decl.signature || undefined,
-      context: "unknown",
-      activation: "configured",
-      span: decl.site,
-      spanProvenance: "parser",
-      witnesses: [
-        {
+    const argumentSpec = declaration.signature.state === "known" && declaration.signature.spec
+      ? declaration.signature.spec
+      : undefined;
+    if (declaration.namespace === "control-sequence") {
+      entities.push({
+        id: `ent:macro-definition@configured/${declaration.package}:${declaration.name}`,
+        kind: "macro-definition",
+        definedName: declaration.name,
+        declarationCommand: "configured",
+        dialect: "configured",
+        argumentSpec,
+        signature: declaration.signature,
+        configuredPackage: declaration.package,
+        elaborable: false,
+        context: "unknown",
+        activation: "configured",
+        span: declaration.site,
+        spanProvenance: "parser",
+        witnesses: [{
           witness: "configured",
           instrument: "unified-latex-ctan",
-          span: decl.site,
+          span: declaration.site,
           spanRole: "summon-anchor",
-          detail: decl.package,
-        },
-      ],
-      agreement: "agreed",
-      agreementBasis: "configured-declaration",
-    });
+          detail: declaration.package,
+        }],
+        agreement: "agreed",
+        agreementBasis: "configured-declaration",
+      });
+    } else {
+      entities.push({
+        id: `ent:environment-definition@configured/${declaration.package}:${declaration.name}`,
+        kind: "environment-definition",
+        definedName: declaration.name,
+        declarationCommand: "configured",
+        mechanism: "configured",
+        argumentSpec,
+        signature: declaration.signature,
+        configuredPackage: declaration.package,
+        context: "unknown",
+        activation: "configured",
+        span: declaration.site,
+        spanProvenance: "parser",
+        witnesses: [{
+          witness: "configured",
+          instrument: "unified-latex-ctan",
+          span: declaration.site,
+          spanRole: "summon-anchor",
+          detail: declaration.package,
+        }],
+        agreement: "agreed",
+        agreementBasis: "configured-declaration",
+      });
+    }
   }
 
   return entities;

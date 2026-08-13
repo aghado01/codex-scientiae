@@ -178,7 +178,7 @@ class SourceExtractionTests(unittest.TestCase):
             b"% \\input{missing}\n"
             b"\\input{sections/body}\n"
         )
-        body = b"\\author{A. Author}\n\\include{nested}\n"
+        body = b"\\author{A. Author}\n\\include{sections/nested}\n"
         nested = (
             b"literal \\% percent\n"
             b"\\doi{10.5555/resolved}\n"

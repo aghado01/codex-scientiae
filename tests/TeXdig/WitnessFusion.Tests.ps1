@@ -180,7 +180,7 @@ const inner = nested.reconciled.entities.find(
   (entity) => entity.kind === "macro-definition" && entity.definedName === "inner"
 );
 
-const unclassifiedLocal = censusLatex(
+const classifiedLocal = censusLatex(
   String.raw`{\newcommand{\localonly}{x}}`,
   "scope.tex"
 ).reconciled.entities.find(
@@ -247,7 +247,7 @@ console.log(JSON.stringify({
     (entity) => entity.kind === "math" && entity.carrier.form === "env" && entity.carrier.name === "equation"
   ).length,
   inner,
-  unclassifiedLocal,
+  classifiedLocal,
   outsideNames: atOutside.scan.sightings.filter((site) => site.kind === "macro-invocation").map((site) => site.name),
   insideNames: atInside.scan.sightings.filter((site) => site.kind === "macro-invocation").map((site) => site.name),
   bibEntrySpans: bibReconciled.entities
@@ -348,9 +348,9 @@ console.log(JSON.stringify({
             $script:IntegrationProbe.inner.definedWithin | Should -Match "^ent:macro-definition@nested\.tex:"
         }
 
-        It "does not assert activation or document flow when declaration scope is unclassified" {
-            $script:IntegrationProbe.unclassifiedLocal.context | Should -Be "unknown"
-            $script:IntegrationProbe.unclassifiedLocal.activation | Should -Be "unknown"
+        It "classifies a definition in an explicit group as immediate and group-local" {
+            $script:IntegrationProbe.classifiedLocal.context | Should -Be "group-local"
+            $script:IntegrationProbe.classifiedLocal.activation | Should -Be "immediate"
         }
 
         It "treats at-sign as a control letter only inside makeatletter state" {

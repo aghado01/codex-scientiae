@@ -147,6 +147,99 @@ class LatexSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(LatexSourceError, "not valid UTF-8"):
             inspect_latex_source_tree(tree)
 
+    def test_nested_inputs_resolve_from_the_compile_root(self) -> None:
+        tree = self.root / "compile-root-input"
+        (tree / "sub").mkdir(parents=True)
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n\\input{sub/wrapper}\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        (tree / "sub" / "wrapper.tex").write_text(
+            "\\input{leaf}\n",
+            encoding="utf-8",
+        )
+        (tree / "leaf.tex").write_text("\\author{Compile Root}\n", encoding="utf-8")
+        (tree / "sub" / "leaf.tex").write_text("\\author{Containing File}\n", encoding="utf-8")
+
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual(("Compile Root",), inspection.embedded_metadata.authors_tex)
+
+    def test_leading_dot_slash_is_normalized_at_the_input_boundary(self) -> None:
+        tree = self.root / "leading-dot-input"
+        tree.mkdir()
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n\\input{./fragment}\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        (tree / "fragment.tex").write_text(
+            "\\author{Leading Dot}\n",
+            encoding="utf-8",
+        )
+
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual(("Leading Dot",), inspection.embedded_metadata.authors_tex)
+
+    def test_subfile_is_resolved_as_a_literal_include_with_command_provenance(self) -> None:
+        tree = self.root / "subfile-input"
+        tree.mkdir()
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n\\subfile{chapter}\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        (tree / "chapter.tex").write_text(
+            "\\author{Subfile Chapter}\n",
+            encoding="utf-8",
+        )
+
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual(("Subfile Chapter",), inspection.embedded_metadata.authors_tex)
+
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n\\subfile{missing}\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(LatexSourceError, r"LaTeX subfile target 'missing'"):
+            inspect_latex_source_tree(tree)
+
+    def test_bare_literal_forms_follow_texdig_token_boundaries(self) -> None:
+        tree = self.root / "bare-inputs"
+        tree.mkdir()
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n"
+            "\\input bare% target stops before this comment\n"
+            "\\include ./chapter.tex\n"
+            "\\subfile appendix\n"
+            "\\input\\dynamic\n"
+            "\\include[dynamic]\n"
+            "\\include]dynamic\n"
+            "\\subfilefoo\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        (tree / "bare.tex").write_text("\\author{Bare Input}\n", encoding="utf-8")
+        (tree / "chapter.tex").write_text("\\author{Bare Include}\n", encoding="utf-8")
+        (tree / "appendix.tex").write_text("\\author{Bare Subfile}\n", encoding="utf-8")
+        (tree / "dynamic.tex").write_text("\\author{Dynamic}\n", encoding="utf-8")
+        (tree / "foo.tex").write_text("\\author{Control Word Prefix}\n", encoding="utf-8")
+
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual(
+            ("Bare Input", "Bare Include", "Bare Subfile"),
+            inspection.embedded_metadata.authors_tex,
+        )
+
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n\\subfile missing\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(LatexSourceError, r"LaTeX subfile target 'missing'"):
+            inspect_latex_source_tree(tree)
+
 
 if __name__ == "__main__":
     unittest.main()

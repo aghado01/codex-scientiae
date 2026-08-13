@@ -17,6 +17,7 @@ import {
   discoverDefinitions,
   parseLatexWitness,
   type DiscoveryResult,
+  type ConfiguredSummonSite,
 } from "../census/parse-latex.ts";
 import { parseBib } from "../census/parse-bib.ts";
 import { reconcileLatex, reconcileBib } from "../census/reconcile.ts";
@@ -25,6 +26,7 @@ import { buildUtensilsIndex, backfillLexicalOnly } from "../census/backfill-uten
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
+import { compileExecution } from "../compile/execution.ts";
 import type {
   CensusEntity,
   PillarClaim,
@@ -244,19 +246,17 @@ export async function runCensus(options: CliArgs) {
   // the physical shape of an earlier control-sequence occurrence.
   // ---------------------------------------------------------------------
   const discoveries = new Map<string, DiscoveryResult>();
-  const requestedPackages = new Map<string, SourceSpan>();
+  const configuredSummons: ConfiguredSummonSite[] = [];
   for (const record of graph.sources) {
     if (!record.parsed || record.language !== "latex") continue;
     const strat = graph.stratifications.get(record.id);
     const text = strat ? strat.stratifiedText : graph.rawContents.get(record.id) || "";
     const discovery = discoverDefinitions(record.id, text, deps);
     discoveries.set(record.id, discovery);
-    for (const [pkg, site] of discovery.requestedPackages) {
-      if (!requestedPackages.has(pkg)) requestedPackages.set(pkg, site);
-    }
+    configuredSummons.push(...discovery.configuredSummons);
   }
 
-  const configured = buildConfiguredChannel(requestedPackages, deps);
+  const configured = buildConfiguredChannel(configuredSummons, deps);
   if (configured.unresolvedPackages.length > 0) {
     allDiagnostics.push({
       code: "census/configured-gap",
@@ -288,7 +288,8 @@ export async function runCensus(options: CliArgs) {
         envDefs: [],
         registry: { macros: {}, environments: {} },
         definitionTokenStarts: new Set<number>(),
-        requestedPackages: new Map<string, SourceSpan>(),
+        configuredSummons: [],
+        deferredContexts: [],
       };
 
       const scan = scanLatex(record.id, strat.stratifiedText);
@@ -418,6 +419,23 @@ export async function runCensus(options: CliArgs) {
     )
   );
 
+  const deferredContexts = [...discoveries.values()].flatMap(
+    (discovery) => discovery.deferredContexts
+  );
+  const execution = compileExecution({
+    slug,
+    treeSha256: graph.treeSha256,
+    entrypoint: graph.entrypointResolved ?? entrypoint,
+    entities: allEntities,
+    claims: allClaims,
+    includeEdges: graph.includeEdges,
+    configured,
+    rawContents: graph.rawContents,
+    deps,
+    deferredContexts,
+  });
+  allDiagnostics.push(...execution.diagnostics);
+
   // Emit bundle (entrypoint reported with on-disk casing when it resolved)
   const summary = emitCensusBundle(
     {
@@ -426,6 +444,9 @@ export async function runCensus(options: CliArgs) {
       entrypoint: graph.entrypointResolved ?? entrypoint,
       sources: graph.sources,
       entities: allEntities,
+      occurrences: execution.occurrences,
+      bindings: execution.bindings,
+      invocations: execution.invocations,
       claims: allClaims,
       coverage: allCoverage,
       diagnostics: allDiagnostics,
@@ -439,8 +460,10 @@ export async function runCensus(options: CliArgs) {
   console.log(`Census complete for ${slug}`);
   console.log(`Sources: ${summary.sourceCount} (parsed: ${allCoverage.length})`);
   console.log(`Entities: ${allEntities.length}`);
+  console.log(`Occurrences: ${execution.occurrences.length}`);
+  console.log(`Binding rows: ${execution.bindings.length}`);
+  console.log(`Invocations: ${execution.invocations.length}`);
   console.log(`Claims: ${allClaims.length}`);
-  console.log("Binding-dependent stores: deferred to the occurrence-aware cut");
   console.log(`Coverage: claimed ${summary.coverage.claimedUtf16} / ${summary.coverage.totalUtf16} UTF-16 units (${summary.coverage.residueSegments} residue segments)`);
   console.log(`Diagnostics: ${allDiagnostics.length} total (${summary.diagnosticCounts.defect || 0} defects, ${summary.diagnosticCounts.warning || 0} warnings, ${summary.diagnosticCounts.info || 0} info)`);
 

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-diagnostics/0.3",
+  "title": "TeXdig 0.3 diagnostic record",
+  "type": "object",
+  "required": ["code", "severity", "message"],
+  "properties": {
+    "code": {
+      "enum": [
+        "census/witness-disagreement",
+        "census/unmatched-begin",
+        "census/unmatched-end",
+        "census/unterminated-verbatim",
+        "census/unterminated-math",
+        "census/span-synthesized",
+        "census/unresolved-include",
+        "census/unknown-environment",
+        "census/opaque-region",
+        "census/residue",
+        "census/unreachable-source",
+        "census/bib-parse-error",
+        "census/bib-duplicate-key",
+        "census/include-case-mismatch",
+        "census/ordinal-label-mismatch",
+        "census/entrypoint-missing",
+        "census/tree-manifest-mismatch",
+        "census/source-decode-error",
+        "census/invalid-span",
+        "census/untrusted-parser-span",
+        "census/invalid-claim",
+        "census/configured-gap",
+        "census/backfill-unavailable",
+        "census/latex-parse-error",
+        "census/catcode-arbitrated",
+        "compile/occurrence-deferred",
+        "compile/occurrence-limit-exceeded",
+        "compile/binding-precondition",
+        "compile/binding-indeterminate",
+        "compile/invocation-deferred",
+        "compile/invocation-malformed",
+        "elaborate/expansion-incomplete",
+        "elaborate/expansion-non-converging"
+      ]
+    },
+    "severity": { "enum": ["info", "warning", "defect"] },
+    "message": { "type": "string", "minLength": 1 },
+    "sourceId": { "type": "string", "minLength": 1 },
+    "span": {
+      "type": "object",
+      "required": ["sourceId", "startUtf16", "endUtf16"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "startUtf16": { "type": "integer", "minimum": 0 },
+        "endUtf16": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "entityId": { "type": "string", "pattern": "^ent:" },
+    "occurrenceId": { "type": "string", "pattern": "^occ:" },
+    "bindingId": { "type": "string", "pattern": "^bind:" },
+    "invocationId": { "type": "string", "pattern": "^inv:" },
+    "witness": { "enum": ["lexical", "parser", "configured"] }
+  },
+  "additionalProperties": false
+}

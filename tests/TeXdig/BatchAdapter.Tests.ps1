@@ -1,6 +1,38 @@
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path "$PSScriptRoot/../..").Path
     $script:FixtureDir = Join-Path $script:RepositoryRoot "tests/fixtures/texdig/mini_article"
+    $script:ExpectedStoreSchemas = [ordered]@{
+        'sources.jsonl' = 'codex-scientiae/texdig-sources/0.2'
+        'entities.jsonl' = 'codex-scientiae/texdig-entities/0.3'
+        'claims.jsonl' = 'codex-scientiae/texdig-claims/0.2'
+        'coverage.json' = 'codex-scientiae/texdig-coverage/0.2'
+        'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.3'
+        'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
+        'bindings.jsonl' = 'codex-scientiae/texdig-bindings/0.3'
+        'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
+        'summary.json' = 'codex-scientiae/texdig-summary/0.3'
+    }
+    $script:ExpectedEmittedStores = @(
+        'sources.jsonl'
+        'entities.jsonl'
+        'occurrences.jsonl'
+        'bindings.jsonl'
+        'invocations.jsonl'
+        'claims.jsonl'
+        'coverage.json'
+        'diagnostics.jsonl'
+        'summary.json'
+    )
+    $script:ExpectedDeferredStores = @(
+        'expansion.jsonl'
+        'walk.jsonl'
+        'zones.jsonl'
+        'macros.jsonl'
+        'references.jsonl'
+        'pointers.jsonl'
+        'frontmatter.jsonl'
+        'graph.jsonl'
+    )
 
     Import-Module (Join-Path $script:RepositoryRoot "src/batch-adapters/adapters.psd1") -Force
     Import-Module (Join-Path $script:RepositoryRoot "src/batch-executor/batch-executor.psd1") -Force
@@ -52,7 +84,7 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
             $script:Jobs[0].Parameters.NodePath | Should -Be $script:Jobs[0].Metadata.NodePath
             Test-Path -LiteralPath $script:Jobs[0].Parameters.NodePath -PathType Leaf | Should -BeTrue
             $script:Jobs[0].Metadata.Slug | Should -Be "mini_article"
-            $script:Jobs[0].Metadata.StoreSchema | Should -Be "texdig-census/0.2"
+            $script:Jobs[0].Metadata.StoreSchema | Should -Be "texdig-census/0.3"
             $script:Jobs[0].Metadata.TreeSha256 | Should -Not -BeNullOrEmpty
             $script:Jobs[0].Metadata.ContainerContract | Should -Be "JobContainerIsDocumentContainer"
             $script:Jobs[0].EstimatedCost | Should -BeGreaterThan 1
@@ -93,9 +125,8 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
             $script:Execution.Summary.Succeeded | Should -Be 1
         }
 
-        It "emits the six stores into the job container (document container)" {
-            foreach ($store in @("sources.jsonl", "entities.jsonl", "claims.jsonl",
-                    "coverage.json", "diagnostics.jsonl", "summary.json")) {
+        It "emits the nine stores into the job container (document container)" {
+            foreach ($store in $script:ExpectedEmittedStores) {
                 Test-Path (Join-Path $script:JobDirectory $store) | Should -BeTrue
             }
         }
@@ -103,7 +134,25 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
         It "produces the same census the direct runner produces" {
             $summary = Get-Content -Raw (Join-Path $script:JobDirectory "summary.json") | ConvertFrom-Json
             $summary.slug | Should -Be "mini_article"
-            $summary.schema | Should -Be "texdig-census/0.2"
+            $summary.schema | Should -Be "texdig-census/0.3"
+            (@($summary.stores.emitted) -join '|') |
+                Should -BeExactly ($script:ExpectedEmittedStores -join '|')
+            (@($summary.stores.deferred) -join '|') |
+                Should -BeExactly ($script:ExpectedDeferredStores -join '|')
+            @($summary.storeSchemas.PSObject.Properties).Count |
+                Should -Be $script:ExpectedStoreSchemas.Count
+            foreach ($store in $script:ExpectedStoreSchemas.Keys) {
+                $property = @($summary.storeSchemas.PSObject.Properties |
+                    Where-Object { $_.Name -ceq $store })
+                $property.Count | Should -Be 1
+                $property[0].Value | Should -BeExactly $script:ExpectedStoreSchemas[$store]
+            }
+            $summary.occurrenceCount | Should -Be @(
+                Get-Content -LiteralPath (Join-Path $script:JobDirectory 'occurrences.jsonl')).Count
+            $summary.bindingRowCount | Should -Be @(
+                Get-Content -LiteralPath (Join-Path $script:JobDirectory 'bindings.jsonl')).Count
+            $summary.invocationCount | Should -Be @(
+                Get-Content -LiteralPath (Join-Path $script:JobDirectory 'invocations.jsonl')).Count
             $summary.coverage.residueUtf16 | Should -Be 12
         }
     }

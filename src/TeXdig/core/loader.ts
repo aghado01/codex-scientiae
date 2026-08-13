@@ -47,8 +47,8 @@ export interface Dependencies {
   };
   /** Per-package signature records from the pinned unified-latex-ctan module. */
   ctan: {
-    macroInfo: Record<string, Record<string, { signature?: string }>>;
-    environmentInfo: Record<string, Record<string, { signature?: string }>>;
+    macroInfo: Record<string, Record<string, { signature?: string; argumentParser?: unknown }>>;
+    environmentInfo: Record<string, Record<string, { signature?: string; argumentParser?: unknown }>>;
   };
   utensils: {
     bibtexParser: {

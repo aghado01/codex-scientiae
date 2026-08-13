@@ -10,23 +10,23 @@
  * stripping (unions and const objects, no enums/namespaces).
  */
 
-export const CENSUS_SCHEMA_VERSION = "texdig-census/0.2" as const;
+export const CENSUS_SCHEMA_VERSION = "texdig-census/0.3" as const;
 
-/** Normative schema identities for every store emitted by the 0.2 census. */
+/** Normative schema identities for every store emitted by the 0.3 census. */
 export const CENSUS_STORE_SCHEMAS = {
   "sources.jsonl": "codex-scientiae/texdig-sources/0.2",
-  "entities.jsonl": "codex-scientiae/texdig-entities/0.2",
+  "entities.jsonl": "codex-scientiae/texdig-entities/0.3",
   "claims.jsonl": "codex-scientiae/texdig-claims/0.2",
   "coverage.json": "codex-scientiae/texdig-coverage/0.2",
-  "diagnostics.jsonl": "codex-scientiae/texdig-diagnostics/0.2",
-  "summary.json": "codex-scientiae/texdig-summary/0.2",
+  "diagnostics.jsonl": "codex-scientiae/texdig-diagnostics/0.3",
+  "occurrences.jsonl": "codex-scientiae/texdig-occurrences/0.3",
+  "bindings.jsonl": "codex-scientiae/texdig-bindings/0.3",
+  "invocations.jsonl": "codex-scientiae/texdig-invocations/0.3",
+  "summary.json": "codex-scientiae/texdig-summary/0.3",
 } as const;
 
-/** Contract-tier stores that 0.2 explicitly does not emit yet. */
+/** Contract-tier stores that 0.3 explicitly does not emit yet. */
 export const CENSUS_DEFERRED_STORES = [
-  "occurrences.jsonl",
-  "bindings.jsonl",
-  "invocations.jsonl",
   "expansion.jsonl",
   "walk.jsonl",
   "zones.jsonl",
@@ -198,6 +198,16 @@ export type DefinitionDialect =
   | "xdef"
   | "configured";
 
+/**
+ * Argument syntax evidence carried by a declaration or configured meaning.
+ * A known zero-argument signature is `{ state: "known", spec: "" }`; it is
+ * deliberately distinct from missing or custom-parser evidence.
+ */
+export type SignatureEvidence =
+  | { state: "known"; spec: string }
+  | { state: "custom-parser"; detail: string }
+  | { state: "unknown"; detail?: string };
+
 /** Lexical execution context. `unknown` is used until ancestry proves a narrower claim. */
 export type DeclarationContext =
   | "document-flow"
@@ -247,7 +257,7 @@ export type IncludeDirective =
   | "addbibresource"
   | "bibliographystyle";
 
-export type CensusEntity =
+export type CensusEntityCore =
   /**
    * A control-sequence site not claimed by a more specific kind below.
    * Definition-forming, include, and envelope-forming commands are recorded
@@ -272,11 +282,17 @@ export type CensusEntity =
        * \makeatletter) and must survive as join keys.
        */
       definedName: string;
+      /** Physical declaration command, preserved independently of dialect. */
+      declarationCommand: string;
       dialect: DefinitionDialect;
       /** Raw signature text as written, e.g. `[2][d]` or an xparse spec. */
       signatureRaw?: string;
       /** Normalized argument specification used by the argument grammar. */
       argumentSpec?: string;
+      /** Authoritative tri-state signature evidence for occurrence attachment. */
+      signature: SignatureEvidence;
+      /** Provider name for configured declarations. */
+      configuredPackage?: string;
       /**
        * Body extent is knowable even when expansion is not: \def/\let bodies
        * carry spans so pointer-hood and dependencies can be derived from
@@ -293,10 +309,14 @@ export type CensusEntity =
       kind: "environment-definition";
       /** The DEFINED environment's name (e.g. `lemma` for \newtheorem{lemma}...). */
       definedName: string;
+      /** Physical declaration command, preserved independently of mechanism. */
+      declarationCommand: string;
       /** `configured` = declared by lane configuration (package/class records), not defined in parsed source. */
       mechanism: "newtheorem" | "newenvironment" | "newfloat" | "configured";
       signatureRaw?: string;
       argumentSpec?: string;
+      signature: SignatureEvidence;
+      configuredPackage?: string;
       /** Counter/numbering argument as written, for newtheorem. */
       counterRaw?: string;
       /** Beginning and ending programs of a newenvironment declaration. */
@@ -381,6 +401,12 @@ export type CensusEntity =
       parts?: { span: SourceSpan; shape: Exclude<BibValueShape, "concat"> }[];
     });
 
+/** Persisted entity rows add the exact raw source slice at emission. */
+export type PersistedCensusEntity = CensusEntityCore & { text: string };
+
+/** In-memory physical entity evidence before the emitter adds `text`. */
+export type CensusEntity = CensusEntityCore;
+
 /** Value shapes latex-utensils distinguishes; `abbreviation` sites are binding-join inputs in cut 2. */
 export type BibValueShape = "text" | "number" | "abbreviation" | "concat";
 
@@ -462,6 +488,12 @@ export const DiagnosticCodes = {
   LatexParseError: "census/latex-parse-error",
   /** A witness conflict resolved by catcode evidence: inside a \makeatletter region the lexical reading of an @-name is authoritative and the catcode-naive parser tokenization yields. */
   CatcodeArbitrated: "census/catcode-arbitrated",
+  OccurrenceDeferred: "compile/occurrence-deferred",
+  OccurrenceLimitExceeded: "compile/occurrence-limit-exceeded",
+  BindingPrecondition: "compile/binding-precondition",
+  BindingIndeterminate: "compile/binding-indeterminate",
+  InvocationDeferred: "compile/invocation-deferred",
+  InvocationMalformed: "compile/invocation-malformed",
   /** An expansion site retained expandable names after substitution — dangling parameters or unexpandable interior. */
   ExpansionIncomplete: "elaborate/expansion-incomplete",
   /** An expansion site failed to reach a fixed point within the round bound — self-referential or mutually recursive definitions. */
@@ -478,6 +510,9 @@ export interface Diagnostic {
   sourceId?: SourceId;
   span?: SourceSpan;
   entityId?: EntityId;
+  occurrenceId?: string;
+  bindingId?: string;
+  invocationId?: string;
   witness?: WitnessKind;
 }
 
@@ -505,6 +540,9 @@ export interface CensusSummary {
     node: string;
   };
   sourceCount: number;
+  occurrenceCount: number;
+  bindingRowCount: number;
+  invocationCount: number;
   entityCounts: Partial<Record<CensusKind, number>>;
   agreementCounts: Partial<Record<AgreementState, number>>;
   diagnosticCounts: Partial<Record<DiagnosticSeverity, number>>;

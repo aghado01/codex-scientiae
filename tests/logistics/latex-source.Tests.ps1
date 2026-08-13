@@ -96,6 +96,94 @@ Describe 'latex-source archive expansion and tree validation' {
         (Test-LatexSourceTree -RootPath $tree -Slug 'doc').entrypoint | Should -Be 'main.tex'
     }
 
+    It 'resolves nested literal inputs from the compile root' {
+        $tree = Join-Path $TestDrive ("compile-root-" + [guid]::NewGuid().ToString('N'))
+        $sub = Join-Path $tree 'sub'
+        New-Item -ItemType Directory -Path $sub -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM -Value @'
+\documentclass{article}
+\input{sub/wrapper}
+\begin{document}x\end{document}
+'@
+        Set-Content -LiteralPath (Join-Path $sub 'wrapper.tex') -Encoding utf8NoBOM -Value '\input{leaf}'
+        Set-Content -LiteralPath (Join-Path $tree 'leaf.tex') -Encoding utf8NoBOM -Value 'COMPILE-ROOT'
+        Set-Content -LiteralPath (Join-Path $sub 'leaf.tex') -Encoding utf8NoBOM -Value 'CONTAINING-FILE'
+
+        $resolved = Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree
+        $resolved | Should -Match 'COMPILE-ROOT'
+        $resolved | Should -Not -Match 'CONTAINING-FILE'
+    }
+
+    It 'normalizes leading-dot input syntax at the compile-root boundary' {
+        $tree = Join-Path $TestDrive ("leading-dot-" + [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $tree -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM `
+            -Value '\input{./fragment}' -NoNewline
+        Set-Content -LiteralPath (Join-Path $tree 'fragment.tex') -Encoding utf8NoBOM `
+            -Value 'LEADING-DOT' -NoNewline
+
+        $resolved = Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree
+        $resolved | Should -BeExactly 'LEADING-DOT'
+    }
+
+    It 'resolves subfile and preserves its physical spelling under Keep policy' {
+        $tree = Join-Path $TestDrive ("subfile-" + [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $tree -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM `
+            -Value '\subfile{chapter}' -NoNewline
+        Set-Content -LiteralPath (Join-Path $tree 'chapter.tex') -Encoding utf8NoBOM `
+            -Value 'SUBFILE-CHAPTER' -NoNewline
+
+        $resolved = Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree
+        $resolved | Should -BeExactly 'SUBFILE-CHAPTER'
+
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM `
+            -Value '\subfile{missing}' -NoNewline
+        $kept = Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree `
+            -UnresolvedInputAction Keep -WarningAction SilentlyContinue
+        $kept | Should -BeExactly '\subfile{missing}'
+        { Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree } |
+            Should -Throw "*LaTeX subfile target 'missing'*"
+    }
+
+    It 'resolves bare literal forms at TeX token boundaries and keeps exact syntax' {
+        $tree = Join-Path $TestDrive ("bare-inputs-" + [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $tree -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM -Value @'
+\input bare% target stops before this comment
+\include ./chapter.tex
+\subfile appendix
+\input\dynamic
+\include[dynamic]
+\include]dynamic
+\subfilefoo
+'@
+        Set-Content -LiteralPath (Join-Path $tree 'bare.tex') -Encoding utf8NoBOM `
+            -Value 'BARE-INPUT' -NoNewline
+        Set-Content -LiteralPath (Join-Path $tree 'chapter.tex') -Encoding utf8NoBOM `
+            -Value 'BARE-INCLUDE' -NoNewline
+        Set-Content -LiteralPath (Join-Path $tree 'appendix.tex') -Encoding utf8NoBOM `
+            -Value 'BARE-SUBFILE' -NoNewline
+        Set-Content -LiteralPath (Join-Path $tree 'dynamic.tex') -Encoding utf8NoBOM `
+            -Value 'EXPANDED-DYNAMIC-TARGET' -NoNewline
+        Set-Content -LiteralPath (Join-Path $tree 'foo.tex') -Encoding utf8NoBOM `
+            -Value 'EXPANDED-CONTROL-WORD-PREFIX' -NoNewline
+
+        $resolved = Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree
+        $resolved | Should -Match 'BARE-INPUT'
+        $resolved | Should -Match 'BARE-INCLUDE'
+        $resolved | Should -Match 'BARE-SUBFILE'
+        $resolved | Should -Not -Match 'EXPANDED-DYNAMIC|EXPANDED-CONTROL-WORD'
+
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM `
+            -Value '\subfile missing' -NoNewline
+        $kept = Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree `
+            -UnresolvedInputAction Keep -WarningAction SilentlyContinue
+        $kept | Should -BeExactly '\subfile missing'
+        { Resolve-LatexSourceInputs -MainPath (Join-Path $tree 'main.tex') -RootPath $tree } |
+            Should -Throw "*LaTeX subfile target 'missing'*"
+    }
+
     It 'makes lock contention visible instead of running two deposit writers concurrently' {
         $root = Join-Path $TestDrive ("lock-" + [guid]::NewGuid().ToString('N'))
         $document = Join-Path $root 'doc'

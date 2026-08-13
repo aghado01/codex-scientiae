@@ -23,7 +23,7 @@ BeforeAll {
 
 Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
     Context "Runner & Worker Contract" {
-        It "returns a typed 0.2 physical-census run record" {
+        It "returns a typed 0.3 census and execution-ledger run record" {
             $script:Run.PSObject.TypeNames | Should -Contain "TeXdig.CensusRun"
             $script:Run.Slug | Should -Be "mini_article"
             $script:Run.Conflict | Should -Be 0
@@ -40,16 +40,24 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $script:Run.ResidueUtf16 | Should -Be 12
         }
 
-        It "emits all 6 evidence and audit tier stores" {
-            Test-Path (Join-Path $script:OutDir "sources.jsonl") | Should -BeTrue
-            Test-Path (Join-Path $script:OutDir "entities.jsonl") | Should -BeTrue
-            Test-Path (Join-Path $script:OutDir "claims.jsonl") | Should -BeTrue
-            Test-Path (Join-Path $script:OutDir "coverage.json") | Should -BeTrue
-            Test-Path (Join-Path $script:OutDir "diagnostics.jsonl") | Should -BeTrue
-            Test-Path (Join-Path $script:OutDir "summary.json") | Should -BeTrue
+        It "emits exactly the nine 0.3 bundle stores" {
+            $expected = @(
+                'sources.jsonl'
+                'entities.jsonl'
+                'occurrences.jsonl'
+                'bindings.jsonl'
+                'invocations.jsonl'
+                'claims.jsonl'
+                'coverage.json'
+                'diagnostics.jsonl'
+                'summary.json'
+            )
+            $published = @(Get-ChildItem -LiteralPath $script:OutDir -File |
+                    ForEach-Object Name | Sort-Object)
+            @($published) | Should -Be @($expected | Sort-Object)
         }
 
-        It "does not publish the withdrawn 0.1 binding-derived stores" {
+        It "does not publish deferred C-wave stores" {
             Test-Path (Join-Path $script:OutDir "expansion.jsonl") | Should -BeFalse
             Test-Path (Join-Path $script:OutDir "macros.jsonl") | Should -BeFalse
         }
@@ -240,7 +248,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $conf.witnesses[0].instrument | Should -Be "unified-latex-ctan"
 
             # The physical census records the control-sequence token only;
-            # configured signatures become binding inputs in a later store.
+            # configured signatures become chronological binding inputs in bindings.jsonl.
             $inv = $script:Entities | Where-Object { $_.kind -eq "macro-invocation" -and $_.name -eq "textcolor" }
             $inv.text | Should -Be '\textcolor'
             $inv.spanProvenance | Should -Not -Be "synthesized-hull"
@@ -349,10 +357,19 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         BeforeAll {
             $sumRaw = Get-Content -Raw (Join-Path $script:OutDir "summary.json")
             $script:Summary = ConvertFrom-Json $sumRaw
+            $script:Occurrences = @(Get-Content -LiteralPath (
+                        Join-Path $script:OutDir 'occurrences.jsonl') |
+                    Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
+            $script:Bindings = @(Get-Content -LiteralPath (
+                        Join-Path $script:OutDir 'bindings.jsonl') |
+                    Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
+            $script:Invocations = @(Get-Content -LiteralPath (
+                        Join-Path $script:OutDir 'invocations.jsonl') |
+                    Where-Object { $_ } | ForEach-Object { ConvertFrom-Json $_ })
         }
 
-        It "conforms to the 0.2 summary, source identity, and runtime contract" {
-            $script:Summary.schema | Should -Be "texdig-census/0.2"
+        It "conforms to the 0.3 summary, source identity, and runtime contract" {
+            $script:Summary.schema | Should -Be "texdig-census/0.3"
             $script:Summary.slug | Should -Be "mini_article"
             $script:Summary.sourceCount | Should -Be 7
 
@@ -363,17 +380,21 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $script:Summary.runtime.node | Should -Be $script:Run.NodeVersion
         }
 
-        It "declares exactly the six physical stores and their normative schemas" {
+        It "declares exactly the nine 0.3 stores and their normative schemas" {
             $expectedSchemas = [ordered]@{
                 'sources.jsonl'     = 'codex-scientiae/texdig-sources/0.2'
-                'entities.jsonl'    = 'codex-scientiae/texdig-entities/0.2'
+                'entities.jsonl'    = 'codex-scientiae/texdig-entities/0.3'
+                'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
+                'bindings.jsonl'    = 'codex-scientiae/texdig-bindings/0.3'
+                'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
                 'claims.jsonl'      = 'codex-scientiae/texdig-claims/0.2'
                 'coverage.json'     = 'codex-scientiae/texdig-coverage/0.2'
-                'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.2'
-                'summary.json'      = 'codex-scientiae/texdig-summary/0.2'
+                'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.3'
+                'summary.json'      = 'codex-scientiae/texdig-summary/0.3'
             }
 
-            @($script:Summary.stores.emitted).Count | Should -Be $expectedSchemas.Count
+            (@($script:Summary.stores.emitted) -join '|') |
+                Should -BeExactly (@($expectedSchemas.Keys) -join '|')
             @($script:Summary.storeSchemas.PSObject.Properties).Count | Should -Be $expectedSchemas.Count
             foreach ($store in $expectedSchemas.Keys) {
                 $script:Summary.stores.emitted | Should -Contain $store
@@ -382,12 +403,28 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             }
         }
 
-        It "explicitly defers the withdrawn binding-derived stores" {
-            $script:Summary.stores.emitted | Should -Not -Contain "expansion.jsonl"
-            $script:Summary.stores.emitted | Should -Not -Contain "macros.jsonl"
-            $script:Summary.stores.deferred | Should -Contain "expansion.jsonl"
-            $script:Summary.stores.deferred | Should -Contain "macros.jsonl"
-            $script:Summary.stores.deferred | Should -Contain "walk.jsonl"
+        It "reports exact execution-store counts" {
+            @($script:Occurrences).Count | Should -Be $script:Summary.occurrenceCount
+            @($script:Bindings).Count | Should -Be $script:Summary.bindingRowCount
+            @($script:Invocations).Count | Should -Be $script:Summary.invocationCount
+            $script:Run.OccurrenceCount | Should -Be $script:Summary.occurrenceCount
+            $script:Run.BindingRowCount | Should -Be $script:Summary.bindingRowCount
+            $script:Run.InvocationCount | Should -Be $script:Summary.invocationCount
+        }
+
+        It "explicitly defers exactly the eight post-B stores" {
+            (@($script:Summary.stores.deferred) -join '|') | Should -BeExactly (@(
+                'expansion.jsonl'
+                'walk.jsonl'
+                'zones.jsonl'
+                'macros.jsonl'
+                'references.jsonl'
+                'pointers.jsonl'
+                'frontmatter.jsonl'
+                'graph.jsonl'
+            ) -join '|')
+            $script:Summary.stores.emitted | Should -Not -Contain 'expansion.jsonl'
+            $script:Summary.stores.emitted | Should -Not -Contain 'macros.jsonl'
         }
 
         It "reports coverage accounting where claimed + residue equals total" {

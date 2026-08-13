@@ -37,21 +37,32 @@ $script:ArticleSearchRoots = @(
     (Join-Path $script:RepoRoot 'ingestion/inventory')
 )
 
-# Exact publication surface for texdig-census/0.2. The PowerShell runner is a
+# Exact publication surface for texdig-census/0.3. The PowerShell runner is a
 # process boundary, so it validates the worker's declared store identities
 # instead of treating an umbrella schema match as sufficient.
 $script:TeXdigCensusStoreSchemas = [ordered]@{
     'sources.jsonl' = 'codex-scientiae/texdig-sources/0.2'
-    'entities.jsonl' = 'codex-scientiae/texdig-entities/0.2'
+    'entities.jsonl' = 'codex-scientiae/texdig-entities/0.3'
     'claims.jsonl' = 'codex-scientiae/texdig-claims/0.2'
     'coverage.json' = 'codex-scientiae/texdig-coverage/0.2'
-    'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.2'
-    'summary.json' = 'codex-scientiae/texdig-summary/0.2'
+    'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.3'
+    'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
+    'bindings.jsonl' = 'codex-scientiae/texdig-bindings/0.3'
+    'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
+    'summary.json' = 'codex-scientiae/texdig-summary/0.3'
 }
-$script:TeXdigCensusDeferredStores = @(
+$script:TeXdigCensusEmittedStores = @(
+    'sources.jsonl'
+    'entities.jsonl'
     'occurrences.jsonl'
     'bindings.jsonl'
     'invocations.jsonl'
+    'claims.jsonl'
+    'coverage.json'
+    'diagnostics.jsonl'
+    'summary.json'
+)
+$script:TeXdigCensusDeferredStores = @(
     'expansion.jsonl'
     'walk.jsonl'
     'zones.jsonl'
@@ -243,7 +254,7 @@ function Read-TeXdigPublishedSummary {
     if ([string] $summary.slug -cne $ExpectedSlug) {
         throw "TeXdig: published summary slug '$($summary.slug)' does not match '$ExpectedSlug' in '$RunDirectory'"
     }
-    if ([string] $summary.schema -cne 'texdig-census/0.2') {
+    if ([string] $summary.schema -cne 'texdig-census/0.3') {
         throw "TeXdig: published summary has unsupported schema '$($summary.schema)' in '$RunDirectory'"
     }
     $runtimeProperty = Find-TeXdigExactJsonProperty -InputObject $summary -Name 'runtime'
@@ -279,9 +290,10 @@ function Read-TeXdigPublishedSummary {
         throw "TeXdig: published summary has no stores.emitted contract in '$RunDirectory'"
     }
 
+    $emittedValues = @($summary.stores.emitted)
     $emitted = [System.Collections.Generic.HashSet[string]]::new(
         [System.StringComparer]::Ordinal)
-    foreach ($storeValue in @($summary.stores.emitted)) {
+    foreach ($storeValue in $emittedValues) {
         $store = [string] $storeValue
         if ([string]::IsNullOrWhiteSpace($store) -or
                 [System.IO.Path]::IsPathFullyQualified($store) -or
@@ -299,13 +311,18 @@ function Read-TeXdigPublishedSummary {
         }
     }
 
-    foreach ($store in $script:TeXdigCensusStoreSchemas.Keys) {
+    foreach ($store in $script:TeXdigCensusEmittedStores) {
         if (-not $emitted.Contains($store)) {
             throw "TeXdig: worker exited 0 but summary omitted required store '$store' in '$RunDirectory'"
         }
     }
-    if ($emitted.Count -ne $script:TeXdigCensusStoreSchemas.Count) {
+    if ($emitted.Count -ne $script:TeXdigCensusEmittedStores.Count) {
         throw "TeXdig: published summary has an incompatible emitted-store count in '$RunDirectory'"
+    }
+    for ($index = 0; $index -lt $script:TeXdigCensusEmittedStores.Count; $index++) {
+        if ([string] $emittedValues[$index] -cne $script:TeXdigCensusEmittedStores[$index]) {
+            throw "TeXdig: published summary has an incompatible emitted-store order in '$RunDirectory'"
+        }
     }
 
     if ($null -eq $summary.stores.deferred) {
@@ -318,6 +335,31 @@ function Read-TeXdigPublishedSummary {
     for ($index = 0; $index -lt $script:TeXdigCensusDeferredStores.Count; $index++) {
         if ([string] $deferred[$index] -cne $script:TeXdigCensusDeferredStores[$index]) {
             throw "TeXdig: published summary has an incompatible deferred-store contract in '$RunDirectory'"
+        }
+    }
+
+    $countNames = @('occurrenceCount', 'bindingRowCount', 'invocationCount')
+    $integerTypeCodes = @(
+        [System.TypeCode]::SByte
+        [System.TypeCode]::Byte
+        [System.TypeCode]::Int16
+        [System.TypeCode]::UInt16
+        [System.TypeCode]::Int32
+        [System.TypeCode]::UInt32
+        [System.TypeCode]::Int64
+        [System.TypeCode]::UInt64
+    )
+    foreach ($countName in $countNames) {
+        $countProperty = Find-TeXdigExactJsonProperty -InputObject $summary -Name $countName
+        $countValue = if ($null -ne $countProperty) { $countProperty.Value } else { $null }
+        $countType = if ($null -ne $countValue) {
+            [System.Type]::GetTypeCode($countValue.GetType())
+        } else {
+            [System.TypeCode]::Empty
+        }
+        if ($null -eq $countProperty -or $countType -notin $integerTypeCodes -or
+                [decimal] $countValue -lt 0) {
+            throw "TeXdig: published summary has an invalid $countName contract in '$RunDirectory'"
         }
     }
 
@@ -410,6 +452,9 @@ function Invoke-TeXdigCensus {
         TreeSha256      = $summary.treeSha256
         Entrypoint      = $summary.entrypoint
         SourceCount     = $summary.sourceCount
+        OccurrenceCount = $summary.occurrenceCount
+        BindingRowCount = $summary.bindingRowCount
+        InvocationCount = $summary.invocationCount
         Entities        = ($summary.entityCounts.PSObject.Properties | Measure-Object -Sum Value).Sum
         Agreed          = & $agreementValue 'agreed'
         LexicalOnly     = & $agreementValue 'lexical-only'

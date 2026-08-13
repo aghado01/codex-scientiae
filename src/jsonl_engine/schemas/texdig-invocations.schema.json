@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-invocations/0.3",
+  "title": "TeXdig 0.3 invocation occurrence",
+  "x-identity": ["/id"],
+  "$defs": {
+    "span": {
+      "type": "object",
+      "required": ["sourceId", "startUtf16", "endUtf16"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "startUtf16": { "type": "integer", "minimum": 0 },
+        "endUtf16": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "signature": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["state", "spec"],
+          "properties": {
+            "state": { "const": "known" },
+            "spec": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state", "detail"],
+          "properties": {
+            "state": { "const": "custom-parser" },
+            "detail": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state"],
+          "properties": {
+            "state": { "const": "unknown" },
+            "detail": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "binding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["state", "bindingEventId", "signature"],
+          "properties": {
+            "state": { "const": "bound" },
+            "bindingEventId": { "type": "string", "pattern": "^bind:" },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state"],
+          "properties": { "state": { "const": "unbound" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state", "causeIds", "detail"],
+          "properties": {
+            "state": { "const": "indeterminate" },
+            "causeIds": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "detail": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state", "reason"],
+          "properties": {
+            "state": { "const": "deferred" },
+            "reason": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "argument": {
+      "type": "object",
+      "required": ["slot", "kind", "source", "delimiter"],
+      "properties": {
+        "slot": { "type": "integer", "minimum": 0 },
+        "kind": { "enum": ["mandatory", "optional", "star", "token", "embellishment", "until"] },
+        "source": { "enum": ["explicit", "omitted", "default"] },
+        "delimiter": { "enum": ["brace", "bracket", "bare-character", "control-sequence", "none"] },
+        "span": { "$ref": "#/$defs/span" },
+        "contentSpan": { "$ref": "#/$defs/span" },
+        "defaultText": { "type": "string" },
+        "marker": { "type": "string" },
+        "terminator": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["contentSpan"] },
+          "then": { "required": ["span"] }
+        },
+        {
+          "oneOf": [
+            {
+              "properties": { "source": { "const": "explicit" } },
+              "required": ["span"],
+              "not": { "required": ["defaultText"] }
+            },
+            {
+              "properties": {
+                "source": { "const": "omitted" },
+                "delimiter": { "const": "none" }
+              },
+              "not": {
+                "anyOf": [
+                  { "required": ["span"] },
+                  { "required": ["contentSpan"] },
+                  { "required": ["defaultText"] }
+                ]
+              }
+            },
+            {
+              "properties": {
+                "kind": { "const": "optional" },
+                "source": { "const": "default" },
+                "delimiter": { "const": "none" }
+              },
+              "required": ["defaultText"],
+              "not": {
+                "anyOf": [
+                  { "required": ["span"] },
+                  { "required": ["contentSpan"] }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "seq",
+    "occurrenceId",
+    "entityId",
+    "name",
+    "siteKind",
+    "siteSpan",
+    "binding",
+    "span",
+    "arguments",
+    "status",
+    "text"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^inv:" },
+    "seq": { "type": "integer", "minimum": 0 },
+    "occurrenceId": { "type": "string", "pattern": "^occ:" },
+    "entityId": { "type": "string", "pattern": "^ent:" },
+    "name": { "type": "string" },
+    "siteKind": { "enum": ["control-sequence", "environment-begin"] },
+    "siteSpan": { "$ref": "#/$defs/span" },
+    "binding": { "$ref": "#/$defs/binding" },
+    "span": { "$ref": "#/$defs/span" },
+    "arguments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/argument" }
+    },
+    "status": { "enum": ["attached", "unbound", "deferred", "indeterminate", "malformed"] },
+    "text": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "enum": ["unbound", "deferred", "indeterminate"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "arguments": { "maxItems": 0 }
+        }
+      }
+    }
+  ],
+  "oneOf": [
+    {
+      "properties": {
+        "binding": {
+          "properties": { "state": { "const": "bound" } },
+          "required": ["state"]
+        },
+        "status": { "enum": ["attached", "deferred", "malformed"] }
+      }
+    },
+    {
+      "properties": {
+        "binding": {
+          "properties": { "state": { "const": "unbound" } },
+          "required": ["state"]
+        },
+        "status": { "const": "unbound" }
+      }
+    },
+    {
+      "properties": {
+        "binding": {
+          "properties": { "state": { "const": "indeterminate" } },
+          "required": ["state"]
+        },
+        "status": { "const": "indeterminate" }
+      }
+    },
+    {
+      "properties": {
+        "binding": {
+          "properties": { "state": { "const": "deferred" } },
+          "required": ["state"]
+        },
+        "status": { "const": "deferred" }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

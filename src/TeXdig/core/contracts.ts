@@ -1,14 +1,10 @@
 /**
- * TeXdig stage-1 contract-tier types — the durable artifact contract downstream
- * consumes. Compiled from the census/evidence tier; self-contained (inline
- * slices ride every row downstream interprets); the deposit tree is evidence
- * substrate, not part of the contract.
+ * TeXdig contract-tier DTOs consumed by downstream stages.
  *
- * Ownership: the jsonl_engine schema registry is the normative authority for
- * emitted stores. These types are the in-language DTO layer for the emitter;
- * once emission lands, the store shapes are minted as registered schemas
- * (src/jsonl_engine/schemas/, graph.jsonl $ref-ing graph-primitive/0.1) and
- * golden-fixture validate-json conformance holds DTO and schema together.
+ * Rows are compiled from physical census evidence and carry the source slices
+ * required for interpretation. The deposit tree remains the evidence substrate.
+ * The jsonl_engine schema registry is the normative emitted-store authority;
+ * these types are the in-language DTO layer used by compilers and emitters.
  *
  * Linking convention: every discrete object's id is `{class}:{locator}` with
  * classes from ID_CLASSES below. The id string is the verbatim join key
@@ -27,9 +23,10 @@ import type {
   SourceSpan,
   SpanProvenance,
   MathCarrier,
+  SignatureEvidence,
 } from "./types.ts";
 
-export const CONTRACT_SCHEMA_VERSION = "texdig-contract/0.2" as const;
+export const CONTRACT_SCHEMA_VERSION = "texdig-contract/0.3" as const;
 
 // ---------------------------------------------------------------------------
 // ID grammar
@@ -55,6 +52,12 @@ export const ID_CLASSES = {
   occ: "occurrences.jsonl",
   /** One chronological definition/binding event. */
   bind: "bindings.jsonl",
+  /** One execution scope frame. */
+  scope: "bindings.jsonl",
+  /** One configured package/class summon. */
+  summon: "bindings.jsonl",
+  /** One declaration sighting that was deliberately not executed. */
+  disposition: "bindings.jsonl",
   /** One binding-dependent invocation occurrence. */
   inv: "invocations.jsonl",
 } as const;
@@ -66,13 +69,8 @@ export type IdClass = keyof typeof ID_CLASSES;
 // ---------------------------------------------------------------------------
 
 /**
- * `seq` is one bundle-local order space assigned over source occurrences.
- * Runtime rows are order-comparable inside one bundle; the integer is never a
- * persistent identity and may be regenerated when requested addresses change.
- *
- * seq is a derived integer over span addresses: rows also carry enough
- * traversal context (includeChain on walk nodes) that ordering is
- * reconstructible without trusting the integer.
+ * `seq` is one strict, bundle-local execution-event order space. It is never a
+ * persistent identity; ids are route/site derived and do not contain seq.
  */
 export type Seq = number;
 
@@ -86,43 +84,115 @@ export interface SourceOccurrence {
   parentOccurrenceId?: string;
   includeEntityId?: EntityId;
   includeChain: SourceId[];
+  basis: "manifest-entrypoint" | "literal-directive";
   state: "entered" | "cycle-cut" | "deferred-context";
+  enterSeq: Seq;
+  exitSeq: Seq;
+  cycleTargetOccurrenceId?: string;
+  deferredReason?: "definition-body" | "conditional" | "argument-body" | "unknown-context";
+}
+
+export interface BindingSymbol {
+  namespace: "control-sequence" | "environment";
+  name: string;
 }
 
 export type BindingMeaning =
-  | { kind: "definition"; declarationId: string; elaborable: boolean }
-  | { kind: "opaque-definition"; declarationId: string }
-  | { kind: "configured"; declarationId: string }
-  | { kind: "primitive"; name: string }
-  | { kind: "character-token"; text: string }
-  | { kind: "unresolved"; name: string };
+  | {
+      kind: "declaration";
+      entityId: EntityId;
+      availability: "body" | "signature-only" | "opaque";
+      signature: SignatureEvidence;
+    }
+  | { kind: "primitive"; name: string; signature: SignatureEvidence }
+  | { kind: "captured"; sourceBindingEventId: string; signature: SignatureEvidence }
+  | { kind: "character-token"; text: string; catcode: "unknown"; signature: SignatureEvidence }
+  | { kind: "opaque"; entityId?: EntityId; reason: string; signature: SignatureEvidence }
+  | { kind: "indeterminate"; reason: string; causeIds: string[]; signature: SignatureEvidence };
 
-export interface BindingEvent {
-  id: string; // bind:...
+export interface ScopeFrame {
+  rowType: "scope-frame";
+  id: string; // scope:...
+  kind: "global" | "document" | "brace-group" | "environment" | "begingroup";
+  parentScopeId?: string;
+  occurrenceId?: string;
+  enterSeq: Seq;
+  exitSeq?: Seq;
+  status: "open" | "closed" | "unterminated" | "indeterminate";
+  openSpan?: SourceSpan;
+  closeSpan?: SourceSpan;
+  openText?: string;
+  closeText?: string;
+}
+
+export interface ConfiguredSummon {
+  rowType: "configured-summon";
+  id: string; // summon:...
   seq: Seq;
   occurrenceId: string;
-  declarationId: string; // def:...
-  entityId: EntityId;
-  definedName: string;
+  scopeId: string;
+  physicalEntityId: EntityId;
+  command: "documentclass" | "usepackage" | "RequirePackage";
+  targetOrdinal: number;
+  packageName: string;
+  siteSpan: SourceSpan;
+  targetSpan: SourceSpan;
+  optionsSpan?: SourceSpan;
+  optionsText?: string;
+  text: string;
+  outcome: "loaded" | "already-loaded" | "unconfigured" | "indeterminate";
+  candidateEntityIds: EntityId[];
+}
+
+export interface BindingEvent {
+  rowType: "binding-event";
+  id: string; // bind:...
+  seq: Seq;
+  occurrenceId?: string;
+  executionScopeId: string;
+  targetScopeId: string;
+  symbol: BindingSymbol;
+  cause:
+    | { kind: "physical-declaration"; entityId: EntityId; siteSpan: SourceSpan }
+    | { kind: "configured"; summonId: string; entityId: EntityId }
+    | { kind: "baseline" }
+    | { kind: "scope-exit"; scopeId: string };
   operation:
     | "new"
     | "renew"
     | "provide"
     | "assign"
-    | "let"
     | "global-assign"
-    | "expanded-assign";
-  scopeId: string;
-  outcome:
+    | "expanded-assign"
+    | "global-expanded-assign"
+    | "let-capture"
+    | "configured-install"
+    | "baseline-install"
+    | "restore";
+  effect:
     | "installed"
     | "skipped-existing"
     | "invalid-precondition"
-    | "deferred"
-    | "unsupported"
-    | "opaque";
-  previousBindingEventId?: string;
-  capturedMeaning?: BindingMeaning;
+    | "restored"
+    | "indeterminate";
+  priorBindingEventId?: string;
+  restoredBindingEventId?: string;
+  installedMeaning?: BindingMeaning;
+  /** Exact declaration/summon slice for source-backed events. */
+  text?: string;
 }
+
+export interface DeclarationDisposition {
+  rowType: "declaration-disposition";
+  id: string; // disposition:...
+  seq: Seq;
+  occurrenceId: string;
+  entityId: EntityId;
+  reason: "definition-body" | "conditional" | "argument-body" | "unknown-context";
+  text: string;
+}
+
+export type BindingRow = ScopeFrame | ConfiguredSummon | BindingEvent | DeclarationDisposition;
 
 export type ArgumentKind =
   | "mandatory"
@@ -135,8 +205,8 @@ export type ArgumentKind =
 export type ArgumentDelimiter =
   | "brace"
   | "bracket"
-  | "bare-token"
-  | "implicit-token"
+  | "bare-character"
+  | "control-sequence"
   | "none";
 
 export interface ArgumentAttachment {
@@ -149,6 +219,8 @@ export interface ArgumentAttachment {
   /** Interior extent; may be zero-length for an explicit empty argument. */
   contentSpan?: SourceSpan;
   defaultText?: string;
+  marker?: string;
+  terminator?: string;
 }
 
 export interface InvocationOccurrence {
@@ -157,14 +229,20 @@ export interface InvocationOccurrence {
   occurrenceId: string;
   entityId: EntityId;
   name: string;
+  siteKind: "control-sequence" | "environment-begin";
+  /** Canonical physical token/begin-fence anchor. */
+  siteSpan: SourceSpan;
   binding:
-    | { state: "bound"; bindingEventId: string }
-    | { state: "bound-out-of-scope"; detail: string }
+    | { state: "bound"; bindingEventId: string; signature: SignatureEvidence }
     | { state: "unbound" }
-    | { state: "deferred"; detail: string };
+    | { state: "indeterminate"; causeIds: string[]; detail: string }
+    | { state: "deferred"; reason: string };
   /** Binding-dependent syntax hull at this occurrence. */
   span: SourceSpan;
   arguments: ArgumentAttachment[];
+  status: "attached" | "unbound" | "deferred" | "indeterminate" | "malformed";
+  /** Exact binding-dependent invocation hull slice. */
+  text: string;
 }
 
 /** Content is stored ONLY in this array form. Refs are verbatim ids. */

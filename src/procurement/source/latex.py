@@ -34,7 +34,11 @@ from procurement.source.tree import (
 
 _DOCUMENT_CLASS = re.compile(r"\\documentclass(?:\s*\[[^\]]*\])?\s*\{")
 _DOCUMENT_MARKER = re.compile(r"\\begin\s*\{\s*document\s*\}")
-_INPUT_COMMAND = re.compile(r"\\(?:input|include)\s*\{([^{}]+)\}")
+_INPUT_COMMAND = re.compile(
+    r"\\(?P<command>input|include|subfile)(?![A-Za-z])"
+    r"(?:\s*\{(?P<braced>[^{}]+)\}|"
+    r"\s*(?P<bare>[^\s\\{}\[\]\x25][^\s\\{}%]*))"
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -205,21 +209,28 @@ def _resolve_inputs(
         try:
             text = _remove_line_comments(get_text(relative))
             cursor = 0
-            directory = posixpath.dirname(relative)
             for match in _INPUT_COMMAND.finditer(text):
                 yield text[cursor : match.start()]
-                name = match.group(1).strip()
+                command = match.group("command")
+                captured = match.group("braced")
+                literal = (captured if captured is not None else match.group("bare")).strip()
+                name = literal
+                while name.startswith("./"):
+                    name = name[2:]
                 try:
                     requested = _portable_relative(
                         name,
                         limits=limits,
-                        label=f"LaTeX input referenced by {relative!r}",
+                        label=f"LaTeX {command} target referenced by {relative!r}",
                     )
                 except SourceMaterializationError as exc:
                     raise LatexSourceError(str(exc)) from exc
                 candidates: list[str] = []
                 for value in (requested, f"{requested}.tex"):
-                    candidate = posixpath.join(directory, value) if directory else value
+                    # TeX resolves ordinary literal inputs in the compile-root
+                    # coordinate system; entering an input file does not change
+                    # the compiler's working directory.
+                    candidate = value
                     if candidate not in candidates:
                         candidates.append(candidate)
                 selected = next(
@@ -228,7 +239,8 @@ def _resolve_inputs(
                 )
                 if selected is None:
                     raise LatexSourceError(
-                        f"unresolved LaTeX input {name!r} referenced by {relative!r}"
+                        f"unresolved LaTeX {command} target {literal!r} "
+                        f"referenced by {relative!r}"
                     )
                 yield from pieces(selected, depth + 1)
                 cursor = match.end()

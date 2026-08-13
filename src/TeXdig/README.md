@@ -2,9 +2,9 @@
 
 TeXdig is the clean-reboot LaTeX extraction lane (unified-latex + latex-utensils, TypeScript core,
 PowerShell orchestration). Stage 1 produces a **closed, span-addressed inventory** of every knowable
-carrier on the source surface of a deposited LaTeX tree. It is mechanical: no macro expansion, no
-interpretation, no surjection. Downstream stages elaborate this inventory and never rediscover
-structure from the stream.
+carrier on the source surface of a deposited LaTeX tree and a chronological execution ledger over
+that evidence. It is mechanical: no macro expansion, semantic manuscript interpretation, or
+surjection. Downstream stages elaborate this inventory and never rediscover structure from the stream.
 
 ## Upstream contract
 
@@ -26,9 +26,10 @@ results are attributed to the verified fingerprint; a manifest value alone is no
    inventory (or declared configuration). Downstream discovery that cannot cite an inventoried site
    is a stage-1 bug. Applies to frontmatter too: declared metadata is span-anchored rows, not flat
    strings.
-4. **Traversal completeness** — every content-bearing claim is reachable from `walk.jsonl`; anything
-   claimed but unreachable is an orphan diagnostic. This catches "censused correctly but lost during
-   assembly," which coverage alone cannot see.
+4. **Execution closure** — every entered source occurrence belongs to the route from the manifest
+   entrypoint; every scope is closed or explicitly non-closed; every binding and invocation join names
+   a resident occurrence, physical entity, scope, or governing binding event. Repeated includes mint
+   distinct occurrence rows without duplicating the physical census entity.
 
 ## Model
 
@@ -61,36 +62,43 @@ results are attributed to the verified fingerprint; a manifest value alone is no
 ## Emitted stores
 
 One runstamped container per document — one document per batch-executor job, the job container is
-the document container (`Writes` root). UTF-8 without BOM, LF rows. Three tiers:
+the document container (`Writes` root). UTF-8 without BOM, LF rows. TeXdig 0.3 emits exactly nine
+stores:
 
-**Planned contract tier** — downstream will consume only this; every row downstream interprets carries its exact
-source slice inline (self-contained; the deposit tree is evidence substrate, not part of the
-contract):
+| Store | Schema | Content |
+| --- | --- | --- |
+| `sources.jsonl` | `codex-scientiae/texdig-sources/0.2` | Fingerprinted deposited-source inventory |
+| `entities.jsonl` | `codex-scientiae/texdig-entities/0.3` | Physical census with exact source slices and evidence basis |
+| `occurrences.jsonl` | `codex-scientiae/texdig-occurrences/0.3` | Route-derived execution occurrences, replay, deferrals, and cycle cuts |
+| `bindings.jsonl` | `codex-scientiae/texdig-bindings/0.3` | Scope, summon, chronological binding, capture, and disposition rows |
+| `invocations.jsonl` | `codex-scientiae/texdig-invocations/0.3` | Governing bindings plus exact invocation hulls and typed arguments |
+| `claims.jsonl` | `codex-scientiae/texdig-claims/0.2` | Physical pillar claims |
+| `coverage.json` | `codex-scientiae/texdig-coverage/0.2` | Per-source UTF-16 coverage accounting |
+| `diagnostics.jsonl` | `codex-scientiae/texdig-diagnostics/0.3` | Registered census and execution diagnostics |
+| `summary.json` | `codex-scientiae/texdig-summary/0.3` | Runtime, fingerprint, exact store identities, counts, and coverage totals |
+
+The retained 0.2 schemas remain immutable historical contracts. The unchanged source, claim, and
+coverage row shapes therefore retain their 0.2 schema identities inside a 0.3 bundle. The summary
+records `occurrenceCount`, `bindingRowCount`, and `invocationCount` beside the physical census counts.
+
+Eight stores remain explicitly deferred in 0.3:
 
 | Store | Content |
 | --- | --- |
+| `expansion.jsonl` | C-wave, resource-bounded expansion results and origin chains |
 | `walk.jsonl` | Traversal-serialized structure: sections, paragraphs, anchors in reading order; content as text-run/ref arrays; `includeChain` context |
 | `zones.jsonl` | Compiled closure-sealed units (math, diagrams, verbatim, floats, theorem-like): slice, closure, per-name binding verdicts, isolability, validation |
 | `macros.jsonl` | Physical declaration/specimen store: exact signature, normalized argument spec, body evidence, lexical `nameRefs`, body fingerprint |
-| `occurrences.jsonl` | Execution occurrences of physical sources, including repeated includes and explicit cycle cuts |
-| `bindings.jsonl` | Chronological definition operations, outcomes, scopes, and captured meanings |
-| `invocations.jsonl` | Per-occurrence binding resolution, exact invocation hull, and typed argument attachments |
 | `references.jsonl` | Canonical reference items: appearance-normalized ordinal + basis, source label register, per-field provenance |
 | `pointers.jsonl` | Label declarations and pointer sites (pointer-hood derived transitively from definition bodies, never a fixed vocabulary), resolution edges |
 | `frontmatter.jsonl` | Span-anchored declared metadata (title, author blob, date, abstract) |
 | `graph.jsonl` | Relational projection of all stores; graph-primitive/0.1-aligned node/edge rows, both ends anchored, address-valued ids; to be registered |
 
-**Evidence tier (emitted in 0.2)**: `sources.jsonl` (with language/role/parsed classification),
-`entities.jsonl` (physical census with an explicit evidence basis), `claims.jsonl` (pillar claims).
-
-**Audit tier (emitted in 0.2)**: `coverage.json`, `diagnostics.jsonl`, `summary.json` (gate outcomes, counts,
-verified `treeSha256`, runtime identity, per-store schema identities).
-
-The six emitted stores have normative 0.2 schemas in the jsonl_engine registry. `core/types.ts` is
-their in-language DTO layer; schema and fixture validation keep the two in agreement. Planned
-contract-tier DTOs live in `core/contracts.ts`; they do not become runtime contract merely by having
-a TypeScript interface, and remain listed under `summary.stores.deferred` until their schemas and
-occurrence-aware producers land.
+`core/types.ts` and `core/contracts.ts` are the in-language DTO layers. The jsonl_engine registry is
+the normative artifact boundary; schema and fixture validation keep emitted DTOs and rows aligned.
+The B-wave compiler interprets only chronological binding and binding-dependent attachment. It does
+not materialize `macros.jsonl` or expand a macro body. Expansion remains a C-wave operation and
+`expansion.jsonl` remains deferred.
 
 ## Linking conventions
 
@@ -105,9 +113,9 @@ occurrence-aware producers land.
 
 ## Versioning
 
-`texdig-census/0.2` is a source-regenerated contract. `0.1` bundles remain immutable historical
-evidence. No JSONL-only conversion can recover omitted empty arguments, exact raw signatures,
-occurrence identity, binding history, or rejected local-frame coordinates.
+`texdig-census/0.3` is a source-regenerated contract. `0.1` and `0.2` bundles remain immutable
+historical evidence. No JSONL-only conversion can recover omitted empty arguments, exact raw
+signatures, occurrence identity, binding history, or rejected local-frame coordinates.
 
 ## Reference canon
 
@@ -123,8 +131,9 @@ paper's own register (alpha labels, list position) is preserved beside the ordin
 
 ## Later cuts
 
-Cut 2: occurrence-aware binding and invocation attachment, followed by relation joins, support
-closure, and purity verdicts. Cut 3: isolated evaluation and render + differential-alignment validation.
+The B wave lands occurrence-aware binding and invocation attachment. The C wave begins with
+resource-bounded expansion, then relation joins, support closure, and purity verdicts. A later cut
+performs isolated evaluation and render plus differential-alignment validation.
 Orchestration joins `batch-adapters` as `Get-TeXdigBatchJob` under the standard job-emission
 contract; the census CLI stays a pure worker (tree + entrypoint in, stores out). PDF-only deposits
 are refused at planning, not failed at the worker.

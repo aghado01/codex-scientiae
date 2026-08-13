@@ -23,6 +23,7 @@ import type {
   DeclarationActivation,
   DeclarationContext,
   Diagnostic,
+  SignatureEvidence,
 } from "../core/types.ts";
 import { DiagnosticCodes } from "../core/types.ts";
 import { isValidSourceSpan, sourceSpanContains } from "../core/spans.ts";
@@ -30,10 +31,12 @@ import type { Dependencies } from "../core/loader.ts";
 
 export interface ParserMacroDef {
   commandName: string;
+  declarationCommand: string;
   definedName: string;
   dialect: DefinitionDialect;
   signatureRaw?: string;
   argumentSpec?: string;
+  signature: SignatureEvidence;
   bodySpan?: SourceSpan;
   /** Full definition site; a hull over attached args when the parser's macro node stops at the csname. */
   span: SourceSpan;
@@ -46,10 +49,12 @@ export interface ParserMacroDef {
 
 export interface ParserEnvDef {
   commandName: string;
+  declarationCommand: string;
   definedName: string;
   mechanism: "newtheorem" | "newenvironment" | "newfloat";
   signatureRaw?: string;
   argumentSpec?: string;
+  signature: SignatureEvidence;
   counterRaw?: string;
   beginBodySpan?: SourceSpan;
   endBodySpan?: SourceSpan;
@@ -78,12 +83,23 @@ export interface DiscoveryResult {
    * name token is a mention, not a use).
    */
   definitionTokenStarts: Set<number>;
-  /**
-   * Packages/classes this file summons (\usepackage, \RequirePackage,
-   * \documentclass), each with the requesting site's span — the anchor for
-   * configured-dialect declarations resolved from the ctan records.
-   */
-  requestedPackages: Map<string, SourceSpan>;
+  /** Every configured package/class summon target in physical source order. */
+  configuredSummons: ConfiguredSummonSite[];
+  /** Source contexts whose contents are not executed by the B-wave compiler. */
+  deferredContexts: {
+    span: SourceSpan;
+    reason: "conditional" | "argument-body";
+  }[];
+}
+
+export interface ConfiguredSummonSite {
+  command: "documentclass" | "usepackage" | "RequirePackage";
+  packageName: string;
+  targetOrdinal: number;
+  siteSpan: SourceSpan;
+  targetSpan: SourceSpan;
+  optionsSpan?: SourceSpan;
+  optionsText?: string;
 }
 
 export interface ParserArgSpan {
@@ -370,6 +386,53 @@ function buildSignature(numArgs: number, hasOptional: boolean, defaultRaw?: stri
   return parts.join(" ");
 }
 
+function knownSignature(spec: string): SignatureEvidence {
+  return { state: "known", spec };
+}
+
+function defSignature(parameterText?: string): SignatureEvidence {
+  if (!parameterText) return knownSignature("");
+  const matches = [...parameterText.matchAll(/#([1-9])/g)];
+  if (matches.length === 0 || matches.map((match) => match[0]).join("") !== parameterText) {
+    return { state: "unknown", detail: "delimited-or-dynamic-def-parameter-text" };
+  }
+  for (let index = 0; index < matches.length; index++) {
+    if (Number(matches[index][1]) !== index + 1) {
+      return { state: "unknown", detail: "non-sequential-def-parameter-text" };
+    }
+  }
+  return knownSignature(matches.map(() => "m").join(" "));
+}
+
+function commaTargets(
+  sourceId: SourceId,
+  text: string,
+  contentSpan: SourceSpan
+): { value: string; span: SourceSpan }[] {
+  const raw = text.slice(contentSpan.startUtf16, contentSpan.endUtf16);
+  const targets: { value: string; span: SourceSpan }[] = [];
+  let segmentStart = 0;
+  for (let index = 0; index <= raw.length; index++) {
+    if (index !== raw.length && raw[index] !== ",") continue;
+    const segment = raw.slice(segmentStart, index);
+    const leading = segment.match(/^\s*/)?.[0].length || 0;
+    const trailing = segment.match(/\s*$/)?.[0].length || 0;
+    const value = segment.slice(leading, segment.length - trailing);
+    if (value) {
+      targets.push({
+        value,
+        span: {
+          sourceId,
+          startUtf16: contentSpan.startUtf16 + segmentStart + leading,
+          endUtf16: contentSpan.startUtf16 + index - trailing,
+        },
+      });
+    }
+    segmentStart = index + 1;
+  }
+  return targets;
+}
+
 export function discoverDefinitions(
   sourceId: SourceId,
   text: string,
@@ -381,7 +444,8 @@ export function discoverDefinitions(
     envDefs: [],
     registry: { macros: {}, environments: {} },
     definitionTokenStarts: new Set(),
-    requestedPackages: new Map(),
+    configuredSummons: [],
+    deferredContexts: [],
   };
 
   let ast: any;
@@ -415,15 +479,22 @@ export function discoverDefinitions(
 
       // --- Package/class summons (configured-channel anchors) -------------
       if (name === "usepackage" || name === "RequirePackage" || name === "documentclass") {
-        const payload = stringContentOfArg(braceArgs[0]);
-        if (payload) {
+        const payloadEvidence = evidenceFor(braceArgs[0]);
+        if (payloadEvidence) {
           const { span } = definitionHull(sourceId, cmdSpan, argumentEvidence);
-          for (const pkg of payload.split(",")) {
-            const trimmed = pkg.trim();
-            if (trimmed && !result.requestedPackages.has(trimmed)) {
-              result.requestedPackages.set(trimmed, span);
-            }
-          }
+          const optionsEvidence = bracketArgs[0] ? evidenceFor(bracketArgs[0]) : undefined;
+          const targets = commaTargets(sourceId, text, payloadEvidence.contentSpan);
+          targets.forEach((target, targetOrdinal) => {
+            result.configuredSummons.push({
+              command: name as "documentclass" | "usepackage" | "RequirePackage",
+              packageName: target.value,
+              targetOrdinal,
+              siteSpan: span,
+              targetSpan: target.span,
+              optionsSpan: optionsEvidence?.span,
+              optionsText: optionsEvidence?.contentRaw,
+            });
+          });
         }
         continue;
       }
@@ -445,10 +516,12 @@ export function discoverDefinitions(
           .join("") || undefined;
         result.macroDefs.push({
           commandName: name,
+          declarationCommand: name,
           definedName,
           dialect: NEWCOMMAND_FAMILY[name],
           signatureRaw,
           argumentSpec: sig || undefined,
+          signature: knownSignature(sig),
           bodySpan,
           span,
           spanSynthesized: synthesized,
@@ -469,8 +542,10 @@ export function discoverDefinitions(
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
           commandName: name,
+          declarationCommand: name,
           definedName: getMacroName(nameNode),
           dialect: "math-operator",
+          signature: knownSignature(""),
           bodySpan,
           span,
           spanSynthesized: synthesized,
@@ -494,9 +569,11 @@ export function discoverDefinitions(
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
           commandName: name,
+          declarationCommand: name,
           definedName: getMacroName(nameNode),
           dialect: "paired-delimiter",
           argumentSpec: "s o m",
+          signature: knownSignature("s o m"),
           bodySpan,
           span,
           spanSynthesized: synthesized,
@@ -515,15 +592,23 @@ export function discoverDefinitions(
         const specEvidence = evidenceFor(braceArgs[1]);
         const signatureRaw = specEvidence?.contentRaw;
         const argumentSpec = signatureRaw?.replace(/\s+/g, " ").trim();
+        const supportedArgumentSpec = argumentSpec !== undefined && (
+          argumentSpec === "" ||
+          /^[somO](?:\{[^{}]*\})?(?:\s+[somO](?:\{[^{}]*\})?)*$/.test(argumentSpec)
+        );
         const bodySpan = evidenceFor(braceArgs[2])?.contentSpan;
         const { span, synthesized } = definitionHull(sourceId, cmdSpan, argumentEvidence);
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
           commandName: name,
+          declarationCommand: name,
           definedName: getMacroName(nameNode),
           dialect: "xparse",
           signatureRaw,
           argumentSpec: argumentSpec || undefined,
+          signature: supportedArgumentSpec
+            ? knownSignature(argumentSpec!)
+            : { state: "unknown", detail: "unsupported-xparse-specification" },
           bodySpan,
           span,
           spanSynthesized: synthesized,
@@ -533,10 +618,7 @@ export function discoverDefinitions(
         });
         // xparse specs use the same letter vocabulary unified-latex signatures
         // do; simple specs register directly, exotic ones are skipped.
-        if (
-          argumentSpec &&
-          /^[somO](?:\{[^{}]*\})?(?:\s+[somO](?:\{[^{}]*\})?)*$/.test(argumentSpec)
-        ) {
+        if (supportedArgumentSpec && argumentSpec) {
           result.registry.macros[getMacroName(nameNode)] = { signature: argumentSpec };
         }
         continue;
@@ -571,8 +653,10 @@ export function discoverDefinitions(
           if (target && target.type === "macro") markDefinitionTokens(target, undefined);
           result.macroDefs.push({
             commandName: name,
+            declarationCommand: name,
             definedName: getMacroName(nameNode),
             dialect: "let",
+            signature: { state: "unknown", detail: "captured-at-execution" },
             bodySpan: targetSpan,
             span: {
               sourceId,
@@ -621,9 +705,11 @@ export function discoverDefinitions(
         markDefinitionTokens(node, nameNode);
         result.macroDefs.push({
           commandName: name,
+          declarationCommand: name,
           definedName: getMacroName(nameNode),
           dialect: name as "def" | "gdef" | "edef" | "xdef",
           signatureRaw,
+          signature: defSignature(signatureRaw),
           bodySpan,
           span: { sourceId, startUtf16: cmdSpan.startUtf16, endUtf16 },
           spanSynthesized: false,
@@ -646,8 +732,10 @@ export function discoverDefinitions(
           const counterEvidence = evidenceFor(bracketArgs[0]);
           result.envDefs.push({
             commandName: name,
+            declarationCommand: name,
             definedName,
             mechanism,
+            signature: knownSignature("o"),
             counterRaw: counterEvidence?.contentRaw,
             span,
             spanSynthesized: synthesized,
@@ -666,10 +754,12 @@ export function discoverDefinitions(
             .join("") || undefined;
           result.envDefs.push({
             commandName: name,
+            declarationCommand: name,
             definedName,
             mechanism,
             signatureRaw,
             argumentSpec: sig || undefined,
+            signature: knownSignature(sig),
             beginBodySpan: evidenceFor(braceArgs[1])?.contentSpan,
             endBodySpan: evidenceFor(braceArgs[2])?.contentSpan,
             span,
@@ -681,8 +771,10 @@ export function discoverDefinitions(
         } else {
           result.envDefs.push({
             commandName: name,
+            declarationCommand: name,
             definedName,
             mechanism,
+            signature: { state: "unknown", detail: "newfloat-environment-syntax" },
             span,
             spanSynthesized: synthesized,
             context: "unknown",
@@ -737,6 +829,73 @@ export function discoverDefinitions(
       child.value.definedWithin = { kind: parent.kind, span: parent.value.span };
     }
   }
+
+  // Classify the execution contexts that the physical AST proves. Unknown
+  // macro argument attachment is intentionally left for the chronological
+  // binding cut; parser-attached arguments and explicit group frames are safe
+  // evidence here, while conditionals remain deferred because no branch is
+  // evaluated during census.
+  const argumentBodies: SourceSpan[] = [];
+  const groupBodies: SourceSpan[] = [];
+  deps.visit.visit(ast, (node: any) => {
+    if (!node || typeof node !== "object") return;
+    if (node.type === "macro") {
+      for (const evidence of collectArgumentEvidence(sourceId, text, node).values()) {
+        argumentBodies.push(evidence.contentSpan);
+      }
+    } else if (node.type === "group") {
+      const span = nodeSpan(sourceId, node);
+      if (span) groupBodies.push(span);
+    }
+  });
+
+  const conditionalOpeners = new Set([
+    "if", "ifcat", "ifnum", "ifdim", "ifodd", "ifvmode", "ifhmode",
+    "ifmmode", "ifinner", "ifvoid", "ifhbox", "ifvbox", "ifx", "ifeof",
+    "iftrue", "iffalse", "ifcase", "ifdefined", "ifcsname", "iffontchar",
+  ]);
+  const conditionalStack: number[] = [];
+  const conditionalSpans: SourceSpan[] = [];
+  const controlSequence = /\\([A-Za-z@]+|.)/g;
+  let conditionalMatch: RegExpExecArray | null;
+  while ((conditionalMatch = controlSequence.exec(text)) !== null) {
+    const name = conditionalMatch[1];
+    if (conditionalOpeners.has(name)) {
+      conditionalStack.push(conditionalMatch.index);
+    } else if (name === "fi" && conditionalStack.length > 0) {
+      const startUtf16 = conditionalStack.pop()!;
+      conditionalSpans.push({
+        sourceId,
+        startUtf16,
+        endUtf16: conditionalMatch.index + conditionalMatch[0].length,
+      });
+    }
+  }
+  for (const startUtf16 of conditionalStack) {
+    conditionalSpans.push({ sourceId, startUtf16, endUtf16: text.length });
+  }
+
+  for (const definition of definitionRefs) {
+    if (definition.value.context === "definition-body") continue;
+    if (conditionalSpans.some((span) => sourceSpanContains(span, definition.value.span))) {
+      definition.value.context = "conditional";
+      definition.value.activation = "deferred";
+    } else if (argumentBodies.some((span) => sourceSpanContains(span, definition.value.span))) {
+      definition.value.context = "argument-body";
+      definition.value.activation = "deferred";
+    } else if (groupBodies.some((span) => sourceSpanContains(span, definition.value.span))) {
+      definition.value.context = "group-local";
+      definition.value.activation = "immediate";
+    } else {
+      definition.value.context = "document-flow";
+      definition.value.activation = "immediate";
+    }
+  }
+
+  result.deferredContexts.push(
+    ...conditionalSpans.map((span) => ({ span, reason: "conditional" as const })),
+    ...argumentBodies.map((span) => ({ span, reason: "argument-body" as const }))
+  );
 
   return result;
 }

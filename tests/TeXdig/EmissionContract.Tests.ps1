@@ -6,16 +6,27 @@ BeforeAll {
     $script:ExpectedNodeVersion = ((& $script:ResolvedNodePath --version 2>&1) -join "`n").Trim()
     $script:ExpectedStoreSchemas = [ordered]@{
         'sources.jsonl' = 'codex-scientiae/texdig-sources/0.2'
-        'entities.jsonl' = 'codex-scientiae/texdig-entities/0.2'
+        'entities.jsonl' = 'codex-scientiae/texdig-entities/0.3'
         'claims.jsonl' = 'codex-scientiae/texdig-claims/0.2'
         'coverage.json' = 'codex-scientiae/texdig-coverage/0.2'
-        'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.2'
-        'summary.json' = 'codex-scientiae/texdig-summary/0.2'
+        'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.3'
+        'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
+        'bindings.jsonl' = 'codex-scientiae/texdig-bindings/0.3'
+        'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
+        'summary.json' = 'codex-scientiae/texdig-summary/0.3'
     }
-    $script:ExpectedDeferredStores = @(
+    $script:ExpectedEmittedStores = @(
+        'sources.jsonl'
+        'entities.jsonl'
         'occurrences.jsonl'
         'bindings.jsonl'
         'invocations.jsonl'
+        'claims.jsonl'
+        'coverage.json'
+        'diagnostics.jsonl'
+        'summary.json'
+    )
+    $script:ExpectedDeferredStores = @(
         'expansion.jsonl'
         'walk.jsonl'
         'zones.jsonl'
@@ -38,6 +49,38 @@ BeforeAll {
 }
 
 Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
+    Context 'Versioned summary schemas' {
+        It 'preserves 0.2 and publishes the exact 0.3 surface' {
+            $schemaRoot = Join-Path $script:RepositoryRoot 'src/jsonl_engine/schemas'
+            $prior = Get-Content -LiteralPath (Join-Path $schemaRoot 'texdig-summary.schema.json') `
+                -Raw | ConvertFrom-Json
+            $current = Get-Content -LiteralPath (Join-Path $schemaRoot `
+                'texdig-summary-v03.schema.json') -Raw | ConvertFrom-Json
+
+            $prior.'$id' | Should -BeExactly 'codex-scientiae/texdig-summary/0.2'
+            $prior.properties.schema.const | Should -BeExactly 'texdig-census/0.2'
+            $current.'$id' | Should -BeExactly 'codex-scientiae/texdig-summary/0.3'
+            $current.properties.schema.const | Should -BeExactly 'texdig-census/0.3'
+            (@($current.properties.stores.properties.emitted.const) -join '|') |
+                Should -BeExactly ($script:ExpectedEmittedStores -join '|')
+            (@($current.properties.stores.properties.deferred.const) -join '|') |
+                Should -BeExactly ($script:ExpectedDeferredStores -join '|')
+            foreach ($countName in @('occurrenceCount', 'bindingRowCount', 'invocationCount')) {
+                @($current.required) | Should -Contain $countName
+                $current.properties.$countName.type | Should -BeExactly 'integer'
+                $current.properties.$countName.minimum | Should -Be 0
+            }
+            @($current.properties.storeSchemas.properties.PSObject.Properties).Count |
+                Should -Be $script:ExpectedStoreSchemas.Count
+            foreach ($store in $script:ExpectedStoreSchemas.Keys) {
+                $property = @($current.properties.storeSchemas.properties.PSObject.Properties |
+                    Where-Object { $_.Name -ceq $store })
+                $property.Count | Should -Be 1
+                $property[0].Value.const | Should -BeExactly $script:ExpectedStoreSchemas[$store]
+            }
+        }
+    }
+
     Context 'Frozen Node executable' {
         It 'invokes the explicit NodePath even when PATH cannot resolve node' {
             $outDir = Join-Path $script:ContractRoot 'explicit-node'
@@ -56,7 +99,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             Test-Path -LiteralPath $summaryPath -PathType Leaf | Should -BeTrue
 
             $summary = Get-Content -LiteralPath $summaryPath -Raw | ConvertFrom-Json
-            $summary.schema | Should -BeExactly 'texdig-census/0.2'
+            $summary.schema | Should -BeExactly 'texdig-census/0.3'
             $summary.runtime.node | Should -BeExactly $script:ExpectedNodeVersion
             @($summary.storeSchemas.PSObject.Properties).Count |
                 Should -Be $script:ExpectedStoreSchemas.Count
@@ -66,8 +109,19 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
                 $property.Count | Should -Be 1
                 $property[0].Value | Should -BeExactly $script:ExpectedStoreSchemas[$store]
             }
+            (@($summary.stores.emitted) -join '|') |
+                Should -BeExactly ($script:ExpectedEmittedStores -join '|')
             (@($summary.stores.deferred) -join '|') |
                 Should -BeExactly ($script:ExpectedDeferredStores -join '|')
+            $summary.occurrenceCount | Should -Be @(
+                Get-Content -LiteralPath (Join-Path $outDir 'occurrences.jsonl')).Count
+            $summary.bindingRowCount | Should -Be @(
+                Get-Content -LiteralPath (Join-Path $outDir 'bindings.jsonl')).Count
+            $summary.invocationCount | Should -Be @(
+                Get-Content -LiteralPath (Join-Path $outDir 'invocations.jsonl')).Count
+            $run.OccurrenceCount | Should -Be $summary.occurrenceCount
+            $run.BindingRowCount | Should -Be $summary.bindingRowCount
+            $run.InvocationCount | Should -Be $summary.invocationCount
         }
 
         It 'rejects a relative explicit NodePath instead of resolving it through PATH' {
@@ -119,7 +173,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json', 'sources.jsonl') }
@@ -136,7 +190,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -153,7 +207,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'another_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -170,7 +224,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = 'v0.0.0' }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -204,7 +258,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 stores = @{ emitted = @('summary.json') }
             } | ConvertTo-Json -Depth 4 |
@@ -225,7 +279,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             $storeSchemas['claims.jsonl'] = 'codex-scientiae/texdig-claims/0.1'
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $storeSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -246,10 +300,10 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             Set-Content -LiteralPath (Join-Path $outDir 'extra.jsonl') -Value '{}'
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
-                stores = @{ emitted = @($script:ExpectedStoreSchemas.Keys) + @('extra.jsonl') }
+                stores = @{ emitted = @($script:ExpectedEmittedStores) + @('extra.jsonl') }
             } | ConvertTo-Json -Depth 4 |
                 Set-Content -LiteralPath (Join-Path $outDir 'summary.json')
 
@@ -266,11 +320,11 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             }
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.2'
+                schema = 'texdig-census/0.3'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{
-                    emitted = @($script:ExpectedStoreSchemas.Keys)
+                    emitted = @($script:ExpectedEmittedStores)
                     deferred = @()
                 }
             } | ConvertTo-Json -Depth 4 |
@@ -279,6 +333,74 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             { Read-TeXdigPublishedSummary -RunDirectory $outDir -ExpectedSlug 'mini_article' `
                     -ExpectedNodeVersion $script:ExpectedNodeVersion } |
                 Should -Throw '*incompatible deferred-store contract*'
+        }
+
+        It 'rejects a permutation of the exact emitted-store order' {
+            $outDir = Join-Path $script:ContractRoot 'wrong-emitted-order'
+            New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+            foreach ($store in $script:ExpectedStoreSchemas.Keys) {
+                Set-Content -LiteralPath (Join-Path $outDir $store) -Value '{}'
+            }
+            $permuted = @($script:ExpectedEmittedStores)
+            $permuted[1], $permuted[2] = $permuted[2], $permuted[1]
+            @{
+                slug = 'mini_article'
+                schema = 'texdig-census/0.3'
+                runtime = @{ node = $script:ExpectedNodeVersion }
+                storeSchemas = $script:ExpectedStoreSchemas
+                stores = @{
+                    emitted = $permuted
+                    deferred = $script:ExpectedDeferredStores
+                }
+                occurrenceCount = 0
+                bindingRowCount = 0
+                invocationCount = 0
+            } | ConvertTo-Json -Depth 4 |
+                Set-Content -LiteralPath (Join-Path $outDir 'summary.json')
+
+            { Read-TeXdigPublishedSummary -RunDirectory $outDir -ExpectedSlug 'mini_article' `
+                    -ExpectedNodeVersion $script:ExpectedNodeVersion } |
+                Should -Throw '*incompatible emitted-store order*'
+        }
+
+        It 'requires nonnegative integral execution-store counts' {
+            $outDir = Join-Path $script:ContractRoot 'invalid-execution-counts'
+            New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+            foreach ($store in $script:ExpectedStoreSchemas.Keys) {
+                Set-Content -LiteralPath (Join-Path $outDir $store) -Value '{}'
+            }
+            $summary = [ordered]@{
+                slug = 'mini_article'
+                schema = 'texdig-census/0.3'
+                runtime = @{ node = $script:ExpectedNodeVersion }
+                storeSchemas = $script:ExpectedStoreSchemas
+                stores = @{
+                    emitted = $script:ExpectedEmittedStores
+                    deferred = $script:ExpectedDeferredStores
+                }
+                occurrenceCount = 0
+                invocationCount = 0
+            }
+            $summary | ConvertTo-Json -Depth 4 |
+                Set-Content -LiteralPath (Join-Path $outDir 'summary.json')
+
+            { Read-TeXdigPublishedSummary -RunDirectory $outDir -ExpectedSlug 'mini_article' `
+                    -ExpectedNodeVersion $script:ExpectedNodeVersion } |
+                Should -Throw '*invalid bindingRowCount contract*'
+
+            $summary['bindingRowCount'] = -1
+            $summary | ConvertTo-Json -Depth 4 |
+                Set-Content -LiteralPath (Join-Path $outDir 'summary.json')
+            { Read-TeXdigPublishedSummary -RunDirectory $outDir -ExpectedSlug 'mini_article' `
+                    -ExpectedNodeVersion $script:ExpectedNodeVersion } |
+                Should -Throw '*invalid bindingRowCount contract*'
+
+            $summary['bindingRowCount'] = 1.5
+            $summary | ConvertTo-Json -Depth 4 |
+                Set-Content -LiteralPath (Join-Path $outDir 'summary.json')
+            { Read-TeXdigPublishedSummary -RunDirectory $outDir -ExpectedSlug 'mini_article' `
+                    -ExpectedNodeVersion $script:ExpectedNodeVersion } |
+                Should -Throw '*invalid bindingRowCount contract*'
         }
 
         It 'refuses stale source-tree attribution without publishing a target bundle' {
@@ -345,6 +467,9 @@ const bundle = {
     agreement: "lexical-only",
     agreementBasis: "single-authority"
   }],
+  occurrences: [],
+  bindings: [],
+  invocations: [],
   claims: [],
   coverage: [{
     sourceId,
@@ -407,12 +532,40 @@ function bundle(raw = "abcdefghij") {
     role: "entrypoint",
     parsed: true,
   };
+  const occurrenceId = "occ:probe-root";
   return {
     slug: "probe",
     treeSha256: treeDigest([source]),
     entrypoint: sourceId,
     sources: [source],
     entities: [],
+    occurrences: [{
+      id: occurrenceId,
+      sourceId,
+      includeChain: [sourceId],
+      basis: "manifest-entrypoint",
+      state: "entered",
+      enterSeq: 0,
+      exitSeq: 5,
+    }],
+    bindings: [{
+      rowType: "scope-frame",
+      id: "scope:probe-global",
+      kind: "global",
+      enterSeq: 1,
+      exitSeq: 4,
+      status: "closed",
+    }, {
+      rowType: "scope-frame",
+      id: "scope:probe-document",
+      kind: "document",
+      parentScopeId: "scope:probe-global",
+      occurrenceId,
+      enterSeq: 2,
+      exitSeq: 3,
+      status: "closed",
+    }],
+    invocations: [],
     claims: [],
     coverage: [{
       sourceId,
@@ -538,6 +691,304 @@ console.log(JSON.stringify(cases));
             (@($results | Where-Object name -eq 'source-sha')[0].message) | Should -Match 'SHA-256 does not match'
             (@($results | Where-Object name -eq 'tree-sha')[0].message) | Should -Match 'canonical source-record aggregate'
             (@($results | Where-Object name -eq 'title-span')[0].message) | Should -Match "unsupported field 'titleSpan'"
+        }
+
+        It 'reconstructs closed diagnostics, binding state, restores, and invocation carriers' {
+            $emitPath = (Resolve-Path -LiteralPath (Join-Path $script:RepositoryRoot `
+                'src/TeXdig/census/emit.ts')).Path
+            $emitUri = ([uri] $emitPath).AbsoluteUri
+            $probe = @'
+import crypto from "node:crypto";
+import { validateCensusBundle } from "__EMIT_URI__";
+
+const digest = (buffer) => crypto.createHash("sha256").update(buffer).digest("hex");
+const span = (startUtf16, endUtf16) => ({ sourceId: "main.tex", startUtf16, endUtf16 });
+const signature = { state: "known", spec: "O{d} m" };
+const treeDigest = (source) => digest(Buffer.from(
+  `${source.id}\0${source.bytes}\0${source.sha256}\n`, "utf8"
+));
+
+function bundle() {
+  const raw = String.raw`\foo{A}`;
+  const buffer = Buffer.from(raw, "utf8");
+  const source = {
+    id: "main.tex", sha256: digest(buffer), bytes: buffer.length,
+    lengthUtf16: raw.length, language: "latex", role: "entrypoint", parsed: true,
+  };
+  const occurrenceId = "occ:probe-root";
+  const bindingId = "bind:probe-foo";
+  const entityId = "ent:macro-invocation@main.tex:0-4";
+  return {
+    slug: "execution-probe",
+    treeSha256: treeDigest(source),
+    entrypoint: source.id,
+    sources: [source],
+    entities: [{
+      id: entityId, kind: "macro-invocation", name: "foo", span: span(0, 4),
+      spanProvenance: "lexical",
+      witnesses: [{ witness: "lexical", span: span(0, 4), spanRole: "token" }],
+      agreement: "agreed", agreementBasis: "single-authority",
+    }],
+    occurrences: [{
+      id: occurrenceId, sourceId: source.id, includeChain: [source.id],
+      basis: "manifest-entrypoint", state: "entered", enterSeq: 2, exitSeq: 7,
+    }],
+    bindings: [{
+      rowType: "scope-frame", id: "scope:probe-global", kind: "global",
+      enterSeq: 0, exitSeq: 6, status: "closed",
+    }, {
+      rowType: "binding-event", id: bindingId, seq: 1,
+      executionScopeId: "scope:probe-global", targetScopeId: "scope:probe-global",
+      symbol: { namespace: "control-sequence", name: "foo" },
+      cause: { kind: "baseline" }, operation: "baseline-install", effect: "installed",
+      installedMeaning: { kind: "primitive", name: "foo", signature },
+    }, {
+      rowType: "scope-frame", id: "scope:probe-document", kind: "document",
+      parentScopeId: "scope:probe-global", occurrenceId, enterSeq: 3, exitSeq: 5,
+      status: "closed",
+    }],
+    invocations: [{
+      id: "inv:probe-foo", seq: 4, occurrenceId, entityId, name: "foo",
+      siteKind: "control-sequence", siteSpan: span(0, 4),
+      binding: { state: "bound", bindingEventId: bindingId, signature },
+      span: span(0, 7),
+      arguments: [{
+        slot: 0, kind: "optional", source: "default", delimiter: "none", defaultText: "d",
+      }, {
+        slot: 1, kind: "mandatory", source: "explicit", delimiter: "brace",
+        span: span(4, 7), contentSpan: span(5, 6),
+      }],
+      status: "attached", text: raw,
+    }],
+    claims: [],
+    coverage: [{
+      sourceId: source.id, lengthUtf16: raw.length, claimedUtf16: 4, residueUtf16: 3,
+      residue: [span(4, 7)],
+    }],
+    diagnostics: [],
+    rawBuffers: new Map([[source.id, buffer]]),
+    rawContents: new Map([[source.id, raw]]),
+    runtimeNode: process.version,
+  };
+}
+
+function result(name, mutate) {
+  const specimen = bundle();
+  mutate(specimen);
+  try {
+    validateCensusBundle(specimen);
+    return { name, accepted: true, message: "" };
+  } catch (error) {
+    return { name, accepted: false, message: String(error) };
+  }
+}
+
+function includeBundle(command, targetSyntax, directive, targetRaw, invocationArgument) {
+  const raw = `\\${command}${targetSyntax}`;
+  const specimen = bundle();
+  const buffer = Buffer.from(raw, "utf8");
+  const source = specimen.sources[0];
+  source.sha256 = digest(buffer);
+  source.bytes = buffer.length;
+  source.lengthUtf16 = raw.length;
+  specimen.treeSha256 = treeDigest(source);
+  specimen.rawBuffers.set(source.id, buffer);
+  specimen.rawContents.set(source.id, raw);
+  specimen.coverage[0] = {
+    sourceId: source.id, lengthUtf16: raw.length, claimedUtf16: raw.length, residueUtf16: 0, residue: [],
+  };
+  const site = span(0, command.length + 1);
+  const entity = {
+    id: `ent:include@main.tex:0-${raw.length}`,
+    kind: "include", directive, targetRaw, span: span(0, raw.length),
+    spanProvenance: "lexical",
+    witnesses: [{ witness: "lexical", span: site, spanRole: "token" }],
+    agreement: "agreed", agreementBasis: "single-authority",
+  };
+  specimen.entities = [entity];
+  const event = specimen.bindings[1];
+  event.symbol.name = command;
+  event.installedMeaning.name = command;
+  event.installedMeaning.signature = { state: "known", spec: "m" };
+  const invocation = specimen.invocations[0];
+  invocation.entityId = entity.id;
+  invocation.name = command;
+  invocation.siteSpan = site;
+  invocation.binding.signature = { state: "known", spec: "m" };
+  invocation.span = span(0, raw.length);
+  invocation.arguments = [invocationArgument];
+  invocation.text = raw;
+  return specimen;
+}
+
+function validationResult(specimen) {
+  try {
+    validateCensusBundle(specimen);
+    return { accepted: true, message: "" };
+  } catch (error) {
+    return { accepted: false, message: String(error) };
+  }
+}
+
+function catcodeArgumentBundle() {
+  const raw = String.raw`\foo\a@b`;
+  const specimen = bundle();
+  const buffer = Buffer.from(raw, "utf8");
+  const source = specimen.sources[0];
+  source.sha256 = digest(buffer);
+  source.bytes = buffer.length;
+  source.lengthUtf16 = raw.length;
+  specimen.treeSha256 = treeDigest(source);
+  specimen.rawBuffers.set(source.id, buffer);
+  specimen.rawContents.set(source.id, raw);
+  specimen.coverage[0] = {
+    sourceId: source.id, lengthUtf16: raw.length, claimedUtf16: raw.length, residueUtf16: 0, residue: [],
+  };
+  specimen.entities.push({
+    id: "ent:macro-invocation@main.tex:4-8", kind: "macro-invocation", name: "a@b", span: span(4, 8),
+    spanProvenance: "lexical",
+    witnesses: [{ witness: "lexical", span: span(4, 8), spanRole: "token" }],
+    agreement: "agreed", agreementBasis: "single-authority",
+  });
+  const invocation = specimen.invocations[0];
+  invocation.span = span(0, 8);
+  invocation.arguments[1] = {
+    slot: 1, kind: "mandatory", source: "explicit", delimiter: "control-sequence",
+    span: span(4, 8), contentSpan: span(4, 8),
+  };
+  invocation.text = raw;
+  return specimen;
+}
+
+const cases = [];
+cases.push(result("closed-diagnostic", (value) => value.diagnostics.push({
+  code: "census/residue", severity: "warning", message: "probe", extra: true,
+})));
+cases.push(result("missing-diagnostic-message", (value) => value.diagnostics.push({
+  code: "census/residue", severity: "warning",
+})));
+cases.push(result("invalid-diagnostic-severity", (value) => value.diagnostics.push({
+  code: "census/residue", severity: "fatal", message: "probe",
+})));
+cases.push(result("restore-field", (value) => {
+  value.bindings[1].restoredBindingEventId = value.bindings[1].id;
+}));
+cases.push(result("relabeled-baseline", (value) => {
+  value.bindings[1].installedMeaning.name = "bar";
+}));
+cases.push(result("restore-correlation", (value) => {
+  const event = value.bindings[1];
+  event.operation = "restore";
+  event.effect = "restored";
+  event.cause = { kind: "scope-exit", scopeId: "scope:probe-document" };
+  event.executionScopeId = "scope:probe-document";
+  event.targetScopeId = "scope:probe-global";
+  event.restoredBindingEventId = event.id;
+}));
+cases.push(result("carrier-name", (value) => {
+  value.invocations[0].name = "bar";
+}));
+cases.push(result("stale-binding", (value) => {
+  const original = value.bindings[1];
+  value.bindings.push({
+    rowType: "binding-event", id: "bind:probe-later", seq: 4,
+    executionScopeId: "scope:probe-document", targetScopeId: "scope:probe-global",
+    symbol: { namespace: "control-sequence", name: "foo" },
+    cause: { kind: "baseline" }, operation: "baseline-install", effect: "installed",
+    priorBindingEventId: original.id,
+    installedMeaning: { kind: "primitive", name: "foo", signature },
+  });
+  value.invocations[0].seq = 5;
+  value.bindings[2].exitSeq = 6;
+  value.bindings[0].exitSeq = 7;
+  value.occurrences[0].exitSeq = 8;
+}));
+cases.push(result("attachment", (value) => {
+  value.invocations[0].span = span(0, 4);
+  value.invocations[0].arguments = [];
+  value.invocations[0].text = String.raw`\foo`;
+}));
+cases.push(result("default-vs-omitted", (value) => {
+  const argument = value.invocations[0].arguments[0];
+  argument.source = "omitted";
+  delete argument.defaultText;
+}));
+cases.push(result("unbound-current", (value) => {
+  const invocation = value.invocations[0];
+  invocation.binding = { state: "unbound" };
+  invocation.status = "unbound";
+  invocation.span = span(0, 4);
+  invocation.arguments = [];
+  invocation.text = String.raw`\foo`;
+}));
+cases.push(result("indeterminate-current", (value) => {
+  const invocation = value.invocations[0];
+  invocation.binding = { state: "indeterminate", causeIds: ["bind:bogus"], detail: "bogus" };
+  invocation.status = "indeterminate";
+  invocation.span = span(0, 4);
+  invocation.arguments = [];
+  invocation.text = String.raw`\foo`;
+}));
+cases.push(result("deferred-hull", (value) => {
+  value.invocations[0].binding = { state: "deferred", reason: "argument-body" };
+  value.invocations[0].status = "deferred";
+}));
+let valid = { accepted: true, message: "" };
+try {
+  validateCensusBundle(bundle());
+} catch (error) {
+  valid = { accepted: false, message: String(error) };
+}
+const bareInput = validationResult(includeBundle(
+  "input", "leaf.tex", "input", "leaf.tex",
+  { slot: 0, kind: "until", source: "explicit", delimiter: "none", span: span(6, 14), contentSpan: span(6, 14) }
+));
+const bracedSubfile = validationResult(includeBundle(
+  "subfile", "{leaf}", "include", "leaf",
+  { slot: 0, kind: "mandatory", source: "explicit", delimiter: "brace", span: span(8, 14), contentSpan: span(9, 13) }
+));
+const catcodeArgument = validationResult(catcodeArgumentBundle());
+console.log(JSON.stringify({ valid, bareInput, bracedSubfile, catcodeArgument, cases }));
+'@.Replace('__EMIT_URI__', $emitUri)
+
+            $probeOutput = @(& $script:ResolvedNodePath --input-type=module --eval $probe 2>&1)
+            $probeExitCode = $LASTEXITCODE
+            $global:LASTEXITCODE = 0
+            $probeExitCode | Should -Be 0
+            $payload = ($probeOutput -join "`n") | ConvertFrom-Json
+            $payload.valid.accepted | Should -BeTrue -Because $payload.valid.message
+            $payload.bareInput.accepted | Should -BeTrue -Because $payload.bareInput.message
+            $payload.bracedSubfile.accepted | Should -BeTrue -Because $payload.bracedSubfile.message
+            $payload.catcodeArgument.accepted | Should -BeTrue -Because $payload.catcodeArgument.message
+            $results = $payload.cases
+
+            @($results | Where-Object accepted).Count | Should -Be 0
+            (@($results | Where-Object name -eq 'closed-diagnostic')[0].message) |
+                Should -Match "unsupported field 'extra'"
+            (@($results | Where-Object name -eq 'missing-diagnostic-message')[0].message) |
+                Should -Match "missing required field 'message'"
+            (@($results | Where-Object name -eq 'invalid-diagnostic-severity')[0].message) |
+                Should -Match "invalid 'severity' value 'fatal'"
+            (@($results | Where-Object name -eq 'restore-field')[0].message) |
+                Should -Match 'restoredBindingEventId outside a restore operation'
+            (@($results | Where-Object name -eq 'relabeled-baseline')[0].message) |
+                Should -Match 'baseline meaning contradicts its symbol'
+            (@($results | Where-Object name -eq 'restore-correlation')[0].message) |
+                Should -Match 'invalid restored binding correlation'
+            (@($results | Where-Object name -eq 'carrier-name')[0].message) |
+                Should -Match 'contradicts its exact physical carrier'
+            (@($results | Where-Object name -eq 'stale-binding')[0].message) |
+                Should -Match 'does not name its current governing binding'
+            (@($results | Where-Object name -eq 'attachment')[0].message) |
+                Should -Match 'attachment contradicts exact source and signature'
+            (@($results | Where-Object name -eq 'default-vs-omitted')[0].message) |
+                Should -Match 'attachment contradicts exact source and signature'
+            (@($results | Where-Object name -eq 'unbound-current')[0].message) |
+                Should -Match 'reports unbound despite a current binding'
+            (@($results | Where-Object name -eq 'indeterminate-current')[0].message) |
+                Should -Match 'indeterminate evidence contradicts current binding state'
+            (@($results | Where-Object name -eq 'deferred-hull')[0].message) |
+                Should -Match 'non-bound state is not token-only'
         }
     }
 }

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-occurrences/0.3",
+  "title": "TeXdig 0.3 source occurrence",
+  "x-identity": ["/id"],
+  "type": "object",
+  "required": [
+    "id",
+    "sourceId",
+    "includeChain",
+    "basis",
+    "state",
+    "enterSeq",
+    "exitSeq"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^occ:" },
+    "sourceId": { "type": "string", "minLength": 1 },
+    "parentOccurrenceId": { "type": "string", "pattern": "^occ:" },
+    "includeEntityId": { "type": "string", "pattern": "^ent:" },
+    "includeChain": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "basis": { "enum": ["manifest-entrypoint", "literal-directive"] },
+    "state": { "enum": ["entered", "cycle-cut", "deferred-context"] },
+    "enterSeq": { "type": "integer", "minimum": 0 },
+    "exitSeq": { "type": "integer", "minimum": 0 },
+    "cycleTargetOccurrenceId": { "type": "string", "pattern": "^occ:" },
+    "deferredReason": {
+      "enum": ["definition-body", "conditional", "argument-body", "unknown-context"]
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "basis": { "const": "manifest-entrypoint" },
+        "state": { "const": "entered" }
+      },
+      "not": {
+        "anyOf": [
+          { "required": ["parentOccurrenceId"] },
+          { "required": ["includeEntityId"] },
+          { "required": ["cycleTargetOccurrenceId"] },
+          { "required": ["deferredReason"] }
+        ]
+      }
+    },
+    {
+      "properties": {
+        "basis": { "const": "literal-directive" },
+        "state": { "const": "entered" }
+      },
+      "required": ["parentOccurrenceId", "includeEntityId"],
+      "not": {
+        "anyOf": [
+          { "required": ["cycleTargetOccurrenceId"] },
+          { "required": ["deferredReason"] }
+        ]
+      }
+    },
+    {
+      "properties": {
+        "basis": { "const": "literal-directive" },
+        "state": { "const": "cycle-cut" }
+      },
+      "required": ["parentOccurrenceId", "includeEntityId", "cycleTargetOccurrenceId"],
+      "not": { "required": ["deferredReason"] }
+    },
+    {
+      "properties": {
+        "basis": { "const": "literal-directive" },
+        "state": { "const": "deferred-context" }
+      },
+      "required": ["parentOccurrenceId", "includeEntityId", "deferredReason"],
+      "not": { "required": ["cycleTargetOccurrenceId"] }
+    }
+  ],
+  "additionalProperties": false
+}

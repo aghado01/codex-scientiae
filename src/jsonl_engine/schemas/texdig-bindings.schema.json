@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-bindings/0.3",
+  "title": "TeXdig 0.3 binding row",
+  "x-identity": ["/id"],
+  "$defs": {
+    "span": {
+      "type": "object",
+      "required": ["sourceId", "startUtf16", "endUtf16"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "startUtf16": { "type": "integer", "minimum": 0 },
+        "endUtf16": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "signature": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["state", "spec"],
+          "properties": {
+            "state": { "const": "known" },
+            "spec": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state", "detail"],
+          "properties": {
+            "state": { "const": "custom-parser" },
+            "detail": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["state"],
+          "properties": {
+            "state": { "const": "unknown" },
+            "detail": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "symbol": {
+      "type": "object",
+      "required": ["namespace", "name"],
+      "properties": {
+        "namespace": { "enum": ["control-sequence", "environment"] },
+        "name": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "meaning": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "entityId", "availability", "signature"],
+          "properties": {
+            "kind": { "const": "declaration" },
+            "entityId": { "type": "string", "pattern": "^ent:" },
+            "availability": { "enum": ["body", "signature-only", "opaque"] },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "name", "signature"],
+          "properties": {
+            "kind": { "const": "primitive" },
+            "name": { "type": "string" },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "sourceBindingEventId", "signature"],
+          "properties": {
+            "kind": { "const": "captured" },
+            "sourceBindingEventId": { "type": "string", "pattern": "^bind:" },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "text", "catcode", "signature"],
+          "properties": {
+            "kind": { "const": "character-token" },
+            "text": { "type": "string" },
+            "catcode": { "const": "unknown" },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "reason", "signature"],
+          "properties": {
+            "kind": { "const": "opaque" },
+            "entityId": { "type": "string", "pattern": "^ent:" },
+            "reason": { "type": "string" },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "reason", "causeIds", "signature"],
+          "properties": {
+            "kind": { "const": "indeterminate" },
+            "reason": { "type": "string" },
+            "causeIds": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "signature": { "$ref": "#/$defs/signature" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "cause": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "entityId", "siteSpan"],
+          "properties": {
+            "kind": { "const": "physical-declaration" },
+            "entityId": { "type": "string", "pattern": "^ent:" },
+            "siteSpan": { "$ref": "#/$defs/span" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "summonId", "entityId"],
+          "properties": {
+            "kind": { "const": "configured" },
+            "summonId": { "type": "string", "pattern": "^summon:" },
+            "entityId": { "type": "string", "pattern": "^ent:" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind"],
+          "properties": { "kind": { "const": "baseline" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "scopeId"],
+          "properties": {
+            "kind": { "const": "scope-exit" },
+            "scopeId": { "type": "string", "pattern": "^scope:" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "scopeFrame": {
+      "type": "object",
+      "required": ["rowType", "id", "kind", "enterSeq", "status"],
+      "properties": {
+        "rowType": { "const": "scope-frame" },
+        "id": { "type": "string", "pattern": "^scope:" },
+        "kind": { "enum": ["global", "document", "brace-group", "environment", "begingroup"] },
+        "parentScopeId": { "type": "string", "pattern": "^scope:" },
+        "occurrenceId": { "type": "string", "pattern": "^occ:" },
+        "enterSeq": { "type": "integer", "minimum": 0 },
+        "exitSeq": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["open", "closed", "unterminated", "indeterminate"] },
+        "openSpan": { "$ref": "#/$defs/span" },
+        "closeSpan": { "$ref": "#/$defs/span" },
+        "openText": { "type": "string" },
+        "closeText": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "configuredSummon": {
+      "type": "object",
+      "required": [
+        "rowType",
+        "id",
+        "seq",
+        "occurrenceId",
+        "scopeId",
+        "physicalEntityId",
+        "command",
+        "targetOrdinal",
+        "packageName",
+        "siteSpan",
+        "targetSpan",
+        "text",
+        "outcome",
+        "candidateEntityIds"
+      ],
+      "properties": {
+        "rowType": { "const": "configured-summon" },
+        "id": { "type": "string", "pattern": "^summon:" },
+        "seq": { "type": "integer", "minimum": 0 },
+        "occurrenceId": { "type": "string", "pattern": "^occ:" },
+        "scopeId": { "type": "string", "pattern": "^scope:" },
+        "physicalEntityId": { "type": "string", "pattern": "^ent:" },
+        "command": { "enum": ["documentclass", "usepackage", "RequirePackage"] },
+        "targetOrdinal": { "type": "integer", "minimum": 0 },
+        "packageName": { "type": "string" },
+        "siteSpan": { "$ref": "#/$defs/span" },
+        "targetSpan": { "$ref": "#/$defs/span" },
+        "optionsSpan": { "$ref": "#/$defs/span" },
+        "optionsText": { "type": "string" },
+        "text": { "type": "string" },
+        "outcome": { "enum": ["loaded", "already-loaded", "unconfigured", "indeterminate"] },
+        "candidateEntityIds": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^ent:" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "bindingEvent": {
+      "type": "object",
+      "required": [
+        "rowType",
+        "id",
+        "seq",
+        "executionScopeId",
+        "targetScopeId",
+        "symbol",
+        "cause",
+        "operation",
+        "effect"
+      ],
+      "properties": {
+        "rowType": { "const": "binding-event" },
+        "id": { "type": "string", "pattern": "^bind:" },
+        "seq": { "type": "integer", "minimum": 0 },
+        "occurrenceId": { "type": "string", "pattern": "^occ:" },
+        "executionScopeId": { "type": "string", "pattern": "^scope:" },
+        "targetScopeId": { "type": "string", "pattern": "^scope:" },
+        "symbol": { "$ref": "#/$defs/symbol" },
+        "cause": { "$ref": "#/$defs/cause" },
+        "operation": {
+          "enum": [
+            "new",
+            "renew",
+            "provide",
+            "assign",
+            "global-assign",
+            "expanded-assign",
+            "global-expanded-assign",
+            "let-capture",
+            "configured-install",
+            "baseline-install",
+            "restore"
+          ]
+        },
+        "effect": {
+          "enum": [
+            "installed",
+            "skipped-existing",
+            "invalid-precondition",
+            "restored",
+            "indeterminate"
+          ]
+        },
+        "priorBindingEventId": { "type": "string", "pattern": "^bind:" },
+        "restoredBindingEventId": { "type": "string", "pattern": "^bind:" },
+        "installedMeaning": { "$ref": "#/$defs/meaning" },
+        "text": { "type": "string" }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "operation": { "const": "restore" },
+            "cause": {
+              "properties": { "kind": { "const": "scope-exit" } },
+              "required": ["kind"]
+            },
+            "effect": { "const": "restored" }
+          }
+        },
+        {
+          "properties": {
+            "operation": { "const": "baseline-install" },
+            "cause": {
+              "properties": { "kind": { "const": "baseline" } },
+              "required": ["kind"]
+            },
+            "effect": { "enum": ["installed", "indeterminate"] }
+          },
+          "not": { "required": ["restoredBindingEventId"] }
+        },
+        {
+          "properties": {
+            "operation": { "const": "configured-install" },
+            "cause": {
+              "properties": { "kind": { "const": "configured" } },
+              "required": ["kind"]
+            },
+            "effect": { "enum": ["installed", "indeterminate"] }
+          },
+          "not": { "required": ["restoredBindingEventId"] }
+        },
+        {
+          "properties": {
+            "operation": { "enum": ["new", "renew"] },
+            "cause": {
+              "properties": { "kind": { "const": "physical-declaration" } },
+              "required": ["kind"]
+            },
+            "effect": { "enum": ["installed", "invalid-precondition", "indeterminate"] }
+          },
+          "not": { "required": ["restoredBindingEventId"] }
+        },
+        {
+          "properties": {
+            "operation": { "const": "provide" },
+            "cause": {
+              "properties": { "kind": { "const": "physical-declaration" } },
+              "required": ["kind"]
+            },
+            "effect": { "enum": ["installed", "skipped-existing", "indeterminate"] }
+          },
+          "not": { "required": ["restoredBindingEventId"] }
+        },
+        {
+          "properties": {
+            "operation": {
+              "enum": [
+                "assign",
+                "global-assign",
+                "expanded-assign",
+                "global-expanded-assign",
+                "let-capture"
+              ]
+            },
+            "cause": {
+              "properties": { "kind": { "const": "physical-declaration" } },
+              "required": ["kind"]
+            },
+            "effect": { "enum": ["installed", "indeterminate"] }
+          },
+          "not": { "required": ["restoredBindingEventId"] }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "declarationDisposition": {
+      "type": "object",
+      "required": ["rowType", "id", "seq", "occurrenceId", "entityId", "reason", "text"],
+      "properties": {
+        "rowType": { "const": "declaration-disposition" },
+        "id": { "type": "string", "pattern": "^disposition:" },
+        "seq": { "type": "integer", "minimum": 0 },
+        "occurrenceId": { "type": "string", "pattern": "^occ:" },
+        "entityId": { "type": "string", "pattern": "^ent:" },
+        "reason": { "enum": ["definition-body", "conditional", "argument-body", "unknown-context"] },
+        "text": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/scopeFrame" },
+    { "$ref": "#/$defs/configuredSummon" },
+    { "$ref": "#/$defs/bindingEvent" },
+    { "$ref": "#/$defs/declarationDisposition" }
+  ]
+}

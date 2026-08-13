@@ -32,6 +32,8 @@ import {
 export interface IncludeEdge {
   fromSourceId: SourceId;
   toSourceId?: SourceId;
+  /** Physical command spelling (`input`, `include`, or normalized alias such as `subfile`). */
+  command: string;
   directive: IncludeDirective;
   targetRaw: string;
   /** Full directive site: csname through closing brace / bare-word target. */
@@ -290,6 +292,7 @@ export function buildSourceGraph(treeDir: string, entrypointRel: string): Source
         includeEdges.push({
           fromSourceId: sourceId,
           toSourceId: resolvedId,
+          command: sighting.command,
           directive: sighting.directive,
           targetRaw: target.targetRaw,
           span: sighting.span,
