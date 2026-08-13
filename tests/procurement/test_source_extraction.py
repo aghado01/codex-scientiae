@@ -1,4 +1,4 @@
-"""Safe source-archive extraction and LaTeX-tree inspection contracts."""
+"""Safe source-archive extraction contracts."""
 
 from __future__ import annotations
 
@@ -13,16 +13,10 @@ from pathlib import Path
 
 from jsonl_engine.deposit import _fingerprint_tree as deposit_fingerprint_tree
 from jsonl_engine.publication import PinnedPublicationRoot
-from procurement.source.archive import (
-    ArchiveLimits,
-    LatexSourceError,
-    LatexSourceInspector,
-    SourceArchiveError,
-    SourceArchiveExtractor,
-    extract_source_archive,
-    fingerprint_source_tree,
-    inspect_latex_source_tree,
-)
+from procurement.source.contracts import ArchiveLimits, SourceArchiveError
+from procurement.source.extraction import SourceArchiveExtractor, extract_source_archive
+from procurement.source.latex import LatexSourceInspector, inspect_latex_source_tree
+from procurement.source.tree import fingerprint_source_tree
 
 
 def _limits(**overrides: int) -> ArchiveLimits:
@@ -82,7 +76,7 @@ def _directory(name: str) -> tuple[str, None, bytes, None]:
     return name, None, tarfile.DIRTYPE, None
 
 
-class SourceArchiveTests(unittest.TestCase):
+class SourceExtractionTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
@@ -292,27 +286,6 @@ class SourceArchiveTests(unittest.TestCase):
                 self.assertFalse(os.path.lexists(destination))
                 self.assertNoPayloadScratch(destination)
 
-    def test_entrypoint_selection_is_explicit_deterministic_and_ambiguity_visible(self) -> None:
-        source = b"\\documentclass{article}\n\\begin{document}x\\end{document}\n"
-        tree = self.root / "entrypoints"
-        tree.mkdir()
-        (tree / "paper.tex").write_bytes(source)
-        (tree / "other.tex").write_bytes(source)
-
-        with self.assertRaisesRegex(LatexSourceError, "ambiguous"):
-            inspect_latex_source_tree(tree)
-        selected = inspect_latex_source_tree(tree, slug="paper")
-        self.assertEqual("paper.tex", selected.entrypoint)
-        self.assertEqual("preferred-name:paper.tex", selected.entrypoint_selection)
-        explicit = inspect_latex_source_tree(tree, main_tex="other.tex")
-        self.assertEqual("other.tex", explicit.entrypoint)
-        self.assertEqual("explicit", explicit.entrypoint_selection)
-
-        (tree / "main.tex").write_bytes(source)
-        preferred = inspect_latex_source_tree(tree)
-        self.assertEqual("main.tex", preferred.entrypoint)
-        self.assertEqual("preferred-name:main.tex", preferred.entrypoint_selection)
-
     def test_archive_paths_must_be_normalized_portable_relatives(self) -> None:
         invalid = (
             "../escape.tex",
@@ -340,20 +313,6 @@ class SourceArchiveTests(unittest.TestCase):
                 self.assertFalse(os.path.lexists(destination))
                 self.assertNoPayloadScratch(destination)
         self.assertFalse((self.root / "escape.tex").exists())
-
-    def test_limit_configuration_rejects_non_integer_and_inconsistent_values(self) -> None:
-        with self.assertRaisesRegex(ValueError, "positive integer"):
-            ArchiveLimits(max_entries=True)
-        with self.assertRaisesRegex(ValueError, "non-negative integer"):
-            ArchiveLimits(max_input_depth=False)
-        with self.assertRaisesRegex(ValueError, "cannot exceed"):
-            ArchiveLimits(max_extracted_bytes=1, max_member_bytes=2)
-
-        tree = self.root / "wrong-limits"
-        tree.mkdir()
-        (tree / "file.txt").write_bytes(b"x")
-        with self.assertRaisesRegex(TypeError, "ArchiveLimits"):
-            fingerprint_source_tree(tree, limits=False)  # type: ignore[arg-type]
 
     def test_links_and_special_tar_members_are_rejected_without_residue(self) -> None:
         unsafe = (
@@ -449,118 +408,6 @@ class SourceArchiveTests(unittest.TestCase):
         with self.assertRaisesRegex(SourceArchiveError, "already exists"):
             extract_source_archive(archive, destination)
         self.assertEqual("caller", marker.read_text(encoding="utf-8"))
-
-    def test_inspection_requires_strict_utf8_for_every_tex_file(self) -> None:
-        tree = self.root / "invalid-tex"
-        tree.mkdir()
-        (tree / "main.tex").write_text(
-            "\\documentclass{article}\n\\begin{document}x\\end{document}\n",
-            encoding="utf-8",
-        )
-        (tree / "unused.tex").write_bytes(b"\xff")
-        with self.assertRaisesRegex(LatexSourceError, "not valid UTF-8"):
-            inspect_latex_source_tree(tree)
-
-    def test_input_resolution_rejects_escape_missing_cycle_and_depth_overflow(self) -> None:
-        cases = {
-            "escape": (
-                b"\\documentclass{article}\n\\input{../outside}\n\\begin{document}x",
-                {},
-                _limits(),
-                "dot path segment",
-            ),
-            "backslash": (
-                b"\\documentclass{article}\n\\input{dir\\file}\n\\begin{document}x",
-                {},
-                _limits(),
-                "backslash",
-            ),
-            "missing": (
-                b"\\documentclass{article}\n\\input{missing}\n\\begin{document}x",
-                {},
-                _limits(),
-                "unresolved",
-            ),
-            "cycle": (
-                b"\\documentclass{article}\n\\input{a}\n\\begin{document}x",
-                {"a.tex": b"\\input{main}"},
-                _limits(),
-                "cyclic",
-            ),
-            "depth": (
-                b"\\documentclass{article}\n\\input{a}\n\\begin{document}x",
-                {"a.tex": b"fragment"},
-                _limits(max_input_depth=0),
-                "depth limit",
-            ),
-        }
-        for name, (main, extras, limits, expected) in cases.items():
-            with self.subTest(name=name):
-                tree = self.root / f"input-{name}"
-                tree.mkdir()
-                (tree / "main.tex").write_bytes(main)
-                for relative, body in extras.items():
-                    (tree / relative).write_bytes(body)
-                with self.assertRaisesRegex(LatexSourceError, expected):
-                    inspect_latex_source_tree(tree, limits=limits)
-
-    def test_resolved_source_size_and_document_marker_are_required(self) -> None:
-        large = self.root / "large-resolved"
-        large.mkdir()
-        (large / "main.tex").write_text(
-            "\\documentclass{article}\n\\begin{document}" + ("x" * 100),
-            encoding="utf-8",
-        )
-        with self.assertRaisesRegex(LatexSourceError, "resolved LaTeX source exceeds"):
-            inspect_latex_source_tree(large, limits=_limits(max_resolved_bytes=40))
-
-        incomplete = self.root / "no-document"
-        incomplete.mkdir()
-        (incomplete / "main.tex").write_text(
-            "\\documentclass{article}\nNo document environment.\n",
-            encoding="utf-8",
-        )
-        with self.assertRaisesRegex(LatexSourceError, "no document environment"):
-            inspect_latex_source_tree(incomplete)
-
-    def test_non_tex_literal_input_is_strictly_decoded_and_fingerprinted(self) -> None:
-        tree = self.root / "literal-input"
-        tree.mkdir()
-        (tree / "main.tex").write_text(
-            "\\documentclass{article}\n\\input{fragment}\n",
-            encoding="utf-8",
-        )
-        (tree / "fragment").write_text(
-            "\\author{Literal Input}\n\\begin{document}x\\end{document}\n",
-            encoding="utf-8",
-        )
-        inspection = inspect_latex_source_tree(tree)
-        self.assertEqual(("Literal Input",), inspection.embedded_metadata.authors_tex)
-        self.assertEqual(2, inspection.file_count)
-        self.assertEqual(1, inspection.tex_file_count)
-
-        (tree / "fragment").write_bytes(b"\xff")
-        with self.assertRaisesRegex(LatexSourceError, "not valid UTF-8"):
-            inspect_latex_source_tree(tree)
-
-    def test_tree_fingerprint_is_sorted_and_deterministic(self) -> None:
-        tree = self.root / "fingerprint"
-        tree.mkdir()
-        (tree / "z.tex").write_bytes(b"z")
-        (tree / "A.txt").write_bytes(b"a")
-        sub = tree / "sub"
-        sub.mkdir()
-        (sub / "b.tex").write_bytes(b"b")
-
-        first = fingerprint_source_tree(tree)
-        second = fingerprint_source_tree(tree)
-        self.assertEqual(first, second)
-        self.assertEqual(("A.txt", "sub/b.tex", "z.tex"), tuple(item.path for item in first.files))
-        deposit_hash, deposit_count, deposit_tex = deposit_fingerprint_tree(str(tree))
-        self.assertEqual(
-            (deposit_hash, deposit_count, deposit_tex),
-            (first.sha256, first.count, first.tex_count),
-        )
 
 
 if __name__ == "__main__":

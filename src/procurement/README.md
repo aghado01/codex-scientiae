@@ -13,7 +13,7 @@ configuration/       validated configuration models and data loading
 domain/              immutable work, discovery, provider, metadata, deposit, and operation contracts
 operations/          discovery, metadata, acquisition, materialization, and catalog use cases
 providers/           provider declarations and adapters
-source/              archive and LaTeX validation plus source findings
+source/              source contracts, extraction, tree identity, LaTeX inspection, and findings
 storage/             acquisition/deposit transactions, catalog roots, and schema-backed persistence
 transport/           HTTP policy and transport primitives
 ```

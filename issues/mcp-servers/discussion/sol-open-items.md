@@ -1,4 +1,4 @@
-The package cut, root/store kernel, acquisition/local-import pinning, engine publication completion, and source-materialization pinning are implemented without compatibility modules. The next milestone is the remaining domain and MCP decomposition.
+The package cut, root/store kernel, acquisition/local-import pinning, engine publication completion, source-materialization pinning, and domain/MCP decomposition are implemented without compatibility modules. The next milestone is provider expansion and the versioned PDF-backed article profile.
 
 The earlier provider-catalog resumption notes are superseded. This file tracks the post-cut sequence.
 
@@ -21,7 +21,7 @@ flowchart LR
     C --> D["Acquisition and local-import pinning complete"]
     D --> E["Engine publication completion complete"]
     E --> F["Source-materialization pinning complete"]
-    F --> G["Remaining domain and MCP decomposition"]
+    F --> G["Remaining domain and MCP decomposition complete"]
     G --> H["Providers, PDF profile, and live cutover"]
 ```
 
@@ -35,7 +35,7 @@ staging.py                -> storage/acquisitions.py
 source.py storage half    -> storage/source_deposits.py
 source.py request models  -> domain/materialization.py
 source.py findings        -> source/findings.py
-archive.py                -> source/archive.py
+archive.py                -> source/{contracts,_safety,extraction,tree,latex}.py
 http.py                   -> transport/http.py
 settings.py               -> configuration/models.py + loader.py
 ProcurementApplication    -> application.py
@@ -45,7 +45,8 @@ The named catalog/root registry now belongs to `storage/catalogs.py`. `storage/s
 
 The cut is mechanically reviewable: direct import changes, no compatibility files, and an `rg` and import-spec gate proving the old paths have disappeared.
 
-The remaining `models.py` and `payloads.py` split follows pinning. Those files do not obstruct filesystem correctness.
+The later domain cut deleted `models.py` and `payloads.py`; their contracts now have focused canonical
+modules under `domain/`.
 
 ### 2. Root and store kernel — implemented
 
@@ -125,16 +126,23 @@ Archive reads and extraction writes are handle/descriptor relative throughout th
 
 Source materialization does not need a second journal. Its persistent pre-sentinel components are immutable and independently validated, so a retry adopts only matching archive, PDF, metadata, and final-tree state. The sole mutable intermediate is exact PID-plus-process-serial private tree scratch; the source lease owns its recursive no-follow sweep. An interruption immediately before the sentinel has a regression proving byte- and mtime-stable recovery without a second metadata request.
 
-### 6. Remaining organization
+### 6. Remaining organization — implemented
 
-After the transactions are sound:
+The behavior-preserving hard cuts are complete:
 
-- split `models.py` into works, discovery, metadata, and common value types;
-- split `payloads.py` into acquisition domain contracts;
-- split archive extraction from LaTeX inspection;
-- decompose MCP registration into tool-family modules;
-- then add BioRxiv, actual Sci-Hub access, compliant endpoint pools, and the versioned PDF-backed article profile.
+- `models.py` is split into base values, deposits, works, discovery, provider, and metadata contracts;
+- `payloads.py` is split into acquisition planning and receipt contracts;
+- source contracts, archive extraction, tree identity, and LaTeX inspection have distinct modules;
+- MCP composition, runtime context, protocol contracts, and six tool families have distinct modules.
+
+The former modules were deleted rather than retained as compatibility facades. Serialized model schemas,
+acquisition receipts, extraction policy, MCP tool schemas, prompts, and materialization ordering remain
+unchanged. Further decomposition should follow a concrete behavior boundary rather than module size alone.
+
+The next feature sequence is compliant endpoint-pool and retry policy, BioRxiv, actual Sci-Hub access, and
+the versioned PDF-backed article profile. Those are protocol or provider changes rather than part of this
+behavior-preserving package cut.
 
 One nuance: eliminating Python import compatibility does not mean silently weakening persisted evidence contracts. Schema changes should still be deliberate and versioned.
 
-Overall, the filesystem transaction foundation is now coherent from configured roots through acquisition, source publication, article sentinel, and inventory rebuild. The next move is the remaining domain/MCP decomposition before adding providers or a PDF-backed article profile.
+Overall, the filesystem transaction foundation and package dependency direction are coherent from configured roots through acquisition, source publication, article sentinel, inventory rebuild, and MCP projection. The next move is explicit provider/network policy before adding provider adapters or a PDF-backed article profile.

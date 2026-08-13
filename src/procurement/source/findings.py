@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from procurement.source.archive import ArchiveExtraction, LatexSourceInspection
+from procurement.source.extraction import ArchiveExtraction
+from procurement.source.latex import LatexSourceInspection
 
 
 def build_source_findings(

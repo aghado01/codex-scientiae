@@ -20,7 +20,7 @@ from procurement.providers import (
     get_builtin_provider_factory_catalog,
 )
 from procurement.providers.base import Capability, ProviderRole
-from procurement.source.archive import ArchiveLimits
+from procurement.source.contracts import ArchiveLimits
 from procurement.storage.acquisitions import AcquisitionStore
 from procurement.storage.catalogs import ArticleCatalogRoots
 from procurement.storage.roots import (

@@ -6,6 +6,11 @@ or cross-provider workflows. Provider arguments are names validated by the backe
 schemas do not duplicate a fixed provider enum. `list_procurement_providers` reports the current category,
 roles, capabilities, and honored search constraints.
 
+`server.py` is the composition and lifespan owner. Protocol-only request aliases and response projections
+live in `contracts.py`, shared request context and cancellation handling live in `runtime.py`, and concrete
+handlers are registered in protocol order from the modules under `tools/`. Tool modules resolve application
+services only through the active MCP request context.
+
 Run the stdio server from the repository environment:
 
 ```pwsh

@@ -1,1 +1,1 @@
-"""LaTeX source validation and evidence submodules."""
+"""Source extraction, tree identity, LaTeX inspection, and evidence."""

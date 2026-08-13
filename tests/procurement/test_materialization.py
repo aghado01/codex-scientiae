@@ -28,14 +28,10 @@ from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
 )
-from procurement.source.archive import (
-    ArchiveExtraction,
-    EmbeddedLatexMetadata,
-    LatexSourceInspection,
-    SourceArchiveExtractor,
-    TreeFile,
-)
+from procurement.source.extraction import ArchiveExtraction, SourceArchiveExtractor
+from procurement.source.latex import EmbeddedLatexMetadata, LatexSourceInspection
 from procurement.source.findings import build_source_findings
+from procurement.source.tree import TreeFile
 from procurement.errors import AcquisitionConflictError, SourceMaterializationError
 from procurement.domain.metadata import (
     ApiResponseEvidence,

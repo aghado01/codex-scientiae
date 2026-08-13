@@ -25,7 +25,7 @@ from procurement.domain.materialization import MetadataMode
 from procurement.domain.metadata import ArtifactReference, DepositMetadataBundle
 from procurement.domain.works import WorkIdentityAnchor
 from procurement.errors import SourceMaterializationError
-from procurement.source.archive import LatexSourceInspection, LatexSourceInspector
+from procurement.source.latex import LatexSourceInspection, LatexSourceInspector
 from procurement.storage.catalogs import ArticleCatalogRoots
 from procurement.storage.documents import DepositMetadataDocument
 

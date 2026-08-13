@@ -30,6 +30,7 @@ def test_removed_flat_namespaces_have_no_compatibility_modules() -> None:
         "procurement.payloads",
         "procurement.services",
         "procurement.settings",
+        "procurement.source.archive",
         "procurement.staging",
     ):
         assert importlib.util.find_spec(name) is None, name
