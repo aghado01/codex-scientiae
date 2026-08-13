@@ -32,6 +32,11 @@ class CatalogSettings(BaseModel):
     name: str = Field(min_length=1)
     path: str = Field(min_length=1)
 
+    @field_validator("name", mode="before")
+    @classmethod
+    def _portable_name(cls, value: object) -> str:
+        return validate_deposit_slug(value)
+
 
 class LocalInboxSettings(BaseModel):
     """One logical local-import inbox beneath the application workspace."""
@@ -72,10 +77,15 @@ class AcquisitionSettings(BaseModel):
 
     @model_validator(mode="after")
     def _unique_logical_names(self) -> Self:
-        names = [inbox.name.casefold() for inbox in self.local_inboxes]
-        if not names:
+        catalogs = [catalog.name.casefold() for catalog in self.catalogs]
+        if not catalogs:
+            raise ValueError("acquisition settings require at least one catalog")
+        if len(catalogs) != len(set(catalogs)):
+            raise ValueError("catalog names must be unique")
+        inboxes = [inbox.name.casefold() for inbox in self.local_inboxes]
+        if not inboxes:
             raise ValueError("acquisition settings require at least one local inbox")
-        if len(names) != len(set(names)):
+        if len(inboxes) != len(set(inboxes)):
             raise ValueError("local inbox names must be unique")
         return self
 

@@ -52,7 +52,6 @@ class ArticleCatalogDescriptorResponse(DomainModel):
     """One configured catalog exposed by logical name."""
 
     name: str
-    catalog_directory: str
 
 
 class ArticleCatalogListResponse(DomainModel):
@@ -65,7 +64,6 @@ class ArticleCatalogSnapshotResponse(DomainModel):
     """Direct-child source-ready membership without inventory publication."""
 
     name: str
-    catalog_directory: str
     article_count: int = Field(ge=0)
     slugs: tuple[str, ...]
 
@@ -74,7 +72,5 @@ class ArticleInventoryResultResponse(DomainModel):
     """One independently rebuilt source-ready article inventory."""
 
     catalog: str
-    catalog_directory: str
-    inventory_path: str
     article_count: int = Field(ge=0)
     slugs: tuple[str, ...]

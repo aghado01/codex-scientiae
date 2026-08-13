@@ -31,6 +31,7 @@ from procurement.storage.article import get_procurement_article_metadata_extensi
 from procurement.storage.schemas import get_procurement_schema_catalog
 
 from jsonl_test_support import article as article_record
+from tests.support.filesystem import directory_link
 
 
 PROTOCOL = "codex-scientiae/jsonl_engine-cli"
@@ -1010,25 +1011,24 @@ class TestDepositRefusals(unittest.TestCase):
             self.assertTrue(os.path.isdir(fixture.article_path))
             self.assertEqual([], _article_scratch(fixture.document_dir))
 
-    def test_existing_article_symlink_is_a_conflict_when_symlinks_are_available(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+    def test_existing_article_reparse_is_a_conflict(self):
+        with tempfile.TemporaryDirectory() as tmpdir, tempfile.TemporaryDirectory() as outside:
             fixture = DepositFixture(tmpdir)
             deposited = deposit_article(**fixture.kwargs())
-            target = os.path.join(tmpdir, "article-target.json")
+            target = os.path.join(outside, "article-target.json")
             os.replace(fixture.article_path, target)
-            try:
-                os.symlink(target, fixture.article_path)
-            except (OSError, NotImplementedError) as exc:
-                self.skipTest(f"symbolic links are unavailable in this environment: {exc}")
+            link_target = os.path.join(outside, "article-target")
+            os.mkdir(link_target)
+            marker = os.path.join(link_target, "incumbent.json")
+            os.replace(target, marker)
+            with directory_link(fixture.article_path, link_target):
+                with self.assertRaises(DepositConflict):
+                    deposit_article(**fixture.kwargs())
 
-            with self.assertRaises(DepositConflict):
-                deposit_article(**fixture.kwargs())
-
-            self.assertTrue(os.path.islink(fixture.article_path))
-            with open(target, "rb") as handle:
-                incumbent = json.loads(handle.read().decode("utf-8"))
-            self.assertEqual(deposited.article, incumbent)
-            self.assertEqual([], _article_scratch(fixture.document_dir))
+                with open(marker, "rb") as handle:
+                    incumbent = json.loads(handle.read().decode("utf-8"))
+                self.assertEqual(deposited.article, incumbent)
+                self.assertEqual([], _article_scratch(fixture.document_dir))
 
     def test_malformed_and_unknown_findings_are_refused_without_a_sentinel(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -1080,21 +1080,18 @@ class TestDepositRefusals(unittest.TestCase):
                     deposit_article(**fixture.kwargs(**override))
             self.assertFalse(os.path.lexists(fixture.article_path))
 
-    def test_a_symlink_cannot_escape_the_document_directory(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+    def test_a_reparse_cannot_escape_the_document_directory(self):
+        with tempfile.TemporaryDirectory() as tmpdir, tempfile.TemporaryDirectory() as outside:
             fixture = DepositFixture(tmpdir)
-            outside = os.path.join(tmpdir, "outside-provider.json")
-            _write_json(outside, {"idv": fixture.slug})
+            _write_json(os.path.join(outside, "outside-provider.json"), {"idv": fixture.slug})
             link_name = "linked-provider.json"
             link = os.path.join(fixture.document_dir, link_name)
-            try:
-                os.symlink(outside, link)
-            except (OSError, NotImplementedError) as exc:
-                self.skipTest(f"symbolic links are unavailable in this environment: {exc}")
-
-            with self.assertRaisesRegex(DepositError, "escapes the document directory"):
-                deposit_article(**fixture.kwargs(provider_json=link_name))
-            self.assertFalse(os.path.lexists(fixture.article_path))
+            with directory_link(link, outside):
+                with self.assertRaisesRegex(
+                    DepositError, "symbolic link or reparse point"
+                ):
+                    deposit_article(**fixture.kwargs(provider_json=link_name))
+                self.assertFalse(os.path.lexists(fixture.article_path))
 
     def test_failed_atomic_publish_leaves_no_sentinel_or_scratch_and_releases_lease(self):
         with tempfile.TemporaryDirectory() as tmpdir:

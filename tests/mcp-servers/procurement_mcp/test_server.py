@@ -702,20 +702,34 @@ class TestProcurementMcp(unittest.TestCase):
                     catalog_list = await client.call_tool("list_article_catalogs", {})
                     self.assertFalse(catalog_list.is_error)
                     self.assertEqual(
-                        catalog_list.structured_content["catalogs"][0]["name"],
-                        "inventory",
+                        catalog_list.structured_content,
+                        {"catalogs": [{"name": "inventory"}]},
                     )
                     catalog_snapshot = await client.call_tool(
                         "inspect_article_catalog", {"catalog": "inventory"}
                     )
                     self.assertFalse(catalog_snapshot.is_error)
-                    self.assertEqual(catalog_snapshot.structured_content["article_count"], 2)
+                    self.assertEqual(
+                        catalog_snapshot.structured_content,
+                        {
+                            "name": "inventory",
+                            "article_count": 2,
+                            "slugs": ["a", "b"],
+                        },
+                    )
                     inventory_result = await client.call_tool(
                         "rebuild_article_inventory",
                         {"catalog": "inventory", "force": True},
                     )
                     self.assertFalse(inventory_result.is_error)
-                    self.assertEqual(inventory_result.structured_content["slugs"], ["a", "b"])
+                    self.assertEqual(
+                        inventory_result.structured_content,
+                        {
+                            "catalog": "inventory",
+                            "article_count": 2,
+                            "slugs": ["a", "b"],
+                        },
+                    )
 
                     inboxes = await client.call_tool("list_local_import_inboxes", {})
                     self.assertFalse(inboxes.is_error)

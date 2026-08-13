@@ -11,6 +11,8 @@ from jsonl_engine.documents import JsonDocumentError, JsonDocumentKind, JsonDocu
 from jsonl_engine.publication import PinnedPublicationRoot
 from jsonl_engine.schemas import SchemaCatalog
 
+from tests.support.filesystem import directory_link
+
 
 @dataclass(frozen=True, slots=True)
 class Note:
@@ -105,14 +107,11 @@ class TestPinnedDirectoryHierarchy(unittest.TestCase):
             os.mkdir(root_path)
             os.mkdir(outside)
             link = os.path.join(root_path, "child")
-            try:
-                os.symlink(outside, link, target_is_directory=True)
-            except (OSError, NotImplementedError) as exc:
-                self.skipTest(f"directory symbolic links are unavailable: {exc}")
-            with PinnedPublicationRoot(root_path) as root:
-                with self.assertRaises((OSError, NotADirectoryError)):
-                    with root.pin_child("child"):
-                        pass
+            with directory_link(link, outside):
+                with PinnedPublicationRoot(root_path) as root:
+                    with self.assertRaises((OSError, NotADirectoryError)):
+                        with root.pin_child("child"):
+                            pass
 
     @unittest.skipIf(os.name == "nt", "Windows holds the named route against replacement")
     def test_current_path_check_detects_a_replaced_posix_root(self) -> None:

@@ -6,8 +6,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from procurement.errors import SourceMaterializationError
+from procurement.source._safety import _plain_directory, _regular_file
 from procurement.source.contracts import ArchiveLimits
 from procurement.source.tree import fingerprint_source_tree
+
+from tests.support.filesystem import directory_link
 
 
 def _limits(**overrides: int) -> ArchiveLimits:
@@ -46,6 +50,27 @@ class SourceContractTests(unittest.TestCase):
         (tree / "file.txt").write_bytes(b"x")
         with self.assertRaisesRegex(TypeError, "ArchiveLimits"):
             fingerprint_source_tree(tree, limits=False)  # type: ignore[arg-type]
+
+    def test_source_roots_reject_directory_reparse_points(self) -> None:
+        target = self.root / "target"
+        target.mkdir()
+        linked = self.root / "linked"
+        with directory_link(linked, target):
+            with self.assertRaisesRegex(
+                SourceMaterializationError, "physical directory"
+            ):
+                _plain_directory(linked, label="source root")
+
+    def test_source_files_reject_reparse_traversal(self) -> None:
+        target = self.root / "target"
+        target.mkdir()
+        (target / "source.tar.gz").write_bytes(b"source")
+        linked = self.root / "linked"
+        with directory_link(linked, target):
+            with self.assertRaisesRegex(
+                SourceMaterializationError, "symbolic link or reparse point"
+            ):
+                _regular_file(linked / "source.tar.gz", label="source archive")
 
 
 if __name__ == "__main__":

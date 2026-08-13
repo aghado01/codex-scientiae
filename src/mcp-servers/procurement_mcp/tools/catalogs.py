@@ -29,10 +29,7 @@ def register_catalog_tools(server: MCPServer) -> None:
             raise RuntimeError("article catalogs are not configured for this application")
         return ArticleCatalogListResponse(
             catalogs=tuple(
-                ArticleCatalogDescriptorResponse(
-                    name=item.name,
-                    catalog_directory=item.catalog_dir,
-                )
+                ArticleCatalogDescriptorResponse(name=item.name)
                 for item in service.catalogs()
             )
         )
@@ -50,7 +47,6 @@ def register_catalog_tools(server: MCPServer) -> None:
         snapshot = await finish_sync(service.inspect, catalog)
         return ArticleCatalogSnapshotResponse(
             name=snapshot.name,
-            catalog_directory=snapshot.catalog_dir,
             article_count=snapshot.article_count,
             slugs=snapshot.slugs,
         )
@@ -70,8 +66,6 @@ def register_catalog_tools(server: MCPServer) -> None:
         descriptor = service.resolve(catalog)
         return ArticleInventoryResultResponse(
             catalog=descriptor.name,
-            catalog_directory=result.catalog_dir,
-            inventory_path=result.inventory_path,
             article_count=result.article_count,
             slugs=tuple(result.slugs),
         )

@@ -11,6 +11,7 @@ from pydantic import ValidationError
 
 from procurement.composition import build_application
 from procurement.configuration import (
+    CatalogSettings,
     DiscoverySettings,
     ProviderHttpSettings,
     RuntimeSecrets,
@@ -72,6 +73,11 @@ def changed_settings(**changes: object) -> DiscoverySettings:
 
 
 class TestCompositionValidation(unittest.TestCase):
+    def test_catalog_names_are_portable_leaves(self) -> None:
+        for name in ("../catalog", "CON", "catalog."):
+            with self.subTest(name=name), self.assertRaises(ValidationError):
+                CatalogSettings(name=name, path="ingestion")
+
     def test_builtin_factory_catalog_separates_configured_and_declared_adapters(self) -> None:
         factories = get_builtin_provider_factory_catalog()
 

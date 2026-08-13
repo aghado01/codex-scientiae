@@ -173,19 +173,17 @@ class TestDiscoveryService(unittest.TestCase):
         with self.assertRaises(asyncio.CancelledError):
             asyncio.run(service.search(SearchRequest(query="x")))
 
-    def test_recommendations_default_to_semantic_scholar(self) -> None:
-        semantic = FakeProvider(
-            "semanticscholar",
-            SearchPage(provider="semanticscholar", start=0, works=(record("semanticscholar", "P1"),)),
+    def test_related_defaults_follow_configured_capabilities(self) -> None:
+        graph = FakeProvider(
+            "graph",
+            SearchPage(provider="graph", start=0, works=(record("graph", "P1"),)),
         )
-        registry = ProviderCatalog(
-            [ProviderBinding(semantic, ALL_DISCOVERY_CAPABILITIES)]
-        )
-        service = DiscoveryService(registry, ("semanticscholar",))
+        registry = ProviderCatalog([ProviderBinding(graph, ALL_DISCOVERY_CAPABILITIES)])
+        service = DiscoveryService(registry, ("graph",))
         response = asyncio.run(service.related("seed", kind="recommendations", limit=7))
-        self.assertEqual(response.provider, "semanticscholar")
-        self.assertEqual(semantic.related_calls, [("seed", "recommendations", 7)])
+        self.assertEqual(response.provider, "graph")
+        self.assertEqual(graph.related_calls, [("seed", "recommendations", 7)])
         with self.assertRaisesRegex(ValueError, "between 1 and 50"):
             asyncio.run(service.related("seed", kind="recommendations", limit=0))
         with self.assertRaisesRegex(ValueError, "nonblank"):
-            asyncio.run(service.resolve("   ", source="semanticscholar"))
+            asyncio.run(service.resolve("   ", source="graph"))

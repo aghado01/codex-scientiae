@@ -42,8 +42,9 @@ reporting success against the replacement. Source materialization retains the ac
 document, private extraction tree, and final tree through archive expansion, form and metadata publication,
 and article publication. Inventory rebuild pins its selected catalog generation through publication.
 
-`list_article_catalogs` exposes the configured names accepted by the filesystem operations; clients cannot
-submit a root path. `materialize_source_deposit` consumes one existing acquisition receipt, safely unpacks
+`list_article_catalogs` exposes only the configured names accepted by the filesystem operations; catalog
+inspection and rebuild responses likewise omit physical host paths. Clients cannot submit a root path.
+`materialize_source_deposit` consumes one existing acquisition receipt, safely unpacks
 and validates its source, optionally copies its receipted PDF, and publishes `article.json` last. Its typed
 metadata strategy is `artifact-identity`, `explicit-doi`, or `omit`; the first two reuse or persist
 `{slug}.api-metadata.json`, while omit never calls a metadata provider. An explicit DOI is cross-checked

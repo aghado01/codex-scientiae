@@ -96,7 +96,7 @@ class DiscoveryService:
         if not 1 <= limit <= 50:
             raise ValueError("related-work limit must be between 1 and 50")
         capability = Capability(kind)
-        selected = source or ("semanticscholar" if kind == "recommendations" else "openalex")
+        selected = source or self._default_provider_for(capability)
         provider = cast(RelatedProvider, self._catalog.get(selected, capability))
         works = await provider.related(identifier, kind, limit)
         return RelatedResponse(provider=provider.name, kind=kind, works=works)
@@ -140,3 +140,14 @@ class DiscoveryService:
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{label} must be a nonblank string")
         return value.strip()
+
+    def _default_provider_for(self, capability: Capability) -> str:
+        """Return the first configured discovery source supporting one capability."""
+
+        for name in self._default_sources:
+            binding = self._catalog.binding(name)
+            if capability in binding.capabilities:
+                return binding.name
+        raise ValueError(
+            f"no default discovery source supports {capability.value!r}"
+        )

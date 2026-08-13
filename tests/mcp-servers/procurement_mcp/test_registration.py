@@ -136,15 +136,15 @@ EXPECTED_TOOL_SCHEMA_FINGERPRINTS = {
     ),
     "list_article_catalogs": (
         "ef85e025d007a79adaa3e623977170de3b328742c9ca6a395b4525f1f4736e3a",
-        "1731772f9b330a7c216aa877a9d9733b17c1831d6953a21f453d9fc92823d2a7",
+        "0e48c0a310624611eda52693e0b44bfaf7206a9ad1958376c369ee99dc038262",
     ),
     "inspect_article_catalog": (
         "f11584b771dc2c468cb74cd4392cf564d250f0afa54fdb8551364d14a442b5fd",
-        "5f5e7fc18d80efcd6e4ab54d57484823703a52c80b7cf90360c1810de74f3476",
+        "2442f3ba0be5223243de9eb8e7687e99fae96de320e705c0bb37e63fc8132c4a",
     ),
     "rebuild_article_inventory": (
         "3618e8c27110f351e85b6c2d2e043b5ecf4d68170788cb53b2474d5c7a9f3791",
-        "ee9e533827f43225eb7718f36ecb7d874a69c81cd501d4f73276cbcd74faa6fe",
+        "993718f794d0d347cbdd1f8f0f42e57faf236c05752571a36d372cad17b35cbc",
     ),
     "list_procurement_providers": (
         "7585fb14417023150b3271b8b9090dac33309bc1f3d485ef2c112bd3859acf14",

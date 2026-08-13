@@ -18,6 +18,7 @@ from jsonl_engine.publication import (
     copy_file_no_clobber,
 )
 from jsonl_test_support import article as article_record
+from tests.support.filesystem import directory_link
 
 
 class TestPinnedHierarchy(unittest.TestCase):
@@ -60,14 +61,11 @@ class TestPinnedHierarchy(unittest.TestCase):
             with open(os.path.join(outside, "evidence.bin"), "wb") as handle:
                 handle.write(b"outside")
             link = os.path.join(root_path, "linked")
-            try:
-                os.symlink(outside, link, target_is_directory=True)
-            except (OSError, NotImplementedError) as exc:
-                self.skipTest(f"directory symbolic links are unavailable: {exc}")
-            with PinnedPublicationRoot(root_path) as root:
-                with self.assertRaises((OSError, NotADirectoryError, PublicationConflict)):
-                    with root.open_relative_file("linked/evidence.bin", "rb"):
-                        pass
+            with directory_link(link, outside):
+                with PinnedPublicationRoot(root_path) as root:
+                    with self.assertRaises((OSError, NotADirectoryError, PublicationConflict)):
+                        with root.open_relative_file("linked/evidence.bin", "rb"):
+                            pass
 
     def test_stable_file_read_measure_and_mutation_detection(self) -> None:
         with tempfile.TemporaryDirectory() as root_path:
@@ -344,20 +342,17 @@ class TestPinnedDirectoryPublication(unittest.TestCase):
                 self.assertFalse(os.path.lexists(staged))
 
     def test_owned_private_tree_cleanup_rejects_links(self) -> None:
-        with tempfile.TemporaryDirectory() as root_path:
+        with tempfile.TemporaryDirectory() as root_path, tempfile.TemporaryDirectory() as outside:
             with PinnedPublicationRoot(root_path) as root:
                 unsafe = os.path.join(root_path, "paper-tex.123.2.tmp")
                 os.mkdir(unsafe)
-                target = os.path.join(root_path, "outside.txt")
+                target = os.path.join(outside, "outside.txt")
                 Path(target).write_bytes(b"outside")
                 link = os.path.join(unsafe, "redirect")
-                try:
-                    os.symlink(target, link)
-                except (OSError, NotImplementedError) as exc:
-                    self.skipTest(f"symbolic links are unavailable: {exc}")
-                with self.assertRaisesRegex(PublicationConflict, "link, reparse point"):
-                    root.remove_owned_tree(unsafe)
-                self.assertEqual(b"outside", Path(target).read_bytes())
+                with directory_link(link, outside):
+                    with self.assertRaisesRegex(PublicationConflict, "link, reparse point"):
+                        root.remove_owned_tree(unsafe)
+                    self.assertEqual(b"outside", Path(target).read_bytes())
 
 
 class TestPinnedArticleManifest(unittest.TestCase):

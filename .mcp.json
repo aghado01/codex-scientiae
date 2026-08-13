@@ -1,5 +1,12 @@
 {
   "mcpServers": {
+    "scientiae-procurement": {
+      "command": "D:\\aghado01\\codex-scientiae\\.venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "procurement_mcp"
+      ]
+    },
     "para-agent": {
       "command": "node",
       "args": [

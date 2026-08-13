@@ -27,6 +27,7 @@ from jsonl_engine.reader import JsonlStore
 from jsonl_engine.sidecar import SCRATCH_ROOT_ENV
 
 from jsonl_test_support import article as article_record
+from tests.support.filesystem import directory_link
 
 
 def _write_json(path: str, value) -> None:
@@ -43,23 +44,6 @@ def _run_cli(*args: str) -> subprocess.CompletedProcess:
         stderr=subprocess.PIPE,
         timeout=120,
     )
-
-
-def _create_directory_junction(link: str, target: str) -> None:
-    """Create a Windows directory junction or skip when the capability is unavailable."""
-
-    if os.name != "nt":
-        raise unittest.SkipTest("Windows directory junction regression")
-    command = os.environ.get("ComSpec", "cmd.exe")
-    proc = subprocess.run(
-        [command, "/d", "/c", "mklink", "/J", link, target],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        timeout=10,
-    )
-    if proc.returncode != 0 or not os.path.lexists(link):
-        reason = (proc.stderr or proc.stdout).decode("utf-8", errors="replace").strip()
-        raise unittest.SkipTest(f"directory junctions are unavailable: {reason}")
 
 
 class TestInventoryCatalog(unittest.TestCase):
@@ -88,15 +72,11 @@ class TestInventoryCatalog(unittest.TestCase):
             catalog = os.path.join(target, "catalog")
             junction = os.path.join(parent, "ß")
             os.makedirs(catalog)
-            _create_directory_junction(junction, target)
-            try:
+            with directory_link(junction, target):
                 publication_root = PinnedPublicationRoot(os.path.join(junction, "catalog"))
                 with self.assertRaisesRegex(NotADirectoryError, "resolves through another"):
                     publication_root.__enter__()
                 self.assertEqual([], publication_root._windows_handles)
-            finally:
-                if os.path.lexists(junction):
-                    os.rmdir(junction)
 
     def test_precheck_to_pin_ancestor_junction_swap_is_refused(self):
         if os.name != "nt":
@@ -114,14 +94,16 @@ class TestInventoryCatalog(unittest.TestCase):
             _write_json(replacement_article, article_record(slug))
             original_catalog_root = inventory_catalog._catalog_root
             swapped = False
+            junction_context = None
 
             def swap_after_precheck(value: str) -> str:
-                nonlocal swapped
+                nonlocal junction_context, swapped
                 root = original_catalog_root(value)
                 if not swapped:
                     swapped = True
                     os.rename(route, retired)
-                    _create_directory_junction(route, replacement)
+                    junction_context = directory_link(route, replacement)
+                    junction_context.__enter__()
                 return root
 
             try:
@@ -143,8 +125,8 @@ class TestInventoryCatalog(unittest.TestCase):
                     os.path.lexists(os.path.join(retired, "catalog", "inventory.jsonl"))
                 )
             finally:
-                if os.path.lexists(route):
-                    os.rmdir(route)
+                if junction_context is not None:
+                    junction_context.__exit__(None, None, None)
 
     def test_catalog_generation_is_pinned_from_article_read_through_publication(self):
         with tempfile.TemporaryDirectory() as parent:
@@ -511,12 +493,11 @@ class TestInventoryCatalog(unittest.TestCase):
         with tempfile.TemporaryDirectory() as catalog, tempfile.TemporaryDirectory() as outside:
             _write_json(os.path.join(outside, "article.json"), article_record("linked"))
             link = os.path.join(catalog, "linked")
-            try:
-                os.symlink(outside, link, target_is_directory=True)
-            except (OSError, NotImplementedError) as exc:
-                self.skipTest(f"directory symlinks are unavailable: {exc}")
-            with self.assertRaisesRegex(InventoryCatalogError, "symbolic link or reparse point"):
-                discover_article_paths(catalog)
+            with directory_link(link, outside):
+                with self.assertRaisesRegex(
+                    InventoryCatalogError, "symbolic link or reparse point"
+                ):
+                    discover_article_paths(catalog)
 
     def test_cli_build_inventory_framed(self):
         with tempfile.TemporaryDirectory() as catalog:
