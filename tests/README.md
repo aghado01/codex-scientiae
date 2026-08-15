@@ -187,12 +187,17 @@ LaTeX-adapter tests.
 
 ### Pytest
 
-Restore the repository Python environment before testing; test execution does not install dependencies:
+Restore the pinned repository Python environment before testing; test execution does not install
+dependencies:
 
 ```pwsh
-.venv/Scripts/python.exe -m pip install -r requirements.txt
-.venv/Scripts/python.exe -m pip install -e .
+./brewery/uv/restore-uv.ps1
 ```
+
+The recipe uses the verified uv payload under `packages/uv`, installs the pinned managed Python under
+`packages/python`, and synchronizes `.venv` from `uv.lock`. No activation or ambient Python/uv lookup is
+required. `requirements.txt` is a generated runtime-only compatibility export, not the dependency
+authority.
 
 Pytest processes require an explicit `--basetemp` plus `TEMP`, `TMP`, and `TMPDIR` beneath a compact
 caller-owned runstamp in `artifacts/test-runs/`. The public batch shell supplies those boundaries:

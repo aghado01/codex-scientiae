@@ -328,6 +328,17 @@ Describe 'source path topology' {
                 }
                 $argsList = @([regex]::Matches($argsBlocks[0].Groups['value'].Value, '"(?<value>[^"\r\n]*)"') |
                     ForEach-Object { $_.Groups['value'].Value })
+                if ($command -and
+                    [System.IO.Path]::GetFileName($command) -match '^(?i:uv(?:\.exe)?)$') {
+                    $expectedUvArgs = @(
+                        'run', '--project', $script:RepoRoot.Replace('\', '/'), '--locked', '--no-sync',
+                        '--no-dev', '--offline', 'scientiae-procurement')
+                    if ((@($argsList) -join "`n") -cne ($expectedUvArgs -join "`n")) {
+                        $failures.Add(
+                            ".codex/config.toml:$name has an invalid locked uv runtime shape")
+                    }
+                    continue
+                }
                 $fileIndexes = @(for ($i = 0; $i -lt $argsList.Count; $i++) {
                         if ($argsList[$i] -ieq '-File') { $i }
                     })

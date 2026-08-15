@@ -1,0 +1,18 @@
+{
+  "schema": "codex-scientiae/toolchain-pin/1",
+  "tool": "uv",
+  "version": "0.11.23",
+  "python_version": "3.12.6",
+  "artifacts": {
+    "windows-x64": {
+      "archive": "uv-x86_64-pc-windows-msvc.zip",
+      "url": "https://github.com/astral-sh/uv/releases/download/0.11.23/uv-x86_64-pc-windows-msvc.zip",
+      "sha256": "02ad29f07e674d68726ba3bb1ff25b335d83515756e2b1a194bb56c3cc30e07c"
+    },
+    "windows-arm64": {
+      "archive": "uv-aarch64-pc-windows-msvc.zip",
+      "url": "https://github.com/astral-sh/uv/releases/download/0.11.23/uv-aarch64-pc-windows-msvc.zip",
+      "sha256": "c24ef88c44c5e6be3daa7357c0cd8419a88de74c5d01f4ff403e06b765249788"
+    }
+  }
+}
