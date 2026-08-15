@@ -31,8 +31,7 @@ function Resolve-JsonlEngineRuntime {
     throw @"
 No repository Python environment was found under '$script:JsonlEngineRepositoryRoot'.
 Set CODEX_JSONL_ENGINE_PYTHON or pass -PythonPath, or restore the repository environment:
-  .venv/Scripts/python.exe -m pip install -r requirements.txt
-  .venv/Scripts/python.exe -m pip install -e .
+  brewery/uv/restore-uv.ps1
 "@
 }
 

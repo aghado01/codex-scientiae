@@ -1,26 +1,20 @@
-# Python project scaffolding for codex-scientiae.
+# Python project definition for the packaged codex-scientiae lane.
 #
-# This repository is mixed-language; Python is one lane. This file exists to make that lane's
-# package importable under ONE name, not to publish a distribution.
+# jsonl_engine must be reachable under one import path for both tests and module execution. Two
+# names for one package create distinct module objects and duplicate process-global registries.
 #
-# The problem it solves: jsonl_engine must be reachable under one import path -- `jsonl_engine` for
-# both tests and `python -m`. Two names for one package means two module objects if both load, which
-# duplicates module-level state such as the global SchemaRegistry.
+# Restore the pinned interpreter, environment, and local uv runtime with:
 #
-#     .venv/Scripts/python.exe -m pip install -r requirements.txt
-#     .venv/Scripts/python.exe -m pip install -e .
+#     ./brewery/uv/restore-uv.ps1
 #
-# Dependencies are not declared here. requirements.txt is this repository's environment manifest and
-# stays the single source; duplicating the list would recreate the same fork one layer up.
-#
-# Hatchling rather than setuptools: setuptools writes a .egg-info directory into the source tree,
-# and redirecting it with egg_base only moves the problem, since the target must be tracked for a
-# fresh clone to install. Hatchling emits none -- an editable install is a .pth file and nothing
-# else. It also ships non-Python files inside the package by default, so schemas/*.schema.json
-# travel with the engine without a package-data declaration.
+# pyproject.toml is the dependency authority. uv.lock freezes the resolved graph and
+# requirements.txt is a generated compatibility export.
 
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "editables==0.6",
+    "hatchling==1.32.0",
+]
 build-backend = "hatchling.build"
 
 [project]
@@ -28,6 +22,14 @@ name = "codex-scientiae"
 version = "0.1.0"
 description = "Codex Scientiae — Python lane for artifact registries and scholarly procurement"
 requires-python = ">=3.12"
+dependencies = [
+    "defusedxml>=0.7,<1",
+    "filelock>=3.13,<4",
+    "httpx>=0.28,<1",
+    "jsonschema>=4.20,<5",
+    "mcp>=2,<3",
+    "pydantic>=2.13,<3",
+]
 
 [project.scripts]
 scientiae-procurement = "procurement_mcp.server:main"
@@ -43,6 +45,16 @@ only-include = [
 "src/jsonl_engine" = "jsonl_engine"
 "src/procurement" = "procurement"
 "src/mcp-servers/procurement_mcp" = "procurement_mcp"
+
+[dependency-groups]
+dev = [
+    "editables==0.6",
+    "hatchling==1.32.0",
+    "pytest>=9,<10",
+]
+
+[tool.uv]
+required-version = "==0.11.23"
 
 [tool.pytest.ini_options]
 # Anchors rootdir at the repository root so `pytest` and `python -m pytest` agree. Import resolution

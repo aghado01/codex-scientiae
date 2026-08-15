@@ -26,6 +26,10 @@ staging and package targets outside those two roots.
 clean clone starts without it. Every shelf there must therefore be reproducible from a recipe in
 this directory.
 
+`brewery/uv/restore-uv.ps1` is the Python toolchain recipe. It verifies a pinned uv release,
+installs the pinned managed Python under `packages/python`, synchronizes `.venv` from `uv.lock`, and
+generates local MCP registrations without requiring environment activation.
+
 ## Recipes not yet written
 
 Two shelves predate that rule. Both were built outside this repository and vendored as finished

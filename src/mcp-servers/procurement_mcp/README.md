@@ -11,13 +11,15 @@ live in `contracts.py`, shared request context and cancellation handling live in
 handlers are registered in protocol order from the modules under `tools/`. Tool modules resolve application
 services only through the active MCP request context.
 
-Run the stdio server from the repository environment:
+Restore the pinned repository environment and generate the local registration:
 
 ```pwsh
-.venv/Scripts/python.exe -m procurement_mcp
+./brewery/uv/restore-uv.ps1
 ```
 
-The installed script name is `scientiae-procurement`. Discovery uses `discover_search`,
+The generated registration invokes `.venv/Scripts/uv.exe` with an explicit project root and
+`--locked --no-sync --no-dev --offline`; activation and ambient Python or uv discovery are not
+required. The installed script name is `scientiae-procurement`. Discovery uses `discover_search`,
 `discover_related`, `resolve_reference`, and `get_work`. `list_procurement_providers` exposes the distinct
 artifact and metadata roles. `prepare_source_deposit_metadata` returns a validated, self-contained metadata
 bundle with the exact HTTP-decoded entity payload consumed by its provider normalizer, a digest, and

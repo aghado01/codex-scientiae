@@ -13,7 +13,7 @@ makes it impossible to clear one module's output without disturbing the rest.
 
 The operating-system user temp tree, including `%LOCALAPPDATA%\Temp` on Windows, is not a project
 scratch fallback. Repository test entrypoints require `TEMP`, `TMP`, and `TMPDIR` to identify one declared
-job directory below this root. Caller-created test runs use `artifacts/test-runs/YYYYDDMM_HHmmss[_NN]`;
+job directory below this root. Caller-created test runs use `artifacts/test-runs/YYYYMMDD_HHmmss[_NN]`;
 adapters consume that absolute address and never allocate their own runstamp.
 
 The first path segment names a **module** or a **process**, never an output kind. Which of the two

@@ -1,5 +1,6 @@
 sandbox_mode = "danger-full-access"
 
 [mcp_servers.scientiae-procurement]
-command = "D:/aghado01/codex-scientiae/.venv/Scripts/python.exe"
-args = ["-m", "procurement_mcp"]
+command = "D:/aghado01/codex-scientiae/.venv/Scripts/uv.exe"
+args = ["run", "--project", "D:/aghado01/codex-scientiae", "--locked", "--no-sync", "--no-dev", "--offline", "scientiae-procurement"]
+env = { CODEX_SCIENTIAE_ROOT = "D:\\aghado01\\codex-scientiae", UV_PROJECT_ENVIRONMENT = "D:\\aghado01\\codex-scientiae\\.venv", UV_PYTHON_INSTALL_DIR = "D:\\aghado01\\codex-scientiae\\packages\\python", UV_CACHE_DIR = "D:\\aghado01\\codex-scientiae\\artifacts\\uv\\cache", UV_NO_PROGRESS = "1", TEMP = "D:\\aghado01\\codex-scientiae\\artifacts\\procurement-mcp\\temp", TMP = "D:\\aghado01\\codex-scientiae\\artifacts\\procurement-mcp\\temp", TMPDIR = "D:\\aghado01\\codex-scientiae\\artifacts\\procurement-mcp\\temp", VIRTUAL_ENV = "", PYTHONHOME = "", PYTHONPATH = "" }
