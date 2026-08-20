@@ -1067,18 +1067,29 @@ class TestDepositRefusals(unittest.TestCase):
     def test_archive_and_tree_must_use_the_canonical_deposit_paths(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             fixture = DepositFixture(tmpdir)
-            alias = f"arXiv-{fixture.slug}.tar.gz"
-            with open(os.path.join(fixture.document_dir, alias), "wb") as handle:
+            other = f"other-{fixture.slug}.tar.gz"
+            with open(os.path.join(fixture.document_dir, other), "wb") as handle:
                 handle.write(fixture.archive_bytes)
             alternate_tree = "alternate-tex"
             os.mkdir(os.path.join(fixture.document_dir, alternate_tree))
 
-            for override in ({"archive": alias}, {"tree": alternate_tree}):
+            for override in ({"archive": other}, {"tree": alternate_tree}):
                 with self.subTest(override=override), self.assertRaisesRegex(
                     DepositError, "canonical deposit path"
                 ):
                     deposit_article(**fixture.kwargs(**override))
             self.assertFalse(os.path.lexists(fixture.article_path))
+
+    def test_arxiv_prefixed_archive_leaf_is_an_accepted_deposit_path(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            alias = f"arXiv-{fixture.slug}.tar.gz"
+            os.replace(fixture.archive_path, os.path.join(fixture.document_dir, alias))
+            result = deposit_article(**fixture.kwargs(archive=alias))
+            self.assertEqual("deposited", result.status)
+            article = result.article
+            self.assertEqual(article["source_forms"][0]["path"], alias)
+            self.assertEqual(article["source_forms"][1]["path"], f"{fixture.slug}-tex")
 
     def test_a_reparse_cannot_escape_the_document_directory(self):
         with tempfile.TemporaryDirectory() as tmpdir, tempfile.TemporaryDirectory() as outside:
