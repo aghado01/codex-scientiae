@@ -196,8 +196,9 @@ dependencies:
 
 The recipe uses the verified uv payload under `packages/uv`, installs the pinned managed Python under
 `packages/python`, and synchronizes `.venv` from `uv.lock`. No activation or ambient Python/uv lookup is
-required. `requirements.txt` is a generated runtime-only compatibility export, not the dependency
-authority.
+required. MCP registrations invoke `packages/uv/uv.exe` directly; `.venv` contains only the synchronized
+Python project environment. `requirements.txt` is a generated runtime-only compatibility export, not the
+dependency authority.
 
 Pytest processes require an explicit `--basetemp` plus `TEMP`, `TMP`, and `TMPDIR` beneath a compact
 caller-owned runstamp in `artifacts/test-runs/`. The public batch shell supplies those boundaries:

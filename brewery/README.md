@@ -28,7 +28,8 @@ this directory.
 
 `brewery/uv/restore-uv.ps1` is the Python toolchain recipe. It verifies a pinned uv release,
 installs the pinned managed Python under `packages/python`, synchronizes `.venv` from `uv.lock`, and
-generates local MCP registrations without requiring environment activation.
+generates local MCP registrations that invoke `packages/uv/uv.exe` directly without requiring environment
+activation.
 
 ## Recipes not yet written
 
