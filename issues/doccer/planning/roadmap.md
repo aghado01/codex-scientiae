@@ -345,3 +345,8 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
   verbs → spec witness; doc-dive skill semantics → permanently above the engine).
 - Doccer is expected to graduate cross-project; anything a graduated doccer would need must live
   in the C# surface, not PowerShell (D13 boundary test).
+- pdf-prose admitted spine (Macy/Shannon) is a census specimen for collect/pair/suppress/K7
+  during IR assembly, not a markdown post-pass. Recipes now; E2E later. Notes:
+  [admitted-spine Rocky training](../discussions/grok-doccer-admitted-spine-rocky-training-20260818.md),
+  [F1 Shannon pressure brief](../briefs/sol-doccer-f1-shannon-spine-pressure-20260818.md)
+  (K7 lossless→render is the F1 shaping consumer; NFC is not).

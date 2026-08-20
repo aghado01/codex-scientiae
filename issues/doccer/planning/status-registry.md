@@ -142,8 +142,10 @@ than reimplementing them.
 | **Durable PowerShell/LaTeX/Markdown adapters** | **CONSUMER-GATED** | Provisional DLL-reach instruments and the graduation/rewrite tests | Promote one adapter only when it collapses to Doccer capabilities plus stores and genuine domain policy | Adapters are consumers and witnesses. They do not freeze missing kernel semantics by convention. |
 
 Canonical sources: [roadmap queue](roadmap.md#queue),
-[CLI return packet](../briefs/sol-doccer-cli-module-deferred-20260809_180623.md), and
-[F2/F6 registry rows](decisions.md#deferred-families-f--trigger--prioritization-default-per-d14).
+[CLI return packet](../briefs/sol-doccer-cli-module-deferred-20260809_180623.md),
+[F2/F6 registry rows](decisions.md#deferred-families-f--trigger--prioritization-default-per-d14),
+and the 2026-08-18 [admitted-spine witness / Rocky training note](../discussions/grok-doccer-admitted-spine-rocky-training-20260818.md)
+(census finds only; recipes, not a durable adapter).
 O3's grouping origin is recorded in the
 [optional branches](architecture-expansion-workplan.md#o3--operational-acceleration-and-persistence).
 
@@ -181,7 +183,7 @@ claims. F3 separately maps decoded text coordinates to source bytes.
 
 | Arc | Status | Existing substrate | Next closure unit | Gate and dependency meaning |
 | --- | --- | --- | --- | --- |
-| **F1 — `OffsetMap`** | **READY** for a contract chip | Draft `Exact | Range | Unmapped` point results; identity/expand/contract/delete/insert segments; explicit span-projection policies; K6/K7 stage carriers | Adjudicate endpoint identity, direction, total coverage/segment invariants, whether boundary ambiguity is distinct from general range ambiguity, composition, and the typed span-projection/residual result; implement one normalization witness | The first edit or normalization job is the shaping consumer. `TextMaster` remains unchanged and normalization remains explicit. |
+| **F1 — `OffsetMap`** | **READY** for a contract chip | Draft `Exact | Range | Unmapped` point results; identity/expand/contract/delete/insert segments; explicit span-projection policies; K6/K7 stage carriers. Shannon lossless→render pressure: Identity 776 / Expand 365 / Delete 0; 5/5 forward probes; [pressure brief](../briefs/sol-doccer-f1-shannon-spine-pressure-20260818.md) | Adjudicate endpoint identity, **both directions**, total coverage/segment invariants, whether Boundary is a point status or a span-projection concern, construction-from-K7 vs post-hoc correspondence, composition, and the typed span-projection/residual result; implement the map (NFC is a later producer, not the first fixture) | The shaping consumer has arrived: a performed K7 rewrite, not markdown and not silent NFC. `TextMaster` remains unchanged and normalization remains explicit. |
 | **F3 — byte addressing** | **CONSUMER-GATED** | UTF-16 `TextMaster` coordinates and the distinct F1 draft | Define a bytes <-> code-units encoding map retaining source encoding and decode-error fidelity | Triggered by byte-exact reproduction or provenance. It never becomes a field bolted onto `TextMaster`, and it is not a Unicode-form map. |
 | **F7a — distance/correspondence** | **READY** for a bounded contract/witness | Current masters, spans, vectors, and policies | Choose one exact or thresholded distance plus a correspondence/edit-script result retaining ambiguity, unmatched residue, cost/tie policy, and resource bound | Correspondence is evidence, not provenance. Numeric distance-only kernels belong to F8a; correspondence-producing results belong here. |
 | **F7b — performed-transform origins** | **READY** for a bounded producer witness | Closed K6 origin basis/relation and K7 stage/materialization contracts | Have a real producer, preferably the same normalization witness as F1, emit actual origins plus loss/unmapped residue | Producer observation licenses origin. Equal text, edit distance, or post-hoc alignment does not. |
@@ -189,8 +191,9 @@ claims. F3 separately maps decoded text coordinates to source bytes.
 | **O1 — fixed linear ET compilation** | **OPTIONAL** | K7 now supplies output programs and origins | Define a restricted recognizer/compiler for one fixed adapter profile and instrument output births | No full polyregular ET, document-defined recursion, or stage fusion is implied. |
 
 Canonical sources: [F1-F7 rows](decisions.md#deferred-families-f--trigger--prioritization-default-per-d14),
-[F7 split](architecture-expansion-workplan.md#f7--correspondence-and-derived-origins), and
-[optional ET branch](architecture-expansion-workplan.md#o1--fixed-linear-et-compilation).
+[F7 split](architecture-expansion-workplan.md#f7--correspondence-and-derived-origins),
+[optional ET branch](architecture-expansion-workplan.md#o1--fixed-linear-et-compilation),
+and the 2026-08-18 [F1 Shannon spine pressure brief](../briefs/sol-doccer-f1-shannon-spine-pressure-20260818.md).
 
 ## Thread 4 — comparison, candidate discovery, statistics, and ranking
 
