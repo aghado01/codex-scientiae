@@ -22,6 +22,12 @@ from .catalog import KindCatalog
 MAX_ARTICLE_MANIFEST_BYTES = 4 * 1024 * 1024
 
 
+def source_archive_names(slug: str) -> tuple[str, str]:
+    """Return the accepted LaTeX archive leaves for one deposit slug."""
+
+    return (f"{slug}.tar.gz", f"arXiv-{slug}.tar.gz")
+
+
 @dataclass(frozen=True, slots=True)
 class ArticleMetadataContribution:
     """Validated bibliographic and evidence values contributed by an application extension."""
@@ -105,9 +111,9 @@ class ArticleManifest(BaseStore):
                 "source_forms must begin with the sole archive followed by the sole source tree",
                 "source_forms",
             )
-        if archive["path"] != f"{record['slug']}.tar.gz":
+        if archive["path"] not in source_archive_names(record["slug"]):
             conflict(
-                "latex-source-archive path must be '<slug>.tar.gz'",
+                "latex-source-archive path must be '<slug>.tar.gz' or 'arXiv-<slug>.tar.gz'",
                 "source_forms",
                 archive_index,
                 "path",

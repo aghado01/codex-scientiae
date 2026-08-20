@@ -25,12 +25,19 @@ from .kinds.article import (
     ArticleManifest,
     ArticleMetadataContribution,
     ArticleMetadataExtension,
+    source_archive_names,
 )
 from .publication import PinnedPublicationRoot, PublicationError
 from .reader import loads
 from .writer import serialize_json
 
-__all__ = ["DepositConflict", "DepositError", "DepositResult", "deposit_article"]
+__all__ = [
+    "DepositConflict",
+    "DepositError",
+    "DepositResult",
+    "deposit_article",
+    "source_archive_names",
+]
 
 
 class DepositError(ValueError):
@@ -1078,9 +1085,11 @@ def _deposit_article_pinned(
         label="tree",
         kind="directory",
     )
-    if archive != f"{slug}.tar.gz":
+    allowed_archives = source_archive_names(slug)
+    if archive not in allowed_archives:
         raise DepositError(
-            f"archive must use the canonical deposit path {slug + '.tar.gz'!r}, got {archive!r}"
+            "archive must use a canonical deposit path "
+            f"{allowed_archives[0]!r} or {allowed_archives[1]!r}, got {archive!r}"
         )
     if tree != f"{slug}-tex":
         raise DepositError(
