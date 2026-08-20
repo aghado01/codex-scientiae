@@ -1,0 +1,23 @@
+{
+  "comment": "RemoveNewLineHyphens. keepLeft+wordlike-right retains a lexical hyphen (well-known). prefixes force a join even if both sides look like words (over-come → overcome).",
+  "prefixes": [
+    "anti", "auto", "bio", "co", "counter", "de", "dis", "ex", "extra",
+    "hyper", "in", "inter", "intra", "macro", "mega", "micro", "mid",
+    "mini", "mis", "multi", "neo", "non", "out", "over", "post", "pre",
+    "pro", "proto", "pseudo", "quasi", "re", "semi", "sub", "super",
+    "trans", "tri", "ultra", "un", "under", "up"
+  ],
+  "keepLeft": [
+    "all", "best", "case", "cost", "cross", "double", "first", "full",
+    "half", "high", "ill", "kind", "large", "left", "light", "long",
+    "low", "motor", "near", "off", "old", "one", "open", "part",
+    "right", "second", "self", "single", "so", "third", "three", "two",
+    "well", "wide"
+  ],
+  "numberWords": [
+    "one", "two", "three", "four", "five", "six", "seven", "eight",
+    "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+    "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "thirty",
+    "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred"
+  ]
+}
