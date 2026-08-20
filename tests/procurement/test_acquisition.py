@@ -749,7 +749,9 @@ class TestStreamedDownloads(unittest.TestCase):
 class TestAcquisitionService(unittest.TestCase):
     def test_store_rejects_an_unretained_path_dependency(self) -> None:
         with tempfile.TemporaryDirectory() as root:
-            with self.assertRaisesRegex(TypeError, "active staging-root descriptor"):
+            with self.assertRaisesRegex(
+                TypeError, "active staging or article-catalog root descriptor"
+            ):
                 AcquisitionStore(root)  # type: ignore[arg-type]
 
     def test_item_replacement_between_creation_and_pin_is_never_accepted(self) -> None:

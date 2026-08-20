@@ -13,6 +13,7 @@ from procurement.domain.base import DomainModel
 from procurement.domain.deposits import (
     PORTABLE_LEAF_PATTERN,
     validate_artifact_deposit_reference,
+    validate_catalog_destination,
     validate_deposit_slug,
 )
 from procurement.domain.metadata import ArtifactReference
@@ -95,6 +96,7 @@ class ArtifactAcquisitionRequest(DomainModel):
         min_length=1,
         json_schema_extra={"uniqueItems": True},
     )
+    catalog: str | None = None
 
     @field_validator("provider", "identifier", mode="before")
     @classmethod
@@ -107,6 +109,15 @@ class ArtifactAcquisitionRequest(DomainModel):
     @classmethod
     def _deduplicate_artifacts(cls, value: object) -> tuple[str, ...]:
         return _unique_text(value, label="artifacts")
+
+    @field_validator("catalog", mode="before")
+    @classmethod
+    def _optional_catalog(cls, value: object) -> str | None:
+        if value is None:
+            return None
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("catalog destination must be a non-empty string")
+        return validate_catalog_destination(value)
 
 
 class ChecksumExpectation(DomainModel):

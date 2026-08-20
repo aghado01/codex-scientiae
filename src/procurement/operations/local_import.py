@@ -23,7 +23,11 @@ from procurement.domain.acquisition.receipts import (
     LocalImportProvenance,
 )
 from procurement.domain.base import DomainModel
-from procurement.domain.deposits import PORTABLE_LEAF_PATTERN, validate_deposit_slug
+from procurement.domain.deposits import (
+    PORTABLE_LEAF_PATTERN,
+    validate_catalog_destination,
+    validate_deposit_slug,
+)
 from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
 from procurement.configuration import ArtifactLimitSettings
@@ -33,13 +37,15 @@ from procurement.storage.acquisitions import (
     AcquisitionItem,
     AcquisitionStore,
     collate_acquisition,
+    store_for_catalog,
 )
+from procurement.storage.catalogs import ArticleCatalogRoots
 from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
 from procurement.storage.safety import is_link_or_reparse, require_current
 
 _COPY_CHUNK_BYTES = 1024 * 1024
 class LocalImportRequest(DomainModel):
-    """Logical local-inbox item to transfer into one staged acquisition."""
+    """Logical local-inbox item to transfer into one acquisition destination."""
 
     inbox: str = Field(min_length=1, json_schema_extra={"pattern": PORTABLE_LEAF_PATTERN})
     leaf: str = Field(min_length=1, json_schema_extra={"pattern": PORTABLE_LEAF_PATTERN})
@@ -47,11 +53,21 @@ class LocalImportRequest(DomainModel):
         min_length=1,
         json_schema_extra={"pattern": PORTABLE_LEAF_PATTERN},
     )
+    catalog: str | None = None
 
     @field_validator("inbox", "leaf", "deposit_slug", mode="before")
     @classmethod
     def _portable_leaf(cls, value: object) -> str:
         return validate_deposit_slug(value)
+
+    @field_validator("catalog", mode="before")
+    @classmethod
+    def _optional_catalog(cls, value: object) -> str | None:
+        if value is None:
+            return None
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("catalog destination must be a non-empty string")
+        return validate_catalog_destination(value)
 
 
 class LocalImportInbox(DomainModel):
@@ -79,13 +95,15 @@ class LocalImportInboxCatalog(DomainModel):
 
 
 class LocalImportService:
-    """Validate configured direct-child files and publish narrow custody receipts."""
+    """Validate configured direct-child files and publish custody receipts."""
 
     def __init__(
         self,
         inboxes: Iterable[ConfiguredRootDescriptor],
         store: AcquisitionStore,
         limits: ArtifactLimitSettings,
+        *,
+        catalogs: ArticleCatalogRoots | None = None,
     ) -> None:
         configured: dict[str, ConfiguredRootDescriptor] = {}
         for descriptor in inboxes:
@@ -115,6 +133,7 @@ class LocalImportService:
             raise AcquisitionError("at least one local-import inbox is required")
         self._inboxes = configured
         self._store = store
+        self._catalogs = catalogs
         self._limits = limits
 
     @property
@@ -158,12 +177,17 @@ class LocalImportService:
             identifier=request.deposit_slug,
             provider_roles=("artifact-access",),
         )
-        with self._store.transaction(request.deposit_slug) as item:
+        store = store_for_catalog(
+            self._store,
+            request.catalog,
+            catalogs=self._catalogs,
+        )
+        with store.transaction(request.deposit_slug) as item:
             manifest = item.recover(item.read_manifest())
             if manifest is not None and manifest.artifact != artifact:
                 raise AcquisitionConflictError(
-                    "staging item acquisition identity conflicts with the local import"
-            )
+                    "acquisition item identity conflicts with the local import"
+                )
 
             partial = item.private_download_path()
             try:

@@ -10,6 +10,7 @@ from procurement.operations.discovery import DiscoveryService
 from procurement.operations.local_import import LocalImportService
 from procurement.operations.materialization import SourceMaterializationService
 from procurement.operations.metadata import MetadataService
+from procurement.operations.procure import ProcureService
 from procurement.providers.catalog import ProviderCatalog
 from procurement.storage.roots import ProcurementRootCatalog
 from procurement.transport.http import HttpClient
@@ -28,6 +29,7 @@ class ProcurementApplication:
     local_import: LocalImportService | None = None
     catalogs: ArticleCatalogService | None = None
     materialization: SourceMaterializationService | None = None
+    procure: ProcureService | None = None
     _closed: bool = field(default=False, init=False, repr=False)
 
     async def close(self) -> None:

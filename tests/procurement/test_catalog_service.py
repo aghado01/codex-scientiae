@@ -9,6 +9,8 @@ from unittest import mock
 
 from jsonl_engine.inventory_catalog import InventoryCatalogError, InventoryCatalogResult
 from procurement.operations.catalogs import ArticleCatalogService
+from pathlib import Path
+
 from procurement.storage.catalogs import (
     ArticleCatalogConfigurationError,
     ArticleCatalogRoots,
@@ -105,6 +107,36 @@ class TestArticleCatalogService(unittest.TestCase):
     def test_loose_path_mappings_are_not_a_catalog_root_registry(self):
         with self.assertRaisesRegex(TypeError, "ProcurementRootCatalog"):
             ArticleCatalogRoots({"Corpus": "one"})  # type: ignore[arg-type]
+
+    def test_workspace_relative_destination_is_created_and_pinned(self):
+        with tempfile.TemporaryDirectory() as parent:
+            roots = _roots(parent)
+            catalogs = ArticleCatalogRoots(roots, workspace_root=parent)
+            destination = "gauntlet/blahblah"
+            try:
+                created = catalogs.resolve(destination, create=True)
+                expected = os.path.join(parent, "gauntlet", "blahblah")
+                self.assertEqual(created.name, destination)
+                self.assertEqual(os.path.abspath(created.catalog_dir), os.path.abspath(expected))
+                self.assertTrue(Path(expected).is_dir())
+                again = catalogs.resolve(destination, create=False)
+                self.assertEqual(again.identity, created.identity)
+                snapshot = ArticleCatalogService(catalogs).inspect(destination)
+                self.assertEqual(snapshot.name, destination)
+                self.assertEqual(snapshot.slugs, ())
+            finally:
+                roots.close()
+
+    def test_missing_workspace_destination_is_not_created_on_inspect(self):
+        with tempfile.TemporaryDirectory() as parent:
+            roots = _roots(parent)
+            catalogs = ArticleCatalogRoots(roots, workspace_root=parent)
+            try:
+                with self.assertRaisesRegex(ArticleCatalogConfigurationError, "unknown"):
+                    catalogs.resolve("gauntlet/missing", create=False)
+                self.assertFalse(os.path.lexists(os.path.join(parent, "gauntlet")))
+            finally:
+                roots.close()
 
 
 if __name__ == "__main__":

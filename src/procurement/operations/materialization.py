@@ -8,11 +8,6 @@ from pathlib import Path
 from typing import TypeVar
 
 from jsonl_engine.deposit import DepositResult
-from jsonl_engine.publication import (
-    PinnedPublicationRoot,
-    PublicationError,
-    copy_file_no_clobber,
-)
 from procurement.domain.acquisition.receipts import AcquiredArtifact, AcquisitionManifest
 from procurement.domain.materialization import (
     SourceMaterializationRequest,
@@ -28,7 +23,7 @@ from procurement.identifiers import is_doi, normalize_doi
 from procurement.operations.metadata import MetadataService
 from procurement.runtime.concurrency import await_boundary
 from procurement.source.findings import build_source_findings
-from procurement.storage.acquisitions import AcquisitionStore
+from procurement.storage.acquisitions import AcquisitionItem
 from procurement.storage.source_deposits import (
     SourceDepositItem,
     SourceDepositStore,
@@ -44,7 +39,6 @@ class SourceMaterializationService:
     def __init__(
         self,
         metadata: MetadataService,
-        acquisitions: AcquisitionStore,
         deposits: SourceDepositStore,
         *,
         archive_limits: ArchiveLimits | None = None,
@@ -55,7 +49,6 @@ class SourceMaterializationService:
             raise ValueError("lock_timeout must be positive")
         limits = archive_limits or ArchiveLimits()
         self._metadata = metadata
-        self._acquisitions = acquisitions
         self._deposits = deposits
         self._extractor = SourceArchiveExtractor(limits)
         self._inspector = LatexSourceInspector(limits)
@@ -66,10 +59,11 @@ class SourceMaterializationService:
         self,
         request: SourceMaterializationRequest,
     ) -> SourceMaterializationResult:
-        """Prepare one staged source without acquiring bytes or rebuilding inventory."""
+        """Prepare one catalog acquisition without copying bytes or rebuilding inventory."""
 
         manifest = await self._run_sync(
             self._read_acquisition,
+            request.catalog,
             request.acquisition_slug,
         )
         _, receipt_pdf = self._forms(manifest)
@@ -116,17 +110,21 @@ class SourceMaterializationService:
         task = asyncio.create_task(asyncio.to_thread(function, *args, **kwargs))
         return await await_boundary(task)
 
-    def _read_acquisition(self, slug: str) -> AcquisitionManifest:
-        with self._acquisitions.transaction(slug, create=False) as item:
-            manifest = item.read_manifest()
-            manifest = item.recover(manifest)
+    def _read_acquisition(self, catalog: str, slug: str) -> AcquisitionManifest:
+        with self._deposits.transaction(catalog, slug, create=False) as item:
+            if item is None:
+                raise SourceMaterializationError(
+                    f"catalog {catalog!r} has no acquisition item {slug!r}"
+                )
+            acq = AcquisitionItem(item.publication_root, slug)
+            manifest = acq.recover(acq.read_manifest())
             if manifest is None:
                 raise SourceMaterializationError(
                     f"acquisition item has no acquisition.json receipt: '{item.directory}'"
                 )
             self._forms(manifest)
             for form in manifest.forms:
-                item.validate_form(form)
+                acq.validate_form(form)
             return manifest
 
     @staticmethod
@@ -151,9 +149,15 @@ class SourceMaterializationService:
         expected_manifest: AcquisitionManifest,
         proposed_metadata: DepositMetadataBundle | None,
     ) -> SourceMaterializationResult:
-        with self._acquisitions.transaction(expected_manifest.slug, create=False) as staged:
-            manifest = staged.read_manifest()
-            manifest = staged.recover(manifest)
+        with self._deposits.transaction(
+            request.catalog,
+            expected_manifest.slug,
+            create=True,
+        ) as item:
+            if item is None:  # pragma: no cover - create=True is a closed invariant
+                raise SourceMaterializationError("source deposit directory was not created")
+            acq = AcquisitionItem(item.publication_root, expected_manifest.slug)
+            manifest = acq.recover(acq.read_manifest())
             if manifest is None:
                 raise SourceMaterializationError(
                     "acquisition receipt disappeared before preparation"
@@ -164,63 +168,53 @@ class SourceMaterializationService:
             ):
                 raise SourceMaterializationError("acquisition identity changed before preparation")
             source_form, pdf_form = self._forms(manifest)
-            source_path = staged.validate_form(source_form)
+            source_path = acq.validate_form(source_form)
             pdf_source = (
-                staged.validate_form(pdf_form)
+                acq.validate_form(pdf_form)
                 if pdf_form is not None
                 else None
             )
-
-            with self._deposits.transaction(
-                request.catalog,
-                manifest.slug,
-                create=True,
-            ) as item:
-                if item is None:  # pragma: no cover - create=True is a closed invariant
-                    raise SourceMaterializationError("source deposit directory was not created")
-                existing = item.inspect_existing(
-                    artifact=manifest.artifact,
-                    identity_anchor=request.identity_anchor,
-                    requested_mode=request.metadata_mode,
-                    receipt_has_pdf=pdf_form is not None,
-                )
-                metadata = proposed_metadata
-                if request.metadata_mode == "required":
-                    if existing is not None and existing.metadata is not None:
-                        metadata = existing.metadata
-                    if metadata is None:
-                        raise SourceMaterializationError(
-                            "required API metadata was not available at publication"
-                        )
-                    if metadata.identity_anchor != request.identity_anchor:
-                        raise SourceMaterializationError(
-                            "resolved API metadata does not match the requested "
-                            "bibliographic identity"
-                        )
-                elif metadata is not None:
+            existing = item.inspect_existing(
+                artifact=manifest.artifact,
+                identity_anchor=request.identity_anchor,
+                requested_mode=request.metadata_mode,
+                receipt_has_pdf=pdf_form is not None,
+            )
+            metadata = proposed_metadata
+            if request.metadata_mode == "required":
+                if existing is not None and existing.metadata is not None:
+                    metadata = existing.metadata
+                if metadata is None:
                     raise SourceMaterializationError(
-                        "metadata-free publication received an API metadata bundle"
+                        "required API metadata was not available at publication"
                     )
-
-                return self._publish(
-                    item,
-                    staged.publication_root,
-                    staged.manifest_path,
-                    manifest,
-                    source_form,
-                    source_path,
-                    pdf_form,
-                    pdf_source,
-                    metadata,
-                    identity_anchor=request.identity_anchor,
-                    main_tex=request.main_tex or "",
+                if metadata.identity_anchor != request.identity_anchor:
+                    raise SourceMaterializationError(
+                        "resolved API metadata does not match the requested "
+                        "bibliographic identity"
+                    )
+            elif metadata is not None:
+                raise SourceMaterializationError(
+                    "metadata-free publication received an API metadata bundle"
                 )
+
+            return self._publish(
+                item,
+                acq,
+                manifest,
+                source_form,
+                source_path,
+                pdf_form,
+                pdf_source,
+                metadata,
+                identity_anchor=request.identity_anchor,
+                main_tex=request.main_tex or "",
+            )
 
     def _publish(
         self,
         item: SourceDepositItem,
-        acquisition_root: PinnedPublicationRoot,
-        acquisition_manifest_path: Path,
+        acq: AcquisitionItem,
         manifest: AcquisitionManifest,
         source_form: AcquiredArtifact,
         source_path: Path,
@@ -231,11 +225,16 @@ class SourceMaterializationService:
         identity_anchor: WorkIdentityAnchor | None,
         main_tex: str,
     ) -> SourceMaterializationResult:
+        if source_path.parent != item.directory:
+            raise SourceMaterializationError(
+                "source artifact is not in the catalog document directory"
+            )
+        archive_leaf = source_form.path
         candidate = item.new_tree_stage()
         try:
             with item.pin_tree_stage(candidate) as candidate_root:
                 extraction = self._extractor.extract_pinned(
-                    acquisition_root,
+                    item.publication_root,
                     source_path,
                     candidate_root,
                 )
@@ -251,39 +250,15 @@ class SourceMaterializationService:
                 )
             self._assert_declared_identity(candidate_inspection, metadata)
 
-            archive_leaf = f"{manifest.slug}.tar.gz"
-            try:
-                archive_copy = copy_file_no_clobber(
-                    acquisition_root,
-                    source_path,
-                    item.publication_root,
-                    item.archive_path,
-                    expected_bytes=source_form.bytes,
-                    expected_sha256=source_form.sha256,
-                )
-            except (OSError, PublicationError, RuntimeError, ValueError) as exc:
-                raise SourceMaterializationError(
-                    f"source archive conflicts with its deposit destination: '{item.archive_path}'"
-                ) from exc
-
             pdf_path: str | None = None
             pdf_leaf: str | None = None
             if pdf_form is not None and pdf_source is not None:
-                pdf_leaf = f"{manifest.slug}.pdf"
-                try:
-                    pdf_copy = copy_file_no_clobber(
-                        acquisition_root,
-                        pdf_source,
-                        item.publication_root,
-                        item.pdf_path,
-                        expected_bytes=pdf_form.bytes,
-                        expected_sha256=pdf_form.sha256,
-                    )
-                except (OSError, PublicationError, RuntimeError, ValueError) as exc:
+                if pdf_source.parent != item.directory:
                     raise SourceMaterializationError(
-                        f"PDF conflicts with its deposit destination: '{item.pdf_path}'"
-                    ) from exc
-                pdf_path = pdf_copy.path
+                        "PDF artifact is not in the catalog document directory"
+                    )
+                pdf_leaf = pdf_form.path
+                pdf_path = str(pdf_source)
             else:
                 if item.exists(item.pdf_path):
                     raise SourceMaterializationError(
@@ -328,17 +303,17 @@ class SourceMaterializationService:
                 publication_root=item.publication_root,
             )
             item.assert_current()
-            acquisition_root.assert_current()
+            acq.assert_current()
             return SourceMaterializationResult(
                 catalog=item.catalog,
                 slug=manifest.slug,
                 status=deposit.status,
                 created=deposit.created,
                 artifact=manifest.artifact,
-                acquisition_manifest_path=str(acquisition_manifest_path),
+                acquisition_manifest_path=str(acq.manifest_path),
                 document_directory=str(item.directory),
                 article_path=deposit.article_path,
-                archive_path=archive_copy.path,
+                archive_path=str(source_path),
                 source_path=installed.path,
                 metadata_path=metadata_path,
                 pdf_path=pdf_path,

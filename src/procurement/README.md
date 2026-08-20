@@ -106,11 +106,11 @@ path or URL. The service sniffs and validates gzip source or PDF bytes, makes an
 publishes the same `acquisition.json` contract with `local-import` custody. It does not claim that a DOI or
 arXiv identity proves the origin of those bytes.
 
-`SourceMaterializationService` consumes an existing `acquisition.json`; it never downloads an artifact.
-It requires exactly one receipted source form, copies staged bytes into an independent inode, safely expands
-gzip-wrapped tar or single-TeX source, validates the complete LaTeX closure, publishes the canonical
-`{slug}.tar.gz` and `{slug}-tex/` forms without replacement, and calls `jsonl_engine` to publish
-`article.json` last. Bibliography is selected by one typed strategy: acquisition artifact identity,
+`SourceMaterializationService` consumes an existing `acquisition.json` in the destination catalog leaf; it
+never downloads an artifact and does not copy receipted bytes. It requires exactly one receipted source
+form, safely expands gzip-wrapped tar or single-TeX source in place, validates the complete LaTeX
+closure, keeps the receipted archive leaf (`{slug}.tar.gz` or `arXiv-{slug}.tar.gz`) and the trimmed
+`{slug}-tex/` tree without replacement, and calls `jsonl_engine` to publish `article.json` last. Bibliography is selected by one typed strategy: acquisition artifact identity,
 caller-supplied DOI, or deliberate omission. Explicit DOI resolution is identity-checked against API results
 and any DOI declared by the validated LaTeX closure. There is no best-effort mode
 that could permanently mint an accidentally metadata-free sentinel. Tar input requires a canonical
@@ -132,11 +132,14 @@ sentinel reads through main and sidecar publication. Default rebuilds publish wi
 sources. The three operations therefore compose without becoming one transaction:
 
 ```text
-acquire one item         -> acquisition.json
-or import one local item -> acquisition.json
-materialize one source  -> article.json
-rebuild one catalog     -> inventory.jsonl
+acquire into a catalog name or workspace path  -> {destination}/{slug}/acquisition.json
+or import one local item there                 -> {destination}/{slug}/acquisition.json
+materialize that same leaf                     -> article.json
+rebuild one catalog                            -> inventory.jsonl
 ```
+The destination may be a configured name such as `inventory` or a confined relative folder such as
+`ingestion/gauntlet/topic`. Missing destination folders are created.
+`ProcureService` runs acquire then materialize at that destination as one operation.
 
 A PDF can currently be imported, receipted, and used as the human basis for an explicit DOI lookup. A lone
 PDF does not yet mint `article.json`: the current article contract requires a validated LaTeX archive and

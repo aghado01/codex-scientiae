@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import os
+import threading
 from contextlib import ExitStack
 from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
-from types import MappingProxyType
 from typing import Mapping
 
 from jsonl_engine.publication import PinnedPublicationRoot
@@ -98,9 +98,11 @@ class ProcurementRootCatalog:
 
         self._definitions = tuple(definitions)
         self._stack: ExitStack | None = None
-        self._descriptors: Mapping[
+        self._lock = threading.Lock()
+        self._descriptor_map: dict[
             tuple[ConfiguredRootKind, str], ConfiguredRootDescriptor
-        ] = MappingProxyType({})
+        ] = {}
+        self._physical: dict[tuple[int, ...], _RootDefinition] = {}
 
     @staticmethod
     def _absolute_path(value: str | Path, *, label: str) -> str:
@@ -175,7 +177,8 @@ class ProcurementRootCatalog:
         except BaseException:
             stack.close()
             raise
-        self._descriptors = MappingProxyType(descriptors)
+        self._descriptor_map = descriptors
+        self._physical = physical
         self._stack = stack
         return self
 
@@ -184,6 +187,8 @@ class ProcurementRootCatalog:
 
         stack = self._stack
         self._stack = None
+        self._descriptor_map = {}
+        self._physical = {}
         if stack is not None:
             stack.close()
 
@@ -211,7 +216,7 @@ class ProcurementRootCatalog:
             raise ConfiguredRootError(f"unknown configured root kind: {kind!r}") from exc
         if not isinstance(name, str) or not name.strip():
             raise ConfiguredRootError("configured root name must not be blank")
-        descriptor = self._descriptors.get((resolved_kind, name.strip().casefold()))
+        descriptor = self._descriptor_map.get((resolved_kind, name.strip().casefold()))
         if descriptor is None:
             available = [
                 item.name for item in self.descriptors(resolved_kind)
@@ -220,6 +225,49 @@ class ProcurementRootCatalog:
                 f"unknown {resolved_kind.value} root {name!r}; available: {available}"
             )
         return descriptor
+
+    def ensure_article_catalog(self, name: str, directory: str) -> ConfiguredRootDescriptor:
+        """Pin one additional article-catalog directory for the application lifetime."""
+
+        self._require_open()
+        stack = self._stack
+        if stack is None:
+            raise ConfiguredRootError("configured root catalog is not open")
+        if not isinstance(name, str) or not name.strip():
+            raise ConfiguredRootError("article catalog name must not be blank")
+        abs_path = self._absolute_path(directory, label="article catalog")
+        key = (ConfiguredRootKind.ARTICLE_CATALOG, name.strip().casefold())
+        with self._lock:
+            existing = self._descriptor_map.get(key)
+            if existing is not None:
+                if os.path.normcase(existing.path) != os.path.normcase(abs_path):
+                    raise ConfiguredRootError(
+                        f"article catalog {name!r} is already bound to '{existing.path}'"
+                    )
+                return existing
+            for descriptor in self.descriptors(ConfiguredRootKind.ARTICLE_CATALOG):
+                if os.path.normcase(descriptor.path) == os.path.normcase(abs_path):
+                    return descriptor
+            root = stack.enter_context(PinnedPublicationRoot(abs_path))
+            identity = root.identity
+            prior = self._physical.get(identity)
+            if prior is not None:
+                return self.resolve(prior.kind, prior.name)
+            definition = _RootDefinition(
+                ConfiguredRootKind.ARTICLE_CATALOG,
+                name.strip(),
+                abs_path,
+            )
+            self._physical[identity] = definition
+            descriptor = ConfiguredRootDescriptor(
+                kind=definition.kind,
+                name=definition.name,
+                path=definition.path,
+                identity=identity,
+                publication_root=root,
+            )
+            self._descriptor_map[key] = descriptor
+            return descriptor
 
     @property
     def staging(self) -> ConfiguredRootDescriptor:
@@ -234,7 +282,7 @@ class ProcurementRootCatalog:
         """Return active descriptors in namespace and logical-name order."""
 
         self._require_open()
-        selected = tuple(self._descriptors.values())
+        selected = tuple(self._descriptor_map.values())
         if kind is not None:
             try:
                 resolved_kind = ConfiguredRootKind(kind)

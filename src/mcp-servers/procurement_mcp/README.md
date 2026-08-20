@@ -17,7 +17,7 @@ Restore the pinned repository environment and generate the local registration:
 ./brewery/uv/restore-uv.ps1
 ```
 
-The generated registration invokes `.venv/Scripts/uv.exe` with an explicit project root and
+The generated registration invokes `./packages/uv/uv.exe` with a project-local root and
 `--locked --no-sync --no-dev --offline`; activation and ambient Python or uv discovery are not
 required. The installed script name is `scientiae-procurement`. Discovery uses `discover_search`,
 `discover_related`, `resolve_reference`, and `get_work`. `list_procurement_providers` exposes the distinct
@@ -30,9 +30,11 @@ does not claim that the bytes came from the selected metadata provider.
 
 Artifact retrieval is deliberately separate. `plan_artifact_acquisition` returns a URL-free summary from a
 fresh server-side provider plan; `acquire_artifact` replans internally, downloads requested source/PDF/HTML
-forms to configured staging, and publishes or validates `acquisition.json`.
-`get_acquisition_receipt` revalidates a staged receipt and every file it names. None of these tools accepts
-a client-selected URL, serialized plan, absolute destination, or arbitrary storage root.
+forms, and publishes or validates `acquisition.json`. Pass `catalog` to write the receipt into a configured catalog name or a workspace-relative
+destination such as `ingestion/gauntlet/topic`; omit it to use staging. Missing destination
+folders are created. `get_acquisition_receipt` revalidates a receipt and
+every file it names. None of these tools accepts a client-selected URL, serialized plan, absolute
+destination, or arbitrary storage root.
 `list_local_import_inboxes` exposes configured logical inbox names, and `import_local_artifact` validates a
 portable direct-child PDF or gzip source before publishing the same acquisition receipt with explicit
 `local-import` custody. It accepts neither a host path nor a URL.
@@ -46,12 +48,17 @@ and article publication. Inventory rebuild pins its selected catalog generation 
 
 `list_article_catalogs` exposes only the configured names accepted by the filesystem operations; catalog
 inspection and rebuild responses likewise omit physical host paths. Clients cannot submit a root path.
-`materialize_source_deposit` consumes one existing acquisition receipt, safely unpacks
-and validates its source, optionally copies its receipted PDF, and publishes `article.json` last. Its typed
+`materialize_source_deposit` consumes one existing acquisition receipt in the named catalog leaf, unpacks
+and validates its source in place, and publishes `article.json` last. The receipted archive leaf is kept;
+the extracted tree is `{slug}-tex/`. Its typed
 metadata strategy is `artifact-identity`, `explicit-doi`, or `omit`; the first two reuse or persist
 `{slug}.api-metadata.json`, while omit never calls a metadata provider. An explicit DOI is cross-checked
 against any DOI declared by the validated LaTeX closure. It does not acquire bytes or
 rebuild an inventory.
+
+`procure_source` is acquire then materialize in lock-step at one destination. It requires a catalog
+destination and a source artifact (default forms are source and PDF). Independent acquire, import, and
+materialize tools remain for bytes-only work and retries.
 
 `inspect_article_catalog` reports the current direct-child source-ready population without writing.
 `rebuild_article_inventory` independently rebuilds `inventory.jsonl` from that population and requires
@@ -59,11 +66,11 @@ rebuild an inventory.
 independent metadata-only route. API metadata supplies bibliographic evidence; source materialization
 separately supplies the seven source-integrity findings.
 
-The intended compositions are deliberately non-unitary:
+The intended compositions are:
 
-- Get one paper: plan and acquire, or import a configured local file, then stop at `acquisition.json`.
-- Prepare one source: acquire/import if needed, select artifact or DOI metadata, then materialize the same
-  `article.json` contract.
+- Procure one source-ready leaf: `procure_source` into a catalog name or workspace-relative destination.
+- Get bytes only: plan and acquire, or import a configured local file, then stop at `acquisition.json`.
+- Materialize an existing receipt: `materialize_source_deposit` on that same destination leaf.
 - Refresh a catalog: rebuild `inventory.jsonl` across any pre-existing direct-child articles, without
   reacquiring or unpacking them.
 

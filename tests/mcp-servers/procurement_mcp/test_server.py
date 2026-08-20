@@ -193,7 +193,7 @@ class RecordingLocalImportService:
 
 
 class StaticAcquisitionService:
-    def inspect(self, slug: str) -> AcquisitionManifest:
+    def inspect(self, slug: str, *, catalog: str | None = None) -> AcquisitionManifest:
         return AcquisitionManifest(
             slug=slug,
             artifact=ArtifactReference(
@@ -461,6 +461,7 @@ class TestProcurementMcp(unittest.TestCase):
                             "list_local_import_inboxes",
                             "import_local_artifact",
                             "materialize_source_deposit",
+                            "procure_source",
                             "list_article_catalogs",
                             "inspect_article_catalog",
                             "rebuild_article_inventory",
@@ -683,7 +684,7 @@ class TestProcurementMcp(unittest.TestCase):
                     )
                     self.assertEqual(
                         set(local_import_tool["inputSchema"]["properties"]),
-                        {"inbox", "leaf", "deposit_slug"},
+                        {"inbox", "leaf", "deposit_slug", "catalog"},
                     )
                     for field in ("inbox", "leaf", "deposit_slug"):
                         self.assertEqual(

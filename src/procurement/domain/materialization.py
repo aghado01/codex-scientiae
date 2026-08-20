@@ -10,6 +10,7 @@ from procurement.domain.base import DomainModel
 from procurement.domain.deposits import (
     PORTABLE_LEAF_PATTERN,
     validate_artifact_deposit_reference,
+    validate_catalog_destination,
     validate_deposit_slug,
 )
 from procurement.domain.metadata import ArtifactReference
@@ -128,8 +129,8 @@ class SourceMaterializationRequest(DomainModel):
     @classmethod
     def _catalog_name(cls, value: object) -> str:
         if not isinstance(value, str) or not value.strip():
-            raise ValueError("catalog must be a non-empty configured name")
-        return value.strip()
+            raise ValueError("catalog destination must be a non-empty string")
+        return validate_catalog_destination(value)
 
     @field_validator("acquisition_slug", mode="before")
     @classmethod

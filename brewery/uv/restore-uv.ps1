@@ -159,19 +159,14 @@ try {
         --no-build-isolation
     if ($LASTEXITCODE -ne 0) { throw "uv project sync failed ($LASTEXITCODE)" }
 
-    $localUv = Join-Path $repoRoot '.venv/Scripts/uv.exe'
-    $pendingLocalUv = "$localUv.pending"
-    if ([System.IO.File]::Exists($pendingLocalUv)) {
-        [System.IO.File]::Delete($pendingLocalUv)
-    }
-    [System.IO.File]::Copy($packageUv, $pendingLocalUv, $false)
-    [System.IO.File]::Move($pendingLocalUv, $localUv, $true)
-    if ((Get-FileHash -LiteralPath $localUv -Algorithm SHA256).Hash -cne
-        (Get-FileHash -LiteralPath $packageUv -Algorithm SHA256).Hash) {
-        throw 'project-local uv executable differs from the verified package shelf'
+    $legacyEnvironmentUv = Join-Path $repoRoot '.venv/Scripts/uv.exe'
+    Assert-Descendant -Path $legacyEnvironmentUv -Parent $repoRoot `
+        -Label 'legacy environment uv executable'
+    if ([System.IO.File]::Exists($legacyEnvironmentUv)) {
+        [System.IO.File]::Delete($legacyEnvironmentUv)
     }
 
-    & $localUv run --project $repoRoot --locked --no-sync --no-dev --offline `
+    & $packageUv run --project $repoRoot --locked --no-sync --no-dev --offline `
         python (Join-Path $PSScriptRoot 'verify-install.py')
     if ($LASTEXITCODE -ne 0) { throw "procurement MCP install verification failed ($LASTEXITCODE)" }
 
@@ -183,7 +178,7 @@ try {
     $succeeded = $true
     [pscustomobject]@{
         pin = $pinPath
-        uv = $localUv
+        uv = $packageUv
         uv_version = $uvVersion
         python_version = $pythonVersion
         environment = Join-Path $repoRoot '.venv'

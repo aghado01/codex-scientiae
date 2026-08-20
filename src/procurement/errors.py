@@ -67,3 +67,7 @@ class AcquisitionConflictError(AcquisitionError):
 
 class SourceMaterializationError(ProcurementError):
     """An acquired source could not become a validated source deposit."""
+
+
+class ProcureError(ProcurementError):
+    """Acquire and materialize could not complete one source-ready leaf."""

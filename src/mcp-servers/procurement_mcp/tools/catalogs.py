@@ -22,7 +22,7 @@ def register_catalog_tools(server: MCPServer) -> None:
     async def list_article_catalogs(
         ctx: Context[AppContext],
     ) -> ArticleCatalogListResponse:
-        """List configured catalog names accepted by source and inventory operations."""
+        """List configured catalog names and any destinations opened this session."""
 
         service = ctx.request_context.lifespan_context.application.catalogs
         if service is None:
@@ -39,7 +39,7 @@ def register_catalog_tools(server: MCPServer) -> None:
         catalog: NonEmptyIdentifier,
         ctx: Context[AppContext],
     ) -> ArticleCatalogSnapshotResponse:
-        """Inspect current direct-child article.json membership without writing inventory."""
+        """Inspect current direct-child article.json membership at a catalog name or destination path."""
 
         service = ctx.request_context.lifespan_context.application.catalogs
         if service is None:

@@ -25,28 +25,8 @@ service applies its host, size, checksum, and payload policies.
 
 # Acquisition and source preparation
 
-Use `plan_artifact_acquisition` when you need to inspect availability and integrity policy without writing
-bytes. Use `acquire_artifact` to retrieve one or more forms into configured staging. The resulting
-`acquisition.json` is an acquired-byte receipt, not an `article.json` source-ready assertion.
-For a file already downloaded locally, call `list_local_import_inboxes` and then
-`import_local_artifact` with one logical inbox, direct-child leaf, and deposit slug. Never infer or submit a
-host path. Local custody does not establish provider origin.
-
-Acquisition, unpack/source preparation, and catalog inventory rebuild are independent. Stop after
-acquisition when bytes are all that the task needs; prepare a source deposit only when unpacked source is
-requested; rebuild an inventory only when the selected catalog population should be rematerialized.
-
-Use `list_article_catalogs` before a filesystem operation when the configured name is not already known.
-Use `materialize_source_deposit` with an existing acquisition slug to create one source-ready deposit. Set
-`metadata.mode="artifact-identity"` when the acquisition identity should drive API selection, use
-`metadata.mode="explicit-doi"` with one caller-selected DOI when byte provenance and work identity are
-independent, or use `metadata.mode="omit"` only for a deliberately metadata-free immutable article.
-Metadata failure in either resolving mode is an error and does not silently weaken the deposit.
-
-Use `inspect_article_catalog` to view current direct-child membership without writing. Use
-`rebuild_article_inventory` only when `inventory.jsonl` should be rematerialized from all current
-`article.json` sentinels. Rebuilding does not acquire or prepare any source; replacing an existing inventory
-requires `force=true`.
+When the task is a source-ready leaf, a destination drop, or a list of papers to one folder, follow the
+`procurement_request` prompt. This prompt stays on search and graph traversal.
 
 # Provider and deposit boundaries
 

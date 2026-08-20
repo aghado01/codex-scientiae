@@ -45,8 +45,9 @@ def register_acquisition_tools(server: MCPServer) -> None:
         identifier: NonEmptyIdentifier,
         ctx: Context[AppContext],
         artifacts: list[ArtifactKind] | None = None,
+        catalog: NonEmptyIdentifier | None = None,
     ) -> AcquisitionResult:
-        """Acquire validated bytes into configured staging and publish acquisition.json."""
+        """Acquire validated bytes into a catalog destination or staging and publish acquisition.json."""
 
         service = ctx.request_context.lifespan_context.application.acquisition
         if service is None:
@@ -56,6 +57,7 @@ def register_acquisition_tools(server: MCPServer) -> None:
                 provider=provider,
                 identifier=identifier,
                 artifacts=tuple(artifacts) if artifacts is not None else ("source",),
+                catalog=catalog,
             )
         )
 
@@ -63,13 +65,14 @@ def register_acquisition_tools(server: MCPServer) -> None:
     async def get_acquisition_receipt(
         deposit_slug: DepositSlug,
         ctx: Context[AppContext],
+        catalog: NonEmptyIdentifier | None = None,
     ) -> AcquisitionManifest:
-        """Read and revalidate one configured staging acquisition receipt."""
+        """Read and revalidate one acquisition receipt in a catalog destination or staging."""
 
         service = ctx.request_context.lifespan_context.application.acquisition
         if service is None:
             raise RuntimeError("artifact acquisition is not configured for this application")
-        return await finish_sync(service.inspect, deposit_slug)
+        return await finish_sync(service.inspect, deposit_slug, catalog=catalog)
 
     @server.tool()
     async def list_local_import_inboxes(
@@ -88,6 +91,7 @@ def register_acquisition_tools(server: MCPServer) -> None:
         leaf: DepositSlug,
         deposit_slug: DepositSlug,
         ctx: Context[AppContext],
+        catalog: NonEmptyIdentifier | None = None,
     ) -> AcquisitionResult:
         """Validate one configured local PDF or gzip source and publish acquisition.json."""
 
@@ -99,5 +103,6 @@ def register_acquisition_tools(server: MCPServer) -> None:
                 inbox=inbox,
                 leaf=leaf,
                 deposit_slug=deposit_slug,
+                catalog=catalog,
             )
         )

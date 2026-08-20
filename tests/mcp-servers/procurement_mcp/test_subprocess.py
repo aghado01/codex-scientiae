@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import ctypes
+import json
 import os
 from ctypes import wintypes
 from pathlib import Path
@@ -15,7 +16,8 @@ from mcp.client import stdio as stdio_module
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
-LOCAL_UV = REPOSITORY_ROOT / ".venv" / "Scripts" / "uv.exe"
+PACKAGE_UV = REPOSITORY_ROOT / "packages" / "uv" / "uv.exe"
+MCP_REGISTRATION = REPOSITORY_ROOT / ".mcp.json"
 RUNTIME_ARGS = [
     "run",
     "--project",
@@ -134,7 +136,7 @@ def _assert_processes_exited(handles: list[int]) -> None:
 def test_locked_uv_launches_from_unrelated_cwd_and_closes_process_tree(
     tmp_path: Path,
 ) -> None:
-    assert LOCAL_UV.is_file()
+    assert PACKAGE_UV.is_file()
     unrelated = tmp_path / "unrelated"
     runtime_temp = tmp_path / "runtime-temp"
     unrelated.mkdir()
@@ -154,7 +156,7 @@ def test_locked_uv_launches_from_unrelated_cwd_and_closes_process_tree(
         "PYTHONPATH": "",
     }
     parameters = StdioServerParameters(
-        command=str(LOCAL_UV),
+        command=str(PACKAGE_UV),
         args=RUNTIME_ARGS,
         env=environment,
         cwd=str(unrelated),
@@ -181,7 +183,7 @@ def test_locked_uv_launches_from_unrelated_cwd_and_closes_process_tree(
                 read_timeout_seconds=15,
             ) as client:
                 result = await client.list_tools()
-                assert len(result.tools) == 16
+                assert len(result.tools) == 17
                 assert result.tools[0].name == "discover_search"
                 assert result.tools[-1].name == "list_procurement_providers"
                 assert len(captured) == 1
@@ -206,3 +208,44 @@ def test_locked_uv_launches_from_unrelated_cwd_and_closes_process_tree(
     assert supervisor.returncode == 0
     _assert_processes_exited(handles)
     assert list(unrelated.iterdir()) == []
+
+
+@pytest.mark.skipif(os.name != "nt", reason="the committed uv bootstrap targets Windows")
+def test_project_local_registration_launches_from_repository_root() -> None:
+    document = json.loads(MCP_REGISTRATION.read_text(encoding="utf-8"))
+    registration = document["mcpServers"]["scientiae-procurement"]
+    assert registration["command"] == "./packages/uv/uv.exe"
+    assert registration["args"][0:3] == ["run", "--project", "."]
+
+    parameters = StdioServerParameters(
+        command=registration["command"],
+        args=registration["args"],
+        env=registration["env"],
+        cwd=str(REPOSITORY_ROOT),
+    )
+
+    async def exercise() -> object:
+        captured: list[object] = []
+        create_process = stdio_module._create_platform_compatible_process
+
+        async def capture_process(*args: object, **kwargs: object) -> object:
+            process = await create_process(*args, **kwargs)
+            captured.append(process)
+            return process
+
+        with mock.patch.object(
+            stdio_module,
+            "_create_platform_compatible_process",
+            side_effect=capture_process,
+        ):
+            async with Client(
+                stdio_module.stdio_client(parameters),
+                read_timeout_seconds=15,
+            ) as client:
+                result = await client.list_tools()
+                assert len(result.tools) == 17
+                assert len(captured) == 1
+        return captured[0]
+
+    supervisor = asyncio.run(exercise())
+    assert supervisor.returncode == 0

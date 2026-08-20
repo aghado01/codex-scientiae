@@ -39,6 +39,7 @@ def register_metadata_tools(server: MCPServer) -> None:
         doi: NonEmptyIdentifier,
         ctx: Context[AppContext],
         fallback_sources: list[ProviderName] | None = None,
+        catalog: ProviderName | None = None,
     ) -> DepositMetadataBundle:
         """Resolve a caller-selected DOI for one existing acquisition receipt."""
 
@@ -46,7 +47,11 @@ def register_metadata_tools(server: MCPServer) -> None:
         acquisition = application.acquisition
         if acquisition is None:
             raise RuntimeError("artifact acquisition is not configured for this application")
-        manifest = await finish_sync(acquisition.inspect, acquisition_slug)
+        manifest = await finish_sync(
+            acquisition.inspect,
+            acquisition_slug,
+            catalog=catalog,
+        )
         return await application.metadata.collect_by_doi(
             deposit_slug=manifest.slug,
             artifact=manifest.artifact,

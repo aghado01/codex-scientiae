@@ -5,7 +5,7 @@ BeforeAll {
     $script:RecipeRoot = Join-Path $script:RepositoryRoot 'brewery/uv'
     $script:Pin = Get-Content -LiteralPath (Join-Path $script:RecipeRoot 'pin.json') -Raw |
         ConvertFrom-Json -AsHashtable
-    $script:LocalUv = Join-Path $script:RepositoryRoot '.venv/Scripts/uv.exe'
+    $script:PackageUv = Join-Path $script:RepositoryRoot 'packages/uv/uv.exe'
 }
 
 Describe 'pinned uv and Python toolchain' {
@@ -50,14 +50,10 @@ Describe 'pinned uv and Python toolchain' {
         }
     }
 
-    It 'uses the verified project-local uv executable' {
-        Test-Path -LiteralPath $script:LocalUv -PathType Leaf | Should -BeTrue
-        $packageUv = Join-Path $script:RepositoryRoot 'packages/uv/uv.exe'
-        Test-Path -LiteralPath $packageUv -PathType Leaf | Should -BeTrue
-        (Get-FileHash -LiteralPath $script:LocalUv -Algorithm SHA256).Hash |
-            Should -BeExactly (Get-FileHash -LiteralPath $packageUv -Algorithm SHA256).Hash
+    It 'uses one verified standalone uv executable outside the Python environment' {
+        Test-Path -LiteralPath $script:PackageUv -PathType Leaf | Should -BeTrue
 
-        $version = (& $script:LocalUv --version | Out-String).Trim()
+        $version = (& $script:PackageUv --version | Out-String).Trim()
         $LASTEXITCODE | Should -Be 0
         $version | Should -Match ("^uv $([regex]::Escape($script:Pin.version))\s")
     }
@@ -66,15 +62,15 @@ Describe 'pinned uv and Python toolchain' {
         $priorCache = [Environment]::GetEnvironmentVariable('UV_CACHE_DIR', 'Process')
         try {
             $env:UV_CACHE_DIR = Join-Path $TestDrive 'uv-cache'
-            & $script:LocalUv lock --project $script:RepositoryRoot --check --offline `
+            & $script:PackageUv lock --project $script:RepositoryRoot --check --offline `
                 2> (Join-Path $TestDrive 'lock.stderr') | Out-Null
             $LASTEXITCODE | Should -Be 0
-            & $script:LocalUv sync --project $script:RepositoryRoot --check --offline `
+            & $script:PackageUv sync --project $script:RepositoryRoot --check --offline `
                 2> (Join-Path $TestDrive 'sync.stderr') | Out-Null
             $LASTEXITCODE | Should -Be 0
 
             $generated = Join-Path $TestDrive 'requirements.txt'
-            & $script:LocalUv export --project $script:RepositoryRoot --locked --no-dev `
+            & $script:PackageUv export --project $script:RepositoryRoot --locked --no-dev `
                 --no-emit-project --no-hashes --format requirements.txt --output-file $generated `
                 2> (Join-Path $TestDrive 'export.stderr') | Out-Null
             $LASTEXITCODE | Should -Be 0
@@ -110,19 +106,23 @@ Describe 'pinned uv and Python toolchain' {
         $document = Get-Content -LiteralPath $mcpPath -Raw | ConvertFrom-Json -AsHashtable
         $document.mcpServers.ContainsKey('sibling') | Should -BeTrue
         $registration = $document.mcpServers['scientiae-procurement']
-        $registration.command | Should -BeExactly $script:LocalUv
+        $registration.command | Should -BeExactly './packages/uv/uv.exe'
         @($registration.args) | Should -Be @(
-            'run', '--project', $script:RepositoryRoot, '--locked', '--no-sync',
+            'run', '--project', '.', '--locked', '--no-sync',
             '--no-dev', '--offline', 'scientiae-procurement')
-        $registration.env.CODEX_SCIENTIAE_ROOT | Should -BeExactly $script:RepositoryRoot
-        $registration.env.TEMP | Should -BeExactly (
-            Join-Path $script:RepositoryRoot 'artifacts/procurement-mcp/temp')
+        $registration.env.CODEX_SCIENTIAE_ROOT | Should -BeExactly '.'
+        $registration.env.UV_PROJECT_ENVIRONMENT | Should -BeExactly './.venv'
+        $registration.env.UV_PYTHON_INSTALL_DIR | Should -BeExactly './packages/python'
+        $registration.env.UV_CACHE_DIR | Should -BeExactly './artifacts/uv/cache'
+        $registration.env.TEMP | Should -BeExactly './artifacts/procurement-mcp/temp'
         $registration.env.PYTHONPATH | Should -BeExactly ''
 
         $toml = Get-Content -LiteralPath $codexPath -Raw
         $toml | Should -Match '(?m)^\[mcp_servers\.sibling\]$'
         $toml | Should -Match '(?m)^\[mcp_servers\.scientiae-procurement\]$'
         $toml | Should -Match ([regex]::Escape('scientiae-procurement'))
+        $toml | Should -Match ([regex]::Escape('command = "./packages/uv/uv.exe"'))
+        $toml | Should -Not -Match ([regex]::Escape($script:RepositoryRoot))
 
         $jsonFirst = [System.IO.File]::ReadAllBytes($mcpPath)
         $tomlFirst = [System.IO.File]::ReadAllBytes($codexPath)
@@ -138,12 +138,11 @@ Describe 'pinned uv and Python toolchain' {
             Join-Path $script:RepositoryRoot '.mcp.json') -Raw |
             ConvertFrom-Json -AsHashtable
         $registration = $document.mcpServers['scientiae-procurement']
-        $registration.command | Should -BeExactly $script:LocalUv
+        $registration.command | Should -BeExactly './packages/uv/uv.exe'
         @($registration.args) | Should -Be @(
-            'run', '--project', $script:RepositoryRoot, '--locked', '--no-sync',
+            'run', '--project', '.', '--locked', '--no-sync',
             '--no-dev', '--offline', 'scientiae-procurement')
-        $registration.env.CODEX_SCIENTIAE_ROOT | Should -BeExactly $script:RepositoryRoot
-        $registration.env.UV_PROJECT_ENVIRONMENT | Should -BeExactly (
-            Join-Path $script:RepositoryRoot '.venv')
+        $registration.env.CODEX_SCIENTIAE_ROOT | Should -BeExactly '.'
+        $registration.env.UV_PROJECT_ENVIRONMENT | Should -BeExactly './.venv'
     }
 }

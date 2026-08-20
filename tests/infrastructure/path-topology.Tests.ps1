@@ -331,7 +331,7 @@ Describe 'source path topology' {
                 if ($command -and
                     [System.IO.Path]::GetFileName($command) -match '^(?i:uv(?:\.exe)?)$') {
                     $expectedUvArgs = @(
-                        'run', '--project', $script:RepoRoot.Replace('\', '/'), '--locked', '--no-sync',
+                        'run', '--project', '.', '--locked', '--no-sync',
                         '--no-dev', '--offline', 'scientiae-procurement')
                     if ((@($argsList) -join "`n") -cne ($expectedUvArgs -join "`n")) {
                         $failures.Add(

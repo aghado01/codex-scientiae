@@ -66,6 +66,24 @@ def validate_deposit_slug(value: object) -> str:
     return value
 
 
+def validate_catalog_destination(value: object) -> str:
+    """Return one configured catalog name or confined workspace-relative destination."""
+
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("catalog destination must be a non-empty string")
+    if "\\" in value:
+        raise ValueError("catalog destination must use forward slashes")
+    text = value.strip().strip("/")
+    if not text or text.startswith("/") or ":" in text.split("/", 1)[0]:
+        raise ValueError("catalog destination must be a relative workspace path")
+    parts = text.split("/")
+    try:
+        normalized = tuple(validate_deposit_slug(part) for part in parts)
+    except ValueError as exc:
+        raise ValueError("catalog destination must be portable path segments") from exc
+    return "/".join(normalized)
+
+
 def validate_artifact_deposit_reference(
     provider: str,
     deposit_slug: str,

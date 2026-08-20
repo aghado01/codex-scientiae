@@ -28,7 +28,10 @@ async def _verify() -> dict[str, object]:
 
     tool_names = [tool.name for tool in tools.tools]
     prompt_names = [prompt.name for prompt in prompts.prompts]
-    if len(tool_names) != 16 or prompt_names != ["discovery_procedure"]:
+    if len(tool_names) != 17 or sorted(prompt_names) != [
+        "discovery_procedure",
+        "procurement_request",
+    ]:
         raise RuntimeError("procurement MCP registration census is incorrect")
     return {
         "distribution": package.metadata["Name"],

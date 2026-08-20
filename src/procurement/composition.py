@@ -15,6 +15,7 @@ from procurement.operations.discovery import DiscoveryService
 from procurement.operations.local_import import LocalImportService
 from procurement.operations.materialization import SourceMaterializationService
 from procurement.operations.metadata import MetadataService
+from procurement.operations.procure import ProcureService
 from procurement.providers import (
     ProviderFactoryCatalog,
     get_builtin_provider_factory_catalog,
@@ -105,7 +106,7 @@ def build_application(
                     timeout_seconds=provider_settings.timeout_seconds,
                     max_attempts=provider_settings.max_attempts,
                 )
-        article_catalog_roots = ArticleCatalogRoots(roots)
+        article_catalog_roots = ArticleCatalogRoots(roots, workspace_root=root)
         catalog_service = ArticleCatalogService(article_catalog_roots)
         acquisition_store = AcquisitionStore(
             roots.staging,
@@ -115,6 +116,7 @@ def build_application(
             provider_catalog,
             http,
             acquisition_store,
+            catalogs=article_catalog_roots,
             provider_policies=policies,
             user_agent=secrets.user_agent(),
             maximum_expanded_source_bytes=settings.acquisition.limits.expanded_source_bytes,
@@ -123,6 +125,7 @@ def build_application(
             roots.descriptors(ConfiguredRootKind.LOCAL_INBOX),
             acquisition_store,
             settings.acquisition.limits,
+            catalogs=article_catalog_roots,
         )
         source_store = SourceDepositStore(
             article_catalog_roots,
@@ -130,7 +133,6 @@ def build_application(
         )
         materialization_service = SourceMaterializationService(
             metadata,
-            acquisition_store,
             source_store,
             archive_limits=ArchiveLimits(
                 max_archive_bytes=settings.acquisition.limits.source_bytes,
@@ -141,6 +143,7 @@ def build_application(
             ),
             lock_timeout=settings.acquisition.lock_timeout_seconds,
         )
+        procure_service = ProcureService(acquisition_service, materialization_service)
         roots.assert_current()
         return ProcurementApplication(
             providers=provider_catalog,
@@ -152,6 +155,7 @@ def build_application(
             local_import=local_import_service,
             catalogs=catalog_service,
             materialization=materialization_service,
+            procure=procure_service,
         )
     except BaseException:
         roots.close()

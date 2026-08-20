@@ -51,10 +51,10 @@ from procurement.domain.acquisition.receipts import AcquiredArtifact, Acquisitio
 from procurement.operations.catalogs import ArticleCatalogService
 from procurement.operations.local_import import LocalImportRequest, LocalImportService
 from procurement.operations.materialization import SourceMaterializationService
-from procurement.storage.acquisitions import AcquisitionStore
+from procurement.storage.acquisitions import AcquisitionStore, store_for_catalog
 from procurement.storage.article import deposit_procurement_article
 from procurement.storage.catalogs import ArticleCatalogRoots
-from procurement.storage.roots import ProcurementRootCatalog
+from procurement.storage.roots import ConfiguredRootKind, ProcurementRootCatalog
 from procurement.storage.source_deposits import SourceDepositStore
 
 
@@ -78,6 +78,7 @@ class Layout:
     catalog_root: Path
     acquisitions: AcquisitionStore
     deposits: SourceDepositStore
+    catalog_roots: ArticleCatalogRoots
     roots: ProcurementRootCatalog
 
 
@@ -123,12 +124,14 @@ def layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Layout]:
         local_inboxes={"manual": inbox_root},
     ).open()
     try:
-        catalog_roots = ArticleCatalogRoots(roots)
+        catalog_roots = ArticleCatalogRoots(roots, workspace_root=tmp_path)
+        catalog_descriptor = roots.resolve(ConfiguredRootKind.ARTICLE_CATALOG, "primary")
         yield Layout(
             staging_root=staging_root,
             catalog_root=catalog_root,
-            acquisitions=AcquisitionStore(roots.staging, lock_timeout=2),
+            acquisitions=AcquisitionStore(catalog_descriptor, lock_timeout=2),
             deposits=SourceDepositStore(catalog_roots, lock_timeout=2),
+            catalog_roots=catalog_roots,
             roots=roots,
         )
     finally:
@@ -194,7 +197,7 @@ def stage_source(
         if write_source:
             source_path.write_bytes(body)
         item.publish_manifest(manifest)
-    return layout.staging_root / SLUG / ARXIV_ALIAS
+    return layout.catalog_root / SLUG / ARXIV_ALIAS
 
 
 def add_pdf_to_receipt(layout: Layout, body: bytes = PDF) -> Path:
@@ -216,7 +219,7 @@ def add_pdf_to_receipt(layout: Layout, body: bytes = PDF) -> Path:
         pdf_path = item.directory / pdf.path
         pdf_path.write_bytes(body)
         item.publish_manifest(manifest.model_copy(update={"forms": (*manifest.forms, pdf)}))
-    return layout.staging_root / SLUG / pdf.path
+    return layout.catalog_root / SLUG / pdf.path
 
 
 def metadata_bundle() -> DepositMetadataBundle:
@@ -310,7 +313,6 @@ def doi_metadata_bundle(
 def service(layout: Layout, metadata: object) -> SourceMaterializationService:
     return SourceMaterializationService(
         metadata,  # type: ignore[arg-type]
-        layout.acquisitions,
         layout.deposits,
         lock_timeout=2,
     )
@@ -336,7 +338,7 @@ def request(
     )
 
 
-def test_real_tar_materialization_normalizes_arxiv_alias_and_uses_real_deposit(
+def test_real_tar_materialization_keeps_arxiv_archive_leaf_and_trimmed_tree(
     layout: Layout,
 ) -> None:
     source_body = tar_gzip_source()
@@ -347,7 +349,7 @@ def test_real_tar_materialization_normalizes_arxiv_alias_and_uses_real_deposit(
     )
 
     document = layout.catalog_root / SLUG
-    canonical_archive = document / f"{SLUG}.tar.gz"
+    archive = document / ARXIV_ALIAS
     article_path = document / "article.json"
     article = json.loads(article_path.read_text(encoding="utf-8"))
     validated = ArticleManifest(target_dir=str(document)).validate_record(article)
@@ -356,13 +358,60 @@ def test_real_tar_materialization_normalizes_arxiv_alias_and_uses_real_deposit(
     assert result.created is True
     assert result.archive_kind == "tar+gzip"
     assert result.entrypoint == "main.tex"
-    assert canonical_archive.read_bytes() == source_body
-    assert canonical_archive.name == f"{SLUG}.tar.gz"
-    assert not (document / ARXIV_ALIAS).exists()
-    assert not os.path.samefile(staged_source, canonical_archive)
-    assert validated["source_forms"][0]["path"] == f"{SLUG}.tar.gz"
+    assert archive.read_bytes() == source_body
+    assert not (document / f"{SLUG}.tar.gz").exists()
+    assert os.path.samefile(staged_source, archive)
+    assert (document / f"{SLUG}-tex").is_dir()
+    assert validated["source_forms"][0]["path"] == ARXIV_ALIAS
     assert validated["source_forms"][0]["archive_kind"] == "tar+gzip"
+    assert validated["source_forms"][1]["path"] == f"{SLUG}-tex"
     assert validated["validation"]["publication"] == "published-new-tree"
+
+
+def test_materialize_creates_a_missing_workspace_destination(layout: Layout) -> None:
+    destination = "gauntlet/blahblah"
+    source_body = tar_gzip_source()
+    store = store_for_catalog(
+        layout.acquisitions,
+        destination,
+        catalogs=layout.catalog_roots,
+    )
+    form = AcquiredArtifact(
+        kind="source",
+        path=ARXIV_ALIAS,
+        format="application/gzip",
+        bytes=len(source_body),
+        sha256=hashlib.sha256(source_body).hexdigest(),
+        origin_url=f"https://export.arxiv.org/e-print/{SLUG}",
+        candidate_id="arxiv-export-source",
+        fetched_at=NOW,
+    )
+    with store.transaction(SLUG) as item:
+        (item.directory / ARXIV_ALIAS).write_bytes(source_body)
+        item.publish_manifest(
+            AcquisitionManifest(slug=SLUG, artifact=artifact(), forms=(form,))
+        )
+
+    dest_root = layout.staging_root.parent / "gauntlet" / "blahblah"
+    result = asyncio.run(
+        service(layout, RejectingMetadataService()).materialize(
+            SourceMaterializationRequest(
+                catalog=destination,
+                acquisition_slug=SLUG,
+                metadata=OmitArticleMetadata(),
+            )
+        )
+    )
+    document = dest_root / SLUG
+    article = json.loads((document / "article.json").read_text(encoding="utf-8"))
+
+    assert dest_root.is_dir()
+    assert result.status == "deposited"
+    assert result.catalog == destination
+    assert (document / ARXIV_ALIAS).read_bytes() == source_body
+    assert (document / f"{SLUG}-tex").is_dir()
+    assert article["source_forms"][0]["path"] == ARXIV_ALIAS
+    assert not (layout.catalog_root / SLUG / "article.json").exists()
 
 
 def test_required_metadata_is_persisted_reused_and_article_is_byte_idempotent(
@@ -420,7 +469,6 @@ def test_interrupted_article_last_publication_recovers_immutable_components(
     article_publication = FailFirstArticlePublication()
     materializer = SourceMaterializationService(
         metadata,  # type: ignore[arg-type]
-        layout.acquisitions,
         layout.deposits,
         article_deposit=article_publication,
         lock_timeout=2,
@@ -431,7 +479,7 @@ def test_interrupted_article_last_publication_recovers_immutable_components(
         asyncio.run(materializer.materialize(materialize_request))
 
     document = layout.catalog_root / SLUG
-    archive = document / f"{SLUG}.tar.gz"
+    archive = document / ARXIV_ALIAS
     metadata_path = document / f"{SLUG}.api-metadata.json"
     tree_main = document / f"{SLUG}-tex" / "main.tex"
     assert archive.is_file()
@@ -461,7 +509,6 @@ def test_interrupted_article_last_publication_recovers_immutable_components(
 def test_abandoned_private_tree_is_swept_under_the_source_lease(layout: Layout) -> None:
     stage_source(layout, tar_gzip_source())
     document = layout.catalog_root / SLUG
-    document.mkdir()
     abandoned = document / f"{SLUG}-tex.9876.a.tmp"
     (abandoned / "nested").mkdir(parents=True)
     (abandoned / "nested" / "partial.tex").write_bytes(b"partial")
@@ -501,7 +548,6 @@ def test_document_generation_is_retained_through_article_publication(
     replacement = AttemptDocumentReplacement()
     materializer = SourceMaterializationService(
         RejectingMetadataService(),  # type: ignore[arg-type]
-        layout.acquisitions,
         layout.deposits,
         article_deposit=replacement,
         lock_timeout=2,
@@ -633,6 +679,7 @@ def test_explicit_doi_conflict_with_latex_declaration_fails_before_publication(
     document = layout.catalog_root / SLUG
     assert not (document / "article.json").exists()
     assert not (document / f"{SLUG}.api-metadata.json").exists()
+    assert (document / ARXIV_ALIAS).is_file()
     assert not (document / f"{SLUG}.tar.gz").exists()
 
 
@@ -758,18 +805,17 @@ def test_later_pdf_enrichment_fails_before_copying_or_mutating_article(
     article_path = Path(first.article_path)
     article_bytes = article_path.read_bytes()
     article_mtime = article_path.stat().st_mtime_ns
-    archive_path = document / f"{SLUG}.tar.gz"
+    archive_path = document / ARXIV_ALIAS
     archive_mtime = archive_path.stat().st_mtime_ns
     tree_main = document / f"{SLUG}-tex" / "main.tex"
     tree_bytes = tree_main.read_bytes()
-    children_before = sorted(path.name for path in document.iterdir())
+    article_forms_before = json.loads(article_bytes)["source_forms"]
     add_pdf_to_receipt(layout)
 
     with pytest.raises(SourceMaterializationError, match="freezes PDF inclusion"):
         asyncio.run(materializer.materialize(request()))
 
-    assert not (document / f"{SLUG}.pdf").exists()
-    assert sorted(path.name for path in document.iterdir()) == children_before
+    assert json.loads(article_path.read_bytes())["source_forms"] == article_forms_before
     assert article_path.read_bytes() == article_bytes
     assert article_path.stat().st_mtime_ns == article_mtime
     assert archive_path.stat().st_mtime_ns == archive_mtime
@@ -797,7 +843,7 @@ def test_pdf_inclusion_is_idempotent_when_frozen_present(layout: Layout) -> None
     assert deposited_pdf.stat().st_mtime_ns == pdf_mtime
     assert article_path.read_bytes() == article_bytes
     assert article_path.stat().st_mtime_ns == article_mtime
-    assert not os.path.samefile(staged_pdf, deposited_pdf)
+    assert os.path.samefile(staged_pdf, deposited_pdf)
     article = json.loads(article_bytes)
     assert [form["role"] for form in article["source_forms"]] == [
         "latex-source-archive",
@@ -825,37 +871,25 @@ def test_missing_or_tampered_staged_source_is_rejected_before_publication(
             service(layout, RejectingMetadataService()).materialize(request())
         )
 
-    assert not (layout.catalog_root / SLUG).exists()
+    assert not (layout.catalog_root / SLUG / "article.json").exists()
 
 
-@pytest.mark.parametrize("occupancy", ("archive", "tree"))
-def test_conflicting_destination_archive_or_tree_is_never_replaced(
-    layout: Layout,
-    occupancy: str,
-) -> None:
-    source_body = tar_gzip_source()
-    stage_source(layout, source_body)
+def test_conflicting_destination_tree_is_never_replaced(layout: Layout) -> None:
+    stage_source(layout, tar_gzip_source())
     document = layout.catalog_root / SLUG
-    document.mkdir()
-    if occupancy == "archive":
-        conflict = document / f"{SLUG}.tar.gz"
-        conflict.write_bytes(b"occupied by different bytes")
-    else:
-        (document / f"{SLUG}.tar.gz").write_bytes(source_body)
-        conflict = document / f"{SLUG}-tex"
-        conflict.mkdir()
-        (conflict / "main.tex").write_bytes(
-            b"\\documentclass{book}\n\\begin{document}different\\end{document}\n"
-        )
+    conflict = document / f"{SLUG}-tex"
+    conflict.mkdir()
+    (conflict / "main.tex").write_bytes(
+        b"\\documentclass{book}\n\\begin{document}different\\end{document}\n"
+    )
 
-    before = conflict.read_bytes() if conflict.is_file() else (conflict / "main.tex").read_bytes()
+    before = (conflict / "main.tex").read_bytes()
     with pytest.raises(SourceMaterializationError, match="conflict"):
         asyncio.run(
             service(layout, RejectingMetadataService()).materialize(request())
         )
 
-    after = conflict.read_bytes() if conflict.is_file() else (conflict / "main.tex").read_bytes()
-    assert after == before
+    assert (conflict / "main.tex").read_bytes() == before
     assert not (document / "article.json").exists()
 
 
@@ -924,6 +958,7 @@ def test_findings_are_a_closed_seven_probe_ledger(
     "values",
     (
         {"catalog": "", "acquisition_slug": SLUG},
+        {"catalog": "../outside", "acquisition_slug": SLUG},
         {"catalog": "primary", "acquisition_slug": "../escape"},
         {
             "catalog": "primary",

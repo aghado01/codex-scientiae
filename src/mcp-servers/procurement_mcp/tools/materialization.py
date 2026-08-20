@@ -26,7 +26,7 @@ def register_materialization_tools(server: MCPServer) -> None:
         main_tex: MainTexPath | None = None,
         metadata: SourceMetadataInput | None = None,
     ) -> SourceMaterializationResult:
-        """Validate one staged source and publish article.json using one metadata strategy."""
+        """Validate one destination acquisition in place and publish article.json using one metadata strategy."""
 
         service = ctx.request_context.lifespan_context.application.materialization
         if service is None:

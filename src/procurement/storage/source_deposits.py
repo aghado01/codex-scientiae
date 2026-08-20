@@ -431,7 +431,7 @@ class SourceDepositStore:
     ) -> Iterator[SourceDepositItem | None]:
         """Hold the catalog generation, source lease, and document generation."""
 
-        descriptor = self._catalogs.resolve(catalog)
+        descriptor = self._catalogs.resolve(catalog, create=True)
         root = descriptor.publication_root
         try:
             active_identity = root.identity

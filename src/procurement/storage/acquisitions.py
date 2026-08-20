@@ -12,11 +12,16 @@ from typing import Iterator
 from filelock import FileLock, Timeout
 
 from jsonl_engine.documents import JsonDocumentError, JsonDocumentStore
+from jsonl_engine.inventory_catalog import MAX_CATALOG_CHILDREN
 from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.domain.acquisition.receipts import AcquiredArtifact, AcquisitionManifest
 from procurement.domain.deposits import validate_deposit_slug
 from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
+from procurement.storage.catalogs import (
+    ArticleCatalogConfigurationError,
+    ArticleCatalogRoots,
+)
 from procurement.storage.documents import AcquisitionManifestDocument
 from procurement.storage.roots import ConfiguredRootDescriptor, ConfiguredRootKind
 from procurement.storage.safety import (
@@ -28,6 +33,12 @@ from procurement.storage.safety import (
 _JOURNAL_LEAF = ".acquisition-publish.json"
 _PARTIAL_LEAF = ".download.part"
 _FORM_ORDER = {"source": 0, "pdf": 1, "html": 2}
+_ACQUISITION_ROOT_KINDS = frozenset(
+    {
+        ConfiguredRootKind.STAGING,
+        ConfiguredRootKind.ARTICLE_CATALOG,
+    }
+)
 
 
 def _measure_file(path: Path) -> tuple[int, str]:
@@ -345,8 +356,36 @@ class AcquisitionItem:
         return manifest
 
 
+def store_for_catalog(
+    staging: "AcquisitionStore",
+    catalog: str | None,
+    *,
+    catalogs: ArticleCatalogRoots | None = None,
+) -> "AcquisitionStore":
+    """Return the staging store or one catalog-rooted acquisition store."""
+
+    if catalog is None:
+        return staging
+    if catalogs is None:
+        raise AcquisitionError("article catalogs are not configured for this application")
+    try:
+        article = catalogs.resolve(catalog, create=True)
+    except ArticleCatalogConfigurationError as exc:
+        raise AcquisitionError(str(exc)) from exc
+    return AcquisitionStore(
+        ConfiguredRootDescriptor(
+            kind=ConfiguredRootKind.ARTICLE_CATALOG,
+            name=article.name,
+            path=article.catalog_dir,
+            identity=article.identity,
+            publication_root=article.publication_root,
+        ),
+        lock_timeout=staging.lock_timeout,
+    )
+
+
 class AcquisitionStore:
-    """Retained staging generation with one lease and child pin per receipt."""
+    """Retained acquisition-item generation with one lease and child pin per receipt."""
 
     def __init__(
         self,
@@ -354,14 +393,19 @@ class AcquisitionStore:
         *,
         lock_timeout: float = 60.0,
     ) -> None:
-        if not isinstance(root, ConfiguredRootDescriptor) or root.kind is not ConfiguredRootKind.STAGING:
-            raise TypeError("AcquisitionStore requires an active staging-root descriptor")
+        if (
+            not isinstance(root, ConfiguredRootDescriptor)
+            or root.kind not in _ACQUISITION_ROOT_KINDS
+        ):
+            raise TypeError(
+                "AcquisitionStore requires an active staging or article-catalog root descriptor"
+            )
         try:
             active_identity = root.publication_root.identity
         except RuntimeError as exc:
-            raise AcquisitionError("staging-root descriptor is no longer active") from exc
+            raise AcquisitionError("acquisition-root descriptor is no longer active") from exc
         if active_identity != root.identity:
-            raise AcquisitionError("staging-root descriptor identity is no longer active")
+            raise AcquisitionError("acquisition-root descriptor identity is no longer active")
         self.descriptor = root
         self.publication_root = root.publication_root
         self.root = Path(root.path)
@@ -371,7 +415,7 @@ class AcquisitionStore:
     def transaction(self, slug: str, *, create: bool = True) -> Iterator[AcquisitionItem]:
         slug = validate_deposit_slug(slug)
         root = self.publication_root
-        require_current(root, label="acquisition staging root", error=AcquisitionConflictError)
+        require_current(root, label="acquisition root", error=AcquisitionConflictError)
         directory = Path(root.absolute(slug))
         lease = FileLock(root.lock_path(directory), timeout=self.lock_timeout)
         try:
@@ -384,10 +428,19 @@ class AcquisitionStore:
         try:
             require_current(
                 root,
-                label="acquisition staging root",
+                label="acquisition root",
                 error=AcquisitionConflictError,
             )
-            collisions = [name for name in root.list_names() if name.casefold() == slug.casefold()]
+            names = root.list_names()
+            if (
+                self.descriptor.kind is ConfiguredRootKind.ARTICLE_CATALOG
+                and len(names) > MAX_CATALOG_CHILDREN
+            ):
+                raise AcquisitionError(
+                    "article catalog exceeds the "
+                    f"{MAX_CATALOG_CHILDREN}-child boundary: '{root.path}'"
+                )
+            collisions = [name for name in names if name.casefold() == slug.casefold()]
             if len(collisions) > 1 or (collisions and collisions[0] != slug):
                 raise AcquisitionConflictError(
                     f"acquisition item name has a portable case collision: {slug!r}"
@@ -419,7 +472,7 @@ class AcquisitionStore:
                 item.assert_current()
                 require_current(
                     root,
-                    label="acquisition staging root",
+                    label="acquisition root",
                     error=AcquisitionConflictError,
                 )
         finally:

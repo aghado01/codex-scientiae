@@ -36,7 +36,9 @@ from procurement.storage.acquisitions import (
     AcquisitionStore,
     collate_acquisition,
     measure_artifact_file,
+    store_for_catalog,
 )
+from procurement.storage.catalogs import ArticleCatalogRoots
 
 _T = TypeVar("_T")
 
@@ -161,6 +163,7 @@ class AcquisitionService:
         http: HttpClient,
         store: AcquisitionStore,
         *,
+        catalogs: ArticleCatalogRoots | None = None,
         provider_policies: Mapping[str, RequestPolicy] | None = None,
         user_agent: str = "codex-scientiae-procurement/0.1",
         maximum_expanded_source_bytes: int = 4 * 1024 * 1024 * 1024,
@@ -168,11 +171,15 @@ class AcquisitionService:
         self._catalog = catalog
         self._http = http
         self._store = store
+        self._catalogs = catalogs
         self._policies = {
             name.casefold(): policy for name, policy in (provider_policies or {}).items()
         }
         self._headers = {"User-Agent": user_agent}
         self._maximum_expanded_source_bytes = maximum_expanded_source_bytes
+
+    def _item_store(self, catalog: str | None) -> AcquisitionStore:
+        return store_for_catalog(self._store, catalog, catalogs=self._catalogs)
 
     async def plan(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
         """Return an internal server-produced plan; callers cannot supply candidate URLs."""
@@ -201,14 +208,17 @@ class AcquisitionService:
             AcquisitionOutcome(kind=item.kind, status="unavailable", error=item.reason)
             for item in plan.unavailable
         ]
-        async with _AsyncAcquisitionTransaction(self._store, plan.deposit_slug) as transaction:
+        async with _AsyncAcquisitionTransaction(
+            self._item_store(request.catalog),
+            plan.deposit_slug,
+        ) as transaction:
             item = transaction.item
             if item is None:  # pragma: no cover - successful entry establishes the item
-                raise AcquisitionError("acquisition staging transaction did not open")
+                raise AcquisitionError("acquisition transaction did not open")
             manifest = await transaction.run(self._recover_item, item)
             if manifest is not None and manifest.artifact != plan.artifact:
                 raise AcquisitionConflictError(
-                    "staging item acquisition identity conflicts with the provider plan"
+                    "acquisition item identity conflicts with the provider plan"
                 )
 
             known = {form.kind: form for form in manifest.forms} if manifest else {}
@@ -279,14 +289,19 @@ class AcquisitionService:
                 outcomes=ordered_outcomes,
             )
 
-    def inspect(self, deposit_slug: str) -> AcquisitionManifest:
+    def inspect(
+        self,
+        deposit_slug: str,
+        *,
+        catalog: str | None = None,
+    ) -> AcquisitionManifest:
         """Read and revalidate one durable acquisition receipt and all named forms."""
 
-        with self._store.transaction(deposit_slug, create=False) as item:
+        with self._item_store(catalog).transaction(deposit_slug, create=False) as item:
             manifest = item.recover(item.read_manifest())
             if manifest is None:
                 raise AcquisitionError(
-                    f"no acquisition.json exists for staged item {deposit_slug!r}"
+                    f"no acquisition.json exists for item {deposit_slug!r}"
                 )
             for form in manifest.forms:
                 item.validate_form(form)
