@@ -1,0 +1,39 @@
+
+\begin{table}[h!]
+\centering
+\fontsize{8.5pt}{10pt}\selectfont{
+\begin{tabular}{@{}lp{10cm}@{}}
+\toprule
+\textbf{Term} & \textbf{Definition and Notation} \\
+\midrule
+Agent & A language model conditioned on a persona or expertise profile ($p_i$), prompted to sample a message or an opinion about a question ($q$). \\
+Social tie & $J_{ij} \in \{-1,0,+1\}$, the edge between agents $i$ and $j$. For concordant (friendly) ties $(J_{ij} = +1)$ the receiver $i$ is prompted to regard the source $j$ as an agent it tends to agree with. For discordant (unfriendly) ties $(J_{ij} = -1)$ the receiver $i$ is prompted to regard the source $j$ as an agent it tends to disagree with.\\
+Communication Network & $J \in \{-1,0,+1\}^{N \times N}$ is the collection of social ties between $N$ agents. We also define $J^{+}$ with $J^{+}_{ij} = \max(J_{ij}, 0)$ and $J^{-}$ with $J^{-}_{ij} = \min(J_{ij}, 0)$. \\
+Group \& Community & A collection of $N$ agents connected by the signed communication network $J$. Group and community are used interchangeably. We set $N=32$.  \\
+Opinions & A binary vote from agent $i$ at round $t$ is denoted as $o_{i}(t) \in \{-1,+1\}$. We take $K$ opinion samples for $o_{i}(t)$ and denote $k$-th binary vote from agent $i$ at round $t$ as $o_{i,k}(t)$. We define opinion $\bar{o}_i(t) = \frac{1}{K}\sum_k o_{i,k}(t)$, and state $s_i(t) = \operatorname{sign}(\bar{o}_i(t))$.  We use $K=5$ in our experiments unless stated otherwise.\\
+Group Opinion & $\bar{o}(t) = (\bar{o}_1(t),\dots,\bar{o}_N(t)) \in [-1,+1]^{N}$ is $\bar{o}_i(t)$ from all agents at time $t$.\\
+Group State & $s(t) = (s_1(t),\dots , s_N(t))$ is $s_i(t)$ from all agents at time $t$. \\
+Individual Trajectory & 
+$(\bar{o}_i(0),\dots,\bar{o}_i(T)) \in [-1,+1]^{T+1}$ is $\bar{o}_i(t)$ from a single agent across timesteps. We use $T=8$ in our experiments unless stated otherwise.\\
+Group Trajectory & $((\bar{o}_1(0),\dots,\bar{o}_1(T)), \dots, (\bar{o}_N(0),\dots,\bar{o}_N(T))) \in [-1,+1]^{N \times (T + 1)}$ is $\bar{o}_i(t)$ from all agents across timesteps. \\
+Episode & We call multiple independent runs of a group trajectory episodes. We take $4$ episodes of the same group trajectory in our experiments unless stated otherwise.\\
+\midrule 
+Archetype & A discrete descriptive category assigned to an individual or a group trajectory. \\
+Net opinion & $n(t) = \frac{1}{N}\sum_i \bar{o}_i(t)$, the average opinion of the group. \\
+Conviction & $c(t) = \frac{1}{N}\sum_i \bar{o}_i(t)^2$, the average strength of individual opinions regardless of direction. \\
+Characteristic Regime & A discrete descriptive category assigned to a group opinion. One of indifference, polarization, or consensus, determined from net opinion and conviction. It is defined relative to other group opinions obtained by running the same model on the same set of questions and social graphs. \\
+\midrule 
+Intrinsic field & Agent $i$'s question-specific predisposition is denoted as $g_i$. \\
+Local field & The combined social and intrinsic field on agent $i$ is denoted as $f_i$. \\
+Logit & The complete argument passed to the logistic function in the fitted update rule, which is denoted as $h_i$. \\
+Interaction Parameters \& Couplings & We refer to $\beta$s that scale social influence in the fitted update rule as interaction parameters or couplings.\\
+\midrule 
+Temperature & $\mathcal{T}$, the noise level of the fitted update rule. We reintroduce it in rollouts by scaling the logit, $P(s_i(t{+}1)=+1) = \sigma(h_i(t)/\mathcal{T})$, so higher $\mathcal{T}$ makes updates noisier. The fitted rule corresponds to the operating point $\mathcal{T}=1$. \\
+Variance of Absolute Net Opinion & $\chi = N\,\mathrm{Var}_t(|n(t)|)$, the variance of the absolute net opinion over a rollout, scaled by the number of agents. \\
+Critical Temperature & $\mathcal{T}_c$, the temperature at which $\chi$ peaks for a community. It marks the finite-size analogue of the phase transition between the high conviction characteristic regimes (consensus, polarization) and the low conviction one (indifference). \\
+\bottomrule
+\end{tabular}
+}
+\caption{Terms and Notation.}
+\label{tab:glossary}
+\end{table}

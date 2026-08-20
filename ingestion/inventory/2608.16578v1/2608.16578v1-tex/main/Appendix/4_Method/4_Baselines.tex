@@ -1,0 +1,57 @@
+\subsection{Baselines}\label{apdx:baselines}
+
+We compare the discrete- and continuous-time models against a set of baselines that isolate
+the contribution of (i) class imbalance, (ii) temporal persistence, (iii) intrinsic agent
+preferences, and (iv) social influence. Writing $d_p$ and $d_q$ for the persona- and
+question-embedding dimensions, we report the parameter count of each so that the comparison in
+Table~\ref{tab:prediction_models} can be read against model capacity. All baselines with
+parameters are fit on the same transitions and with the same objective as the update rules
+(Appendix~\ref{apdx:fitting}).
+
+\textit{Majority Class.} Majority class is the simplest possible predictor. It ignores agent identity and interactions and always predicts the majority opinion observed in the training data,
+\[
+\hat{s}_i(t{+}1)=c,
+\qquad
+c=\operatorname{sign}\!\Big(\textstyle\sum_{\text{train}} s\Big).
+\]
+The model contains a single learned parameter, the constant label $c\in\{+1,-1\}$, and measures
+the extent to which performance can be explained by class imbalance alone. We report this baseline only in tables that report accuracy (not balanced) because some models exhibit label bias.
+
+\textit{Persistence.} Persistence assumes that opinions do not change and simply copies the
+current opinion,
+\[
+\hat{s}_i(t{+}1)=s_i(t).
+\]
+Because opinion trajectories are often highly persistent, this baseline can be surprisingly
+strong under plain accuracy despite predicting no opinion reversals. For the rollouts, persistence predicts $\hat{s}_i(t)=s_i(0)$.
+
+
+\textit{Interaction-Free Model.} This baseline retains agent- and question-specific information while removing all social interactions. Predictions depend only on the intrinsic field,
+\[
+P\big(s_i(t{+}1)=+1\big)
+=
+\sigma\!\big(g_i\big),
+\qquad
+g_i={w}_{\text{field}}^{\top}{\phi}_i .
+\]
+Since the field is independent of the current opinion state, predictions are identical across
+rounds and exhibit no dynamics.The model has
+$(1+d_p+d_q+d_p d_q)$ learned parameters,\footnote{$d_p = d_q = 3$ and $1+d_p+d_q+d_p d_q = 16$ in all experiments.} the bias, persona and question components,
+and their interaction. It isolates how much of an agent's next opinion is predictable
+from who it is and what it was asked, before any communication with other agents.
+
+
+\textit{Mean-Field Model.} This baseline incorporates social influence while discarding network
+structure. Instead of interacting through the signed graph, each agent responds only to the
+population-average opinion,
+\vspace{-4pt}
+\[
+\bar{s}(t)=\frac{1}{n}\sum_j s_j(t),
+\quad \text{yielding} \quad
+P\big(s_i(t{+}1)=+1\big)
+=
+\sigma\!\big(g_i+\beta\,\bar{s}(t)\big).
+\]
+The model captures a conformity pressure toward the prevailing opinion while ignoring
+heterogeneity in social ties. It assumes a $J$ in which every pair of agents is coupled with equal strength. Therefore, this baseline tests whether the signed-network structure provides additional predictive value. Relative
+to the Interaction-Free baseline it introduces a single additional coupling parameter $\beta$, for a total of $(1+d_p+d_q+d_p d_q)+1 = 17$ learned parameters.

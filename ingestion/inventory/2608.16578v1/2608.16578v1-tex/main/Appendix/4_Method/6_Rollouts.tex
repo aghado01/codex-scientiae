@@ -1,0 +1,26 @@
+\subsection{Rollouts}\label{apdx:rollouts}
+
+
+
+\textit{Deterministic Rollouts.} The rollout numbers reported in parentheses in
+Table~\ref{tab:prediction_models} and Table~\ref{tab:generalization} take the modal prediction
+at each step,
+\[
+\hat s_i(t{+}1) = \operatorname{sign}\!\big(h_i(t)\big)
+\quad\Longleftrightarrow\quad
+\hat s_i(t{+}1) = +1 \ \text{ iff } \ \sigma\big(h_i(t)\big) > \tfrac12 ,
+\]
+and are scored against the observed $s(t)$ for $t = 1,\dots,T$ with the metric of
+Appendix~\ref{apdx:metric}. Thresholding is the right choice when the question is how well the
+rule tracks a \emph{particular} trajectory, since sampling would add noise that no predictor
+could be expected to match round for round.
+
+\textit{Stochastic Rollouts.} Section~\ref{sec:results_distributions}
+asks whether the fitted dynamics produce distribution of group trajectories that look like the
+real ones. Hence, we instead sample,
+\[
+\hat s_i(t{+}1) = +1 \quad\text{with probability}\quad \sigma\big(h_i(t)\big),
+\]
+independently across agents and rounds, and compare the resulting distribution of individual and
+group archetypes against the real one (Figure~\ref{fig:macrostate_distribution}). Both
+variants use the identical fitted rule and differ only in this last step. The temperature sweep experiments also use stochastic rollouts with $1/\mathcal{T}$ scaling $h_i$: $\sigma\big(h_i(t) /\mathcal{T}\big)$.

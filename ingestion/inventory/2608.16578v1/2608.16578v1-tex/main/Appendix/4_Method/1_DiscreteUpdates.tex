@@ -1,0 +1,57 @@
+\subsection{Local Update Rule}\label{apdx:discrete-updates}
+
+This appendix derives the logistic update rule of Section~\ref{sec:method} from the energy function and assuming the Boltzmann distribution. For energy-based models of this form, the Boltzmann distribution is the stationary distribution of the standard stochastic relaxation with asynchronous updates, which is a construction used throughout the Ising literature and its applications to neural and social systems
+\citep{glauber1963,hopfield1982neural,brock2001,castellano2009}. Our derivation uses only the single-agent conditional distribution induced by this measure as a starting point. Appendix ~\ref{apdx:async_update} and Appendix ~\ref{apdx:continuous-extension} treat the asynchronous case, where Boltzmann distribution is the stationary distribution of the dynamics.
+
+
+\textit{Local Field.} Let $s_{i} \in \{+1,-1\}$ be the opinion of agent $i$. Fixing all opinions other than $s_i$, the energy
+\[
+E(s) \;=\; -\frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n J_{ij}\,s_i s_j \;-\; \sum_{i=1}^n g_i\,s_i
+\]
+splits into a part that depends on $s_i$ and a part that does not,
+\[
+E(s) \;=\; -\,s_i f_i \;+\; C,
+\qquad
+f_i \;=\; \sum_{j\neq i} J_{ij}\,s_j \;+\; g_i ,
+\]
+where $C$ collects every term independent of $s_i$. The factor $\tfrac12$ disappears because
+$J = J^{\top}$ with zero diagonal, so $s_i$ appears twice in the double sum, once in row $i$
+and once in column $i$. We call $f_i$ the \emph{local field} on agent $i$: the total pull that
+its neighbors and its own predisposition exert on it.
+
+
+Under the Boltzmann distribution $P(s) \propto e^{-\beta E(s)}$, the probability that $s_i = +1$ conditional on the rest of the group $s_{-i}$ is obtained by normalizing over the two
+values $s_i$ can take,
+\[
+P(s_i = +1 \mid s_{-i})
+\;=\; \frac{e^{-\beta E(s_i=+1)}}{e^{-\beta E(s_i=+1)} + e^{-\beta E(s_i=-1)}} .
+\]
+Substituting $E(s) = -s_i f_i + C$ and cancelling the common factor $e^{-\beta C}$ gives
+\[
+P(s_i=+1\mid s_{-i})
+= \frac{e^{\beta f_i - \beta C}}{e^{\beta f_i - \beta C} + e^{-\beta f_i - \beta C}}
+= \frac{e^{\beta f_i}}{e^{\beta f_i} + e^{-\beta f_i}}
+= \frac{1}{1 + e^{-2\beta f_i}}
+= \sigma\!\left(2\beta f_i\right),
+\]
+and
+\[
+P(s_i=+1\mid s_{-i})
+\;=\; \sigma\!\Big(2\beta \big(\textstyle\sum_{j\neq i} J_{ij}\,s_j + g_i\big)\Big)
+\;=\; \sigma\!\left(\tilde\beta \sum_{j} J_{ij}\,s_j(t) + \tilde g_i\right),
+\]
+where the last step absorbs the factor of $2$ into the coupling, $\tilde\beta = 2\beta$, and
+writes $\tilde g_i = 2\beta g_i$ for the rescaled local bias. The two are not separately
+identified from opinion data alone: only the products $\tilde\beta$ and $\tilde g_i$ enter the
+likelihood, which is why we fit $\tilde\beta$ and $\tilde g_i$ directly and report the fitted
+model as sitting at temperature $\mathcal{T} = 1$ (Section~\ref{sec:results_temperature}). An agent's
+next opinion is therefore a logistic function of (a) the peer pressure
+$\sum_j J_{ij}s_j(t)$ flowing in along the signed graph, scaled by $\tilde\beta$, and (b) an
+intrinsic field $\tilde g_i$ encoding the leaning of agent $i$'s persona on this question in
+the absence of any peer influence. We omit $\;\tilde{\cdot}\;$ and use $\beta$ and $g_i$ parameters in the main text for simplicity.
+
+\textit{Synchronous Updates.} The observed data record one opinion per agent per round, with
+all agents polled at the same round boundary, so we apply the rule synchronously: every agent's
+next opinion is drawn from the law above evaluated at the \emph{current} configuration
+$s(t)$, and all of them are updated at once to form $s(t+1)$. Appendix~\ref{apdx:continuous-extension} relaxes it by letting agents update at
+independent random times, following  \citet{glauber1963}.

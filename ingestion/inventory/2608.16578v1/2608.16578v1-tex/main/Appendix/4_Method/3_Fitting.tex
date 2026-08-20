@@ -1,0 +1,49 @@
+\subsection{Fitting}\label{apdx:fitting}
+\paragraph{Features $x$.} All methods share a static field block
+$\phi_i = [\,1 \mid p_i \mid q \mid p_i \otimes q\,] \in \mathbb{R}^{16}$,
+built from the top-3 PCA scores of the persona embedding ($p_i \in \mathbb{R}^{3}$)
+and of the question embedding ($q \in \mathbb{R}^{3}$), their outer product, and a
+bias. Persistence and Majority Class involve no fit and no features. The fitted
+methods differ only in the columns appended to $\phi_i$.
+
+\textit{Interaction-Free} uses $x = \phi_i \in \mathbb{R}^{16}$ with no
+state-dependent columns. Consequently, its predictions are constant across rounds.
+
+\textit{Mean-Field} uses $x = [\,\phi_i \mid \bar{s}(t)\,] \in \mathbb{R}^{17}$,
+where $\bar{s}(t) = \frac{1}{n}\sum_j s_j(t)$ is the population-mean opinion.
+
+\textit{Discrete update with one coupling} uses
+$x = [\,\phi_i \mid (J \, s(t))_i\,] \in \mathbb{R}^{17}$, where $J$ is the
+$n \times n$ interaction matrix and $s(t)$ the vector of size $n$ with current opinions.
+
+\textit{Discrete update with three couplings} uses $x = [\,\phi_i \mid (J^{+} s(t))_i \mid (J^{-} s(t))_i \mid (|J|\, s(t))_i\,]
+\in \mathbb{R}^{19}$, the concordant, discordant, and unsigned neighbor interaction terms. 
+
+\textit{Continuous update with one coupling} uses the same design
+$x = [\,\phi_i \mid (J \, s(t))_i\,] \in \mathbb{R}^{17}$. Differently, the update is
+$m_i = (1-\varepsilon)\, s_i(t) + \varepsilon \tanh(w^{\top}x)$ and the
+update rate $\varepsilon$ is an additional parameter (18 parameters in total).
+
+\textit{Continuous update with three couplings} uses
+$x = [\,\phi_i \mid (J^{+} s(t))_i \mid (J^{-} s(t))_i \mid (|J|\, s(t))_i\,]
+\in \mathbb{R}^{19}$, inside $\tanh(w^{\top}x)$, with $\varepsilon$ again
+as an additional parameter.
+
+\paragraph{Target $y$.} The target is the observed next opinion
+$y = s_i(t{+}1) \in \{+1,-1\}$, coded as
+$\mathbf{1}\{s_i(t{+}1) = +1\} \in \{0,1\}$. We pool all one-step transitions ($t = 0,\dots,7$, all 32 agents) over the train questions, the 8 random training graphs (the lattice and low-rank families are held out entirely), and 4 episodes per configuration.
+
+\paragraph{Loss.} All fitted models maximize a Bernoulli likelihood over the
+pooled transitions, with a small $\ell_2$ penalty ($\lambda = 10^{-3}$) on the
+persona--question field weights only. The bias, the coupling parameters, and
+$\varepsilon$ are unpenalized. The discrete and baseline models use
+$P(s_i(t{+}1)=+1) = \sigma(w^{\top}x)$. The continuous model uses
+$P(s_i(t{+}1)=+1) = \tfrac{1}{2}(1+m_i)$ with
+$m_i = (1-\varepsilon)\, s_i(t) + \varepsilon \tanh(w^{\top}x)$.
+
+\paragraph{Optimization.} All models are fit by full-batch Adam on standardized
+columns (learning rate $0.05$, $\beta_1 = 0.9$, $\beta_2 = 0.999$, at most
+1{,}500 steps with a plateau stop checked every 100). In the continuous model the update rate is reparameterized as $\varepsilon = \sigma(\theta_0)$ to keep it in $(0,1)$. All couplings are initialized at $0.1$ and all other parameters at zero. Because the unsigned drive $(|J|s)_i$ lies in the span of the signed drives, the
+three-coupling designs are fit in two stages: $\beta_0$ is estimated first
+from the unsigned model, then held fixed as an offset while $\beta^{+}$ and
+$\beta^{-}$ are refit.

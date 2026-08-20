@@ -1,0 +1,27 @@
+\subsection{Balanced Accuracy}\label{apdx:metric}
+
+We score predictions with balanced accuracy in Tables \ref{tab:prediction_models} and \ref{tab:generalization}. We sort the observed transitions into four groups, by whether the agent's next opinion flips or stays
+($y_i(t{+}1) \neq s_i(t)$ or $y_i(t{+}1) = s_i(t)$) and by the value of that next opinion
+($+1$ or $-1$). Balanced accuracy is the unweighted mean of the accuracies on these four groups,
+\[
+\text{Balanced Accuracy} \;=\; \tfrac{1}{4}\Big(
+\mathrm{acc}[\text{flip} \wedge {+}1] +
+\mathrm{acc}[\text{flip} \wedge {-}1] +
+\mathrm{acc}[\text{stay} \wedge {+}1] +
+\mathrm{acc}[\text{stay} \wedge {-}1]
+\Big).
+\]
+
+We observe that the agent opinions change rarely and the two labels are not equally
+common, so the two degenerate strategies both score well under plain accuracy: copying the
+current opinion exploits the rarity of flips, and always predicting the more common label
+exploits the class imbalance. Balanced accuracy closes both routes at once. A rule that always copies gets
+every \textit{stay} group right and every \textit{flip} group wrong, and a rule that always
+predicts one label gets both of that label's groups right and both of the other's wrong. In
+either case two of the four terms are $1$ and two are $0$. This means a number above $50$ can only be earned by predicting which agents change their minds and in which direction.
+
+
+\textit{Application to Rollouts.} The rollout columns of Table~\ref{tab:prediction_models}
+apply the same four-way decomposition, with the groups defined by the observed transition at
+each round and the prediction taken from the rolled-out trajectory
+(Appendix~\ref{apdx:rollouts}).

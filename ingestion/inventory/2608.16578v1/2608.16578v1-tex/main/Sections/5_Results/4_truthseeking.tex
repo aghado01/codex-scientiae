@@ -1,0 +1,45 @@
+\subsection{Consensus Formation and Truth Seeking}\label{sec:results_truthseeking}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l ccc ccc ccccc}
+\toprule
+& \multicolumn{3}{c}{Three couplings (O)}
+& \multicolumn{3}{c}{Three couplings (S)}
+& \multicolumn{5}{c}{Five couplings (O)} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-12}
+Model & $\beta^{+}$ & $\beta^{-}$ & $\beta_{0}$
+      & $\beta^{+}$ & $\beta^{-}$ & $\beta_{0}$
+      & $\beta^{+}_{T}$ & $\beta^{+}_{F}$ & $\beta^{-}_{T}$ & $\beta^{-}_{F}$ & $\beta_{0}$ \\
+\midrule
+GPT-4o-mini   & $+2.10$ & $+0.75$ & $+0.93$ & $+2.39$ & $+1.08$ & $+0.61$ & $+2.29$ & $+1.98$ & $+0.70$ & $+0.85$ & $+0.93$ \\
+Gemma-3n-E4B  & $+0.29$ & $+0.23$ & $+0.96$ & $+0.44$ & $+0.35$ & $+0.55$ & $+0.34$ & $+0.20$ & $+0.17$ & $+0.36$ & $+0.96$ \\
+Qwen3.5-9B    & $+0.90$ & $+0.50$ & $+1.01$ & $+1.12$ & $+0.65$ & $+0.64$ & $+1.03$ & $+0.77$ & $+0.40$ & $+0.80$ & $+1.01$ \\
+Llama-3.1-8B    & $+0.97$ & $+0.61$ & $+0.97$ & $+1.35$ & $+0.67$ & $+0.99$ & $+1.15$ & $+0.84$ & $+0.59$ & $+0.61$ & $+0.97$ \\
+\bottomrule
+\end{tabular}
+\caption{Fitted coefficients of the three- and five-coupling discrete-time update rules. Because the unsigned drive lies in the span of the signed drives, the individual coefficients are not jointly identifiable; we therefore fix the decomposition by a two-stage protocol: $\beta_{0}$ is first fitted alone (a sign-agnostic model with no signed couplings), then held fixed while the signed couplings are refitted. Stage one is identical for both rules, so within a dataset the three- and five-coupling rows share $\beta_{0}$. The identifiable combinations ($\beta^{+}+\beta_{0}$, $\beta_{0}-\beta^{-}$, and the truth gaps $\beta^{+}_{T}-\beta^{+}_{F}$, $\beta^{-}_{T}-\beta^{-}_{F}$) agree with the jointly fitted (ridge-resolved) values to two decimals. The five-coupling rule splits each drive by whether the pull is toward the correct answer, so it is defined for the objective dataset only.\label{tab:couplings_five}}
+\end{table}
+
+
+\textit{Consensus Formation.} Below the critical social temperature the community tends to settle into an ordered (high conviction) state over the long run. But, which ordered state it reaches depends on the strength of the personal and social pressures. Focusing on the social term, a stable split can only sustain itself if discordant connections are strong enough to hold two groups apart. All four models show the same pattern in Table~\ref{tab:couplings_five}, with $\beta^{+}$ consistently larger than $\beta^{-}$. The effective coefficient on concordant edges ($\beta^{+}+\beta_{0}$) lies between $0.99$ and $3.03$ across all models and question types, while the effective coefficient on discordant edges ($\beta_{0}-\beta^{-}$) never exceeds $0.73$ and is negative or negligible in two cases ($-0.47$ for GPT-4o-mini and $-0.01$ for Qwen3.5-9B, subjective). A stable split requires repulsion from discordant ties to be comparable in strength to the attraction from concordant ties. However, we observe that the discordant ties are not as strong as the concordant ones and, hence, are too weak to hold two camps apart. Since the fitted dynamics operate below the critical temperature with strong concordant and weak discordant couplings, social pressures favor consensus, consistent with the trend observed in Section~\ref{sec:obs_phase_char}. \footnote{We note that strong personal pressures can nonetheless sustain polarization when agents are intrinsically motivated to take different sides (oppositely signed strong $g_i$).}
+
+\textit{Truth Seeking.} To understand the truth seeking tendency of the system, we investigate whether a neighbor who is correct has a stronger impact compared to a neighbor who holds the incorrect answer. To that end, we fit a five-coupling rule that splits each signed channel by whether the neighbor holds the correct answer at the current step, giving $\beta^{\pm}_{T}$ and $\beta^{\pm}_{F}$. With $y_{gt}$ as the ground truth answer to the objective question, we let $\kappa_j(t) = \mathbf{1}\{\, s_j(t) = y_{gt} \,\}$, which takes the value $\kappa_j(t) = 1$ when $s_j(t)$ is correct and $0$ otherwise. Then, $P\big(s_i = +1\big) = \sigma(h)$, where
+{\small
+\[
+h =
+\sum_{j} \big[\beta^{+}_{T} \kappa_j(t) + \beta^{+}_{F} (1 - \kappa_j(t))\big] J^{+}_{ij}\,s_j(t)
++ \sum_{j} \big[\beta^{-}_{T} \kappa_j(t) + \beta^{-}_{F} (1 - \kappa_j(t))\big] J^{-}_{ij}\,s_j(t)
++ \beta_{0} \sum_{j} |J_{ij}|\,s_j(t) + g_i
+\]
+}
+The split is by the neighbor's current opinion rather than by a fixed property of the neighbor, so an agent moves between the two groups as it changes its mind. In all four models the two channels show a truth-seeking asymmetry:
+on the concordant channel, correct neighbors pull harder
+($\beta^{+}_{T} > \beta^{+}_{F}$), while on the discordant channel,
+incorrect neighbors push harder ($\beta^{-}_{F} > \beta^{-}_{T}$). Since discordant influence is repulsive, being pushed harder away from wrong answers is also truth-seeking. Therefore, the community moves toward the correct answer, explaining the observation of Section~\ref{sec:truth_seeking}.
+
+
+\subsection{Asynchronous Updates}
+The continuous-time model is useful when the synchronous-update assumption is dropped. In the asynchronous experiment (Table \ref{tab:async}), where each GPT-4o-mini agent reconsiders at independent random times at an average rate of 0.5 updates per round, the continuous rule with coupling splits predicts held-out transitions with 80.4/78.5 (in-distribution/OOD) rollout accuracy on subjective questions and 65.3/65.9 on objective questions, outperforming every baseline. Because only a fraction of agents update in any time window, most observed transitions are persistent, and a predictor must jointly infer who shifts and who stays put. We therefore evaluate with raw accuracy rather than balanced accuracy here. See Appendix \ref{apdx:async_update} for more details.%

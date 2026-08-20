@@ -1,0 +1,817 @@
+\begin{thebibliography}{60}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Amit et~al.(1985)Amit, Gutfreund, and Sompolinsky]{amit1985storing}
+Daniel~J. Amit, Hanoch Gutfreund, and H.~Sompolinsky.
+\newblock Storing infinite numbers of patterns in a spin-glass model of neural
+  networks.
+\newblock \emph{Physical Review Letters}, 55\penalty0 (14):\penalty0
+  1530--1533, 1985.
+\newblock \doi{10.1103/PhysRevLett.55.1530}.
+
+\bibitem[{Anthropic}(2026)]{anthropic2026opus48}
+{Anthropic}.
+\newblock System card: Claude opus 4.8.
+\newblock Technical report, Anthropic, May 2026.
+\newblock URL \url{https://www.anthropic.com/claude-opus-4-8-system-card}.
+\newblock Accessed: 2026-08-17.
+
+\bibitem[Argyle et~al.(2023)Argyle, Busby, Fulda, Gubler, Rytting, and
+  Wingate]{argyle2023}
+Lisa~P. Argyle, Ethan~C. Busby, Nancy Fulda, Joshua~R. Gubler, Christopher
+  Rytting, and David Wingate.
+\newblock Out of one, many: Using language models to simulate human samples.
+\newblock \emph{Political Analysis}, 31\penalty0 (3):\penalty0 337--351, 2023.
+
+\bibitem[Ashery et~al.(2025)Ashery, Aiello, and Baronchelli]{ashery2025}
+Ariel~Flint Ashery, Luca~Maria Aiello, and Andrea Baronchelli.
+\newblock Emergent social conventions and collective bias in {LLM} populations.
+\newblock \emph{Science Advances}, 11\penalty0 (20):\penalty0 eadu9368, 2025.
+\newblock \doi{10.1126/sciadv.adu9368}.
+
+\bibitem[Bialek et~al.(2012)Bialek, Cavagna, Giardina, Mora, Silvestri, Viale,
+  and Walczak]{bialek2012statistical}
+William Bialek, Andrea Cavagna, Irene Giardina, Thierry Mora, Edmondo
+  Silvestri, Massimiliano Viale, and Aleksandra~M Walczak.
+\newblock Statistical mechanics for natural flocks of birds.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 109\penalty0
+  (13):\penalty0 4786--4791, 2012.
+
+\bibitem[Bianchi et~al.(2026)Bianchi, Kwon, Pappu, and
+  Zou]{bianchi2026harnessingcollectiveintelligenceai}
+Federico Bianchi, Yongchan Kwon, Aneesh Pappu, and James Zou.
+\newblock Harnessing the collective intelligence of ai agents in the wild for
+  new discoveries, 2026.
+\newblock URL \url{https://arxiv.org/abs/2606.10402}.
+
+\bibitem[Brock and Durlauf(2001)]{brock2001}
+William~A. Brock and Steven~N. Durlauf.
+\newblock Discrete choice with social interactions.
+\newblock \emph{The Review of Economic Studies}, 68\penalty0 (2):\penalty0
+  235--260, 2001.
+\newblock \doi{10.1111/1467-937X.00168}.
+
+\bibitem[Castellano et~al.(2009)Castellano, Fortunato, and
+  Loreto]{castellano2009}
+Claudio Castellano, Santo Fortunato, and Vittorio Loreto.
+\newblock Statistical physics of social dynamics.
+\newblock \emph{Reviews of Modern Physics}, 81\penalty0 (2):\penalty0 591--646,
+  2009.
+
+\bibitem[Cemri et~al.(2025)Cemri, Pan, Yang, Agrawal, Chopra, Tiwari, Keutzer,
+  Parameswaran, Klein, Ramchandran, Zaharia, Gonzalez, and Stoica]{cemri2025}
+Mert Cemri, Melissa~Z. Pan, Shuyi Yang, Lakshya~A. Agrawal, Bhavya Chopra,
+  Rishabh Tiwari, Kurt Keutzer, Aditya Parameswaran, Dan Klein, Kannan
+  Ramchandran, Matei Zaharia, Joseph~E. Gonzalez, and Ion Stoica.
+\newblock Why do multi-agent {LLM} systems fail?, 2025.
+\newblock Also in NeurIPS 2025 Datasets and Benchmarks Track.
+
+\bibitem[Chen et~al.(2024)Chen, Saha, and Bansal]{chen2024reconcile}
+Justin Chen, Swarnadeep Saha, and Mohit Bansal.
+\newblock Reconcile: Round-table conference improves reasoning via consensus
+  among diverse llms.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 7066--7085,
+  2024.
+
+\bibitem[Chen et~al.(2023)Chen, Su, Zuo, Yang, Yuan, Chan, Yu, Lu, Hung, Qian,
+  Qin, Cong, Xie, Liu, Sun, and Zhou]{chen2023}
+Weize Chen, Yusheng Su, Jingwei Zuo, Cheng Yang, Chenfei Yuan, Chi-Min Chan,
+  Heyang Yu, Yaxi Lu, Yi-Hsin Hung, Chen Qian, Yujia Qin, Xin Cong, Ruobing
+  Xie, Zhiyuan Liu, Maosong Sun, and Jie Zhou.
+\newblock {AgentVerse}: Facilitating multi-agent collaboration and exploring
+  emergent behaviors, 2023.
+
+\bibitem[Chuang et~al.(2024)Chuang, Goyal, Harlalka, Suresh, Hawkins, Yang,
+  Shah, Hu, and Rogers]{chuang2024}
+Yun-Shiuan Chuang, Agam Goyal, Nikunj Harlalka, Siddharth Suresh, Robert
+  Hawkins, Sijia Yang, Dhavan Shah, Junjie Hu, and Timothy~T. Rogers.
+\newblock Simulating opinion dynamics with networks of {LLM}-based agents.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  NAACL}, 2024.
+
+\bibitem[De~Marzo et~al.(2024)De~Marzo, Castellano, and Garcia]{demarzo2024}
+Giordano De~Marzo, Claudio Castellano, and David Garcia.
+\newblock {AI} agents can coordinate beyond human scale, 2024.
+
+\bibitem[Du et~al.(2023)Du, Li, Torralba, Tenenbaum, and
+  Mordatch]{du2023improvingfactualityreasoninglanguage}
+Yilun Du, Shuang Li, Antonio Torralba, Joshua~B. Tenenbaum, and Igor Mordatch.
+\newblock Improving factuality and reasoning in language models through
+  multiagent debate, 2023.
+\newblock URL \url{https://arxiv.org/abs/2305.14325}.
+
+\bibitem[Edwards and Anderson(1975)]{edwards1975}
+S.~F. Edwards and P.~W. Anderson.
+\newblock Theory of spin glasses.
+\newblock \emph{Journal of Physics F}, 5\penalty0 (5):\penalty0 965--974, 1975.
+
+\bibitem[Gautam and Riegler(2026)]{moltbook_observatory_archive_2026}
+Sushant Gautam and Michael~A. Riegler.
+\newblock Moltbook observatory archive, 2026.
+\newblock URL
+  \url{https://huggingface.co/datasets/SimulaMet/moltbook-observatory-archive}.
+
+\bibitem[{Gemma Team} et~al.(2025){Gemma Team}, Kamath, Ferret, Pathak,
+  Vieillard, Merhej, Perrin, Matejovicova, Ramé, Rivière, Rouillard, Mesnard,
+  Cideron, bastien Grill, Ramos, Yvinec, Casbon, Pot, Penchev, Liu, Visin,
+  Kenealy, Beyer, Zhai, Tsitsulin, Busa-Fekete, Feng, Sachdeva, Coleman, Gao,
+  Mustafa, Barr, Parisotto, Tian, Eyal, Cherry, Peter, Sinopalnikov,
+  Bhupatiraju, Agarwal, Kazemi, Malkin, Kumar, Vilar, Brusilovsky, Luo,
+  Steiner, Friesen, Sharma, Sharma, Gilady, Goedeckemeyer, Saade, Feng,
+  Kolesnikov, Bendebury, Abdagic, Vadi, György, Pinto, Das, Bapna, Miech,
+  Yang, Paterson, Shenoy, Chakrabarti, Piot, Wu, Shahriari, Petrini, Chen, Lan,
+  Choquette-Choo, Carey, Brick, Deutsch, Eisenbud, Cattle, Cheng, Paparas,
+  Sreepathihalli, Reid, Tran, Zelle, Noland, Huizenga, Kharitonov, Liu,
+  Amirkhanyan, Cameron, Hashemi, Klimczak-Plucińska, Singh, Mehta, Lehri,
+  Hazimeh, Ballantyne, Szpektor, Nardini, Pouget-Abadie, Chan, Stanton,
+  Wieting, Lai, Orbay, Fernandez, Newlan, yeong Ji, Singh, Black, Yu, Hui,
+  Vodrahalli, Greff, Qiu, Valentine, Coelho, Ritter, Hoffman, Watson,
+  Chaturvedi, Moynihan, Ma, Babar, Noy, Byrd, Roy, Momchev, Chauhan, Sachdeva,
+  Bunyan, Botarda, Caron, Rubenstein, Culliton, Schmid, Sessa, Xu, Stanczyk,
+  Tafti, Shivanna, Wu, Pan, Rokni, Willoughby, Vallu, Mullins, Jerome, Smoot,
+  Girgin, Iqbal, Reddy, Sheth, Põder, Bhatnagar, Panyam, Eiger, Zhang, Liu,
+  Yacovone, Liechty, Kalra, Evci, Misra, Roseberry, Feinberg, Kolesnikov, Han,
+  Kwon, Chen, Chow, Zhu, Wei, Egyed, Cotruta, Giang, Kirk, Rao, Black, Babar,
+  Lo, Moreira, Martins, Sanseviero, Gonzalez, Gleicher, Warkentin, Mirrokni,
+  Senter, Collins, Barral, Ghahramani, Hadsell, Matias, Sculley, Petrov,
+  Fiedel, Shazeer, Vinyals, Dean, Hassabis, Kavukcuoglu, Farabet, Buchatskaya,
+  Alayrac, Anil, Dmitry, Lepikhin, Borgeaud, Bachem, Joulin, Andreev, Hardin,
+  Dadashi, and Hussenot]{gemmateam2025gemma3technicalreport}
+{Gemma Team}, Aishwarya Kamath, Johan Ferret, Shreya Pathak, Nino Vieillard,
+  Ramona Merhej, Sarah Perrin, Tatiana Matejovicova, Alexandre Ramé, Morgane
+  Rivière, Louis Rouillard, Thomas Mesnard, Geoffrey Cideron, Jean bastien
+  Grill, Sabela Ramos, Edouard Yvinec, Michelle Casbon, Etienne Pot, Ivo
+  Penchev, Gaël Liu, Francesco Visin, Kathleen Kenealy, Lucas Beyer, Xiaohai
+  Zhai, Anton Tsitsulin, Robert Busa-Fekete, Alex Feng, Noveen Sachdeva,
+  Benjamin Coleman, Yi~Gao, Basil Mustafa, Iain Barr, Emilio Parisotto, David
+  Tian, Matan Eyal, Colin Cherry, Jan-Thorsten Peter, Danila Sinopalnikov,
+  Surya Bhupatiraju, Rishabh Agarwal, Mehran Kazemi, Dan Malkin, Ravin Kumar,
+  David Vilar, Idan Brusilovsky, Jiaming Luo, Andreas Steiner, Abe Friesen,
+  Abhanshu Sharma, Abheesht Sharma, Adi~Mayrav Gilady, Adrian Goedeckemeyer,
+  Alaa Saade, Alex Feng, Alexander Kolesnikov, Alexei Bendebury, Alvin Abdagic,
+  Amit Vadi, András György, André~Susano Pinto, Anil Das, Ankur Bapna,
+  Antoine Miech, Antoine Yang, Antonia Paterson, Ashish Shenoy, Ayan
+  Chakrabarti, Bilal Piot, Bo~Wu, Bobak Shahriari, Bryce Petrini, Charlie Chen,
+  Charline~Le Lan, Christopher~A. Choquette-Choo, CJ~Carey, Cormac Brick,
+  Daniel Deutsch, Danielle Eisenbud, Dee Cattle, Derek Cheng, Dimitris Paparas,
+  Divyashree~Shivakumar Sreepathihalli, Doug Reid, Dustin Tran, Dustin Zelle,
+  Eric Noland, Erwin Huizenga, Eugene Kharitonov, Frederick Liu, Gagik
+  Amirkhanyan, Glenn Cameron, Hadi Hashemi, Hanna Klimczak-Plucińska, Harman
+  Singh, Harsh Mehta, Harshal~Tushar Lehri, Hussein Hazimeh, Ian Ballantyne,
+  Idan Szpektor, Ivan Nardini, Jean Pouget-Abadie, Jetha Chan, Joe Stanton,
+  John Wieting, Jonathan Lai, Jordi Orbay, Joseph Fernandez, Josh Newlan,
+  Ju~yeong Ji, Jyotinder Singh, Kat Black, Kathy Yu, Kevin Hui, Kiran
+  Vodrahalli, Klaus Greff, Linhai Qiu, Marcella Valentine, Marina Coelho,
+  Marvin Ritter, Matt Hoffman, Matthew Watson, Mayank Chaturvedi, Michael
+  Moynihan, Min Ma, Nabila Babar, Natasha Noy, Nathan Byrd, Nick Roy, Nikola
+  Momchev, Nilay Chauhan, Noveen Sachdeva, Oskar Bunyan, Pankil Botarda, Paul
+  Caron, Paul~Kishan Rubenstein, Phil Culliton, Philipp Schmid, Pier~Giuseppe
+  Sessa, Pingmei Xu, Piotr Stanczyk, Pouya Tafti, Rakesh Shivanna, Renjie Wu,
+  Renke Pan, Reza Rokni, Rob Willoughby, Rohith Vallu, Ryan Mullins, Sammy
+  Jerome, Sara Smoot, Sertan Girgin, Shariq Iqbal, Shashir Reddy, Shruti Sheth,
+  Siim Põder, Sijal Bhatnagar, Sindhu~Raghuram Panyam, Sivan Eiger, Susan
+  Zhang, Tianqi Liu, Trevor Yacovone, Tyler Liechty, Uday Kalra, Utku Evci,
+  Vedant Misra, Vincent Roseberry, Vlad Feinberg, Vlad Kolesnikov, Woohyun Han,
+  Woosuk Kwon, Xi~Chen, Yinlam Chow, Yuvein Zhu, Zichuan Wei, Zoltan Egyed,
+  Victor Cotruta, Minh Giang, Phoebe Kirk, Anand Rao, Kat Black, Nabila Babar,
+  Jessica Lo, Erica Moreira, Luiz~Gustavo Martins, Omar Sanseviero, Lucas
+  Gonzalez, Zach Gleicher, Tris Warkentin, Vahab Mirrokni, Evan Senter, Eli
+  Collins, Joelle Barral, Zoubin Ghahramani, Raia Hadsell, Yossi Matias,
+  D.~Sculley, Slav Petrov, Noah Fiedel, Noam Shazeer, Oriol Vinyals, Jeff Dean,
+  Demis Hassabis, Koray Kavukcuoglu, Clement Farabet, Elena Buchatskaya,
+  Jean-Baptiste Alayrac, Rohan Anil, Dmitry, Lepikhin, Sebastian Borgeaud,
+  Olivier Bachem, Armand Joulin, Alek Andreev, Cassidy Hardin, Robert Dadashi,
+  and Léonard Hussenot.
+\newblock Gemma 3 technical report, 2025.
+\newblock URL \url{https://arxiv.org/abs/2503.19786}.
+
+\bibitem[Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl]{gilmer2017mpnn}
+Justin Gilmer, Samuel~S. Schoenholz, Patrick~F. Riley, Oriol Vinyals, and
+  George~E. Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2017.
+
+\bibitem[Glauber(1963)]{glauber1963}
+Roy~J. Glauber.
+\newblock Time-dependent statistics of the ising model.
+\newblock \emph{Journal of Mathematical Physics}, 4\penalty0 (2):\penalty0
+  294--307, 1963.
+
+\bibitem[Grattafiori et~al.(2024)Grattafiori, Dubey, Jauhri, Pandey, Kadian,
+  Al-Dahle, Letman, Mathur, Schelten, Vaughan, Yang, Fan, Goyal, Hartshorn,
+  Yang, Mitra, Sravankumar, Korenev, Hinsvark, Rao, Zhang, Rodriguez,
+  Gregerson, Spataru, Roziere, Biron, Tang, Chern, Caucheteux, Nayak, Bi,
+  Marra, McConnell, Keller, Touret, Wu, Wong, Ferrer, Nikolaidis, Allonsius,
+  Song, Pintz, Livshits, Wyatt, Esiobu, Choudhary, Mahajan, Garcia-Olano,
+  Perino, Hupkes, Lakomkin, AlBadawy, Lobanova, Dinan, Smith, Radenovic,
+  Guzmán, Zhang, Synnaeve, Lee, Anderson, Thattai, Nail, Mialon, Pang,
+  Cucurell, Nguyen, Korevaar, Xu, Touvron, Zarov, Ibarra, Kloumann, Misra,
+  Evtimov, Zhang, Copet, Lee, Geffert, Vranes, Park, Mahadeokar, Shah, van~der
+  Linde, Billock, Hong, Lee, Fu, Chi, Huang, Liu, Wang, Yu, Bitton, Spisak,
+  Park, Rocca, Johnstun, Saxe, Jia, Alwala, Prasad, Upasani, Plawiak, Li,
+  Heafield, Stone, El-Arini, Iyer, Malik, Chiu, Bhalla, Lakhotia,
+  Rantala-Yeary, van~der Maaten, Chen, Tan, Jenkins, Martin, Madaan, Malo,
+  Blecher, Landzaat, de~Oliveira, Muzzi, Pasupuleti, Singh, Paluri, Kardas,
+  Tsimpoukelli, Oldham, Rita, Pavlova, Kambadur, Lewis, Si, Singh, Hassan,
+  Goyal, Torabi, Bashlykov, Bogoychev, Chatterji, Zhang, Duchenne, Çelebi,
+  Alrassy, Zhang, Li, Vasic, Weng, Bhargava, Dubal, Krishnan, Koura, Xu, He,
+  Dong, Srinivasan, Ganapathy, Calderer, Cabral, Stojnic, Raileanu, Maheswari,
+  Girdhar, Patel, Sauvestre, Polidoro, Sumbaly, Taylor, Silva, Hou, Wang,
+  Hosseini, Chennabasappa, Singh, Bell, Kim, Edunov, Nie, Narang, Raparthy,
+  Shen, Wan, Bhosale, Zhang, Vandenhende, Batra, Whitman, Sootla, Collot,
+  Gururangan, Borodinsky, Herman, Fowler, Sheasha, Georgiou, Scialom,
+  Speckbacher, Mihaylov, Xiao, Karn, Goswami, Gupta, Ramanathan, Kerkez,
+  Gonguet, Do, Vogeti, Albiero, Petrovic, Chu, Xiong, Fu, Meers, Martinet,
+  Wang, Wang, Tan, Xia, Xie, Jia, Wang, Goldschlag, Gaur, Babaei, Wen, Song,
+  Zhang, Li, Mao, Coudert, Yan, Chen, Papakipos, Singh, Srivastava, Jain,
+  Kelsey, Shajnfeld, Gangidi, Victoria, Goldstand, Menon, Sharma, Boesenberg,
+  Baevski, Feinstein, Kallet, Sangani, Teo, Yunus, Lupu, Alvarado, Caples, Gu,
+  Ho, Poulton, Ryan, Ramchandani, Dong, Franco, Goyal, Saraf, Chowdhury,
+  Gabriel, Bharambe, Eisenman, Yazdan, James, Maurer, Leonhardi, Huang, Loyd,
+  Paola, Paranjape, Liu, Wu, Ni, Hancock, Wasti, Spence, Stojkovic, Gamido,
+  Montalvo, Parker, Burton, Mejia, Liu, Wang, Kim, Zhou, Hu, Chu, Cai, Tindal,
+  Feichtenhofer, Gao, Civin, Beaty, Kreymer, Li, Adkins, Xu, Testuggine, David,
+  Parikh, Liskovich, Foss, Wang, Le, Holland, Dowling, Jamil, Montgomery,
+  Presani, Hahn, Wood, Le, Brinkman, Arcaute, Dunbar, Smothers, Sun, Kreuk,
+  Tian, Kokkinos, Ozgenel, Caggioni, Kanayet, Seide, Florez, Schwarz, Badeer,
+  Swee, Halpern, Herman, Sizov, Guangyi, Zhang, Lakshminarayanan, Inan,
+  Shojanazeri, Zou, Wang, Zha, Habeeb, Rudolph, Suk, Aspegren, Goldman, Zhan,
+  Damlaj, Molybog, Tufanov, Leontiadis, Veliche, Gat, Weissman, Geboski, Kohli,
+  Lam, Asher, Gaya, Marcus, Tang, Chan, Zhen, Reizenstein, Teboul, Zhong, Jin,
+  Yang, Cummings, Carvill, Shepard, McPhie, Torres, Ginsburg, Wang, Wu, U,
+  Saxena, Khandelwal, Zand, Matosich, Veeraraghavan, Michelena, Li, Jagadeesh,
+  Huang, Chawla, Huang, Chen, Garg, A, Silva, Bell, Zhang, Guo, Yu, Moshkovich,
+  Wehrstedt, Khabsa, Avalani, Bhatt, Mankus, Hasson, Lennie, Reso, Groshev,
+  Naumov, Lathi, Keneally, Liu, Seltzer, Valko, Restrepo, Patel, Vyatskov,
+  Samvelyan, Clark, Macey, Wang, Hermoso, Metanat, Rastegari, Bansal,
+  Santhanam, Parks, White, Bawa, Singhal, Egebo, Usunier, Mehta, Laptev, Dong,
+  Cheng, Chernoguz, Hart, Salpekar, Kalinli, Kent, Parekh, Saab, Balaji,
+  Rittner, Bontrager, Roux, Dollar, Zvyagina, Ratanchandani, Yuvraj, Liang,
+  Alao, Rodriguez, Ayub, Murthy, Nayani, Mitra, Parthasarathy, Li, Hogan,
+  Battey, Wang, Howes, Rinott, Mehta, Siby, Bondu, Datta, Chugh, Hunt, Dhillon,
+  Sidorov, Pan, Mahajan, Verma, Yamamoto, Ramaswamy, Lindsay, Lindsay, Feng,
+  Lin, Zha, Patil, Shankar, Zhang, Zhang, Wang, Agarwal, Sajuyigbe, Chintala,
+  Max, Chen, Kehoe, Satterfield, Govindaprasad, Gupta, Deng, Cho, Virk,
+  Subramanian, Choudhury, Goldman, Remez, Glaser, Best, Koehler, Robinson, Li,
+  Zhang, Matthews, Chou, Shaked, Vontimitta, Ajayi, Montanez, Mohan, Kumar,
+  Mangla, Ionescu, Poenaru, Mihailescu, Ivanov, Li, Wang, Jiang, Bouaziz,
+  Constable, Tang, Wu, Wang, Wu, Gao, Kleinman, Chen, Hu, Jia, Qi, Li, Zhang,
+  Zhang, Adi, Nam, Yu, Wang, Zhao, Hao, Qian, Li, He, Rait, DeVito, Rosnbrick,
+  Wen, Yang, Zhao, and Ma]{grattafiori2024llama3herdmodels}
+Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek
+  Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Alex
+  Vaughan, Amy Yang, Angela Fan, Anirudh Goyal, Anthony Hartshorn, Aobo Yang,
+  Archi Mitra, Archie Sravankumar, Artem Korenev, Arthur Hinsvark, Arun Rao,
+  Aston Zhang, Aurelien Rodriguez, Austen Gregerson, Ava Spataru, Baptiste
+  Roziere, Bethany Biron, Binh Tang, Bobbie Chern, Charlotte Caucheteux, Chaya
+  Nayak, Chloe Bi, Chris Marra, Chris McConnell, Christian Keller, Christophe
+  Touret, Chunyang Wu, Corinne Wong, Cristian~Canton Ferrer, Cyrus Nikolaidis,
+  Damien Allonsius, Daniel Song, Danielle Pintz, Danny Livshits, Danny Wyatt,
+  David Esiobu, Dhruv Choudhary, Dhruv Mahajan, Diego Garcia-Olano, Diego
+  Perino, Dieuwke Hupkes, Egor Lakomkin, Ehab AlBadawy, Elina Lobanova, Emily
+  Dinan, Eric~Michael Smith, Filip Radenovic, Francisco Guzmán, Frank Zhang,
+  Gabriel Synnaeve, Gabrielle Lee, Georgia~Lewis Anderson, Govind Thattai,
+  Graeme Nail, Gregoire Mialon, Guan Pang, Guillem Cucurell, Hailey Nguyen,
+  Hannah Korevaar, Hu~Xu, Hugo Touvron, Iliyan Zarov, Imanol~Arrieta Ibarra,
+  Isabel Kloumann, Ishan Misra, Ivan Evtimov, Jack Zhang, Jade Copet, Jaewon
+  Lee, Jan Geffert, Jana Vranes, Jason Park, Jay Mahadeokar, Jeet Shah, Jelmer
+  van~der Linde, Jennifer Billock, Jenny Hong, Jenya Lee, Jeremy Fu, Jianfeng
+  Chi, Jianyu Huang, Jiawen Liu, Jie Wang, Jiecao Yu, Joanna Bitton, Joe
+  Spisak, Jongsoo Park, Joseph Rocca, Joshua Johnstun, Joshua Saxe, Junteng
+  Jia, Kalyan~Vasuden Alwala, Karthik Prasad, Kartikeya Upasani, Kate Plawiak,
+  Ke~Li, Kenneth Heafield, Kevin Stone, Khalid El-Arini, Krithika Iyer, Kshitiz
+  Malik, Kuenley Chiu, Kunal Bhalla, Kushal Lakhotia, Lauren Rantala-Yeary,
+  Laurens van~der Maaten, Lawrence Chen, Liang Tan, Liz Jenkins, Louis Martin,
+  Lovish Madaan, Lubo Malo, Lukas Blecher, Lukas Landzaat, Luke de~Oliveira,
+  Madeline Muzzi, Mahesh Pasupuleti, Mannat Singh, Manohar Paluri, Marcin
+  Kardas, Maria Tsimpoukelli, Mathew Oldham, Mathieu Rita, Maya Pavlova,
+  Melanie Kambadur, Mike Lewis, Min Si, Mitesh~Kumar Singh, Mona Hassan, Naman
+  Goyal, Narjes Torabi, Nikolay Bashlykov, Nikolay Bogoychev, Niladri
+  Chatterji, Ning Zhang, Olivier Duchenne, Onur Çelebi, Patrick Alrassy,
+  Pengchuan Zhang, Pengwei Li, Petar Vasic, Peter Weng, Prajjwal Bhargava,
+  Pratik Dubal, Praveen Krishnan, Punit~Singh Koura, Puxin Xu, Qing He,
+  Qingxiao Dong, Ragavan Srinivasan, Raj Ganapathy, Ramon Calderer,
+  Ricardo~Silveira Cabral, Robert Stojnic, Roberta Raileanu, Rohan Maheswari,
+  Rohit Girdhar, Rohit Patel, Romain Sauvestre, Ronnie Polidoro, Roshan
+  Sumbaly, Ross Taylor, Ruan Silva, Rui Hou, Rui Wang, Saghar Hosseini, Sahana
+  Chennabasappa, Sanjay Singh, Sean Bell, Seohyun~Sonia Kim, Sergey Edunov,
+  Shaoliang Nie, Sharan Narang, Sharath Raparthy, Sheng Shen, Shengye Wan,
+  Shruti Bhosale, Shun Zhang, Simon Vandenhende, Soumya Batra, Spencer Whitman,
+  Sten Sootla, Stephane Collot, Suchin Gururangan, Sydney Borodinsky, Tamar
+  Herman, Tara Fowler, Tarek Sheasha, Thomas Georgiou, Thomas Scialom, Tobias
+  Speckbacher, Todor Mihaylov, Tong Xiao, Ujjwal Karn, Vedanuj Goswami, Vibhor
+  Gupta, Vignesh Ramanathan, Viktor Kerkez, Vincent Gonguet, Virginie Do, Vish
+  Vogeti, Vítor Albiero, Vladan Petrovic, Weiwei Chu, Wenhan Xiong, Wenyin Fu,
+  Whitney Meers, Xavier Martinet, Xiaodong Wang, Xiaofang Wang, Xiaoqing~Ellen
+  Tan, Xide Xia, Xinfeng Xie, Xuchao Jia, Xuewei Wang, Yaelle Goldschlag,
+  Yashesh Gaur, Yasmine Babaei, Yi~Wen, Yiwen Song, Yuchen Zhang, Yue Li,
+  Yuning Mao, Zacharie~Delpierre Coudert, Zheng Yan, Zhengxing Chen, Zoe
+  Papakipos, Aaditya Singh, Aayushi Srivastava, Abha Jain, Adam Kelsey, Adam
+  Shajnfeld, Adithya Gangidi, Adolfo Victoria, Ahuva Goldstand, Ajay Menon,
+  Ajay Sharma, Alex Boesenberg, Alexei Baevski, Allie Feinstein, Amanda Kallet,
+  Amit Sangani, Amos Teo, Anam Yunus, Andrei Lupu, Andres Alvarado, Andrew
+  Caples, Andrew Gu, Andrew Ho, Andrew Poulton, Andrew Ryan, Ankit Ramchandani,
+  Annie Dong, Annie Franco, Anuj Goyal, Aparajita Saraf, Arkabandhu Chowdhury,
+  Ashley Gabriel, Ashwin Bharambe, Assaf Eisenman, Azadeh Yazdan, Beau James,
+  Ben Maurer, Benjamin Leonhardi, Bernie Huang, Beth Loyd, Beto~De Paola,
+  Bhargavi Paranjape, Bing Liu, Bo~Wu, Boyu Ni, Braden Hancock, Bram Wasti,
+  Brandon Spence, Brani Stojkovic, Brian Gamido, Britt Montalvo, Carl Parker,
+  Carly Burton, Catalina Mejia, Ce~Liu, Changhan Wang, Changkyu Kim, Chao Zhou,
+  Chester Hu, Ching-Hsiang Chu, Chris Cai, Chris Tindal, Christoph
+  Feichtenhofer, Cynthia Gao, Damon Civin, Dana Beaty, Daniel Kreymer, Daniel
+  Li, David Adkins, David Xu, Davide Testuggine, Delia David, Devi Parikh,
+  Diana Liskovich, Didem Foss, Dingkang Wang, Duc Le, Dustin Holland, Edward
+  Dowling, Eissa Jamil, Elaine Montgomery, Eleonora Presani, Emily Hahn, Emily
+  Wood, Eric-Tuan Le, Erik Brinkman, Esteban Arcaute, Evan Dunbar, Evan
+  Smothers, Fei Sun, Felix Kreuk, Feng Tian, Filippos Kokkinos, Firat Ozgenel,
+  Francesco Caggioni, Frank Kanayet, Frank Seide, Gabriela~Medina Florez,
+  Gabriella Schwarz, Gada Badeer, Georgia Swee, Gil Halpern, Grant Herman,
+  Grigory Sizov, Guangyi, Zhang, Guna Lakshminarayanan, Hakan Inan, Hamid
+  Shojanazeri, Han Zou, Hannah Wang, Hanwen Zha, Haroun Habeeb, Harrison
+  Rudolph, Helen Suk, Henry Aspegren, Hunter Goldman, Hongyuan Zhan, Ibrahim
+  Damlaj, Igor Molybog, Igor Tufanov, Ilias Leontiadis, Irina-Elena Veliche,
+  Itai Gat, Jake Weissman, James Geboski, James Kohli, Janice Lam, Japhet
+  Asher, Jean-Baptiste Gaya, Jeff Marcus, Jeff Tang, Jennifer Chan, Jenny Zhen,
+  Jeremy Reizenstein, Jeremy Teboul, Jessica Zhong, Jian Jin, Jingyi Yang, Joe
+  Cummings, Jon Carvill, Jon Shepard, Jonathan McPhie, Jonathan Torres, Josh
+  Ginsburg, Junjie Wang, Kai Wu, Kam~Hou U, Karan Saxena, Kartikay Khandelwal,
+  Katayoun Zand, Kathy Matosich, Kaushik Veeraraghavan, Kelly Michelena, Keqian
+  Li, Kiran Jagadeesh, Kun Huang, Kunal Chawla, Kyle Huang, Lailin Chen,
+  Lakshya Garg, Lavender A, Leandro Silva, Lee Bell, Lei Zhang, Liangpeng Guo,
+  Licheng Yu, Liron Moshkovich, Luca Wehrstedt, Madian Khabsa, Manav Avalani,
+  Manish Bhatt, Martynas Mankus, Matan Hasson, Matthew Lennie, Matthias Reso,
+  Maxim Groshev, Maxim Naumov, Maya Lathi, Meghan Keneally, Miao Liu,
+  Michael~L. Seltzer, Michal Valko, Michelle Restrepo, Mihir Patel, Mik
+  Vyatskov, Mikayel Samvelyan, Mike Clark, Mike Macey, Mike Wang, Miquel~Jubert
+  Hermoso, Mo~Metanat, Mohammad Rastegari, Munish Bansal, Nandhini Santhanam,
+  Natascha Parks, Natasha White, Navyata Bawa, Nayan Singhal, Nick Egebo,
+  Nicolas Usunier, Nikhil Mehta, Nikolay~Pavlovich Laptev, Ning Dong, Norman
+  Cheng, Oleg Chernoguz, Olivia Hart, Omkar Salpekar, Ozlem Kalinli, Parkin
+  Kent, Parth Parekh, Paul Saab, Pavan Balaji, Pedro Rittner, Philip Bontrager,
+  Pierre Roux, Piotr Dollar, Polina Zvyagina, Prashant Ratanchandani, Pritish
+  Yuvraj, Qian Liang, Rachad Alao, Rachel Rodriguez, Rafi Ayub, Raghotham
+  Murthy, Raghu Nayani, Rahul Mitra, Rangaprabhu Parthasarathy, Raymond Li,
+  Rebekkah Hogan, Robin Battey, Rocky Wang, Russ Howes, Ruty Rinott, Sachin
+  Mehta, Sachin Siby, Sai~Jayesh Bondu, Samyak Datta, Sara Chugh, Sara Hunt,
+  Sargun Dhillon, Sasha Sidorov, Satadru Pan, Saurabh Mahajan, Saurabh Verma,
+  Seiji Yamamoto, Sharadh Ramaswamy, Shaun Lindsay, Shaun Lindsay, Sheng Feng,
+  Shenghao Lin, Shengxin~Cindy Zha, Shishir Patil, Shiva Shankar, Shuqiang
+  Zhang, Shuqiang Zhang, Sinong Wang, Sneha Agarwal, Soji Sajuyigbe, Soumith
+  Chintala, Stephanie Max, Stephen Chen, Steve Kehoe, Steve Satterfield,
+  Sudarshan Govindaprasad, Sumit Gupta, Summer Deng, Sungmin Cho, Sunny Virk,
+  Suraj Subramanian, Sy~Choudhury, Sydney Goldman, Tal Remez, Tamar Glaser,
+  Tamara Best, Thilo Koehler, Thomas Robinson, Tianhe Li, Tianjun Zhang, Tim
+  Matthews, Timothy Chou, Tzook Shaked, Varun Vontimitta, Victoria Ajayi,
+  Victoria Montanez, Vijai Mohan, Vinay~Satish Kumar, Vishal Mangla, Vlad
+  Ionescu, Vlad Poenaru, Vlad~Tiberiu Mihailescu, Vladimir Ivanov, Wei Li,
+  Wenchen Wang, Wenwen Jiang, Wes Bouaziz, Will Constable, Xiaocheng Tang,
+  Xiaojian Wu, Xiaolan Wang, Xilun Wu, Xinbo Gao, Yaniv Kleinman, Yanjun Chen,
+  Ye~Hu, Ye~Jia, Ye~Qi, Yenda Li, Yilin Zhang, Ying Zhang, Yossi Adi, Youngjin
+  Nam, Yu, Wang, Yu~Zhao, Yuchen Hao, Yundi Qian, Yunlu Li, Yuzi He, Zach Rait,
+  Zachary DeVito, Zef Rosnbrick, Zhaoduo Wen, Zhenyu Yang, Zhiwei Zhao, and
+  Zhiyu Ma.
+\newblock The llama 3 herd of models, 2024.
+\newblock URL \url{https://arxiv.org/abs/2407.21783}.
+
+\bibitem[Hebb(1949)]{hebb1949organization}
+Donald~O. Hebb.
+\newblock \emph{The Organization of Behavior: A Neuropsychological Theory}.
+\newblock Wiley, New York, 1949.
+
+\bibitem[Hendrycks et~al.(2021)Hendrycks, Burns, Kadavath, Arora, Basart, Tang,
+  Song, and Steinhardt]{hendrycks2021measuringmathematicalproblemsolving}
+Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric
+  Tang, Dawn Song, and Jacob Steinhardt.
+\newblock Measuring mathematical problem solving with the math dataset, 2021.
+\newblock URL \url{https://arxiv.org/abs/2103.03874}.
+
+\bibitem[Hopfield(1982)]{hopfield1982neural}
+J.~J. Hopfield.
+\newblock Neural networks and physical systems with emergent collective
+  computational abilities.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 79\penalty0
+  (8):\penalty0 2554--2558, 1982.
+\newblock \doi{10.1073/pnas.79.8.2554}.
+
+\bibitem[Horton(2023)]{horton2023}
+John~J. Horton.
+\newblock Large language models as simulated economic agents: What can we learn
+  from homo silicus?
+\newblock Technical Report 31122, National Bureau of Economic Research, 2023.
+
+\bibitem[Hu et~al.(2025)Hu, Lu, and Clune]{hu2025automateddesignagenticsystems}
+Shengran Hu, Cong Lu, and Jeff Clune.
+\newblock Automated design of agentic systems, 2025.
+\newblock URL \url{https://arxiv.org/abs/2408.08435}.
+
+\bibitem[Ising(1925)]{ising1925}
+Ernst Ising.
+\newblock Beitrag zur theorie des ferromagnetismus.
+\newblock \emph{Zeitschrift f{\"u}r Physik}, 31:\penalty0 253--258, 1925.
+
+\bibitem[Khattab et~al.(2023)Khattab, Singhvi, Maheshwari, Zhang, Santhanam,
+  Vardhamanan, Haq, Sharma, Joshi, Moazam, Miller, Zaharia, and
+  Potts]{khattab2023}
+Omar Khattab, Arnav Singhvi, Paridhi Maheshwari, Zhiyuan Zhang, Keshav
+  Santhanam, Sri Vardhamanan, Saiful Haq, Ashutosh Sharma, Thomas~T. Joshi,
+  Hanna Moazam, Heather Miller, Matei Zaharia, and Christopher Potts.
+\newblock {DSPy}: Compiling declarative language model calls into
+  self-improving pipelines, 2023.
+
+\bibitem[Lange et~al.(2025)Lange, Imajuku, and
+  Cetin]{lange2025shinkaevolveopenendedsampleefficientprogram}
+Robert~Tjarko Lange, Yuki Imajuku, and Edoardo Cetin.
+\newblock Shinkaevolve: Towards open-ended and sample-efficient program
+  evolution, 2025.
+\newblock URL \url{https://arxiv.org/abs/2509.19349}.
+
+\bibitem[Liang et~al.(2024)Liang, He, Jiao, Wang, Wang, Wang, Yang, Shi, and
+  Tu]{liang-etal-2024-encouraging}
+Tian Liang, Zhiwei He, Wenxiang Jiao, Xing Wang, Yan Wang, Rui Wang, Yujiu
+  Yang, Shuming Shi, and Zhaopeng Tu.
+\newblock Encouraging divergent thinking in large language models through
+  multi-agent debate.
+\newblock In Yaser Al-Onaizan, Mohit Bansal, and Yun-Nung Chen, editors,
+  \emph{Proceedings of the 2024 Conference on Empirical Methods in Natural
+  Language Processing}, pages 17889--17904, Miami, Florida, USA, November 2024.
+  Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2024.emnlp-main.992}.
+\newblock URL \url{https://aclanthology.org/2024.emnlp-main.992/}.
+
+\bibitem[Likert(1932)]{likert1932}
+Rensis Likert.
+\newblock A technique for the measurement of attitudes.
+\newblock \emph{Archives of Psychology}, 22\penalty0 (140):\penalty0 1--55,
+  1932.
+
+\bibitem[Marks et~al.(2011)Marks, Colwell, Sheridan, Hopf, Pagnani, Zecchina,
+  and Sander]{marks2011}
+Debora~S. Marks, Lucy~J. Colwell, Robert Sheridan, Thomas~A. Hopf, Andrea
+  Pagnani, Riccardo Zecchina, and Chris Sander.
+\newblock Protein {3D} structure computed from evolutionary sequence variation.
+\newblock \emph{PLoS ONE}, 6\penalty0 (12):\penalty0 e28766, 2011.
+\newblock \doi{10.1371/journal.pone.0028766}.
+
+\bibitem[M{\'e}zard et~al.(1987)M{\'e}zard, Parisi, and Virasoro]{mezard1987}
+Marc M{\'e}zard, Giorgio Parisi, and Miguel~Angel Virasoro.
+\newblock \emph{Spin Glass Theory and Beyond}, volume~9 of \emph{Lecture Notes
+  in Physics}.
+\newblock World Scientific, 1987.
+
+\bibitem[Neelakantan et~al.(2022)Neelakantan, Xu, Puri, Radford, Han, Tworek,
+  Yuan, Tezak, Kim, Hallacy, Heidecke, Shyam, Power, Nekoul, Sastry, Krueger,
+  Schnurr, Such, Hsu, Thompson, Khan, Sherbakov, Jang, Welinder, and
+  Weng]{neelakantan2022textcodeembeddingscontrastive}
+Arvind Neelakantan, Tao Xu, Raul Puri, Alec Radford, Jesse~Michael Han, Jerry
+  Tworek, Qiming Yuan, Nikolas Tezak, Jong~Wook Kim, Chris Hallacy, Johannes
+  Heidecke, Pranav Shyam, Boris Power, Tyna~Eloundou Nekoul, Girish Sastry,
+  Gretchen Krueger, David Schnurr, Felipe~Petroski Such, Kenny Hsu, Madeleine
+  Thompson, Tabarak Khan, Toki Sherbakov, Joanne Jang, Peter Welinder, and
+  Lilian Weng.
+\newblock Text and code embeddings by contrastive pre-training, 2022.
+\newblock URL \url{https://arxiv.org/abs/2201.10005}.
+
+\bibitem[Nielsen et~al.(2026)Nielsen, Cetin, Schwendeman, Sun, Xu, and
+  Tang]{nielsen2026learningorchestrateagentsnatural}
+Stefan Nielsen, Edoardo Cetin, Peter Schwendeman, Qi~Sun, Jinglue Xu, and Yujin
+  Tang.
+\newblock Learning to orchestrate agents in natural language with the
+  conductor, 2026.
+\newblock URL \url{https://arxiv.org/abs/2512.04388}.
+
+\bibitem[Novikov et~al.(2025)Novikov, Vũ, Eisenberger, Dupont, Huang, Wagner,
+  Shirobokov, Kozlovskii, Ruiz, Mehrabian, Kumar, See, Chaudhuri, Holland,
+  Davies, Nowozin, Kohli, and
+  Balog]{novikov2025alphaevolvecodingagentscientific}
+Alexander Novikov, Ngân Vũ, Marvin Eisenberger, Emilien Dupont, Po-Sen Huang,
+  Adam~Zsolt Wagner, Sergey Shirobokov, Borislav Kozlovskii, Francisco J.~R.
+  Ruiz, Abbas Mehrabian, M.~Pawan Kumar, Abigail See, Swarat Chaudhuri, George
+  Holland, Alex Davies, Sebastian Nowozin, Pushmeet Kohli, and Matej Balog.
+\newblock Alphaevolve: A coding agent for scientific and algorithmic discovery,
+  2025.
+\newblock URL \url{https://arxiv.org/abs/2506.13131}.
+
+\bibitem[OpenAI et~al.(2024)OpenAI, :, Hurst, Lerer, Goucher, Perelman, Ramesh,
+  Clark, Ostrow, Welihinda, Hayes, Radford, Mądry, Baker-Whitcomb, Beutel,
+  Borzunov, Carney, Chow, Kirillov, Nichol, Paino, Renzin, Passos, Kirillov,
+  Christakis, Conneau, Kamali, Jabri, Moyer, Tam, Crookes, Tootoochian,
+  Tootoonchian, Kumar, Vallone, Karpathy, Braunstein, Cann, Codispoti, Galu,
+  Kondrich, Tulloch, Mishchenko, Baek, Jiang, Pelisse, Woodford, Gosalia, Dhar,
+  Pantuliano, Nayak, Oliver, Zoph, Ghorbani, Leimberger, Rossen, Sokolowsky,
+  Wang, Zweig, Hoover, Samic, McGrew, Spero, Giertler, Cheng, Lightcap, Walkin,
+  Quinn, Guarraci, Hsu, Kellogg, Eastman, Lugaresi, Wainwright, Bassin, Hudson,
+  Chu, Nelson, Li, Shern, Conger, Barette, Voss, Ding, Lu, Zhang, Beaumont,
+  Hallacy, Koch, Gibson, Kim, Choi, McLeavey, Hesse, Fischer, Winter,
+  Czarnecki, Jarvis, Wei, Koumouzelis, Sherburn, Kappler, Levin, Levy, Carr,
+  Farhi, Mely, Robinson, Sasaki, Jin, Valladares, Tsipras, Li, Nguyen, Findlay,
+  Oiwoh, Wong, Asdar, Proehl, Yang, Antonow, Kramer, Peterson, Sigler, Wallace,
+  Brevdo, Mays, Khorasani, Such, Raso, Zhang, von Lohmann, Sulit, Goh, Oden,
+  Salmon, Starace, Brockman, Salman, Bao, Hu, Wong, Wang, Schmidt, Whitney,
+  Jun, Kirchner, de~Oliveira~Pinto, Ren, Chang, Chung, Kivlichan, O'Connell,
+  O'Connell, Osband, Silber, Sohl, Okuyucu, Lan, Kostrikov, Sutskever,
+  Kanitscheider, Gulrajani, Coxon, Menick, Pachocki, Aung, Betker, Crooks,
+  Lennon, Kiros, Leike, Park, Kwon, Phang, Teplitz, Wei, Wolfe, Chen, Harris,
+  Varavva, Lee, Shieh, Lin, Yu, Weng, Tang, Yu, Jang, Candela, Beutler,
+  Landers, Parish, Heidecke, Schulman, Lachman, McKay, Uesato, Ward, Kim,
+  Huizinga, Sitkin, Kraaijeveld, Gross, Kaplan, Snyder, Achiam, Jiao, Lee,
+  Zhuang, Harriman, Fricke, Hayashi, Singhal, Shi, Karthik, Wood, Rimbach, Hsu,
+  Nguyen, Gu-Lemberg, Button, Liu, Howe, Muthukumar, Luther, Ahmad, Kai, Itow,
+  Workman, Pathak, Chen, Jing, Guy, Fedus, Zhou, Mamitsuka, Weng, McCallum,
+  Held, Ouyang, Feuvrier, Zhang, Kondraciuk, Kaiser, Hewitt, Metz, Doshi,
+  Aflak, Simens, Boyd, Thompson, Dukhan, Chen, Gray, Hudnall, Zhang, Aljubeh,
+  Litwin, Zeng, Johnson, Shetty, Gupta, Shah, Yatbaz, Yang, Zhong, Glaese,
+  Chen, Janner, Lampe, Petrov, Wu, Wang, Fradin, Pokrass, Castro, de~Castro,
+  Pavlov, Brundage, Wang, Khan, Murati, Bavarian, Lin, Yesildal, Soto,
+  Gimelshein, Cone, Staudacher, Summers, LaFontaine, Chowdhury, Ryder, Stathas,
+  Turley, Tezak, Felix, Kudige, Keskar, Deutsch, Bundick, Puckett, Nachum,
+  Okelola, Boiko, Murk, Jaffe, Watkins, Godement, Campbell-Moore, Chao,
+  McMillan, Belov, Su, Bak, Bakkum, Deng, Dolan, Hoeschele, Welinder, Tillet,
+  Pronin, Tillet, Dhariwal, Yuan, Dias, Lim, Arora, Troll, Lin, Lopes, Puri,
+  Miyara, Leike, Gaubert, Zamani, Wang, Donnelly, Honsby, Smith, Sahai,
+  Ramchandani, Huet, Carmichael, Zellers, Chen, Chen, Nigmatullin, Cheu, Jain,
+  Altman, Schoenholz, Toizer, Miserendino, Agarwal, Culver, Ethersmith, Gray,
+  Grove, Metzger, Hermani, Jain, Zhao, Wu, Jomoto, Wu, Shuaiqi, Xia, Phene,
+  Papay, Narayanan, Coffey, Lee, Hall, Balaji, Broda, Stramer, Xu, Gogineni,
+  Christianson, Sanders, Patwardhan, Cunninghman, Degry, Dimson, Raoux,
+  Shadwell, Zheng, Underwood, Markov, Sherbakov, Rubin, Stasi, Kaftan, Heywood,
+  Peterson, Walters, Eloundou, Qi, Moeller, Monaco, Kuo, Fomenko, Chang, Zheng,
+  Zhou, Manassra, Sheu, Zaremba, Patil, Qian, Kim, Cheng, Zhang, He, Zhang,
+  Jin, Dai, and Malkov]{openai2024gpt4ocard}
+OpenAI, :, Aaron Hurst, Adam Lerer, Adam~P. Goucher, Adam Perelman, Aditya
+  Ramesh, Aidan Clark, AJ~Ostrow, Akila Welihinda, Alan Hayes, Alec Radford,
+  Aleksander Mądry, Alex Baker-Whitcomb, Alex Beutel, Alex Borzunov, Alex
+  Carney, Alex Chow, Alex Kirillov, Alex Nichol, Alex Paino, Alex Renzin,
+  Alex~Tachard Passos, Alexander Kirillov, Alexi Christakis, Alexis Conneau,
+  Ali Kamali, Allan Jabri, Allison Moyer, Allison Tam, Amadou Crookes, Amin
+  Tootoochian, Amin Tootoonchian, Ananya Kumar, Andrea Vallone, Andrej
+  Karpathy, Andrew Braunstein, Andrew Cann, Andrew Codispoti, Andrew Galu,
+  Andrew Kondrich, Andrew Tulloch, Andrey Mishchenko, Angela Baek, Angela
+  Jiang, Antoine Pelisse, Antonia Woodford, Anuj Gosalia, Arka Dhar, Ashley
+  Pantuliano, Avi Nayak, Avital Oliver, Barret Zoph, Behrooz Ghorbani, Ben
+  Leimberger, Ben Rossen, Ben Sokolowsky, Ben Wang, Benjamin Zweig, Beth
+  Hoover, Blake Samic, Bob McGrew, Bobby Spero, Bogo Giertler, Bowen Cheng,
+  Brad Lightcap, Brandon Walkin, Brendan Quinn, Brian Guarraci, Brian Hsu,
+  Bright Kellogg, Brydon Eastman, Camillo Lugaresi, Carroll Wainwright, Cary
+  Bassin, Cary Hudson, Casey Chu, Chad Nelson, Chak Li, Chan~Jun Shern,
+  Channing Conger, Charlotte Barette, Chelsea Voss, Chen Ding, Cheng Lu, Chong
+  Zhang, Chris Beaumont, Chris Hallacy, Chris Koch, Christian Gibson, Christina
+  Kim, Christine Choi, Christine McLeavey, Christopher Hesse, Claudia Fischer,
+  Clemens Winter, Coley Czarnecki, Colin Jarvis, Colin Wei, Constantin
+  Koumouzelis, Dane Sherburn, Daniel Kappler, Daniel Levin, Daniel Levy, David
+  Carr, David Farhi, David Mely, David Robinson, David Sasaki, Denny Jin, Dev
+  Valladares, Dimitris Tsipras, Doug Li, Duc~Phong Nguyen, Duncan Findlay,
+  Edede Oiwoh, Edmund Wong, Ehsan Asdar, Elizabeth Proehl, Elizabeth Yang, Eric
+  Antonow, Eric Kramer, Eric Peterson, Eric Sigler, Eric Wallace, Eugene
+  Brevdo, Evan Mays, Farzad Khorasani, Felipe~Petroski Such, Filippo Raso,
+  Francis Zhang, Fred von Lohmann, Freddie Sulit, Gabriel Goh, Gene Oden, Geoff
+  Salmon, Giulio Starace, Greg Brockman, Hadi Salman, Haiming Bao, Haitang Hu,
+  Hannah Wong, Haoyu Wang, Heather Schmidt, Heather Whitney, Heewoo Jun,
+  Hendrik Kirchner, Henrique~Ponde de~Oliveira~Pinto, Hongyu Ren, Huiwen Chang,
+  Hyung~Won Chung, Ian Kivlichan, Ian O'Connell, Ian O'Connell, Ian Osband, Ian
+  Silber, Ian Sohl, Ibrahim Okuyucu, Ikai Lan, Ilya Kostrikov, Ilya Sutskever,
+  Ingmar Kanitscheider, Ishaan Gulrajani, Jacob Coxon, Jacob Menick, Jakub
+  Pachocki, James Aung, James Betker, James Crooks, James Lennon, Jamie Kiros,
+  Jan Leike, Jane Park, Jason Kwon, Jason Phang, Jason Teplitz, Jason Wei,
+  Jason Wolfe, Jay Chen, Jeff Harris, Jenia Varavva, Jessica~Gan Lee, Jessica
+  Shieh, Ji~Lin, Jiahui Yu, Jiayi Weng, Jie Tang, Jieqi Yu, Joanne Jang,
+  Joaquin~Quinonero Candela, Joe Beutler, Joe Landers, Joel Parish, Johannes
+  Heidecke, John Schulman, Jonathan Lachman, Jonathan McKay, Jonathan Uesato,
+  Jonathan Ward, Jong~Wook Kim, Joost Huizinga, Jordan Sitkin, Jos Kraaijeveld,
+  Josh Gross, Josh Kaplan, Josh Snyder, Joshua Achiam, Joy Jiao, Joyce Lee,
+  Juntang Zhuang, Justyn Harriman, Kai Fricke, Kai Hayashi, Karan Singhal, Katy
+  Shi, Kavin Karthik, Kayla Wood, Kendra Rimbach, Kenny Hsu, Kenny Nguyen,
+  Keren Gu-Lemberg, Kevin Button, Kevin Liu, Kiel Howe, Krithika Muthukumar,
+  Kyle Luther, Lama Ahmad, Larry Kai, Lauren Itow, Lauren Workman, Leher
+  Pathak, Leo Chen, Li~Jing, Lia Guy, Liam Fedus, Liang Zhou, Lien Mamitsuka,
+  Lilian Weng, Lindsay McCallum, Lindsey Held, Long Ouyang, Louis Feuvrier,
+  Lu~Zhang, Lukas Kondraciuk, Lukasz Kaiser, Luke Hewitt, Luke Metz, Lyric
+  Doshi, Mada Aflak, Maddie Simens, Madelaine Boyd, Madeleine Thompson, Marat
+  Dukhan, Mark Chen, Mark Gray, Mark Hudnall, Marvin Zhang, Marwan Aljubeh,
+  Mateusz Litwin, Matthew Zeng, Max Johnson, Maya Shetty, Mayank Gupta, Meghan
+  Shah, Mehmet Yatbaz, Meng~Jia Yang, Mengchao Zhong, Mia Glaese, Mianna Chen,
+  Michael Janner, Michael Lampe, Michael Petrov, Michael Wu, Michele Wang,
+  Michelle Fradin, Michelle Pokrass, Miguel Castro, Miguel Oom~Temudo
+  de~Castro, Mikhail Pavlov, Miles Brundage, Miles Wang, Minal Khan, Mira
+  Murati, Mo~Bavarian, Molly Lin, Murat Yesildal, Nacho Soto, Natalia
+  Gimelshein, Natalie Cone, Natalie Staudacher, Natalie Summers, Natan
+  LaFontaine, Neil Chowdhury, Nick Ryder, Nick Stathas, Nick Turley, Nik Tezak,
+  Niko Felix, Nithanth Kudige, Nitish Keskar, Noah Deutsch, Noel Bundick, Nora
+  Puckett, Ofir Nachum, Ola Okelola, Oleg Boiko, Oleg Murk, Oliver Jaffe,
+  Olivia Watkins, Olivier Godement, Owen Campbell-Moore, Patrick Chao, Paul
+  McMillan, Pavel Belov, Peng Su, Peter Bak, Peter Bakkum, Peter Deng, Peter
+  Dolan, Peter Hoeschele, Peter Welinder, Phil Tillet, Philip Pronin, Philippe
+  Tillet, Prafulla Dhariwal, Qiming Yuan, Rachel Dias, Rachel Lim, Rahul Arora,
+  Rajan Troll, Randall Lin, Rapha~Gontijo Lopes, Raul Puri, Reah Miyara, Reimar
+  Leike, Renaud Gaubert, Reza Zamani, Ricky Wang, Rob Donnelly, Rob Honsby,
+  Rocky Smith, Rohan Sahai, Rohit Ramchandani, Romain Huet, Rory Carmichael,
+  Rowan Zellers, Roy Chen, Ruby Chen, Ruslan Nigmatullin, Ryan Cheu, Saachi
+  Jain, Sam Altman, Sam Schoenholz, Sam Toizer, Samuel Miserendino, Sandhini
+  Agarwal, Sara Culver, Scott Ethersmith, Scott Gray, Sean Grove, Sean Metzger,
+  Shamez Hermani, Shantanu Jain, Shengjia Zhao, Sherwin Wu, Shino Jomoto,
+  Shirong Wu, Shuaiqi, Xia, Sonia Phene, Spencer Papay, Srinivas Narayanan,
+  Steve Coffey, Steve Lee, Stewart Hall, Suchir Balaji, Tal Broda, Tal Stramer,
+  Tao Xu, Tarun Gogineni, Taya Christianson, Ted Sanders, Tejal Patwardhan,
+  Thomas Cunninghman, Thomas Degry, Thomas Dimson, Thomas Raoux, Thomas
+  Shadwell, Tianhao Zheng, Todd Underwood, Todor Markov, Toki Sherbakov, Tom
+  Rubin, Tom Stasi, Tomer Kaftan, Tristan Heywood, Troy Peterson, Tyce Walters,
+  Tyna Eloundou, Valerie Qi, Veit Moeller, Vinnie Monaco, Vishal Kuo, Vlad
+  Fomenko, Wayne Chang, Weiyi Zheng, Wenda Zhou, Wesam Manassra, Will Sheu,
+  Wojciech Zaremba, Yash Patil, Yilei Qian, Yongjik Kim, Youlong Cheng,
+  Yu~Zhang, Yuchen He, Yuchen Zhang, Yujia Jin, Yunxing Dai, and Yury Malkov.
+\newblock Gpt-4o system card, 2024.
+\newblock URL \url{https://arxiv.org/abs/2410.21276}.
+
+\bibitem[Parisi(1979)]{parisi1979}
+Giorgio Parisi.
+\newblock Infinite number of order parameters for spin-glasses.
+\newblock \emph{Physical Review Letters}, 43\penalty0 (23):\penalty0
+  1754--1756, 1979.
+\newblock \doi{10.1103/PhysRevLett.43.1754}.
+
+\bibitem[Park et~al.(2023)Park, O'Brien, Cai, Morris, Liang, and
+  Bernstein]{park2023}
+Joon~Sung Park, Joseph~C. O'Brien, Carrie~J. Cai, Meredith~Ringel Morris, Percy
+  Liang, and Michael~S. Bernstein.
+\newblock Generative agents: Interactive simulacra of human behavior.
+\newblock In \emph{Proceedings of the 36th Annual ACM Symposium on User
+  Interface Software and Technology (UIST)}, 2023.
+
+\bibitem[Park et~al.(2024)Park, Zou, Shaw, Hill, Cai, Morris, Willer, Liang,
+  and Bernstein]{park2024}
+Joon~Sung Park, Carolyn~Q. Zou, Aaron Shaw, Benjamin~Mako Hill, Carrie Cai,
+  Meredith~Ringel Morris, Robb Willer, Percy Liang, and Michael~S. Bernstein.
+\newblock Generative agent simulations of 1,000 people, 2024.
+
+\bibitem[Piao et~al.(2025)Piao, Yan, Zhang, Li, Yan, Lan, Lu, Zheng, Wang,
+  Zhou, et~al.]{piao2025}
+Jinghua Piao, Yuwei Yan, Jun Zhang, Nian Li, Junbo Yan, Xiaochong Lan, Zhihong
+  Lu, Zhiheng Zheng, Jing~Yi Wang, Di~Zhou, et~al.
+\newblock {AgentSociety}: Large-scale simulation of {LLM}-driven generative
+  agents advances understanding of human behaviors and society, 2025.
+
+\bibitem[Potts(1952)]{potts1952}
+Renfrey~B. Potts.
+\newblock Some generalized order-disorder transformations.
+\newblock \emph{Mathematical Proceedings of the Cambridge Philosophical
+  Society}, 48\penalty0 (1):\penalty0 106--109, 1952.
+\newblock \doi{10.1017/S0305004100027419}.
+
+\bibitem[{Promptfoo Team}(2025)]{promptfoo_political_bias_2025}
+{Promptfoo Team}.
+\newblock Political questions dataset for llm bias evaluation, 2025.
+\newblock URL
+  \url{https://huggingface.co/datasets/promptfoo/political-questions}.
+
+\bibitem[{Qwen Team}(2026)]{qwen3.5}
+{Qwen Team}.
+\newblock {Qwen3.5}: Towards native multimodal agents, February 2026.
+\newblock URL \url{https://qwen.ai/blog?id=qwen3.5}.
+
+\bibitem[Scarselli et~al.(2009)Scarselli, Gori, Tsoi, Hagenbuchner, and
+  Monfardini]{scarselli2009gnn}
+Franco Scarselli, Marco Gori, Ah~Chung Tsoi, Markus Hagenbuchner, and Gabriele
+  Monfardini.
+\newblock The graph neural network model.
+\newblock \emph{IEEE Transactions on Neural Networks}, 20\penalty0
+  (1):\penalty0 61--80, 2009.
+\newblock \doi{10.1109/TNN.2008.2005605}.
+
+\bibitem[Schneidman et~al.(2006)Schneidman, Berry, Segev, and
+  Bialek]{schneidman2006}
+Elad Schneidman, Michael~J. Berry, Ronen Segev, and William Bialek.
+\newblock Weak pairwise correlations imply strongly correlated network states
+  in a neural population.
+\newblock \emph{Nature}, 440\penalty0 (7087):\penalty0 1007--1012, 2006.
+\newblock \doi{10.1038/nature04701}.
+
+\bibitem[Sherrington and Kirkpatrick(1975)]{sherrington1975}
+David Sherrington and Scott Kirkpatrick.
+\newblock Solvable model of a spin-glass.
+\newblock \emph{Physical Review Letters}, 35\penalty0 (26):\penalty0
+  1792--1796, 1975.
+
+\bibitem[Swanson et~al.(2024)Swanson, Wu, Bulaong, Pak, and
+  Zou]{Swanson2024.11.11.623004}
+Kyle Swanson, Wesley Wu, Nash~L. Bulaong, John~E. Pak, and James Zou.
+\newblock The virtual lab: Ai agents design new sars-cov-2 nanobodies with
+  experimental validation.
+\newblock \emph{bioRxiv}, 2024.
+\newblock \doi{10.1101/2024.11.11.623004}.
+\newblock URL
+  \url{https://www.biorxiv.org/content/early/2024/11/12/2024.11.11.623004}.
+
+\bibitem[Toner and Tu(1995)]{toner1995}
+John Toner and Yuhai Tu.
+\newblock Long-range order in a two-dimensional dynamical {XY} model: How birds
+  fly together.
+\newblock \emph{Physical Review Letters}, 75\penalty0 (23):\penalty0
+  4326--4329, 1995.
+\newblock \doi{10.1103/PhysRevLett.75.4326}.
+
+\bibitem[Toubia et~al.(2025)Toubia, Gui, Peng, Merlau, Li, and
+  Chen]{toubia2025twin2k500datasetbuildingdigital}
+Olivier Toubia, George~Z. Gui, Tianyi Peng, Daniel~J. Merlau, Ang Li, and
+  Haozhe Chen.
+\newblock Twin-2k-500: A dataset for building digital twins of over 2,000
+  people based on their answers to over 500 questions, 2025.
+\newblock URL \url{https://arxiv.org/abs/2505.17479}.
+
+\bibitem[Vicsek et~al.(1995)Vicsek, Czir{\'o}k, Ben-Jacob, Cohen, and
+  Shochet]{vicsek1995}
+Tam{\'a}s Vicsek, Andr{\'a}s Czir{\'o}k, Eshel Ben-Jacob, Inon Cohen, and Ofer
+  Shochet.
+\newblock Novel type of phase transition in a system of self-driven particles.
+\newblock \emph{Physical Review Letters}, 75\penalty0 (6):\penalty0 1226--1229,
+  1995.
+\newblock \doi{10.1103/PhysRevLett.75.1226}.
+
+\bibitem[Wang et~al.(2024{\natexlab{a}})Wang, Wang, Athiwaratkun, Zhang, and
+  Zou]{wang2024mixtureofagentsenhanceslargelanguage}
+Junlin Wang, Jue Wang, Ben Athiwaratkun, Ce~Zhang, and James Zou.
+\newblock Mixture-of-agents enhances large language model capabilities,
+  2024{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2406.04692}.
+
+\bibitem[Wang et~al.(2024{\natexlab{b}})Wang, Wang, Su, Tong, and
+  Song]{wang2024bounds}
+Qineng Wang, Zihao Wang, Ying Su, Hanghang Tong, and Yangqiu Song.
+\newblock Rethinking the bounds of {LLM} reasoning: Are multi-agent discussions
+  the key?
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (ACL)}, 2024{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2023)Wang, Wei, Schuurmans, Le, Chi, Narang, Chowdhery,
+  and Zhou]{wang2023selfconsistencyimproveschainthought}
+Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed~Chi, Sharan Narang,
+  Aakanksha Chowdhery, and Denny Zhou.
+\newblock Self-consistency improves chain of thought reasoning in language
+  models, 2023.
+\newblock URL \url{https://arxiv.org/abs/2203.11171}.
+
+\bibitem[Weigt et~al.(2009)Weigt, White, Szurmant, Hoch, and Hwa]{weigt2009}
+Martin Weigt, Robert~A. White, Hendrik Szurmant, James~A. Hoch, and Terence
+  Hwa.
+\newblock Identification of direct residue contacts in protein-protein
+  interaction by message passing.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 106\penalty0
+  (1):\penalty0 67--72, 2009.
+\newblock \doi{10.1073/pnas.0805923106}.
+
+\bibitem[Wu(1982)]{wu1982potts}
+Fa-Yueh Wu.
+\newblock The {P}otts model.
+\newblock \emph{Reviews of Modern Physics}, 54\penalty0 (1):\penalty0 235--268,
+  1982.
+\newblock \doi{10.1103/RevModPhys.54.235}.
+
+\bibitem[Yang et~al.(2025)Yang, Chai, Shao, Song, Qi, Rui, and
+  Zhang]{yang2025agentnetdecentralizedevolutionarycoordination}
+Yingxuan Yang, Huacan Chai, Shuai Shao, Yuanyi Song, Siyuan Qi, Renting Rui,
+  and Weinan Zhang.
+\newblock Agentnet: Decentralized evolutionary coordination for llm-based
+  multi-agent systems, 2025.
+\newblock URL \url{https://arxiv.org/abs/2504.00587}.
+
+\bibitem[Yang et~al.(2024)Yang, Zhang, Zheng, Jiang, Gan, Wang, Ling, Chen, Ma,
+  Dong, et~al.]{yang2024oasis}
+Ziyi Yang, Zaibin Zhang, Zirui Zheng, Yuxian Jiang, Ziyue Gan, Zhiyu Wang,
+  Zijian Ling, Jinsong Chen, Martz Ma, Bowen Dong, et~al.
+\newblock {OASIS}: Open agent social interaction simulations with one million
+  agents, 2024.
+
+\bibitem[Ye et~al.(2026)Ye, Lin, Tang, Luo, Thapa, Yang, Su, Yang, Liu, Li, Li,
+  Sun, Gao, Ding, He, Zhang, Sun, Wang, Zhong, Shen, Li, Lu, Cui, He, Ma, Li,
+  Baoyin, Choi, Ermon, Chu, Li, Xu, and
+  Zou]{ye2026structuredscalingaidiscovery}
+Haotian Ye, Haowei Lin, Jingyi Tang, Yizhen Luo, Rahul Thapa, Caiyin Yang,
+  Chang Su, Rui Yang, Ruihua Liu, Rundao Li, Zeyu Li, Pengwei Sun, Chong Gao,
+  Dachao Ding, Guangrong He, Miaolei Zhang, Lina Sun, Wenyang Wang, Yuchen
+  Zhong, Zhuohao Shen, Puheng Li, Pan Lu, Bianxiao Cui, Di~He, Jianzhu Ma,
+  Junfeng Li, Hexi Baoyin, Yejin Choi, Stefano Ermon, Xiaowen Chu, Tongyang Li,
+  Yuzhi Xu, and James Zou.
+\newblock Structured scaling of ai discovery across diverse scientific domains,
+  2026.
+\newblock URL \url{https://arxiv.org/abs/2604.19341}.
+
+\bibitem[Zhang et~al.(2025)Zhang, Xiang, Yu, Teng, Chen, Chen, Zhuge, Cheng,
+  Hong, Wang, Zheng, Liu, Luo, and Wu]{zhang2025aflowautomatingagenticworkflow}
+Jiayi Zhang, Jinyu Xiang, Zhaoyang Yu, Fengwei Teng, Xionghui Chen, Jiaqi Chen,
+  Mingchen Zhuge, Xin Cheng, Sirui Hong, Jinlin Wang, Bingnan Zheng, Bang Liu,
+  Yuyu Luo, and Chenglin Wu.
+\newblock Aflow: Automating agentic workflow generation, 2025.
+\newblock URL \url{https://arxiv.org/abs/2410.10762}.
+
+\bibitem[Zhuge et~al.(2024)Zhuge, Wang, Kirsch, Faccio, Khizbullin, and
+  Schmidhuber]{zhuge2024}
+Mingchen Zhuge, Wenyi Wang, Louis Kirsch, Francesco Faccio, Dmitrii Khizbullin,
+  and J{\"u}rgen Schmidhuber.
+\newblock Language agents as optimizable graphs.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2024.
+
+\end{thebibliography}

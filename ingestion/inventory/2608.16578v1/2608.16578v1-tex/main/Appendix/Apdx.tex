@@ -1,0 +1,64 @@
+
+{\centering \LARGE\bfseries Appendix\par}
+\vspace{3em}
+{\setlength{\parskip}{0pt}%
+ \hypersetup{linkcolor=black}%
+ \titlecontents{section}[0em]{\addvspace{5pt}\bfseries}{\thecontentslabel\quad}{}{\enspace\titlerule*[0.6pc]{.}\contentspage}
+ \titlecontents{subsection}[2.4em]{\addvspace{1pt}}{\thecontentslabel\quad}{}{\enspace\titlerule*[0.6pc]{.}\contentspage}%
+ {\bfseries\large Table of Contents\par}
+ \vspace{4pt}\hrule height 0.4pt\vspace{8pt}
+ \printcontents[apx]{}{1}{\setcounter{tocdepth}{2}}
+ \vspace{8pt}\hrule height 0.4pt}
+
+\renewcommand\thefigure{S\arabic{figure}}
+\renewcommand\thetable{S\arabic{table}}
+\renewcommand{\theHfigure}{S\arabic{figure}}
+\renewcommand{\theHtable}{S\arabic{table}}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\setcounter{equation}{0}
+\renewcommand\theequation{S\arabic{equation}}
+
+\newpage
+\section{Terms and Notation}\label{apdx:notation}
+\input{main/Appendix/1_Notation/1_Notation}
+
+\newpage
+
+\section{Setup Details}\label{apdx:setup_details}
+
+\vspace{-8pt}
+\input{main/Appendix/2_Setup/1_TasksNetworksModels}
+
+\input{main/Appendix/2_Setup/2_Prompts}
+
+\newpage
+
+\section{Additional Observations}\label{apdx:observations}
+\input{main/Appendix/3_Observations/1_Inclinations}
+\input{main/Appendix/3_Observations/2_LabelBias}
+\input{main/Appendix/3_Observations/3_PhaseThresholds}
+\input{main/Appendix/3_Observations/4_RareMacrostates}
+\input{main/Appendix/3_Observations/5_CommunicationNetworks}
+
+
+\section{Method Details}\label{apdx:method}
+\input{main/Appendix/4_Method/1_DiscreteUpdates}
+\input{main/Appendix/4_Method/2_ContinuousTime}
+\input{main/Appendix/4_Method/3_Fitting}
+\input{main/Appendix/4_Method/4_Baselines}
+\input{main/Appendix/4_Method/5_Metric}
+\input{main/Appendix/4_Method/6_Rollouts}
+
+\newpage
+ 
+\section{Additional Results}\label{apdx:results} 
+\input{main/Appendix/5_Results/1_continouous_model_utility}
+\input{main/Appendix/5_Results/2_asynchronous_update_exp}
+\input{main/Appendix/5_Results/3_PerSocietyPhaseTransitions}
+\input{main/Appendix/5_Results/4_TemperatureSweep}
+\input{main/Appendix/5_Results/5_ReplicaPredictability}
+\input{main/Appendix/5_Results/6_f1}
+
+\stopcontents[apx]
+\newpage

@@ -1,0 +1,133 @@
+\begin{figure*}[h!]
+\centering
+\scriptsize
+\definecolor{myblue}{HTML}{1A4FE0}    %
+\definecolor{mypurple}{HTML}{6A3FD6}  %
+\tcbset{
+    promptbox/.style={
+        colback=gray!5, boxrule=0.5pt, arc=1mm,
+        left=1mm, right=1mm, top=0.5mm, bottom=0.5mm,
+        fonttitle=\scriptsize\bfseries, valign=top,
+        width=\linewidth, height=4.5cm
+    },
+    objbox/.style={
+        promptbox, colframe=myblue, coltitle=myblue,
+        colbacktitle=myblue!14
+    },
+    subjbox/.style={
+        promptbox, colframe=mypurple, coltitle=mypurple,
+        colbacktitle=mypurple!14
+    },
+    groupbox/.style={
+        boxrule=0.5pt, arc=1mm,
+        left=1mm, right=1mm, top=0.5mm, bottom=0.5mm,
+        halign=center, valign=center,
+        fontupper=\normalsize\bfseries,
+        width=\linewidth
+    }
+}
+\newcommand{\secskip}{\vspace{1.2pt}}
+
+\begin{minipage}[t]{0.245\textwidth}%
+\begin{tcolorbox}[objbox, title={Objective: Opinion Prompt}]%
+\tiny
+\textbf{Expertise}\par
+You are a mathematics expert on a panel. Calibrate to this solved example: [\textit{Algebra L5 problem + ground-truth solution}].
+\secskip
+
+\textbf{Messages}\par
+[messages from concordant connections]\par
+[messages from discordant connections]
+\secskip
+
+\textbf{Problem}\par
+[Zorn the Conqueror remainder problem] \quad A) 201 \quad B) 202
+\secskip
+
+\textbf{Instruction}\par
+Give your gut answer; no reasoning or steps.
+\secskip
+
+\textbf{Format}\par
+A single character: \texttt{A} or \texttt{B}.
+\end{tcolorbox}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.245\textwidth}%
+\begin{tcolorbox}[objbox, title={Objective: Message Prompt}]%
+\tiny
+\textbf{Expertise}\par
+You are a mathematics expert on a panel. Calibrate to this solved example: [\textit{Algebra L5 problem + ground-truth solution}].
+\secskip
+
+\textbf{Messages}\par
+[messages from concordant connections]\par
+[messages from discordant connections]
+\secskip
+
+\textbf{Problem}\par
+[Zorn the Conqueror remainder problem] \quad A) 201 \quad B) 202
+\secskip
+
+\textbf{Instruction}\par
+Your answer is \textbf{A}. Write a brief message favoring A with your strongest reason.
+\secskip
+
+\textbf{Format}\par
+A two-sentence message only.
+\end{tcolorbox}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.245\textwidth}%
+\begin{tcolorbox}[subjbox, title={Subjective: Opinion Prompt}]%
+\tiny
+\textbf{Persona}\par
+You express the views of: [\textit{Hispanic male, 30s--40s, US West, very liberal, empathetic, environmentally minded, $\dots$}].
+\secskip
+
+\textbf{Messages}\par
+[messages from concordant connections]\par
+[messages from discordant connections]
+\secskip
+
+\textbf{Statement}\par
+``Stricter gun control laws would reduce violent crime rates.''
+\secskip
+
+\textbf{Instruction}\par
+Is your persona more likely to \textbf{AGREE} or \textbf{DISAGREE}?
+\secskip
+
+\textbf{Format}\par
+One word: \texttt{AGREE} or \texttt{DISAGREE}.
+\end{tcolorbox}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.245\textwidth}%
+\begin{tcolorbox}[subjbox, title={Subjective: Message Prompt}]%
+\tiny
+\textbf{Persona}\par
+You express the views of: [\textit{Hispanic male, 30s--40s, US West, very liberal, empathetic, environmentally minded, $\dots$}].
+\secskip
+
+\textbf{Messages}\par
+[messages from concordant connections]\par
+[messages from discordant connections]
+\secskip
+
+\textbf{Statement}\par
+``Stricter gun control laws would reduce violent crime rates.''
+\secskip
+
+\textbf{Instruction}\par
+Your persona \textbf{AGREES}. Write a brief message conveying this view and its main reason.
+\secskip
+
+
+\textbf{Format}\par
+A two-sentence message only.
+\end{tcolorbox}%
+\end{minipage}%
+\caption{Prompt templates across the two task types (objective and subjective) and two formats (opinion and message). Full prompts are presented in the Appendix \ref{apdx:prompts}.}
+\label{fig:prompt_overview}
+\end{figure*}

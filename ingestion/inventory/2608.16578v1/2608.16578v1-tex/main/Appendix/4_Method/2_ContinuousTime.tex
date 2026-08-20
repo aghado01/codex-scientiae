@@ -1,0 +1,108 @@
+\subsection{Continuous Extension}\label{apdx:continuous-extension}
+
+The dynamics of Appendix~\ref{apdx:discrete-updates} assume that all agents update their
+opinions synchronously at discrete time steps. We now relax this assumption by introducing a
+continuous-time model in which agents revise their opinions independently at random times, as in \citet{glauber1963}.
+
+\subsubsection{Flip Rate}
+
+\textit{Update Rate.} Agent $i$ reconsiders its opinion during a small time window $\mathrm dt$
+with probability $\mathrm dt/\tau$, independently of everything that has happened before. We call $1/\tau$ the agent's update rate. Every agent has its own update mechanism, running independently at the rate $1/\tau$.
+
+\textit{Probability of a Flip.} For simplicity, in this section, we move $\beta$ inside $f_i$ and define $f_i \;=\; \beta  \sum_{j\neq i} J_{ij}\,s_j \;+\; g_i$. Note that the probability that $s_i$ is $+1$ is $P(s_i = +1) = \sigma(2f_i)$ and the
+probability that $s_i$ is $-1$ is $P(s_i = -1) = 1 - \sigma(2f_i) = \sigma(-2f_i)$. Then, given
+the current state is $+1$, the probability of a flip is $\sigma(-2f_i)$, and given the current
+state is $-1$, the probability of a flip is $\sigma(2f_i)$. We can write the probability of a
+flip more compactly as
+\(
+P(\text{flip}) = \sigma(-s_i\,2f_i)
+\).
+
+\textit{Flip rate $=$ Update Rate $\times$ Probability of a Flip.} Now, we combine the update
+rate with the probability of a flip to obtain the flip rate. Using
+$\sigma(-2x) = \tfrac{1}{2}\big(1 - \tanh x\big)$ and $\tanh(s_i f_i) = s_i \tanh f_i$, we get
+\(
+P(\text{flip}) = \sigma(-s_i 2f_i) = \tfrac{1}{2}\big(1 - s_i \tanh f_i\big).
+\) The flip rate $w_i$ is the update rate times the flip probability,
+\[
+w_i(s) = \frac{1}{\tau}\,\sigma(-s_i 2f_i)
+= \frac{1}{2\tau}\big(1 - s_i \tanh f_i\big)
+= \frac{1}{2\tau}\big(1 - s_i \langle s_i\rangle_c\big).
+\]
+
+\subsubsection{Master Equation}
+
+Now, we introduce the master equation, which describes the probability flux between states and
+is derived from the conservation of probability mass. At any given time, the system must occupy
+one of the possible states in its state space. Consequently, the total probability over all
+states must remain equal to one. This implies that probability mass cannot be created or
+destroyed. It can only flow from one state to another. Therefore, for each state, the rate of change of its probability is determined by the balance between the probability flux entering the state and the probability flux leaving it. The master equation formalizes this balance by equating the net change in probability to the total inflow minus the total outflow of probability mass.
+
+\textit{Flip operator $\mathcal{F}$.} Define $\mathcal{F}_i s$ as state $s$ with agent $i$ flipped,
+\(
+\mathcal{F}_i s = [\,s_1,\ \ldots,\ -s_i,\ \ldots,\ s_n\,].
+\)
+\textit{Master Equation.} The probability of being at state $s$ changes based on the difference
+between the inflow into and outflow out of state $s$,
+\[
+\frac{d}{dt}P(s,t) = \sum_{i=1}^{n}
+\underbrace{w_i(\mathcal{F}_i s)\,P(\mathcal{F}_i s, t)}_{\text{inflow into } s}
+- \underbrace{w_i(s)\,P(s,t)}_{\text{outflow out of } s}.
+\]
+This is a probability-flow equation expressing conservation of probability mass in the system,
+where $w_i(\mathcal{F}_i s)$ is the probability that $i$ flips at $\mathcal{F}_i s$, and $P(\mathcal{F}_i s, t)$ is the
+probability mass allocated to $\mathcal{F}_i s$. The inflow into $s$ is $w_i(\mathcal{F}_i s)\times P(\mathcal{F}_i s, t)$
+and the outflow out of $s$ is $w_i(s)\times P(s,t)$, where
+\[
+w_i(s) = \frac{1}{2\tau}\big(1 - s_i \tanh f_i\big),
+\qquad
+w_i(\mathcal{F}_i s) = \frac{1}{2\tau}\big(1 - (-s_i)\tanh f_i\big)
+= \frac{1}{2\tau}\big(1 + s_i \tanh f_i\big).
+\]
+
+\subsubsection{Mean-Field ODE}
+
+The master equation tracks the full distribution $P(s,t)$ over all $2^n$ configurations, which
+is intractable to follow directly. Instead, we track only the quantity we care about: each
+agent's opinion, 
+$m_i(t) = \langle s_i(t)\rangle = \sum_s s_i\,P(s,t)$, which is between
+$-1$ (the agent is surely $-1$) and $+1$ (surely $+1$).
+
+We can derive how $m_i$ evolves directly from the master equation. The only events that change $s_i$ are flips of agent $i$ itself. Each flip sends $s_i \mapsto -s_i$, a change of $-2s_i$, and these flips occur at rate $w_i(s)$. Averaging this
+instantaneous change over the distribution gives
+\[
+\frac{d m_i}{dt}
+= \big\langle -2\,s_i\,w_i(s)\big\rangle
+= -\frac{1}{\tau}\big\langle s_i\big(1 - s_i \tanh f_i\big)\big\rangle
+= -\frac{1}{\tau}\Big(\langle s_i\rangle - \big\langle \tanh f_i\big\rangle\Big),
+\]
+where the last step uses $s_i^2 = 1$. This relation is exact; however, the average
+$\langle \tanh f_i\rangle$ is intractable to compute.
+
+\textit{Mean-field approximation.} To make this quantity tractable, we make the mean-field approximation. We assume each agent feels the \emph{average} field of its neighbors rather than their fluctuating instantaneous opinions, and that neighbors are uncorrelated. Consequently, we
+can move the average inside the nonlinearity,
+\[
+\big\langle \tanh f_i\big\rangle \;\approx\; \tanh\big(\langle f_i\rangle\big),
+\qquad
+\langle f_i\rangle = \beta\sum_{j=1}^n J_{ij}\,\langle s_j\rangle + g_i = \beta\,(Jm)_i + g_i,
+\]
+replacing each neighbor opinion $s_j \in \{ -1, +1\}$ by the $m_j \in [-1, +1]$. This neglects the correlations between agents, but it reduces the $2^n$-dimensional master equation into a closed system of $N$ ordinary differential equations,
+\[
+\tau\,\frac{d m_i}{dt} \;=\; -\,m_i \;+\; \tanh\!\Big(\beta\,(Jm)_i + g_i\Big).
+\]
+Each agent's opinion relaxes, on the timescale $\tau$, toward the response
+$\tanh(\beta(Jm)_i + g_i)$ it would settle into given the current average opinions of its
+neighbors. The fixed points $m^\star$ are where $\frac{d m}{dt} = 0$ and $m_i^\star = \tanh(\beta(Jm^\star)_i + g_i)$.
+
+\subsubsection{Discretization and the Clock Parameter}
+
+\textit{Discretizing the ODE.} Discretizing the ODE over one observed round of duration
+$\mathrm dt$ recovers a form that is similar to the synchronous map of Appendix~\ref{apdx:discrete-updates}. Each agent
+updates at least once in the round with probability $\varepsilon = 1 - e^{-\mathrm dt/\tau}$,
+\[
+m_i(t{+}1) = (1-\varepsilon)\,m_i(t) + \varepsilon\,\tanh\!\Big(\beta\,(Jm(t))_i + g_i\Big),
+\]
+so $\varepsilon \in (0,1)$ is simply the per-round update rate, with
+$\tau/\mathrm dt = -1/\ln(1-\varepsilon)$. Taking $\varepsilon \to 1$ returns the discrete rule,
+in which every agent revises its opinion in every round.  The three-coupling split of
+Appendix~\ref{apdx:discrete-updates} carries over in the same way, by replacing the argument of the $\tanh$ with the corresponding linear combination of peer sums.

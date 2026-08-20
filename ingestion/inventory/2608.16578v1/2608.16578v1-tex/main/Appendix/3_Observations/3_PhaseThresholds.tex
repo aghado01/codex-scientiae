@@ -1,0 +1,35 @@
+
+\clearpage
+\subsection{Thresholds for Characteristic Regimes}\label{apdx:mode_thresholds}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{llcc}
+\toprule
+ & & \multicolumn{2}{c}{Threshold} \\
+\cmidrule(lr){3-4}
+Regime & Model & Conviction $c^\star$ & Net opinion $n^\star$ \\
+\midrule
+\multirow{4}{*}{Objective}
+              & GPT-4o-mini   & 0.910 & 0.475 \\
+              & Gemma-3n-E4B  & 0.940 & 0.994 \\
+              & Qwen3.5-9B    & 0.790 & 0.913 \\
+              & Llama-3.1-8B    & 0.740 & 0.913 \\
+\midrule
+\multirow{4}{*}{Subjective}
+              & GPT-4o-mini   & 0.960 & 0.375 \\
+              & Gemma-3n-E4B  & 0.910 & 0.725 \\
+              & Qwen3.5-9B    & 0.820 & 0.600 \\
+              & Llama-3.1-8B    & 0.950 & 0.963 \\
+\bottomrule
+\end{tabular}
+\caption{\textit{Selected thresholds for Figure \ref{fig:3_Observations_modes}}. For each model--regime row, the
+\emph{conviction threshold} $c^\star$ is defined as the $1/3$ quantile of conviction,
+pooled across all episodes, graphs, and rounds; communities with $c(t)<c^\star$ are
+classified as \emph{indifferent}. The \emph{net-opinion threshold} $n^\star$ is then
+defined as the median of $|n(t)|$ among the remaining ``committed'' communities and
+applied symmetrically as $\pm n^\star$ to distinguish \emph{polarization}
+($|n(t)|\le n^\star$) from \emph{consensus} ($|n(t)|>n^\star$). Both thresholds are
+reported on their native ranges, $c\in[0,1]$ and $|n|\in[0,1]$.}
+\label{tab:mode_thresholds}
+\end{table}

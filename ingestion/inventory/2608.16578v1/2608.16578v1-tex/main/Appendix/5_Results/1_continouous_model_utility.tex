@@ -1,0 +1,55 @@
+\subsection{Raw Accuracy and the Utility of the Continuous Model}
+\label{apdx:res_utility_of_continuous}
+
+Even when predicting agent communities that update synchronously in lockstep, the continuous rule outperforms the discrete rule when evaluated by accuracy. This difference disappears under flip-balanced accuracy because, for one-step predictions, the continuous rule adds the discrete rule with a fitted flip threshold. Because flips are rare in the training data, the fitted $\varepsilon$ trades sensitivity to flips for precision on the far more common non-flip transitions. Raw accuracy rewards this, whereas balanced accuracy reweights flips and non-flips to $50/50$ and neutralizes it, which is why we report raw accuracy in these tables.
+\begin{table}[h!]
+\centering
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l cc cc cc cc}
+\toprule
+ & \multicolumn{2}{c}{GPT-4o-mini} & \multicolumn{2}{c}{Gemma-3n-E4B} & \multicolumn{2}{c}{Qwen3.5-9B} & \multicolumn{2}{c}{Llama-3.1-8B} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Method & In-d. & Out-d. & In-d. & Out-d. & In-d. & Out-d. & In-d. & Out-d. \\
+\midrule
+Majority Class & 64.0 (64.0) & 61.9 (61.9) & 54.0 (54.0) & 55.9 (55.9) & 50.5 (50.5) & 49.2 (49.2) & 87.2 (87.2) & 87.4 (87.4) \\
+Persistence & 76.9 (73.2) & 73.7 (71.6) & 81.3 (70.9) & 81.1 (70.6) & 75.3 (75.2) & 74.3 (\textbf{74.8}) & 85.1 (75.3) & 85.6 (74.4) \\
+Interaction-Free & 54.0 (54.0) & 51.0 (51.0) & 64.3 (64.3) & 62.5 (62.5) & 48.4 (48.4) & 46.3 (46.3) & 49.6 (49.6) & 48.9 (48.9) \\
+Mean-Field & 67.6 (59.1) & 66.6 (60.4) & 78.3 (73.5) & 77.5 (\textbf{74.8}) & 73.6 (71.7) & 73.9 (73.1) & 86.3 (74.9) & 86.2 (73.9) \\
+\midrule
+Discrete Update & 76.5 (68.7) & 74.4 (67.3) & 64.7 (64.1) & 62.5 (62.0) & 63.3 (56.6) & 58.0 (53.6) & 55.2 (53.7) & 53.8 (52.9) \\
+\quad + Three Couplings & 85.9 (76.9) & 85.4 (76.7) & 80.9 (73.9) & 79.7 (70.4) & 83.3 (75.1) & 80.3 (71.9) & 90.6 (80.8) & 90.0 (80.8) \\
+\midrule
+Continuous Update & 82.7 (73.0) & 80.4 (70.3) & 81.2 (67.4) & 80.3 (65.5) & 74.5 (58.3) & 70.7 (55.0) & 75.0 (61.2) & 73.8 (60.2) \\
+\quad + Three Couplings & \textbf{89.3} (\textbf{80.0}) & \textbf{87.6} (\textbf{80.3}) & \textbf{84.5} (\textbf{76.6}) & \textbf{83.6} (72.4) & \textbf{85.4} (\textbf{75.6}) & \textbf{82.4} (73.4) & \textbf{94.2} (\textbf{88.2}) & \textbf{93.7} (\textbf{88.0}) \\
+\bottomrule
+\end{tabular}%
+}\caption{\textit{Predictions on Subjective Questions.} Same setup as Table \ref{tab:prediction_models} but uses the raw accuracy as a metric instead of balanced accuracy.\label{tab:prediction_models_sub}}
+
+\end{table}
+
+\begin{table}[h!]
+\centering
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l cc cc cc cc}
+\toprule
+ & \multicolumn{2}{c}{GPT-4o-mini} & \multicolumn{2}{c}{Gemma-3n-E4B} & \multicolumn{2}{c}{Qwen3.5-9B} & \multicolumn{2}{c}{Llama-3.1-8B} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Method & In-d. & Out-d. & In-d. & Out-d. & In-d. & Out-d. & In-d. & Out-d. \\
+\midrule
+Majority Class & 47.2 (47.2) & 46.5 (46.5) & 58.6 (58.6) & 58.5 (58.5) & 49.1 (49.1) & 49.4 (49.4) & 79.4 (79.4) & 77.9 (77.9) \\
+Persistence & 63.2 (58.6) & 62.4 (57.7) & 86.6 (78.6) & 87.1 (79.3) & 81.8 (63.9) & 82.4 (63.5) & 75.7 (66.2) & 75.8 (65.6) \\
+Interaction-Free & 48.9 (48.9) & 47.9 (47.9) & 61.6 (61.6) & 62.0 (62.0) & 43.5 (43.5) & 44.7 (44.7) & 79.4 (79.4) & 77.9 (77.9) \\
+Mean-Field & 69.5 (56.4) & 69.3 (56.6) & 90.2 (\textbf{82.9}) & 90.4 (\textbf{84.2}) & 87.3 (\textbf{69.6}) & 87.6 (\textbf{68.6}) & 83.2 (75.0) & 82.2 (72.4) \\
+\midrule
+Discrete Time Update & 68.8 (60.7) & 66.2 (59.3) & 61.1 (61.2) & 61.6 (61.9) & 47.9 (46.3) & 47.6 (47.1) & 79.3 (79.0) & 77.6 (77.3) \\
+\quad + Three Couplings & 86.7 (67.4) & 85.5 (64.9) & 91.6 (81.8) & 91.5 (81.5) & 91.3 (66.7) & 90.9 (65.4) & 89.3 (78.8) & \textbf{88.4} (77.5) \\
+\midrule
+Continuous Time Update & 70.9 (57.9) & 68.3 (56.2) & 86.7 (69.2) & 87.1 (69.8) & 73.8 (47.2) & 73.3 (48.2) & 79.7 (79.4) & 78.1 (77.7) \\
+\quad + Three Couplings & \textbf{87.2} (\textbf{70.0}) & \textbf{85.6} (\textbf{67.8}) & \textbf{92.4} (82.0) & \textbf{92.6} (81.9) & \textbf{91.5} (67.1) & \textbf{91.1} (65.4) & \textbf{89.4} (\textbf{79.8}) & \textbf{88.4} (\textbf{78.3}) \\
+\bottomrule
+\end{tabular}%
+}
+\caption{\textit{Predictions on Objective Questions.} Same setup as Table \ref{tab:prediction_models} but uses the raw accuracy as a metric instead of balanced accuracy.\label{tab:prediction_models_obj}}
+\end{table}

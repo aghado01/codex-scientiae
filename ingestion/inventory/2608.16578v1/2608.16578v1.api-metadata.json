@@ -1,0 +1,117 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.16578v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.16578v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Physics of Agents: Statistical Mechanics Predicts Collective Behavior of AI Agents",
+      "authors": [
+        "Batu El",
+        "Jinhee Paeng",
+        "Fatih Dinc",
+        "Shiye Su",
+        "Mete Erdogan",
+        "Aneesh Pappu",
+        "Haotian Ye",
+        "Wanjia Zhao",
+        "Surya Ganguli",
+        "James Zou"
+      ],
+      "abstract": "AI agents increasingly operate as part of interacting systems rather than in isolation. As agents exchange information and jointly make decisions, their interactions can improve collective reasoning but may also produce herding, polarization, or amplify shared biases. Understanding and predicting these collective dynamics is therefore important for designing effective and aligned multi-agent systems. Here, we study over 10,000 communities of language-model agents that repeatedly exchange messages and revise their opinions across objective mathematics questions and subjective political statements. Despite substantial diversity in possible behavior, the individual and group dynamics can be represented by three characteristic regimes: indifference, polarization, and consensus. AI agents start indifferent and build conviction as they interact. On objective questions, communication improves collective accuracy, while on subjective questions it often drifts group opinions toward the right in the political spectrum. We explain these observations with a statistical-mechanics formalism in which agents stochastically favor lower social pressure. Given only initial opinions, our model predicts individual trajectories, outperforms all standard baselines, generalizes to unseen community graphs, and reproduces the observed group archetype distributions. Our fitted model parameters reveal the mechanics underlying our key observations: i) communities operate below the critical social temperature, which explains conviction buildup; ii) attractive ties outweigh repulsive ones, which favors consensus; and iii) agents holding the correct answer exert the strongest pull, which drives truth-seeking. Overall, our results demonstrate that collective behavior of AI agents, like that of other complex systems, follows compact and predictive dynamical laws.",
+      "doi": null,
+      "arxiv_id": "2608.16578v1",
+      "published": "2026-08-17T13:41:24Z",
+      "updated": "2026-08-17T13:41:24Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.16578v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.16578v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.MA",
+        "cs.SI"
+      ],
+      "external_ids": {
+        "arxiv": "2608.16578v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.16578v1",
+          "url": "https://arxiv.org/abs/2608.16578v1",
+          "doi": null,
+          "arxiv_id": "2608.16578v1",
+          "published": "2026-08-17T13:41:24Z",
+          "updated": "2026-08-17T13:41:24Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.16578v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-20T06:20:17.440137Z",
+      "sha256": "f5031cc6f0f3631de2c189e04e80fdb7d98a43709acaa052a53eaf95f3972dc6",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvNWh3T0Iwci9ua1B5Yk9tTTFlTTVYY2ZwVkp3PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4xNjU3OHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTIwVDA1OjI2OjMwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjE2NTc4djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xNjU3OHYxPC9pZD4KICAgIDx0aXRsZT5QaHlzaWNzIG9mIEFnZW50czogU3RhdGlzdGljYWwgTWVjaGFuaWNzIFByZWRpY3RzIENvbGxlY3RpdmUgQmVoYXZpb3Igb2YgQUkgQWdlbnRzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDgtMTdUMTM6NDE6MjRaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDguMTY1Nzh2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDguMTY1Nzh2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkFJIGFnZW50cyBpbmNyZWFzaW5nbHkgb3BlcmF0ZSBhcyBwYXJ0IG9mIGludGVyYWN0aW5nIHN5c3RlbXMgcmF0aGVyIHRoYW4gaW4gaXNvbGF0aW9uLiBBcyBhZ2VudHMgZXhjaGFuZ2UgaW5mb3JtYXRpb24gYW5kIGpvaW50bHkgbWFrZSBkZWNpc2lvbnMsIHRoZWlyIGludGVyYWN0aW9ucyBjYW4gaW1wcm92ZSBjb2xsZWN0aXZlIHJlYXNvbmluZyBidXQgbWF5IGFsc28gcHJvZHVjZSBoZXJkaW5nLCBwb2xhcml6YXRpb24sIG9yIGFtcGxpZnkgc2hhcmVkIGJpYXNlcy4gVW5kZXJzdGFuZGluZyBhbmQgcHJlZGljdGluZyB0aGVzZSBjb2xsZWN0aXZlIGR5bmFtaWNzIGlzIHRoZXJlZm9yZSBpbXBvcnRhbnQgZm9yIGRlc2lnbmluZyBlZmZlY3RpdmUgYW5kIGFsaWduZWQgbXVsdGktYWdlbnQgc3lzdGVtcy4gSGVyZSwgd2Ugc3R1ZHkgb3ZlciAxMCwwMDAgY29tbXVuaXRpZXMgb2YgbGFuZ3VhZ2UtbW9kZWwgYWdlbnRzIHRoYXQgcmVwZWF0ZWRseSBleGNoYW5nZSBtZXNzYWdlcyBhbmQgcmV2aXNlIHRoZWlyIG9waW5pb25zIGFjcm9zcyBvYmplY3RpdmUgbWF0aGVtYXRpY3MgcXVlc3Rpb25zIGFuZCBzdWJqZWN0aXZlIHBvbGl0aWNhbCBzdGF0ZW1lbnRzLiBEZXNwaXRlIHN1YnN0YW50aWFsIGRpdmVyc2l0eSBpbiBwb3NzaWJsZSBiZWhhdmlvciwgdGhlIGluZGl2aWR1YWwgYW5kIGdyb3VwIGR5bmFtaWNzIGNhbiBiZSByZXByZXNlbnRlZCBieSB0aHJlZSBjaGFyYWN0ZXJpc3RpYyByZWdpbWVzOiBpbmRpZmZlcmVuY2UsIHBvbGFyaXphdGlvbiwgYW5kIGNvbnNlbnN1cy4gQUkgYWdlbnRzIHN0YXJ0IGluZGlmZmVyZW50IGFuZCBidWlsZCBjb252aWN0aW9uIGFzIHRoZXkgaW50ZXJhY3QuIE9uIG9iamVjdGl2ZSBxdWVzdGlvbnMsIGNvbW11bmljYXRpb24gaW1wcm92ZXMgY29sbGVjdGl2ZSBhY2N1cmFjeSwgd2hpbGUgb24gc3ViamVjdGl2ZSBxdWVzdGlvbnMgaXQgb2Z0ZW4gZHJpZnRzIGdyb3VwIG9waW5pb25zIHRvd2FyZCB0aGUgcmlnaHQgaW4gdGhlIHBvbGl0aWNhbCBzcGVjdHJ1bS4gV2UgZXhwbGFpbiB0aGVzZSBvYnNlcnZhdGlvbnMgd2l0aCBhIHN0YXRpc3RpY2FsLW1lY2hhbmljcyBmb3JtYWxpc20gaW4gd2hpY2ggYWdlbnRzIHN0b2NoYXN0aWNhbGx5IGZhdm9yIGxvd2VyIHNvY2lhbCBwcmVzc3VyZS4gR2l2ZW4gb25seSBpbml0aWFsIG9waW5pb25zLCBvdXIgbW9kZWwgcHJlZGljdHMgaW5kaXZpZHVhbCB0cmFqZWN0b3JpZXMsIG91dHBlcmZvcm1zIGFsbCBzdGFuZGFyZCBiYXNlbGluZXMsIGdlbmVyYWxpemVzIHRvIHVuc2VlbiBjb21tdW5pdHkgZ3JhcGhzLCBhbmQgcmVwcm9kdWNlcyB0aGUgb2JzZXJ2ZWQgZ3JvdXAgYXJjaGV0eXBlIGRpc3RyaWJ1dGlvbnMuIE91ciBmaXR0ZWQgbW9kZWwgcGFyYW1ldGVycyByZXZlYWwgdGhlIG1lY2hhbmljcyB1bmRlcmx5aW5nIG91ciBrZXkgb2JzZXJ2YXRpb25zOiBpKSBjb21tdW5pdGllcyBvcGVyYXRlIGJlbG93IHRoZSBjcml0aWNhbCBzb2NpYWwgdGVtcGVyYXR1cmUsIHdoaWNoIGV4cGxhaW5zIGNvbnZpY3Rpb24gYnVpbGR1cDsgaWkpIGF0dHJhY3RpdmUgdGllcyBvdXR3ZWlnaCByZXB1bHNpdmUgb25lcywgd2hpY2ggZmF2b3JzIGNvbnNlbnN1czsgYW5kIGlpaSkgYWdlbnRzIGhvbGRpbmcgdGhlIGNvcnJlY3QgYW5zd2VyIGV4ZXJ0IHRoZSBzdHJvbmdlc3QgcHVsbCwgd2hpY2ggZHJpdmVzIHRydXRoLXNlZWtpbmcuIE92ZXJhbGwsIG91ciByZXN1bHRzIGRlbW9uc3RyYXRlIHRoYXQgY29sbGVjdGl2ZSBiZWhhdmlvciBvZiBBSSBhZ2VudHMsIGxpa2UgdGhhdCBvZiBvdGhlciBjb21wbGV4IHN5c3RlbXMsIGZvbGxvd3MgY29tcGFjdCBhbmQgcHJlZGljdGl2ZSBkeW5hbWljYWwgbGF3cy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5NQSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLlNJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDgtMTdUMTM6NDE6MjRaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD41MSBwYWdlcywgMjAgZmlndXJlcywgOSB0YWJsZXM8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QmF0dSBFbDwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmluaGVlIFBhZW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5GYXRpaCBEaW5jPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TaGl5ZSBTdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWV0ZSBFcmRvZ2FuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbmVlc2ggUGFwcHU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkhhb3RpYW4gWWU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPldhbmppYSBaaGFvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TdXJ5YSBHYW5ndWxpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5KYW1lcyBab3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Physics of Agents: Statistical Mechanics Predicts Collective Behavior of AI Agents",
+    "authors": [
+      "Batu El",
+      "Jinhee Paeng",
+      "Fatih Dinc",
+      "Shiye Su",
+      "Mete Erdogan",
+      "Aneesh Pappu",
+      "Haotian Ye",
+      "Wanjia Zhao",
+      "Surya Ganguli",
+      "James Zou"
+    ],
+    "abstract": "AI agents increasingly operate as part of interacting systems rather than in isolation. As agents exchange information and jointly make decisions, their interactions can improve collective reasoning but may also produce herding, polarization, or amplify shared biases. Understanding and predicting these collective dynamics is therefore important for designing effective and aligned multi-agent systems. Here, we study over 10,000 communities of language-model agents that repeatedly exchange messages and revise their opinions across objective mathematics questions and subjective political statements. Despite substantial diversity in possible behavior, the individual and group dynamics can be represented by three characteristic regimes: indifference, polarization, and consensus. AI agents start indifferent and build conviction as they interact. On objective questions, communication improves collective accuracy, while on subjective questions it often drifts group opinions toward the right in the political spectrum. We explain these observations with a statistical-mechanics formalism in which agents stochastically favor lower social pressure. Given only initial opinions, our model predicts individual trajectories, outperforms all standard baselines, generalizes to unseen community graphs, and reproduces the observed group archetype distributions. Our fitted model parameters reveal the mechanics underlying our key observations: i) communities operate below the critical social temperature, which explains conviction buildup; ii) attractive ties outweigh repulsive ones, which favors consensus; and iii) agents holding the correct answer exert the strongest pull, which drives truth-seeking. Overall, our results demonstrate that collective behavior of AI agents, like that of other complex systems, follows compact and predictive dynamical laws.",
+    "identifiers": {
+      "arxiv": "2608.16578",
+      "arxiv_versioned": "2608.16578v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.16578v1"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.MA",
+      "cs.SI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-17T13:41:24Z",
+    "updated": "2026-08-17T13:41:24Z"
+  }
+}

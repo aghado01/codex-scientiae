@@ -1,0 +1,34 @@
+
+We model community as a system in which individuals adjust their opinions in response to social pressure. We define $s_i$ as the opinion state of agent $i$ and the interaction coefficient $J_{ij}$ as the influence of agent $j$ on agent $i$. Then, two key modeling assumptions give rise to a mathematically tractable model of multi-agent interactions and opinion forming. First, we assume that individuals would like to minimize the social pressure. Consider the term $a_i=\sum_j J_{ij}s_j$, which represents the perceived population opinion that an individual $i$ faces from their social environment. Mathematically, $a_i s_i > 0$ when, on average, agent $i$ sits on the same side as its friendly connections and on the opposite side of its unfriendly connections, and $a_i s_i < 0$ otherwise. Using this observation, we define the term $-\sum_i a_i s_i =-\sum_i \sum_j s_i J_{ij}s_j$ as the total social pressure in the community. When there is a misalignment, the individual experiences are pressured to conform or adjust. Second, for a given question, we assume that each individual has a tendency to hold an opinion of their own, say $\tilde s_i$. When $\tilde s_i$ and $s_i$ disagrees, this creates yet another pressure point. Thus, we define the term $-\lambda \sum_{i} \tilde s_i s_i$ as the personal pressure, where $\lambda\geq 0$ is a parameter quantifying the relative importance of the two contributions. Our hypothesis is that the population opinions, $s = (s_1, s_2, ... , s_N)$, favor lower-pressure configurations and stochastically evolve toward configurations that minimize this total pressure.
+
+Consequently, with $g_i=\lambda \tilde s_i$, we can define a loss, or equivalently, an energy function as
+$$
+E(s) = -\frac{1}{2}\sum_i \sum_j s_i J_{ij}s_j - \lambda \sum_{i} \tilde s_i s_i \;=\; -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N J_{ij}\,s_i s_j \;-\; \sum_{i=1}^N g_i\, s_i .
+$$
+The symmetric coupling coefficient $J_{ij} \in \{+1,0,-1\}$ quantifies the nature of social influence between agents $i$ and $j$, while the intrinsic field $g_i \in \mathbb R$ captures agent $i$'s predisposition on the issue. The first term rewards configurations that are consistent with the underlying social relationships (assumption 1), whereas the second term biases opinions toward agents' individual tendencies (assumption 2). In an ideal world, each individual would hold an opinion aligned with their intrinsic predisposition while also satisfying all interpersonal constraints. 
+
+Fixing all other agents' opinions, the local field the agent $i$ experiences can be expressed as
+\(f_i = \sum_{j\neq i} J_{ij}\,s_j + g_i
+\). Under the Boltzmann distribution, we can derive (see Appendix \ref{apdx:discrete-updates})  the probability of an agent having opinion $s_i = +1$ to be
+\[
+P(s_i=+1\mid s_{-i})
+= \sigma\!\left(h_i\right), \quad \text{where} \quad h_i = \beta \sum_{j} J_{ij}\,s_j(t) + g_i
+\]
+where $s_{-i}$ is the opinion state of all other agents. This shows that an agent's next opinion is a logistic function of (a) the peer pressure $\sum_j J_{ij}s_j(t)$ flowing in along the signed graph, scaled by the coupling $\beta$, and (b) an intrinsic field $g_i$ encoding the leaning of the persona of agent $i$ for this question in the absence of any peer influence.
+
+\textit{Three Couplings.}\label{sec:dissecting-couplings} We observe that, in a system of interacting language models, (a) the existence of a connection itself creates a pull and (b)  the pull and push strengths of discordant and concordant connections differ. To account for these cases, we introduce a three coupling model. 
+\[
+P\big(s_i = +1\big) = \sigma\!\left(\beta^{+} \sum_{j} J^{+}_{ij}\,s_j(t) + \beta^{-} \sum_{j} J^{-}_{ij}\,s_j(t) + \beta_{0} \sum_{j} |J_{ij}|\,s_j(t) + g_i\right).
+\]
+where $\beta_{0}$ measures the effect of having a connection, $\beta^{+}$ measures the effect of having a concordant connection, and $\beta^{-}$ measures the effect of having a discordant connection. The total weight an agent places on a friendly neighbor is then $\beta^{+} + \beta_{0}$ and on an unfriendly neighbor $\beta_{0} - \beta^{-}$. Note that this is equivalent to using only two couplings ( $\beta^{+}$ and  $\beta^{-}$), but we retain this version because it makes comparisons to the single coupling case explicit. Further, due to a two-stage fitting process described below, this choice allows a direct interpretation of the terms $\beta^{\pm}$ by decoupling the effect of being a neighbor from the valence of the connection.
+
+
+\paragraph{Fitting.} We parameterize $g_i$ as a function of embeddings, $ g_i = w^\top \phi_i$, where $\phi_i$ concatenates the agent's persona embedding, the question embedding, and their interaction. We fit the $\beta$s and $w$ by running gradient-descent to minimize the cross-entropy between each agent's predicted next opinion and its observed value on the one-step transitions. For the three-coupling model, fitting proceeds in two stages: we first estimate \(\beta_0\), then, holding \(\beta_0\) fixed, estimate \(\beta^+\) and \(\beta^-\) jointly. Appendix~\ref{apdx:fitting} provides the details of the objective, optimization, and the train--test splits. 
+
+\paragraph{Continuous-time extension.} In Appendix \ref{apdx:async_update}, we relax the assumption that every agent revises their opinion at discrete time steps and instead let each agent reconsider their opinion at independent random times. In  Appendix~\ref{apdx:continuous-extension}, we model this relaxation via a continuous-time extension of our model with a mean-field ODE derived from the master equation that captures probability flux between states. This mean-field ODE contains a parameter $\varepsilon \in (0,1)$ representing the rate of agent updates.  %
+We present this continuous-time variant alongside the discrete rules and discuss its advantages in Appendix~\ref{apdx:res_utility_of_continuous} and Appendix \ref{apdx:async_update}.
+
+\paragraph{Baselines.} We compare against Persistence, Interaction Free, and Mean-Field baselines. \textit{Persistence} predicts \(\hat{s}_i(t+1)=s_i(t)\) in one step predictions and $\hat{s}_i(t)=s_i(0)$ in rollouts. \textit{Interaction-Free} keeps personal pressure
+but removes all social-pressure terms, and \textit{Mean-Field} retains both personal and
+social pressure but ignores graph structure by encoding social pressure as pulling each agent
+toward the global average opinion. This tests whether explicit signed-network structure adds predictive value beyond a global consensus signal. Details of the baselines are explained in Appendix \ref{apdx:baselines}. 

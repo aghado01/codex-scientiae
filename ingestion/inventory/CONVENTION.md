@@ -16,7 +16,7 @@ the slug and identifies an immutable provider version.
 
 ```text
 {slug}/
-  {slug}.tar.gz       # optional acquired LaTeX source archive
+  {slug}.tar.gz or arXiv-{slug}.tar.gz  # acquired LaTeX source archive
   {slug}-tex/         # stable raw extraction of that archive
   {slug}.pdf          # optional acquired PDF form of the same document
   {slug}.arxiv.json   # optional provider/acquisition evidence
@@ -24,10 +24,10 @@ the slug and identifies an immutable provider version.
   article.json        # authoritative flat article and source-ready sentinel
 ```
 
-An acquired LaTeX archive named either `{slug}.tar.gz` or `arXiv-{slug}.tar.gz` is normalized to
-`{slug}.tar.gz` only after private extraction and validation succeed. The archive and extracted tree are
-source material, not run output. Generated artifacts after raw extraction belong under the applicable
-runstamped `artifacts/...` directory.
+An acquired LaTeX archive is `{slug}.tar.gz` or the arXiv provider leaf `arXiv-{slug}.tar.gz`. The
+extracted tree is always `{slug}-tex/`. The archive and extracted tree are source material, not run
+output. Generated artifacts after raw extraction belong under the applicable runstamped
+`artifacts/...` directory.
 
 ### Document-local LaTeX curation
 

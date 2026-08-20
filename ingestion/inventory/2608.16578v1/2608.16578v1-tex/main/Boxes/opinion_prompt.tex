@@ -1,0 +1,102 @@
+\begingroup
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+\newcommand{\secskip}{\vspace{2pt}}
+
+\begin{tcolorbox}[
+    breakable,
+    title={Subjective: Opinion Prompt},
+    colback=gray!5, colframe=gray!60, boxrule=0.5pt, arc=1.5mm,
+    left=1.5mm, right=1.5mm, top=0.5mm, bottom=0.5mm
+]
+\tiny
+
+\textbf{Persona}\par
+You are an agent responsible for expressing the views of the following person:\par
+Hispanic male in his 30s--40s living in the US West, single, agnostic, very liberal Democrat, living alone and working full-time with mid income and some college. Socially somewhat reserved but generally cooperative and warm; highly empathetic and environmentally minded, and wants to be seen as dependable, respected, and improving---though not necessarily loved by everyone. Emotionally reactive with elevated anxiety and stress sensitivity, preferring clarity and closure and often seeking the ``best'' option rather than settling, which can lead to worry or second-guessing. Not especially curious about abstract or novel ideas and tends to avoid heavy cognitive effort, yet can be logically reflective when prompted and is not prone to overconfidence. Financially tends toward impulsive spending and uses mental ``buckets'' for money; has only moderate comfort with numbers and financial concepts. In negotiations and sharing situations he aims to keep the majority while still maintaining a sense of fairness, is moderately trusting upfront, but less inclined to reciprocate generously once in the advantaged position.
+
+\secskip
+\textbf{Messages}\par
+\textit{Messages From Sources Your Persona Tends to Agree With}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\topsep}{1pt}\setlength{\parsep}{0pt}\setlength{\leftmargin}{1em}
+    \item Background checks save lives; tighter limits keep weapons from people who should not have them.
+    \item States with stronger gun laws see fewer shootings, so regulation clearly works.
+\end{itemize}
+\textit{Messages From Sources Your Persona Tends to Disagree With}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\topsep}{1pt}\setlength{\parsep}{0pt}\setlength{\leftmargin}{1em}
+    \item Criminals ignore laws, so new rules only burden law-abiding owners.
+    \item Violent crime is about poverty and enforcement, not the number of gun statutes.
+\end{itemize}
+
+\secskip
+\textbf{Statement}\par
+Your task is to express your persona's opinion about the following statement.\par
+\textit{Statement:} ``Stricter gun control laws would reduce violent crime rates''
+
+\secskip
+\textbf{Instruction}\par
+Given this background, is your persona currently more likely to \textbf{AGREE} or \textbf{DISAGREE} with the statement?
+
+\secskip
+\textbf{Response Format}\par
+Respond with exactly one word: \texttt{AGREE} or \texttt{DISAGREE}.
+
+\end{tcolorbox}
+
+\vspace{3pt}
+
+\begin{tcolorbox}[
+    breakable,
+    title={Objective: Opinion Prompt},
+    colback=gray!5, colframe=gray!60, boxrule=0.5pt, arc=1.5mm,
+    left=1.5mm, right=1.5mm, top=0.5mm, bottom=0.5mm
+]
+\tiny
+
+\textbf{Your Expertise}\par
+You are a mathematics expert acting as one agent in a panel. To calibrate the domain and rigor of your expertise, here is one representative problem you have already solved correctly, together with its ground-truth solution. Bring this same level of care and domain knowledge when you reason about new problems.
+
+\secskip
+\textit{Example problem (Algebra, Level 5):}\par
+Let $f(x)=ax+3$ for $x>2$, $\;f(x)=x-5$ for $-2\le x\le 2$, and $f(x)=2x-b$ for $x<-2$. Find $a+b$ if the piecewise function is continuous (which means that its graph can be drawn without lifting your pencil from the paper).
+
+\secskip
+\textit{Ground-truth solution:}\par
+For the piecewise function to be continuous, the cases must ``meet'' at $2$ and $-2$. For example, $ax+3$ and $x-5$ must be equal when $x=2$. This implies $a(2)+3=2-5$, which we solve to get $2a=-6 \Rightarrow a=-3$. Similarly, $x-5$ and $2x-b$ must be equal when $x=-2$. Substituting, we get $-2-5=2(-2)-b$, which implies $b=3$. So $a+b=-3+3=\boxed{0}$.
+
+\secskip
+\textbf{Messages}\par
+\textit{Messages From Colleagues You Tend to Agree With}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\topsep}{1pt}\setlength{\parsep}{0pt}\setlength{\leftmargin}{1em}
+    \item The remainder conditions point to 201; the CRT setup lines up cleanly.
+    \item I get 201 as the smallest value above 100 satisfying both congruences.
+\end{itemize}
+\textit{Messages From Colleagues You Tend to Disagree With}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\topsep}{1pt}\setlength{\parsep}{0pt}\setlength{\leftmargin}{1em}
+    \item I think the off-by-one pushes it to 202, not 201.
+    \item Counting the remainders again, 202 looks like the smallest to me.
+\end{itemize}
+
+\secskip
+\textbf{Problem}\par
+You are one member of an expert panel answering the following multiple-choice problem.\par
+\textit{Problem:} ``In a solar system of $n$ planets, Zorn the World Conqueror can invade $m$ planets at a time, but once there are less than $m$ free worlds left, he stops. If he invades $13$ at a time then there are $6$ left, and if he invades $14$ at a time then there are $5$ left. If this solar system has more than $100$ planets, what is the smallest number of planets it could have?''
+
+\secskip
+\textit{Options:} A) 201 \quad B) 202
+
+\secskip
+\textbf{Instruction}\par
+Give your gut answer on which option is correct, based on immediate intuition. Do NOT work through the problem, show any steps, compute, or explain---just commit to a snap judgement.
+
+\secskip
+\textbf{Response Format}\par
+Respond with a single character, \texttt{A} or \texttt{B}, and nothing else: no reasoning, no working, no punctuation, no explanation.
+
+\end{tcolorbox}
+
+\captionof{figure}{Opinion generation prompts. While sampling the opinions, we prompt the models to give a direct judgment without a chain-of-thought.}
+\label{fig:opinion_prompt_examples}
+
+\endgroup

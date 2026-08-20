@@ -1,0 +1,36 @@
+AI agents increasingly operate as part of interacting systems rather than in isolation. In scientific research, software engineering, and other complex domains, multiple agents exchange findings and opinions, critique proposed solutions, and jointly refine decisions. Systems such as the Virtual Lab \citep{Swanson2024.11.11.623004} and EinsteinArena \citep{bianchi2026harnessingcollectiveintelligenceai} demonstrate that flexible teams of language-model agents can carry out substantial parts of the scientific discovery process, from literature synthesis and hypothesis generation to computational analysis and experimental design. Related multi-agent interactions are increasingly used for coding, planning, debate, and automated research \citep{du2023improvingfactualityreasoninglanguage,liang-etal-2024-encouraging,chen2023}.
+
+Interacting agents may also become part of everyday life. Personal assistant agents could communicate on behalf of their users to schedule meetings, negotiate purchases, coordinate travel, allocate shared resources, or resolve competing preferences. In such settings, the behavior that matters is not only that of any one assistant but also the collective outcome produced by many assistants interacting with one another. These interactions can aggregate complementary information, but they can also produce herding, polarization, persistent disagreement, oscillation, or the amplification of shared biases. As the number and autonomy of deployed agents grow, understanding these collective dynamics becomes important for both the design of effective multi-agent systems and AI alignment. Given the agents, their initial states, and the network through which they communicate, can we predict how the system will evolve? When will interaction improve collective decisions, and when will it instead entrench errors or amplify undesirable biases?
+
+
+
+
+To answer these questions, we study communities of language-model agents that hold opinions about a shared question, communicate over a social network, and repeatedly revise their views (Figure \ref{fig:1_intro}). Each agent is assigned a distinct persona or area of expertise, and pairs of agents are connected by either concordant or discordant relationships. We consider both objective mathematical questions with verifiable answers and subjective political statements without unique ground-truth answers. Across multiple language models, questions, communication networks, and episodes, we simulate around $~10,000$ agent communities and record how their individual and collective opinions evolve over repeated rounds of interaction (Section~\ref{sec:setup}).
+
+Our empirical analysis reveals diverse but structured collective dynamics (Section~\ref{sec:observations}). At the level of individual agents, opinion trajectories fall into recurring archetypes, in which some agents remain frozen, some switch once, some reverse and later return to their original position, and others oscillate repeatedly (Section~\ref{sec:macrostates_microstates}). At the population level, communities exhibit three characteristic regimes: indifference, in which agents hold weak opinions; polarization, in which strongly committed agents divide into opposing camps; and consensus, in which agents converge toward the same position. Although communities commonly begin with weakly held opinions, interaction consistently increases conviction and progressively moves them toward more ordered states (Section~\ref{sec:obs_phase_char}). Analysis of communication patterns reveal that this ordering is not a simple strategy where the population locks in on the initial majority, instead communities frequently weaken or overturn their initial collective position. On objective questions, these changes improve collective accuracy on average, with initially incorrect majorities switching to the correct answer more often than initially correct majorities becoming incorrect. On subjective questions, however, communication can produce systematic ideological drift, demonstrating that interaction may also amplify directional biases inherited from the underlying language models (Section~\ref{sec:truth_seeking}).
+
+
+
+
+To predict and interpret these behaviors, we introduce a theoretical model of interacting agents in which individuals update their opinions to minimize the social pressure defined over a social graph (Section~\ref{sec:method}). We represent each agent's opinion as a binary variable whose evolution is governed by two forces: i) an intrinsic bias term (referred to as ``intrinsic field'') that captures the agent's predisposition toward the question, and ii) an interaction term quantifying social pressure by capturing the influence exerted by neighboring agents. This construction yields a theoretical model, whose mathematics can be mapped to the well-known Ising model from statistical mechanics literature \citep{ising1925,glauber1963}. We use this machinery to derive a stochastic update rule for opinions in which the probability of an agent adopting either opinion depends on its persona, the question, and the opinions of the agents connected to it. We extend the Ising model with multiple interaction parameters, which we fit with intrinsic fields directly from observed opinion transitions.
+
+
+Despite its simplicity, the resulting model accurately predicts the collective behavior of agents on held-out questions, substantially outperforms standard baselines, and generalizes from random communication graphs to previously unseen network families (Section~\ref{sec:results_prediction}). When rolled out from observed initial conditions, it also approximately reproduces the population-level distribution of collective outcomes (Section~\ref{sec:results_distributions}). The fitted dynamics further provide a quantitative interpretation of the empirical observations. The communities operate in an ordered, low-temperature regime, consistent with the observed buildup of conviction (Section~\ref{sec:results_temperature}). Concordant interactions are substantially stronger than discordant interactions, favoring consensus over persistent polarization. On objective questions, agents currently holding the correct answer exert greater fitted influence than agents holding an incorrect answer, providing a statistical account of the observed improvement in collective accuracy (Section~\ref{sec:results_truthseeking}).
+
+Together, these results suggest that the collective behavior of interacting AI agents can be described by compact dynamical laws analogous to those used for other complex systems. Statistical mechanics provides a framework for identifying recurring regimes, forecasting population dynamics, and relating system-level outcomes to interpretable interaction parameters.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

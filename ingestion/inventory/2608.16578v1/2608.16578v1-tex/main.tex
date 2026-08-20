@@ -1,0 +1,129 @@
+\pdfoutput=1
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage{arxiv}
+
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\graphicspath{{./}{./Figures/}}
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\usepackage{wrapfig}
+\usepackage[normalem]{ulem}
+\usepackage{pifont}
+\usepackage{xspace}
+\usepackage[table]{xcolor}
+\usepackage{bm}
+\usepackage{tcolorbox, listings}
+\tcbuselibrary{skins, breakable, listings, raster}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{accents}   %
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titletoc}
+
+\newcommand{\rowavg}[1]{\langle #1 \rangle}
+\newcommand{\colavg}[1]{\hat{\underaccent{\check}{#1}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathbb{N}}
+
+\newcommand{\blfootnote}[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\input{main/Tables/preamble}
+
+\title{Physics of Agents: Statistical Mechanics Predicts Collective Behavior of AI Agents}
+\author{%
+  \begin{tabular}{cccc}
+    Batu El$^{1\dag}$ & Jinhee Paeng$^{1}$ & Fatih Dinc$^{2}$ & Shiye Su$^{1}$ \\[0.6em] Mete Erdogan$^{1}$ &
+    Aneesh Pappu$^{1}$  
+    & Haotian Ye$^{1}$
+     & Wanjia Zhao$^{1}$ 
+  \end{tabular} \\[0.6em]
+  \begin{tabular}{ccc}
+   & Surya Ganguli$^{1}$ & James Zou$^{1\dag}$
+  \end{tabular}
+}
+\affiliation{$^{1}$Stanford University \quad $^{2}$UC Santa Barbara \quad 
+}
+
+\begin{document}
+
+\blfootnote{%
+\centering
+\begin{tabular}{llll}
+Code & \href{https://github.com/batu-el/physics-of-agents}{github.com/batu-el/physics-of-agents} &
+Online Appendix & \href{https://batu-el.github.io/physics-of-agents}{batu-el.github.io/physics-of-agents} \\
+Dataset & \href{https://huggingface.co/physics-of-agents}{huggingface.co/physics-of-agents}
+&
+\multicolumn{2}{l}{{\dag} Correspondence to \texttt{\{batuel,jamesz\}@stanford.edu}}
+\end{tabular}%
+}
+
+\maketitle
+
+\vspace{-0.5cm}
+\input{main/Sections/0_Abstract/0_Abstract}
+
+\section{Introduction}\label{sec:intro}
+\input{main/Sections/1_Introduction/1_Introduction}
+
+\section{Setup}\label{sec:setup}
+\input{main/Sections/2_Setup/2_Setup}
+
+\section{Empirical Characterization of Agents' Collective Dynamics}\label{sec:observations}
+\input{main/Sections/3_Observations/3_Observations}
+
+
+\section{Statistical Mechanics Model of Agents' Behavior}\label{sec:method}
+\input{main/Sections/4_Method/4_Method}
+
+
+\section{Applications of the Statistical Physics Model}\label{sec:results}
+We next demonstrate that our statistical physics model can predict
+agent dynamics for unseen graphs and questions, and reproduces the population-level
+distribution of collective outcomes when rolled out from observed initial conditions.
+Furthermore, this model suggests that the agent communities operate below the critical social temperature,
+which explains why interacting communities do not remain indifferent but tend to form consensus or polarize. Which high conviction state they reach is determined by the social ties and the intrinsic field. We observe that the pull of friendly (concordant) edges dominates the push of unfriendly (discordant) edges, which favors consensus over polarization, and the neighbors holding the correct answer pull harder than ones holding the wrong answer, which drives truth seeking.
+
+\input{main/Sections/5_Results/1_prediction}
+\input{main/Sections/5_Results/2_macrodist}
+\input{main/Sections/5_Results/3_criticaltemp}
+\input{main/Sections/5_Results/4_truthseeking}
+
+
+\section{Related Works}\label{sec:related_works}
+\input{main/Sections/6_Related_Works/6_Related_Works}
+
+\section{Discussion and Conclusion}\label{sec:discussion}
+\input{main/Sections/7_Discussion_and_Conclusion/7_Discussion_and_Conclusion}
+
+\newpage
+\bibliographystyle{plainnat}
+\bibliography{ref}
+
+\appendix
+\startcontents[apx]          %
+
+\clearpage
+\input{main/Appendix/Apdx}
+
+\end{document}

@@ -1,0 +1,81 @@
+\usepackage[margin=1.3in]{geometry}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{amsmath}
+\usepackage[capitalise]{cleveref} % keep after hyperref and amsmath
+%\usepackage{enumitem}
+
+\usepackage{titlesec}
+\titlespacing{\paragraph}{0pt}{8pt}{1em}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+
+% \usepackage{tabto}
+% \def\marginsymbol{\protect\marginsymbolhelper}
+% \def\marginsymbolhelper{\tabto*{-6pt}\makebox[0cm]{\color{red!50!black}§}\tabto*{\TabPrevPos}}
+% % \renewcommand{\thesection}{\arabic{section}\marginsymbol}
+% \let\oldsection\section
+% \renewcommand{\section}[2][\empty]{%
+%   \ifx#1\empty
+%     \oldsection{#2\marginsymbol}%
+%   \else
+%     \oldsection[#1]{#2\marginsymbol}%
+%   \fi
+% }
+
+% Paragraph settings
+\setlength{\parskip}{0.5\baselineskip}
+\setlength{\parindent}{0pt}           % Removes indentation
+
+
+% \renewcommand\Authands{ \ \ } % controls author separator
+% \renewcommand\Authsep{ \ \ } % controls author separator
+
+\renewenvironment{abstract}
+ {\small
+  \begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{%
+    \setlength{\leftmargin}{7mm}% <---------- CHANGE HERE
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item\relax}
+ {\endlist}
+
+% cleveref reference format
+\crefformat{section}{§#2#1#3}
+\Crefformat{section}{§#2#1#3}
+\crefformat{subsection}{§#2#1#3}
+\Crefformat{subsection}{§#2#1#3}
+\crefmultiformat{section}{§#2#1#3}{ and §#2#1#3}{, §#2#1#3}{ and §#2#1#3}
+\Crefmultiformat{section}{§#2#1#3}{ and §#2#1#3}{, §#2#1#3}{ and §#2#1#3}
+
+
+% Affiliation support (single shared affiliation, no per-author superscripts)
+\gdef\@affiliation{}
+\newcommand{\affiliation}[1]{\gdef\@affiliation{#1}}
+
+% Title stuff, taken from deproc.
+\def\maketitle{
+\par
+\begin{center}
+{\LARGE\textbf{\@title{}}}
+\end{center}
+\begin{center}
+{\textbf{\@author}}
+\end{center}
+\ifx\@affiliation\@empty\else
+\begin{center}
+\@affiliation
+\end{center}
+\fi
+}
