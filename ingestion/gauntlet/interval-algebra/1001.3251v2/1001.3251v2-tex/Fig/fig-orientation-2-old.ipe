@@ -1,0 +1,71 @@
+<ipe version="60030" creator="Ipe 6.0 preview 30">
+<info created="D:20090127133325" modified="D:20090317141638" bbox="cropbox"/>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<page gridsize="16">
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" stroke="black" matrix="0.422707 0 0 0.758111 -7.80949 101.164" pen="normal">
+128 400 m
+448 400 l
+</path>
+<path stroke="black" matrix="0.417178 0 0 0.71033 -6.96113 97.3291" pen="normal">
+128 336 m
+448 336 l
+</path>
+<text stroke="black" matrix="1.00094 0 0 1.06887 -263.704 -25.0693" pos="448 400" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal">$L_{1}$</text>
+<text stroke="black" matrix="1 0 0 1 -263.27 -0.996488" pos="448 336" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal">$L_{2}$</text>
+<text stroke="black" matrix="0.00699263 0 0 -1.14637 51.0898 885.733" pos="192 416" type="label" width="10.173" height="8.112" depth="2.47" valign="baseline" size="normal">$u_{1}^{1}$</text>
+<text stroke="black" matrix="1.00094 0 0 1.06887 -43.7444 -35.86" pos="208 416" type="label" width="10.173" height="8.112" depth="2.47" valign="baseline" size="normal">$u_{1}^{2}$</text>
+<text stroke="black" matrix="1.00094 0 0 1.06887 -161.047 -35.7544" pos="240 416" type="label" width="10.173" height="8.112" depth="2.47" valign="baseline" size="normal">$u_{2}^{1}$</text>
+<text stroke="black" matrix="1.00094 0 0 1.06887 -133.192 -35.8345" pos="272 416" type="label" width="10.173" height="8.112" depth="2.47" valign="baseline" size="normal">$u_{2}^{2}$</text>
+<text stroke="black" matrix="1.00094 0 0 1.06887 -199.867 -35.7544" pos="320 416" type="label" width="10.173" height="8.112" depth="2.47" valign="baseline" size="normal">$u_{3}^{1}$</text>
+<text stroke="black" matrix="1.00094 0 0 1.06887 -255.78 -35.8718" pos="352 416" type="label" width="10.173" height="8.112" depth="2.47" valign="baseline" size="normal">$u_{3}^{2}$</text>
+<path stroke="black" matrix="1.54223 0 0 1.06564 -238.556 -21.8479" pen="heavier">
+192 400 m
+224 336 l
+</path>
+<path stroke="black" matrix="1.08523 0 0 1.06562 -158.076 -21.8401" pen="heavier">
+224 400 m
+192 336 l
+</path>
+<path stroke="black" matrix="3.24135 0 0 1.06887 -676.139 -23.1405" pen="heavier">
+240 400 m
+256 336 l
+</path>
+<path stroke="black" matrix="0.126594 0 0 1.06703 92.8284 -22.4039" pen="heavier">
+256 400 m
+272 336 l
+</path>
+<path stroke="black" matrix="0.864961 0 0 1.06886 -93.2899 -23.1366" pen="heavier">
+240 336 m
+304 400 l
+</path>
+<path stroke="black" matrix="0.938547 0 0 1.06887 -110.793 -23.1405" pen="heavier">
+272 400 m
+304 336 l
+</path>
+<text stroke="black" matrix="1 0 0 1 -144.94 0" pos="192 368" type="label" width="13.176" height="6.808" depth="0" valign="baseline" size="normal">$R:$</text>
+<path stroke="black" matrix="1 0 0 1 -1.24306 0" pen="heavier">
+61.5761 336.294 m
+9.94662 0 0 9.94662 51.6316 336.087 56.2855 344.878 a
+</path>
+<text stroke="black" matrix="1 0 0 1 -1.24306 0" pos="60.1259 342.717" type="label" width="32.209" height="7.475" depth="4.58" valign="baseline" size="normal" style="default">$\theta_{R}(\ell_{u_{2}^{1}})$</text>
+</page>
+</ipe>

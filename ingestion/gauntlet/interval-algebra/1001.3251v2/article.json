@@ -1,0 +1,167 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1001.3251v2",
+  "initialized_utc": "2026-08-20T11:22:15.960199Z",
+  "title": "The Recognition of Tolerance and Bounded Tolerance Graphs",
+  "authors": [
+    "George B. Mertzios",
+    "Ignasi Sau",
+    "Shmuel Zaks"
+  ],
+  "abstract": "Tolerance graphs model interval relations in such a way that intervals can tolerate a certain degree of overlap without being in conflict. This subclass of perfect graphs has been extensively studied, due to both its interesting structure and its numerous applications. Several efficient algorithms for optimization problems that are NP-hard on general graphs have been designed for tolerance graphs. In spite of this, the recognition of tolerance graphs - namely, the problem of deciding whether a given graph is a tolerance graph - as well as the recognition of their main subclass of bounded tolerance graphs, have been the most fundamental open problems on this class of graphs (cf. the book on tolerance graphs \\cite{GolTol04}) since their introduction in 1982 \\cite{GoMo82}. In this article we prove that both recognition problems are NP-complete, even in the case where the input graph is a trapezoid graph. The presented results are surprising because, on the one hand, most subclasses of perfect graphs admit polynomial recognition algorithms and, on the other hand, bounded tolerance graphs were believed to be efficiently recognizable as they are a natural special case of trapezoid graphs (which can be recognized in polynomial time) and share a very similar structure with them. For our reduction we extend the notion of an \\emph{acyclic orientation} of permutation and trapezoid graphs. Our main tool is a new algorithm that uses \\emph{vertex splitting} to transform a given trapezoid graph into a permutation graph, while preserving this new acyclic orientation property. This method of vertex splitting is of independent interest; very recently, it has been proved a powerful tool also in the design of efficient recognition algorithms for other classes of graphs \\cite{MC-Trapezoid}.",
+  "identifiers": {
+    "arxiv": "1001.3251",
+    "arxiv_versioned": "1001.3251v2",
+    "doi": null,
+    "external": {
+      "arxiv": "1001.3251v2"
+    }
+  },
+  "categories": [
+    "cs.CC",
+    "cs.DM"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CC",
+  "published": "2010-01-19T10:24:34Z",
+  "updated": "2010-02-03T13:36:00Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "1001.3251v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10810,
+        "sha256": "34bb52a69908cf4a420d0328c918dd9c1022a4ea30920ade7ced84b451efd5e3",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-20T11:22:12.657553Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=1001.3251v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "825d08252860e6cdb9a96ef68497eccabcbd1867d361199a8da5bb3654126dba"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "Mertzios_Tolerance.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "The Recognition of Tolerance \\\\\nand Bounded Tolerance Graphs",
+        "authors_tex": [
+          "G.B. Mertzios",
+          "I. Sau",
+          "S. Zaks"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "1001.3251v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-1001.3251v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 783936,
+      "sha256": "a8b2c218fd1d31b10651756bbd5389c07e635aeaaac834c45a76874f3eafb254",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1001.3251v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-1001.3251v2.tar.gz",
+      "entrypoint": "Mertzios_Tolerance.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 78,
+      "tex_files": 1,
+      "sha256": "41f2622ad1c5b68579bbed4c22946de2dfda3403c0e42f87cbd47456a7c9b668"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1001.3251v2.pdf",
+      "format": "application/pdf",
+      "bytes": 270445,
+      "sha256": "e5cc3e0e8edab706633b4a08da56aa613d1b11e9fb58e762be36807986630a66"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-20T11:22:15.960199Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 79
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 78
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "Mertzios_Tolerance.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

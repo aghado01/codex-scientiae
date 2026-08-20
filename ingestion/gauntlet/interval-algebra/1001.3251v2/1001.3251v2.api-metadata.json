@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "1001.3251v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "1001.3251v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "The Recognition of Tolerance and Bounded Tolerance Graphs",
+      "authors": [
+        "George B. Mertzios",
+        "Ignasi Sau",
+        "Shmuel Zaks"
+      ],
+      "abstract": "Tolerance graphs model interval relations in such a way that intervals can tolerate a certain degree of overlap without being in conflict. This subclass of perfect graphs has been extensively studied, due to both its interesting structure and its numerous applications. Several efficient algorithms for optimization problems that are NP-hard on general graphs have been designed for tolerance graphs. In spite of this, the recognition of tolerance graphs - namely, the problem of deciding whether a given graph is a tolerance graph - as well as the recognition of their main subclass of bounded tolerance graphs, have been the most fundamental open problems on this class of graphs (cf. the book on tolerance graphs \\cite{GolTol04}) since their introduction in 1982 \\cite{GoMo82}. In this article we prove that both recognition problems are NP-complete, even in the case where the input graph is a trapezoid graph. The presented results are surprising because, on the one hand, most subclasses of perfect graphs admit polynomial recognition algorithms and, on the other hand, bounded tolerance graphs were believed to be efficiently recognizable as they are a natural special case of trapezoid graphs (which can be recognized in polynomial time) and share a very similar structure with them. For our reduction we extend the notion of an \\emph{acyclic orientation} of permutation and trapezoid graphs. Our main tool is a new algorithm that uses \\emph{vertex splitting} to transform a given trapezoid graph into a permutation graph, while preserving this new acyclic orientation property. This method of vertex splitting is of independent interest; very recently, it has been proved a powerful tool also in the design of efficient recognition algorithms for other classes of graphs \\cite{MC-Trapezoid}.",
+      "doi": null,
+      "arxiv_id": "1001.3251v2",
+      "published": "2010-01-19T10:24:34Z",
+      "updated": "2010-02-03T13:36:00Z",
+      "year": 2010,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/1001.3251v2",
+      "pdf_url": "https://arxiv.org/pdf/1001.3251v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CC",
+        "cs.DM"
+      ],
+      "external_ids": {
+        "arxiv": "1001.3251v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "1001.3251v2",
+          "url": "https://arxiv.org/abs/1001.3251v2",
+          "doi": null,
+          "arxiv_id": "1001.3251v2",
+          "published": "2010-01-19T10:24:34Z",
+          "updated": "2010-02-03T13:36:00Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=1001.3251v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-20T11:22:12.657553Z",
+      "sha256": "825d08252860e6cdb9a96ef68497eccabcbd1867d361199a8da5bb3654126dba",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvdkVzR01xUUs2VTVUa3hSV1Nlb00zcktIT0tZPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MTAwMS4zMjUxdjImYW1wO3N0YXJ0PTAmYW1wO21heF9yZXN1bHRzPTE8L3RpdGxlPgogIDx1cGRhdGVkPjIwMjYtMDgtMjBUMTE6MjI6MDBaPC91cGRhdGVkPgogIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2FwaS9xdWVyeT9zZWFyY2hfcXVlcnk9JmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xJmFtcDtpZF9saXN0PTEwMDEuMzI1MXYyIiB0eXBlPSJhcHBsaWNhdGlvbi9hdG9tK3htbCIvPgogIDxvcGVuc2VhcmNoOml0ZW1zUGVyUGFnZT4xPC9vcGVuc2VhcmNoOml0ZW1zUGVyUGFnZT4KICA8b3BlbnNlYXJjaDp0b3RhbFJlc3VsdHM+MTwvb3BlbnNlYXJjaDp0b3RhbFJlc3VsdHM+CiAgPG9wZW5zZWFyY2g6c3RhcnRJbmRleD4wPC9vcGVuc2VhcmNoOnN0YXJ0SW5kZXg+CiAgPGVudHJ5PgogICAgPGlkPmh0dHA6Ly9hcnhpdi5vcmcvYWJzLzEwMDEuMzI1MXYyPC9pZD4KICAgIDx0aXRsZT5UaGUgUmVjb2duaXRpb24gb2YgVG9sZXJhbmNlIGFuZCBCb3VuZGVkIFRvbGVyYW5jZSBHcmFwaHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAxMC0wMi0wM1QxMzozNjowMFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMTAwMS4zMjUxdjIiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8xMDAxLjMyNTF2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PiAgVG9sZXJhbmNlIGdyYXBocyBtb2RlbCBpbnRlcnZhbCByZWxhdGlvbnMgaW4gc3VjaCBhIHdheSB0aGF0IGludGVydmFscyBjYW4gdG9sZXJhdGUgYSBjZXJ0YWluIGRlZ3JlZSBvZiBvdmVybGFwIHdpdGhvdXQgYmVpbmcgaW4gY29uZmxpY3QuIFRoaXMgc3ViY2xhc3Mgb2YgcGVyZmVjdCBncmFwaHMgaGFzIGJlZW4gZXh0ZW5zaXZlbHkgc3R1ZGllZCwgZHVlIHRvIGJvdGggaXRzIGludGVyZXN0aW5nIHN0cnVjdHVyZSBhbmQgaXRzIG51bWVyb3VzIGFwcGxpY2F0aW9ucy4gU2V2ZXJhbCBlZmZpY2llbnQgYWxnb3JpdGhtcyBmb3Igb3B0aW1pemF0aW9uIHByb2JsZW1zIHRoYXQgYXJlIE5QLWhhcmQgb24gZ2VuZXJhbCBncmFwaHMgaGF2ZSBiZWVuIGRlc2lnbmVkIGZvciB0b2xlcmFuY2UgZ3JhcGhzLiBJbiBzcGl0ZSBvZiB0aGlzLCB0aGUgcmVjb2duaXRpb24gb2YgdG9sZXJhbmNlIGdyYXBocyAtIG5hbWVseSwgdGhlIHByb2JsZW0gb2YgZGVjaWRpbmcgd2hldGhlciBhIGdpdmVuIGdyYXBoIGlzIGEgdG9sZXJhbmNlIGdyYXBoIC0gYXMgd2VsbCBhcyB0aGUgcmVjb2duaXRpb24gb2YgdGhlaXIgbWFpbiBzdWJjbGFzcyBvZiBib3VuZGVkIHRvbGVyYW5jZSBncmFwaHMsIGhhdmUgYmVlbiB0aGUgbW9zdCBmdW5kYW1lbnRhbCBvcGVuIHByb2JsZW1zIG9uIHRoaXMgY2xhc3Mgb2YgZ3JhcGhzIChjZi4gdGhlIGJvb2sgb24gdG9sZXJhbmNlIGdyYXBocyBcY2l0ZXtHb2xUb2wwNH0pIHNpbmNlIHRoZWlyIGludHJvZHVjdGlvbiBpbiAxOTgyIFxjaXRle0dvTW84Mn0uIEluIHRoaXMgYXJ0aWNsZSB3ZSBwcm92ZSB0aGF0IGJvdGggcmVjb2duaXRpb24gcHJvYmxlbXMgYXJlIE5QLWNvbXBsZXRlLCBldmVuIGluIHRoZSBjYXNlIHdoZXJlIHRoZSBpbnB1dCBncmFwaCBpcyBhIHRyYXBlem9pZCBncmFwaC4gVGhlIHByZXNlbnRlZCByZXN1bHRzIGFyZSBzdXJwcmlzaW5nIGJlY2F1c2UsIG9uIHRoZSBvbmUgaGFuZCwgbW9zdCBzdWJjbGFzc2VzIG9mIHBlcmZlY3QgZ3JhcGhzIGFkbWl0IHBvbHlub21pYWwgcmVjb2duaXRpb24gYWxnb3JpdGhtcyBhbmQsIG9uIHRoZSBvdGhlciBoYW5kLCBib3VuZGVkIHRvbGVyYW5jZSBncmFwaHMgd2VyZSBiZWxpZXZlZCB0byBiZSBlZmZpY2llbnRseSByZWNvZ25pemFibGUgYXMgdGhleSBhcmUgYSBuYXR1cmFsIHNwZWNpYWwgY2FzZSBvZiB0cmFwZXpvaWQgZ3JhcGhzICh3aGljaCBjYW4gYmUgcmVjb2duaXplZCBpbiBwb2x5bm9taWFsIHRpbWUpIGFuZCBzaGFyZSBhIHZlcnkgc2ltaWxhciBzdHJ1Y3R1cmUgd2l0aCB0aGVtLiBGb3Igb3VyIHJlZHVjdGlvbiB3ZSBleHRlbmQgdGhlIG5vdGlvbiBvZiBhbiBcZW1waHthY3ljbGljIG9yaWVudGF0aW9ufSBvZiBwZXJtdXRhdGlvbiBhbmQgdHJhcGV6b2lkIGdyYXBocy4gT3VyIG1haW4gdG9vbCBpcyBhIG5ldyBhbGdvcml0aG0gdGhhdCB1c2VzIFxlbXBoe3ZlcnRleCBzcGxpdHRpbmd9IHRvIHRyYW5zZm9ybSBhIGdpdmVuIHRyYXBlem9pZCBncmFwaCBpbnRvIGEgcGVybXV0YXRpb24gZ3JhcGgsIHdoaWxlIHByZXNlcnZpbmcgdGhpcyBuZXcgYWN5Y2xpYyBvcmllbnRhdGlvbiBwcm9wZXJ0eS4gVGhpcyBtZXRob2Qgb2YgdmVydGV4IHNwbGl0dGluZyBpcyBvZiBpbmRlcGVuZGVudCBpbnRlcmVzdDsgdmVyeSByZWNlbnRseSwgaXQgaGFzIGJlZW4gcHJvdmVkIGEgcG93ZXJmdWwgdG9vbCBhbHNvIGluIHRoZSBkZXNpZ24gb2YgZWZmaWNpZW50IHJlY29nbml0aW9uIGFsZ29yaXRobXMgZm9yIG90aGVyIGNsYXNzZXMgb2YgZ3JhcGhzIFxjaXRle01DLVRyYXBlem9pZH0uPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNDIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuRE0iIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAxMC0wMS0xOVQxMDoyNDozNFo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PjEyIHBhZ2VzLCA0IGZpZ3VyZXMsIDEgYWxnb3JpdGhtLCBQcm9jZWVkaW5ncyBvZiB0aGUgMjd0aCBJbnRlcm5hdGlvbmFsIFN5bXBvc2l1bSBvbiBUaGVvcmV0aWNhbCBBc3BlY3RzIG9mIENvbXB1dGVyIFNjaWVuY2UgKFNUQUNTKSwgTmFuY3ksIEZyYW5jZSwgTWFyY2ggMjAxMDwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNDIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5HZW9yZ2UgQi4gTWVydHppb3M8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPklnbmFzaSBTYXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlNobXVlbCBaYWtzPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "The Recognition of Tolerance and Bounded Tolerance Graphs",
+    "authors": [
+      "George B. Mertzios",
+      "Ignasi Sau",
+      "Shmuel Zaks"
+    ],
+    "abstract": "Tolerance graphs model interval relations in such a way that intervals can tolerate a certain degree of overlap without being in conflict. This subclass of perfect graphs has been extensively studied, due to both its interesting structure and its numerous applications. Several efficient algorithms for optimization problems that are NP-hard on general graphs have been designed for tolerance graphs. In spite of this, the recognition of tolerance graphs - namely, the problem of deciding whether a given graph is a tolerance graph - as well as the recognition of their main subclass of bounded tolerance graphs, have been the most fundamental open problems on this class of graphs (cf. the book on tolerance graphs \\cite{GolTol04}) since their introduction in 1982 \\cite{GoMo82}. In this article we prove that both recognition problems are NP-complete, even in the case where the input graph is a trapezoid graph. The presented results are surprising because, on the one hand, most subclasses of perfect graphs admit polynomial recognition algorithms and, on the other hand, bounded tolerance graphs were believed to be efficiently recognizable as they are a natural special case of trapezoid graphs (which can be recognized in polynomial time) and share a very similar structure with them. For our reduction we extend the notion of an \\emph{acyclic orientation} of permutation and trapezoid graphs. Our main tool is a new algorithm that uses \\emph{vertex splitting} to transform a given trapezoid graph into a permutation graph, while preserving this new acyclic orientation property. This method of vertex splitting is of independent interest; very recently, it has been proved a powerful tool also in the design of efficient recognition algorithms for other classes of graphs \\cite{MC-Trapezoid}.",
+    "identifiers": {
+      "arxiv": "1001.3251",
+      "arxiv_versioned": "1001.3251v2",
+      "doi": null,
+      "external": {
+        "arxiv": "1001.3251v2"
+      }
+    },
+    "categories": [
+      "cs.CC",
+      "cs.DM"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CC",
+    "published": "2010-01-19T10:24:34Z",
+    "updated": "2010-02-03T13:36:00Z"
+  }
+}

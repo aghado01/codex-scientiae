@@ -1,0 +1,102 @@
+<ipe version="60030" creator="Ipe 6.0 preview 30">
+<info created="D:20081114155242" modified="D:20090224185109" bbox="cropbox"/>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<page gridsize="16">
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" stroke="black" matrix="0.6738 0 0 0.709264 89.7536 116.295" pen="normal">
+128 400 m
+448 400 l
+</path>
+<path stroke="black" matrix="0.674813 0 0 0.71033 89.6239 97.3291" pen="normal">
+128 336 m
+448 336 l
+</path>
+<path stroke="black" matrix="-0.333333 0 0 1 335.118 0" pen="heavier">
+208 400 m
+160 336 l
+</path>
+<path stroke="black" matrix="-1 0 0 1 529.29 0" dash="dotted" pen="heavier">
+160 400 m
+208 336 l
+</path>
+<text stroke="black" matrix="1 0 0 1 -53.7078 -3.15112" pos="448 400" type="label" valign="baseline" size="normal">$L_{1}$</text>
+<text stroke="black" matrix="1 0 0 1 -53.7078 -3.15112" pos="448 336" type="label" valign="baseline" size="normal">$L_{2}$</text>
+<text stroke="black" matrix="1 0 0 1 37.9333 -12.9547" pos="256 416" type="label" valign="baseline" size="normal">$e_{i}$</text>
+<text stroke="black" matrix="1 0 0 1 -42.0667 -12.9547" pos="304 416" type="label" valign="baseline" size="normal">$b_{i}$</text>
+<text stroke="black" matrix="1 0 0 1 13.4391 -12.9547" pos="352 416" type="label" valign="baseline" size="normal">$f_{i}$</text>
+<text stroke="black" matrix="1 0 0 1 -50.5609 -12.9547" pos="400 416" type="label" valign="baseline" size="normal">$d_{i}$</text>
+<path stroke="black" matrix="0.334427 0 0 0.97827 283.406 7.43089" dash="dashed" pen="heavier">
+208 400 m
+160 336 l
+</path>
+<text stroke="black" matrix="1 0 0 3.49221 -6.21529 -917.134" pos="288 368" type="label" valign="baseline" size="normal">$x_{r_{i,2}}=0$</text>
+<text stroke="black" matrix="1 0 0 1 -30.7095 0" pos="384 368" type="label" valign="baseline" size="normal">$x_{r_{i,3}}=1$</text>
+<path stroke="black" matrix="1.5 0 0 1 -158.215 0" dash="dotted" pen="heavier">
+304 400 m
+272 336 l
+</path>
+<path stroke="black" matrix="0.333333 0 0 1 138.667 0" pen="heavier">
+160 400 m
+208 336 l
+</path>
+<path stroke="black" matrix="0.322261 0 0 0.980482 140.335 6.54589" dash="dashed" pen="heavier">
+208 400 m
+160 336 l
+</path>
+<text stroke="black" matrix="1 0 0 1 28.1486 -12.9547" pos="160 416" type="label" valign="baseline" size="normal">$a_{i}$</text>
+<text stroke="black" matrix="-3.15432 0 0 1 860.248 -12.9547" pos="208 416" type="label" valign="baseline" size="normal">$c_{i}$</text>
+<text stroke="black" matrix="1 0 0 1 12.8488 0" pos="192 368" type="label" valign="baseline" size="normal">$x_{r_{i,1}}=1$</text>
+</page>
+</ipe>

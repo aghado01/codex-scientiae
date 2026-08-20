@@ -1,0 +1,93 @@
+\section{Conclusions} \label{sec:conclusions}
+
+In this paper, we have described the minimal obstructions that make a partial interval representation
+non-extendible. There are three main points following from the proof:
+
+\begin{packed_enum}
+\item Minimal obstructions for the partial representation extension problem are much more
+complicated than minimal forbidden induced subgraphs of interval graphs, characterized by
+Lekkerkerker and Boland~\cite{lb_graphs}.
+\item Nevertheless, it is possible to describe these obstructions using structural results derived
+in~\cite{kkosv} and in this paper. We show that almost all of these obstructions consist of three
+intervals $x_k$, $y_k$ and $z_k$ that are forced by the partial representation to be drawn in an
+incorrect left-to-right order. This incorrect placement leads to the complex zig-zag structure of a
+$k$-FAT obstruction. 
+\item The structure of the sections of a Q-node $Q$ can be very intricate. Suppose that we contract
+in $G[Q]$ the sections of each subtree $T_i$ into one vertex. Then we get an interval graph which
+has a unique interval representation up to flipping the real line. Such interval graphs have been
+extensively studied, see for instance~\cite{hanlon,fishburn_unique,prescribed_lengths_npc}.
+Therefore, our structural results needed to find minimal obstructions may be of independent
+interest.
+\end{packed_enum}
+
+\heading{Structural Open Problems.}
+The first open problem we propose is a characterization of minimal obstructions for other graph
+classes. We select those classes for which polynomial-time algorithms are
+known~\cite{cfk,kkkw,kkorssv}.  \emph{Circle graphs} (\circle) are intersection graphs of chords of
+a circle. \emph{Function graphs} (\fun) are intersection graphs of continuous functions $f : [0,1]
+\to \mathbb R$, and \emph{permutation graphs} (\perm) are function graphs which can be represented
+by linear functions.  \emph{Proper interval graphs} (\pint) are intersection graphs of closed
+intervals in which no interval is a proper subset of another interval. \emph{Unit interval graphs}
+(\uint) are intersection graphs of closed intervals of length one. 
+
+\begin{problem} \label{prob:other_minimal_obstructions}
+What are the minimal obstructions for partial representation extension of the classes \circle, \fun,
+\perm, \pint, and \uint?
+\end{problem}
+
+The second open problem involves a generalization of partial representations called \emph{bounded
+representations}~\cite{bko,kkorssv,soulignac}. Suppose that a graph $G$ is given together with two closed
+intervals $L_v$ and $R_v$ for every vertex $v \in V(G)$. A \emph{bounded representation} of $G$ is a
+representation such that $\ell(v) \in L_v$ and $r(v) \in R_v$ for every vertex $v \in V(G)$. We call
+bounds \emph{solvable} if and only if there exists a bounded representation.
+This generalizes partial representations: we can use singletons $L_v$ and $R_v$ for pre-drawn 
+intervals and put them equal $\mathbb R$ for the others.
+
+\begin{problem} \label{prob:bounded_representations}
+What are minimal obstructions making bounds for interval graphs unsolvable?
+\end{problem}
+
+\heading{Algorithmic Open Problems.}
+We have described a linear-time certifying algorithm that can find one of the minimal obstructions
+in a non-extendible partial representation. There are several related computational problems,
+suggested by Jan Kratochv\'{\i}l, for which the complexity is open:
+
+\begin{problem} \label{prob:obstruction_testing}
+What is the computational complexity of the problem of testing whether a given minimal obstruction
+is contained in $G$ and $\calR'$?
+\end{problem}
+
+Since a minimal obstruction contains at most four pre-drawn intervals, we can test over all subsets
+of at most four pre-drawn intervals whether they form an obstruction (say, by freeing the rest of
+them and testing whether the modified partial representation is extendible). If $k$ is fixed, we can
+test whether the subgraph of a given obstruction is contained in $G$. Given a triple $x_k$, $y_k$
+and $z_k$ forming a $k$-FAT obstruction, the proof of k-FAT Lemma~\ref{lem:k_fat} and the algorithm
+of Lemma~\ref{lem:computing_k_fat} constructs it while minimizing $k$. The approach needs to be
+changed to check whether they also form an $\ell$-FAT obstruction, for $\ell > k$.
+
+The next problem generalizes the partial representation extension problem.
+
+\begin{problem} \label{prob:representation_modification}
+What is the computational complexity of testing whether at most $\ell$ pre-drawn intervals can be
+freed to make a partial representation extendible $\calR'$?
+\end{problem}
+
+Similar problems are usually \cNP-complete. On the other hand, we propose the following reformulation
+which might lead to a polynomial-time algorithm. Every minimal obstruction contains at most four
+pre-drawn intervals. Let $P$ be the set of pre-drawn intervals, and let $\calS$ consist of all
+subsets of $P$ of size at most four which form an obstruction.  We can clearly compute $\calS$ in
+polynomial time. Then the problem above is equivalent to finding a minimal hitting set of $P$ and
+$\calS$. This problem is in general \cNP-complete, but the extra structure given by the MPQ-tree
+might make it tractable.
+
+\begin{problem} \label{prob:graph_modification}
+What is the complexity of testing whether it is possible to remove at most $\ell$ vertices from an
+interval graph $G$ to make a partial representation extendible $\calR'$?
+\end{problem}
+
+This problem is fundamentally different from Problem~\ref{prob:representation_modification}, in
+which the partial representation $\calR'$ is modified. In this problem, we modify the graph $G$
+itself, changing its structure. When we remove a pre-drawn vertex, we also remove its pre-drawn
+interval from the partial representation. We note that the assumption that $G$ is an interval graph
+is important. For general graphs $G$, the problem is known to be \cNP-complete even when $\calR' =
+\emptyset$~\cite{node_deletion_hereditary}.

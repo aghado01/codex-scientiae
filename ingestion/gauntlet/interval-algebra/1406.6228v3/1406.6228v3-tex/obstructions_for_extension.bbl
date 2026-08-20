@@ -1,0 +1,196 @@
+\begin{thebibliography}{10}
+
+\bibitem{extending_planar}
+P.~Angelini, G.~D. Battista, F.~Frati, V.~Jel\'{\i}nek, J.~Kratochv\'{\i}l,
+  M.~Patrignani, and I.~Rutter.
+\newblock Testing planarity of partially embedded graphs.
+\newblock In {\em SODA'10}, pages 202--221, 2010.
+
+\bibitem{bko}
+M.~Balko, P.~Klav\'{i}k, and Y.~Otachi.
+\newblock Bounded representations of interval and proper interval graphs.
+\newblock In {\em ISAAC}, volume 8283 of {\em LNCS}, pages 535--546. Springer,
+  2013.
+
+\bibitem{benzer_interval_graphs}
+S.~Benzer.
+\newblock On the topology of the genetic fine structure.
+\newblock {\em Proc. Nat. Acad. Sci. U.S.A.}, 45:1607--1620, 1959.
+
+\bibitem{blas_rutter}
+T.~Bl{\"a}sius and I.~Rutter.
+\newblock Simultaneous {PQ}-ordering with applications to constrained embedding
+  problems.
+\newblock In {\em SODA'13}, pages 1030--1043, 2013.
+
+\bibitem{PQ_trees}
+K.~Booth and G.~Lueker.
+\newblock Testing for the consecutive ones property, interval graphs, and
+  planarity using {PQ}-tree algorithms.
+\newblock {\em J. Comput. System Sci.}, 13:335--379, 1976.
+
+\bibitem{contact_planar_ext}
+S.~Chaplick, P.~Dorbec, J.~Kratochvíl, M.~Montassier, and J.~Stacho.
+\newblock Contact representations of planar graphs: Extending a partial
+  representation is hard.
+\newblock In {\em WG'14}, volume 8747 of {\em LNCS}, pages 139--151. 2014.
+
+\bibitem{cfk}
+S.~Chaplick, R.~Fulek, and P.~Klav\'{\i}k.
+\newblock Extending partial representations of circle graphs.
+\newblock In {\em Graph Drawing}, volume 8242 of {\em LNCS}, pages 131--142.
+  Springer, 2013.
+
+\bibitem{colbourn_booth}
+C.~J. Colbourn and K.~S. Booth.
+\newblock Linear times automorphism algorithms for trees, interval graphs, and
+  planar graphs.
+\newblock {\em SIAM J. Comput.}, 10(1):203--225, 1981.
+
+\bibitem{LBFS_int}
+D.~G. Corneil, S.~Olariu, and L.~Stewart.
+\newblock The {LBFS} structure and recognition of interval graphs.
+\newblock {\em SIAM Journal on Discrete Mathematics}, 23(4):1905--1953, 2009.
+
+\bibitem{fishburn_unique}
+P.~C. Fishburn.
+\newblock A characterization of uniquely representable interval graphs.
+\newblock {\em Discrete Applied Mathematics}, 12:191--194, 1985.
+
+\bibitem{fishburn}
+P.~C. Fishburn.
+\newblock Interval graphs and interval orders.
+\newblock {\em Discrete mathematics}, 55(2):135--149, 1985.
+
+\bibitem{maximal_cliques}
+D.~R. Fulkerson and O.~A. Gross.
+\newblock Incidence matrices and interval graphs.
+\newblock {\em Pac. J. Math.}, 15:835--855, 1965.
+
+\bibitem{hajos_interval_graphs}
+G.~Haj{\'o}s.
+\newblock {\"U}ber eine {A}rt von {G}raphen.
+\newblock {\em Internat. Math. News}, 11:65, 1957.
+
+\bibitem{hanlon}
+P.~Hanlon.
+\newblock Counting interval graphs.
+\newblock {\em Transactions of the American Mathematical Society},
+  272(2):383--426, 1982.
+
+\bibitem{kuratowski_ext}
+V.~Jel\'{\i}nek, J.~Kratochv\'{\i}l, and I.~Rutter.
+\newblock A kuratowski-type theorem for planarity of partially embedded graphs.
+\newblock {\em Comput. Geom.}, 46(4):466--492, 2013.
+
+\bibitem{karp_hybridization}
+R.~M. Karp.
+\newblock Mapping the genome: Some combinatorial problems arising in molecular
+  biology.
+\newblock In {\em Proceedings of the Twenty-fifth Annual ACM Symposium on
+  Theory of Computing}, STOC '93, pages 278--285, 1993.
+
+\bibitem{kendall}
+D.~G. Kendall.
+\newblock Incidence matrices, interval graphs and seriation in archaeology.
+\newblock {\em Pac. J. Math}, 28(3):565--570, 1969.
+
+\bibitem{kkkw}
+P.~Klav{\'i}k, J.~Kratochv{\'i}l, T.~Krawczyk, and B.~Walczak.
+\newblock Extending partial representations of function graphs and permutation
+  graphs.
+\newblock In {\em ESA}, volume 7501 of {\em LNCS}, pages 671--682. Springer,
+  2012.
+
+\bibitem{kkorssv}
+P.~Klav\'{\i}k, J.~Kratochv\'{\i}l, Y.~Otachi, I.~Rutter, T.~Saitoh,
+  M.~Saumell, and T.~Vysko\v{c}il.
+\newblock Extending partial representations of proper and unit interval graphs.
+\newblock In {\em SWAT}, volume 8503 of {\em LNCS}, pages 253--264. Springer,
+  2014.
+
+\bibitem{kkos}
+P.~Klav\'{\i}k, J.~Kratochv\'{\i}l, Y.~Otachi, and T.~Saitoh.
+\newblock Extending partial representations of subclasses of chordal graphs.
+\newblock In {\em ISAAC}, volume 7676 of {\em LNCS}, pages 444--454. Springer,
+  2012.
+
+\bibitem{kkosv}
+P.~Klav\'{\i}k, J.~Kratochv\'{\i}l, Y.~Otachi, T.~Saitoh, and T.~Vysko\v{c}il.
+\newblock Extending partial representations of interval graphs.
+\newblock {\em CoRR}, abs/1306.2182, 2013.
+
+\bibitem{kkv}
+P.~Klav\'{\i}k, J.~Kratochv\'{\i}l, and T.~Vysko\v{c}il.
+\newblock Extending partial representations of interval graphs.
+\newblock In {\em TAMC}, volume 6648 of {\em LNCS}, pages 276--285. Springer,
+  2011.
+
+\bibitem{kos}
+P.~Klav\'{\i}k, Y.~Otachi, and J.~\v{S}ejnoha.
+\newblock On the classes of interval graphs of limited nesting and count of
+  lengths.
+\newblock {\em CoRR}, abs/1510.03998, 2015.
+
+\bibitem{ks}
+P.~Klav\'{\i}k and M.~Saumell.
+\newblock Minimal obstructions for partial representations of interval graphs.
+\newblock In {\em ISAAC}, volume 8889 of {\em Lecture Notes in Computer
+  Science}, pages 401--413, 2014.
+
+\bibitem{korte_mohring}
+N.~Korte and R.~M{\"o}hring.
+\newblock An incremental linear-time algorithm for recognizing interval graphs.
+\newblock {\em SIAM J. Comput.}, 18(1):68--81, 1989.
+
+\bibitem{lb_graphs}
+C.~Lekkerkerker and D.~Boland.
+\newblock Representation of finite graphs by a set of intervals on the real
+  line.
+\newblock {\em Fund. Math.}, 51:45--64, 1962.
+
+\bibitem{node_deletion_hereditary}
+J.~M. Lewis and M.~Yannakakis.
+\newblock The node-deletion problem for hereditary properties is np-complete.
+\newblock {\em Journal of Computer and System Sciences}, 20(2):219--230, 1980.
+
+\bibitem{finding_lb_graphs}
+N.~Lindzey and R.~M. McConnell.
+\newblock On finding {T}ucker submatrices and {L}ekker\-kerker-{B}oland
+  subgraphs.
+\newblock In {\em Graph-Theoretic Concepts in Computer Science}, volume 8165 of
+  {\em Lecture Notes in Computer Science}, pages 345--357. 2013.
+
+\bibitem{straight_planar_npcomplete}
+M.~Patrignani.
+\newblock On extending a partial straight-line drawing.
+\newblock {\em Int. J. Found. Comput. Sci.}, 17(5):1061--1070, 2006.
+
+\bibitem{prescribed_lengths_npc}
+I.~Pe'er and R.~Shamir.
+\newblock Realizing interval graphs with size and distance constraints.
+\newblock {\em SIAM Journal on Discrete Mathematics}, 10(4):662--687, 1997.
+
+\bibitem{roberts_discrete_models}
+F.~S. Roberts.
+\newblock {\em Discrete Mathematical Models, with Applications to Social,
+  Biological, and Environmental Problems}.
+\newblock Prentice-Hall, Englewood Cliffs, 1976.
+
+\bibitem{recog_chordal_graphs}
+D.~J. Rose, R.~E. Tarjan, and G.~S. Lueker.
+\newblock Algorithmic aspects of vertex elimination on graphs.
+\newblock {\em SICOMP}, 5(2):266--283, 1976.
+
+\bibitem{soulignac}
+F.~J. Soulignac.
+\newblock Minimal and short representations of unit interval and unit
+  circular-arc graphs.
+\newblock {\em CoRR}, abs/1408.3443, 2014.
+
+\bibitem{stoffers}
+K.~E. Stoffers.
+\newblock Scheduling of traffic lights--a new approach.
+\newblock {\em Transportation Research}, 2:199--234, 1968.
+
+\end{thebibliography}

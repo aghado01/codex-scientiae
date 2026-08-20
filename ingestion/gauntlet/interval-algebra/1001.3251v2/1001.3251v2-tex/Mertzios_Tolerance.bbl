@@ -1,0 +1,147 @@
+\begin{thebibliography}{10}
+
+\bibitem{Altschul90}
+S.~F. Altschul, W.~Gish, W.~Miller, E.~W. Myers, and D.~J. Lipman.
+\newblock Basic local alignment search tool.
+\newblock {\em Journal of molecular biology}, 215(3):403--410, 1990.
+
+\bibitem{BFI95}
+K.~P. Bogart, P.~C. Fishburn, G.~Isaak, and L.~Langley.
+\newblock Proper and unit tolerance graphs.
+\newblock {\em Discrete Applied Mathematics}, 60(1-3):99--117, 1995.
+
+\bibitem{classes99}
+A.~Brandst\"{a}dt, V.~B. Le, and J.~P. Spinrad.
+\newblock {\em Graph classes: a survey}.
+\newblock {SIAM} Monographs on Discrete Mathematics and Applications, 1999.
+
+\bibitem{Bus06}
+A.~H. Busch.
+\newblock A characterization of triangle-free tolerance graphs.
+\newblock {\em Discrete Applied Mathematics}, 154(3):471--477, 2006.
+
+\bibitem{BuIs07}
+A.~H. Busch and G.~Isaak.
+\newblock Recognizing bipartite tolerance graphs in linear time.
+\newblock In {\em Proceedings of the 33rd International Workshop on
+  Graph-Theoretic Concepts in Computer Science (WG)}, pages 12--20, 2007.
+
+\bibitem{Cheah96}
+F.~Cheah and D.~G. Corneil.
+\newblock On the structure of trapezoid graphs.
+\newblock {\em Discrete Applied Mathematics}, 66(2):109--133, 1996.
+
+\bibitem{Communication09}
+F.~Cheah and D.~G. Corneil, 2009.
+\newblock Personal communication.
+
+\bibitem{Fel98}
+S.~Felsner.
+\newblock Tolerance graphs and orders.
+\newblock {\em Journal of Graph Theory}, 28:129--140, 1998.
+
+\bibitem{FishburnTrotter99}
+P.~C. Fishburn and W.~Trotter.
+\newblock Split semiorders.
+\newblock {\em Discrete Mathematics}, 195:111--126, 1999.
+
+\bibitem{Golumbic04}
+M.~C. Golumbic.
+\newblock {\em Algorithmic graph theory and perfect graphs (Annals of Discrete
+  Mathematics, Vol. 57)}.
+\newblock North-Holland Publishing Co., 2nd edition, 2004.
+
+\bibitem{GoMo82}
+M.~C. Golumbic and C.~L. Monma.
+\newblock A generalization of interval graphs with tolerances.
+\newblock In {\em Proceedings of the 13th Southeastern Conference on
+  Combinatorics, Graph Theory and Computing, Congressus Numerantium 35}, pages
+  321--331, 1982.
+
+\bibitem{GolumbicMonma84}
+M.~C. Golumbic, C.~L. Monma, and W.~T. Trotter.
+\newblock Tolerance graphs.
+\newblock {\em Discrete Applied Mathematics}, 9(2):157--170, 1984.
+
+\bibitem{GolSi02}
+M.~C. Golumbic and A.~Siani.
+\newblock Coloring algorithms for tolerance graphs: reasoning and scheduling
+  with interval constraints.
+\newblock In {\em Proceedings of the Joint International Conferences on
+  Artificial Intelligence, Automated Reasoning, and Symbolic Computation
+  (AISC/Calculemus)}, pages 196--207, 2002.
+
+\bibitem{GolTol04}
+M.~C. Golumbic and A.~N. Trenk.
+\newblock {\em Tolerance graphs}.
+\newblock Cambridge Studies in Advanced Mathematics, 2004.
+
+\bibitem{HaSh04}
+R.~B. Hayward and R.~Shamir.
+\newblock A note on tolerance graph recognition.
+\newblock {\em Discrete Applied Mathematics}, 143(1-3):307--311, 2004.
+
+\bibitem{IsaakNT03}
+G.~Isaak, K.~L. Nyman, and A.~N. Trenk.
+\newblock A hierarchy of classes of bounded bitolerance orders.
+\newblock {\em Ars Combinatoria}, 69, 2003.
+
+\bibitem{KKL+06}
+M.~Kaufmann, J.~Kratochv\'{\i}l, K.~A. Lehmann, and A.~R. Subramanian.
+\newblock Max-tolerance graphs as intersection graphs: cliques, cycles, and
+  recognition.
+\newblock In {\em Proceedings of the 17th annual {ACM-SIAM} symposium on
+  Discrete Algorithms ({SODA})}, pages 832--841, 2006.
+
+\bibitem{KeBe04}
+J.~M. Keil and P.~Belleville.
+\newblock Dominating the complements of bounded tolerance graphs and the
+  complements of trapezoid graphs.
+\newblock {\em Discrete Applied Mathematics}, 140(1-3):73--89, 2004.
+
+\bibitem{Langley93}
+L.~Langley.
+\newblock {\em Interval tolerance orders and dimension}.
+\newblock PhD thesis, Dartmouth College, 1993.
+
+\bibitem{MaSpinrad94}
+T.-H. Ma and J.~P. Spinrad.
+\newblock On the 2-chain subgraph cover and related problems.
+\newblock {\em Journal of Algorithms}, 17(2):251--268, 1994.
+
+\bibitem{MC-Trapezoid}
+G.~B. Mertzios and D.~G. Corneil.
+\newblock Vertex splitting and the recognition of trapezoid graphs.
+\newblock Technical Report AIB-2009-16, Department of Computer Science, RWTH
+  Aachen University, September 2009.
+
+\bibitem{MSZ-Model-SIDMA-09}
+G.~B. Mertzios, I.~Sau, and S.~Zaks.
+\newblock A new intersection model and improved algorithms for tolerance
+  graphs.
+\newblock {\em {SIAM} Journal on Discrete Mathematics}, 23(4):1800--1813, 2009.
+
+\bibitem{MertziosSauZaksAIB0905}
+G.~B. Mertzios, I.~Sau, and S.~Zaks.
+\newblock The recognition of tolerance and bounded tolerance graphs is
+  {NP}-complete.
+\newblock Technical Report AIB-2009-06, Department of Computer Science, RWTH
+  Aachen University, April 2009.
+
+\bibitem{NaMa92}
+G.~Narasimhan and R.~Manber.
+\newblock Stability and chromatic number of tolerance graphs.
+\newblock {\em Discrete Applied Mathematics}, 36:47--56, 1992.
+
+\bibitem{Ryan98}
+S.~P. Ryan.
+\newblock Trapezoid order classification.
+\newblock {\em Order}, 15:341--354, 1998.
+
+\bibitem{Spinrad03}
+J.~P. Spinrad.
+\newblock {\em Efficient graph representations}, volume~19 of {\em Fields
+  Institute Monographs}.
+\newblock American Mathematical Society, 2003.
+
+\end{thebibliography}

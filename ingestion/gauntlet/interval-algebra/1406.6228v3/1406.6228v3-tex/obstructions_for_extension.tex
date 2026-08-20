@@ -1,0 +1,213 @@
+\documentclass[envcountsect,envcountsame]{llncs}
+\usepackage{makeidx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage[dvips]{graphicx}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{comment}
+\usepackage{color}
+\usepackage{array,amssymb,amsmath,amsbsy}
+\usepackage{enumerate}
+\usepackage[bottom]{footmisc}
+\usepackage[all,cmtip]{xy}
+\usepackage{amsbsy}
+\usepackage{a4wide}
+\usepackage{hyperref}
+\usepackage{simplemargins}
+
+\setlength{\smpagewidth}{21cm}
+\setlength{\smpageheight}{28cm}
+\setallmargins{1in}
+
+\setlength{\textfloatsep}{10pt}
+\setlength{\abovecaptionskip}{5pt}
+\setlength{\belowcaptionskip}{-2.5pt}
+
+\setcounter{tocdepth}{2}
+\makeatletter
+\renewcommand*\l@author[2]{}
+\renewcommand*\l@title[2]{}
+\makeatletter
+\newcommand{\nocontentsline}[3]{}
+\newcommand{\tocless}[2]{\bgroup\let\addcontentsline=\nocontentsline#1{#2}\egroup}
+
+\pagestyle{plain}
+
+\newenvironment{packed_enum}{
+	\begin{enumerate}
+		\setlength{\itemsep}{1pt}
+	    \setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+\newenvironment{packed_itemize}{
+	\begin{itemize}
+		\setlength{\itemsep}{1pt}
+	    \setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newenvironment{packed_head_enum}[1]{
+	\begin{enumerate}[#1]
+		\setlength{\itemsep}{1pt}
+	    \setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+\newenvironment{packed_head_itemize}[1]{
+	\begin{itemize}[#1]
+		\setlength{\itemsep}{1pt}
+	    \setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+
+\newcommand{\heading}[1]{\medskip\par\noindent{\bf #1}}
+
+\def\computationproblem#1#2#3#4{% {problem_name}{input}{output}
+	\vskip 1ex
+	\begin{center}
+	\fbox{\begin{tabular}{rp{#4}}
+	{\bf Problem:\enspace}&#1\\
+	{\bf Input:\enspace}&#2\\
+	{\bf Output:\enspace}&#3\\
+	\end{tabular}}
+	\end{center}
+	\vskip 1ex
+}
+
+% caligraphic symbols
+\def\calA{{\cal A}} \def\calB{{\cal B}} \def\calC{{\cal C}} \def\calD{{\cal D}}
+\def\calE{{\cal E}} \def\calF{{\cal F}} \def\calG{{\cal G}} \def\calH{{\cal H}}
+\def\calI{{\cal I}} \def\calJ{{\cal J}} \def\calK{{\cal K}} \def\calL{{\cal L}}
+\def\calM{{\cal M}} \def\calN{{\cal N}} \def\calO{{\cal O}} \def\calP{{\cal P}}
+\def\calQ{{\cal Q}} \def\calR{{\cal R}} \def\calS{{\cal S}} \def\calT{{\cal T}}
+\def\calU{{\cal U}} \def\calV{{\cal V}} \def\calW{{\cal W}} \def\calX{{\cal X}}
+\def\calY{{\cal Y}} \def\calZ{{\cal Z}}
+
+\def\frakA{{\mathfrak A}} \def\frakB{{\mathfrak B}} \def\frakC{{\mathfrak C}} \def\frakD{{\mathfrak D}}
+\def\frakE{{\mathfrak E}} \def\frakF{{\mathfrak F}} \def\frakG{{\mathfrak G}} \def\frakH{{\mathfrak H}}
+\def\frakI{{\mathfrak I}} \def\frakJ{{\mathfrak J}} \def\frakK{{\mathfrak K}} \def\frakL{{\mathfrak L}}
+\def\frakM{{\mathfrak M}} \def\frakN{{\mathfrak N}} \def\frakO{{\mathfrak O}} \def\frakP{{\mathfrak P}}
+\def\frakQ{{\mathfrak Q}} \def\frakR{{\mathfrak R}} \def\frakS{{\mathfrak S}} \def\frakT{{\mathfrak T}}
+\def\frakU{{\mathfrak U}} \def\frakV{{\mathfrak V}} \def\frakW{{\mathfrak W}} \def\frakX{{\mathfrak X}}
+\def\frakY{{\mathfrak Y}} \def\frakZ{{\mathfrak Z}}
+
+% computational problem
+\def\cP{\hbox{\rm \sffamily P}}
+\def\cNP{\hbox{\rm \sffamily NP}}
+\def\cGI{\hbox{\rm \sffamily GI}}
+\def\cW#1{\hbox{\rm \sffamily W[#1]}}
+\def\cXP{\hbox{\rm \sffamily XP}}
+\def\cFPT{\hbox{\rm \sffamily FPT}}
+
+% general symbols
+\def\eps{\varepsilon}
+\def\O{\mathcal{O}{}}
+\def\blt{\blacktriangleleft}
+\def\bgt{\blacktriangleright}
+\def\wlt{\vartriangleleft}
+\def\wgt{\vartriangleright}
+\def\wle{\trianglelefteq}
+\def\wge{\trianglerighteq}
+\def\clql{\mathord\curvearrowleft}
+\def\clqr{\mathord\curvearrowright}
+\def\da{\downarrow}
+\def\cp{\textrm{\rm cp}}
+\def\LH{\textrm{\rm LH}}
+\def\UH{\textrm{\rm UH}}
+\def\inter#1{\left<#1\right>}
+\def\maxinter#1{\mathord{\leftarrow}\!\!\left<#1\right>\!\!\mathord{\rightarrow}}
+\def\mininter#1{\mathord{\rightarrow}\!\!\left<#1\right>\!\!\mathord{\leftarrow}}
+\def\endlft{{\mathord{\reflectbox{\ensuremath{\scriptstyle\mapsto}}}}}
+\def\startrt{{\mathord{\mapsto}}}
+\def\lft{\leftarrow}
+\def\rt{\rightarrow}
+
+% computational problems
+\def\recog{\textsc{Recog}}
+\def\ext{\textsc{RepExt}}
+\def\brep{\textsc{BoundRep}}
+\def\sim{\textsc{Sim}}
+\def\inclusion{\textsc{Inclusion}}
+\def\sub{\textsc{SubSet}}
+\def\super{\textsc{SuperSet}}
+
+% the graph classes
+\def\int{\hbox{\bf \rm \sffamily INT}}
+\def\pint{\hbox{\bf \rm \sffamily PROPER INT}}
+\def\uint{\hbox{\bf \rm \sffamily UNIT INT}}
+\def\circle{\hbox{\bf \rm \sffamily CIRCLE}}
+\def\fun{\hbox{\bf \rm \sffamily FUN}}
+\def\perm{\hbox{\bf \rm \sffamily PERM}}
+\def\ca{\hbox{\bf \rm \sffamily CA}}
+\def\hca{\hbox{\bf \rm \sffamily HCA}}
+\def\chor{\hbox{\bf \rm \sffamily CHOR}}
+\def\atfree{\hbox{\bf \rm \sffamily AT-FREE}}
+
+\newcounter{lth}
+\setcounter{lth}{1}
+\title{Minimal Obstructions for Partial Representations\\of Interval Graphs\thanks{The conference
+version of this paper appeared in ISAAC 2014~\cite{ks}. For an interactive structural diagram of
+this paper, see \url{http://pavel.klavik.cz/orgpad/minobstr.html} (supported for Firefox and Google
+Chrome).}}
+
+\author{Pavel Klav\'{\i}k\inst{1}${}^,$\thanks{%
+			Supported by CE-ITI (P202/12/G061 of GA\v{C}R) and Charles University as GAUK 196213.
+			A part of this work was carried out during a visit at ULB in Brussels, funded by a
+			EUROCORES Short Term Visit grant.}
+		\and Maria Saumell\inst{2}${}^,$\thanks{%
+			Supported by project LO1506 of the Czech Ministry of Education, Youth and Sports, project NEXLIZ - CZ.1.07/2.3.00/30.0038 co-financed by
+			European Social Fund and the state budget of Czech Republic,
+			and ESF EuroGIGA project ComPoSe as F.R.S.-FNRS - EUROGIGA NR 13604.}
+		}
+
+\institute{Computer Science Institute, Charles University in Prague,\\Czech Republic.
+			E-mail: \texttt{klavik@iuuk.mff.cuni.cz}\\[0.75ex]\and
+		Department of Mathematics and European Centre of Excellence NTIS,\\University of West Bohemia, Pilsen, Czech Republic.
+			E-mail: \texttt{saumell@kma.zcu.cz}.}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\emph{Interval graphs} are intersection graphs of closed intervals. A~generalization of recognition
+called \emph{partial representation extension} was introduced recently. The input gives an interval
+graph with a \emph{partial representation} specifying some pre-drawn intervals.  We ask whether the
+remaining intervals can be added to create an \emph{extending representation}.  Two linear-time
+algorithms are known for solving this problem.
+
+\hskip 1em In this paper, we characterize the \emph{minimal obstructions} which make partial
+representations non-extendible. This generalizes Lekkerkerker and Boland's characterization of
+the minimal forbidden induced subgraphs of interval graphs. Each minimal obstruction consists of a
+forbidden induced subgraph together with at most four pre-drawn intervals. A Helly-type result
+follows: A partial representation is extendible if and only if every quadruple of pre-drawn
+intervals is extendible by itself. Our characterization leads to a linear-time certifying algorithm for
+partial representation extension.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input introduction
+\input definition_of_obstructions
+\input maximal_cliques
+\input interval_orders
+\input strategy
+\input leaves
+\input p_nodes
+\input q_nodes
+\input main_result
+\input conclusions
+
+\heading{Acknowledgment.} We would like to thank to Jaroslav Ne\v{s}et\v{r}il for suggesting us the
+problem of minimal obstructions for partial representation extension.
+
+%\nocite{*}
+\bibliographystyle{plain}
+\bibliography{obstructions_for_extension}
+
+\end{document}

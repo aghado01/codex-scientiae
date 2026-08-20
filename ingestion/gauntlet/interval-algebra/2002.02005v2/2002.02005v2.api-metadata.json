@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2002.02005v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2002.02005v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "On hybrid order dimension",
+      "authors": [
+        "Athanasios Andrikopoulos"
+      ],
+      "abstract": "The notion of interval order was introduced by Norbert Wiener \\cite{wie} in order to clarify the relation between the notion of an instant of time and that of a period of time. This was a problem on which Bertrand Russell \\cite{rus} worked at the time. Interval orders play an important role in many areas of pure and applied mathematics, graph theory, computer science and engineering. Special cases of interval order are the semiorder and linear order. All of these notions are especially important in the study of linear-interval and linear-semiorder dimension of a binary relation. This kind of dimension, which we call {\\it hybrid order dimension}, gives a common generalization of linear order and interval order (semiorder) dimension and is arguably the most important measure of ordered set complexity. In this paper, we present three main results of the theory of hybrid order dimension. More specifically, we obtain necessary and sufficient conditions for a binary relation to have an interval order (resp. linear-interval order, linear-simiorder) extension, as well as an interval order realizer of interval orders (resp. linear-interval orders, linear-simiorders). We also obtain a characterization of the interval order (resp. linear-interval order, linear-simiorder) dimension. Because a binary relation's hybrid order dimension is less than its (linear) order dimension, these results will be able to improve known results in graph theory and computer science by identifying more efficient algorithms.",
+      "doi": null,
+      "arxiv_id": "2002.02005v2",
+      "published": "2020-02-04T15:40:11Z",
+      "updated": "2024-03-07T22:22:26Z",
+      "year": 2020,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2002.02005v2",
+      "pdf_url": "https://arxiv.org/pdf/2002.02005v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.CO"
+      ],
+      "external_ids": {
+        "arxiv": "2002.02005v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2002.02005v2",
+          "url": "https://arxiv.org/abs/2002.02005v2",
+          "doi": null,
+          "arxiv_id": "2002.02005v2",
+          "published": "2020-02-04T15:40:11Z",
+          "updated": "2024-03-07T22:22:26Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2002.02005v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-20T11:38:15.120048Z",
+      "sha256": "45f4e9a53bd7dce56a0f587f6fc43cfe9b351d0e0673e2026e6638b2fe9fb99e",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvanVzVGRFb1c4TCtidTFnNFlqVCtCUCsrZGVJPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjAwMi4wMjAwNXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTIwVDExOjM4OjAzWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMDAyLjAyMDA1djIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjAwMi4wMjAwNXYyPC9pZD4KICAgIDx0aXRsZT5PbiBoeWJyaWQgb3JkZXIgZGltZW5zaW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjQtMDMtMDdUMjI6MjI6MjZaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIwMDIuMDIwMDV2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIwMDIuMDIwMDV2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlRoZSBub3Rpb24gb2YgaW50ZXJ2YWwgb3JkZXIgd2FzIGludHJvZHVjZWQgYnkgTm9yYmVydCBXaWVuZXIgXGNpdGV7d2llfSBpbiBvcmRlciB0byBjbGFyaWZ5IHRoZSByZWxhdGlvbiBiZXR3ZWVuIHRoZSBub3Rpb24gb2YgYW4gaW5zdGFudCBvZiB0aW1lIGFuZCB0aGF0IG9mIGEgcGVyaW9kIG9mIHRpbWUuIFRoaXMgd2FzIGEgcHJvYmxlbSBvbiB3aGljaCBCZXJ0cmFuZCBSdXNzZWxsIFxjaXRle3J1c30gd29ya2VkIGF0IHRoZSB0aW1lLiBJbnRlcnZhbCBvcmRlcnMgcGxheSBhbiBpbXBvcnRhbnQgcm9sZSBpbiBtYW55IGFyZWFzIG9mIHB1cmUgYW5kIGFwcGxpZWQgbWF0aGVtYXRpY3MsIGdyYXBoIHRoZW9yeSwgY29tcHV0ZXIgc2NpZW5jZSBhbmQgZW5naW5lZXJpbmcuIFNwZWNpYWwgY2FzZXMgb2YgaW50ZXJ2YWwgb3JkZXIgYXJlIHRoZSBzZW1pb3JkZXIgYW5kIGxpbmVhciBvcmRlci4gQWxsIG9mIHRoZXNlIG5vdGlvbnMgYXJlIGVzcGVjaWFsbHkgaW1wb3J0YW50IGluIHRoZSBzdHVkeSBvZiBsaW5lYXItaW50ZXJ2YWwgYW5kIGxpbmVhci1zZW1pb3JkZXIgZGltZW5zaW9uIG9mIGEgYmluYXJ5IHJlbGF0aW9uLiBUaGlzIGtpbmQgb2YgZGltZW5zaW9uLCB3aGljaCB3ZSBjYWxsIHtcaXQgaHlicmlkIG9yZGVyIGRpbWVuc2lvbn0sIGdpdmVzIGEgY29tbW9uIGdlbmVyYWxpemF0aW9uIG9mIGxpbmVhciBvcmRlciBhbmQgaW50ZXJ2YWwgb3JkZXIgKHNlbWlvcmRlcikgZGltZW5zaW9uIGFuZCBpcyBhcmd1YWJseSB0aGUgbW9zdCBpbXBvcnRhbnQgbWVhc3VyZSBvZiBvcmRlcmVkIHNldCBjb21wbGV4aXR5LiBJbiB0aGlzIHBhcGVyLCB3ZSBwcmVzZW50IHRocmVlIG1haW4gcmVzdWx0cyBvZiB0aGUgdGhlb3J5IG9mIGh5YnJpZCBvcmRlciBkaW1lbnNpb24uIE1vcmUgc3BlY2lmaWNhbGx5LCB3ZSBvYnRhaW4gbmVjZXNzYXJ5IGFuZCBzdWZmaWNpZW50IGNvbmRpdGlvbnMgZm9yIGEgYmluYXJ5IHJlbGF0aW9uIHRvIGhhdmUgYW4gaW50ZXJ2YWwgb3JkZXIgKHJlc3AuIGxpbmVhci1pbnRlcnZhbCBvcmRlciwgbGluZWFyLXNpbWlvcmRlcikgZXh0ZW5zaW9uLCBhcyB3ZWxsIGFzIGFuIGludGVydmFsIG9yZGVyIHJlYWxpemVyIG9mIGludGVydmFsIG9yZGVycyAocmVzcC4gbGluZWFyLWludGVydmFsIG9yZGVycywgbGluZWFyLXNpbWlvcmRlcnMpLiBXZSBhbHNvIG9idGFpbiBhIGNoYXJhY3Rlcml6YXRpb24gb2YgdGhlIGludGVydmFsIG9yZGVyIChyZXNwLiBsaW5lYXItaW50ZXJ2YWwgb3JkZXIsIGxpbmVhci1zaW1pb3JkZXIpIGRpbWVuc2lvbi4gQmVjYXVzZSBhIGJpbmFyeSByZWxhdGlvbidzIGh5YnJpZCBvcmRlciBkaW1lbnNpb24gaXMgbGVzcyB0aGFuIGl0cyAobGluZWFyKSBvcmRlciBkaW1lbnNpb24sIHRoZXNlIHJlc3VsdHMgd2lsbCBiZSBhYmxlIHRvIGltcHJvdmUga25vd24gcmVzdWx0cyBpbiBncmFwaCB0aGVvcnkgYW5kIGNvbXB1dGVyIHNjaWVuY2UgYnkgaWRlbnRpZnlpbmcgbW9yZSBlZmZpY2llbnQgYWxnb3JpdGhtcy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ibWF0aC5DTyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDIwLTAyLTA0VDE1OjQwOjExWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+MjAgcGFnZXMsIDIgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09Im1hdGguQ08iLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkF0aGFuYXNpb3MgQW5kcmlrb3BvdWxvczwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "On hybrid order dimension",
+    "authors": [
+      "Athanasios Andrikopoulos"
+    ],
+    "abstract": "The notion of interval order was introduced by Norbert Wiener \\cite{wie} in order to clarify the relation between the notion of an instant of time and that of a period of time. This was a problem on which Bertrand Russell \\cite{rus} worked at the time. Interval orders play an important role in many areas of pure and applied mathematics, graph theory, computer science and engineering. Special cases of interval order are the semiorder and linear order. All of these notions are especially important in the study of linear-interval and linear-semiorder dimension of a binary relation. This kind of dimension, which we call {\\it hybrid order dimension}, gives a common generalization of linear order and interval order (semiorder) dimension and is arguably the most important measure of ordered set complexity. In this paper, we present three main results of the theory of hybrid order dimension. More specifically, we obtain necessary and sufficient conditions for a binary relation to have an interval order (resp. linear-interval order, linear-simiorder) extension, as well as an interval order realizer of interval orders (resp. linear-interval orders, linear-simiorders). We also obtain a characterization of the interval order (resp. linear-interval order, linear-simiorder) dimension. Because a binary relation's hybrid order dimension is less than its (linear) order dimension, these results will be able to improve known results in graph theory and computer science by identifying more efficient algorithms.",
+    "identifiers": {
+      "arxiv": "2002.02005",
+      "arxiv_versioned": "2002.02005v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2002.02005v2"
+      }
+    },
+    "categories": [
+      "math.CO"
+    ],
+    "concepts": [],
+    "primary_category": "math.CO",
+    "published": "2020-02-04T15:40:11Z",
+    "updated": "2024-03-07T22:22:26Z"
+  }
+}

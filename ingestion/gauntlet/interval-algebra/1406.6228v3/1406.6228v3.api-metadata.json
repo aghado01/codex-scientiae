@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "1406.6228v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "1406.6228v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Minimal Obstructions for Partial Representations of Interval Graphs",
+      "authors": [
+        "Pavel Klavík",
+        "Maria Saumell"
+      ],
+      "abstract": "Interval graphs are intersection graphs of closed intervals. A generalization of recognition called partial representation extension was introduced recently. The input gives an interval graph with a partial representation specifying some pre-drawn intervals. We ask whether the remaining intervals can be added to create an extending representation. Two linear-time algorithms are known for solving this problem. In this paper, we characterize the minimal obstructions which make partial representations non-extendible. This generalizes Lekkerkerker and Boland's characterization of the minimal forbidden induced subgraphs of interval graphs. Each minimal obstruction consists of a forbidden induced subgraph together with at most four pre-drawn intervals. A Helly-type result follows: A partial representation is extendible if and only if every quadruple of pre-drawn intervals is extendible by itself. Our characterization leads to a linear-time certifying algorithm for partial representation extension.",
+      "doi": null,
+      "arxiv_id": "1406.6228v3",
+      "published": "2014-06-24T13:15:06Z",
+      "updated": "2015-12-30T07:48:24Z",
+      "year": 2014,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/1406.6228v3",
+      "pdf_url": "https://arxiv.org/pdf/1406.6228v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.CO",
+        "cs.DM"
+      ],
+      "external_ids": {
+        "arxiv": "1406.6228v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "1406.6228v3",
+          "url": "https://arxiv.org/abs/1406.6228v3",
+          "doi": null,
+          "arxiv_id": "1406.6228v3",
+          "published": "2014-06-24T13:15:06Z",
+          "updated": "2015-12-30T07:48:24Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=1406.6228v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-20T11:21:56.846107Z",
+      "sha256": "9eb819a9eb29cc3dce3d3e7aca91fbaae0330338aff126bddc80bfe971d6239c",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvWU9yUitEc1ZyVWpCQjRRdVJleE5aS25lbDNnPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MTQwNi42MjI4djMmYW1wO3N0YXJ0PTAmYW1wO21heF9yZXN1bHRzPTE8L3RpdGxlPgogIDx1cGRhdGVkPjIwMjYtMDgtMjBUMTE6MjE6NDRaPC91cGRhdGVkPgogIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2FwaS9xdWVyeT9zZWFyY2hfcXVlcnk9JmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xJmFtcDtpZF9saXN0PTE0MDYuNjIyOHYzIiB0eXBlPSJhcHBsaWNhdGlvbi9hdG9tK3htbCIvPgogIDxvcGVuc2VhcmNoOml0ZW1zUGVyUGFnZT4xPC9vcGVuc2VhcmNoOml0ZW1zUGVyUGFnZT4KICA8b3BlbnNlYXJjaDp0b3RhbFJlc3VsdHM+MTwvb3BlbnNlYXJjaDp0b3RhbFJlc3VsdHM+CiAgPG9wZW5zZWFyY2g6c3RhcnRJbmRleD4wPC9vcGVuc2VhcmNoOnN0YXJ0SW5kZXg+CiAgPGVudHJ5PgogICAgPGlkPmh0dHA6Ly9hcnhpdi5vcmcvYWJzLzE0MDYuNjIyOHYzPC9pZD4KICAgIDx0aXRsZT5NaW5pbWFsIE9ic3RydWN0aW9ucyBmb3IgUGFydGlhbCBSZXByZXNlbnRhdGlvbnMgb2YgSW50ZXJ2YWwgR3JhcGhzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMTUtMTItMzBUMDc6NDg6MjRaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE0MDYuNjIyOHYzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMTQwNi42MjI4djMiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT4gIEludGVydmFsIGdyYXBocyBhcmUgaW50ZXJzZWN0aW9uIGdyYXBocyBvZiBjbG9zZWQgaW50ZXJ2YWxzLiBBIGdlbmVyYWxpemF0aW9uIG9mIHJlY29nbml0aW9uIGNhbGxlZCBwYXJ0aWFsIHJlcHJlc2VudGF0aW9uIGV4dGVuc2lvbiB3YXMgaW50cm9kdWNlZCByZWNlbnRseS4gVGhlIGlucHV0IGdpdmVzIGFuIGludGVydmFsIGdyYXBoIHdpdGggYSBwYXJ0aWFsIHJlcHJlc2VudGF0aW9uIHNwZWNpZnlpbmcgc29tZSBwcmUtZHJhd24gaW50ZXJ2YWxzLiBXZSBhc2sgd2hldGhlciB0aGUgcmVtYWluaW5nIGludGVydmFscyBjYW4gYmUgYWRkZWQgdG8gY3JlYXRlIGFuIGV4dGVuZGluZyByZXByZXNlbnRhdGlvbi4gVHdvIGxpbmVhci10aW1lIGFsZ29yaXRobXMgYXJlIGtub3duIGZvciBzb2x2aW5nIHRoaXMgcHJvYmxlbS4KICBJbiB0aGlzIHBhcGVyLCB3ZSBjaGFyYWN0ZXJpemUgdGhlIG1pbmltYWwgb2JzdHJ1Y3Rpb25zIHdoaWNoIG1ha2UgcGFydGlhbCByZXByZXNlbnRhdGlvbnMgbm9uLWV4dGVuZGlibGUuIFRoaXMgZ2VuZXJhbGl6ZXMgTGVra2Vya2Vya2VyIGFuZCBCb2xhbmQncyBjaGFyYWN0ZXJpemF0aW9uIG9mIHRoZSBtaW5pbWFsIGZvcmJpZGRlbiBpbmR1Y2VkIHN1YmdyYXBocyBvZiBpbnRlcnZhbCBncmFwaHMuIEVhY2ggbWluaW1hbCBvYnN0cnVjdGlvbiBjb25zaXN0cyBvZiBhIGZvcmJpZGRlbiBpbmR1Y2VkIHN1YmdyYXBoIHRvZ2V0aGVyIHdpdGggYXQgbW9zdCBmb3VyIHByZS1kcmF3biBpbnRlcnZhbHMuIEEgSGVsbHktdHlwZSByZXN1bHQgZm9sbG93czogQSBwYXJ0aWFsIHJlcHJlc2VudGF0aW9uIGlzIGV4dGVuZGlibGUgaWYgYW5kIG9ubHkgaWYgZXZlcnkgcXVhZHJ1cGxlIG9mIHByZS1kcmF3biBpbnRlcnZhbHMgaXMgZXh0ZW5kaWJsZSBieSBpdHNlbGYuIE91ciBjaGFyYWN0ZXJpemF0aW9uIGxlYWRzIHRvIGEgbGluZWFyLXRpbWUgY2VydGlmeWluZyBhbGdvcml0aG0gZm9yIHBhcnRpYWwgcmVwcmVzZW50YXRpb24gZXh0ZW5zaW9uLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJtYXRoLkNPIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuRE0iIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAxNC0wNi0yNFQxMzoxNTowNlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09Im1hdGguQ08iLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlBhdmVsIEtsYXbDrWs8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1hcmlhIFNhdW1lbGw8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Minimal Obstructions for Partial Representations of Interval Graphs",
+    "authors": [
+      "Pavel Klavík",
+      "Maria Saumell"
+    ],
+    "abstract": "Interval graphs are intersection graphs of closed intervals. A generalization of recognition called partial representation extension was introduced recently. The input gives an interval graph with a partial representation specifying some pre-drawn intervals. We ask whether the remaining intervals can be added to create an extending representation. Two linear-time algorithms are known for solving this problem. In this paper, we characterize the minimal obstructions which make partial representations non-extendible. This generalizes Lekkerkerker and Boland's characterization of the minimal forbidden induced subgraphs of interval graphs. Each minimal obstruction consists of a forbidden induced subgraph together with at most four pre-drawn intervals. A Helly-type result follows: A partial representation is extendible if and only if every quadruple of pre-drawn intervals is extendible by itself. Our characterization leads to a linear-time certifying algorithm for partial representation extension.",
+    "identifiers": {
+      "arxiv": "1406.6228",
+      "arxiv_versioned": "1406.6228v3",
+      "doi": null,
+      "external": {
+        "arxiv": "1406.6228v3"
+      }
+    },
+    "categories": [
+      "math.CO",
+      "cs.DM"
+    ],
+    "concepts": [],
+    "primary_category": "math.CO",
+    "published": "2014-06-24T13:15:06Z",
+    "updated": "2015-12-30T07:48:24Z"
+  }
+}

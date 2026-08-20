@@ -1,0 +1,97 @@
+<ipe version="60030" creator="Ipe 6.0 preview 30">
+<info created="D:20090127133325" modified="D:20090403203934" bbox="cropbox"/>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<page gridsize="16">
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<mark layer="alpha" stroke="black" matrix="0.202209 -0.979342 0.979342 0.202209 -171.955 346.195" pos="176 576" shape="1" size="normal" fill="black" pen="normal"/>
+<mark stroke="black" matrix="0.507113 -0.861879 0.861879 0.507113 -178.541 8.78602" pos="0 576" shape="1" size="normal" fill="black" pen="normal"/>
+<mark stroke="black" matrix="0.507113 -0.861879 0.861879 0.507113 -178.541 8.78602" pos="22.6071 598.143" shape="1" size="normal" fill="black" pen="normal"/>
+<mark stroke="black" matrix="0.202209 -0.979342 0.979342 0.202209 -172.25 346.609" pos="154.802 599.356" shape="1" size="normal" fill="black" pen="normal"/>
+<mark stroke="black" matrix="0.990711 0.135981 -0.135981 0.990711 288.023 -254.573" pos="176 576" shape="1" size="normal" fill="black" pen="normal"/>
+<mark stroke="black" matrix="0.990711 0.135981 -0.135981 0.990711 286.993 -254.089" pos="154.802 599.356" shape="1" size="normal" fill="black" pen="normal"/>
+<path stroke="black" matrix="0.466083 0 0 0.499191 317.677 12.9705" pen="normal">
+88.2676 696.654 m
+0.219687 576.037 l
+</path>
+<path stroke="black" matrix="1.05257 0 0 0.323371 291.335 125.412" pen="normal">
+147.088 590.014 m
+88.021 663.709 l
+</path>
+<path stroke="black" matrix="0.297645 0 0 3.74656 375.285 -1869.12" pen="normal">
+175.876 576.324 m
+28.7611 589.6 l
+</path>
+<path stroke="black" matrix="-0.433982 -0.520453 0.984948 -0.823371 38.0552 769.817" pen="normal">
+17.8885 0 0 17.8885 160 408 e
+</path>
+<path stroke="black" matrix="-0.563723 0.376069 -0.71376 -1.06706 818.577 679.017" pen="normal">
+17.8885 0 0 17.8885 160 408 e
+</path>
+<path stroke="black" matrix="0.166536 0.656869 -1.24401 0.317031 813.862 62.5519" pen="normal">
+17.8885 0 0 17.8885 160 408 e
+</path>
+<path stroke="black" matrix="0.280104 0 0 0.300002 317.718 127.711" pen="normal" backarrow="normal">
+88.2676 696.654 m
+0.219687 576.037 l
+</path>
+<path stroke="black" matrix="0.58306 0 0 0.179128 332.662 221.146" pen="normal" backarrow="normal">
+147.088 590.014 m
+88.021 663.709 l
+</path>
+<path stroke="black" matrix="0.341168 0 0 4.29441 302.783 -2188.99" pen="normal" arrow="normal">
+237.831 588.876 m
+304.85 582.792 l
+</path>
+<text stroke="black" matrix="0.00441398 0.00541493 0.831311 -0.677643 14.5947 637.515" pos="192 416" type="label" valign="baseline" size="normal">$u_{1}^{1}$</text>
+<text stroke="black" matrix="0.631829 0.775108 -0.775108 0.631829 563.248 -83.8328" pos="208 416" type="label" valign="baseline" size="normal">$u_{1}^{2}$</text>
+<text stroke="black" matrix="0.766206 -0.642595 0.642595 0.766206 -133.752 130.449" pos="240 416" type="label" valign="baseline" size="normal">$u_{2}^{1}$</text>
+<text stroke="black" matrix="0.766206 -0.642595 0.642595 0.766206 -138.59 152.492" pos="272 416" type="label" valign="baseline" size="normal">$u_{2}^{2}$</text>
+<text stroke="black" matrix="0.967596 0.252503 -0.252503 0.967596 242.932 -168.039" pos="320 416" type="label" valign="baseline" size="normal">$u_{3}^{1}$</text>
+<text stroke="black" matrix="0.967596 0.252503 -0.252503 0.967596 194.626 -202.094" pos="352 416" type="label" valign="baseline" size="normal">$u_{3}^{2}$</text>
+<path stroke="black" matrix="-0.160129 -0.0417872 -0.39147 1.50012 681.636 -567.201" pen="normal">
+175.876 576.324 m
+28.7611 589.6 l
+</path>
+<path stroke="black" matrix="-0.19628 -0.0512209 -0.479851 1.8388 775.428 -754.567" pen="normal" arrow="normal">
+237.831 588.876 m
+304.85 582.792 l
+</path>
+<path stroke="black" matrix="-0.237527 0 0 3.53783 390.715 -1745.61" pen="normal">
+175.876 576.324 m
+28.7611 589.6 l
+</path>
+<path stroke="black" matrix="-0.297207 0 0 4.42673 454.506 -2266.47" pen="normal" arrow="normal">
+237.831 588.876 m
+304.85 582.792 l
+</path>
+<text stroke="black" pos="310.22 340.032" type="label" valign="baseline" size="normal" style="default">$\Phi _{R}:$</text>
+</page>
+</ipe>

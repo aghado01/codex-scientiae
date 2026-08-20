@@ -1,0 +1,122 @@
+<ipe version="60030" creator="Ipe 6.0 preview 30">
+<info created="D:20081114155242" modified="D:20090220134605" bbox="cropbox"/>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<page gridsize="16">
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" stroke="black" matrix="1.04348 0 0 1 -20.1739 0" pen="normal">
+96 496 m
+464 496 l
+</path>
+<path stroke="black" matrix="1.04348 0 0 1 -20.1739 0" pen="normal">
+96 416 m
+464 416 l
+</path>
+<text stroke="black" matrix="1 0 0 1 -13.4665 -2.48612" pos="480 496" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal" style="default">$L_{1}$</text>
+<text stroke="black" matrix="1 0 0 1 -13.4665 -2.48612" pos="480 416" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal" style="default">$L_{2}$</text>
+<path stroke="black" matrix="1 0 0 1 -16 0" fill="gray6" pen="normal">
+256 496 m
+320 496 l
+336 416 l
+240 416 l
+h
+</path>
+<path stroke="black" matrix="1 0 0 1 -33.4005 0" fill="gray6" pen="normal">
+208 496 m
+192 416 l
+224 416 l
+224 496 l
+h
+</path>
+<path stroke="black" matrix="1 0 0 1 -17.4005 0" fill="gray6" pen="normal">
+160 496 m
+160 416 l
+112 416 l
+128 496 l
+h
+</path>
+<path stroke="black" matrix="1 0 0 1 -8.98788 0.159366" fill="gray6" pen="normal">
+416 496 m
+416 416 l
+448 416 l
+432 496 l
+h
+</path>
+<path stroke="black" matrix="1 0 0 1 -5.25909 0.159366" fill="gray6" pen="normal">
+384 496 m
+384 416 l
+336 416 l
+352 496 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 1 -12.8138 68.2749" pos="128 400" type="label" width="14.193" height="6.808" depth="2.49" valign="baseline" size="normal" style="default">$T_{v_{1}}$</text>
+<text stroke="black" matrix="1 0 0 1 -17.8207 76.9231" pos="192 400" type="label" width="14.193" height="6.808" depth="2.49" valign="baseline" size="normal" style="default">$T_{v_{2}}$</text>
+<text stroke="black" matrix="1 0 0 1 5.6649 50.6828" pos="352 400" type="label" width="14.193" height="6.808" depth="2.49" valign="baseline" size="normal" style="default">$T_{v_{3}}$</text>
+<text stroke="black" matrix="1 0 0 1 -3.00153 51.138" pos="416 400" type="label" width="14.193" height="6.808" depth="2.49" valign="baseline" size="normal" style="default">$T_{v_{4}}$</text>
+<text stroke="black" matrix="1 0 0 1 -7.28266 65.0888" pos="272 400" type="label" width="11.03" height="6.812" depth="1.49" valign="baseline" size="normal" style="default">$T_{u}$</text>
+<path stroke="black" matrix="0.997607 0 0 0.891857 1.0719 49.0341" fill="gray4" pen="normal">
+288 496 m
+352 416 l
+368 416 l
+320 496 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 1 29.5858 -67.3646" pos="279.157 546.558" type="label" width="14.919" height="6.808" depth="2.49" valign="baseline" size="normal" style="default">$T_{u_{2}}$</text>
+<path stroke="black" matrix="0.912014 0 0 1 7.77536 0" fill="gray4" pen="normal">
+88.3699 420.061 m
+122.036 420.061 l
+288.212 491.164 l
+248.621 491.434 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 1 -5.21341 -80.6064" pos="219.53 555.206" type="label" width="14.919" height="6.808" depth="2.49" valign="baseline" size="normal">$T_{u_{1}}$</text>
+<path stroke="black" matrix="1 0 0 1.00584 0 -2.45299" fill="gray4" pen="normal">
+168.874 419.981 m
+213.935 419.981 l
+462.456 491.442 l
+384.167 489.621 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 1 43.2408 -48.7028" pos="340.604 527.896" type="label" width="14.919" height="6.808" depth="2.49" valign="baseline" size="normal">$T_{u_{3}}$</text>
+<text stroke="black" matrix="1 0 0 1 5.91716 -7.10059" pos="64 464" type="label" valign="baseline" size="normal" style="default">$R:$</text>
+</page>
+</ipe>

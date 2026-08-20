@@ -1,0 +1,164 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "1406.6228v3",
+  "initialized_utc": "2026-08-20T11:22:00.182581Z",
+  "title": "Minimal Obstructions for Partial Representations of Interval Graphs",
+  "authors": [
+    "Pavel Klavík",
+    "Maria Saumell"
+  ],
+  "abstract": "Interval graphs are intersection graphs of closed intervals. A generalization of recognition called partial representation extension was introduced recently. The input gives an interval graph with a partial representation specifying some pre-drawn intervals. We ask whether the remaining intervals can be added to create an extending representation. Two linear-time algorithms are known for solving this problem. In this paper, we characterize the minimal obstructions which make partial representations non-extendible. This generalizes Lekkerkerker and Boland's characterization of the minimal forbidden induced subgraphs of interval graphs. Each minimal obstruction consists of a forbidden induced subgraph together with at most four pre-drawn intervals. A Helly-type result follows: A partial representation is extendible if and only if every quadruple of pre-drawn intervals is extendible by itself. Our characterization leads to a linear-time certifying algorithm for partial representation extension.",
+  "identifiers": {
+    "arxiv": "1406.6228",
+    "arxiv_versioned": "1406.6228v3",
+    "doi": null,
+    "external": {
+      "arxiv": "1406.6228v3"
+    }
+  },
+  "categories": [
+    "math.CO",
+    "cs.DM"
+  ],
+  "concepts": [],
+  "primary_category": "math.CO",
+  "published": "2014-06-24T13:15:06Z",
+  "updated": "2015-12-30T07:48:24Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "1406.6228v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7814,
+        "sha256": "74eff8eebd8df594fa5eeb154a32b12af98bd216497bd9dde0465bb58dcc9ea0",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-20T11:21:56.846107Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=1406.6228v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "9eb819a9eb29cc3dce3d3e7aca91fbaae0330338aff126bddc80bfe971d6239c"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "obstructions_for_extension.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Minimal Obstructions for Partial Representations\\\\of Interval Graphs\\thanks{The conference\nversion of this paper appeared in ISAAC 2014~\\cite{ks}. For an interactive structural diagram of\nthis paper, see \\url{http://pavel.klavik.cz/orgpad/minobstr.html} (supported for Firefox and Google\nChrome).}",
+        "authors_tex": [
+          "Pavel Klav\\'{\\i}k\\inst{1}${}^,$\\thanks{\n\t\t\tSupported by CE-ITI (P202/12/G061 of GA\\v{C}R) and Charles University as GAUK 196213.\n\t\t\tA part of this work was carried out during a visit at ULB in Brussels, funded by a\n\t\t\tEUROCORES Short Term Visit grant.}\n\t\t\\and Maria Saumell\\inst{2}${}^,$\\thanks{\n\t\t\tSupported by project LO1506 of the Czech Ministry of Education, Youth and Sports, project NEXLIZ - CZ.1.07/2.3.00/30.0038 co-financed by\n\t\t\tEuropean Social Fund and the state budget of Czech Republic,\n\t\t\tand ESF EuroGIGA project ComPoSe as F.R.S.-FNRS - EUROGIGA NR 13604.}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "1406.6228v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-1406.6228v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 184784,
+      "sha256": "fab587935e6b71ed88a960cc3b4c7d6286a0ead6df4cc3d0fc0d6144177fe53b",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "1406.6228v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-1406.6228v3.tar.gz",
+      "entrypoint": "obstructions_for_extension.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 50,
+      "tex_files": 11,
+      "sha256": "a1853af3e2f69d6383dc6ec065762808be5dbb28a5fae6939199fd7a524e0584"
+    },
+    {
+      "role": "pdf-source",
+      "path": "1406.6228v3.pdf",
+      "format": "application/pdf",
+      "bytes": 568904,
+      "sha256": "5c0d9e9668be96fddc287a8bcfdbc5b5b13728707571d72dc999a204879ef6a8"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-20T11:22:00.182581Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 50
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 50
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 11
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "obstructions_for_extension.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+<ipe version="60030" creator="Ipe 6.0 preview 30">
+<info created="D:20090223194034" modified="D:20090330151302" bbox="cropbox"/>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<ipestyle>
+</ipestyle>
+<page gridsize="16">
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" stroke="black" matrix="0.72999 0 0 0.825207 64.1969 -127.352" fill="gray6" pen="normal">
+96 736 m
+512 736 l
+</path>
+<text stroke="black" matrix="1 0 0 1 -86.6525 -258.101" pos="528 736" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal">$L_{1}$</text>
+<text stroke="black" matrix="1 0 0 1 -86.6525 -242.101" pos="528 640" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal">$L_{2}$</text>
+<text stroke="black" matrix="1 0 0 1 65.1232 -285.761" pos="276.629 783.24" type="label" width="10.173" height="8.113" depth="2.59" valign="baseline" size="normal">$u_{i}^{2}$</text>
+<text stroke="black" matrix="1 0 0 1 -4.55162 -256" pos="227.262 753.479" type="label" width="10.173" height="8.113" depth="2.59" valign="baseline" size="normal">$u_{i}^{1}$</text>
+<path stroke="black" matrix="0.729977 0 0 0.825191 64.519 -207.519" fill="gray6" pen="normal">
+96 736 m
+512 736 l
+</path>
+<path stroke="black" matrix="1 0 0 0.833333 0 -133.333" fill="gray7" pen="normal">
+224 736 m
+208 640 l
+384 640 l
+352 736 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 0.833333 0 -133.333" pos="288 688" type="label" width="14.186" height="6.808" depth="2.49" valign="baseline" size="normal">$T_{u_{i}}$</text>
+<path stroke="black" matrix="1.16004 0 0 1.16004 -33.2886 -360.987" pen="heavier">
+208 656 m
+224 736 l
+</path>
+<path stroke="black" matrix="1.16761 0 0 1.16761 -64.3623 -365.952" pen="heavier">
+384 656 m
+352 736 l
+</path>
+<path stroke="black" fill="gray6" pen="normal">
+177.051 405.289 m
+240.92 405.167 l
+255.141 474.798 l
+191.027 474.675 l
+h
+</path>
+<path stroke="black" fill="gray6" pen="normal">
+322.065 474.933 m
+386.131 474.774 l
+413.86 405.13 l
+349.795 405.13 l
+h
+</path>
+<path stroke="black" matrix="0.790486 0 0 0.790486 44.5375 -113.773" dash="dashed" pen="heavier">
+225.663 744.399 m
+208.133 656.589 l
+</path>
+<path stroke="black" matrix="-1.58355 0 0 0.790486 711.488 -113.804" dash="dashed" pen="heavier">
+225.663 744.399 m
+208.133 656.589 l
+</path>
+<path stroke="black" matrix="1 0 0 1 0 -256" fill="gray5" pen="normal">
+395.799 666.441 m
+427.831 666.282 l
+404.246 725.564 l
+372.214 725.564 l
+h
+</path>
+<text stroke="black" matrix="1.41111 0 0 0.802604 -130.444 -54.462" pos="208 688" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,2}}$</text>
+<text stroke="black" matrix="1 0 0 0.833333 15.3122 -102.173" pos="176 720" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,1}}$</text>
+<text stroke="black" matrix="-9.90466 0 0 -10.452 4622.07 8055.45" pos="453.094 723.1" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,3}}$</text>
+<text stroke="black" matrix="1 0 0 0.833333 -40.868 -109.852" pos="404.777 729.053" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,4}}$</text>
+<path stroke="black" matrix="1 0 0 1 0 -256" fill="gray5" pen="normal">
+194.023 666.311 m
+205.914 725.521 l
+173.919 725.521 l
+162.15 666.433 l
+h
+</path>
+<path stroke="black" matrix="1 0 0 1 -7.98796 0" fill="gray4" pen="normal">
+195.051 415.431 m
+204.952 464.466 l
+172.985 464.466 l
+163.178 415.336 l
+h
+</path>
+<path stroke="black" matrix="0.559653 0 0 0.559653 46.618 47.9907" dash="dashed" pen="normal">
+225.663 744.399 m
+208.133 656.589 l
+</path>
+<path stroke="black" matrix="0.668314 0 0 0.668314 39.0775 -27.986" dash="dashed" pen="normal">
+225.663 744.399 m
+208.133 656.589 l
+</path>
+<path stroke="black" matrix="1 0 0 1 8.12761 0" fill="gray4" pen="normal">
+393.835 415.346 m
+425.708 415.346 l
+406.282 464.476 l
+374.221 464.476 l
+h
+</path>
+<path stroke="black" matrix="-1.34398 0 0 0.670898 691.494 -29.951" dash="dashed" pen="normal">
+225.663 744.399 m
+208.133 656.589 l
+</path>
+<path stroke="black" matrix="-1.1213 0 0 0.55974 659.204 47.8924" dash="dashed" pen="normal">
+225.663 744.399 m
+208.133 656.589 l
+</path>
+<path stroke="black" matrix="0.937801 0 0 1.4207 11.9406 -559.709" pen="normal">
+196.456 741.533 m
+214.662 724.728 l
+</path>
+<path stroke="black" matrix="1.03722 0 0 0.95973 -0.790425 -217.986" pen="normal">
+162.145 741.183 m
+177.55 714.224 l
+</path>
+<path stroke="black" matrix="1.8297 0 0 1.3015 -157.925 -471.783" pen="normal">
+162.145 741.183 m
+177.55 714.224 l
+</path>
+<path stroke="black" pen="normal">
+369.719 493.912 m
+364.117 469.403 l
+</path>
+<path stroke="black" matrix="1.07081 0 0 1.01351 -27.849 -6.67" pen="normal">
+397.379 493.562 m
+393.877 467.303 l
+</path>
+<path stroke="black" pen="normal">
+426.089 493.562 m
+414.535 457.499 l
+</path>
+<text stroke="black" pos="391.322 496.888" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,5}}$</text>
+<text stroke="black" pos="420.907 497.343" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,6}}$</text>
+</page>
+</ipe>

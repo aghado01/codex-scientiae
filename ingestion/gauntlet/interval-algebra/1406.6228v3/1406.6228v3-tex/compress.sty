@@ -1,0 +1,21 @@
+% reduce point size of section hadings and distance between list items
+\def\@listI{\leftmargin\leftmargini \parsep 0pt \topsep
+1pt \itemsep 1pt}
+\let\@listi\@listI
+\@listi
+\def\@listii{\leftmargin\leftmarginii
+ \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+ \topsep 1pt
+ \parsep 0pt
+ \itemsep 1pt}
+\def\section{\@startsection {section}{1}{\z@}{-2ex plus -1ex minus -.2ex}{1.1ex}{\large\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-2ex plus -1ex minus -.2ex}{0.9ex}{\normalsize\bf}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                    {0.75ex \@plus1ex \@minus.2ex}%
+                                    {-1em}%
+                                    {\normalfont\normalsize\bfseries}}
+
+\setlength{\textfloatsep}{10pt}
+\setlength{\abovecaptionskip}{5pt}
+\setlength{\belowcaptionskip}{-5pt}
+

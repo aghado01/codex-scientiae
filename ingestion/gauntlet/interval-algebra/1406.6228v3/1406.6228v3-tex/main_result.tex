@@ -1,0 +1,86 @@
+\section{Proofs of the Main Results} \label{sec:main_result}
+
+Now, we are ready to put all results together to prove the main theorem. It states that a partial
+representation $\calR'$ of $G$ is extendible if and only if $G$ and $\calR'$ contain none of the
+obstructions described in Section~\ref{sec:definition_of_obstructions}.
+
+\begin{proof}[Theorem~\ref{thm:repext_obstructions}]
+If $G$ and $\calR'$ contain one of the obstructions, they are non-extendible by
+Lemma~\ref{lem:correctness_all}. It remains to prove the converse. If $G$ is not an interval graph,
+it contains an LB obstruction~\cite{lb_graphs}. Otherwise, $G$ is an interval graph and there exists
+an MPQ-tree $T$ for it. By Lemma~\ref{lem:repext_char}, we know that a partial representation
+$\calR'$ is extendible if and only if $T$ can be reordered according to $\wlt$. If it cannot be
+reordered, then the reordering algorithm fails in some node of $T$. If this reordering fails in a
+leaf, we get a $1$-BI obstruction by Lemma~\ref{lem:leaf}. If it fails in a P-node, we get an SE,
+$1$-BI, or $1$-FAT obstruction by Lemma~\ref{lem:p_node}. And if it fails in a Q-node, we get one of
+the obstructions of Section~\ref{sec:definition_of_obstructions} by
+Lemmas~\ref{lem:q_node_three_cliques}, \ref{lem:q_node_two}, and \ref{lem:q_node_three}.\qed
+\end{proof}
+
+Next, we show that a partial representation $\calR'$ is extendible if and only if every quadruple of
+pre-drawn intervals is extendible by itself.
+
+\begin{proof}[Corollary~\ref{cor:helly_obstructions}]
+The result follows from the fact that all the obstructions of Theorem~\ref{thm:repext_obstructions}
+contain at most four pre-drawn intervals.\qed
+\end{proof}
+
+Concerning the certifying algorithm, we first show that $k$-FAT obstructions can be found in linear
+time:
+
+\begin{lemma} \label{lem:computing_k_fat}
+Suppose that the assumptions of $k$-FAT Lemma~\ref{lem:k_fat} are satisfied. Then we can find a
+$k$-FAT obstruction in time $\O(n+m)$.
+\end{lemma}
+
+\begin{proof}
+Since the proof of $k$-FAT Lemma~\ref{lem:k_fat} is constructive, the algorithm follows it.  Let $Q$
+be the Q-node.  We search the graph $G[Q] \setminus N[y_k]$ from $x_k$ to compute $C(x_k)$, and test
+whether $z_k$ belongs to it. If it does, the algorithm stops and outputs $1$-FAT. Otherwise, we compute
+$W_k$, choose $t_k$, and store it together with $P_k$.
+We choose $x_{k-1}$ as in the the proof; if $s_i(Q) = s_{t_k}^\rt(Q)$, then either
+$s_{x_{k-1}}^\lft(Q) = s_{i+1}(Q)$, or $x_{k-1}$ belongs to sections of $T_{i+1}$.
+Then we apply the rest of the algorithm recursively.  It is important that then we can remove
+$C(x_k)$ and $W_k$ from the graph because they are not used in the remainder of the obstruction.
+
+Since the algorithm searches each vertex and edge of $G[Q] \setminus N[y_k]$ at most once when
+computing $C(x_j)$, we obtain that the algorithm runs in time $\O(n+m)$.\qed
+\end{proof}
+
+Similarly, a $(k,\ell)$-CE obstruction can be obtained from $(k,\ell)$-CE Lemma~\ref{lem:kl_ce} in
+time $\O(n+m)$.  Since obstructions are built constructively, we get a linear-time certifying
+algorithm for the partial representation extension problem:
+
+\begin{proof}[Corollary~\ref{cor:certifying_algorithm}]
+We can assume that $G$ is an interval graph; otherwise we can find an LB obstruction in time
+$\O(n+m)$ using~\cite{finding_lb_graphs}.  Each interval graph has $\O(n)$ maximal cliques of total
+size $\O(n+m)$, and that they can be found in linear time~\cite{recog_chordal_graphs}.  We compute
+the MPQ-tree $T$ in time $\O(n+m)$ using~\cite{korte_mohring}. Next, we use the partial
+representation extension algorithm of~\cite{kkosv} in time $\O(n+m)$, which either finds an
+extending representation, or finds an obstructed node which cannot be reordered according to $\wlt$.
+We distinguish three cases according to the distinct types of obstructed nodes.
+
+\emph{Case 1: A leaf cannot be reordered.}
+We output a $1$-BI obstruction in time $\O(n)$, by searching the partial representation.
+
+\emph{Case 2: A P-node $P$ cannot be reordered.}
+From the partial representation extension algorithm, we get directly a two-cycle, ensured by
+Lemma~\ref{lem:p_node_two_cycle}, and four maximal cliques $a$, $b$, $c$, and $d$ defining it. By
+Lemma~\ref{lem:p_node_three_cliques}, one of these maximal cliques can be omitted, and
+it can be clearly found in constant time. It remains to output an SE, $1$-BI, or $1$-FAT
+obstruction in time $\O(n+m)$, by following Lemma~\ref{lem:p_node}. For $1$-BI and $1$-FAT
+obstructions, we find a shortest path in $G[P] \setminus N[y_k]$ by searching the graph.
+
+\emph{Case 3: A Q-node $Q$ cannot be reordered.}
+From the partial representation extension algorithm, we get four maximal cliques defining the
+obstruction and, by following Lemma~\ref{lem:q_node_three_cliques}, we can reduce it to at most three
+maximal cliques. An SE obstruction can be computed in time $\O(n+m)$. If three maximal
+cliques are contained in two subtrees, we follow Lemma~\ref{lem:q_node_two} and output one of the
+obstructions in time $\O(n+m)$.
+
+If three maximal cliques belong to three different subtrees, we follow the structure of the proof of
+Lemma~\ref{lem:q_node_three}. In all cases, we derive some vertices somehow placed in the Q-node and
+some pre-drawn intervals, which can be easily done in time $\O(n+m)$. Next, we either apply $k$-FAT
+Lemma, or $(k,\ell)$-CE Lemma to construct the obstruction, which can be done in time $\O(n+m)$ by
+Lemma~\ref{lem:computing_k_fat}.\qed
+\end{proof}

@@ -1,0 +1,59 @@
+<ipe version="60030" creator="Ipe 6.0 preview 30">
+<info created="D:20090223194034" modified="D:20090223200151" bbox="cropbox"/>
+<ipestyle>
+</ipestyle>
+<page gridsize="16">
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" stroke="black" matrix="0.884615 0 0 1 11.0769 0" fill="gray6" pen="normal">
+96 736 m
+512 736 l
+</path>
+<path stroke="black" matrix="0.884615 0 0 1 11.0769 16" pen="normal">
+96 640 m
+512 640 l
+</path>
+<text stroke="black" matrix="1 0 0 1 -60.6046 -2.10077" pos="528 736" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal">$L_{1}$</text>
+<text stroke="black" matrix="1 0 0 1 -60.6046 13.8992" pos="528 640" type="label" width="11.25" height="6.812" depth="1.49" valign="baseline" size="normal">$L_{2}$</text>
+<path stroke="black" matrix="1 0 0 0.833333 0 122.667" fill="gray6" pen="normal">
+224 736 m
+208 640 l
+384 640 l
+352 736 l
+h
+</path>
+<path stroke="black" matrix="1.25 0 0 0.833333 -68 122.667" fill="gray6" pen="normal">
+240 736 m
+144 640 l
+176 640 l
+272 736 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 0.833333 0 122.667" pos="288 688" type="label" width="14.186" height="6.808" depth="2.49" valign="baseline" size="normal">$T_{u_{i}}$</text>
+<text stroke="black" matrix="1 0 0 0.833333 -74.5562 90.1222" pos="208 688" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,2}}$</text>
+<path stroke="black" matrix="1 0 0 0.833333 4.97223 122.667" fill="gray6" pen="normal">
+160 736 m
+160 640 l
+192 640 l
+192 736 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 0.833333 -5.26227 122.667" pos="176 720" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,1}}$</text>
+<path stroke="black" fill="gray6" pen="normal">
+336 656 m
+368 656 l
+448 736 l
+416 736 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 0.833333 -40.053 122.959" pos="453.094 723.1" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,3}}$</text>
+<path stroke="black" matrix="1 0 0 1 -1.86459 0" fill="gray6" pen="normal">
+432 656 m
+400 656 l
+368 736 l
+400 736 l
+h
+</path>
+<text stroke="black" matrix="1 0 0 0.833333 -26.4191 117.838" pos="404.777 729.053" type="label" width="19.86" height="6.807" depth="3.46" valign="baseline" size="normal">$T_{u_{i,4}}$</text>
+</page>
+</ipe>
