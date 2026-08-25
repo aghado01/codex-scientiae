@@ -12,7 +12,7 @@ Describe 'pinned uv and Python toolchain' {
     It 'keeps the bootstrap, Python selector, project requirement, lock, and export consistent' {
         $script:Pin.schema | Should -BeExactly 'codex-scientiae/toolchain-pin/1'
         $script:Pin.tool | Should -BeExactly 'uv'
-        $script:Pin.version | Should -BeExactly '0.11.23'
+        $script:Pin.version | Should -BeExactly '0.12.6'
 
         $pythonVersion = (Get-Content -LiteralPath (
                 Join-Path $script:RepositoryRoot '.python-version') -Raw).Trim()
