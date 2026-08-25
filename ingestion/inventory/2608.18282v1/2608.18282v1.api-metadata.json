@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.18282v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.18282v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Self-supervised In-context Operator Learning for Stochastic Mean-Field Control",
+      "authors": [
+        "Suyi Gao",
+        "Mo Zhou",
+        "Rongjie Lai"
+      ],
+      "abstract": "Stochastic mean-field control (MFC) provides a fundamental framework for coordinating large populations of interacting agents under uncertainty, with a wide range of applications. Existing numerical and deep-learning methods solve one MFC problem instance at a time and must be re-optimized whenever the task changes. In this work, we formulate stochastic MFC as an operator-learning problem and develop, to the best of our knowledge, the first mesh-free, self-supervised neural operator for stochastic MFC. The main challenge is that the diffusion term in the controlled Fokker--Planck equation precludes deterministic transport-map representations. We address this challenge by combining the probability-flow ODE with an invertible normalizing-flow-based transformer, which recasts the dynamics as a deterministic continuity equation and enables closed-form score evaluation through the exact inverse and analytical log-determinant of the normalizing flow, with $\\mathcal{O}(d)$ cost per particle for networks of fixed size. Through transformer-based in-context learning, task prompts, represented by compact distribution parameters or raw particle clouds, condition the transport map, enabling a single pretrained operator to solve unseen tasks in one forward pass. The resulting \\emph{Normalizing Flow Invertible Solution Transformer} (NFIST) is trained end-to-end by minimizing the stochastic control objective directly, requiring no precomputed numerical solutions for training. We further prove the consistency of the proposed operator-learning formulation with task-by-task optimization. Numerical experiments on stochastic optimal control, Schrödinger bridge, systemic-risk control, and obstacle-avoiding path planning demonstrate effective zero-shot generalization while substantially reducing the computational cost of solving large families of stochastic MFC problems.",
+      "doi": null,
+      "arxiv_id": "2608.18282v1",
+      "published": "2026-08-18T20:03:48Z",
+      "updated": "2026-08-18T20:03:48Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.18282v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.18282v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.OC",
+        "cs.LG",
+        "eess.SY"
+      ],
+      "external_ids": {
+        "arxiv": "2608.18282v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.18282v1",
+          "url": "https://arxiv.org/abs/2608.18282v1",
+          "doi": null,
+          "arxiv_id": "2608.18282v1",
+          "published": "2026-08-18T20:03:48Z",
+          "updated": "2026-08-18T20:03:48Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.18282v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-25T22:19:10.700651Z",
+      "sha256": "015671d442916a2e7824073f30902306b01c27989d5327041226d6c7dc6f13ed",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvVzl0NVI1dnVSRXpVN0VpQi9SdzRCY2xJMVBzPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4xODI4MnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI1VDIyOjE4OjU4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjE4MjgydjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xODI4MnYxPC9pZD4KICAgIDx0aXRsZT5TZWxmLXN1cGVydmlzZWQgSW4tY29udGV4dCBPcGVyYXRvciBMZWFybmluZyBmb3IgU3RvY2hhc3RpYyBNZWFuLUZpZWxkIENvbnRyb2w8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0xOFQyMDowMzo0OFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xODI4MnYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4xODI4MnYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+U3RvY2hhc3RpYyBtZWFuLWZpZWxkIGNvbnRyb2wgKE1GQykgcHJvdmlkZXMgYSBmdW5kYW1lbnRhbCBmcmFtZXdvcmsgZm9yIGNvb3JkaW5hdGluZyBsYXJnZSBwb3B1bGF0aW9ucyBvZiBpbnRlcmFjdGluZyBhZ2VudHMgdW5kZXIgdW5jZXJ0YWludHksIHdpdGggYSB3aWRlIHJhbmdlIG9mIGFwcGxpY2F0aW9ucy4gRXhpc3RpbmcgbnVtZXJpY2FsIGFuZCBkZWVwLWxlYXJuaW5nIG1ldGhvZHMgc29sdmUgb25lIE1GQyBwcm9ibGVtIGluc3RhbmNlIGF0IGEgdGltZSBhbmQgbXVzdCBiZSByZS1vcHRpbWl6ZWQgd2hlbmV2ZXIgdGhlIHRhc2sgY2hhbmdlcy4gSW4gdGhpcyB3b3JrLCB3ZSBmb3JtdWxhdGUgc3RvY2hhc3RpYyBNRkMgYXMgYW4gb3BlcmF0b3ItbGVhcm5pbmcgcHJvYmxlbSBhbmQgZGV2ZWxvcCwgdG8gdGhlIGJlc3Qgb2Ygb3VyIGtub3dsZWRnZSwgdGhlIGZpcnN0IG1lc2gtZnJlZSwgc2VsZi1zdXBlcnZpc2VkIG5ldXJhbCBvcGVyYXRvciBmb3Igc3RvY2hhc3RpYyBNRkMuIFRoZSBtYWluIGNoYWxsZW5nZSBpcyB0aGF0IHRoZSBkaWZmdXNpb24gdGVybSBpbiB0aGUgY29udHJvbGxlZCBGb2trZXItLVBsYW5jayBlcXVhdGlvbiBwcmVjbHVkZXMgZGV0ZXJtaW5pc3RpYyB0cmFuc3BvcnQtbWFwIHJlcHJlc2VudGF0aW9ucy4gV2UgYWRkcmVzcyB0aGlzIGNoYWxsZW5nZSBieSBjb21iaW5pbmcgdGhlIHByb2JhYmlsaXR5LWZsb3cgT0RFIHdpdGggYW4gaW52ZXJ0aWJsZSBub3JtYWxpemluZy1mbG93LWJhc2VkIHRyYW5zZm9ybWVyLCB3aGljaCByZWNhc3RzIHRoZSBkeW5hbWljcyBhcyBhIGRldGVybWluaXN0aWMgY29udGludWl0eSBlcXVhdGlvbiBhbmQgZW5hYmxlcyBjbG9zZWQtZm9ybSBzY29yZSBldmFsdWF0aW9uIHRocm91Z2ggdGhlIGV4YWN0IGludmVyc2UgYW5kIGFuYWx5dGljYWwgbG9nLWRldGVybWluYW50IG9mIHRoZSBub3JtYWxpemluZyBmbG93LCB3aXRoICRcbWF0aGNhbHtPfShkKSQgY29zdCBwZXIgcGFydGljbGUgZm9yIG5ldHdvcmtzIG9mIGZpeGVkIHNpemUuIFRocm91Z2ggdHJhbnNmb3JtZXItYmFzZWQgaW4tY29udGV4dCBsZWFybmluZywgdGFzayBwcm9tcHRzLCByZXByZXNlbnRlZCBieSBjb21wYWN0IGRpc3RyaWJ1dGlvbiBwYXJhbWV0ZXJzIG9yIHJhdyBwYXJ0aWNsZSBjbG91ZHMsIGNvbmRpdGlvbiB0aGUgdHJhbnNwb3J0IG1hcCwgZW5hYmxpbmcgYSBzaW5nbGUgcHJldHJhaW5lZCBvcGVyYXRvciB0byBzb2x2ZSB1bnNlZW4gdGFza3MgaW4gb25lIGZvcndhcmQgcGFzcy4gVGhlIHJlc3VsdGluZyBcZW1waHtOb3JtYWxpemluZyBGbG93IEludmVydGlibGUgU29sdXRpb24gVHJhbnNmb3JtZXJ9IChORklTVCkgaXMgdHJhaW5lZCBlbmQtdG8tZW5kIGJ5IG1pbmltaXppbmcgdGhlIHN0b2NoYXN0aWMgY29udHJvbCBvYmplY3RpdmUgZGlyZWN0bHksIHJlcXVpcmluZyBubyBwcmVjb21wdXRlZCBudW1lcmljYWwgc29sdXRpb25zIGZvciB0cmFpbmluZy4gV2UgZnVydGhlciBwcm92ZSB0aGUgY29uc2lzdGVuY3kgb2YgdGhlIHByb3Bvc2VkIG9wZXJhdG9yLWxlYXJuaW5nIGZvcm11bGF0aW9uIHdpdGggdGFzay1ieS10YXNrIG9wdGltaXphdGlvbi4gTnVtZXJpY2FsIGV4cGVyaW1lbnRzIG9uIHN0b2NoYXN0aWMgb3B0aW1hbCBjb250cm9sLCBTY2hyw7ZkaW5nZXIgYnJpZGdlLCBzeXN0ZW1pYy1yaXNrIGNvbnRyb2wsIGFuZCBvYnN0YWNsZS1hdm9pZGluZyBwYXRoIHBsYW5uaW5nIGRlbW9uc3RyYXRlIGVmZmVjdGl2ZSB6ZXJvLXNob3QgZ2VuZXJhbGl6YXRpb24gd2hpbGUgc3Vic3RhbnRpYWxseSByZWR1Y2luZyB0aGUgY29tcHV0YXRpb25hbCBjb3N0IG9mIHNvbHZpbmcgbGFyZ2UgZmFtaWxpZXMgb2Ygc3RvY2hhc3RpYyBNRkMgcHJvYmxlbXMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09Im1hdGguT0MiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5MRyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImVlc3MuU1kiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0xOFQyMDowMzo0OFo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09Im1hdGguT0MiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlN1eWkgR2FvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NbyBaaG91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Sb25namllIExhaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Self-supervised In-context Operator Learning for Stochastic Mean-Field Control",
+    "authors": [
+      "Suyi Gao",
+      "Mo Zhou",
+      "Rongjie Lai"
+    ],
+    "abstract": "Stochastic mean-field control (MFC) provides a fundamental framework for coordinating large populations of interacting agents under uncertainty, with a wide range of applications. Existing numerical and deep-learning methods solve one MFC problem instance at a time and must be re-optimized whenever the task changes. In this work, we formulate stochastic MFC as an operator-learning problem and develop, to the best of our knowledge, the first mesh-free, self-supervised neural operator for stochastic MFC. The main challenge is that the diffusion term in the controlled Fokker--Planck equation precludes deterministic transport-map representations. We address this challenge by combining the probability-flow ODE with an invertible normalizing-flow-based transformer, which recasts the dynamics as a deterministic continuity equation and enables closed-form score evaluation through the exact inverse and analytical log-determinant of the normalizing flow, with $\\mathcal{O}(d)$ cost per particle for networks of fixed size. Through transformer-based in-context learning, task prompts, represented by compact distribution parameters or raw particle clouds, condition the transport map, enabling a single pretrained operator to solve unseen tasks in one forward pass. The resulting \\emph{Normalizing Flow Invertible Solution Transformer} (NFIST) is trained end-to-end by minimizing the stochastic control objective directly, requiring no precomputed numerical solutions for training. We further prove the consistency of the proposed operator-learning formulation with task-by-task optimization. Numerical experiments on stochastic optimal control, Schrödinger bridge, systemic-risk control, and obstacle-avoiding path planning demonstrate effective zero-shot generalization while substantially reducing the computational cost of solving large families of stochastic MFC problems.",
+    "identifiers": {
+      "arxiv": "2608.18282",
+      "arxiv_versioned": "2608.18282v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.18282v1"
+      }
+    },
+    "categories": [
+      "math.OC",
+      "cs.LG",
+      "eess.SY"
+    ],
+    "concepts": [],
+    "primary_category": "math.OC",
+    "published": "2026-08-18T20:03:48Z",
+    "updated": "2026-08-18T20:03:48Z"
+  }
+}
