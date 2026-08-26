@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2608.16578v1",
-  "initialized_utc": "2026-08-20T06:20:23.366694Z",
+  "initialized_utc": "2026-08-26T03:58:39.955214Z",
   "title": "Physics of Agents: Statistical Mechanics Predicts Collective Behavior of AI Agents",
   "authors": [
     "Batu El",
@@ -135,8 +135,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-20T06:20:23.366694Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:58:39.955214Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

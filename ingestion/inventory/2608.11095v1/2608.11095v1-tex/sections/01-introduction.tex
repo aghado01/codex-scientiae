@@ -1,0 +1,65 @@
+\input{assets/fig_diagram.tex}
+
+\section{Introduction}
+\label{sec:intro}
+
+Overwhelmingly, agentic READMEs never stop growing. A \texttt{copilot-instructions.md},
+\texttt{AGENTS.md} or \texttt{CLAUDE.md} gains instructions and rarely shed them
+\citep{chatlatanagulchai2025agentreadmes}. Deleting the file is not the answer: repositories carrying one
+finish agent tasks faster and in fewer tokens
+\citep{lulla2026contextfiles}. Keeping everything is not free either: instruction-following degrades as
+constraints accumulate \citep{jiang2024followbench, lior2025wildifeval}, and the median file already carries
+\FieldOpMedian{} instructions, the average more than tripling over its own lifetime
+(\FieldGrowthCountPeakPct{}, \autoref{fig:hero:growth}).
+
+Different mechanisms can explain this growth. If requirements stop applying (instruction staleness), deletion
+hazard rises with an instruction's age. If brittle instructions die young, leaving robust ones behind (content
+fragility), hazard falls. If maintainers lose an instruction's rationale (imperfect recall), hazard falls
+with age and, unlike either rival, also with the number of maintainers. Nobody has identified the root cause
+because line diffs and file sizes cannot resolve individual instructions over time.
+
+``What's the point of this code?'' is a question every engineer has asked. Deleting agentic
+instructions risks a regression, and doing so safely requires counterfactuals that maintainers cannot
+feasibly run. Recording an instruction's latent reasoning costs $O(1)$, but reconstructing
+it costs $O(2^{|D|})$ for a prompt with $|D|$ instructions (\autoref{sec:theory}). Successive edits by
+multiple authors destroy that latent reasoning, so deletion hazard decays with age, additions outrun
+removals, and instructions grow without bound until agents become non-functional --- \textbf{catastrophic
+remembering}. Under catastrophic forgetting, a gradient learner overwrites what it should have kept
+\citep{mccloskey1989catastrophic, french1999catastrophic, kirkpatrick2017overcoming}; under catastrophic
+remembering, a maintainer keeps what they should have overwritten. Both fail and fail for the same reason:
+whatever would license the update is gone.\looseness=-1
+
+How deletions actually occur in agentic prompts points to the root cause. \RewriteDeathShare{} of instruction
+deaths arrive in one commit that bulldozes the file, after which growth resumes at its prior rate
+(\autoref{sec:rewrite}): removing one instruction needs a reason, removing all needs none. And the hazard agrees
+--- removal becomes less likely the older an instruction is, and less likely still the more authors have
+edited the file (\autoref{sec:field}).
+
+Software engineering solved this decades ago with the comment: text addressed to the next maintainer and
+invisible to the interpreter \citep{knuth1984literate}. Recovering why code was written as it was is
+developers' most serious problem \citep{latoza2006mentalmodels}, so the practice is to record the why, not
+the how or the what \citep{mcconnell2004codecomplete}. Unsurprisingly, both carry over to agentic prompts.
+
+We show that prompt comments encoding an instruction's latent reasoning can halt unbounded prompt growth,
+removing \HorizonExcessRemovedPct{} of the excess size (\HorizonControlExcessPct{} to
+\HorizonPracticalExcessPct{}) over \HorizonT{} steps, and cutting it from \LabControlExcessPct{} to
+\LabPracticalExcessPct{} (\LabPracticalDeltaExcessPp{}) over \LabT{} (\autoref{fig:hero:lab}).
+Because irrelevant context distracts models \citep{shi2023distracted}, this improves instruction-following on
+real prompts by as much as \WildDeltaSatPct{} (\WildDeltaSatPp{}).
+We ablate the effect across comment payloads to show outcome-grounded latent reasoning drives the gain.
+Finally, we show that prompt comments' advantage only grows as (agentic) maintainers grow more capable
+(\autoref{sec:lab}).\looseness=-1
+
+We contribute a new approach to prompt maintenance, characterized across four dimensions:
+\begin{itemize}[nosep,itemsep=2pt,parsep=2pt,topsep=2pt,leftmargin=*]
+  \item \emph{Theory of prompt maintenance.} Decaying recoverability of latent reasoning predicts unbounded
+    growth (\autoref{sec:theory}).
+  \item \emph{Root cause of unbounded prompt growth.} Deletion hazard decays with age over \FieldSpells{}
+    lifetimes, implicating imperfect recall, not instruction staleness or content fragility
+    (\autoref{sec:hazard}).
+  \item \emph{New evaluation with known optimum.} Inverting IFEval yields verifiable worlds whose minimum cover is
+    known, so excess size and correctness become measurable (\autoref{sec:testbed}, \autoref{sec:wild}).
+  \item \emph{Practical solution.} Prompt comments remove \HorizonExcessRemovedPct{} of the excess size
+    (\autoref{sec:lab}), and improve instruction-following on real prompts by as much as \WildDeltaSatPct{}
+    (\autoref{sec:wild}).
+\end{itemize}

@@ -1,0 +1,115 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2602.00217v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2602.00217v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Dispersion Loss Counteracts Embedding Condensation and Improves Generalization in Small Language Models",
+      "authors": [
+        "Chen Liu",
+        "Xingzhi Sun",
+        "Xi Xiao",
+        "Alexandre Van Tassel",
+        "Ke Xu",
+        "Kristof Reimann",
+        "Danqi Liao",
+        "Mark Gerstein",
+        "Tianyang Wang",
+        "Xiao Wang",
+        "Smita Krishnaswamy"
+      ],
+      "abstract": "Large language models (LLMs) achieve remarkable performance through ever-increasing parameter counts, but scaling incurs steep computational costs. To better understand LLM scaling, we study representational differences between LLMs and their smaller counterparts, with the goal of replicating the representational qualities of larger models in smaller models. We observe a geometric phenomenon which we term $\\textbf{embedding condensation}$, where token embeddings collapse into a narrow cone-like subspace in some language models. Through systematic analyses across multiple Transformer families, we show that small models such as $\\texttt{GPT2}$ and $\\texttt{Qwen3-0.6B}$ exhibit severe condensation, whereas larger models such as $\\texttt{GPT2-xl}$ and $\\texttt{Qwen3-32B}$ are more resistant to this phenomenon. Additional observations show that embedding condensation is not reliably mitigated by knowledge distillation from larger models. To fight against it, we formulate a dispersion loss that explicitly encourages embedding dispersion during training. Experiments demonstrate that it mitigates condensation, recovers dispersion patterns seen in larger models, and yields performance gains across 10 benchmarks. We believe this work offers a principled path toward improving smaller Transformers without additional parameters.",
+      "doi": null,
+      "arxiv_id": "2602.00217v3",
+      "published": "2026-01-30T16:07:03Z",
+      "updated": "2026-05-05T01:31:55Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2602.00217v3",
+      "pdf_url": "https://arxiv.org/pdf/2602.00217v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2602.00217v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2602.00217v3",
+          "url": "https://arxiv.org/abs/2602.00217v3",
+          "doi": null,
+          "arxiv_id": "2602.00217v3",
+          "published": "2026-01-30T16:07:03Z",
+          "updated": "2026-05-05T01:31:55Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2602.00217v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:05.296111Z",
+      "sha256": "940964917976e37a855ad24d9ce65b1a64121c8b03be31ce069c89de8066857c",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvU1dmblJaSkdtUUlCKy81T0hHWW9pak1uRzhBPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwMi4wMDIxN3YzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjA1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjAyLjAwMjE3djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwMi4wMDIxN3YzPC9pZD4KICAgIDx0aXRsZT5EaXNwZXJzaW9uIExvc3MgQ291bnRlcmFjdHMgRW1iZWRkaW5nIENvbmRlbnNhdGlvbiBhbmQgSW1wcm92ZXMgR2VuZXJhbGl6YXRpb24gaW4gU21hbGwgTGFuZ3VhZ2UgTW9kZWxzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDUtMDVUMDE6MzE6NTVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDIuMDAyMTd2MyIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDIuMDAyMTd2MyIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkxhcmdlIGxhbmd1YWdlIG1vZGVscyAoTExNcykgYWNoaWV2ZSByZW1hcmthYmxlIHBlcmZvcm1hbmNlIHRocm91Z2ggZXZlci1pbmNyZWFzaW5nIHBhcmFtZXRlciBjb3VudHMsIGJ1dCBzY2FsaW5nIGluY3VycyBzdGVlcCBjb21wdXRhdGlvbmFsIGNvc3RzLiBUbyBiZXR0ZXIgdW5kZXJzdGFuZCBMTE0gc2NhbGluZywgd2Ugc3R1ZHkgcmVwcmVzZW50YXRpb25hbCBkaWZmZXJlbmNlcyBiZXR3ZWVuIExMTXMgYW5kIHRoZWlyIHNtYWxsZXIgY291bnRlcnBhcnRzLCB3aXRoIHRoZSBnb2FsIG9mIHJlcGxpY2F0aW5nIHRoZSByZXByZXNlbnRhdGlvbmFsIHF1YWxpdGllcyBvZiBsYXJnZXIgbW9kZWxzIGluIHNtYWxsZXIgbW9kZWxzLiBXZSBvYnNlcnZlIGEgZ2VvbWV0cmljIHBoZW5vbWVub24gd2hpY2ggd2UgdGVybSAkXHRleHRiZntlbWJlZGRpbmcgY29uZGVuc2F0aW9ufSQsIHdoZXJlIHRva2VuIGVtYmVkZGluZ3MgY29sbGFwc2UgaW50byBhIG5hcnJvdyBjb25lLWxpa2Ugc3Vic3BhY2UgaW4gc29tZSBsYW5ndWFnZSBtb2RlbHMuIFRocm91Z2ggc3lzdGVtYXRpYyBhbmFseXNlcyBhY3Jvc3MgbXVsdGlwbGUgVHJhbnNmb3JtZXIgZmFtaWxpZXMsIHdlIHNob3cgdGhhdCBzbWFsbCBtb2RlbHMgc3VjaCBhcyAkXHRleHR0dHtHUFQyfSQgYW5kICRcdGV4dHR0e1F3ZW4zLTAuNkJ9JCBleGhpYml0IHNldmVyZSBjb25kZW5zYXRpb24sIHdoZXJlYXMgbGFyZ2VyIG1vZGVscyBzdWNoIGFzICRcdGV4dHR0e0dQVDIteGx9JCBhbmQgJFx0ZXh0dHR7UXdlbjMtMzJCfSQgYXJlIG1vcmUgcmVzaXN0YW50IHRvIHRoaXMgcGhlbm9tZW5vbi4gQWRkaXRpb25hbCBvYnNlcnZhdGlvbnMgc2hvdyB0aGF0IGVtYmVkZGluZyBjb25kZW5zYXRpb24gaXMgbm90IHJlbGlhYmx5IG1pdGlnYXRlZCBieSBrbm93bGVkZ2UgZGlzdGlsbGF0aW9uIGZyb20gbGFyZ2VyIG1vZGVscy4gVG8gZmlnaHQgYWdhaW5zdCBpdCwgd2UgZm9ybXVsYXRlIGEgZGlzcGVyc2lvbiBsb3NzIHRoYXQgZXhwbGljaXRseSBlbmNvdXJhZ2VzIGVtYmVkZGluZyBkaXNwZXJzaW9uIGR1cmluZyB0cmFpbmluZy4gRXhwZXJpbWVudHMgZGVtb25zdHJhdGUgdGhhdCBpdCBtaXRpZ2F0ZXMgY29uZGVuc2F0aW9uLCByZWNvdmVycyBkaXNwZXJzaW9uIHBhdHRlcm5zIHNlZW4gaW4gbGFyZ2VyIG1vZGVscywgYW5kIHlpZWxkcyBwZXJmb3JtYW5jZSBnYWlucyBhY3Jvc3MgMTAgYmVuY2htYXJrcy4gV2UgYmVsaWV2ZSB0aGlzIHdvcmsgb2ZmZXJzIGEgcHJpbmNpcGxlZCBwYXRoIHRvd2FyZCBpbXByb3Zpbmcgc21hbGxlciBUcmFuc2Zvcm1lcnMgd2l0aG91dCBhZGRpdGlvbmFsIHBhcmFtZXRlcnMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDEtMzBUMTY6MDc6MDNaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD5JQ01MIDIwMjY8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5MRyIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q2hlbiBMaXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlhpbmd6aGkgU3VuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaSBYaWFvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbGV4YW5kcmUgVmFuIFRhc3NlbDwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2UgWHU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktyaXN0b2YgUmVpbWFubjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RGFucWkgTGlhbzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWFyayBHZXJzdGVpbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+VGlhbnlhbmcgV2FuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WGlhbyBXYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TbWl0YSBLcmlzaG5hc3dhbXk8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Dispersion Loss Counteracts Embedding Condensation and Improves Generalization in Small Language Models",
+    "authors": [
+      "Chen Liu",
+      "Xingzhi Sun",
+      "Xi Xiao",
+      "Alexandre Van Tassel",
+      "Ke Xu",
+      "Kristof Reimann",
+      "Danqi Liao",
+      "Mark Gerstein",
+      "Tianyang Wang",
+      "Xiao Wang",
+      "Smita Krishnaswamy"
+    ],
+    "abstract": "Large language models (LLMs) achieve remarkable performance through ever-increasing parameter counts, but scaling incurs steep computational costs. To better understand LLM scaling, we study representational differences between LLMs and their smaller counterparts, with the goal of replicating the representational qualities of larger models in smaller models. We observe a geometric phenomenon which we term $\\textbf{embedding condensation}$, where token embeddings collapse into a narrow cone-like subspace in some language models. Through systematic analyses across multiple Transformer families, we show that small models such as $\\texttt{GPT2}$ and $\\texttt{Qwen3-0.6B}$ exhibit severe condensation, whereas larger models such as $\\texttt{GPT2-xl}$ and $\\texttt{Qwen3-32B}$ are more resistant to this phenomenon. Additional observations show that embedding condensation is not reliably mitigated by knowledge distillation from larger models. To fight against it, we formulate a dispersion loss that explicitly encourages embedding dispersion during training. Experiments demonstrate that it mitigates condensation, recovers dispersion patterns seen in larger models, and yields performance gains across 10 benchmarks. We believe this work offers a principled path toward improving smaller Transformers without additional parameters.",
+    "identifiers": {
+      "arxiv": "2602.00217",
+      "arxiv_versioned": "2602.00217v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2602.00217v3"
+      }
+    },
+    "categories": [
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2026-01-30T16:07:03Z",
+    "updated": "2026-05-05T01:31:55Z"
+  }
+}

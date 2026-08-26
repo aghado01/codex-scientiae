@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2607.06696v3",
-  "initialized_utc": "2026-08-26T03:22:15.456225Z",
+  "initialized_utc": "2026-08-26T03:57:41.454658Z",
   "title": "Heat-Kernel Entropy Profiles and Geometric Effective Sample Size for Weighted Measures on Manifolds",
   "authors": [
     "Kisung You",
@@ -57,8 +57,11 @@
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
       "declarations": {
-        "title_tex": null,
-        "authors_tex": [],
+        "title_tex": "Heat-Kernel Entropy Profiles and Geometric Effective Sample Size for Weighted Measures on Manifolds",
+        "authors_tex": [
+          "Kisung You",
+          "Boram Cho"
+        ],
         "doi": null
       }
     },
@@ -125,8 +128,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:22:15.456225Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:41.454658Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

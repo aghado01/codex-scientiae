@@ -2,27 +2,82 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2602.00217v3",
-  "initialized_utc": "2026-08-11T03:19:33.757782Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:58:05.911484Z",
+  "title": "Dispersion Loss Counteracts Embedding Condensation and Improves Generalization in Small Language Models",
+  "authors": [
+    "Chen Liu",
+    "Xingzhi Sun",
+    "Xi Xiao",
+    "Alexandre Van Tassel",
+    "Ke Xu",
+    "Kristof Reimann",
+    "Danqi Liao",
+    "Mark Gerstein",
+    "Tianyang Wang",
+    "Xiao Wang",
+    "Smita Krishnaswamy"
+  ],
+  "abstract": "Large language models (LLMs) achieve remarkable performance through ever-increasing parameter counts, but scaling incurs steep computational costs. To better understand LLM scaling, we study representational differences between LLMs and their smaller counterparts, with the goal of replicating the representational qualities of larger models in smaller models. We observe a geometric phenomenon which we term $\\textbf{embedding condensation}$, where token embeddings collapse into a narrow cone-like subspace in some language models. Through systematic analyses across multiple Transformer families, we show that small models such as $\\texttt{GPT2}$ and $\\texttt{Qwen3-0.6B}$ exhibit severe condensation, whereas larger models such as $\\texttt{GPT2-xl}$ and $\\texttt{Qwen3-32B}$ are more resistant to this phenomenon. Additional observations show that embedding condensation is not reliably mitigated by knowledge distillation from larger models. To fight against it, we formulate a dispersion loss that explicitly encourages embedding dispersion during training. Experiments demonstrate that it mitigates condensation, recovers dispersion patterns seen in larger models, and yields performance gains across 10 benchmarks. We believe this work offers a principled path toward improving smaller Transformers without additional parameters.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2602.00217",
+    "arxiv_versioned": "2602.00217v3",
+    "doi": null,
+    "external": {
+      "arxiv": "2602.00217v3"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.LG",
+  "published": "2026-01-30T16:07:03Z",
+  "updated": "2026-05-05T01:31:55Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2602.00217v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10093,
+        "sha256": "f241417915d7f776370463f53471fa2298a6048cb1c075cd5deb583cfe8aad68",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:58:05.296111Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2602.00217v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "940964917976e37a855ad24d9ce65b1a64121c8b03be31ce069c89de8066857c"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
       "declarations": {
-        "title_tex": null,
-        "authors_tex": [],
+        "title_tex": "Dispersion Loss Counteracts Embedding Condensation and\\\\Improves Generalization in Small Language Models",
+        "authors_tex": [
+          "Chen Liu",
+          "Xingzhi Sun",
+          "Xi Xiao",
+          "Alexandre Van Tassel",
+          "Ke Xu",
+          "Kristof Reimann",
+          "Danqi Liao",
+          "Mark Gerstein",
+          "Tianyang Wang",
+          "Xiao Wang",
+          "Smita Krishnaswamy"
+        ],
         "doi": null
       }
     },
@@ -32,7 +87,32 @@
         "bytes": 213,
         "sha256": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2602.00217v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -64,8 +144,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:33.757782Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:58:05.911484Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -90,8 +170,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

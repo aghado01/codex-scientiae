@@ -2,34 +2,97 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "1911.02748v2",
-  "initialized_utc": "2026-08-11T08:29:42.501966Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:20.434857Z",
+  "title": "Data transforming augmentation for heteroscedastic models",
+  "authors": [
+    "Hyungsuk Tak",
+    "Kisung You",
+    "Sujit K. Ghosh",
+    "Bingyue Su",
+    "Joseph Kelly"
+  ],
+  "abstract": "Data augmentation (DA) turns seemingly intractable computational problems into simple ones by augmenting latent missing data. In addition to computational simplicity, it is now well-established that DA equipped with a deterministic transformation can improve the convergence speed of iterative algorithms such as an EM algorithm or Gibbs sampler. In this article, we outline a framework for the transformation-based DA, which we call data transforming augmentation (DTA), allowing augmented data to be a deterministic function of latent and observed data, and unknown parameters. Under this framework, we investigate a novel DTA scheme that turns heteroscedastic models into homoscedastic ones to take advantage of simpler computations typically available in homoscedastic cases. Applying this DTA scheme to fitting linear mixed models, we demonstrate simpler computations and faster convergence rates of resulting iterative algorithms, compared with those under a non-transformation-based DA scheme. We also fit a Beta-Binomial model using the proposed DTA scheme, which enables sampling approximate marginal posterior distributions that are available only under homoscedasticity. An R package, Rdta, is publicly available at CRAN.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "1911.02748",
+    "arxiv_versioned": "1911.02748v2",
+    "doi": "10.1080/10618600.2019.1704295",
+    "external": {
+      "arxiv": "1911.02748v2",
+      "doi": "10.1080/10618600.2019.1704295"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME",
+    "stat.CO"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2019-11-07T04:14:01Z",
+  "updated": "2020-01-28T02:53:11Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "1911.02748v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9290,
+        "sha256": "78dc5248f7f7edeb570fd9ec0b389bfa2475b6540d9bc710031c52c21f9b412c",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:20.172932Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=1911.02748v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "c6f6aa75d560bbc54f26c6cde1c903cf5b2ff22546a85c390694129371b61816"
+      }
+    ],
     "latex_source": {
       "entrypoint": "dta_arXiv.tex",
       "selection": "single-candidate",
       "declarations": {
         "title_tex": "\\bf  Data transforming augmentation for heteroscedastic models",
         "authors_tex": [
-          "Hyungsuk Tak$^{\\dag}$, Kisung You$^{\\S}$, Sujit \\textcolor{black}{K.}~Ghosh$^{\\P}$, Bingyue Su$^{\\S}$, and Joseph Kelly$^{\\ddag}$\\thanks{Corresponding author: josephkelly@google.com} \\vspace{.4cm}\\\\\n     $^{\\dag}$Pennsylvania State University, $^{\\S}$University of Notre Dame,\\\\ $^{\\P}$North Carolina State University, $^{\\ddag}$Google LLC",
-          "~"
+          "Hyungsuk Tak$^{\\dag}$, Kisung You$^{\\S}$, Sujit \\textcolor{black}{K.}~Ghosh$^{\\P}$, Bingyue Su$^{\\S}$, and Joseph Kelly$^{\\ddag}$\\thanks{Corresponding author: josephkelly@google.com} \\vspace{.4cm}\\\\\n     $^{\\dag}$Pennsylvania State University, $^{\\S}$University of Notre Dame,\\\\ $^{\\P}$North Carolina State University, $^{\\ddag}$Google LLC"
         ],
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "1911.02748v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -61,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:42.501966Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:20.434857Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -87,8 +150,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "dta_arXiv.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "dta_arXiv.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -2,30 +2,69 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2508.06105v2",
-  "initialized_utc": "2026-08-11T03:19:32.133541Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:58:02.104591Z",
+  "title": "You Don't Need Pre-built Graphs for RAG: Retrieval Augmented Generation with Adaptive Reasoning Structures",
+  "authors": [
+    "Shengyuan Chen",
+    "Chuang Zhou",
+    "Zheng Yuan",
+    "Qinggang Zhang",
+    "Zeyang Cui",
+    "Hao Chen",
+    "Yilin Xiao",
+    "Jiannong Cao",
+    "Xiao Huang"
+  ],
+  "abstract": "Large language models (LLMs) often suffer from hallucination, generating factually incorrect statements when handling questions beyond their knowledge and perception. Retrieval-augmented generation (RAG) addresses this by retrieving query-relevant contexts from knowledge bases to support LLM reasoning. Recent advances leverage pre-constructed graphs to capture the relational connections among distributed documents, showing remarkable performance in complex tasks. However, existing Graph-based RAG (GraphRAG) methods rely on a costly process to transform the corpus into a graph, introducing overwhelming token cost and update latency. Moreover, real-world queries vary in type and complexity, requiring different logic structures for accurate reasoning. The pre-built graph may not align with these required structures, resulting in ineffective knowledge retrieval. To this end, we propose a $\\textbf{Logic}$-aware $\\textbf{R}etrieval$-$\\textbf{A}$ugmented $\\textbf{G}$eneration framework ($\\textbf{LogicRAG}$) that dynamically extracts reasoning structures at inference time to guide adaptive retrieval without any pre-built graph. LogicRAG begins by decomposing the input query into a set of subproblems and constructing a directed acyclic graph (DAG) to model the logical dependencies among them. To support coherent multi-step reasoning, LogicRAG then linearizes the graph using topological sort, so that subproblems can be addressed in a logically consistent order. Besides, LogicRAG applies graph pruning to reduce redundant retrieval and uses context pruning to filter irrelevant context, significantly reducing the overall token cost. Extensive experiments demonstrate that LogicRAG achieves both superior performance and efficiency compared to state-of-the-art baselines.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2508.06105",
+    "arxiv_versioned": "2508.06105v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2508.06105v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.CL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2025-08-08T08:07:40Z",
+  "updated": "2025-11-17T02:52:04Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2508.06105v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 11363,
+        "sha256": "53344181095e74a4cf1dade46b5d6bc4e7124d423e0b6a2501439c6bce07903b",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:58:01.761798Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2508.06105v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "2478ee3b2718ad04e5c3a39218f82ef74c6f63eaa97a8b34e3c783c5b3cc3380"
+      }
+    ],
     "latex_source": {
       "entrypoint": "logicrag.tex",
       "selection": "single-candidate",
       "declarations": {
         "title_tex": "You Don't Need Pre-built Graphs for RAG: \\\\ Retrieval Augmented Generation with Adaptive Reasoning Structures",
         "authors_tex": [
-          "Shengyuan Chen\\thanks{Equal contribution. $^{\\dagger}$Corresponding author.},\n    Chuang Zhou$^*$, \n    Zheng Yuan,\n    Qinggang Zhang$^{\\dagger}$,\n    Zeyang Cui,\n    Hao Chen,\n    Yilin Xiao,\n    Jiannong Cao,\n    Xiao Huang",
-          "Author Name",
-          "First Author Name\\textsuperscript{\\rm 1},\n    Second Author Name\\textsuperscript{\\rm 2},\n    Third Author Name\\textsuperscript{\\rm 1}"
+          "Shengyuan Chen\\thanks{Equal contribution. $^{\\dagger}$Corresponding author.},\n    Chuang Zhou$^*$, \n    Zheng Yuan,\n    Qinggang Zhang$^{\\dagger}$,\n    Zeyang Cui,\n    Hao Chen,\n    Yilin Xiao,\n    Jiannong Cao,\n    Xiao Huang"
         ],
         "doi": null
       }
@@ -36,7 +75,32 @@
         "bytes": 383,
         "sha256": "293169fb9b19e7d92b8f56fbea7353efdf78ac3373415a4e30232bc89682959d"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2508.06105v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -61,8 +125,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:32.133541Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:58:02.104591Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -87,8 +151,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "logicrag.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "logicrag.tex"
       },
       {
         "name": "literal-inputs-resolved",

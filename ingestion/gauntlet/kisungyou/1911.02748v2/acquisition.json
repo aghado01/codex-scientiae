@@ -1,0 +1,42 @@
+{
+  "schema": "codex-scientiae/acquisition/0.1",
+  "state": "acquired",
+  "slug": "1911.02748v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "1911.02748v2",
+    "provider_roles": [
+      "artifact-origin",
+      "artifact-access",
+      "metadata-authority"
+    ]
+  },
+  "forms": [
+    {
+      "kind": "source",
+      "path": "1911.02748v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 365085,
+      "sha256": "c54c3589be6c19e60fa8977480d8927ced2129b8e6c166fed14042b2754f6c8d",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/src/1911.02748v2",
+      "candidate_id": "arxiv-source",
+      "fetched_at": "2026-08-11T08:29:42.501966Z",
+      "provider_checksum": null,
+      "local_import": null
+    },
+    {
+      "kind": "pdf",
+      "path": "1911.02748v2.pdf",
+      "format": "application/pdf",
+      "bytes": 683219,
+      "sha256": "86aac8806d70b37cd7350a981e0f14cb6800d4608aa594597ef292a516188fa6",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/pdf/1911.02748v2",
+      "candidate_id": "arxiv-pdf",
+      "fetched_at": "2026-08-11T08:29:42.501966Z",
+      "provider_checksum": null,
+      "local_import": null
+    }
+  ]
+}

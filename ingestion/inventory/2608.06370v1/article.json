@@ -1,0 +1,171 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.06370v1",
+  "initialized_utc": "2026-08-26T03:58:23.046464Z",
+  "title": "The Bitter Lesson of Tool Calling",
+  "authors": [
+    "Ishan Patel",
+    "Sahil Sen",
+    "Elias Lumer",
+    "Vamse Kumar Subbiah"
+  ],
+  "abstract": "Tool use transforms LLMs into agents that act beyond their training data, and for code-capable models, programmatic tool calling extends this further by replacing rigid JSON calls with scripts that chain and parallelize naturally. However, a systematic evaluation of tools as code on an established benchmark across current and prior model generations under real-world task conditions has not been conducted. In this work, we empirically compare programmatic tool calling (PTC) to native JSON tool calling across 14 language models on BFCL v4. In the programmatic tool calling paradigm, tools are exposed as typed Python stubs that the model invokes through code, with execution and results handled in a single agent turn. Programmatic tool calling matches or exceeds native JSON tool calling in 11 of 14 models on BFCL v4, with the GPT-5.6 family achieving a 10.6% improvement over the JSON tool calling baseline. Further, it matches or outperforms baseline in 13 of 14 models under parallel fan-out, and holds stable under context rot conditions where baseline degrades 2.3% on average. Our results demonstrate that programmatic tool calling is a viable and robust alternative to JSON tool calling, with performance tracking model capability across release generations.",
+  "identifiers": {
+    "arxiv": "2608.06370",
+    "arxiv_versioned": "2608.06370v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.06370v1"
+    }
+  },
+  "categories": [
+    "cs.CL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2026-08-06T17:58:32Z",
+  "updated": "2026-08-06T17:58:32Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.06370v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8711,
+        "sha256": "1a6ab11f58e0cd682015f1d57664a6e577b1e0e726d0f4208808e6db6ebdb4bb",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:58:22.755890Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.06370v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "3e0de6c193ada816174f344c6f654d1eb59b17abe650dfacfc25531f5b5acfa6"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "The Bitter Lesson of Tool Calling",
+        "authors_tex": [
+          "\\textbf{Ishan Patel}, \n \\textbf{Sahil Sen}, \n \\textbf{Elias Lumer}, \n \\textbf{and Vamse Kumar Subbiah} \\\\\n \\\n \\textit{Commercial Technology and Innovation Office} \\\\\\textit{PricewaterhouseCoopers, U.S.A}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 383,
+        "sha256": "7f07dc2fe3abda157368f547fc93b7a1cc1776cb486d1d20e6112f0fde247c2f"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.06370v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.06370v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1522528,
+      "sha256": "667ae01e7fbd5a2f81ecf87a6471070410aed04f11a2b809b1ad208a027b1577",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.06370v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.06370v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 8,
+      "tex_files": 1,
+      "sha256": "7bcc13d6484f992e57cbef0bf9bf10c30220dfd767b088d8878e5c37fee874f5"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.06370v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1732777,
+      "sha256": "dbcc5bde9195a9e507949a992329ae2f37992435d291601e327ebf594e5d5ad4"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-26T03:58:23.046464Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 8
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 8
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2605.08001v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2605.08001v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Scale selection for geometric medians on product manifolds",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Geometric medians on product manifolds are sensitive to the relative scaling of factor metrics because the median objective couples the factors rather than separating them. We study this scale-selection problem and first prove that naive joint minimization over location and scale is degenerate: the scale is driven to the boundary and the problem collapses to a marginal median, effectively discarding one factor. Thus relative scale is not identifiable from the raw median loss alone. We develop three alternatives to mitigate this issue. The first treats scale as indexing a sensitivity path and establishes uniform consistency, a functional central limit theorem, and a derivative-based sensitivity measure. The second constructs a robust scale-calibrated median using marginal radial median scales, yielding unit invariance, consistency, a two-step central limit theorem, and bounded influence. The third introduces a bounded balance equation for direct scale estimation, with monotonicity, uniqueness, joint asymptotic normality, and bounded influence. Simulations illustrate boundary collapse, sensitivity, unit invariance, and balanced estimation in Euclidean and Bures-Wasserstein settings.",
+      "doi": null,
+      "arxiv_id": "2605.08001v1",
+      "published": "2026-05-08T16:57:01Z",
+      "updated": "2026-05-08T16:57:01Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2605.08001v1",
+      "pdf_url": "https://arxiv.org/pdf/2605.08001v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.ST",
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2605.08001v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2605.08001v1",
+          "url": "https://arxiv.org/abs/2605.08001v1",
+          "doi": null,
+          "arxiv_id": "2605.08001v1",
+          "published": "2026-05-08T16:57:01Z",
+          "updated": "2026-05-08T16:57:01Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2605.08001v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:31.928183Z",
+      "sha256": "e569aa86841d0296369fed701936b11a2852449967091186dcb8d1d2412edb64",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvdEFuV1NGSzhiODBKT2lFYVdXam9WbHFEaVFRPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNS4wODAwMXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjMxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA1LjA4MDAxdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNS4wODAwMXYxPC9pZD4KICAgIDx0aXRsZT5TY2FsZSBzZWxlY3Rpb24gZm9yIGdlb21ldHJpYyBtZWRpYW5zIG9uIHByb2R1Y3QgbWFuaWZvbGRzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDUtMDhUMTY6NTc6MDFaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDUuMDgwMDF2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDUuMDgwMDF2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5Pkdlb21ldHJpYyBtZWRpYW5zIG9uIHByb2R1Y3QgbWFuaWZvbGRzIGFyZSBzZW5zaXRpdmUgdG8gdGhlIHJlbGF0aXZlIHNjYWxpbmcgb2YgZmFjdG9yIG1ldHJpY3MgYmVjYXVzZSB0aGUgbWVkaWFuIG9iamVjdGl2ZSBjb3VwbGVzIHRoZSBmYWN0b3JzIHJhdGhlciB0aGFuIHNlcGFyYXRpbmcgdGhlbS4gV2Ugc3R1ZHkgdGhpcyBzY2FsZS1zZWxlY3Rpb24gcHJvYmxlbSBhbmQgZmlyc3QgcHJvdmUgdGhhdCBuYWl2ZSBqb2ludCBtaW5pbWl6YXRpb24gb3ZlciBsb2NhdGlvbiBhbmQgc2NhbGUgaXMgZGVnZW5lcmF0ZTogdGhlIHNjYWxlIGlzIGRyaXZlbiB0byB0aGUgYm91bmRhcnkgYW5kIHRoZSBwcm9ibGVtIGNvbGxhcHNlcyB0byBhIG1hcmdpbmFsIG1lZGlhbiwgZWZmZWN0aXZlbHkgZGlzY2FyZGluZyBvbmUgZmFjdG9yLiBUaHVzIHJlbGF0aXZlIHNjYWxlIGlzIG5vdCBpZGVudGlmaWFibGUgZnJvbSB0aGUgcmF3IG1lZGlhbiBsb3NzIGFsb25lLiBXZSBkZXZlbG9wIHRocmVlIGFsdGVybmF0aXZlcyB0byBtaXRpZ2F0ZSB0aGlzIGlzc3VlLiBUaGUgZmlyc3QgdHJlYXRzIHNjYWxlIGFzIGluZGV4aW5nIGEgc2Vuc2l0aXZpdHkgcGF0aCBhbmQgZXN0YWJsaXNoZXMgdW5pZm9ybSBjb25zaXN0ZW5jeSwgYSBmdW5jdGlvbmFsIGNlbnRyYWwgbGltaXQgdGhlb3JlbSwgYW5kIGEgZGVyaXZhdGl2ZS1iYXNlZCBzZW5zaXRpdml0eSBtZWFzdXJlLiBUaGUgc2Vjb25kIGNvbnN0cnVjdHMgYSByb2J1c3Qgc2NhbGUtY2FsaWJyYXRlZCBtZWRpYW4gdXNpbmcgbWFyZ2luYWwgcmFkaWFsIG1lZGlhbiBzY2FsZXMsIHlpZWxkaW5nIHVuaXQgaW52YXJpYW5jZSwgY29uc2lzdGVuY3ksIGEgdHdvLXN0ZXAgY2VudHJhbCBsaW1pdCB0aGVvcmVtLCBhbmQgYm91bmRlZCBpbmZsdWVuY2UuIFRoZSB0aGlyZCBpbnRyb2R1Y2VzIGEgYm91bmRlZCBiYWxhbmNlIGVxdWF0aW9uIGZvciBkaXJlY3Qgc2NhbGUgZXN0aW1hdGlvbiwgd2l0aCBtb25vdG9uaWNpdHksIHVuaXF1ZW5lc3MsIGpvaW50IGFzeW1wdG90aWMgbm9ybWFsaXR5LCBhbmQgYm91bmRlZCBpbmZsdWVuY2UuIFNpbXVsYXRpb25zIGlsbHVzdHJhdGUgYm91bmRhcnkgY29sbGFwc2UsIHNlbnNpdGl2aXR5LCB1bml0IGludmFyaWFuY2UsIGFuZCBiYWxhbmNlZCBlc3RpbWF0aW9uIGluIEV1Y2xpZGVhbiBhbmQgQnVyZXMtV2Fzc2Vyc3RlaW4gc2V0dGluZ3MuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09Im1hdGguU1QiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDUtMDhUMTY6NTc6MDFaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJtYXRoLlNUIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Scale selection for geometric medians on product manifolds",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Geometric medians on product manifolds are sensitive to the relative scaling of factor metrics because the median objective couples the factors rather than separating them. We study this scale-selection problem and first prove that naive joint minimization over location and scale is degenerate: the scale is driven to the boundary and the problem collapses to a marginal median, effectively discarding one factor. Thus relative scale is not identifiable from the raw median loss alone. We develop three alternatives to mitigate this issue. The first treats scale as indexing a sensitivity path and establishes uniform consistency, a functional central limit theorem, and a derivative-based sensitivity measure. The second constructs a robust scale-calibrated median using marginal radial median scales, yielding unit invariance, consistency, a two-step central limit theorem, and bounded influence. The third introduces a bounded balance equation for direct scale estimation, with monotonicity, uniqueness, joint asymptotic normality, and bounded influence. Simulations illustrate boundary collapse, sensitivity, unit invariance, and balanced estimation in Euclidean and Bures-Wasserstein settings.",
+    "identifiers": {
+      "arxiv": "2605.08001",
+      "arxiv_versioned": "2605.08001v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2605.08001v1"
+      }
+    },
+    "categories": [
+      "math.ST",
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "math.ST",
+    "published": "2026-05-08T16:57:01Z",
+    "updated": "2026-05-08T16:57:01Z"
+  }
+}

@@ -2,21 +2,57 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2503.23653v2",
-  "initialized_utc": "2026-08-11T08:29:53.804988Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:52.838806Z",
+  "title": "Scalable Geometric Learning with Correlation-Based Functional Brain Networks",
+  "authors": [
+    "Kisung You",
+    "Yelim Lee",
+    "Hae-Jeong Park"
+  ],
+  "abstract": "The correlation matrix is a central representation of functional brain networks in neuroimaging. Traditional analyses often treat pairwise interactions independently in a Euclidean setting, overlooking the intrinsic geometry of correlation matrices. While earlier attempts have embraced the quotient geometry of the correlation manifold, they remain limited by computational inefficiency and numerical instability, particularly in high-dimensional contexts. This paper presents a novel geometric framework that employs diffeomorphic transformations to embed correlation matrices into a Euclidean space, preserving salient manifold properties and enabling large-scale analyses. The proposed method integrates with established learning algorithms - regression, dimensionality reduction, and clustering - and extends naturally to population-level inference of brain networks. Simulation studies demonstrate both improved computational speed and enhanced accuracy compared to conventional manifold-based approaches. Moreover, applications in real neuroimaging scenarios illustrate the framework's utility, enhancing behavior score prediction, subject fingerprinting in resting-state fMRI, and hypothesis testing in electroencephalogram data. An open-source MATLAB toolbox is provided to facilitate broader adoption and advance the application of correlation geometry in functional brain network research.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2503.23653",
+    "arxiv_versioned": "2503.23653v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2503.23653v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ML",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2025-03-31T01:35:50Z",
+  "updated": "2025-04-09T15:14:53Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2503.23653v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9277,
+        "sha256": "2a4669330edb4b8f49528ca65b04b747fdccd99bd4250a712ae0ad64fc413923",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:52.077108Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2503.23653v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "2b404e8ef88dc5218350dd53ba2035007089a38364c7a19c8710830851f62c05"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
@@ -30,7 +66,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2503.23653v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -62,8 +123,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:53.804988Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:52.838806Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -88,8 +149,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

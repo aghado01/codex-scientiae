@@ -2,21 +2,54 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2603.14815v1",
-  "initialized_utc": "2026-08-11T08:30:00.875648Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:14.003516Z",
+  "title": "On Heterogeneity in Wasserstein Space",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Data represented by probability measures arise as empirical distributions, posterior distributions, and feature-based representations of complex objects. We study heterogeneity in a population of probability measures through the expected value of a chosen transform of the pairwise Wasserstein distance. The resulting estimator is unbiased and, under simple moment conditions on the population law, is strongly consistent, asymptotically normal, and equipped with a consistent standard error. This also yields a simple comparison of two populations and remains stable under plug-in approximation when the measures are estimated. The associated empirical eccentricities identify the observations that contribute most strongly to heterogeneity within a sample.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2603.14815",
+    "arxiv_versioned": "2603.14815v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2603.14815v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2026-03-16T04:33:07Z",
+  "updated": "2026-03-16T04:33:07Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2603.14815v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 6641,
+        "sha256": "b3ac197a462b930c000695d43380282bf1491810f91523b89e083b0d60809643",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:13.778147Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2603.14815v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "53561bc1b5b00dc59283c33e2717996b9101633dd30a72316c0daf657285cd86"
+      }
+    ],
     "latex_source": {
       "entrypoint": "write-arxiv.tex",
       "selection": "single-candidate",
@@ -34,7 +67,32 @@
         "bytes": 383,
         "sha256": "47a7e262bc63ed16d0818ee43fd453016afacb88bc3bc99d1556b462fd79e53e"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2603.14815v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:30:00.875648Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:14.003516Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +150,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "write-arxiv.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "write-arxiv.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2605.20681v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2605.20681v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Scale-Calibrated Median-of-Means for Robust Distributed Principal Component Analysis",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Distributed principal component analysis (PCA) produces node-level estimates of both a mean vector and a principal subspace. Robustly aggregating these heterogeneous objects requires a relative scale between mean error and subspace error. We study a scale-calibrated median-of-means estimator for this problem using the product geometry of Euclidean space and the Grassmann manifold. A node-level PCA expansion shows that the mean component has the usual linear influence, whereas the subspace component is an eigengap-weighted covariance perturbation. We prove a local reduction showing that the proposed product-manifold median-of-means estimator is asymptotically equivalent to a scaled spatial median of node influence errors. This yields fixed-node non-Gaussian limits, growing-node Gaussian limits with finite-block bias, and an explicit scale-dependent covariance formula. We propose robust block-scale and inference-optimal calibration rules, establish high-probability median-of-means bounds, characterize factorwise bad-node influence, and prove node-bootstrap validity. Simulations and large-scale single-cell RNA-seq data show that scale calibration adapts to eigengap-driven subspace uncertainty and provides a robust distributed PCA summary.",
+      "doi": null,
+      "arxiv_id": "2605.20681v1",
+      "published": "2026-05-20T03:48:31Z",
+      "updated": "2026-05-20T03:48:31Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2605.20681v1",
+      "pdf_url": "https://arxiv.org/pdf/2605.20681v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2605.20681v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2605.20681v1",
+          "url": "https://arxiv.org/abs/2605.20681v1",
+          "doi": null,
+          "arxiv_id": "2605.20681v1",
+          "published": "2026-05-20T03:48:31Z",
+          "updated": "2026-05-20T03:48:31Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2605.20681v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:35.360364Z",
+      "sha256": "50d018bd36a498b0f6e828edf79dda638c128e7e3f4515b9de4ed3585c6b8ebf",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvVEd2RUtXVW5zamNiRXZLL1NVNWl3UEFWUHdBPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNS4yMDY4MXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjM1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA1LjIwNjgxdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNS4yMDY4MXYxPC9pZD4KICAgIDx0aXRsZT5TY2FsZS1DYWxpYnJhdGVkIE1lZGlhbi1vZi1NZWFucyBmb3IgUm9idXN0IERpc3RyaWJ1dGVkIFByaW5jaXBhbCBDb21wb25lbnQgQW5hbHlzaXM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNS0yMFQwMzo0ODozMVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNS4yMDY4MXYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNS4yMDY4MXYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+RGlzdHJpYnV0ZWQgcHJpbmNpcGFsIGNvbXBvbmVudCBhbmFseXNpcyAoUENBKSBwcm9kdWNlcyBub2RlLWxldmVsIGVzdGltYXRlcyBvZiBib3RoIGEgbWVhbiB2ZWN0b3IgYW5kIGEgcHJpbmNpcGFsIHN1YnNwYWNlLiBSb2J1c3RseSBhZ2dyZWdhdGluZyB0aGVzZSBoZXRlcm9nZW5lb3VzIG9iamVjdHMgcmVxdWlyZXMgYSByZWxhdGl2ZSBzY2FsZSBiZXR3ZWVuIG1lYW4gZXJyb3IgYW5kIHN1YnNwYWNlIGVycm9yLiBXZSBzdHVkeSBhIHNjYWxlLWNhbGlicmF0ZWQgbWVkaWFuLW9mLW1lYW5zIGVzdGltYXRvciBmb3IgdGhpcyBwcm9ibGVtIHVzaW5nIHRoZSBwcm9kdWN0IGdlb21ldHJ5IG9mIEV1Y2xpZGVhbiBzcGFjZSBhbmQgdGhlIEdyYXNzbWFubiBtYW5pZm9sZC4gQSBub2RlLWxldmVsIFBDQSBleHBhbnNpb24gc2hvd3MgdGhhdCB0aGUgbWVhbiBjb21wb25lbnQgaGFzIHRoZSB1c3VhbCBsaW5lYXIgaW5mbHVlbmNlLCB3aGVyZWFzIHRoZSBzdWJzcGFjZSBjb21wb25lbnQgaXMgYW4gZWlnZW5nYXAtd2VpZ2h0ZWQgY292YXJpYW5jZSBwZXJ0dXJiYXRpb24uIFdlIHByb3ZlIGEgbG9jYWwgcmVkdWN0aW9uIHNob3dpbmcgdGhhdCB0aGUgcHJvcG9zZWQgcHJvZHVjdC1tYW5pZm9sZCBtZWRpYW4tb2YtbWVhbnMgZXN0aW1hdG9yIGlzIGFzeW1wdG90aWNhbGx5IGVxdWl2YWxlbnQgdG8gYSBzY2FsZWQgc3BhdGlhbCBtZWRpYW4gb2Ygbm9kZSBpbmZsdWVuY2UgZXJyb3JzLiBUaGlzIHlpZWxkcyBmaXhlZC1ub2RlIG5vbi1HYXVzc2lhbiBsaW1pdHMsIGdyb3dpbmctbm9kZSBHYXVzc2lhbiBsaW1pdHMgd2l0aCBmaW5pdGUtYmxvY2sgYmlhcywgYW5kIGFuIGV4cGxpY2l0IHNjYWxlLWRlcGVuZGVudCBjb3ZhcmlhbmNlIGZvcm11bGEuIFdlIHByb3Bvc2Ugcm9idXN0IGJsb2NrLXNjYWxlIGFuZCBpbmZlcmVuY2Utb3B0aW1hbCBjYWxpYnJhdGlvbiBydWxlcywgZXN0YWJsaXNoIGhpZ2gtcHJvYmFiaWxpdHkgbWVkaWFuLW9mLW1lYW5zIGJvdW5kcywgY2hhcmFjdGVyaXplIGZhY3Rvcndpc2UgYmFkLW5vZGUgaW5mbHVlbmNlLCBhbmQgcHJvdmUgbm9kZS1ib290c3RyYXAgdmFsaWRpdHkuIFNpbXVsYXRpb25zIGFuZCBsYXJnZS1zY2FsZSBzaW5nbGUtY2VsbCBSTkEtc2VxIGRhdGEgc2hvdyB0aGF0IHNjYWxlIGNhbGlicmF0aW9uIGFkYXB0cyB0byBlaWdlbmdhcC1kcml2ZW4gc3Vic3BhY2UgdW5jZXJ0YWludHkgYW5kIHByb3ZpZGVzIGEgcm9idXN0IGRpc3RyaWJ1dGVkIFBDQSBzdW1tYXJ5Ljwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNS0yMFQwMzo0ODozMVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Scale-Calibrated Median-of-Means for Robust Distributed Principal Component Analysis",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Distributed principal component analysis (PCA) produces node-level estimates of both a mean vector and a principal subspace. Robustly aggregating these heterogeneous objects requires a relative scale between mean error and subspace error. We study a scale-calibrated median-of-means estimator for this problem using the product geometry of Euclidean space and the Grassmann manifold. A node-level PCA expansion shows that the mean component has the usual linear influence, whereas the subspace component is an eigengap-weighted covariance perturbation. We prove a local reduction showing that the proposed product-manifold median-of-means estimator is asymptotically equivalent to a scaled spatial median of node influence errors. This yields fixed-node non-Gaussian limits, growing-node Gaussian limits with finite-block bias, and an explicit scale-dependent covariance formula. We propose robust block-scale and inference-optimal calibration rules, establish high-probability median-of-means bounds, characterize factorwise bad-node influence, and prove node-bootstrap validity. Simulations and large-scale single-cell RNA-seq data show that scale calibration adapts to eigengap-driven subspace uncertainty and provides a robust distributed PCA summary.",
+    "identifiers": {
+      "arxiv": "2605.20681",
+      "arxiv_versioned": "2605.20681v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2605.20681v1"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-05-20T03:48:31Z",
+    "updated": "2026-05-20T03:48:31Z"
+  }
+}

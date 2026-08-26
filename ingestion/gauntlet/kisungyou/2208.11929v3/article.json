@@ -2,21 +2,56 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2208.11929v3",
-  "initialized_utc": "2026-08-11T08:29:48.241073Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:38.415791Z",
+  "title": "On the spherical Laplace distribution",
+  "authors": [
+    "Kisung You",
+    "Dennis Shung"
+  ],
+  "abstract": "The von Mises-Fisher (vMF) distribution has long been a mainstay for inference with data on the unit hypersphere in directional statistics. The performance of statistical inference based on the vMF distribution, however, may suffer when there are significant outliers and noise in the data. Based on an analogy of the median as a robust measure of central tendency and its relationship to the Laplace distribution, we proposed the spherical Laplace (SL) distribution, a novel probability measure for modelling directional data. We present a sampling scheme and theoretical results on maximum likelihood estimation. We derive efficient numerical routines for parameter estimation in the absence of closed-form formula. An application of model-based clustering is considered under the finite mixture model framework. Our numerical methods for parameter estimation and clustering are validated using simulated and real data experiments.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2208.11929",
+    "arxiv_versioned": "2208.11929v3",
+    "doi": "10.23919/fusion52260.2023.10224108",
+    "external": {
+      "arxiv": "2208.11929v3",
+      "doi": "10.23919/fusion52260.2023.10224108"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2022-08-25T08:20:18Z",
+  "updated": "2022-09-07T06:52:23Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2208.11929v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7835,
+        "sha256": "c1c1dfdf4e7f72073f59f505a77620dab6177a084abd79de9ec0d910d56d66cb",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:38.028694Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2208.11929v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "2906805655d11a81ee9cbeff9b9e4a70de697de9f440855a773eabae81fc64eb"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
@@ -29,7 +64,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2208.11929v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -61,8 +121,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:48.241073Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:38.415791Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -87,8 +147,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

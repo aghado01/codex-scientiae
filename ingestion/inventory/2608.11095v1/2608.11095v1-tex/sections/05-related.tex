@@ -1,0 +1,71 @@
+\section{Related Work}
+\label{sec:related}
+
+
+\paragraph{Empirical studies of agentic context files.}
+Prior measurement establishes that context files earn their keep and only grow.
+\citet{chatlatanagulchai2025agentreadmes} characterize \texttt{AGENTS.md}-class files, which
+accumulate content and rarely shed it; \citet{tafreshipour2025promptinthewild} track prompt evolution in
+repositories, where additions dominate every other edit type;
+\citet{lulla2026contextfiles} show they pay for themselves, since repositories carrying one finish
+agent tasks faster and in fewer tokens. We measure that growth over the lifetimes of individual
+instructions, fine enough to estimate a deletion hazard and identify what drives it
+(\autoref{sec:hazard}).
+
+\paragraph{Agent memory and eviction.}
+Agent memory systems already implement forgetting, each against an observable staleness proxy.
+MemGPT evicts on context overflow \citep{packer2023memgpt}; Mem0 deletes on detected contradiction, and
+its graph variant and Zep timestamp superseded entries invalid
+\citep{chhikara2025mem0, rasmussen2025zep}; FSFM catalogs mechanisms from passive decay to safety-triggered
+deletion \citep{fsfm2026selective}. Authored instructions admit no such proxy: an instruction does not
+become outdated merely by being old or rarely triggered. Instead, we show that an instruction's latent
+reasoning should be the primary driver of whether it should be retained or not (\autoref{sec:theory},
+\autoref{sec:hazard}).
+
+\paragraph{Organizational behavior.}
+Organizational written rules are artifacts people maintain for decades and have been studied extensively.
+Lehman's laws attribute a program's growth to a changing environment \citep{lehman1980laws}, the demand-side
+account; \citet{zhou1993dynamics} treats rule change as a stochastic process whose rate depends on a rule's
+own age; \citet{schulz1998limits} shows rule birth rates falling as the population densifies; and
+\citet{march2000dynamics} assembles both into an account of rule births, revisions, and suspensions. We use
+their insights to characterize the unique dynamics in agentic programming beyond compositional effects and
+staleness and further decompose a novel latent reasoning recoverability factor $\bar \rho(a)$ that depends on age $a$
+(\autoref{eq:hazard}, \autoref{sec:hazard}).
+
+\paragraph{Software engineering best practices.}
+Software engineering solved comparable challenges decades ago via syntactic structures and engineering
+conventions. Literate programming argued that a program is addressed to a human reader \citep{knuth1984literate};
+\citet{mcconnell2004codecomplete} makes commenting the \emph{why} standard practice;
+\citet{latoza2006mentalmodels} find recovering that rationale is developers' most serious problem;
+architecture decision records institutionalize recording it at decision time \citep{nygard2011adr}; and
+commit messages exist to carry it and routinely fail \citep{tian2022commitmessages}. We directly build on
+both the structural and semantic insights to drive the core pillars of our result, showing that comments
+encoding an instruction's latent reasoning cut excess size at parity constraint satisfaction (\autoref{sec:protocol}).
+
+However, code-comment fidelity is notoriously weak and entire lines of research are dedicated to their
+divergence. Comments and the code they describe co-evolve poorly \citep{fluri2007coevolution}; detecting and
+addressing comment--code inconsistency are their own ML-for-SWE tasks \citep{panthaplackel2020comments,
+panthaplackel2021jit}. Our ablations identify that low-information, poorly-structured and misleading
+rationale carries the same deleterious effects into agentic coding (\autoref{sec:protocol},
+\autoref{tab:ablations}).
+
+\paragraph{Continual learning.}
+Continual learning is our closest cousin but primarily targets tasks with drifting objectives. Networks
+trained on a task sequence overwrite what earlier tasks taught them \citep{mccloskey1989catastrophic,
+french1999catastrophic}; rehearsal and regularization toward parameters that mattered before
+\citep{kirkpatrick2017overcoming} preserve what a shifting objective would destroy; L2P, DualPrompt, and
+CODA-Prompt move that burden into the input, learning \emph{fixed-size} prompt pools a frozen backbone
+selects from, which bounds growth by construction \citep{wang2022l2p, wang2022dualprompt, smith2023coda}.
+Although our task is stationary, we borrow their frameworks and find complementary insights driven by fixed
+resource constraints: fixed parameters driving catastrophic forgetting under shifting objectives there,
+intermittent failures driving catastrophic remembering under (approximately) fixed instruction counts here
+(\autoref{eq:ratchet}, \autoref{sec:protocol}).
+
+\paragraph{Instruction following.}
+IFEval scores responses against verifiable constraints \citep{zhou2023ifeval}; FollowBench grades
+progressively added constraint levels and WildIFEval collects real requests carrying many at once, both
+documenting that following degrades as the required set grows
+\citep{jiang2024followbench, lior2025wildifeval}. Those benchmarks price the constraints a response must
+satisfy, the harm our motivation rests on. We invert them to price extraneous instructions instead
+(\autoref{sec:wild}) and to make the minimum cover observable, without which excess size is unmeasurable
+(\autoref{sec:testbed}).

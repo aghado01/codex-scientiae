@@ -1,0 +1,14 @@
+\begin{figure*}[t]
+  \includegraphics[width=\linewidth]{assets/fig_mass_rewrite_examples.pdf}
+  \caption{
+    Maintainers bulldoze rather than prune, and the ratchet
+    survives it. Instruction count $D_t$ for six illustrative context
+    files; a red rule marks a commit cutting the file to at most half its
+    instructions. Wholesale rewrites carry \RewriteDeathShare{} of all
+    instruction deaths, and regrowth is immediate: the mean file drops to
+    \RewriteDropPct{} and is back to \RewriteReboundPct{} within
+    \RewriteEventWindow{} commits (\RewriteEventFiles{} files aligned on
+    their first rewrite, \autoref{fig:massrewrite:event}).
+  }
+  \label{fig:massrewrite:examples}
+\end{figure*}

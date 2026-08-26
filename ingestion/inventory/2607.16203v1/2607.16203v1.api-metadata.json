@@ -1,0 +1,111 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.16203v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.16203v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "DocOCR-Eval: A Correction-Based Framework for OCR Tool Selection Without Ground Truth",
+      "authors": [
+        "Zihan Xu",
+        "Puzhen Wu",
+        "Lawrence Chun Man Lau",
+        "Wei Liu",
+        "Sirui Li",
+        "Yifan Peng",
+        "Yihao Ding"
+      ],
+      "abstract": "Document parsing is a foundational step for document understanding tasks such as visual question answering and key information extraction, as it transforms unstructured scanned images into structured representations by extracting textual, visual, and layout information. While numerous Optical Character Recognition (OCR) engines and multimodal large language models (MLLMs) have been developed for this purpose, selecting an appropriate document parsing solution for a given document collection remains challenging, particularly in label-scarce settings. In this work, we conduct a systematic evaluation of text recognition performance across a diverse set of OCR engines and state-of-the-art MLLMs on multiple scanned document benchmarks spanning different domains and languages. Motivated by the limited contextual reasoning capabilities of many OCR engines and the high cost of manual annotations, we propose DocOCR-Eval, an annotation-free evaluation framework for automatic OCR assessment and selection. DocOCR-Eval employs a three-staged correction and ranking strategy to approximate annotation-based tool ordering without ground-truth labels. We show that aggregating across multiple MLLMs progressively improves alignment with annotation-based rankings. Extensive experiments further demonstrate that reliable OCR tool selection can be achieved in realistic, label-limited settings, providing practical guidance for deploying document parsing systems across diverse real-world document collections.",
+      "doi": null,
+      "arxiv_id": "2607.16203v1",
+      "published": "2026-05-05T10:59:34Z",
+      "updated": "2026-05-05T10:59:34Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.16203v1",
+      "pdf_url": "https://arxiv.org/pdf/2607.16203v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2607.16203v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.16203v1",
+          "url": "https://arxiv.org/abs/2607.16203v1",
+          "doi": null,
+          "arxiv_id": "2607.16203v1",
+          "published": "2026-05-05T10:59:34Z",
+          "updated": "2026-05-05T10:59:34Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.16203v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:16.004074Z",
+      "sha256": "4cb5ee0a853d939c50518ca2c86fb2f58e29cb5e272cf1e3754546b23c41400d",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvSkY4T25OM1JKUC9QZHZnNVROcGRnWDFkcEhzPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4xNjIwM3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjE1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjE2MjAzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4xNjIwM3YxPC9pZD4KICAgIDx0aXRsZT5Eb2NPQ1ItRXZhbDogQSBDb3JyZWN0aW9uLUJhc2VkIEZyYW1ld29yayBmb3IgT0NSIFRvb2wgU2VsZWN0aW9uIFdpdGhvdXQgR3JvdW5kIFRydXRoPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDUtMDVUMTA6NTk6MzRaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDcuMTYyMDN2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDcuMTYyMDN2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkRvY3VtZW50IHBhcnNpbmcgaXMgYSBmb3VuZGF0aW9uYWwgc3RlcCBmb3IgZG9jdW1lbnQgdW5kZXJzdGFuZGluZyB0YXNrcyBzdWNoIGFzIHZpc3VhbCBxdWVzdGlvbiBhbnN3ZXJpbmcgYW5kIGtleSBpbmZvcm1hdGlvbiBleHRyYWN0aW9uLCBhcyBpdCB0cmFuc2Zvcm1zIHVuc3RydWN0dXJlZCBzY2FubmVkIGltYWdlcyBpbnRvIHN0cnVjdHVyZWQgcmVwcmVzZW50YXRpb25zIGJ5IGV4dHJhY3RpbmcgdGV4dHVhbCwgdmlzdWFsLCBhbmQgbGF5b3V0IGluZm9ybWF0aW9uLiBXaGlsZSBudW1lcm91cyBPcHRpY2FsIENoYXJhY3RlciBSZWNvZ25pdGlvbiAoT0NSKSBlbmdpbmVzIGFuZCBtdWx0aW1vZGFsIGxhcmdlIGxhbmd1YWdlIG1vZGVscyAoTUxMTXMpIGhhdmUgYmVlbiBkZXZlbG9wZWQgZm9yIHRoaXMgcHVycG9zZSwgc2VsZWN0aW5nIGFuIGFwcHJvcHJpYXRlIGRvY3VtZW50IHBhcnNpbmcgc29sdXRpb24gZm9yIGEgZ2l2ZW4gZG9jdW1lbnQgY29sbGVjdGlvbiByZW1haW5zIGNoYWxsZW5naW5nLCBwYXJ0aWN1bGFybHkgaW4gbGFiZWwtc2NhcmNlIHNldHRpbmdzLiBJbiB0aGlzIHdvcmssIHdlIGNvbmR1Y3QgYSBzeXN0ZW1hdGljIGV2YWx1YXRpb24gb2YgdGV4dCByZWNvZ25pdGlvbiBwZXJmb3JtYW5jZSBhY3Jvc3MgYSBkaXZlcnNlIHNldCBvZiBPQ1IgZW5naW5lcyBhbmQgc3RhdGUtb2YtdGhlLWFydCBNTExNcyBvbiBtdWx0aXBsZSBzY2FubmVkIGRvY3VtZW50IGJlbmNobWFya3Mgc3Bhbm5pbmcgZGlmZmVyZW50IGRvbWFpbnMgYW5kIGxhbmd1YWdlcy4gTW90aXZhdGVkIGJ5IHRoZSBsaW1pdGVkIGNvbnRleHR1YWwgcmVhc29uaW5nIGNhcGFiaWxpdGllcyBvZiBtYW55IE9DUiBlbmdpbmVzIGFuZCB0aGUgaGlnaCBjb3N0IG9mIG1hbnVhbCBhbm5vdGF0aW9ucywgd2UgcHJvcG9zZSBEb2NPQ1ItRXZhbCwgYW4gYW5ub3RhdGlvbi1mcmVlIGV2YWx1YXRpb24gZnJhbWV3b3JrIGZvciBhdXRvbWF0aWMgT0NSIGFzc2Vzc21lbnQgYW5kIHNlbGVjdGlvbi4gRG9jT0NSLUV2YWwgZW1wbG95cyBhIHRocmVlLXN0YWdlZCBjb3JyZWN0aW9uIGFuZCByYW5raW5nIHN0cmF0ZWd5IHRvIGFwcHJveGltYXRlIGFubm90YXRpb24tYmFzZWQgdG9vbCBvcmRlcmluZyB3aXRob3V0IGdyb3VuZC10cnV0aCBsYWJlbHMuIFdlIHNob3cgdGhhdCBhZ2dyZWdhdGluZyBhY3Jvc3MgbXVsdGlwbGUgTUxMTXMgcHJvZ3Jlc3NpdmVseSBpbXByb3ZlcyBhbGlnbm1lbnQgd2l0aCBhbm5vdGF0aW9uLWJhc2VkIHJhbmtpbmdzLiBFeHRlbnNpdmUgZXhwZXJpbWVudHMgZnVydGhlciBkZW1vbnN0cmF0ZSB0aGF0IHJlbGlhYmxlIE9DUiB0b29sIHNlbGVjdGlvbiBjYW4gYmUgYWNoaWV2ZWQgaW4gcmVhbGlzdGljLCBsYWJlbC1saW1pdGVkIHNldHRpbmdzLCBwcm92aWRpbmcgcHJhY3RpY2FsIGd1aWRhbmNlIGZvciBkZXBsb3lpbmcgZG9jdW1lbnQgcGFyc2luZyBzeXN0ZW1zIGFjcm9zcyBkaXZlcnNlIHJlYWwtd29ybGQgZG9jdW1lbnQgY29sbGVjdGlvbnMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA1LTA1VDEwOjU5OjM0WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+V29yayBpbiBwcm9ncmVzczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkxHIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5aaWhhbiBYdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UHV6aGVuIFd1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5MYXdyZW5jZSBDaHVuIE1hbiBMYXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPldlaSBMaXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlNpcnVpIExpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZaWZhbiBQZW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZaWhhbyBEaW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "DocOCR-Eval: A Correction-Based Framework for OCR Tool Selection Without Ground Truth",
+    "authors": [
+      "Zihan Xu",
+      "Puzhen Wu",
+      "Lawrence Chun Man Lau",
+      "Wei Liu",
+      "Sirui Li",
+      "Yifan Peng",
+      "Yihao Ding"
+    ],
+    "abstract": "Document parsing is a foundational step for document understanding tasks such as visual question answering and key information extraction, as it transforms unstructured scanned images into structured representations by extracting textual, visual, and layout information. While numerous Optical Character Recognition (OCR) engines and multimodal large language models (MLLMs) have been developed for this purpose, selecting an appropriate document parsing solution for a given document collection remains challenging, particularly in label-scarce settings. In this work, we conduct a systematic evaluation of text recognition performance across a diverse set of OCR engines and state-of-the-art MLLMs on multiple scanned document benchmarks spanning different domains and languages. Motivated by the limited contextual reasoning capabilities of many OCR engines and the high cost of manual annotations, we propose DocOCR-Eval, an annotation-free evaluation framework for automatic OCR assessment and selection. DocOCR-Eval employs a three-staged correction and ranking strategy to approximate annotation-based tool ordering without ground-truth labels. We show that aggregating across multiple MLLMs progressively improves alignment with annotation-based rankings. Extensive experiments further demonstrate that reliable OCR tool selection can be achieved in realistic, label-limited settings, providing practical guidance for deploying document parsing systems across diverse real-world document collections.",
+    "identifiers": {
+      "arxiv": "2607.16203",
+      "arxiv_versioned": "2607.16203v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.16203v1"
+      }
+    },
+    "categories": [
+      "cs.LG",
+      "cs.AI",
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2026-05-05T10:59:34Z",
+    "updated": "2026-05-05T10:59:34Z"
+  }
+}

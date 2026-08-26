@@ -1,0 +1,23 @@
+\begin{table}[t]
+  \centering\small
+  % Narrow label column: @{\hspace{0.6em}} trims the gap after it. tabularx spans the full
+  % \columnwidth, with the X (Behavior) column absorbing exactly the width the label and
+  % property columns leave over — no hand-tuned fraction to drift when a cell's text changes.
+  \begin{tabularx}{\columnwidth}{@{}l@{\hspace{0.6em}}l>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    & \textbf{Property} & \textbf{Behavior} \\
+    \midrule
+    A1 & instructability & some $d$ raises $q_c$ \\
+    A2 & interference & adding $d$ lowers other $q_{c'}$ \\
+    A3 & redundancy & a second $d'$ adds no $q_c$ \\
+    A4 & censoring & outcomes don't name their $d$ \\
+    A5 & stochasticity & $q_c < 1$ even when covered \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    The five characteristics of the hidden constraint set and its feedback (\autoref{sec:theory}).
+    Instructability, interference and redundancy set the regime axis; censoring blocks deletions;
+    stochasticity drives additions.
+  }
+  \label{tab:characteristics}
+\end{table}

@@ -1,0 +1,24 @@
+\section{Discussion}
+\label{sec:discussion}
+If English is the new code, why don't we have comments yet?
+
+Fundamentally, we show two things: (i) agentic prompts grow because an instruction's latent reasoning
+decays faster than the instruction (\autoref{sec:hazard}), and (ii) saving that latent reasoning in prompt
+comments at write time reduces instruction count and wins back instruction-following (\autoref{sec:protocol},
+\autoref{sec:wild}).
+
+Neither half should surprise us. Software engineering identified and solved the same problem decades ago and continual
+learning is working on solving its dual --- catastrophic forgetting --- right now. Although both settings
+differ in detail, both offer lessons in principle; however, LLM agents started driving real work before we
+could adopt their lessons. We eagerly borrow from both now.
+
+Our results open three novel lines of work. Coding agent developers can give prompts a comment syntax, so
+an instruction's latent rationale can reach the next maintainer; our prototype, while promising, is just a
+prototype. Maintainers who manage agentic coding prompts can identify best practices: while they may overlap
+substantially with software engineering best practices, there are almost certainly differences. Finally,
+researchers can look for what (i) beats it, since prompt maintenance is continual learning over text and
+nobody has built its analogue of rehearsal or regularization, and (ii) measures it, at representative
+constraint counts and for constraints that are not mechanically verifiable.
+
+Every field is borrowing from AI right now. We should borrow back just as readily. The answer to
+catastrophic remembering was forty years old and one field over, and the next one might be too.

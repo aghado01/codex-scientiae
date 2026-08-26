@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2307.15213v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2307.15213v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "PCA, SVD, and Centering of Data",
+      "authors": [
+        "Donggun Kim",
+        "Kisung You"
+      ],
+      "abstract": "The research detailed in this paper scrutinizes Principal Component Analysis (PCA), a seminal method employed in statistics and machine learning for the purpose of reducing data dimensionality. Singular Value Decomposition (SVD) is often employed as the primary means for computing PCA, a process that indispensably includes the step of centering - the subtraction of the mean location from the data set. In our study, we delve into a detailed exploration of the influence of this critical yet often ignored or downplayed data centering step. Our research meticulously investigates the conditions under which two PCA embeddings, one derived from SVD with centering and the other without, can be viewed as aligned. As part of this exploration, we analyze the relationship between the first singular vector and the mean direction, subsequently linking this observation to the congruity between two SVDs of centered and uncentered matrices. Furthermore, we explore the potential implications arising from the absence of centering in the context of performing PCA via SVD from a spectral analysis standpoint. Our investigation emphasizes the importance of a comprehensive understanding and acknowledgment of the subtleties involved in the computation of PCA. As such, we believe this paper offers a crucial contribution to the nuanced understanding of this foundational statistical method and stands as a valuable addition to the academic literature in the field of statistics.",
+      "doi": null,
+      "arxiv_id": "2307.15213v2",
+      "published": "2023-07-27T22:10:28Z",
+      "updated": "2024-04-01T17:10:52Z",
+      "year": 2023,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2307.15213v2",
+      "pdf_url": "https://arxiv.org/pdf/2307.15213v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "stat.ML"
+      ],
+      "external_ids": {
+        "arxiv": "2307.15213v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2307.15213v2",
+          "url": "https://arxiv.org/abs/2307.15213v2",
+          "doi": null,
+          "arxiv_id": "2307.15213v2",
+          "published": "2023-07-27T22:10:28Z",
+          "updated": "2024-04-01T17:10:52Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2307.15213v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:48.621214Z",
+      "sha256": "0c14245d556a3998a2134cbd15c1835631ba7c0fca1a65e0c48e0d9258519884",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvT3pUVU5zYjBrV21DblJ6N2xhakUvS3Jyai9FPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjMwNy4xNTIxM3YyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjQ4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMzA3LjE1MjEzdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjMwNy4xNTIxM3YyPC9pZD4KICAgIDx0aXRsZT5QQ0EsIFNWRCwgYW5kIENlbnRlcmluZyBvZiBEYXRhPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjQtMDQtMDFUMTc6MTA6NTJaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIzMDcuMTUyMTN2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIzMDcuMTUyMTN2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlRoZSByZXNlYXJjaCBkZXRhaWxlZCBpbiB0aGlzIHBhcGVyIHNjcnV0aW5pemVzIFByaW5jaXBhbCBDb21wb25lbnQgQW5hbHlzaXMgKFBDQSksIGEgc2VtaW5hbCBtZXRob2QgZW1wbG95ZWQgaW4gc3RhdGlzdGljcyBhbmQgbWFjaGluZSBsZWFybmluZyBmb3IgdGhlIHB1cnBvc2Ugb2YgcmVkdWNpbmcgZGF0YSBkaW1lbnNpb25hbGl0eS4gU2luZ3VsYXIgVmFsdWUgRGVjb21wb3NpdGlvbiAoU1ZEKSBpcyBvZnRlbiBlbXBsb3llZCBhcyB0aGUgcHJpbWFyeSBtZWFucyBmb3IgY29tcHV0aW5nIFBDQSwgYSBwcm9jZXNzIHRoYXQgaW5kaXNwZW5zYWJseSBpbmNsdWRlcyB0aGUgc3RlcCBvZiBjZW50ZXJpbmcgLSB0aGUgc3VidHJhY3Rpb24gb2YgdGhlIG1lYW4gbG9jYXRpb24gZnJvbSB0aGUgZGF0YSBzZXQuIEluIG91ciBzdHVkeSwgd2UgZGVsdmUgaW50byBhIGRldGFpbGVkIGV4cGxvcmF0aW9uIG9mIHRoZSBpbmZsdWVuY2Ugb2YgdGhpcyBjcml0aWNhbCB5ZXQgb2Z0ZW4gaWdub3JlZCBvciBkb3ducGxheWVkIGRhdGEgY2VudGVyaW5nIHN0ZXAuIE91ciByZXNlYXJjaCBtZXRpY3Vsb3VzbHkgaW52ZXN0aWdhdGVzIHRoZSBjb25kaXRpb25zIHVuZGVyIHdoaWNoIHR3byBQQ0EgZW1iZWRkaW5ncywgb25lIGRlcml2ZWQgZnJvbSBTVkQgd2l0aCBjZW50ZXJpbmcgYW5kIHRoZSBvdGhlciB3aXRob3V0LCBjYW4gYmUgdmlld2VkIGFzIGFsaWduZWQuIEFzIHBhcnQgb2YgdGhpcyBleHBsb3JhdGlvbiwgd2UgYW5hbHl6ZSB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIGZpcnN0IHNpbmd1bGFyIHZlY3RvciBhbmQgdGhlIG1lYW4gZGlyZWN0aW9uLCBzdWJzZXF1ZW50bHkgbGlua2luZyB0aGlzIG9ic2VydmF0aW9uIHRvIHRoZSBjb25ncnVpdHkgYmV0d2VlbiB0d28gU1ZEcyBvZiBjZW50ZXJlZCBhbmQgdW5jZW50ZXJlZCBtYXRyaWNlcy4gRnVydGhlcm1vcmUsIHdlIGV4cGxvcmUgdGhlIHBvdGVudGlhbCBpbXBsaWNhdGlvbnMgYXJpc2luZyBmcm9tIHRoZSBhYnNlbmNlIG9mIGNlbnRlcmluZyBpbiB0aGUgY29udGV4dCBvZiBwZXJmb3JtaW5nIFBDQSB2aWEgU1ZEIGZyb20gYSBzcGVjdHJhbCBhbmFseXNpcyBzdGFuZHBvaW50LiBPdXIgaW52ZXN0aWdhdGlvbiBlbXBoYXNpemVzIHRoZSBpbXBvcnRhbmNlIG9mIGEgY29tcHJlaGVuc2l2ZSB1bmRlcnN0YW5kaW5nIGFuZCBhY2tub3dsZWRnbWVudCBvZiB0aGUgc3VidGxldGllcyBpbnZvbHZlZCBpbiB0aGUgY29tcHV0YXRpb24gb2YgUENBLiBBcyBzdWNoLCB3ZSBiZWxpZXZlIHRoaXMgcGFwZXIgb2ZmZXJzIGEgY3J1Y2lhbCBjb250cmlidXRpb24gdG8gdGhlIG51YW5jZWQgdW5kZXJzdGFuZGluZyBvZiB0aGlzIGZvdW5kYXRpb25hbCBzdGF0aXN0aWNhbCBtZXRob2QgYW5kIHN0YW5kcyBhcyBhIHZhbHVhYmxlIGFkZGl0aW9uIHRvIHRoZSBhY2FkZW1pYyBsaXRlcmF0dXJlIGluIHRoZSBmaWVsZCBvZiBzdGF0aXN0aWNzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5NTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDIzLTA3LTI3VDIyOjEwOjI4WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+MTYgcGFnZXMsIDIgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkRvbmdndW4gS2ltPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "PCA, SVD, and Centering of Data",
+    "authors": [
+      "Donggun Kim",
+      "Kisung You"
+    ],
+    "abstract": "The research detailed in this paper scrutinizes Principal Component Analysis (PCA), a seminal method employed in statistics and machine learning for the purpose of reducing data dimensionality. Singular Value Decomposition (SVD) is often employed as the primary means for computing PCA, a process that indispensably includes the step of centering - the subtraction of the mean location from the data set. In our study, we delve into a detailed exploration of the influence of this critical yet often ignored or downplayed data centering step. Our research meticulously investigates the conditions under which two PCA embeddings, one derived from SVD with centering and the other without, can be viewed as aligned. As part of this exploration, we analyze the relationship between the first singular vector and the mean direction, subsequently linking this observation to the congruity between two SVDs of centered and uncentered matrices. Furthermore, we explore the potential implications arising from the absence of centering in the context of performing PCA via SVD from a spectral analysis standpoint. Our investigation emphasizes the importance of a comprehensive understanding and acknowledgment of the subtleties involved in the computation of PCA. As such, we believe this paper offers a crucial contribution to the nuanced understanding of this foundational statistical method and stands as a valuable addition to the academic literature in the field of statistics.",
+    "identifiers": {
+      "arxiv": "2307.15213",
+      "arxiv_versioned": "2307.15213v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2307.15213v2"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "stat.ML"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2023-07-27T22:10:28Z",
+    "updated": "2024-04-01T17:10:52Z"
+  }
+}

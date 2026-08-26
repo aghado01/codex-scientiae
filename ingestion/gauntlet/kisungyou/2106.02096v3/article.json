@@ -2,21 +2,56 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2106.02096v3",
-  "initialized_utc": "2026-08-11T08:29:44.396299Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:27.690104Z",
+  "title": "Shape-Preserving Dimensionality Reduction : An Algorithm and Measures of Topological Equivalence",
+  "authors": [
+    "Byeongsu Yu",
+    "Kisung You"
+  ],
+  "abstract": "We introduce a linear dimensionality reduction technique preserving topological features via persistent homology. The method is designed to find linear projection $L$ which preserves the persistent diagram of a point cloud $\\mathbb{X}$ via simulated annealing. The projection $L$ induces a set of canonical simplicial maps from the Rips (or Čech) filtration of $\\mathbb{X}$ to that of $L\\mathbb{X}$. In addition to the distance between persistent diagrams, the projection induces a map between filtrations, called filtration homomorphism. Using the filtration homomorphism, one can measure the difference between shapes of two filtrations directly comparing simplicial complexes with respect to quasi-isomorphism $μ_{\\operatorname{quasi-iso}}$ or strong homotopy equivalence $μ_{\\operatorname{equiv}}$. These $μ_{\\operatorname{quasi-iso}}$ and $μ_{\\operatorname{equiv}}$ measures how much portion of corresponding simplicial complexes is quasi-isomorphic or homotopy equivalence respectively. We validate the effectiveness of our framework with simple examples.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2106.02096",
+    "arxiv_versioned": "2106.02096v3",
+    "doi": null,
+    "external": {
+      "arxiv": "2106.02096v3"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ML",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2021-06-03T19:28:52Z",
+  "updated": "2021-06-13T21:03:10Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2106.02096v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8193,
+        "sha256": "dad9fc1a89b7ad3b436d8e3a9287c033bfe77bb50925d878aad66609869820bf",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:27.420271Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2106.02096v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "83adf7c2a47009776f3d5ae5bd3b863442148022cac2a483100ad2eeed7344dc"
+      }
+    ],
     "latex_source": {
       "entrypoint": "PHdimred.tex",
       "selection": "single-candidate",
@@ -29,7 +64,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2106.02096v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -61,8 +121,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:44.396299Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:27.690104Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -87,8 +147,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "PHdimred.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "PHdimred.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -2,21 +2,55 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2601.10992v2",
-  "initialized_utc": "2026-08-11T08:29:59.833821Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:10.178810Z",
+  "title": "Constant Metric Scaling in Riemannian Computation",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Constant rescaling of a Riemannian metric appears in many computational settings, often through a global scale parameter that is introduced either explicitly or implicitly. Although this operation is elementary, its consequences are not always made clear in practice and may be confused with changes in curvature, manifold structure, or coordinate representation. In this note we provide a short, self-contained account of constant metric scaling on arbitrary Riemannian manifolds. We distinguish between quantities that change under such a scaling, including norms, distances, volume elements, and gradient magnitudes, and geometric objects that remain invariant, such as the Levi--Civita connection, geodesics, exponential and logarithmic maps, and parallel transport. We also discuss implications for Riemannian optimization, where constant metric scaling can often be interpreted as a global rescaling of step sizes rather than a modification of the underlying geometry. The goal of this note is purely expository and is intended to clarify how a global metric scale parameter can be introduced in Riemannian computation without altering the geometric structures on which these methods rely.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2601.10992",
+    "arxiv_versioned": "2601.10992v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2601.10992v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.LG",
+    "stat.CO"
+  ],
+  "concepts": [],
+  "primary_category": "cs.LG",
+  "published": "2026-01-16T04:54:23Z",
+  "updated": "2026-01-28T16:26:46Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2601.10992v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8253,
+        "sha256": "1d4c2cca8748631fcbfda2482592f1e12ecfcd75f096cab18f561249bbc729ce",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:09.971930Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2601.10992v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "e844eccbeef9bac8da5c1174ccb6e2b8a8b8e87051b52cf57a6a7f0238095853"
+      }
+    ],
     "latex_source": {
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
@@ -34,7 +68,32 @@
         "bytes": 219,
         "sha256": "617532b3e6913e02fae667c6759390dfa4031514d63891614b45a74f061bb96b"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2601.10992v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +125,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:59.833821Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:10.178810Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +151,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "manuscript.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
       },
       {
         "name": "literal-inputs-resolved",

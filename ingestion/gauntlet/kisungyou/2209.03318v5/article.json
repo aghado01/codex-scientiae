@@ -2,21 +2,58 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2209.03318v5",
-  "initialized_utc": "2026-08-11T08:29:51.446166Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:46.144897Z",
+  "title": "On the Wasserstein median of probability measures",
+  "authors": [
+    "Kisung You",
+    "Dennis Shung",
+    "Mauro Giuffrè"
+  ],
+  "abstract": "The primary choice to summarize a finite collection of random objects is by using measures of central tendency, such as mean and median. In the field of optimal transport, the Wasserstein barycenter corresponds to the Fréchet or geometric mean of a set of probability measures, which is defined as a minimizer of the sum of squared distances to each element in a given set with respect to the Wasserstein distance of order 2. We introduce the Wasserstein median as a robust alternative to the Wasserstein barycenter. The Wasserstein median corresponds to the Fréchet median under the 2-Wasserstein metric. The existence and consistency of the Wasserstein median are first established, along with its robustness property. In addition, we present a general computational pipeline that employs any recognized algorithms for the Wasserstein barycenter in an iterative fashion and demonstrate its convergence. The utility of the Wasserstein median as a robust measure of central tendency is demonstrated using real and simulated data.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2209.03318",
+    "arxiv_versioned": "2209.03318v5",
+    "doi": "10.1080/10618600.2024.2374580",
+    "external": {
+      "arxiv": "2209.03318v5",
+      "doi": "10.1080/10618600.2024.2374580"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME",
+    "stat.CO"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2022-09-07T17:25:02Z",
+  "updated": "2025-09-02T05:25:25Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2209.03318v5.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8424,
+        "sha256": "0b23f1cb842f31ec99a2b1734d1b23e522fadabdc360d801ea74118a12b3c553",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:45.344862Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2209.03318v5&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "2c2500e28fd9558774c1ef7e622ca3c607d38903ee83740d46aacf01601deea5"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
@@ -27,7 +64,7 @@
           "Dennis Shung",
           "Mauro Giuffr\\`{e}"
         ],
-        "doi": null
+        "doi": "10.1080/10618600.2024.2374580"
       }
     },
     "package_control_files": [
@@ -36,7 +73,32 @@
         "bytes": 442,
         "sha256": "b0242f670fc347505ce99b57aae6dba40a48f6bb380bc5d742fc5d7fa8736cf7"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2209.03318v5",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -68,8 +130,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:51.446166Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:46.144897Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -94,8 +156,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

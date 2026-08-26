@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2608.18282v1",
-  "initialized_utc": "2026-08-25T22:19:11.832776Z",
+  "initialized_utc": "2026-08-26T03:58:41.740486Z",
   "title": "Self-supervised In-context Operator Learning for Stochastic Mean-Field Control",
   "authors": [
     "Suyi Gao",
@@ -130,8 +130,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-25T22:19:11.832776Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:58:41.740486Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2601.10992v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2601.10992v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Constant Metric Scaling in Riemannian Computation",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Constant rescaling of a Riemannian metric appears in many computational settings, often through a global scale parameter that is introduced either explicitly or implicitly. Although this operation is elementary, its consequences are not always made clear in practice and may be confused with changes in curvature, manifold structure, or coordinate representation. In this note we provide a short, self-contained account of constant metric scaling on arbitrary Riemannian manifolds. We distinguish between quantities that change under such a scaling, including norms, distances, volume elements, and gradient magnitudes, and geometric objects that remain invariant, such as the Levi--Civita connection, geodesics, exponential and logarithmic maps, and parallel transport. We also discuss implications for Riemannian optimization, where constant metric scaling can often be interpreted as a global rescaling of step sizes rather than a modification of the underlying geometry. The goal of this note is purely expository and is intended to clarify how a global metric scale parameter can be introduced in Riemannian computation without altering the geometric structures on which these methods rely.",
+      "doi": null,
+      "arxiv_id": "2601.10992v2",
+      "published": "2026-01-16T04:54:23Z",
+      "updated": "2026-01-28T16:26:46Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2601.10992v2",
+      "pdf_url": "https://arxiv.org/pdf/2601.10992v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG",
+        "stat.CO"
+      ],
+      "external_ids": {
+        "arxiv": "2601.10992v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2601.10992v2",
+          "url": "https://arxiv.org/abs/2601.10992v2",
+          "doi": null,
+          "arxiv_id": "2601.10992v2",
+          "published": "2026-01-16T04:54:23Z",
+          "updated": "2026-01-28T16:26:46Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2601.10992v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:09.971930Z",
+      "sha256": "e844eccbeef9bac8da5c1174ccb6e2b8a8b8e87051b52cf57a6a7f0238095853",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvVnFqYitWTHY5S2xTSzg2QkRYVFNNa052aTRnPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwMS4xMDk5MnYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjA5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjAxLjEwOTkydjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwMS4xMDk5MnYyPC9pZD4KICAgIDx0aXRsZT5Db25zdGFudCBNZXRyaWMgU2NhbGluZyBpbiBSaWVtYW5uaWFuIENvbXB1dGF0aW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDEtMjhUMTY6MjY6NDZaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDEuMTA5OTJ2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDEuMTA5OTJ2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkNvbnN0YW50IHJlc2NhbGluZyBvZiBhIFJpZW1hbm5pYW4gbWV0cmljIGFwcGVhcnMgaW4gbWFueSBjb21wdXRhdGlvbmFsIHNldHRpbmdzLCBvZnRlbiB0aHJvdWdoIGEgZ2xvYmFsIHNjYWxlIHBhcmFtZXRlciB0aGF0IGlzIGludHJvZHVjZWQgZWl0aGVyIGV4cGxpY2l0bHkgb3IgaW1wbGljaXRseS4gQWx0aG91Z2ggdGhpcyBvcGVyYXRpb24gaXMgZWxlbWVudGFyeSwgaXRzIGNvbnNlcXVlbmNlcyBhcmUgbm90IGFsd2F5cyBtYWRlIGNsZWFyIGluIHByYWN0aWNlIGFuZCBtYXkgYmUgY29uZnVzZWQgd2l0aCBjaGFuZ2VzIGluIGN1cnZhdHVyZSwgbWFuaWZvbGQgc3RydWN0dXJlLCBvciBjb29yZGluYXRlIHJlcHJlc2VudGF0aW9uLiBJbiB0aGlzIG5vdGUgd2UgcHJvdmlkZSBhIHNob3J0LCBzZWxmLWNvbnRhaW5lZCBhY2NvdW50IG9mIGNvbnN0YW50IG1ldHJpYyBzY2FsaW5nIG9uIGFyYml0cmFyeSBSaWVtYW5uaWFuIG1hbmlmb2xkcy4gV2UgZGlzdGluZ3Vpc2ggYmV0d2VlbiBxdWFudGl0aWVzIHRoYXQgY2hhbmdlIHVuZGVyIHN1Y2ggYSBzY2FsaW5nLCBpbmNsdWRpbmcgbm9ybXMsIGRpc3RhbmNlcywgdm9sdW1lIGVsZW1lbnRzLCBhbmQgZ3JhZGllbnQgbWFnbml0dWRlcywgYW5kIGdlb21ldHJpYyBvYmplY3RzIHRoYXQgcmVtYWluIGludmFyaWFudCwgc3VjaCBhcyB0aGUgTGV2aS0tQ2l2aXRhIGNvbm5lY3Rpb24sIGdlb2Rlc2ljcywgZXhwb25lbnRpYWwgYW5kIGxvZ2FyaXRobWljIG1hcHMsIGFuZCBwYXJhbGxlbCB0cmFuc3BvcnQuIFdlIGFsc28gZGlzY3VzcyBpbXBsaWNhdGlvbnMgZm9yIFJpZW1hbm5pYW4gb3B0aW1pemF0aW9uLCB3aGVyZSBjb25zdGFudCBtZXRyaWMgc2NhbGluZyBjYW4gb2Z0ZW4gYmUgaW50ZXJwcmV0ZWQgYXMgYSBnbG9iYWwgcmVzY2FsaW5nIG9mIHN0ZXAgc2l6ZXMgcmF0aGVyIHRoYW4gYSBtb2RpZmljYXRpb24gb2YgdGhlIHVuZGVybHlpbmcgZ2VvbWV0cnkuIFRoZSBnb2FsIG9mIHRoaXMgbm90ZSBpcyBwdXJlbHkgZXhwb3NpdG9yeSBhbmQgaXMgaW50ZW5kZWQgdG8gY2xhcmlmeSBob3cgYSBnbG9iYWwgbWV0cmljIHNjYWxlIHBhcmFtZXRlciBjYW4gYmUgaW50cm9kdWNlZCBpbiBSaWVtYW5uaWFuIGNvbXB1dGF0aW9uIHdpdGhvdXQgYWx0ZXJpbmcgdGhlIGdlb21ldHJpYyBzdHJ1Y3R1cmVzIG9uIHdoaWNoIHRoZXNlIG1ldGhvZHMgcmVseS48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0LkNPIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDEtMTZUMDQ6NTQ6MjNaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5MRyIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Constant Metric Scaling in Riemannian Computation",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Constant rescaling of a Riemannian metric appears in many computational settings, often through a global scale parameter that is introduced either explicitly or implicitly. Although this operation is elementary, its consequences are not always made clear in practice and may be confused with changes in curvature, manifold structure, or coordinate representation. In this note we provide a short, self-contained account of constant metric scaling on arbitrary Riemannian manifolds. We distinguish between quantities that change under such a scaling, including norms, distances, volume elements, and gradient magnitudes, and geometric objects that remain invariant, such as the Levi--Civita connection, geodesics, exponential and logarithmic maps, and parallel transport. We also discuss implications for Riemannian optimization, where constant metric scaling can often be interpreted as a global rescaling of step sizes rather than a modification of the underlying geometry. The goal of this note is purely expository and is intended to clarify how a global metric scale parameter can be introduced in Riemannian computation without altering the geometric structures on which these methods rely.",
+    "identifiers": {
+      "arxiv": "2601.10992",
+      "arxiv_versioned": "2601.10992v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2601.10992v2"
+      }
+    },
+    "categories": [
+      "cs.LG",
+      "stat.CO"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2026-01-16T04:54:23Z",
+    "updated": "2026-01-28T16:26:46Z"
+  }
+}

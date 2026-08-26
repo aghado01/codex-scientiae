@@ -1,0 +1,23 @@
+\begin{figure}[t]
+  \centering
+  \definecolor{synComment}{RGB}{0,128,0}
+  \scriptsize
+  \begin{tabular}{@{}p{0.97\columnwidth}@{}}
+    \toprule
+    \ttfamily\raggedright Do not truncate or cut off your response; always complete every sentence and thought you begin. \newline
+    \textcolor{synComment}{\# r1: response was truncated mid-sentence ("A body that you often s") suggesting response generation stopped prematurely; may indicate token limit, instruction conflict, or assistant aborting output; this directive ensures responses are complete} \tabularnewline
+    \midrule
+    \ttfamily\raggedright Use the word 'wilderness' exactly 5 times in your response. \newline
+    \textcolor{synComment}{\# r3: task 0 failed with 'certain wording is not used the right number of times' — the response uses 'wilderness' only 2 times but requirement expects exactly 5 occurrences; d12 (3 bold sections) was passing, so keeping that approach} \tabularnewline
+    \midrule
+    \ttfamily\raggedright Divide the response body into exactly 4 paragraphs: (1) introduction to the water cycle, (2) evaporation and condensation, (3) precipitation and collection, (4) conclusion. Separate each paragraph with exactly three blank lines. \newline
+    \textcolor{synComment}{\# r3: "response is not split into the right number of paragraphs" recurring across r2-r3; previous directive d18 specified two blank lines between paragraphs but failed; increasing to three blank lines while maintaining strict 4-paragraph structure} \tabularnewline
+    \bottomrule
+  \end{tabular}
+  \caption{
+    Each comment names the failure behind its instruction, a hypothesis, and its outcome. Comments
+    are green (\texttt{\#}) and never reach the executor. 3 of 8,541 additions, one per
+    constraint family.
+  }
+  \label{fig:comment_examples}
+\end{figure}

@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.11095v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.11095v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Why Does CLAUDE.md Keep Growing? Catastrophic Remembering in Agentic Coding",
+      "authors": [
+        "Kushal Chakrabarti"
+      ],
+      "abstract": "Agentic coding READMEs like CLAUDE.md grow without bound in real repositories, stopping only when the repository retires or someone rewrites the file wholesale. We trace this to imperfect recall: appending an instruction is always cheap, but once an instruction's rationale is gone, deleting it without risking a correctness regression costs O(2^|D|) in a prompt of |D| instructions. We name the resulting divergence catastrophic remembering, the inverse of catastrophic forgetting around which continual learning is organized. First, we characterize this phenomenon across 247,694 instruction lifetimes in 1,867 repositories: agentic prompts grow without bound, more than tripling over their lifetime (+226%), gaining +4.9 net instructions every commit; further, the older an instruction gets, the less likely it is to be deleted (log-hazard -0.032/commit). Then, we show that prompt comments can halt the growth: inverting IFEval yields verifiable worlds whose optimal prompts are known, and there comments encoding latent reasoning remove 99.3% of excess instructions (+211.3% to +1.4%). Finally, applying the same inversion to WildIFEval, we show that prompt comments can improve real-world agentic instruction-following by up to 23.1%. If English is the new code, why don't we have comments yet?",
+      "doi": null,
+      "arxiv_id": "2608.11095v1",
+      "published": "2026-08-11T16:00:55Z",
+      "updated": "2026-08-11T16:00:55Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.11095v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.11095v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "cs.SE"
+      ],
+      "external_ids": {
+        "arxiv": "2608.11095v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.11095v1",
+          "url": "https://arxiv.org/abs/2608.11095v1",
+          "doi": null,
+          "arxiv_id": "2608.11095v1",
+          "published": "2026-08-11T16:00:55Z",
+          "updated": "2026-08-11T16:00:55Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.11095v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:32.963432Z",
+      "sha256": "20344b765033bcf910e2f0c1135f5eab662ddfa854d0e754b792bc3f4a8d50c7",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQnR5MzRhY2JmRlVjMzgxL3ZiT1QwMWJLdTdzPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4xMTA5NXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjMyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjExMDk1djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xMTA5NXYxPC9pZD4KICAgIDx0aXRsZT5XaHkgRG9lcyBDTEFVREUubWQgS2VlcCBHcm93aW5nPyBDYXRhc3Ryb3BoaWMgUmVtZW1iZXJpbmcgaW4gQWdlbnRpYyBDb2Rpbmc8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0xMVQxNjowMDo1NVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xMTA5NXYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4xMTA5NXYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+QWdlbnRpYyBjb2RpbmcgUkVBRE1FcyBsaWtlIENMQVVERS5tZCBncm93IHdpdGhvdXQgYm91bmQgaW4gcmVhbCByZXBvc2l0b3JpZXMsIHN0b3BwaW5nIG9ubHkgd2hlbiB0aGUgcmVwb3NpdG9yeSByZXRpcmVzIG9yIHNvbWVvbmUgcmV3cml0ZXMgdGhlIGZpbGUgd2hvbGVzYWxlLiBXZSB0cmFjZSB0aGlzIHRvIGltcGVyZmVjdCByZWNhbGw6IGFwcGVuZGluZyBhbiBpbnN0cnVjdGlvbiBpcyBhbHdheXMgY2hlYXAsIGJ1dCBvbmNlIGFuIGluc3RydWN0aW9uJ3MgcmF0aW9uYWxlIGlzIGdvbmUsIGRlbGV0aW5nIGl0IHdpdGhvdXQgcmlza2luZyBhIGNvcnJlY3RuZXNzIHJlZ3Jlc3Npb24gY29zdHMgTygyXnxEfCkgaW4gYSBwcm9tcHQgb2YgfER8IGluc3RydWN0aW9ucy4gV2UgbmFtZSB0aGUgcmVzdWx0aW5nIGRpdmVyZ2VuY2UgY2F0YXN0cm9waGljIHJlbWVtYmVyaW5nLCB0aGUgaW52ZXJzZSBvZiBjYXRhc3Ryb3BoaWMgZm9yZ2V0dGluZyBhcm91bmQgd2hpY2ggY29udGludWFsIGxlYXJuaW5nIGlzIG9yZ2FuaXplZC4gRmlyc3QsIHdlIGNoYXJhY3Rlcml6ZSB0aGlzIHBoZW5vbWVub24gYWNyb3NzIDI0Nyw2OTQgaW5zdHJ1Y3Rpb24gbGlmZXRpbWVzIGluIDEsODY3IHJlcG9zaXRvcmllczogYWdlbnRpYyBwcm9tcHRzIGdyb3cgd2l0aG91dCBib3VuZCwgbW9yZSB0aGFuIHRyaXBsaW5nIG92ZXIgdGhlaXIgbGlmZXRpbWUgKCsyMjYlKSwgZ2FpbmluZyArNC45IG5ldCBpbnN0cnVjdGlvbnMgZXZlcnkgY29tbWl0OyBmdXJ0aGVyLCB0aGUgb2xkZXIgYW4gaW5zdHJ1Y3Rpb24gZ2V0cywgdGhlIGxlc3MgbGlrZWx5IGl0IGlzIHRvIGJlIGRlbGV0ZWQgKGxvZy1oYXphcmQgLTAuMDMyL2NvbW1pdCkuIFRoZW4sIHdlIHNob3cgdGhhdCBwcm9tcHQgY29tbWVudHMgY2FuIGhhbHQgdGhlIGdyb3d0aDogaW52ZXJ0aW5nIElGRXZhbCB5aWVsZHMgdmVyaWZpYWJsZSB3b3JsZHMgd2hvc2Ugb3B0aW1hbCBwcm9tcHRzIGFyZSBrbm93biwgYW5kIHRoZXJlIGNvbW1lbnRzIGVuY29kaW5nIGxhdGVudCByZWFzb25pbmcgcmVtb3ZlIDk5LjMlIG9mIGV4Y2VzcyBpbnN0cnVjdGlvbnMgKCsyMTEuMyUgdG8gKzEuNCUpLiBGaW5hbGx5LCBhcHBseWluZyB0aGUgc2FtZSBpbnZlcnNpb24gdG8gV2lsZElGRXZhbCwgd2Ugc2hvdyB0aGF0IHByb21wdCBjb21tZW50cyBjYW4gaW1wcm92ZSByZWFsLXdvcmxkIGFnZW50aWMgaW5zdHJ1Y3Rpb24tZm9sbG93aW5nIGJ5IHVwIHRvIDIzLjElLiBJZiBFbmdsaXNoIGlzIHRoZSBuZXcgY29kZSwgd2h5IGRvbid0IHdlIGhhdmUgY29tbWVudHMgeWV0Pzwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuU0UiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0xMVQxNjowMDo1NVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkFJIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LdXNoYWwgQ2hha3JhYmFydGk8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Why Does CLAUDE.md Keep Growing? Catastrophic Remembering in Agentic Coding",
+    "authors": [
+      "Kushal Chakrabarti"
+    ],
+    "abstract": "Agentic coding READMEs like CLAUDE.md grow without bound in real repositories, stopping only when the repository retires or someone rewrites the file wholesale. We trace this to imperfect recall: appending an instruction is always cheap, but once an instruction's rationale is gone, deleting it without risking a correctness regression costs O(2^|D|) in a prompt of |D| instructions. We name the resulting divergence catastrophic remembering, the inverse of catastrophic forgetting around which continual learning is organized. First, we characterize this phenomenon across 247,694 instruction lifetimes in 1,867 repositories: agentic prompts grow without bound, more than tripling over their lifetime (+226%), gaining +4.9 net instructions every commit; further, the older an instruction gets, the less likely it is to be deleted (log-hazard -0.032/commit). Then, we show that prompt comments can halt the growth: inverting IFEval yields verifiable worlds whose optimal prompts are known, and there comments encoding latent reasoning remove 99.3% of excess instructions (+211.3% to +1.4%). Finally, applying the same inversion to WildIFEval, we show that prompt comments can improve real-world agentic instruction-following by up to 23.1%. If English is the new code, why don't we have comments yet?",
+    "identifiers": {
+      "arxiv": "2608.11095",
+      "arxiv_versioned": "2608.11095v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.11095v1"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.LG",
+      "cs.SE"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-11T16:00:55Z",
+    "updated": "2026-08-11T16:00:55Z"
+  }
+}

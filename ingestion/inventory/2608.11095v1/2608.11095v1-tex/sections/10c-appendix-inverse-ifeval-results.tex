@@ -1,0 +1,99 @@
+
+\section{Inverse-IFEval Results}
+\label{sec:appendix:lab}
+
+\subsection{Results by cover size}
+\label{sec:appendix:strata}
+
+\input{assets/table_strata.tex}
+
+\autoref{tab:strata} is the full split behind \autoref{sec:protocol}'s pooled numbers, and the two
+strata disagree about the headline. At covers of two, the uncommented arm ends far above cover. At
+covers of three, its interval straddles cover, so criterion~(i) of \autoref{tab:seeds} does not
+hold within the three-constraint slice on its own. The pooled ratchet is therefore a two-constraint
+result at this horizon.
+
+The disagreement shows \autoref{sec:theory}'s interference regime appearing inside the experiment
+rather than a defect in it. Interference makes deletion pay, and it is weak at these constraint
+counts and strong at the counts \autoref{sec:growth} measures. Our scope is therefore split: the
+experiment demonstrates the mechanism where retention is nearly free, and the corpus shows the
+ratchet running where pruning would pay.
+
+\subsection{The ratchet against maintainer capability}
+\label{sec:appendix:capacity}
+
+\input{assets/table_capacity.tex}
+
+\autoref{tab:capacity} moves the maintainer alone, holding the executor, task stream, horizon and
+protocol fixed, and answers whether the effect needs a matched maintainer/executor pair. It does not:
+the uncommented arm's excess grows with capability, and the comment protocol's advantage grows with it.
+The Sonnet~5 row is reported for completeness but is a compliance record rather than a capability
+reading --- that maintainer overran the comment budget on two of every five additions, so it did not
+write the protocol it was given.
+
+\subsection{What the comment channel needs}
+\label{sec:appendix:ablations}
+
+\input{assets/table_ablations.tex}
+
+\autoref{tab:ablations} separates three objections: whether the effect is the comment's text or its
+content, whether the rationale needs a channel of its own, and which field of the schema carries the
+pruning. Rows are each run's arm against its own uncommented control. The clause rows drop one
+field of the \textsc{commit} schema each, under the names \autoref{fig:renderings}(a) gives them;
+each variant is otherwise byte-identical to the full protocol, so a row's contrast is the field it
+drops and not a rewording.
+
+\subsection{Replication across world draws}
+\label{sec:appendix:seeds}
+
+\input{assets/table_seeds.tex}
+
+All four criteria of record hold on each of the three world draws separately (\autoref{tab:seeds}),
+not only pooled. Each seed is a fresh permutation sample of the eligible IFEval pool, so the three
+columns are independent draws of the world pool rather than repeated runs on one. The uncommented
+arm's across-seed spread of \LabControlSeedSdPp{} is small against the \LabPracticalDeltaExcessPp{}
+effect the design is powered on.
+
+\subsection{What the arm mean hides}
+\label{sec:appendix:calibration}
+
+\input{assets/table_calibration.tex}
+
+The protocol reaches cover per world and not only on the arm mean
+(\autoref{tab:calibration}a), and it overshoots on the short side: it empties one prompt in eight,
+against almost none under either uninformed arm. \autoref{tab:calibration}(b) prices that. We split
+worlds by whether the protocol ended empty and read every arm within each split, which pairs the
+comparison on the same worlds and holds difficulty fixed. Satisfaction parity holds where the
+protocol kept instructions and fails where it emptied them. Those are the hard worlds, where every
+arm scores far below its average, and the protocol's own endpoint defines the split, so the paired
+deficit bounds the cost of deletion rather than estimating it.
+
+One condition on the recommendation follows. Writing a comment risks nothing, because it removes
+nothing. Acting on one to delete is where the risk sits, and this experiment imposed no floor on
+how far a maintainer may prune. An operator deploying the protocol should impose one.
+
+\subsection{Lifting the comment strip}
+\label{sec:appendix:failures}
+
+Code separates the comment channel from the executor, and that design choice carries a measurable
+price. We lift it in one run identical to the canonical one in every respect except that we render
+the protocol arm's comments into the executor's prompt as well as the maintainer's, at one seed.
+Exposure is real rather than nominal, since \InlineExposure{} of executor calls carry a prompt that
+could show a comment at all, the rest being steps at which the prompt was still empty.
+
+We pair per world against the canonical run over \InlineWorlds{} worlds: the prompt ends at
+\InlineExcessPct{} excess size against \InlineRefExcessPct{} (\InlineDeltaExcessPp{},
+\InlineDeltaExcessCI{}) at a satisfaction difference of \InlineDeltaSatPp{} (\InlineDeltaSatCI{},
+straddling zero). Writing the
+rationale into the file the model reads costs prompt size and buys no correctness. The effect sits
+entirely in deletions rather than additions, and the direction reverses on a substantial minority
+of worlds, so we report a direction at one seed rather than a settled magnitude. We have not tested
+why an executor-visible comment should make a maintainer delete less.
+
+Contamination of answer quality does not appear to be part of the cost. Maintenance vocabulary
+appears in \InlineLeakage{} of the exposed arm's completions against \InlineLeakageControl{} under
+the stripped prompt, so the executor does not visibly parrot the notes back. The strip earns its
+place in this experiment by leaving the comment channel's information content as the only thing
+that varies across arms, which licenses the causal reading in \autoref{sec:protocol}. We do not
+claim it as a defense against leakage that did not occur.
+

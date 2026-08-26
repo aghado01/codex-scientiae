@@ -2,21 +2,54 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2607.28881v2",
-  "initialized_utc": "2026-08-11T03:19:37.924827Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:58:19.872695Z",
+  "title": "Fragility of Value under Imperfect Alignment",
+  "authors": [
+    "Winter Cross"
+  ],
+  "abstract": "As more responsibility is placed upon AI systems, it becomes increasingly important to guarantee that these systems are aligned with humanity. A common fear in AI safety is that human value is fragile -- that is, optimizing too heavily for an imperfect proxy to human values will lead to a catastrophic outcome. In this paper, we present a model of the alignment problem where an agent undergoes idealized alignment training that guarantees its value function satisfies a proxy condition before optimizing the world. Our primary results identify conditions on the human value function and the accuracy of several proxy conditions under which an agent with an $η$-catastrophic value function, one that is guaranteed to take the expectation of human value below $η$ in the limit of optimizing power, would be deployed. Our results highlight the danger of overoptimization and motivate AI designs that limit optimization pressure, such as quantilizers, rather than relying solely on pre-deployment training.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2607.28881",
+    "arxiv_versioned": "2607.28881v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.28881v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-07-30T22:52:34Z",
+  "updated": "2026-08-05T03:59:10Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.28881v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7601,
+        "sha256": "7ed673385541e3afdf063affac336e54907f4979f3ba80d36823641dc29f07aa",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:58:19.511458Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.28881v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "1589c3beea16927fce45b61ea14b5222fdba082e8a5e8bfec4c3036b68d3477a"
+      }
+    ],
     "latex_source": {
       "entrypoint": "Fragility_of_Value_under_Imperfect_Alignment.tex",
       "selection": "single-candidate",
@@ -34,7 +67,32 @@
         "bytes": 253,
         "sha256": "38dc3140f55f1cb5a13667d0c435be740df3d55b651cb82e0b4407150b98ca01"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.28881v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:37.924827Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:58:19.872695Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +150,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "Fragility_of_Value_under_Imperfect_Alignment.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "Fragility_of_Value_under_Imperfect_Alignment.tex"
       },
       {
         "name": "literal-inputs-resolved",

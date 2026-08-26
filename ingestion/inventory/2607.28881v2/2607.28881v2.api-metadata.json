@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.28881v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.28881v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Fragility of Value under Imperfect Alignment",
+      "authors": [
+        "Winter Cross"
+      ],
+      "abstract": "As more responsibility is placed upon AI systems, it becomes increasingly important to guarantee that these systems are aligned with humanity. A common fear in AI safety is that human value is fragile -- that is, optimizing too heavily for an imperfect proxy to human values will lead to a catastrophic outcome. In this paper, we present a model of the alignment problem where an agent undergoes idealized alignment training that guarantees its value function satisfies a proxy condition before optimizing the world. Our primary results identify conditions on the human value function and the accuracy of several proxy conditions under which an agent with an $η$-catastrophic value function, one that is guaranteed to take the expectation of human value below $η$ in the limit of optimizing power, would be deployed. Our results highlight the danger of overoptimization and motivate AI designs that limit optimization pressure, such as quantilizers, rather than relying solely on pre-deployment training.",
+      "doi": null,
+      "arxiv_id": "2607.28881v2",
+      "published": "2026-07-30T22:52:34Z",
+      "updated": "2026-08-05T03:59:10Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.28881v2",
+      "pdf_url": "https://arxiv.org/pdf/2607.28881v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2607.28881v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.28881v2",
+          "url": "https://arxiv.org/abs/2607.28881v2",
+          "doi": null,
+          "arxiv_id": "2607.28881v2",
+          "published": "2026-07-30T22:52:34Z",
+          "updated": "2026-08-05T03:59:10Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.28881v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:19.511458Z",
+      "sha256": "1589c3beea16927fce45b61ea14b5222fdba082e8a5e8bfec4c3036b68d3477a",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvR3JvLzdXb3VKL3FmV1ZEOTJWYXA3WTE0RlhjPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4yODg4MXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjE5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjI4ODgxdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4yODg4MXYyPC9pZD4KICAgIDx0aXRsZT5GcmFnaWxpdHkgb2YgVmFsdWUgdW5kZXIgSW1wZXJmZWN0IEFsaWdubWVudDwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA4LTA1VDAzOjU5OjEwWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA3LjI4ODgxdjIiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA3LjI4ODgxdjIiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5BcyBtb3JlIHJlc3BvbnNpYmlsaXR5IGlzIHBsYWNlZCB1cG9uIEFJIHN5c3RlbXMsIGl0IGJlY29tZXMgaW5jcmVhc2luZ2x5IGltcG9ydGFudCB0byBndWFyYW50ZWUgdGhhdCB0aGVzZSBzeXN0ZW1zIGFyZSBhbGlnbmVkIHdpdGggaHVtYW5pdHkuIEEgY29tbW9uIGZlYXIgaW4gQUkgc2FmZXR5IGlzIHRoYXQgaHVtYW4gdmFsdWUgaXMgZnJhZ2lsZSAtLSB0aGF0IGlzLCBvcHRpbWl6aW5nIHRvbyBoZWF2aWx5IGZvciBhbiBpbXBlcmZlY3QgcHJveHkgdG8gaHVtYW4gdmFsdWVzIHdpbGwgbGVhZCB0byBhIGNhdGFzdHJvcGhpYyBvdXRjb21lLiBJbiB0aGlzIHBhcGVyLCB3ZSBwcmVzZW50IGEgbW9kZWwgb2YgdGhlIGFsaWdubWVudCBwcm9ibGVtIHdoZXJlIGFuIGFnZW50IHVuZGVyZ29lcyBpZGVhbGl6ZWQgYWxpZ25tZW50IHRyYWluaW5nIHRoYXQgZ3VhcmFudGVlcyBpdHMgdmFsdWUgZnVuY3Rpb24gc2F0aXNmaWVzIGEgcHJveHkgY29uZGl0aW9uIGJlZm9yZSBvcHRpbWl6aW5nIHRoZSB3b3JsZC4gT3VyIHByaW1hcnkgcmVzdWx0cyBpZGVudGlmeSBjb25kaXRpb25zIG9uIHRoZSBodW1hbiB2YWx1ZSBmdW5jdGlvbiBhbmQgdGhlIGFjY3VyYWN5IG9mIHNldmVyYWwgcHJveHkgY29uZGl0aW9ucyB1bmRlciB3aGljaCBhbiBhZ2VudCB3aXRoIGFuICTOtyQtY2F0YXN0cm9waGljIHZhbHVlIGZ1bmN0aW9uLCBvbmUgdGhhdCBpcyBndWFyYW50ZWVkIHRvIHRha2UgdGhlIGV4cGVjdGF0aW9uIG9mIGh1bWFuIHZhbHVlIGJlbG93ICTOtyQgaW4gdGhlIGxpbWl0IG9mIG9wdGltaXppbmcgcG93ZXIsIHdvdWxkIGJlIGRlcGxveWVkLiBPdXIgcmVzdWx0cyBoaWdobGlnaHQgdGhlIGRhbmdlciBvZiBvdmVyb3B0aW1pemF0aW9uIGFuZCBtb3RpdmF0ZSBBSSBkZXNpZ25zIHRoYXQgbGltaXQgb3B0aW1pemF0aW9uIHByZXNzdXJlLCBzdWNoIGFzIHF1YW50aWxpemVycywgcmF0aGVyIHRoYW4gcmVseWluZyBzb2xlbHkgb24gcHJlLWRlcGxveW1lbnQgdHJhaW5pbmcuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDctMzBUMjI6NTI6MzRaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD4yNCBwYWdlcywgNyBmaWd1cmVzIEFkZGVkIGFja25vd2xlZGdlbWVudCBvZiBmdW5kaW5nPC9hcnhpdjpjb21tZW50PgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuQUkiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPldpbnRlciBDcm9zczwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Fragility of Value under Imperfect Alignment",
+    "authors": [
+      "Winter Cross"
+    ],
+    "abstract": "As more responsibility is placed upon AI systems, it becomes increasingly important to guarantee that these systems are aligned with humanity. A common fear in AI safety is that human value is fragile -- that is, optimizing too heavily for an imperfect proxy to human values will lead to a catastrophic outcome. In this paper, we present a model of the alignment problem where an agent undergoes idealized alignment training that guarantees its value function satisfies a proxy condition before optimizing the world. Our primary results identify conditions on the human value function and the accuracy of several proxy conditions under which an agent with an $η$-catastrophic value function, one that is guaranteed to take the expectation of human value below $η$ in the limit of optimizing power, would be deployed. Our results highlight the danger of overoptimization and motivate AI designs that limit optimization pressure, such as quantilizers, rather than relying solely on pre-deployment training.",
+    "identifiers": {
+      "arxiv": "2607.28881",
+      "arxiv_versioned": "2607.28881v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.28881v2"
+      }
+    },
+    "categories": [
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-07-30T22:52:34Z",
+    "updated": "2026-08-05T03:59:10Z"
+  }
+}

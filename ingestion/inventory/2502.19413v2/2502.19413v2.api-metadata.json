@@ -1,0 +1,121 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2502.19413v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2502.19413v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Project Alexandria: Towards Freeing Scientific Knowledge from Copyright Burdens via LLMs",
+      "authors": [
+        "Christoph Schuhmann",
+        "Gollam Rabby",
+        "Ameya Prabhu",
+        "Tawsif Ahmed",
+        "Andreas Hochlehnert",
+        "Huu Nguyen",
+        "Nick Akinci",
+        "Ludwig Schmidt",
+        "Robert Kaczmarczyk",
+        "Sören Auer",
+        "Jenia Jitsev",
+        "Matthias Bethge"
+      ],
+      "abstract": "Paywalls, licenses and copyright rules often restrict the broad dissemination and reuse of scientific knowledge. We take the position that it is both legally and technically feasible to extract the scientific knowledge in scholarly texts. Current methods, like text embeddings, fail to reliably preserve factual content, and simple paraphrasing may not be legally sound. We propose a new idea for the community to adopt: convert scholarly documents into knowledge preserving, but style agnostic representations we term Knowledge Units using LLMs. These units use structured data capturing entities, attributes and relationships without stylistic content. We provide evidence that Knowledge Units (1) form a legally defensible framework for sharing knowledge from copyrighted research texts, based on legal analyses of German copyright law and U.S. Fair Use doctrine, and (2) preserve most (~95\\%) factual knowledge from original text, measured by MCQ performance on facts from the original copyrighted text across four research domains. Freeing scientific knowledge from copyright promises transformative benefits for scientific research and education by allowing language models to reuse important facts from copyrighted text. To support this, we share open-source tools for converting research documents into Knowledge Units. Overall, our work posits the feasibility of democratizing access to scientific knowledge while respecting copyright.",
+      "doi": null,
+      "arxiv_id": "2502.19413v2",
+      "published": "2025-02-26T18:56:52Z",
+      "updated": "2025-04-18T15:48:01Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2502.19413v2",
+      "pdf_url": "https://arxiv.org/pdf/2502.19413v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2502.19413v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2502.19413v2",
+          "url": "https://arxiv.org/abs/2502.19413v2",
+          "doi": null,
+          "arxiv_id": "2502.19413v2",
+          "published": "2025-02-26T18:56:52Z",
+          "updated": "2025-04-18T15:48:01Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2502.19413v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:47.321333Z",
+      "sha256": "fbf9f36f614d35e1e33db9dbfcf1a279b117f9c27e3a12caeec220bdf5b7091d",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvYXNmdHQ0QWF1OEpMekFlcTBSUXJvZHBYWTJNPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwMi4xOTQxM3YyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjQ3WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTAyLjE5NDEzdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwMi4xOTQxM3YyPC9pZD4KICAgIDx0aXRsZT5Qcm9qZWN0IEFsZXhhbmRyaWE6IFRvd2FyZHMgRnJlZWluZyBTY2llbnRpZmljIEtub3dsZWRnZSBmcm9tIENvcHlyaWdodCBCdXJkZW5zIHZpYSBMTE1zPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjUtMDQtMThUMTU6NDg6MDFaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI1MDIuMTk0MTN2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI1MDIuMTk0MTN2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlBheXdhbGxzLCBsaWNlbnNlcyBhbmQgY29weXJpZ2h0IHJ1bGVzIG9mdGVuIHJlc3RyaWN0IHRoZSBicm9hZCBkaXNzZW1pbmF0aW9uIGFuZCByZXVzZSBvZiBzY2llbnRpZmljIGtub3dsZWRnZS4gV2UgdGFrZSB0aGUgcG9zaXRpb24gdGhhdCBpdCBpcyBib3RoIGxlZ2FsbHkgYW5kIHRlY2huaWNhbGx5IGZlYXNpYmxlIHRvIGV4dHJhY3QgdGhlIHNjaWVudGlmaWMga25vd2xlZGdlIGluIHNjaG9sYXJseSB0ZXh0cy4gQ3VycmVudCBtZXRob2RzLCBsaWtlIHRleHQgZW1iZWRkaW5ncywgZmFpbCB0byByZWxpYWJseSBwcmVzZXJ2ZSBmYWN0dWFsIGNvbnRlbnQsIGFuZCBzaW1wbGUgcGFyYXBocmFzaW5nIG1heSBub3QgYmUgbGVnYWxseSBzb3VuZC4gV2UgcHJvcG9zZSBhIG5ldyBpZGVhIGZvciB0aGUgY29tbXVuaXR5IHRvIGFkb3B0OiBjb252ZXJ0IHNjaG9sYXJseSBkb2N1bWVudHMgaW50byBrbm93bGVkZ2UgcHJlc2VydmluZywgYnV0IHN0eWxlIGFnbm9zdGljIHJlcHJlc2VudGF0aW9ucyB3ZSB0ZXJtIEtub3dsZWRnZSBVbml0cyB1c2luZyBMTE1zLiBUaGVzZSB1bml0cyB1c2Ugc3RydWN0dXJlZCBkYXRhIGNhcHR1cmluZyBlbnRpdGllcywgYXR0cmlidXRlcyBhbmQgcmVsYXRpb25zaGlwcyB3aXRob3V0IHN0eWxpc3RpYyBjb250ZW50LiBXZSBwcm92aWRlIGV2aWRlbmNlIHRoYXQgS25vd2xlZGdlIFVuaXRzICgxKSBmb3JtIGEgbGVnYWxseSBkZWZlbnNpYmxlIGZyYW1ld29yayBmb3Igc2hhcmluZyBrbm93bGVkZ2UgZnJvbSBjb3B5cmlnaHRlZCByZXNlYXJjaCB0ZXh0cywgYmFzZWQgb24gbGVnYWwgYW5hbHlzZXMgb2YgR2VybWFuIGNvcHlyaWdodCBsYXcgYW5kIFUuUy4gRmFpciBVc2UgZG9jdHJpbmUsIGFuZCAoMikgcHJlc2VydmUgbW9zdCAofjk1XCUpIGZhY3R1YWwga25vd2xlZGdlIGZyb20gb3JpZ2luYWwgdGV4dCwgbWVhc3VyZWQgYnkgTUNRIHBlcmZvcm1hbmNlIG9uIGZhY3RzIGZyb20gdGhlIG9yaWdpbmFsIGNvcHlyaWdodGVkIHRleHQgYWNyb3NzIGZvdXIgcmVzZWFyY2ggZG9tYWlucy4gRnJlZWluZyBzY2llbnRpZmljIGtub3dsZWRnZSBmcm9tIGNvcHlyaWdodCBwcm9taXNlcyB0cmFuc2Zvcm1hdGl2ZSBiZW5lZml0cyBmb3Igc2NpZW50aWZpYyByZXNlYXJjaCBhbmQgZWR1Y2F0aW9uIGJ5IGFsbG93aW5nIGxhbmd1YWdlIG1vZGVscyB0byByZXVzZSBpbXBvcnRhbnQgZmFjdHMgZnJvbSBjb3B5cmlnaHRlZCB0ZXh0LiBUbyBzdXBwb3J0IHRoaXMsIHdlIHNoYXJlIG9wZW4tc291cmNlIHRvb2xzIGZvciBjb252ZXJ0aW5nIHJlc2VhcmNoIGRvY3VtZW50cyBpbnRvIEtub3dsZWRnZSBVbml0cy4gT3ZlcmFsbCwgb3VyIHdvcmsgcG9zaXRzIHRoZSBmZWFzaWJpbGl0eSBvZiBkZW1vY3JhdGl6aW5nIGFjY2VzcyB0byBzY2llbnRpZmljIGtub3dsZWRnZSB3aGlsZSByZXNwZWN0aW5nIGNvcHlyaWdodC48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMDItMjZUMTg6NTY6NTJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD5UZWNobmljYWwgUmVwb3J0PC9hcnhpdjpjb21tZW50PgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuTEciLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNocmlzdG9waCBTY2h1aG1hbm48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkdvbGxhbSBSYWJieTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QW1leWEgUHJhYmh1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UYXdzaWYgQWhtZWQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkFuZHJlYXMgSG9jaGxlaG5lcnQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkh1dSBOZ3V5ZW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk5pY2sgQWtpbmNpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5MdWR3aWcgU2NobWlkdDwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Um9iZXJ0IEthY3ptYXJjenlrPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Tw7ZyZW4gQXVlcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmVuaWEgSml0c2V2PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NYXR0aGlhcyBCZXRoZ2U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Project Alexandria: Towards Freeing Scientific Knowledge from Copyright Burdens via LLMs",
+    "authors": [
+      "Christoph Schuhmann",
+      "Gollam Rabby",
+      "Ameya Prabhu",
+      "Tawsif Ahmed",
+      "Andreas Hochlehnert",
+      "Huu Nguyen",
+      "Nick Akinci",
+      "Ludwig Schmidt",
+      "Robert Kaczmarczyk",
+      "Sören Auer",
+      "Jenia Jitsev",
+      "Matthias Bethge"
+    ],
+    "abstract": "Paywalls, licenses and copyright rules often restrict the broad dissemination and reuse of scientific knowledge. We take the position that it is both legally and technically feasible to extract the scientific knowledge in scholarly texts. Current methods, like text embeddings, fail to reliably preserve factual content, and simple paraphrasing may not be legally sound. We propose a new idea for the community to adopt: convert scholarly documents into knowledge preserving, but style agnostic representations we term Knowledge Units using LLMs. These units use structured data capturing entities, attributes and relationships without stylistic content. We provide evidence that Knowledge Units (1) form a legally defensible framework for sharing knowledge from copyrighted research texts, based on legal analyses of German copyright law and U.S. Fair Use doctrine, and (2) preserve most (~95\\%) factual knowledge from original text, measured by MCQ performance on facts from the original copyrighted text across four research domains. Freeing scientific knowledge from copyright promises transformative benefits for scientific research and education by allowing language models to reuse important facts from copyrighted text. To support this, we share open-source tools for converting research documents into Knowledge Units. Overall, our work posits the feasibility of democratizing access to scientific knowledge while respecting copyright.",
+    "identifiers": {
+      "arxiv": "2502.19413",
+      "arxiv_versioned": "2502.19413v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2502.19413v2"
+      }
+    },
+    "categories": [
+      "cs.LG",
+      "cs.AI",
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2025-02-26T18:56:52Z",
+    "updated": "2025-04-18T15:48:01Z"
+  }
+}

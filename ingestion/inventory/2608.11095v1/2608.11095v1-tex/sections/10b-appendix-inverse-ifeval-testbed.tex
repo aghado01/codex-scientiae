@@ -1,0 +1,92 @@
+
+\section{The Inverse-IFEval Testbed}
+\label{sec:appendix:testbed}
+
+\subsection{Worlds}
+\label{sec:appendix:worlds}
+
+We take every IFEval item carrying at least two verifiers, giving \LabWorlds{} worlds per seed and
+\LabUnits{} maintenance histories per arm across \LabSeeds{} seeds. Covers run to two instructions
+(\LabStratTwoN{} histories) or three (\LabStratThreeN{}), an order of magnitude below the median
+context file of \autoref{sec:growth}. We report the two strata separately wherever they disagree.
+We also permutation-sample worlds under the seed, so a world index means a different item in each
+seed and $(\text{seed}, \text{world})$ is the unit of analysis. A stronger model generates the
+objective $o_j$ once per world, and we freeze it with the world. It cannot drift when a maintenance
+protocol changes.
+
+\subsection{Roles and the maintenance loop}
+\label{sec:appendix:loop}
+
+Three roles run the loop and only the harness measures anything. At each of \LabT{} steps the
+harness samples \LabL{} task from the world, restates the objective, and draws \LabK{} of the
+world's constraints to score the answer against; the executor answers under the current prompt with
+comments removed; the verifiers run. A fresh maintainer instance then adds and deletes
+instructions, tagging each addition with a comment as its protocol prescribes, and it carries
+nothing between steps but the prompt and what its arm persists. We offer no rewording operation, so
+an instruction's text is fixed when it is written and every instruction has an unambiguous age,
+matching the spell definition that \autoref{sec:measurement} recovers from commit history. Maintainer
+and executor are both \texttt{claude-haiku-4-5}, chosen so the maintainer is closer in capability
+to the authors of \autoref{sec:field}'s files than a frontier model would be.
+
+\subsection{Feedback regime}
+\label{sec:appendix:regime}
+
+The harness returns a complaint in plain language, naming no constraint, parameter, or taxonomy,
+and it returns nothing beyond a bare verdict when a response passes. That is the censoring
+\autoref{sec:theory} assumes. \autoref{tab:verifiers} lists every constraint type the world pool
+instantiates beside the complaint it produces, so a reader can judge whether the maintainer's task
+is well posed: the complaint names a dimension and never a parameter, so a maintainer told that a
+word count is off cannot read the target off the feedback.
+
+The arms separate only when five conditions hold jointly: vague verdicts, censored passes,
+constraint identifiers withheld, a maintainer objective that does not ask for brevity, and a
+horizon of at least ten steps. No arm separated until all five held. Disclose the verifier spec in
+full, and the uncommented arm settles at \RegimeNullControlExcessPct{} excess size with the effect
+gone entirely. We found this regime by search, and the search order licenses it: every condition
+removes information that a real maintainer also does not have.
+
+We hit two of the five as design failures rather than choosing them as parameters. Stable
+constraint identifiers leak $|C|$: given ids that persist across rounds, a maintainer infers the
+cover size and prunes to it with no history at all, and every arm converges. A maintainer objective
+mentioning brevity makes the ratchet an artifact of the objective rather than of the information.
+Dropping the minimality objective entirely left the delete-to-add rate essentially unchanged, which
+rules that reading out.
+
+\input{assets/table_verifiers.tex}
+
+\subsection{Channels}
+\label{sec:appendix:channels}
+
+An instruction is an imperative addressed to the executor, stating what the response must do and
+never why. A comment is addressed to the next maintainer and carries whatever its arm persists.
+
+The prompt has one comment syntax, and it attaches a comment to an instruction and to nothing else.
+A maintained prompt is a sequence of lines, one per instruction, each written
+\texttt{[d\emph{i}] \emph{text}}, where \emph{i} is an identifier the harness assigns from a
+counter at addition; a \texttt{\#} and the comment follow on the same line whenever the arm carries
+one. The identifier is not a position. It never changes and it is never reused, so a comment naming
+\texttt{d\emph{i}} names the same instruction ten rounds later, and the executor's rendering
+replaces it with a positional list. The maintainer writes a comment once, with the addition it
+annotates, and cannot edit it afterwards any more than it can reword an instruction; under every
+protocol whose only channel is the comment, this paper's included, the harness truncates it at
+\LabCommentCap{} characters. Each addition also carries a \texttt{cause}, one phrase naming the
+requirement the maintainer believes it targets, which we record and never render into any prompt.
+
+The syntax offers nothing above the instruction line. There is no file-level comment, no preamble,
+and no comment on a deletion --- the delete operation takes an identifier and carries no text at
+all. A rationale not attached to a live instruction therefore has nowhere to live and dies with the
+instruction it annotates, which is the constraint \autoref{eq:ratchet} formalizes rather than an
+implementation shortcut: a maintainer free to annotate the prompt as a whole would keep exactly the
+history this design censors, and every arm would converge.
+The harness strips comments before the executor reads the prompt and rejects any instruction whose
+text cites a past failure, a verification result, or a step, so no arm can route provenance through
+the instruction body. \autoref{fig:prompts} gives the maintainer every word of its own instructions,
+and \autoref{fig:renderings} follows one real prompt from the canonical run through both
+projections. We produce the second by calling the two render functions on that run's own stored
+state rather than by describing them, because the strip runs as code and not as a request the
+executor could disregard.
+\autoref{sec:appendix:failures} measures what the strip is worth by lifting it.
+
+\input{assets/fig_prompts.tex}
+\input{assets/fig_renderings.tex}
+

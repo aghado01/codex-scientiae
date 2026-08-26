@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2608.02593v1",
-  "initialized_utc": "2026-08-26T03:21:53.013515Z",
+  "initialized_utc": "2026-08-26T03:57:42.907439Z",
   "title": "Exact Likelihood and Sampling for Riemannian Gaussian Distributions on Correlation Matrices",
   "authors": [
     "Kisung You"
@@ -124,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:21:53.013515Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:42.907439Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

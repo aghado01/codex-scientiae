@@ -2,28 +2,65 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2506.07658v3",
-  "initialized_utc": "2026-08-11T03:19:31.140093Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:59.486805Z",
+  "title": "From Raw Corpora to Domain Benchmarks: Automated Evaluation of LLM Domain Expertise",
+  "authors": [
+    "Nitin Sharma",
+    "Thomas Wolfers",
+    "Çağatay Yıldız"
+  ],
+  "abstract": "Accurate domain-specific benchmarking of LLMs is essential, specifically in domains with direct implications for humans, such as law, healthcare, and education. However, existing benchmarks are documented to be contaminated and are based on multiple-choice questions, which suffer from inherent biases. To measure domain-specific knowledge in LLMs, we present a deterministic pipeline that transforms raw domain corpora into completion-style benchmarks without relying on other LLMs or costly human annotation. Our approach first extracts domain-specific keywords and related target vocabulary from an input corpus. It then constructs prompt-target pairs where domain-specific words serve as prediction targets. By measuring LLMs' ability to complete these prompts, we provide a direct assessment of domain knowledge at low computational cost. Our pipeline avoids benchmark contamination, enables automated updates with new domain data, and facilitates fair comparisons between base and instruction-tuned (chat) models. We validate our approach by showing that model performances on our benchmark significantly correlate with those on an expert-curated benchmark. We then demonstrate how our benchmark provides insights into knowledge acquisition in domain-adaptive, continual, and general pretraining. Finally, we examine the effects of instruction fine-tuning by comparing base and chat models within our unified evaluation framework. In conclusion, our pipeline enables scalable, domain-specific, LLM-independent, and unbiased evaluation of both base and chat models.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2506.07658",
+    "arxiv_versioned": "2506.07658v3",
+    "doi": null,
+    "external": {
+      "arxiv": "2506.07658v3"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.CL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2025-06-09T11:30:12Z",
+  "updated": "2026-03-05T22:36:20Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2506.07658v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9867,
+        "sha256": "8a68e6753f98f931b55f89319a6846b0149d85ca04b931ebd1a5c9fcd79df529",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:58.421352Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2506.07658v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "0bbca1eaa33e89678c01f2b920120b300c5310d84cb1c0ee3bf43d827bbc6442"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
       "declarations": {
         "title_tex": "From Raw Corpora to Domain Benchmarks: Automated Evaluation of LLM Domain Expertise",
         "authors_tex": [
-          "\\name Nitin Sharma \\\\\n      \\addr Department of Psychiatry and Psychotherapy\\\\\n      University Hospital Tübingen, Germany\n      \\AND\n      \\name Thomas Wolfers \\\\\n      \\addr Laboratory for Mental Health Mapping \\\\ Carl Zeiss Professor for AI in Neural Systems Imaging\\\\\n      Friedrich Schiller University Jena, Germany\n      \\AND\n      \\name Çağatay Yıldız \\\\\n      \\addr Cluster of Excellence Machine Learning for Science\\\\\n      University of Tübingen, Germany"
+          "Nitin Sharma",
+          "Thomas Wolfers",
+          "Çağatay Yıldız"
         ],
         "doi": null
       }
@@ -34,7 +71,32 @@
         "bytes": 213,
         "sha256": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2506.07658v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -59,8 +121,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:31.140093Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:59.486805Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -85,8 +147,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

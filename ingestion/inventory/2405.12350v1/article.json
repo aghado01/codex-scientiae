@@ -2,21 +2,57 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2405.12350v1",
-  "initialized_utc": "2026-08-11T03:19:24.875982Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:44.476870Z",
+  "title": "A framework for extraction and transformation of documents",
+  "authors": [
+    "Cristian Riveros",
+    "Markus L. Schmid",
+    "Nicole Schweikardt"
+  ],
+  "abstract": "We present a theoretical framework for the extraction and transformation of text documents. We propose to use a two-phase process where the first phase extracts span-tuples from a document, and the second phase maps the content of the span-tuples into new documents. We base the extraction phase on the framework of document spanners and the transformation phase on the theory of polyregular functions, the class of regular string-to-string functions with polynomial growth. For supporting practical extract-transform scenarios, we propose an extension of document spanners described by regex formulas from span-tuples to so-called multispan-tuples, where variables are mapped to sets of spans. We prove that this extension, called regex multispanners, has the same desirable properties as standard spanners described by regex formulas. In our framework, an Extract-Transform (ET) program is given by a regex multispanner followed by a polyregular function. In this paper, we study the expressibility and evaluation problem of ET programs when the transformation function is linear, called linear ET programs. We show that linear ET programs are equally expressive as non-deterministic streaming string transducers under bag semantics. Moreover, we show that linear ET programs are closed under composition. Finally, we present an enumeration algorithm for evaluating every linear ET program over a document with linear time preprocessing and constant delay.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2405.12350",
+    "arxiv_versioned": "2405.12350v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2405.12350v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.DB",
+    "cs.FL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.DB",
+  "published": "2024-05-20T19:59:25Z",
+  "updated": "2024-05-20T19:59:25Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2405.12350v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9461,
+        "sha256": "f47386a02eb43763f4a8c85714977ef6cf3c7f5c7df654e5769e2ea77eee92dc",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:44.175400Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2405.12350v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "88bb10a169f39f8727c6565ecdd7b9b19c7d8c61e298053626df399760449152"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
@@ -30,7 +66,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2405.12350v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -55,8 +116,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:24.875982Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:44.476870Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -81,8 +142,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

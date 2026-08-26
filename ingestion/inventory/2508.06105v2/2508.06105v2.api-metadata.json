@@ -1,0 +1,111 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2508.06105v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2508.06105v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "You Don't Need Pre-built Graphs for RAG: Retrieval Augmented Generation with Adaptive Reasoning Structures",
+      "authors": [
+        "Shengyuan Chen",
+        "Chuang Zhou",
+        "Zheng Yuan",
+        "Qinggang Zhang",
+        "Zeyang Cui",
+        "Hao Chen",
+        "Yilin Xiao",
+        "Jiannong Cao",
+        "Xiao Huang"
+      ],
+      "abstract": "Large language models (LLMs) often suffer from hallucination, generating factually incorrect statements when handling questions beyond their knowledge and perception. Retrieval-augmented generation (RAG) addresses this by retrieving query-relevant contexts from knowledge bases to support LLM reasoning. Recent advances leverage pre-constructed graphs to capture the relational connections among distributed documents, showing remarkable performance in complex tasks. However, existing Graph-based RAG (GraphRAG) methods rely on a costly process to transform the corpus into a graph, introducing overwhelming token cost and update latency. Moreover, real-world queries vary in type and complexity, requiring different logic structures for accurate reasoning. The pre-built graph may not align with these required structures, resulting in ineffective knowledge retrieval. To this end, we propose a $\\textbf{Logic}$-aware $\\textbf{R}etrieval$-$\\textbf{A}$ugmented $\\textbf{G}$eneration framework ($\\textbf{LogicRAG}$) that dynamically extracts reasoning structures at inference time to guide adaptive retrieval without any pre-built graph. LogicRAG begins by decomposing the input query into a set of subproblems and constructing a directed acyclic graph (DAG) to model the logical dependencies among them. To support coherent multi-step reasoning, LogicRAG then linearizes the graph using topological sort, so that subproblems can be addressed in a logically consistent order. Besides, LogicRAG applies graph pruning to reduce redundant retrieval and uses context pruning to filter irrelevant context, significantly reducing the overall token cost. Extensive experiments demonstrate that LogicRAG achieves both superior performance and efficiency compared to state-of-the-art baselines.",
+      "doi": null,
+      "arxiv_id": "2508.06105v2",
+      "published": "2025-08-08T08:07:40Z",
+      "updated": "2025-11-17T02:52:04Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2508.06105v2",
+      "pdf_url": "https://arxiv.org/pdf/2508.06105v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2508.06105v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2508.06105v2",
+          "url": "https://arxiv.org/abs/2508.06105v2",
+          "doi": null,
+          "arxiv_id": "2508.06105v2",
+          "published": "2025-08-08T08:07:40Z",
+          "updated": "2025-11-17T02:52:04Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2508.06105v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:01.761798Z",
+      "sha256": "2478ee3b2718ad04e5c3a39218f82ef74c6f63eaa97a8b34e3c783c5b3cc3380",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvekh4S1NocnRiVWlKN0FHSUlWYVYwSE5vSWVnPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwOC4wNjEwNXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjAxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA4LjA2MTA1djIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwOC4wNjEwNXYyPC9pZD4KICAgIDx0aXRsZT5Zb3UgRG9uJ3QgTmVlZCBQcmUtYnVpbHQgR3JhcGhzIGZvciBSQUc6IFJldHJpZXZhbCBBdWdtZW50ZWQgR2VuZXJhdGlvbiB3aXRoIEFkYXB0aXZlIFJlYXNvbmluZyBTdHJ1Y3R1cmVzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjUtMTEtMTdUMDI6NTI6MDRaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI1MDguMDYxMDV2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI1MDguMDYxMDV2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkxhcmdlIGxhbmd1YWdlIG1vZGVscyAoTExNcykgb2Z0ZW4gc3VmZmVyIGZyb20gaGFsbHVjaW5hdGlvbiwgZ2VuZXJhdGluZyBmYWN0dWFsbHkgaW5jb3JyZWN0IHN0YXRlbWVudHMgd2hlbiBoYW5kbGluZyBxdWVzdGlvbnMgYmV5b25kIHRoZWlyIGtub3dsZWRnZSBhbmQgcGVyY2VwdGlvbi4gUmV0cmlldmFsLWF1Z21lbnRlZCBnZW5lcmF0aW9uIChSQUcpIGFkZHJlc3NlcyB0aGlzIGJ5IHJldHJpZXZpbmcgcXVlcnktcmVsZXZhbnQgY29udGV4dHMgZnJvbSBrbm93bGVkZ2UgYmFzZXMgdG8gc3VwcG9ydCBMTE0gcmVhc29uaW5nLiBSZWNlbnQgYWR2YW5jZXMgbGV2ZXJhZ2UgcHJlLWNvbnN0cnVjdGVkIGdyYXBocyB0byBjYXB0dXJlIHRoZSByZWxhdGlvbmFsIGNvbm5lY3Rpb25zIGFtb25nIGRpc3RyaWJ1dGVkIGRvY3VtZW50cywgc2hvd2luZyByZW1hcmthYmxlIHBlcmZvcm1hbmNlIGluIGNvbXBsZXggdGFza3MuIEhvd2V2ZXIsIGV4aXN0aW5nIEdyYXBoLWJhc2VkIFJBRyAoR3JhcGhSQUcpIG1ldGhvZHMgcmVseSBvbiBhIGNvc3RseSBwcm9jZXNzIHRvIHRyYW5zZm9ybSB0aGUgY29ycHVzIGludG8gYSBncmFwaCwgaW50cm9kdWNpbmcgb3ZlcndoZWxtaW5nIHRva2VuIGNvc3QgYW5kIHVwZGF0ZSBsYXRlbmN5LiBNb3Jlb3ZlciwgcmVhbC13b3JsZCBxdWVyaWVzIHZhcnkgaW4gdHlwZSBhbmQgY29tcGxleGl0eSwgcmVxdWlyaW5nIGRpZmZlcmVudCBsb2dpYyBzdHJ1Y3R1cmVzIGZvciBhY2N1cmF0ZSByZWFzb25pbmcuIFRoZSBwcmUtYnVpbHQgZ3JhcGggbWF5IG5vdCBhbGlnbiB3aXRoIHRoZXNlIHJlcXVpcmVkIHN0cnVjdHVyZXMsIHJlc3VsdGluZyBpbiBpbmVmZmVjdGl2ZSBrbm93bGVkZ2UgcmV0cmlldmFsLiBUbyB0aGlzIGVuZCwgd2UgcHJvcG9zZSBhICRcdGV4dGJme0xvZ2ljfSQtYXdhcmUgJFx0ZXh0YmZ7Un1ldHJpZXZhbCQtJFx0ZXh0YmZ7QX0kdWdtZW50ZWQgJFx0ZXh0YmZ7R30kZW5lcmF0aW9uIGZyYW1ld29yayAoJFx0ZXh0YmZ7TG9naWNSQUd9JCkgdGhhdCBkeW5hbWljYWxseSBleHRyYWN0cyByZWFzb25pbmcgc3RydWN0dXJlcyBhdCBpbmZlcmVuY2UgdGltZSB0byBndWlkZSBhZGFwdGl2ZSByZXRyaWV2YWwgd2l0aG91dCBhbnkgcHJlLWJ1aWx0IGdyYXBoLiBMb2dpY1JBRyBiZWdpbnMgYnkgZGVjb21wb3NpbmcgdGhlIGlucHV0IHF1ZXJ5IGludG8gYSBzZXQgb2Ygc3VicHJvYmxlbXMgYW5kIGNvbnN0cnVjdGluZyBhIGRpcmVjdGVkIGFjeWNsaWMgZ3JhcGggKERBRykgdG8gbW9kZWwgdGhlIGxvZ2ljYWwgZGVwZW5kZW5jaWVzIGFtb25nIHRoZW0uIFRvIHN1cHBvcnQgY29oZXJlbnQgbXVsdGktc3RlcCByZWFzb25pbmcsIExvZ2ljUkFHIHRoZW4gbGluZWFyaXplcyB0aGUgZ3JhcGggdXNpbmcgdG9wb2xvZ2ljYWwgc29ydCwgc28gdGhhdCBzdWJwcm9ibGVtcyBjYW4gYmUgYWRkcmVzc2VkIGluIGEgbG9naWNhbGx5IGNvbnNpc3RlbnQgb3JkZXIuIEJlc2lkZXMsIExvZ2ljUkFHIGFwcGxpZXMgZ3JhcGggcHJ1bmluZyB0byByZWR1Y2UgcmVkdW5kYW50IHJldHJpZXZhbCBhbmQgdXNlcyBjb250ZXh0IHBydW5pbmcgdG8gZmlsdGVyIGlycmVsZXZhbnQgY29udGV4dCwgc2lnbmlmaWNhbnRseSByZWR1Y2luZyB0aGUgb3ZlcmFsbCB0b2tlbiBjb3N0LiBFeHRlbnNpdmUgZXhwZXJpbWVudHMgZGVtb25zdHJhdGUgdGhhdCBMb2dpY1JBRyBhY2hpZXZlcyBib3RoIHN1cGVyaW9yIHBlcmZvcm1hbmNlIGFuZCBlZmZpY2llbmN5IGNvbXBhcmVkIHRvIHN0YXRlLW9mLXRoZS1hcnQgYmFzZWxpbmVzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI1LTA4LTA4VDA4OjA3OjQwWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+VGhpcyB3b3JrIGhhcyBiZWVuIGFjY2VwdGVkIHRvIEFBQUknMjY8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5DTCIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2hlbmd5dWFuIENoZW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNodWFuZyBaaG91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5aaGVuZyBZdWFuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5RaW5nZ2FuZyBaaGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WmV5YW5nIEN1aTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFvIENoZW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPllpbGluIFhpYW88L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkppYW5ub25nIENhbzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WGlhbyBIdWFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "You Don't Need Pre-built Graphs for RAG: Retrieval Augmented Generation with Adaptive Reasoning Structures",
+    "authors": [
+      "Shengyuan Chen",
+      "Chuang Zhou",
+      "Zheng Yuan",
+      "Qinggang Zhang",
+      "Zeyang Cui",
+      "Hao Chen",
+      "Yilin Xiao",
+      "Jiannong Cao",
+      "Xiao Huang"
+    ],
+    "abstract": "Large language models (LLMs) often suffer from hallucination, generating factually incorrect statements when handling questions beyond their knowledge and perception. Retrieval-augmented generation (RAG) addresses this by retrieving query-relevant contexts from knowledge bases to support LLM reasoning. Recent advances leverage pre-constructed graphs to capture the relational connections among distributed documents, showing remarkable performance in complex tasks. However, existing Graph-based RAG (GraphRAG) methods rely on a costly process to transform the corpus into a graph, introducing overwhelming token cost and update latency. Moreover, real-world queries vary in type and complexity, requiring different logic structures for accurate reasoning. The pre-built graph may not align with these required structures, resulting in ineffective knowledge retrieval. To this end, we propose a $\\textbf{Logic}$-aware $\\textbf{R}etrieval$-$\\textbf{A}$ugmented $\\textbf{G}$eneration framework ($\\textbf{LogicRAG}$) that dynamically extracts reasoning structures at inference time to guide adaptive retrieval without any pre-built graph. LogicRAG begins by decomposing the input query into a set of subproblems and constructing a directed acyclic graph (DAG) to model the logical dependencies among them. To support coherent multi-step reasoning, LogicRAG then linearizes the graph using topological sort, so that subproblems can be addressed in a logically consistent order. Besides, LogicRAG applies graph pruning to reduce redundant retrieval and uses context pruning to filter irrelevant context, significantly reducing the overall token cost. Extensive experiments demonstrate that LogicRAG achieves both superior performance and efficiency compared to state-of-the-art baselines.",
+    "identifiers": {
+      "arxiv": "2508.06105",
+      "arxiv_versioned": "2508.06105v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2508.06105v2"
+      }
+    },
+    "categories": [
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2025-08-08T08:07:40Z",
+    "updated": "2025-11-17T02:52:04Z"
+  }
+}

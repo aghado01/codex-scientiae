@@ -2,21 +2,59 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2208.12435v1",
-  "initialized_utc": "2026-08-11T08:29:49.797944Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:42.898415Z",
+  "title": "Comparing multiple latent space embeddings using topological analysis",
+  "authors": [
+    "Kisung You",
+    "Ilmun Kim",
+    "Ick Hoon Jin",
+    "Minjeong Jeon",
+    "Dennis Shung"
+  ],
+  "abstract": "The latent space model is one of the well-known methods for statistical inference of network data. While the model has been much studied for a single network, it has not attracted much attention to analyze collectively when multiple networks and their latent embeddings are present. We adopt a topology-based representation of latent space embeddings to learn over a population of network model fits, which allows us to compare networks of potentially varying sizes in an invariant manner to label permutation and rigid motion. This approach enables us to propose algorithms for clustering and multi-sample hypothesis tests by adopting well-established theories for Hilbert space-valued analysis. After the proposed method is validated via simulated examples, we apply the framework to analyze educational survey data from Korean innovative school reform.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2208.12435",
+    "arxiv_versioned": "2208.12435v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2208.12435v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME",
+    "stat.AP"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2022-08-26T04:51:12Z",
+  "updated": "2022-08-26T04:51:12Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2208.12435v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7767,
+        "sha256": "c3ce537c1de25f0ac7a893add99df0b3fcbbe639a4f41d751e0a7992f38ee0e0",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:41.603316Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2208.12435v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "268254b6b90a1f5822aac83b713a2d3b7b5e8d177f7003abc191d75c4a5f68ef"
+      }
+    ],
     "latex_source": {
       "entrypoint": "preprint.tex",
       "selection": "single-candidate",
@@ -32,7 +70,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2208.12435v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -64,8 +127,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:49.797944Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:42.898415Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -90,8 +153,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "preprint.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "preprint.tex"
       },
       {
         "name": "literal-inputs-resolved",

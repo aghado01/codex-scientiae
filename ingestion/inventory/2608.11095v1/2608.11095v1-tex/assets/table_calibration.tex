@@ -1,0 +1,41 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabular}{@{}lrrrrrr@{}}
+    \toprule
+    \multicolumn{7}{@{}l}{\textbf{(a)} Per-world calibration to the minimum cover} \\
+    \midrule
+    Arm & $N$ & Mean ratio & Mean $|{\rm ratio}-1|$ & Empty & Within $\frac{1}{4}$ & Above $1.5\times$ \\
+    no prompt comments & 552 & 1.604 & 0.921 & 2.4\% & 33.3\% & 22.3\% \\
+    comment-shaped noise & 552 & 1.532 & 0.822 & 1.1\% & 35.0\% & 21.9\% \\
+    informative comments & 552 & 0.942 & 0.481 & 12.1\% & 37.3\% & 9.8\% \\
+    \midrule
+    \multicolumn{7}{@{}l}{\textbf{(b)} Satisfaction on the worlds the protocol emptied, and on the rest} \\
+    \midrule
+    Arm & $N$ & Satisfaction & 95\% CI & \multicolumn{2}{l}{Paired $\Delta$ vs.\ the protocol arm} & 95\% CI \\
+    \multicolumn{7}{@{}l}{\emph{worlds the protocol emptied}} \\
+    no prompt comments & 67 & 0.279 & $[0.209, 0.348]$ & \multicolumn{2}{l}{$-0.020$} & $[-0.065, +0.025]$ \\
+    comment-shaped noise & 67 & 0.328 & $[0.256, 0.400]$ & \multicolumn{2}{l}{$-0.070$} & $[-0.114, -0.027]$ \\
+    informative comments & 67 & 0.259 & $[0.199, 0.321]$ & \multicolumn{2}{l}{---} &  \\
+    \multicolumn{7}{@{}l}{\emph{worlds it kept instructions on}} \\
+    no prompt comments & 485 & 0.406 & $[0.377, 0.436]$ & \multicolumn{2}{l}{$-0.007$} & $[-0.031, +0.016]$ \\
+    comment-shaped noise & 485 & 0.413 & $[0.383, 0.443]$ & \multicolumn{2}{l}{$-0.014$} & $[-0.034, +0.007]$ \\
+    informative comments & 485 & 0.399 & $[0.368, 0.429]$ & \multicolumn{2}{l}{---} &  \\
+    \bottomrule
+  \end{tabular}
+  \caption{
+    The commented arm is closest to cover on the mean and on individual prompts alike.
+    \textbf{(a)} gives per-world calibration at the final step: mean $|D_T|/|D_\star|$, mean
+    $\bigl||D_T|/|D_\star| - 1\bigr|$ (0 = every world exactly at cover), and the shares of worlds
+    ending empty, within a quarter of cover, and above $1.5\times$ it. \emph{informative comments}
+    wins on both readings, so its arm mean can be read directly: the two need not agree, and where
+    they disagree the mean is the one that misleads. The mean still hides a tail. One prompt in
+    eight ends empty under the protocol against one in forty under the uncommented arm.
+    \textbf{(b)} prices that tail. We split worlds by whether the protocol arm ended empty, then
+    give last-3-step satisfaction per arm within each split and the paired difference from the
+    protocol arm on the same worlds, with its 95\% bootstrap CI. Parity holds where the protocol
+    kept instructions and fails where it emptied them. Those are the hard worlds, and every arm
+    scores far below its own average on them. The protocol's own endpoint defines the split, so
+    this paired deficit bounds the cost of deletion rather than estimating it.
+  }
+  \label{tab:calibration}
+\end{table*}

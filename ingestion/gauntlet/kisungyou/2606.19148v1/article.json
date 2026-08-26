@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2606.19148v1",
-  "initialized_utc": "2026-08-26T03:22:36.673893Z",
+  "initialized_utc": "2026-08-26T03:57:39.479560Z",
   "title": "Fast Computation of Free-Support Wasserstein Medians",
   "authors": [
     "Kisung You",
@@ -128,8 +128,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:22:36.673893Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:39.479560Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

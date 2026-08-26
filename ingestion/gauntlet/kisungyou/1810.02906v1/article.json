@@ -2,21 +2,58 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "1810.02906v1",
-  "initialized_utc": "2026-08-11T08:29:41.264560Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:17.103209Z",
+  "title": "Network Distance Based on Laplacian Flows on Graphs",
+  "authors": [
+    "Dianbin Bao",
+    "Kisung You",
+    "Lizhen Lin"
+  ],
+  "abstract": "Distance plays a fundamental role in measuring similarity between objects. Various visualization techniques and learning tasks in statistics and machine learning such as shape matching, classification, dimension reduction and clustering often rely on some distance or similarity measure. It is of tremendous importance to have a distance that can incorporate the underlying structure of the object. In this paper, we focus on proposing such a distance between network objects. Our key insight is to define a distance based on the long term diffusion behavior of the whole network. We first introduce a dynamic system on graphs called Laplacian flow. Based on this Laplacian flow, a new version of diffusion distance between networks is proposed. We will demonstrate the utility of the distance and its advantage over various existing distances through explicit examples. The distance is also applied to subsequent learning tasks such as clustering network objects.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "1810.02906",
+    "arxiv_versioned": "1810.02906v1",
+    "doi": "10.1109/bigdata55660.2022.10020500",
+    "external": {
+      "arxiv": "1810.02906v1",
+      "doi": "10.1109/bigdata55660.2022.10020500"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ML",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2018-10-05T23:15:24Z",
+  "updated": "2018-10-05T23:15:24Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "1810.02906v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8149,
+        "sha256": "067f0a046213911d76cd65175ee8759838e106899e84c008eab42aa16bb739f5",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:16.769987Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=1810.02906v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "2e72332bbdbb96f63a04a9ea5fdc9f64f63269b0509783b212248718fcb06a3a"
+      }
+    ],
     "latex_source": {
       "entrypoint": "LaplacianFlow.tex",
       "selection": "single-candidate",
@@ -30,7 +67,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "1810.02906v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -62,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:41.264560Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:17.103209Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -88,8 +150,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "LaplacianFlow.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "LaplacianFlow.tex"
       },
       {
         "name": "literal-inputs-resolved",

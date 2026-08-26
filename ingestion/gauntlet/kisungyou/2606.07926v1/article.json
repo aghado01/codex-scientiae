@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2606.07926v1",
-  "initialized_utc": "2026-08-26T03:22:47.955068Z",
+  "initialized_utc": "2026-08-26T03:57:38.804814Z",
   "title": "Barycentric Projections of Optimal Transport Plans on Riemannian Manifolds",
   "authors": [
     "Kisung You"
@@ -57,7 +57,7 @@
       "declarations": {
         "title_tex": "Barycentric Projections of Optimal Transport Plans on Riemannian Manifolds",
         "authors_tex": [
-          "\\name Kisung You \\email kisung.you@baruch.cuny.edu \\\\\n      \\addr Department of Mathematics\\\\\n      Baruch College"
+          "Kisung You"
         ],
         "doi": null
       }
@@ -125,8 +125,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:22:47.955068Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:38.804814Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2208.12435v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2208.12435v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Comparing multiple latent space embeddings using topological analysis",
+      "authors": [
+        "Kisung You",
+        "Ilmun Kim",
+        "Ick Hoon Jin",
+        "Minjeong Jeon",
+        "Dennis Shung"
+      ],
+      "abstract": "The latent space model is one of the well-known methods for statistical inference of network data. While the model has been much studied for a single network, it has not attracted much attention to analyze collectively when multiple networks and their latent embeddings are present. We adopt a topology-based representation of latent space embeddings to learn over a population of network model fits, which allows us to compare networks of potentially varying sizes in an invariant manner to label permutation and rigid motion. This approach enables us to propose algorithms for clustering and multi-sample hypothesis tests by adopting well-established theories for Hilbert space-valued analysis. After the proposed method is validated via simulated examples, we apply the framework to analyze educational survey data from Korean innovative school reform.",
+      "doi": null,
+      "arxiv_id": "2208.12435v1",
+      "published": "2022-08-26T04:51:12Z",
+      "updated": "2022-08-26T04:51:12Z",
+      "year": 2022,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2208.12435v1",
+      "pdf_url": "https://arxiv.org/pdf/2208.12435v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "stat.AP"
+      ],
+      "external_ids": {
+        "arxiv": "2208.12435v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2208.12435v1",
+          "url": "https://arxiv.org/abs/2208.12435v1",
+          "doi": null,
+          "arxiv_id": "2208.12435v1",
+          "published": "2022-08-26T04:51:12Z",
+          "updated": "2022-08-26T04:51:12Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2208.12435v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:41.603316Z",
+      "sha256": "268254b6b90a1f5822aac83b713a2d3b7b5e8d177f7003abc191d75c4a5f68ef",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvTHRETnlhdTgwM0hBcEtTUDFxUEw2RW5mTzhvPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjIwOC4xMjQzNXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjQxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMjA4LjEyNDM1djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjIwOC4xMjQzNXYxPC9pZD4KICAgIDx0aXRsZT5Db21wYXJpbmcgbXVsdGlwbGUgbGF0ZW50IHNwYWNlIGVtYmVkZGluZ3MgdXNpbmcgdG9wb2xvZ2ljYWwgYW5hbHlzaXM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyMi0wOC0yNlQwNDo1MToxMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjIwOC4xMjQzNXYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjIwOC4xMjQzNXYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+VGhlIGxhdGVudCBzcGFjZSBtb2RlbCBpcyBvbmUgb2YgdGhlIHdlbGwta25vd24gbWV0aG9kcyBmb3Igc3RhdGlzdGljYWwgaW5mZXJlbmNlIG9mIG5ldHdvcmsgZGF0YS4gV2hpbGUgdGhlIG1vZGVsIGhhcyBiZWVuIG11Y2ggc3R1ZGllZCBmb3IgYSBzaW5nbGUgbmV0d29yaywgaXQgaGFzIG5vdCBhdHRyYWN0ZWQgbXVjaCBhdHRlbnRpb24gdG8gYW5hbHl6ZSBjb2xsZWN0aXZlbHkgd2hlbiBtdWx0aXBsZSBuZXR3b3JrcyBhbmQgdGhlaXIgbGF0ZW50IGVtYmVkZGluZ3MgYXJlIHByZXNlbnQuIFdlIGFkb3B0IGEgdG9wb2xvZ3ktYmFzZWQgcmVwcmVzZW50YXRpb24gb2YgbGF0ZW50IHNwYWNlIGVtYmVkZGluZ3MgdG8gbGVhcm4gb3ZlciBhIHBvcHVsYXRpb24gb2YgbmV0d29yayBtb2RlbCBmaXRzLCB3aGljaCBhbGxvd3MgdXMgdG8gY29tcGFyZSBuZXR3b3JrcyBvZiBwb3RlbnRpYWxseSB2YXJ5aW5nIHNpemVzIGluIGFuIGludmFyaWFudCBtYW5uZXIgdG8gbGFiZWwgcGVybXV0YXRpb24gYW5kIHJpZ2lkIG1vdGlvbi4gVGhpcyBhcHByb2FjaCBlbmFibGVzIHVzIHRvIHByb3Bvc2UgYWxnb3JpdGhtcyBmb3IgY2x1c3RlcmluZyBhbmQgbXVsdGktc2FtcGxlIGh5cG90aGVzaXMgdGVzdHMgYnkgYWRvcHRpbmcgd2VsbC1lc3RhYmxpc2hlZCB0aGVvcmllcyBmb3IgSGlsYmVydCBzcGFjZS12YWx1ZWQgYW5hbHlzaXMuIEFmdGVyIHRoZSBwcm9wb3NlZCBtZXRob2QgaXMgdmFsaWRhdGVkIHZpYSBzaW11bGF0ZWQgZXhhbXBsZXMsIHdlIGFwcGx5IHRoZSBmcmFtZXdvcmsgdG8gYW5hbHl6ZSBlZHVjYXRpb25hbCBzdXJ2ZXkgZGF0YSBmcm9tIEtvcmVhbiBpbm5vdmF0aXZlIHNjaG9vbCByZWZvcm0uPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0LkFQIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjItMDgtMjZUMDQ6NTE6MTJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD40NiBwYWdlcywgMTEgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPklsbXVuIEtpbTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SWNrIEhvb24gSmluPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NaW5qZW9uZyBKZW9uPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5EZW5uaXMgU2h1bmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Comparing multiple latent space embeddings using topological analysis",
+    "authors": [
+      "Kisung You",
+      "Ilmun Kim",
+      "Ick Hoon Jin",
+      "Minjeong Jeon",
+      "Dennis Shung"
+    ],
+    "abstract": "The latent space model is one of the well-known methods for statistical inference of network data. While the model has been much studied for a single network, it has not attracted much attention to analyze collectively when multiple networks and their latent embeddings are present. We adopt a topology-based representation of latent space embeddings to learn over a population of network model fits, which allows us to compare networks of potentially varying sizes in an invariant manner to label permutation and rigid motion. This approach enables us to propose algorithms for clustering and multi-sample hypothesis tests by adopting well-established theories for Hilbert space-valued analysis. After the proposed method is validated via simulated examples, we apply the framework to analyze educational survey data from Korean innovative school reform.",
+    "identifiers": {
+      "arxiv": "2208.12435",
+      "arxiv_versioned": "2208.12435v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2208.12435v1"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "stat.AP"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2022-08-26T04:51:12Z",
+    "updated": "2022-08-26T04:51:12Z"
+  }
+}

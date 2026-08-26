@@ -1,0 +1,100 @@
+
+\section{Compute, Artifacts, and Reproducibility}
+\label{sec:appendix:artifacts}
+
+\subsection{Compute}
+\label{sec:appendix:compute}
+
+The campaign's canonical run cost \CostCalls{} model calls, \CostTokens{} tokens and
+\CostModelHours{} model-hours across both roles, all \LabSeeds{} seeds and all three arms; wall
+clock comes in lower, because the run fans out across workers. Call counts are identical across
+arms, since every arm meets the same worlds, the same horizon and the same frozen task stream --- an
+arm difference there would mean the arms were never matched and no contrast in \autoref{sec:lab}
+would be licensed, so we assert it rather than describe it. The manipulation lives instead in
+maintainer input tokens, which rise with what each arm's handoff carries
+(\CostMaintainerInRange{} from the uncommented arm to the commented one). Both roles run
+\texttt{claude-haiku-4-5}; each world's one-line objective is generated once at build time by
+\texttt{claude-sonnet-5} and then frozen with the world, identically for every arm.
+
+We train no model, so our budget is inference and parsing rather than gradient steps. Both halves
+run on CPU-only cloud containers (8 vCPU, 16\,GiB, no accelerator). The corpus half is network- and
+parse-bound, cloning \FieldRepos{} repositories bloblessly and segmenting every historical version
+of every context file, and we enforce its wall-clock budget in code rather than watching it by
+hand. The controlled experiment issues those calls against a hosted API, so the
+parameter counts of \texttt{claude-haiku-4-5} and \texttt{claude-sonnet-5} are not public and we
+cannot report them. We do pin the model versions and every decoding setting that varies
+(\texttt{max\_tokens} per role, extended thinking disabled for objective generation) in the run's
+resolved config. We otherwise decode at API defaults and ran no hyperparameter search over them.
+The design's knobs are the feedback conditions of \apxref{sec:appendix:regime} and the comment
+protocol itself, and we report both with their failures rather than only their survivor
+(\autoref{tab:ablations}).
+
+\subsection{What we consume, and under what license}
+\label{sec:appendix:licenses}
+
+We consume two artifacts, and we use each for
+research, the purpose each was released for. The agent-context sampling frame
+is the repository selection of \citet{chatlatanagulchai2025agentreadmes},
+distributed as a replication package that carries no license file. We therefore
+take from it only the list of repository URLs and re-derive every byte of
+content from the public histories of those repositories themselves, which is
+also the measurement this study requires
+(\apxref{sec:appendix:construction}). We build the controlled experiment's
+worlds from the IFEval input set \citep{zhou2023ifeval}, released under
+Apache~2.0 as part of \texttt{google-research}. We redistribute no repository
+content. We release only derived per-instruction tables and the code that
+produces them from the public sources above.
+
+\subsection{What we reimplement}
+\label{sec:appendix:reimplementation}
+
+We implemented the \LabVerifierTypes{}
+constraint verifiers of \autoref{tab:verifiers} ourselves rather than reuse
+IFEval's evaluation code, because our testbed inverts the benchmark: a verifier
+must run against a maintained prompt and return a censored complaint rather
+than score a completion (\apxref{sec:appendix:regime}). A reimplementation can
+disagree with the original at the margin. Every satisfaction rate in this paper
+is therefore a rate against our verifiers, comparable across arms rather than
+against published IFEval numbers.
+
+\subsection{Packages that determine a reported number}
+\label{sec:appendix:packages}
+
+We match across versions
+with \texttt{rapidfuzz} at a similarity threshold of \MatchFuzzyThreshold{}
+(\apxref{sec:appendix:tracking}), and we estimate the deletion hazard with the
+Nelson--Aalen estimator from \texttt{lifelines}. We fit the frailty and
+interaction models with our own piecewise-exponential EM
+(\apxref{sec:appendix:frailty}) rather than a library routine, so this appendix
+specifies that estimator instead of referring to one. We call models through
+the Anthropic Python SDK. A lockfile resolves exact versions and freezes them
+into each run's \texttt{env.lock}, so a reader reproducing a number resolves the
+same dependency set by construction rather than by matching a printed version
+string.
+
+\subsection{Coverage, and what the corpus is not documented for}
+\label{sec:appendix:coverage}
+
+The corpus is
+\FieldRepos{} public GitHub repositories carrying \texttt{CLAUDE.md},
+\texttt{AGENTS.md}, or \texttt{copilot-instructions.md}, yielding
+\FieldMultiVersionFiles{} multi-version files, \FieldMatches{} tracked
+transitions, and \FieldSpells{} instruction spells, of which
+\FieldDeletions{} end in a deletion (\apxref{sec:appendix:construction}). We fit
+nothing to held-out data, so we run no train/test split: we estimate on the
+whole corpus, and the controlled experiment draws its worlds by seeded
+permutation of the eligible IFEval pool (\apxref{sec:appendix:worlds}). We did
+not measure the corpus's natural language distribution, its programming
+language distribution, its domain composition, or any demographic property of
+its authors. No result here should be read as covering non-English
+instructions. Limitations states this as a bound on our scope rather than a gap
+to be filled by assumption.
+
+\subsection{Authorship metadata}
+\label{sec:appendix:authorship}
+
+Commit metadata identifies people, and we
+reduce it at extraction to one bit per file: whether at least two distinct
+non-bot authors have touched it, the covariate of
+\apxref{sec:appendix:interaction}. Nothing downstream of that reduction
+carries a name or an address, and no released artifact does.

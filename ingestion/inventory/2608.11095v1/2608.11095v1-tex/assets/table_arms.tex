@@ -1,0 +1,25 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}Xrrrrrr@{}}
+    \toprule
+    & & & & \multicolumn{2}{c}{Instruction Count} & \multicolumn{2}{c}{Constraint Satisfaction} \\
+    \cmidrule(lr){5-6}\cmidrule(lr){7-8}
+    Role & Arm & $T$ & $N$ & $|D_T|$ & Excess Size (\pct) & Rate (\pct, $t{=}T$) & Rate (\pct, $t{=}0$) \\
+    \midrule
+    \textsc{control} & no prompt comments & 15 & 552 & 3.5 & $+60.4 \pm 18.4$ & $39.0 \pm 2.8$ & $23.2 \pm 2.4$ \\
+    \textsc{placebo} & comment-shaped noise & 15 & 552 & 3.3 & $+53.2 \pm 14.6$ & $40.3 \pm 2.7$ & $22.0 \pm 2.4$ \\
+    \textsc{treatment} & informative comments & 15 & 552 & 2.1 & {\boldmath$-5.8 \pm 6.6$} & $38.2 \pm 2.6$ & $21.5 \pm 2.4$ \\
+    \midrule
+    \textsc{control} & no prompt comments & 51 & 184 & 6.6 & $+211.3 \pm 105.3$ & $44.0 \pm 4.9$ & $23.9 \pm 3.9$ \\
+    \textsc{placebo} & comment-shaped noise & 51 & 184 & 5.3 & $+147.9 \pm 79.9$ & $42.6 \pm 4.9$ & $22.3 \pm 4.2$ \\
+    \textsc{treatment} & informative comments & 51 & 184 & 2.2 & {\boldmath$+1.4 \pm 22.1$} & $44.0 \pm 4.7$ & $21.7 \pm 3.9$ \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    Informative comments cut excess size at parity satisfaction, more so at $T{=}51$. Excess is
+    $|D_T|/|D_\star|{-}1$ at $|D_\star|{=}2.2$; rate is the share of a round's scored
+    constraints passed, $t{=}T$ the last-3-round mean. \textbf{Bold} = best in its block, CIs
+    disjoint; $\pm$ is half a 95\pct{} bootstrap CI, asymmetric. 3 seeds at $T{=}15$, 1 at $T{=}51$.
+  }
+  \label{tab:arms}
+\end{table*}

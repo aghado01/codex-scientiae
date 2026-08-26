@@ -2,28 +2,63 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2605.01664v1",
-  "initialized_utc": "2026-08-11T03:19:34.562560Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T04:00:14.553435Z",
+  "title": "A Hybrid Retrieval and Reranking Framework for Evidence-Grounded Retrieval-Augmented Generation",
+  "authors": [
+    "Fariba Afrin Irany",
+    "Sampson Akwafuo"
+  ],
+  "abstract": "Retrieval-augmented generation (RAG) improves large language model reliability by grounding generated responses in external evidence. However, RAG performance depends on the relevance of retrieved passages, the quality of evidence ranking, and the ability to verify whether generated claims are supported by source documents. This study presents a hybrid retrieval and reranking framework for citation-aware RAG in biomedical and healthcare-related document question answering. The framework uses Amazon Bedrock Knowledge Bases for document ingestion, parsing, chunking, embedding generation, and evidence retrieval. Source PDF documents are stored in Amazon S3, embedded using Amazon Titan Text Embeddings V2, and indexed with Amazon OpenSearch Serverless. Hybrid retrieval first retrieves candidate evidence chunks, and Cohere reranking then prioritizes the most relevant passages before answer generation. The answer-generation stage uses top-ranked evidence chunks to produce controlled, evidence-grounded responses, while a separate judge model evaluates each generated factual claim against the retrieved evidence. The framework was evaluated using 25 biomedical NLP and healthcare transformer queries as a pilot-scale proof-of-concept study. Across the evaluation set, the system retrieved and reranked 500 evidence chunks and generated answers from top-ranked evidence. Claim-level grounding evaluation extracted 200 factual claims, all of which were judged to be supported by retrieved evidence, resulting in 100.0% grounding accuracy. The results suggest that hybrid retrieval, reranking, conservative prompting, and claim-level evaluation can support reliable evidence-grounded RAG responses when sufficient source evidence is available.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2605.01664",
+    "arxiv_versioned": "2605.01664v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2605.01664v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.IR"
+  ],
+  "concepts": [],
+  "primary_category": "cs.IR",
+  "published": "2026-05-03T01:33:31Z",
+  "updated": "2026-05-03T01:33:31Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2605.01664v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10283,
+        "sha256": "689129afd807e82dc0dcc238e0b230dbe2ec1bffc88f4992f9d33be7f1bf433d",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T04:00:13.880191Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2605.01664v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "0635e7ff126ccdf019079295e488e9c45f5d31e1b42fa97cfe72e33c0bcc282e"
+      }
+    ],
     "latex_source": {
       "entrypoint": "IEEE_Conference_main.tex",
       "selection": "single-candidate",
       "declarations": {
         "title_tex": "A Hybrid Retrieval and Reranking Framework for Evidence-Grounded Retrieval-Augmented Generation",
         "authors_tex": [
-          "\\IEEEauthorblockN{1\\textsuperscript{st} Fariba Afrin Irany}\n\n\\IEEEauthorblockA{\n\n\\textit{University of North Texas} \\\\\nDenton, Texas, USA \\\\\nafrinirany75@gmail.com\n}\n\\and\n\\IEEEauthorblockN{2\\textsuperscript{nd} Sampson Akwafuo}\n\\IEEEauthorblockA{\n\\textit{California State University} \\\\\nFullerton, California, USA \\\\\nsakwafuo@acm.org\n}"
+          "1\\textsuperscript{st} Fariba Afrin Irany",
+          "2\\textsuperscript{nd} Sampson Akwafuo"
         ],
         "doi": null
       }
@@ -34,7 +69,32 @@
         "bytes": 229,
         "sha256": "34c3911a4f76fa3cdc68f3b6f79bc34286afa676ace6b5deabc86800ed8c0d74"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2605.01664v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -59,8 +119,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:34.562560Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T04:00:14.553435Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -85,8 +145,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "IEEE_Conference_main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "IEEE_Conference_main.tex"
       },
       {
         "name": "literal-inputs-resolved",

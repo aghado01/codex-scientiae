@@ -2,21 +2,54 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2605.00363v1",
-  "initialized_utc": "2026-08-11T08:30:04.525247Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:25.588753Z",
+  "title": "Profile Likelihood Inference for Anisotropic Hyperbolic Wrapped Normal Models on Hyperbolic Space",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "We study likelihood-based inference for the anisotropic hyperbolic wrapped normal distribution on standard hyperbolic space. The model has a manifold-valued location parameter and a full positive definite covariance matrix in tangent coordinates. For independent observations from this family, we analyze the profile maximum likelihood estimator obtained by optimizing the likelihood over the location after profiling out the covariance. To guarantee finite-sample existence, we formulate the estimator on a covariance shell that bounds eigenvalues away from zero and infinity. We prove that this constrained likelihood is well posed, that the anisotropic wrapped normal family is identifiable, and that the estimator is strongly consistent when the true covariance lies in the interior of the shell. In global normal coordinates for the location and log-covariance coordinates for the nuisance parameter, we establish joint asymptotic normality and derive efficient profile inference for the location parameter through the Schur-complement information. We further prove local asymptotic normality of the experiment and obtain the Hájek--Le Cam local asymptotic minimax lower bound under squared geodesic loss. The profile estimator attains this bound for truncated squared loss, and for ordinary squared loss under a uniform-integrability condition. We also give an explicit computational form of the estimator based on spectral clipping of the empirical tangent covariance, and present a Monte Carlo calibration study showing that the finite-sample scaled location risk and Wald coverage agree with the asymptotic theory.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2605.00363",
+    "arxiv_versioned": "2605.00363v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2605.00363v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "math.ST"
+  ],
+  "concepts": [],
+  "primary_category": "math.ST",
+  "published": "2026-05-01T02:54:41Z",
+  "updated": "2026-05-01T02:54:41Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2605.00363v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9801,
+        "sha256": "db1b637ce528b784c5193bf8fc99a05a865c7637b6206b4b87eaee17bac619cc",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:25.178317Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2605.00363v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "1b7f97d68bd9083f22c5c0a706e453c39eb0250eb9fdff7dd2104a340a55ac11"
+      }
+    ],
     "latex_source": {
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
@@ -34,7 +67,32 @@
         "bytes": 219,
         "sha256": "617532b3e6913e02fae667c6759390dfa4031514d63891614b45a74f061bb96b"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2605.00363v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:30:04.525247Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:25.588753Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +150,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "manuscript.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2005.11107v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2005.11107v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Rdimtools: An R package for Dimension Reduction and Intrinsic Dimension Estimation",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Discovering patterns of the complex high-dimensional data is a long-standing problem. Dimension Reduction (DR) and Intrinsic Dimension Estimation (IDE) are two fundamental thematic programs that facilitate geometric understanding of the data. We present Rdimtools - an R package that supports 133 DR and 17 IDE algorithms whose extent makes multifaceted scrutiny of the data in one place easier. Rdimtools is distributed under the MIT license and is accessible from CRAN, GitHub, and its package website, all of which deliver instruction for installation, self-contained examples, and API documentation.",
+      "doi": "10.1016/j.simpa.2022.100414",
+      "arxiv_id": "2005.11107v1",
+      "published": "2020-05-22T11:06:43Z",
+      "updated": "2020-05-22T11:06:43Z",
+      "year": 2020,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2005.11107v1",
+      "pdf_url": "https://arxiv.org/pdf/2005.11107v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2005.11107v1",
+        "doi": "10.1016/j.simpa.2022.100414"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2005.11107v1",
+          "url": "https://arxiv.org/abs/2005.11107v1",
+          "doi": "10.1016/j.simpa.2022.100414",
+          "arxiv_id": "2005.11107v1",
+          "published": "2020-05-22T11:06:43Z",
+          "updated": "2020-05-22T11:06:43Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2005.11107v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:23.550308Z",
+      "sha256": "02b085944d77715f368dcd253074186402dad917b95cca7af14d6d9f0e3edffc",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvek9Mc3BRTTExWmsrMUltNXdISGlVdDB3alJvPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjAwNS4xMTEwN3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjIzWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMDA1LjExMTA3djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjAwNS4xMTEwN3YxPC9pZD4KICAgIDx0aXRsZT5SZGltdG9vbHM6IEFuIFIgcGFja2FnZSBmb3IgRGltZW5zaW9uIFJlZHVjdGlvbiBhbmQgSW50cmluc2ljIERpbWVuc2lvbiBFc3RpbWF0aW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjAtMDUtMjJUMTE6MDY6NDNaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIwMDUuMTExMDd2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIwMDUuMTExMDd2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkRpc2NvdmVyaW5nIHBhdHRlcm5zIG9mIHRoZSBjb21wbGV4IGhpZ2gtZGltZW5zaW9uYWwgZGF0YSBpcyBhIGxvbmctc3RhbmRpbmcgcHJvYmxlbS4gRGltZW5zaW9uIFJlZHVjdGlvbiAoRFIpIGFuZCBJbnRyaW5zaWMgRGltZW5zaW9uIEVzdGltYXRpb24gKElERSkgYXJlIHR3byBmdW5kYW1lbnRhbCB0aGVtYXRpYyBwcm9ncmFtcyB0aGF0IGZhY2lsaXRhdGUgZ2VvbWV0cmljIHVuZGVyc3RhbmRpbmcgb2YgdGhlIGRhdGEuIFdlIHByZXNlbnQgUmRpbXRvb2xzIC0gYW4gUiBwYWNrYWdlIHRoYXQgc3VwcG9ydHMgMTMzIERSIGFuZCAxNyBJREUgYWxnb3JpdGhtcyB3aG9zZSBleHRlbnQgbWFrZXMgbXVsdGlmYWNldGVkIHNjcnV0aW55IG9mIHRoZSBkYXRhIGluIG9uZSBwbGFjZSBlYXNpZXIuIFJkaW10b29scyBpcyBkaXN0cmlidXRlZCB1bmRlciB0aGUgTUlUIGxpY2Vuc2UgYW5kIGlzIGFjY2Vzc2libGUgZnJvbSBDUkFOLCBHaXRIdWIsIGFuZCBpdHMgcGFja2FnZSB3ZWJzaXRlLCBhbGwgb2Ygd2hpY2ggZGVsaXZlciBpbnN0cnVjdGlvbiBmb3IgaW5zdGFsbGF0aW9uLCBzZWxmLWNvbnRhaW5lZCBleGFtcGxlcywgYW5kIEFQSSBkb2N1bWVudGF0aW9uLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyMC0wNS0yMlQxMTowNjo0M1o8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUwiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhcnhpdjpkb2k+MTAuMTAxNi9qLnNpbXBhLjIwMjIuMTAwNDE0PC9hcnhpdjpkb2k+CiAgICA8bGluayByZWw9InJlbGF0ZWQiIGhyZWY9Imh0dHBzOi8vZG9pLm9yZy8xMC4xMDE2L2ouc2ltcGEuMjAyMi4xMDA0MTQiIHRpdGxlPSJkb2kiLz4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Rdimtools: An R package for Dimension Reduction and Intrinsic Dimension Estimation",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Discovering patterns of the complex high-dimensional data is a long-standing problem. Dimension Reduction (DR) and Intrinsic Dimension Estimation (IDE) are two fundamental thematic programs that facilitate geometric understanding of the data. We present Rdimtools - an R package that supports 133 DR and 17 IDE algorithms whose extent makes multifaceted scrutiny of the data in one place easier. Rdimtools is distributed under the MIT license and is accessible from CRAN, GitHub, and its package website, all of which deliver instruction for installation, self-contained examples, and API documentation.",
+    "identifiers": {
+      "arxiv": "2005.11107",
+      "arxiv_versioned": "2005.11107v1",
+      "doi": "10.1016/j.simpa.2022.100414",
+      "external": {
+        "arxiv": "2005.11107v1",
+        "doi": "10.1016/j.simpa.2022.100414"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2020-05-22T11:06:43Z",
+    "updated": "2020-05-22T11:06:43Z"
+  }
+}

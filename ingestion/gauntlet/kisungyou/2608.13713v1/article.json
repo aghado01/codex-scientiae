@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2608.13713v1",
-  "initialized_utc": "2026-08-26T03:21:40.663591Z",
+  "initialized_utc": "2026-08-26T03:57:43.585867Z",
   "title": "Hyperbolic Latent Position Models for Hierarchical Bipartite Data",
   "authors": [
     "Kisung You"
@@ -124,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:21:40.663591Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:43.585867Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

@@ -1,0 +1,28 @@
+\section*{Ethics Statement}
+
+We mine public repository histories, and the only personal data we touch is
+authorship metadata. Each commit in a file's history carries an author name and
+email; we reduce them at extraction to a count of distinct editors, the
+covariate in \autoref{sec:hazard}. No artifact we release carries an identity.
+We redistribute no repository content, only derived tables and the code that
+rebuilds them (\apxref{sec:appendix:artifacts}). These files are public, but
+nobody wrote them for this measurement. Every result we report is therefore an
+aggregate over \FieldRepos{} repositories rather than a judgment about any one
+maintainer.
+
+Our own recommendation carries the main risk. We tell maintainers to delete
+instructions whose rationale they can recover, and an operator who automates
+that rule will delete instructions whose rationale was real. Our protocol
+empties a nontrivial share of prompts, and the uncommented arm scores higher on
+exactly those worlds (\apxref{sec:appendix:calibration}). Writing a comment
+removes nothing and is therefore safe. Acting on one is not. An operator
+deploying the protocol should keep a person in the deletion path and hold
+safety-relevant instructions out of scope until someone tests the protocol on
+them.
+
+We did not audit the corpus for offensive content, and we print only three
+verbatim strings, all comments from our own run
+(\autoref{fig:comment_examples}). We recruited no participants, and an author
+produced the one hand-annotation here (\autoref{tab:gates}); an independent
+re-annotation would fix that. We train nothing, and \apxref{sec:appendix:compute} reports
+the compute.

@@ -1,0 +1,93 @@
+\section{Prompts Ratchet: Growth, Rewrite, Regrowth}
+\label{sec:field}
+
+Agentic context files grow until someone rewrites them wholesale and then they grow again, characterizing the
+unique sawtooth-like growth curve we call the \textbf{ratchet} (\autoref{fig:massrewrite:event}). Its
+deletion hazard and covariates identify its root cause for the first time --- imperfect recall.
+
+We decompose agentic prompts into individual instructions and track their decay over commit histories
+(\autoref{sec:growth}-\ref{sec:rewrite}), then falsify instruction staleness and content fragility and
+finally confirm a prediction only imperfect recall can make (\autoref{sec:hazard}). Our corpus spans \FieldRepos{}
+GitHub repositories, \FieldMultiVersionFiles{} multi-version files, \FieldMatches{} version-to-version
+transitions, and \FieldSpells{} instruction lifetimes; \apxref{sec:appendix:corpus} details construction,
+segmentation, matching and censoring.
+
+\subsection{Agentic prompts grow unbounded until a wholesale rewrite}
+\label{sec:growth}
+
+Maintainers add and almost never remove, so agentic prompts grow without bound in instruction count,
+instruction complexity and total size until history ends or a file is rewritten wholesale.
+
+At its last tracked version, the median file holds \FieldOpMedian{} instructions (90th percentile:
+\FieldOpNinety{}), well
+past the threshold at which instruction-following degrades
+\citep{jiang2024followbench, lior2025wildifeval}. Among \FieldMultiVersionRepos{} multi-version repositories,
+\FieldFracGrow{} grow their instruction count against \FieldFracShrink{} that shrink it, a median net gain of
+\FieldMedianNetD{} instructions. On average, excluding mass rewrites, each commit adds a net
+\FieldNetPerCommit{} instructions across \FieldTouchingCommits{} commits.
+
+Every component we measure grows. Over a file's own lifetime the mean trajectory gains up to
+\FieldGrowthCountPeakPct{} in count (\autoref{fig:hero:growth}) and \FieldGrowthLenPeakPct{} in mean
+instruction length. Alongside that, the total size of agentic prompts grows \FieldGrowthPayloadPct{},
+so the count is not text migrating between the instruction and payload classes
+(\apxref{sec:appendix:decomposition}).
+
+\subsection{Most disappearances are not deletions}
+\label{sec:measurement}
+
+When maintainers delete instructions, they generally do so wholesale in a mass rewrite.
+\FieldCensoredDeathShare{} of instruction deaths arrive in a wholesale rewrite or a migration to a sibling
+file. In such cases, a line diff cannot separate deletions from rewordings, which partially explains why
+``deletions are rare'' has
+stood unexplained: prompt-change studies report additions dominating without settling what became of any one
+instruction \citep{tafreshipour2025promptinthewild}.\looseness=-1
+
+When a file loses half or more of its instructions in a single commit, we call it a \emph{rewrite}; text
+reappearing in a sibling file is a \emph{migration}. We censor both as competing risks (\FieldRewriteDeaths{}
+and \FieldMigrationDeaths{} deaths, with exposure bounded in both directions in \apxref{sec:appendix:censoring}),
+since neither involves a maintainer judging any given instruction to be worth its place \citep{march2000dynamics}.
+Matching validates at \GateBPrecision{} precision and \GateBRecall{} recall on \GateBPool{} hand-annotated
+transitions, leaving \FieldSpells{} lifetimes and \FieldDeletions{} tracked deletions.
+
+\subsection{Growth immediately resumes after rewrite}
+\label{sec:rewrite}
+
+Although a mass rewrite resets a prompt's size, it does not address the underlying root cause (imperfect
+recall), so the prompt starts growing again immediately after the rewrite.
+
+Aligning files on their first mass rewrite at $t = 0$, the mean instruction count rises monotonically through
+$t = -1$, drops to \RewriteDropPct{} of its pre-rewrite value at $t = 0$, and recovers to
+\RewriteReboundPct{} over the \RewriteEventWindow{} commits after (\autoref{fig:massrewrite:event}). In fact,
+agentic prompts grow faster \emph{after} a rewrite: a file gains \RewriteGrowthPostCommit{} instructions per
+commit after a mass rewrite vs. \RewriteGrowthPreCommit{} before it.
+
+
+
+\subsection{Deletion hazard falsifies rival mechanisms}
+\label{sec:hazard}
+
+The deletion hazard $h(a)$ and its interaction with author count identify imperfect recall as the
+mechanism driving instruction growth.
+
+In particular, instruction staleness and imperfect recall predict opposite slopes for deletion
+hazard: the first predicts hazard rising with age, as instructions fall out of date
+\citep{lehman1980laws, panthaplackel2021jit}; the second predicts it falling, as the reasoning behind
+them is lost. As we can see in \autoref{fig:hazard}, the deletion hazard $h(a)$ falls with age $a$. The
+log-hazard slope from a repository-stratified bootstrap is $\FieldSlopeCommit$ per commit, its interval
+excluding zero (95\% CI $\FieldSlopeCommitCI$; \apxref{sec:appendix:hazard}).
+
+Content fragility --- where fragile instructions, files or repositories die young --- would bend deletion hazard
+downward through compositional effects, but composition alone cannot account for the slope. We refit it with a
+gamma frailty model ($n = \FrailtyDeathsCensored$ deaths, censored at \HazardAgeMax{} commits) against a no-frailty
+baseline \citep{vaupel1979frailty}. Its strongest form, shared instructions with the same text, absorbs
+\FrailtyAbsorbedContent{} but leaves the slope at $\FrailtySlopeContent$ ($\FrailtySlopeContentCI$;
+\apxref{sec:appendix:frailty}).
+
+Finally, imperfect recall predicts something that neither rival can explain: if latent reasoning is encoded
+while a maintainer makes the change, deletion hazard should decay with the number of maintainers touching a
+file, not just with age. Counting human authors and controlling for file activity, it does:
+$\beta_{\text{multi-author} \times \text{age}} = \InterMulti$ ($z = \InterMultiZ$; \apxref{sec:appendix:interaction}).
+
+Across real-world repositories, then, unbounded prompt growth is widespread, costly at the sizes files reach,
+and explainable only by imperfect recall. However, this setting is observed, not assigned; we turn next to one where
+we control what the maintainer inherits.

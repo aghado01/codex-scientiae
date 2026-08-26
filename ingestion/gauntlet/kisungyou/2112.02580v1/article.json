@@ -2,24 +2,60 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2112.02580v1",
-  "initialized_utc": "2026-08-11T08:32:20.822178Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T04:00:11.311389Z",
+  "title": "Bayesian Optimal Two-sample Tests in High-dimension",
+  "authors": [
+    "Kyoungjae Lee",
+    "Kisung You",
+    "Lizhen Lin"
+  ],
+  "abstract": "We propose optimal Bayesian two-sample tests for testing equality of high-dimensional mean vectors and covariance matrices between two populations. In many applications including genomics and medical imaging, it is natural to assume that only a few entries of two mean vectors or covariance matrices are different. Many existing tests that rely on aggregating the difference between empirical means or covariance matrices are not optimal or yield low power under such setups. Motivated by this, we develop Bayesian two-sample tests employing a divide-and-conquer idea, which is powerful especially when the difference between two populations is sparse but large. The proposed two-sample tests manifest closed forms of Bayes factors and allow scalable computations even in high-dimensions. We prove that the proposed tests are consistent under relatively mild conditions compared to existing tests in the literature. Furthermore, the testable regions from the proposed tests turn out to be optimal in terms of rates. Simulation studies show clear advantages of the proposed tests over other state-of-the-art methods in various scenarios. Our tests are also applied to the analysis of the gene expression data of two cancer data sets.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2112.02580",
+    "arxiv_versioned": "2112.02580v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2112.02580v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME",
+    "math.ST"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2021-12-05T14:22:02Z",
+  "updated": "2021-12-05T14:22:02Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2112.02580v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8643,
+        "sha256": "59c3c7f9b859657538e3bb3157886d3d4ad4650bdf891b40d71213643173a80e",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T04:00:10.536732Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2112.02580v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "8beb52de0216e55d4b786184237f1cfbb8982ae2347763f5fbdf4c5fa61f8379"
+      }
+    ],
     "latex_source": {
       "entrypoint": "two-sample-tests.tex",
-      "selection": "explicit",
+      "selection": "unique-root",
       "declarations": {
         "title_tex": "Bayesian Optimal Two-sample Tests in High-dimension",
         "authors_tex": [
@@ -30,7 +66,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2112.02580v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -47,7 +108,7 @@
       "format": "application/x-latex-source-tree",
       "derived_from": "2112.02580v1.tar.gz",
       "entrypoint": "two-sample-tests.tex",
-      "entrypoint_selection": "explicit",
+      "entrypoint_selection": "unique-root",
       "files": 44,
       "tex_files": 2,
       "sha256": "14fc2fdd38d8d38bffdfb84d6c8afd3d4faf4a362dca1dca9100c0c4d2906a78"
@@ -62,8 +123,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:32:20.822178Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T04:00:11.311389Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -87,10 +148,9 @@
       },
       {
         "name": "entrypoint-unambiguous",
-        "outcome": "not-applicable",
-        "entrypoint": "two-sample-tests.tex",
-        "reason": "entrypoint named explicitly; the ambiguity scan did not run",
-        "selection": "explicit"
+        "outcome": "passed",
+        "selection": "unique-root",
+        "entrypoint": "two-sample-tests.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -2,33 +2,93 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2005.11107v1",
-  "initialized_utc": "2026-08-11T08:29:43.419746Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:23.761555Z",
+  "title": "Rdimtools: An R package for Dimension Reduction and Intrinsic Dimension Estimation",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Discovering patterns of the complex high-dimensional data is a long-standing problem. Dimension Reduction (DR) and Intrinsic Dimension Estimation (IDE) are two fundamental thematic programs that facilitate geometric understanding of the data. We present Rdimtools - an R package that supports 133 DR and 17 IDE algorithms whose extent makes multifaceted scrutiny of the data in one place easier. Rdimtools is distributed under the MIT license and is accessible from CRAN, GitHub, and its package website, all of which deliver instruction for installation, self-contained examples, and API documentation.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2005.11107",
+    "arxiv_versioned": "2005.11107v1",
+    "doi": "10.1016/j.simpa.2022.100414",
+    "external": {
+      "arxiv": "2005.11107v1",
+      "doi": "10.1016/j.simpa.2022.100414"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ML",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2020-05-22T11:06:43Z",
+  "updated": "2020-05-22T11:06:43Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2005.11107v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 6756,
+        "sha256": "da9e22a3c58a972f6371c124cdbb5594d5b76323471ebb91662840d5a065bc55",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:23.550308Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2005.11107v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "02b085944d77715f368dcd253074186402dad917b95cca7af14d6d9f0e3edffc"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
       "declarations": {
         "title_tex": "Rdimtools: An R package for Dimension Reduction and Intrinsic Dimension Estimation",
         "authors_tex": [
-          "\\name Kisung You \\email kyou@nd.edu \\\\\n\t\\addr Department of Applied and Computational Mathematics and Statistics \\\\ \n\tUniversity of Notre Dame \\\\\n\tNotre Dame, IN 46556, USA"
+          "Kisung You"
         ],
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2005.11107v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -60,8 +120,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:43.419746Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:23.761555Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -86,8 +146,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

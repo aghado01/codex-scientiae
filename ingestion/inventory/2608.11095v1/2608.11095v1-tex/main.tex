@@ -1,0 +1,94 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[final]{acl}   % [final] = deanonymized (arXiv/camera-ready); drop it for an ARR review copy
+\newcommand{\fixme}[1]{\textbf{\color{red}[FIXME: #1]}}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{enumitem}   % [nosep,leftmargin=*] contributions list in sections/01-introduction.tex
+\usepackage{array}      % >{\raggedright...} column spec in assets/table_characteristics.tex
+\usepackage{tabularx}   % full-column-width X column, same table
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\setcounter{topnumber}{1}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Section}
+\renewcommand{\subsubsectionautorefname}{Section}
+\DeclareRobustCommand{\apxref}[1]{{%
+    \renewcommand{\sectionautorefname}{Appendix}%
+    \renewcommand{\subsectionautorefname}{Appendix}%
+    \renewcommand{\subsubsectionautorefname}{Appendix}%
+    \autoref{#1}%
+}}
+\providecommand{\subfigureautorefname}{Figure}
+\providecommand{\subtableautorefname}{Table}
+
+\makeatletter
+\newcommand{\pct}{\edef\cr@series{\f@series}\edef\cr@medium{m}%
+\ifx\cr@series\cr@medium\else\kern-0.06em\fi\%}
+\makeatother
+\newcommand{\pp}{\ifmmode\mathrm{pp}\else pp\fi}
+
+\input{assets/macros.tex}
+
+\title{Why Does \texttt{CLAUDE.md} Keep Growing?\\ Catastrophic Remembering in Agentic Coding}
+
+\author{
+  Kushal Chakrabarti\\
+  South Park Commons\\
+  \texttt{kushalc@obviouslywrong.org}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  Agentic coding READMEs like \texttt{CLAUDE.md} grow without bound in real repositories, stopping only when
+  the repository retires or someone rewrites the file wholesale.
+  We trace this to imperfect recall: appending an instruction is always cheap, but once an instruction's
+  rationale is gone, deleting it without risking a correctness regression costs $O(2^{|D|})$ in a prompt of
+  $|D|$ instructions.
+  We name the resulting divergence \textbf{catastrophic remembering}, the inverse of catastrophic forgetting around
+  which continual learning is organized.
+  First, we characterize this phenomenon across \FieldSpells{} instruction lifetimes in \FieldRepos{} repositories:
+  agentic prompts grow without bound, more than tripling over their lifetime (\FieldGrowthCountPeakPct{}), gaining
+  \FieldNetPerCommit{} net instructions every commit; further, the older an instruction gets, the less likely
+  it is to be deleted (log-hazard \FieldSlopeCommit{}/commit).
+  Then, we show that prompt comments can halt the growth: inverting IFEval yields verifiable worlds
+  whose optimal prompts are known, and there \textbf{comments encoding latent reasoning remove
+  \HorizonExcessRemovedPct{} of excess instructions} (\HorizonControlExcessPct{} to \HorizonPracticalExcessPct{}).
+  Finally, applying the same inversion to WildIFEval, we show that prompt comments can \textbf{improve
+  real-world agentic instruction-following by up to \WildDeltaSatPct{}}.
+  If English is the new code, why don't we have comments yet?
+\end{abstract}
+
+\input{assets/fig_hero}
+\input{sections/01-introduction}
+\input{sections/02-theory}
+\input{sections/03-field}
+\input{sections/04-lab}
+\input{sections/05-related}
+\input{sections/06-discussion}
+\input{sections/07-limitations}
+\input{sections/08-llm-usage}
+\input{sections/09-ethics}
+
+\bibliography{references}
+
+\appendix
+\input{sections/10a-appendix-field}
+\input{sections/10b-appendix-inverse-ifeval-testbed}
+\input{sections/10c-appendix-inverse-ifeval-results}
+\input{sections/10d-appendix-wildifeval}
+\input{sections/10e-appendix-reproducibility}
+
+\end{document}

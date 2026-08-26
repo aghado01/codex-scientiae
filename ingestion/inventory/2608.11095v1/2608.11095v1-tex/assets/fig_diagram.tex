@@ -1,0 +1,27 @@
+\begin{figure*}[t]
+  \centering
+  \begin{subfigure}[b]{0.58\textwidth}
+    \centering
+    \resizebox{\linewidth}{!}{\input{assets/fig_flow}}
+    \caption{
+      Why do agentic prompts only grow? The latent reasoning behind $d_i$ is never written and decays over
+      the (possibly agentic) development loop, so deletion risks an acute regression while the cost of
+      addition stays diffuse.
+    }
+    \label{fig:flow}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.38\textwidth}
+    \centering
+    \fbox{\parbox{0.96\linewidth}{\input{assets/fig_comment}}}
+    \caption{
+      The fix: informative comments encode latent reasoning, which stops
+      unbounded growth in agentic READMEs.
+    }
+    \label{fig:comment}
+  \end{subfigure}
+  \caption{
+    The prompt-comment world. Latent reasoning is free at write-time and exponentially costly to reconstruct
+    at read-time, but prompt comments preserve it and stop the unbounded growth of agentic READMEs.
+  }
+  \label{fig:comment_world}
+\end{figure*}

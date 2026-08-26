@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2605.00363v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2605.00363v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Profile Likelihood Inference for Anisotropic Hyperbolic Wrapped Normal Models on Hyperbolic Space",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "We study likelihood-based inference for the anisotropic hyperbolic wrapped normal distribution on standard hyperbolic space. The model has a manifold-valued location parameter and a full positive definite covariance matrix in tangent coordinates. For independent observations from this family, we analyze the profile maximum likelihood estimator obtained by optimizing the likelihood over the location after profiling out the covariance. To guarantee finite-sample existence, we formulate the estimator on a covariance shell that bounds eigenvalues away from zero and infinity. We prove that this constrained likelihood is well posed, that the anisotropic wrapped normal family is identifiable, and that the estimator is strongly consistent when the true covariance lies in the interior of the shell. In global normal coordinates for the location and log-covariance coordinates for the nuisance parameter, we establish joint asymptotic normality and derive efficient profile inference for the location parameter through the Schur-complement information. We further prove local asymptotic normality of the experiment and obtain the Hájek--Le Cam local asymptotic minimax lower bound under squared geodesic loss. The profile estimator attains this bound for truncated squared loss, and for ordinary squared loss under a uniform-integrability condition. We also give an explicit computational form of the estimator based on spectral clipping of the empirical tangent covariance, and present a Monte Carlo calibration study showing that the finite-sample scaled location risk and Wald coverage agree with the asymptotic theory.",
+      "doi": null,
+      "arxiv_id": "2605.00363v1",
+      "published": "2026-05-01T02:54:41Z",
+      "updated": "2026-05-01T02:54:41Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2605.00363v1",
+      "pdf_url": "https://arxiv.org/pdf/2605.00363v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.ST"
+      ],
+      "external_ids": {
+        "arxiv": "2605.00363v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2605.00363v1",
+          "url": "https://arxiv.org/abs/2605.00363v1",
+          "doi": null,
+          "arxiv_id": "2605.00363v1",
+          "published": "2026-05-01T02:54:41Z",
+          "updated": "2026-05-01T02:54:41Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2605.00363v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:25.178317Z",
+      "sha256": "1b7f97d68bd9083f22c5c0a706e453c39eb0250eb9fdff7dd2104a340a55ac11",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvbFZWTXAwMlFocTN2N3NDUXBnNnorWVYrZmVrPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNS4wMDM2M3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjI1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA1LjAwMzYzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNS4wMDM2M3YxPC9pZD4KICAgIDx0aXRsZT5Qcm9maWxlIExpa2VsaWhvb2QgSW5mZXJlbmNlIGZvciBBbmlzb3Ryb3BpYyBIeXBlcmJvbGljIFdyYXBwZWQgTm9ybWFsIE1vZGVscyBvbiBIeXBlcmJvbGljIFNwYWNlPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDUtMDFUMDI6NTQ6NDFaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDUuMDAzNjN2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDUuMDAzNjN2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PldlIHN0dWR5IGxpa2VsaWhvb2QtYmFzZWQgaW5mZXJlbmNlIGZvciB0aGUgYW5pc290cm9waWMgaHlwZXJib2xpYyB3cmFwcGVkIG5vcm1hbCBkaXN0cmlidXRpb24gb24gc3RhbmRhcmQgaHlwZXJib2xpYyBzcGFjZS4gVGhlIG1vZGVsIGhhcyBhIG1hbmlmb2xkLXZhbHVlZCBsb2NhdGlvbiBwYXJhbWV0ZXIgYW5kIGEgZnVsbCBwb3NpdGl2ZSBkZWZpbml0ZSBjb3ZhcmlhbmNlIG1hdHJpeCBpbiB0YW5nZW50IGNvb3JkaW5hdGVzLiBGb3IgaW5kZXBlbmRlbnQgb2JzZXJ2YXRpb25zIGZyb20gdGhpcyBmYW1pbHksIHdlIGFuYWx5emUgdGhlIHByb2ZpbGUgbWF4aW11bSBsaWtlbGlob29kIGVzdGltYXRvciBvYnRhaW5lZCBieSBvcHRpbWl6aW5nIHRoZSBsaWtlbGlob29kIG92ZXIgdGhlIGxvY2F0aW9uIGFmdGVyIHByb2ZpbGluZyBvdXQgdGhlIGNvdmFyaWFuY2UuIFRvIGd1YXJhbnRlZSBmaW5pdGUtc2FtcGxlIGV4aXN0ZW5jZSwgd2UgZm9ybXVsYXRlIHRoZSBlc3RpbWF0b3Igb24gYSBjb3ZhcmlhbmNlIHNoZWxsIHRoYXQgYm91bmRzIGVpZ2VudmFsdWVzIGF3YXkgZnJvbSB6ZXJvIGFuZCBpbmZpbml0eS4gV2UgcHJvdmUgdGhhdCB0aGlzIGNvbnN0cmFpbmVkIGxpa2VsaWhvb2QgaXMgd2VsbCBwb3NlZCwgdGhhdCB0aGUgYW5pc290cm9waWMgd3JhcHBlZCBub3JtYWwgZmFtaWx5IGlzIGlkZW50aWZpYWJsZSwgYW5kIHRoYXQgdGhlIGVzdGltYXRvciBpcyBzdHJvbmdseSBjb25zaXN0ZW50IHdoZW4gdGhlIHRydWUgY292YXJpYW5jZSBsaWVzIGluIHRoZSBpbnRlcmlvciBvZiB0aGUgc2hlbGwuIEluIGdsb2JhbCBub3JtYWwgY29vcmRpbmF0ZXMgZm9yIHRoZSBsb2NhdGlvbiBhbmQgbG9nLWNvdmFyaWFuY2UgY29vcmRpbmF0ZXMgZm9yIHRoZSBudWlzYW5jZSBwYXJhbWV0ZXIsIHdlIGVzdGFibGlzaCBqb2ludCBhc3ltcHRvdGljIG5vcm1hbGl0eSBhbmQgZGVyaXZlIGVmZmljaWVudCBwcm9maWxlIGluZmVyZW5jZSBmb3IgdGhlIGxvY2F0aW9uIHBhcmFtZXRlciB0aHJvdWdoIHRoZSBTY2h1ci1jb21wbGVtZW50IGluZm9ybWF0aW9uLiBXZSBmdXJ0aGVyIHByb3ZlIGxvY2FsIGFzeW1wdG90aWMgbm9ybWFsaXR5IG9mIHRoZSBleHBlcmltZW50IGFuZCBvYnRhaW4gdGhlIEjDoWplay0tTGUgQ2FtIGxvY2FsIGFzeW1wdG90aWMgbWluaW1heCBsb3dlciBib3VuZCB1bmRlciBzcXVhcmVkIGdlb2Rlc2ljIGxvc3MuIFRoZSBwcm9maWxlIGVzdGltYXRvciBhdHRhaW5zIHRoaXMgYm91bmQgZm9yIHRydW5jYXRlZCBzcXVhcmVkIGxvc3MsIGFuZCBmb3Igb3JkaW5hcnkgc3F1YXJlZCBsb3NzIHVuZGVyIGEgdW5pZm9ybS1pbnRlZ3JhYmlsaXR5IGNvbmRpdGlvbi4gV2UgYWxzbyBnaXZlIGFuIGV4cGxpY2l0IGNvbXB1dGF0aW9uYWwgZm9ybSBvZiB0aGUgZXN0aW1hdG9yIGJhc2VkIG9uIHNwZWN0cmFsIGNsaXBwaW5nIG9mIHRoZSBlbXBpcmljYWwgdGFuZ2VudCBjb3ZhcmlhbmNlLCBhbmQgcHJlc2VudCBhIE1vbnRlIENhcmxvIGNhbGlicmF0aW9uIHN0dWR5IHNob3dpbmcgdGhhdCB0aGUgZmluaXRlLXNhbXBsZSBzY2FsZWQgbG9jYXRpb24gcmlzayBhbmQgV2FsZCBjb3ZlcmFnZSBhZ3JlZSB3aXRoIHRoZSBhc3ltcHRvdGljIHRoZW9yeS48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ibWF0aC5TVCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA1LTAxVDAyOjU0OjQxWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+MzQgcGFnZXMsIDIgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09Im1hdGguU1QiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Profile Likelihood Inference for Anisotropic Hyperbolic Wrapped Normal Models on Hyperbolic Space",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "We study likelihood-based inference for the anisotropic hyperbolic wrapped normal distribution on standard hyperbolic space. The model has a manifold-valued location parameter and a full positive definite covariance matrix in tangent coordinates. For independent observations from this family, we analyze the profile maximum likelihood estimator obtained by optimizing the likelihood over the location after profiling out the covariance. To guarantee finite-sample existence, we formulate the estimator on a covariance shell that bounds eigenvalues away from zero and infinity. We prove that this constrained likelihood is well posed, that the anisotropic wrapped normal family is identifiable, and that the estimator is strongly consistent when the true covariance lies in the interior of the shell. In global normal coordinates for the location and log-covariance coordinates for the nuisance parameter, we establish joint asymptotic normality and derive efficient profile inference for the location parameter through the Schur-complement information. We further prove local asymptotic normality of the experiment and obtain the Hájek--Le Cam local asymptotic minimax lower bound under squared geodesic loss. The profile estimator attains this bound for truncated squared loss, and for ordinary squared loss under a uniform-integrability condition. We also give an explicit computational form of the estimator based on spectral clipping of the empirical tangent covariance, and present a Monte Carlo calibration study showing that the finite-sample scaled location risk and Wald coverage agree with the asymptotic theory.",
+    "identifiers": {
+      "arxiv": "2605.00363",
+      "arxiv_versioned": "2605.00363v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2605.00363v1"
+      }
+    },
+    "categories": [
+      "math.ST"
+    ],
+    "concepts": [],
+    "primary_category": "math.ST",
+    "published": "2026-05-01T02:54:41Z",
+    "updated": "2026-05-01T02:54:41Z"
+  }
+}

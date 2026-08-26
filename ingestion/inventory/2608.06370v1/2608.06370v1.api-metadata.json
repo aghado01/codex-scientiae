@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.06370v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.06370v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "The Bitter Lesson of Tool Calling",
+      "authors": [
+        "Ishan Patel",
+        "Sahil Sen",
+        "Elias Lumer",
+        "Vamse Kumar Subbiah"
+      ],
+      "abstract": "Tool use transforms LLMs into agents that act beyond their training data, and for code-capable models, programmatic tool calling extends this further by replacing rigid JSON calls with scripts that chain and parallelize naturally. However, a systematic evaluation of tools as code on an established benchmark across current and prior model generations under real-world task conditions has not been conducted. In this work, we empirically compare programmatic tool calling (PTC) to native JSON tool calling across 14 language models on BFCL v4. In the programmatic tool calling paradigm, tools are exposed as typed Python stubs that the model invokes through code, with execution and results handled in a single agent turn. Programmatic tool calling matches or exceeds native JSON tool calling in 11 of 14 models on BFCL v4, with the GPT-5.6 family achieving a 10.6% improvement over the JSON tool calling baseline. Further, it matches or outperforms baseline in 13 of 14 models under parallel fan-out, and holds stable under context rot conditions where baseline degrades 2.3% on average. Our results demonstrate that programmatic tool calling is a viable and robust alternative to JSON tool calling, with performance tracking model capability across release generations.",
+      "doi": null,
+      "arxiv_id": "2608.06370v1",
+      "published": "2026-08-06T17:58:32Z",
+      "updated": "2026-08-06T17:58:32Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.06370v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.06370v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2608.06370v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.06370v1",
+          "url": "https://arxiv.org/abs/2608.06370v1",
+          "doi": null,
+          "arxiv_id": "2608.06370v1",
+          "published": "2026-08-06T17:58:32Z",
+          "updated": "2026-08-06T17:58:32Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.06370v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:22.755890Z",
+      "sha256": "3e0de6c193ada816174f344c6f654d1eb59b17abe650dfacfc25531f5b5acfa6",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQnBseG5Vc1FIWEZmZ3R1RTRobFI3aDNWOFRnPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4wNjM3MHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjIyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjA2MzcwdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4wNjM3MHYxPC9pZD4KICAgIDx0aXRsZT5UaGUgQml0dGVyIExlc3NvbiBvZiBUb29sIENhbGxpbmc8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0wNlQxNzo1ODozMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4wNjM3MHYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4wNjM3MHYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+VG9vbCB1c2UgdHJhbnNmb3JtcyBMTE1zIGludG8gYWdlbnRzIHRoYXQgYWN0IGJleW9uZCB0aGVpciB0cmFpbmluZyBkYXRhLCBhbmQgZm9yIGNvZGUtY2FwYWJsZSBtb2RlbHMsIHByb2dyYW1tYXRpYyB0b29sIGNhbGxpbmcgZXh0ZW5kcyB0aGlzIGZ1cnRoZXIgYnkgcmVwbGFjaW5nIHJpZ2lkIEpTT04gY2FsbHMgd2l0aCBzY3JpcHRzIHRoYXQgY2hhaW4gYW5kIHBhcmFsbGVsaXplIG5hdHVyYWxseS4gSG93ZXZlciwgYSBzeXN0ZW1hdGljIGV2YWx1YXRpb24gb2YgdG9vbHMgYXMgY29kZSBvbiBhbiBlc3RhYmxpc2hlZCBiZW5jaG1hcmsgYWNyb3NzIGN1cnJlbnQgYW5kIHByaW9yIG1vZGVsIGdlbmVyYXRpb25zIHVuZGVyIHJlYWwtd29ybGQgdGFzayBjb25kaXRpb25zIGhhcyBub3QgYmVlbiBjb25kdWN0ZWQuIEluIHRoaXMgd29yaywgd2UgZW1waXJpY2FsbHkgY29tcGFyZSBwcm9ncmFtbWF0aWMgdG9vbCBjYWxsaW5nIChQVEMpIHRvIG5hdGl2ZSBKU09OIHRvb2wgY2FsbGluZyBhY3Jvc3MgMTQgbGFuZ3VhZ2UgbW9kZWxzIG9uIEJGQ0wgdjQuIEluIHRoZSBwcm9ncmFtbWF0aWMgdG9vbCBjYWxsaW5nIHBhcmFkaWdtLCB0b29scyBhcmUgZXhwb3NlZCBhcyB0eXBlZCBQeXRob24gc3R1YnMgdGhhdCB0aGUgbW9kZWwgaW52b2tlcyB0aHJvdWdoIGNvZGUsIHdpdGggZXhlY3V0aW9uIGFuZCByZXN1bHRzIGhhbmRsZWQgaW4gYSBzaW5nbGUgYWdlbnQgdHVybi4gUHJvZ3JhbW1hdGljIHRvb2wgY2FsbGluZyBtYXRjaGVzIG9yIGV4Y2VlZHMgbmF0aXZlIEpTT04gdG9vbCBjYWxsaW5nIGluIDExIG9mIDE0IG1vZGVscyBvbiBCRkNMIHY0LCB3aXRoIHRoZSBHUFQtNS42IGZhbWlseSBhY2hpZXZpbmcgYSAxMC42JSBpbXByb3ZlbWVudCBvdmVyIHRoZSBKU09OIHRvb2wgY2FsbGluZyBiYXNlbGluZS4gRnVydGhlciwgaXQgbWF0Y2hlcyBvciBvdXRwZXJmb3JtcyBiYXNlbGluZSBpbiAxMyBvZiAxNCBtb2RlbHMgdW5kZXIgcGFyYWxsZWwgZmFuLW91dCwgYW5kIGhvbGRzIHN0YWJsZSB1bmRlciBjb250ZXh0IHJvdCBjb25kaXRpb25zIHdoZXJlIGJhc2VsaW5lIGRlZ3JhZGVzIDIuMyUgb24gYXZlcmFnZS4gT3VyIHJlc3VsdHMgZGVtb25zdHJhdGUgdGhhdCBwcm9ncmFtbWF0aWMgdG9vbCBjYWxsaW5nIGlzIGEgdmlhYmxlIGFuZCByb2J1c3QgYWx0ZXJuYXRpdmUgdG8gSlNPTiB0b29sIGNhbGxpbmcsIHdpdGggcGVyZm9ybWFuY2UgdHJhY2tpbmcgbW9kZWwgY2FwYWJpbGl0eSBhY3Jvc3MgcmVsZWFzZSBnZW5lcmF0aW9ucy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQ0wiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0wNlQxNzo1ODozMlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Jc2hhbiBQYXRlbDwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2FoaWwgU2VuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5FbGlhcyBMdW1lcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+VmFtc2UgS3VtYXIgU3ViYmlhaDwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "The Bitter Lesson of Tool Calling",
+    "authors": [
+      "Ishan Patel",
+      "Sahil Sen",
+      "Elias Lumer",
+      "Vamse Kumar Subbiah"
+    ],
+    "abstract": "Tool use transforms LLMs into agents that act beyond their training data, and for code-capable models, programmatic tool calling extends this further by replacing rigid JSON calls with scripts that chain and parallelize naturally. However, a systematic evaluation of tools as code on an established benchmark across current and prior model generations under real-world task conditions has not been conducted. In this work, we empirically compare programmatic tool calling (PTC) to native JSON tool calling across 14 language models on BFCL v4. In the programmatic tool calling paradigm, tools are exposed as typed Python stubs that the model invokes through code, with execution and results handled in a single agent turn. Programmatic tool calling matches or exceeds native JSON tool calling in 11 of 14 models on BFCL v4, with the GPT-5.6 family achieving a 10.6% improvement over the JSON tool calling baseline. Further, it matches or outperforms baseline in 13 of 14 models under parallel fan-out, and holds stable under context rot conditions where baseline degrades 2.3% on average. Our results demonstrate that programmatic tool calling is a viable and robust alternative to JSON tool calling, with performance tracking model capability across release generations.",
+    "identifiers": {
+      "arxiv": "2608.06370",
+      "arxiv_versioned": "2608.06370v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.06370v1"
+      }
+    },
+    "categories": [
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2026-08-06T17:58:32Z",
+    "updated": "2026-08-06T17:58:32Z"
+  }
+}

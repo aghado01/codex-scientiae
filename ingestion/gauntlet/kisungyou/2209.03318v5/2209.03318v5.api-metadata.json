@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2209.03318v5",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2209.03318v5",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "On the Wasserstein median of probability measures",
+      "authors": [
+        "Kisung You",
+        "Dennis Shung",
+        "Mauro Giuffrè"
+      ],
+      "abstract": "The primary choice to summarize a finite collection of random objects is by using measures of central tendency, such as mean and median. In the field of optimal transport, the Wasserstein barycenter corresponds to the Fréchet or geometric mean of a set of probability measures, which is defined as a minimizer of the sum of squared distances to each element in a given set with respect to the Wasserstein distance of order 2. We introduce the Wasserstein median as a robust alternative to the Wasserstein barycenter. The Wasserstein median corresponds to the Fréchet median under the 2-Wasserstein metric. The existence and consistency of the Wasserstein median are first established, along with its robustness property. In addition, we present a general computational pipeline that employs any recognized algorithms for the Wasserstein barycenter in an iterative fashion and demonstrate its convergence. The utility of the Wasserstein median as a robust measure of central tendency is demonstrated using real and simulated data.",
+      "doi": "10.1080/10618600.2024.2374580",
+      "arxiv_id": "2209.03318v5",
+      "published": "2022-09-07T17:25:02Z",
+      "updated": "2025-09-02T05:25:25Z",
+      "year": 2022,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2209.03318v5",
+      "pdf_url": "https://arxiv.org/pdf/2209.03318v5",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "stat.CO"
+      ],
+      "external_ids": {
+        "arxiv": "2209.03318v5",
+        "doi": "10.1080/10618600.2024.2374580"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2209.03318v5",
+          "url": "https://arxiv.org/abs/2209.03318v5",
+          "doi": "10.1080/10618600.2024.2374580",
+          "arxiv_id": "2209.03318v5",
+          "published": "2022-09-07T17:25:02Z",
+          "updated": "2025-09-02T05:25:25Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2209.03318v5&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:45.344862Z",
+      "sha256": "2c2500e28fd9558774c1ef7e622ca3c607d38903ee83740d46aacf01601deea5",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcTd0emZNeEZBT0pKOWpaQ1llMzVZMFliNWdBPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjIwOS4wMzMxOHY1JmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjQ1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMjA5LjAzMzE4djUiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjIwOS4wMzMxOHY1PC9pZD4KICAgIDx0aXRsZT5PbiB0aGUgV2Fzc2Vyc3RlaW4gbWVkaWFuIG9mIHByb2JhYmlsaXR5IG1lYXN1cmVzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjUtMDktMDJUMDU6MjU6MjVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIyMDkuMDMzMTh2NSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIyMDkuMDMzMTh2NSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlRoZSBwcmltYXJ5IGNob2ljZSB0byBzdW1tYXJpemUgYSBmaW5pdGUgY29sbGVjdGlvbiBvZiByYW5kb20gb2JqZWN0cyBpcyBieSB1c2luZyBtZWFzdXJlcyBvZiBjZW50cmFsIHRlbmRlbmN5LCBzdWNoIGFzIG1lYW4gYW5kIG1lZGlhbi4gSW4gdGhlIGZpZWxkIG9mIG9wdGltYWwgdHJhbnNwb3J0LCB0aGUgV2Fzc2Vyc3RlaW4gYmFyeWNlbnRlciBjb3JyZXNwb25kcyB0byB0aGUgRnLDqWNoZXQgb3IgZ2VvbWV0cmljIG1lYW4gb2YgYSBzZXQgb2YgcHJvYmFiaWxpdHkgbWVhc3VyZXMsIHdoaWNoIGlzIGRlZmluZWQgYXMgYSBtaW5pbWl6ZXIgb2YgdGhlIHN1bSBvZiBzcXVhcmVkIGRpc3RhbmNlcyB0byBlYWNoIGVsZW1lbnQgaW4gYSBnaXZlbiBzZXQgd2l0aCByZXNwZWN0IHRvIHRoZSBXYXNzZXJzdGVpbiBkaXN0YW5jZSBvZiBvcmRlciAyLiBXZSBpbnRyb2R1Y2UgdGhlIFdhc3NlcnN0ZWluIG1lZGlhbiBhcyBhIHJvYnVzdCBhbHRlcm5hdGl2ZSB0byB0aGUgV2Fzc2Vyc3RlaW4gYmFyeWNlbnRlci4gVGhlIFdhc3NlcnN0ZWluIG1lZGlhbiBjb3JyZXNwb25kcyB0byB0aGUgRnLDqWNoZXQgbWVkaWFuIHVuZGVyIHRoZSAyLVdhc3NlcnN0ZWluIG1ldHJpYy4gVGhlIGV4aXN0ZW5jZSBhbmQgY29uc2lzdGVuY3kgb2YgdGhlIFdhc3NlcnN0ZWluIG1lZGlhbiBhcmUgZmlyc3QgZXN0YWJsaXNoZWQsIGFsb25nIHdpdGggaXRzIHJvYnVzdG5lc3MgcHJvcGVydHkuIEluIGFkZGl0aW9uLCB3ZSBwcmVzZW50IGEgZ2VuZXJhbCBjb21wdXRhdGlvbmFsIHBpcGVsaW5lIHRoYXQgZW1wbG95cyBhbnkgcmVjb2duaXplZCBhbGdvcml0aG1zIGZvciB0aGUgV2Fzc2Vyc3RlaW4gYmFyeWNlbnRlciBpbiBhbiBpdGVyYXRpdmUgZmFzaGlvbiBhbmQgZGVtb25zdHJhdGUgaXRzIGNvbnZlcmdlbmNlLiBUaGUgdXRpbGl0eSBvZiB0aGUgV2Fzc2Vyc3RlaW4gbWVkaWFuIGFzIGEgcm9idXN0IG1lYXN1cmUgb2YgY2VudHJhbCB0ZW5kZW5jeSBpcyBkZW1vbnN0cmF0ZWQgdXNpbmcgcmVhbCBhbmQgc2ltdWxhdGVkIGRhdGEuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0LkNPIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjItMDktMDdUMTc6MjU6MDJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD40MCBwYWdlcywgMTYgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkRlbm5pcyBTaHVuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWF1cm8gR2l1ZmZyw6g8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhcnhpdjpkb2k+MTAuMTA4MC8xMDYxODYwMC4yMDI0LjIzNzQ1ODA8L2FyeGl2OmRvaT4KICAgIDxsaW5rIHJlbD0icmVsYXRlZCIgaHJlZj0iaHR0cHM6Ly9kb2kub3JnLzEwLjEwODAvMTA2MTg2MDAuMjAyNC4yMzc0NTgwIiB0aXRsZT0iZG9pIi8+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "On the Wasserstein median of probability measures",
+    "authors": [
+      "Kisung You",
+      "Dennis Shung",
+      "Mauro Giuffrè"
+    ],
+    "abstract": "The primary choice to summarize a finite collection of random objects is by using measures of central tendency, such as mean and median. In the field of optimal transport, the Wasserstein barycenter corresponds to the Fréchet or geometric mean of a set of probability measures, which is defined as a minimizer of the sum of squared distances to each element in a given set with respect to the Wasserstein distance of order 2. We introduce the Wasserstein median as a robust alternative to the Wasserstein barycenter. The Wasserstein median corresponds to the Fréchet median under the 2-Wasserstein metric. The existence and consistency of the Wasserstein median are first established, along with its robustness property. In addition, we present a general computational pipeline that employs any recognized algorithms for the Wasserstein barycenter in an iterative fashion and demonstrate its convergence. The utility of the Wasserstein median as a robust measure of central tendency is demonstrated using real and simulated data.",
+    "identifiers": {
+      "arxiv": "2209.03318",
+      "arxiv_versioned": "2209.03318v5",
+      "doi": "10.1080/10618600.2024.2374580",
+      "external": {
+        "arxiv": "2209.03318v5",
+        "doi": "10.1080/10618600.2024.2374580"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "stat.CO"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2022-09-07T17:25:02Z",
+    "updated": "2025-09-02T05:25:25Z"
+  }
+}

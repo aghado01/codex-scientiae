@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2505.18844v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2505.18844v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Geometric medians on product manifolds",
+      "authors": [
+        "Jiewon Park",
+        "Kisung You"
+      ],
+      "abstract": "Product manifolds arise when heterogeneous geometric variables are jointly observed. While the Fréchet mean on Riemannian manifolds separates cleanly across factors, the canonical geometric median couples them, and its behavior has remained largely unexplored. In this paper, we give the first systematic treatment of this problem. After formulating the coupled objective, we establish general existence and uniqueness results that the median is unique on any Hadamard product, and remains locally unique under sharp conditions on curvature and injectivity radius even when one or more factors have positive curvature. We then prove that the estimator enjoys Lipschitz stability to perturbations and the optimal breakdown point, extending classical robustness guarantees to the product-manifold setting. Two practical solvers are proposed, including a Riemannian subgradient method with global sublinear convergence and a product-aware Weiszfeld algorithm that achieves local linear convergence. Both algorithms update the factors independently while respecting the latent coupling term, enabling implementation with standard manifold primitives. Simulations on parameter spaces of univariate and multivariate Gaussian distributions endowed with the Bures-Wasserstein geometry show that the median is more resilient to contamination than the Fréchet mean.",
+      "doi": "10.1016/j.jmva.2026.105653",
+      "arxiv_id": "2505.18844v3",
+      "published": "2025-05-24T19:34:25Z",
+      "updated": "2025-10-01T01:57:27Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2505.18844v3",
+      "pdf_url": "https://arxiv.org/pdf/2505.18844v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2505.18844v3",
+        "doi": "10.1016/j.jmva.2026.105653"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2505.18844v3",
+          "url": "https://arxiv.org/abs/2505.18844v3",
+          "doi": "10.1016/j.jmva.2026.105653",
+          "arxiv_id": "2505.18844v3",
+          "published": "2025-05-24T19:34:25Z",
+          "updated": "2025-10-01T01:57:27Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2505.18844v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:02.436127Z",
+      "sha256": "e68e499e765918d2df2cb69de6950ee2f341d18c1d6ecc976d09a733c53b1046",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvZkNEdW5rbnB5a1QvUmQrVThBSUE4NnJJYTA4PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwNS4xODg0NHYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjAyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA1LjE4ODQ0djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwNS4xODg0NHYzPC9pZD4KICAgIDx0aXRsZT5HZW9tZXRyaWMgbWVkaWFucyBvbiBwcm9kdWN0IG1hbmlmb2xkczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI1LTEwLTAxVDAxOjU3OjI3WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNTA1LjE4ODQ0djMiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNTA1LjE4ODQ0djMiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5Qcm9kdWN0IG1hbmlmb2xkcyBhcmlzZSB3aGVuIGhldGVyb2dlbmVvdXMgZ2VvbWV0cmljIHZhcmlhYmxlcyBhcmUgam9pbnRseSBvYnNlcnZlZC4gV2hpbGUgdGhlIEZyw6ljaGV0IG1lYW4gb24gUmllbWFubmlhbiBtYW5pZm9sZHMgc2VwYXJhdGVzIGNsZWFubHkgYWNyb3NzIGZhY3RvcnMsIHRoZSBjYW5vbmljYWwgZ2VvbWV0cmljIG1lZGlhbiBjb3VwbGVzIHRoZW0sIGFuZCBpdHMgYmVoYXZpb3IgaGFzIHJlbWFpbmVkIGxhcmdlbHkgdW5leHBsb3JlZC4gSW4gdGhpcyBwYXBlciwgd2UgZ2l2ZSB0aGUgZmlyc3Qgc3lzdGVtYXRpYyB0cmVhdG1lbnQgb2YgdGhpcyBwcm9ibGVtLiBBZnRlciBmb3JtdWxhdGluZyB0aGUgY291cGxlZCBvYmplY3RpdmUsIHdlIGVzdGFibGlzaCBnZW5lcmFsIGV4aXN0ZW5jZSBhbmQgdW5pcXVlbmVzcyByZXN1bHRzIHRoYXQgdGhlIG1lZGlhbiBpcyB1bmlxdWUgb24gYW55IEhhZGFtYXJkIHByb2R1Y3QsIGFuZCByZW1haW5zIGxvY2FsbHkgdW5pcXVlIHVuZGVyIHNoYXJwIGNvbmRpdGlvbnMgb24gY3VydmF0dXJlIGFuZCBpbmplY3Rpdml0eSByYWRpdXMgZXZlbiB3aGVuIG9uZSBvciBtb3JlIGZhY3RvcnMgaGF2ZSBwb3NpdGl2ZSBjdXJ2YXR1cmUuIFdlIHRoZW4gcHJvdmUgdGhhdCB0aGUgZXN0aW1hdG9yIGVuam95cyBMaXBzY2hpdHogc3RhYmlsaXR5IHRvIHBlcnR1cmJhdGlvbnMgYW5kIHRoZSBvcHRpbWFsIGJyZWFrZG93biBwb2ludCwgZXh0ZW5kaW5nIGNsYXNzaWNhbCByb2J1c3RuZXNzIGd1YXJhbnRlZXMgdG8gdGhlIHByb2R1Y3QtbWFuaWZvbGQgc2V0dGluZy4gVHdvIHByYWN0aWNhbCBzb2x2ZXJzIGFyZSBwcm9wb3NlZCwgaW5jbHVkaW5nIGEgUmllbWFubmlhbiBzdWJncmFkaWVudCBtZXRob2Qgd2l0aCBnbG9iYWwgc3VibGluZWFyIGNvbnZlcmdlbmNlIGFuZCBhIHByb2R1Y3QtYXdhcmUgV2Vpc3pmZWxkIGFsZ29yaXRobSB0aGF0IGFjaGlldmVzIGxvY2FsIGxpbmVhciBjb252ZXJnZW5jZS4gQm90aCBhbGdvcml0aG1zIHVwZGF0ZSB0aGUgZmFjdG9ycyBpbmRlcGVuZGVudGx5IHdoaWxlIHJlc3BlY3RpbmcgdGhlIGxhdGVudCBjb3VwbGluZyB0ZXJtLCBlbmFibGluZyBpbXBsZW1lbnRhdGlvbiB3aXRoIHN0YW5kYXJkIG1hbmlmb2xkIHByaW1pdGl2ZXMuIFNpbXVsYXRpb25zIG9uIHBhcmFtZXRlciBzcGFjZXMgb2YgdW5pdmFyaWF0ZSBhbmQgbXVsdGl2YXJpYXRlIEdhdXNzaWFuIGRpc3RyaWJ1dGlvbnMgZW5kb3dlZCB3aXRoIHRoZSBCdXJlcy1XYXNzZXJzdGVpbiBnZW9tZXRyeSBzaG93IHRoYXQgdGhlIG1lZGlhbiBpcyBtb3JlIHJlc2lsaWVudCB0byBjb250YW1pbmF0aW9uIHRoYW4gdGhlIEZyw6ljaGV0IG1lYW4uPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNS0wNS0yNFQxOTozNDoyNVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkppZXdvbiBQYXJrPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXJ4aXY6ZG9pPjEwLjEwMTYvai5qbXZhLjIwMjYuMTA1NjUzPC9hcnhpdjpkb2k+CiAgICA8bGluayByZWw9InJlbGF0ZWQiIGhyZWY9Imh0dHBzOi8vZG9pLm9yZy8xMC4xMDE2L2ouam12YS4yMDI2LjEwNTY1MyIgdGl0bGU9ImRvaSIvPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Geometric medians on product manifolds",
+    "authors": [
+      "Jiewon Park",
+      "Kisung You"
+    ],
+    "abstract": "Product manifolds arise when heterogeneous geometric variables are jointly observed. While the Fréchet mean on Riemannian manifolds separates cleanly across factors, the canonical geometric median couples them, and its behavior has remained largely unexplored. In this paper, we give the first systematic treatment of this problem. After formulating the coupled objective, we establish general existence and uniqueness results that the median is unique on any Hadamard product, and remains locally unique under sharp conditions on curvature and injectivity radius even when one or more factors have positive curvature. We then prove that the estimator enjoys Lipschitz stability to perturbations and the optimal breakdown point, extending classical robustness guarantees to the product-manifold setting. Two practical solvers are proposed, including a Riemannian subgradient method with global sublinear convergence and a product-aware Weiszfeld algorithm that achieves local linear convergence. Both algorithms update the factors independently while respecting the latent coupling term, enabling implementation with standard manifold primitives. Simulations on parameter spaces of univariate and multivariate Gaussian distributions endowed with the Bures-Wasserstein geometry show that the median is more resilient to contamination than the Fréchet mean.",
+    "identifiers": {
+      "arxiv": "2505.18844",
+      "arxiv_versioned": "2505.18844v3",
+      "doi": "10.1016/j.jmva.2026.105653",
+      "external": {
+        "arxiv": "2505.18844v3",
+        "doi": "10.1016/j.jmva.2026.105653"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2025-05-24T19:34:25Z",
+    "updated": "2025-10-01T01:57:27Z"
+  }
+}

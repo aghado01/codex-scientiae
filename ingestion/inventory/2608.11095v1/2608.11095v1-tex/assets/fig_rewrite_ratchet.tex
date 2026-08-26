@@ -1,0 +1,12 @@
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{assets/fig_mass_rewrite_event.pdf}
+  \caption{
+    The ratchet: a rewrite resets a prompt's size but not its growth rate. Prompts grow
+    \RewriteGrowthPreCommit{} per commit before their first rewrite, are cut to \RewriteDropPct{}, then
+    regrow immediately and faster, at \RewriteGrowthPostCommit{} per commit. Mean instructions
+    relative to the \emph{first} pre-rewrite, each file's rewrite event aligned to $t=0$; band: 95\%
+    bootstrap CI.
+  }
+  \label{fig:massrewrite:event}
+\end{figure}

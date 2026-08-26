@@ -1,0 +1,75 @@
+\begin{table*}[t]
+  \centering\footnotesize
+  \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    & \multicolumn{2}{c}{Contrast under each judge} & \textsc{did} \\
+    \cmidrule(lr){2-3}
+    Criterion & \texttt{claude-haiku-4-5} & \texttt{gpt-5.6-luna} & \shortstack[r]{\texttt{claude-haiku-4-5}\\$-$\,\texttt{gpt-5.6-luna}} \\
+    \midrule
+    (i) interference & $\mathbf{-0.241}$ [$-0.334$, $-0.149$] & $\mathbf{-0.197}$ [$-0.287$, $-0.108$] & --- \\
+    (ii) comments buy IF & $\mathbf{+0.116}$ [$+0.051$, $+0.183$] & $\mathbf{+0.078}$ [$+0.006$, $+0.149$] & $+0.038$ [$-0.019$, $+0.096$] \\
+    (v) not just recovery & $\mathbf{+0.116}$ [$+0.048$, $+0.185$] & $\mathbf{+0.083}$ [$+0.005$, $+0.159$] & $+0.033$ [$-0.031$, $+0.095$] \\
+    (aux) recovery & $\mathbf{+0.125}$ [$+0.016$, $+0.250$] & $+0.062$ [$-0.062$, $+0.188$] & $+0.062$ [$-0.062$, $+0.203$] \\
+    (iii) comments buy size & $\mathbf{-7.328}$ [$-8.641$, $-5.953$] & $\mathbf{-7.328}$ [$-8.641$, $-5.953$] & $+0.000$ [$+0.000$, $+0.000$] \\
+    (iv) placebo null (SSR) & $+0.027$ [$-0.044$, $+0.101$] & $+0.033$ [$-0.036$, $+0.101$] & $-0.006$ [$-0.070$, $+0.061$] \\
+    (iv) placebo null (size) & $-1.297$ [$-2.656$, $+0.031$] & $-1.297$ [$-2.656$, $+0.031$] & $+0.000$ [$+0.000$, $+0.000$] \\
+    \bottomrule
+  \end{tabular}
+  \caption{
+    Every contrast \S\ref{sec:wild} reports survives an independent scorer, and the two judges'
+    effect sizes are not distinguishable. Rows are the pre-registered criteria of
+    \apxref{sec:appendix:wildgrid}; columns 2--3 give the paired
+    \textsc{treatment}$-$\textsc{control} difference under each judge (\textsc{placebo}$-$%
+    \textsc{control} for the placebo rows, and $D{=}16$ vs.\ $D{=}0$ within \textsc{control}
+    for interference), with its 95\% percentile bootstrap interval over $W{=}64$ worlds;
+    \textbf{bold} marks a point estimate whose interval excludes zero. \texttt{gpt-5.6-luna} matches
+    \texttt{claude-haiku-4-5}'s capability tier, so a disagreement between them is a vendor difference rather
+    than a capability one, and it re-scores the \emph{same} stored responses through the same
+    prompt, schema, token cap and $\text{temperature}{=}0$: only the model differs. Column 4 is the
+    per-world difference-in-differences $(\text{T}-\text{C})|_a - (\text{T}-\text{C})|_b$, for $a$
+    and $b$ the judges of columns 2 and 3, over those same worlds --- the estimate that says whether
+    two judges' effect sizes differ, which two overlapping per-judge intervals do not. It covers zero on every row, so the spread between the
+    two point estimates has no evidential support as a judge difference. At $W{=}64$ that
+    is absence of evidence and not equivalence: the interval on (ii) reaches $0.096$. Rates
+    are per-constraint satisfaction; the two size rows are counts of directives, and are the
+    built-in control --- no judge sees $|D_T|$, so their columns must agree exactly and their
+    \textsc{did} must be $0$.
+  }
+  \label{tab:judges}
+\end{table*}
+
+\begin{table*}[t]
+  \centering\footnotesize
+  \begin{tabular}{@{}lrrrrrr@{}}
+    \toprule
+    & & & & \multicolumn{2}{c}{Pass rate} & \\
+    \cmidrule(lr){5-6}
+    Slice & $n$ & Agree & $\kappa$ [95\% CI] & \texttt{claude-haiku-4-5} & \texttt{gpt-5.6-luna} & Lenience \\
+    \midrule
+    all arms & 6,336 & 0.821 & 0.639 [0.620, 0.657] & 0.545 & 0.547 & $+0.002$ \\
+    \addlinespace
+    \textsc{control} & 2,112 & 0.816 & 0.631 [0.598, 0.664] & 0.539 & 0.534 & $-0.006$ \\
+    \textsc{treatment} & 2,112 & 0.819 & 0.632 [0.598, 0.665] & 0.565 & 0.563 & $-0.002$ \\
+    \textsc{placebo} & 2,112 & 0.827 & 0.653 [0.618, 0.684] & 0.529 & 0.543 & $+0.014$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{
+    Judge agreement is substantial and does not vary with the arm, so judge noise cannot have
+    manufactured the arm gap in \autoref{tab:judges}. Judge $a = $ \texttt{claude-haiku-4-5} against judge
+    $b = $ \texttt{gpt-5.6-luna} on all 6,336 verdicts, pooled and per arm: raw agreement, Cohen's
+    $\kappa$ with its 95\% bootstrap interval, each judge's own marginal pass rate, and lenience,
+    the signed disagreement $(b\text{ only} - a\text{ only})/n$ --- positive means $b$ passes what
+    $a$ fails. $\kappa$ is shown beside the marginals throughout because it collapses toward zero
+    whenever one label is rare however well two raters agree; here the marginals are near-equal, so
+    $\kappa$ is not a prevalence artifact. Read the per-arm rows first: uniform lenience compresses
+    every arm toward the ceiling and shrinks all gaps mechanically, whereas lenience that varied
+    \emph{by arm} would mean the judge interacts with the treatment. It does not vary --- $\kappa$
+    spans 0.631--0.653 across the three arms. The judges disagree on
+    17.9\% of individual verdicts while their marginal pass rates differ by
+    0.002, so the disagreements cancel rather than accumulate: same threshold,
+    different items. Judge~1 decoded at the vendor default and the re-judge at
+    $\text{temperature}{=}0$, so these figures absorb judge~1's sampling variance and bound the
+    agreement from below.
+  }
+  \label{tab:judgeagreement}
+\end{table*}

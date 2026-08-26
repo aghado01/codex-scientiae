@@ -1,0 +1,25 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}Xrrc@{}}
+    \toprule
+    Gate & Criterion & Threshold & Observed & Pass \\
+    \midrule
+    0 & Median per-repo net $\Delta D > 0$ & $> 0$ & $+7$ & $\checkmark$ \\
+    0 & Grow:shrink ratio & $> 1.5$ & 2.42 & $\checkmark$ \\
+    A & Deletions excluding rewrites & $\ge 300$ & 28,426 & $\checkmark$ \\
+    A & Tail share at/above median age & $\ge 20\%$ & 57.0\% & $\checkmark$ \\
+    B & Matcher precision / recall & $\ge 0.85$ & 1.000 / 0.933 & $\checkmark$ \\
+    -- & Median rel.\ growth, all multi-version files: count vs.\ length & count $>$ length & $1.193$ vs.\ $1.028$ & $\checkmark$ \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    Every pre-registered criterion passes on the canonical corpus. Rows: the criteria fixed before
+    any pipeline code (\S\ref{sec:appendix:matching}--\ref{sec:appendix:censoring}); columns: the
+    threshold each was written against and the value this run produced. Gate~B is measured on a
+    50-transition hand-annotation pool rather than on this run, the only inherited number in the
+    corpus half. \emph{Grow:shrink} is the share of multi-version repositories gaining instructions
+    over the share losing them; \emph{tail share} is the fraction of deletions at or above the
+    median observed instruction age, which guards identification past that age.
+  }
+  \label{tab:gates}
+\end{table*}

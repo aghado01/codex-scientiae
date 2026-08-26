@@ -2,21 +2,55 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2605.08001v1",
-  "initialized_utc": "2026-08-11T08:30:06.866793Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:32.589570Z",
+  "title": "Scale selection for geometric medians on product manifolds",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Geometric medians on product manifolds are sensitive to the relative scaling of factor metrics because the median objective couples the factors rather than separating them. We study this scale-selection problem and first prove that naive joint minimization over location and scale is degenerate: the scale is driven to the boundary and the problem collapses to a marginal median, effectively discarding one factor. Thus relative scale is not identifiable from the raw median loss alone. We develop three alternatives to mitigate this issue. The first treats scale as indexing a sensitivity path and establishes uniform consistency, a functional central limit theorem, and a derivative-based sensitivity measure. The second constructs a robust scale-calibrated median using marginal radial median scales, yielding unit invariance, consistency, a two-step central limit theorem, and bounded influence. The third introduces a bounded balance equation for direct scale estimation, with monotonicity, uniqueness, joint asymptotic normality, and bounded influence. Simulations illustrate boundary collapse, sensitivity, unit invariance, and balanced estimation in Euclidean and Bures-Wasserstein settings.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2605.08001",
+    "arxiv_versioned": "2605.08001v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2605.08001v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "math.ST",
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "math.ST",
+  "published": "2026-05-08T16:57:01Z",
+  "updated": "2026-05-08T16:57:01Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2605.08001v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8309,
+        "sha256": "ba0317dd2808b5a4e1ebfe3e52bb10370397e390b80d19217d16ce92226ef599",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:31.928183Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2605.08001v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "e569aa86841d0296369fed701936b11a2852449967091186dcb8d1d2412edb64"
+      }
+    ],
     "latex_source": {
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
@@ -34,7 +68,32 @@
         "bytes": 219,
         "sha256": "617532b3e6913e02fae667c6759390dfa4031514d63891614b45a74f061bb96b"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2605.08001v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +125,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:30:06.866793Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:32.589570Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +151,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "manuscript.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
       },
       {
         "name": "literal-inputs-resolved",

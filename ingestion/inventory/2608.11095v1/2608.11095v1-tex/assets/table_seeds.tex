@@ -1,0 +1,37 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}Xrrrrr@{}}
+    \toprule
+    Excess size (\%) & s0 & s1 & s2 & Pooled & sd \\
+    \midrule
+    no prompt comments & $+59.9$ & $+49.8$ & $+71.6$ & $+60.4$ & 10.9 \\
+    comment-shaped noise & $+54.9$ & $+46.0$ & $+58.8$ & $+53.2$ & 6.5 \\
+    informative comments & $-0.1$ & $-2.1$ & $-15.1$ & $-5.8$ & 8.2 \\
+    \midrule
+    Satisfaction (\%) & s0 & s1 & s2 & Pooled & sd \\
+    \midrule
+    no prompt comments & $38.8$ & $38.3$ & $40.0$ & $39.0$ & 0.9 \\
+    comment-shaped noise & $40.0$ & $40.0$ & $40.8$ & $40.3$ & 0.4 \\
+    informative comments & $38.9$ & $36.8$ & $39.0$ & $38.2$ & 1.3 \\
+    \midrule
+    Criterion of record & s0 & s1 & s2 & Pooled & \\
+    \midrule
+    (i) uncommented arm ratchets & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & \\
+    (iv) noise $\approx$ uncommented & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    Every criterion passes on every world draw. The upper block gives final excess size
+    $\frac{|D_T|}{|D_\star|}{-}1$ per arm, with one column per seed, then the pooled value and the
+    across-seed standard deviation in pp. Each seed is a fresh permutation sample of IFEval
+    items, so the seeds are independent draws of the world pool and not repeated runs on one pool.
+    The middle block gives last-three-round constraint satisfaction as a level, so the size result
+    is readable beside the correctness it was bought at. The lower block gives the criteria of
+    record. We fixed these before the run and evaluate
+    each one per seed, since a criterion that passed pooled but failed on one seed of three would
+    be an averaging artifact, and a gap here would show it. Across seeds, the uncommented arm varies little
+    against the effect this design is powered on, which is why we read the pooled numbers in
+    \S\ref{sec:protocol}.
+  }
+  \label{tab:seeds}
+\end{table*}

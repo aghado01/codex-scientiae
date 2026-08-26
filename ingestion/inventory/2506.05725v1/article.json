@@ -2,21 +2,58 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2506.05725v1",
-  "initialized_utc": "2026-08-11T03:19:28.112024Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:54.969844Z",
+  "title": "Large Language Models are Good Relational Learners",
+  "authors": [
+    "Fang Wu",
+    "Vijay Prakash Dwivedi",
+    "Jure Leskovec"
+  ],
+  "abstract": "Large language models (LLMs) have demonstrated remarkable capabilities across various domains, yet their application to relational deep learning (RDL) remains underexplored. Existing approaches adapt LLMs by traversing relational links between entities in a database and converting the structured data into flat text documents. Still, this text-based serialization disregards critical relational structures, introduces redundancy, and often exceeds standard LLM context lengths. We introduce Rel-LLM, a novel architecture that utilizes a graph neural network (GNN)- based encoder to generate structured relational prompts for LLMs within a retrieval-augmented generation (RAG) framework. Unlike traditional text-based serialization approaches, our method preserves the inherent relational structure of databases while enabling LLMs to effectively process and reason over complex entity relationships. Specifically, the GNN encoder extracts a local subgraph around an entity to build feature representations that contain relevant entity relationships and temporal dependencies. These representations are transformed into structured prompts using a denormalization process, effectively allowing the LLM to reason over relational structures. Through extensive experiments, we demonstrate that Rel-LLM outperforms existing methods on key RDL tasks, offering a scalable and efficient approach to integrating LLMs with structured data sources. Code is available at https://github.com/smiles724/Rel-LLM.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2506.05725",
+    "arxiv_versioned": "2506.05725v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2506.05725v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.CL",
+    "cs.AI",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2025-06-06T04:07:55Z",
+  "updated": "2025-06-06T04:07:55Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2506.05725v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9651,
+        "sha256": "f0eff786be6de61d2826b7591490a596e30882901d57214680ca6c2870576999",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:54.615766Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2506.05725v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "e8377c7b36a9aabb29b5b657efbf7ed7ad832395ebbfac4be6ad1d940c819546"
+      }
+    ],
     "latex_source": {
       "entrypoint": "main.tex",
       "selection": "single-candidate",
@@ -34,7 +71,32 @@
         "bytes": 342,
         "sha256": "da86945ce19c8054b58f3aea4f0d98496dbb59c7978e301bef61c37f7d155fa6"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2506.05725v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -59,8 +121,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:28.112024Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:54.969844Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -85,8 +147,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "main.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2606.28796v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2606.28796v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Structure-Preserving Document Translation via Multi-Stage LLM Pipeline: A Case Study in Marathi",
+      "authors": [
+        "Manasi Waghe",
+        "Danish Chandargi",
+        "Mohammad Aamir Rayyan",
+        "Raviraj Joshi",
+        "A. R. Deshpande"
+      ],
+      "abstract": "Government documents in India are predominantly issued in regional languages such as Marathi, creating substantial accessibility barriers for non-native readers, interstate administrative bodies, and policy analysts. Although recent advances in neural machine translation have improved sentence-level translation quality, existing systems largely neglect document structure, formatting integrity, and domain-specific terminology, thereby limiting their applicability to official documentation. This paper presents a structure-preserving Marathi-to-English government document translation framework capable of performing end-to-end document transformation while maintaining layout fidelity. The proposed system integrates layout-aware optical character recognition, coordinate-based text extraction, large language model based translation, and structured document reconstruction through HTML representations. By enforcing spatial alignment constraints and preserving hierarchical document elements, the framework ensures structural consistency between the source and translated documents. Experimental evaluation on real-world Marathi government PDFs demonstrates improved structural preservation, translation coherence, and terminological consistency compared to conventional text-only translation pipelines. The proposed framework contributes toward scalable multilingual accessibility solutions for e-governance and administrative document processing.",
+      "doi": null,
+      "arxiv_id": "2606.28796v1",
+      "published": "2026-06-27T08:07:44Z",
+      "updated": "2026-06-27T08:07:44Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2606.28796v1",
+      "pdf_url": "https://arxiv.org/pdf/2606.28796v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2606.28796v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2606.28796v1",
+          "url": "https://arxiv.org/abs/2606.28796v1",
+          "doi": null,
+          "arxiv_id": "2606.28796v1",
+          "published": "2026-06-27T08:07:44Z",
+          "updated": "2026-06-27T08:07:44Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2606.28796v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:12.469787Z",
+      "sha256": "b40d591480be990e6b079c2f150dad7ace4401ca8b638959583ce16b13586302",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcWxkcVAwVVp5OTZPbFRTSks2K014YzJYZEdZPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNi4yODc5NnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjEyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA2LjI4Nzk2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNi4yODc5NnYxPC9pZD4KICAgIDx0aXRsZT5TdHJ1Y3R1cmUtUHJlc2VydmluZyBEb2N1bWVudCBUcmFuc2xhdGlvbiB2aWEgTXVsdGktU3RhZ2UgTExNIFBpcGVsaW5lOiBBIENhc2UgU3R1ZHkgaW4gTWFyYXRoaTwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA2LTI3VDA4OjA3OjQ0WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA2LjI4Nzk2djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA2LjI4Nzk2djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5Hb3Zlcm5tZW50IGRvY3VtZW50cyBpbiBJbmRpYSBhcmUgcHJlZG9taW5hbnRseSBpc3N1ZWQgaW4gcmVnaW9uYWwgbGFuZ3VhZ2VzIHN1Y2ggYXMgTWFyYXRoaSwgY3JlYXRpbmcgc3Vic3RhbnRpYWwgYWNjZXNzaWJpbGl0eSBiYXJyaWVycyBmb3Igbm9uLW5hdGl2ZSByZWFkZXJzLCBpbnRlcnN0YXRlIGFkbWluaXN0cmF0aXZlIGJvZGllcywgYW5kIHBvbGljeSBhbmFseXN0cy4gQWx0aG91Z2ggcmVjZW50IGFkdmFuY2VzIGluIG5ldXJhbCBtYWNoaW5lIHRyYW5zbGF0aW9uIGhhdmUgaW1wcm92ZWQgc2VudGVuY2UtbGV2ZWwgdHJhbnNsYXRpb24gcXVhbGl0eSwgZXhpc3Rpbmcgc3lzdGVtcyBsYXJnZWx5IG5lZ2xlY3QgZG9jdW1lbnQgc3RydWN0dXJlLCBmb3JtYXR0aW5nIGludGVncml0eSwgYW5kIGRvbWFpbi1zcGVjaWZpYyB0ZXJtaW5vbG9neSwgdGhlcmVieSBsaW1pdGluZyB0aGVpciBhcHBsaWNhYmlsaXR5IHRvIG9mZmljaWFsIGRvY3VtZW50YXRpb24uIFRoaXMgcGFwZXIgcHJlc2VudHMgYSBzdHJ1Y3R1cmUtcHJlc2VydmluZyBNYXJhdGhpLXRvLUVuZ2xpc2ggZ292ZXJubWVudCBkb2N1bWVudCB0cmFuc2xhdGlvbiBmcmFtZXdvcmsgY2FwYWJsZSBvZiBwZXJmb3JtaW5nIGVuZC10by1lbmQgZG9jdW1lbnQgdHJhbnNmb3JtYXRpb24gd2hpbGUgbWFpbnRhaW5pbmcgbGF5b3V0IGZpZGVsaXR5LiBUaGUgcHJvcG9zZWQgc3lzdGVtIGludGVncmF0ZXMgbGF5b3V0LWF3YXJlIG9wdGljYWwgY2hhcmFjdGVyIHJlY29nbml0aW9uLCBjb29yZGluYXRlLWJhc2VkIHRleHQgZXh0cmFjdGlvbiwgbGFyZ2UgbGFuZ3VhZ2UgbW9kZWwgYmFzZWQgdHJhbnNsYXRpb24sIGFuZCBzdHJ1Y3R1cmVkIGRvY3VtZW50IHJlY29uc3RydWN0aW9uIHRocm91Z2ggSFRNTCByZXByZXNlbnRhdGlvbnMuIEJ5IGVuZm9yY2luZyBzcGF0aWFsIGFsaWdubWVudCBjb25zdHJhaW50cyBhbmQgcHJlc2VydmluZyBoaWVyYXJjaGljYWwgZG9jdW1lbnQgZWxlbWVudHMsIHRoZSBmcmFtZXdvcmsgZW5zdXJlcyBzdHJ1Y3R1cmFsIGNvbnNpc3RlbmN5IGJldHdlZW4gdGhlIHNvdXJjZSBhbmQgdHJhbnNsYXRlZCBkb2N1bWVudHMuIEV4cGVyaW1lbnRhbCBldmFsdWF0aW9uIG9uIHJlYWwtd29ybGQgTWFyYXRoaSBnb3Zlcm5tZW50IFBERnMgZGVtb25zdHJhdGVzIGltcHJvdmVkIHN0cnVjdHVyYWwgcHJlc2VydmF0aW9uLCB0cmFuc2xhdGlvbiBjb2hlcmVuY2UsIGFuZCB0ZXJtaW5vbG9naWNhbCBjb25zaXN0ZW5jeSBjb21wYXJlZCB0byBjb252ZW50aW9uYWwgdGV4dC1vbmx5IHRyYW5zbGF0aW9uIHBpcGVsaW5lcy4gVGhlIHByb3Bvc2VkIGZyYW1ld29yayBjb250cmlidXRlcyB0b3dhcmQgc2NhbGFibGUgbXVsdGlsaW5ndWFsIGFjY2Vzc2liaWxpdHkgc29sdXRpb25zIGZvciBlLWdvdmVybmFuY2UgYW5kIGFkbWluaXN0cmF0aXZlIGRvY3VtZW50IHByb2Nlc3NpbmcuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNi0yN1QwODowNzo0NFo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NYW5hc2kgV2FnaGU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkRhbmlzaCBDaGFuZGFyZ2k8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1vaGFtbWFkIEFhbWlyIFJheXlhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UmF2aXJhaiBKb3NoaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QS4gUi4gRGVzaHBhbmRlPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Structure-Preserving Document Translation via Multi-Stage LLM Pipeline: A Case Study in Marathi",
+    "authors": [
+      "Manasi Waghe",
+      "Danish Chandargi",
+      "Mohammad Aamir Rayyan",
+      "Raviraj Joshi",
+      "A. R. Deshpande"
+    ],
+    "abstract": "Government documents in India are predominantly issued in regional languages such as Marathi, creating substantial accessibility barriers for non-native readers, interstate administrative bodies, and policy analysts. Although recent advances in neural machine translation have improved sentence-level translation quality, existing systems largely neglect document structure, formatting integrity, and domain-specific terminology, thereby limiting their applicability to official documentation. This paper presents a structure-preserving Marathi-to-English government document translation framework capable of performing end-to-end document transformation while maintaining layout fidelity. The proposed system integrates layout-aware optical character recognition, coordinate-based text extraction, large language model based translation, and structured document reconstruction through HTML representations. By enforcing spatial alignment constraints and preserving hierarchical document elements, the framework ensures structural consistency between the source and translated documents. Experimental evaluation on real-world Marathi government PDFs demonstrates improved structural preservation, translation coherence, and terminological consistency compared to conventional text-only translation pipelines. The proposed framework contributes toward scalable multilingual accessibility solutions for e-governance and administrative document processing.",
+    "identifiers": {
+      "arxiv": "2606.28796",
+      "arxiv_versioned": "2606.28796v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2606.28796v1"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2026-06-27T08:07:44Z",
+    "updated": "2026-06-27T08:07:44Z"
+  }
+}

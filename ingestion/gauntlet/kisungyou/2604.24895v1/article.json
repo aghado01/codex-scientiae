@@ -2,21 +2,54 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2604.24895v1",
-  "initialized_utc": "2026-08-11T08:30:03.456739Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:22.369883Z",
+  "title": "Finite Mixture Modeling with Riemannian Gaussian Distributions on Hyperbolic Space",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Hyperbolic space is increasingly used for hierarchical, tree-like, and network-structured data, but likelihood-based density modeling on hyperbolic space remains relatively limited. This paper develops finite mixture modeling with isotropic Riemannian Gaussian distributions on hyperbolic space under the hyperboloid model. We derive the density, radial normalizing constant, and a finite-sum representation involving the complementary error function. We then formulate weighted maximum likelihood estimation, which is the fundamental subproblem in mixture fitting: the location estimator is the weighted Fréchet mean, while the inverse-scale estimator is obtained from a one-dimensional strictly convex profile problem. For finite mixtures, we derive exact EM and generalized EM algorithms. The generalized version replaces exact barycenter solves with truncated hyperbolic majorization-minimization updates. We establish existence and uniqueness of the weighted single-component estimator, singularity of the unrestricted mixture likelihood, existence of a constrained mixture estimator, and monotonicity properties of the EM-type algorithms. Simulations show accurate weighted estimation, reliable mixture recovery, effective model selection, and substantial computational savings from generalized EM. Real network examples based on hyperbolic embeddings illustrate the method as an exploratory likelihood-based clustering tool for non-Euclidean data.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2604.24895",
+    "arxiv_versioned": "2604.24895v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2604.24895v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2026-04-27T18:21:29Z",
+  "updated": "2026-04-27T18:21:29Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2604.24895v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9113,
+        "sha256": "21caca7921b8004effa3d1a348e11c827097d520ec4dc440aba67dd99e8cdfe0",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:21.166158Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2604.24895v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "0b31587fb88e569a8bd5c4044496236cebc9b067d074a1a9f62041af74a9c64a"
+      }
+    ],
     "latex_source": {
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
@@ -34,7 +67,32 @@
         "bytes": 382,
         "sha256": "044988eaee454645279d4cebc69929a81f11510cb853d1f5fa95b538a7962d77"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2604.24895v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +124,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:30:03.456739Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:22.369883Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +150,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "manuscript.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
       },
       {
         "name": "literal-inputs-resolved",

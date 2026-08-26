@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2604.02739v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2604.02739v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Quotient-Based Posterior Analysis for Euclidean Latent Space Models",
+      "authors": [
+        "Kisung You",
+        "Mauro Giuffrè"
+      ],
+      "abstract": "Latent space models are widely used in statistical network analysis and are often fit by Markov chain Monte Carlo. However, posterior summaries of latent coordinates are not canonical because the likelihood depends only on pairwise distances and is invariant under rigid motions of the latent space. Standard post hoc alignment can aid visualization, but the resulting summaries depend on an arbitrary reference configuration. We propose a quotient-based posterior analysis for Euclidean latent space models using the centered Gram map, which represents identifiable latent structure while removing nonidentifiability. This yields intrinsic posterior summaries of mean structure and uncertainty that can be computed directly from posterior samples, together with basic theoretical guarantees including canonicality, existence, and stability. Through simulations and analyses of the Florentine marriage network and a statisticians' coauthorship network, the proposed framework clarifies when alignment-based summaries are stable, when they become reference-sensitive, and which nodes or relationships are weakly identified. These results show how coherent posterior analysis can reveal latent relational structure beyond a single embedding.",
+      "doi": null,
+      "arxiv_id": "2604.02739v1",
+      "published": "2026-04-03T05:21:10Z",
+      "updated": "2026-04-03T05:21:10Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2604.02739v1",
+      "pdf_url": "https://arxiv.org/pdf/2604.02739v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "stat.ML"
+      ],
+      "external_ids": {
+        "arxiv": "2604.02739v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2604.02739v1",
+          "url": "https://arxiv.org/abs/2604.02739v1",
+          "doi": null,
+          "arxiv_id": "2604.02739v1",
+          "published": "2026-04-03T05:21:10Z",
+          "updated": "2026-04-03T05:21:10Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2604.02739v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:17.436509Z",
+      "sha256": "8eea3962a80aa8b769294f65f7bdec125254c9c8f3d6f51157c6a21192c6278c",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvRzRTUFRDMk5ta3JwUVA3a1pOQW5uTVhTU3NZPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNC4wMjczOXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjE3WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA0LjAyNzM5djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNC4wMjczOXYxPC9pZD4KICAgIDx0aXRsZT5RdW90aWVudC1CYXNlZCBQb3N0ZXJpb3IgQW5hbHlzaXMgZm9yIEV1Y2xpZGVhbiBMYXRlbnQgU3BhY2UgTW9kZWxzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDQtMDNUMDU6MjE6MTBaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDQuMDI3Mzl2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDQuMDI3Mzl2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkxhdGVudCBzcGFjZSBtb2RlbHMgYXJlIHdpZGVseSB1c2VkIGluIHN0YXRpc3RpY2FsIG5ldHdvcmsgYW5hbHlzaXMgYW5kIGFyZSBvZnRlbiBmaXQgYnkgTWFya292IGNoYWluIE1vbnRlIENhcmxvLiBIb3dldmVyLCBwb3N0ZXJpb3Igc3VtbWFyaWVzIG9mIGxhdGVudCBjb29yZGluYXRlcyBhcmUgbm90IGNhbm9uaWNhbCBiZWNhdXNlIHRoZSBsaWtlbGlob29kIGRlcGVuZHMgb25seSBvbiBwYWlyd2lzZSBkaXN0YW5jZXMgYW5kIGlzIGludmFyaWFudCB1bmRlciByaWdpZCBtb3Rpb25zIG9mIHRoZSBsYXRlbnQgc3BhY2UuIFN0YW5kYXJkIHBvc3QgaG9jIGFsaWdubWVudCBjYW4gYWlkIHZpc3VhbGl6YXRpb24sIGJ1dCB0aGUgcmVzdWx0aW5nIHN1bW1hcmllcyBkZXBlbmQgb24gYW4gYXJiaXRyYXJ5IHJlZmVyZW5jZSBjb25maWd1cmF0aW9uLiBXZSBwcm9wb3NlIGEgcXVvdGllbnQtYmFzZWQgcG9zdGVyaW9yIGFuYWx5c2lzIGZvciBFdWNsaWRlYW4gbGF0ZW50IHNwYWNlIG1vZGVscyB1c2luZyB0aGUgY2VudGVyZWQgR3JhbSBtYXAsIHdoaWNoIHJlcHJlc2VudHMgaWRlbnRpZmlhYmxlIGxhdGVudCBzdHJ1Y3R1cmUgd2hpbGUgcmVtb3Zpbmcgbm9uaWRlbnRpZmlhYmlsaXR5LiBUaGlzIHlpZWxkcyBpbnRyaW5zaWMgcG9zdGVyaW9yIHN1bW1hcmllcyBvZiBtZWFuIHN0cnVjdHVyZSBhbmQgdW5jZXJ0YWludHkgdGhhdCBjYW4gYmUgY29tcHV0ZWQgZGlyZWN0bHkgZnJvbSBwb3N0ZXJpb3Igc2FtcGxlcywgdG9nZXRoZXIgd2l0aCBiYXNpYyB0aGVvcmV0aWNhbCBndWFyYW50ZWVzIGluY2x1ZGluZyBjYW5vbmljYWxpdHksIGV4aXN0ZW5jZSwgYW5kIHN0YWJpbGl0eS4gVGhyb3VnaCBzaW11bGF0aW9ucyBhbmQgYW5hbHlzZXMgb2YgdGhlIEZsb3JlbnRpbmUgbWFycmlhZ2UgbmV0d29yayBhbmQgYSBzdGF0aXN0aWNpYW5zJyBjb2F1dGhvcnNoaXAgbmV0d29yaywgdGhlIHByb3Bvc2VkIGZyYW1ld29yayBjbGFyaWZpZXMgd2hlbiBhbGlnbm1lbnQtYmFzZWQgc3VtbWFyaWVzIGFyZSBzdGFibGUsIHdoZW4gdGhleSBiZWNvbWUgcmVmZXJlbmNlLXNlbnNpdGl2ZSwgYW5kIHdoaWNoIG5vZGVzIG9yIHJlbGF0aW9uc2hpcHMgYXJlIHdlYWtseSBpZGVudGlmaWVkLiBUaGVzZSByZXN1bHRzIHNob3cgaG93IGNvaGVyZW50IHBvc3RlcmlvciBhbmFseXNpcyBjYW4gcmV2ZWFsIGxhdGVudCByZWxhdGlvbmFsIHN0cnVjdHVyZSBiZXlvbmQgYSBzaW5nbGUgZW1iZWRkaW5nLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5NTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA0LTAzVDA1OjIxOjEwWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0ic3RhdC5NRSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWF1cm8gR2l1ZmZyw6g8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Quotient-Based Posterior Analysis for Euclidean Latent Space Models",
+    "authors": [
+      "Kisung You",
+      "Mauro Giuffrè"
+    ],
+    "abstract": "Latent space models are widely used in statistical network analysis and are often fit by Markov chain Monte Carlo. However, posterior summaries of latent coordinates are not canonical because the likelihood depends only on pairwise distances and is invariant under rigid motions of the latent space. Standard post hoc alignment can aid visualization, but the resulting summaries depend on an arbitrary reference configuration. We propose a quotient-based posterior analysis for Euclidean latent space models using the centered Gram map, which represents identifiable latent structure while removing nonidentifiability. This yields intrinsic posterior summaries of mean structure and uncertainty that can be computed directly from posterior samples, together with basic theoretical guarantees including canonicality, existence, and stability. Through simulations and analyses of the Florentine marriage network and a statisticians' coauthorship network, the proposed framework clarifies when alignment-based summaries are stable, when they become reference-sensitive, and which nodes or relationships are weakly identified. These results show how coherent posterior analysis can reveal latent relational structure beyond a single embedding.",
+    "identifiers": {
+      "arxiv": "2604.02739",
+      "arxiv_versioned": "2604.02739v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2604.02739v1"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "stat.ML"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-04-03T05:21:10Z",
+    "updated": "2026-04-03T05:21:10Z"
+  }
+}

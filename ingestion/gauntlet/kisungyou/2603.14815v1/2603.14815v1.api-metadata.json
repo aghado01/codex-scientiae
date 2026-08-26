@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2603.14815v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2603.14815v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "On Heterogeneity in Wasserstein Space",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Data represented by probability measures arise as empirical distributions, posterior distributions, and feature-based representations of complex objects. We study heterogeneity in a population of probability measures through the expected value of a chosen transform of the pairwise Wasserstein distance. The resulting estimator is unbiased and, under simple moment conditions on the population law, is strongly consistent, asymptotically normal, and equipped with a consistent standard error. This also yields a simple comparison of two populations and remains stable under plug-in approximation when the measures are estimated. The associated empirical eccentricities identify the observations that contribute most strongly to heterogeneity within a sample.",
+      "doi": null,
+      "arxiv_id": "2603.14815v1",
+      "published": "2026-03-16T04:33:07Z",
+      "updated": "2026-03-16T04:33:07Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2603.14815v1",
+      "pdf_url": "https://arxiv.org/pdf/2603.14815v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2603.14815v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2603.14815v1",
+          "url": "https://arxiv.org/abs/2603.14815v1",
+          "doi": null,
+          "arxiv_id": "2603.14815v1",
+          "published": "2026-03-16T04:33:07Z",
+          "updated": "2026-03-16T04:33:07Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2603.14815v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:13.778147Z",
+      "sha256": "53561bc1b5b00dc59283c33e2717996b9101633dd30a72316c0daf657285cd86",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvaGZhYkdQaDlVcE9IOW4weUJtMDVGclVzY3Y4PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwMy4xNDgxNXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjEzWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjAzLjE0ODE1djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwMy4xNDgxNXYxPC9pZD4KICAgIDx0aXRsZT5PbiBIZXRlcm9nZW5laXR5IGluIFdhc3NlcnN0ZWluIFNwYWNlPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDMtMTZUMDQ6MzM6MDdaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDMuMTQ4MTV2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDMuMTQ4MTV2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkRhdGEgcmVwcmVzZW50ZWQgYnkgcHJvYmFiaWxpdHkgbWVhc3VyZXMgYXJpc2UgYXMgZW1waXJpY2FsIGRpc3RyaWJ1dGlvbnMsIHBvc3RlcmlvciBkaXN0cmlidXRpb25zLCBhbmQgZmVhdHVyZS1iYXNlZCByZXByZXNlbnRhdGlvbnMgb2YgY29tcGxleCBvYmplY3RzLiBXZSBzdHVkeSBoZXRlcm9nZW5laXR5IGluIGEgcG9wdWxhdGlvbiBvZiBwcm9iYWJpbGl0eSBtZWFzdXJlcyB0aHJvdWdoIHRoZSBleHBlY3RlZCB2YWx1ZSBvZiBhIGNob3NlbiB0cmFuc2Zvcm0gb2YgdGhlIHBhaXJ3aXNlIFdhc3NlcnN0ZWluIGRpc3RhbmNlLiBUaGUgcmVzdWx0aW5nIGVzdGltYXRvciBpcyB1bmJpYXNlZCBhbmQsIHVuZGVyIHNpbXBsZSBtb21lbnQgY29uZGl0aW9ucyBvbiB0aGUgcG9wdWxhdGlvbiBsYXcsIGlzIHN0cm9uZ2x5IGNvbnNpc3RlbnQsIGFzeW1wdG90aWNhbGx5IG5vcm1hbCwgYW5kIGVxdWlwcGVkIHdpdGggYSBjb25zaXN0ZW50IHN0YW5kYXJkIGVycm9yLiBUaGlzIGFsc28geWllbGRzIGEgc2ltcGxlIGNvbXBhcmlzb24gb2YgdHdvIHBvcHVsYXRpb25zIGFuZCByZW1haW5zIHN0YWJsZSB1bmRlciBwbHVnLWluIGFwcHJveGltYXRpb24gd2hlbiB0aGUgbWVhc3VyZXMgYXJlIGVzdGltYXRlZC4gVGhlIGFzc29jaWF0ZWQgZW1waXJpY2FsIGVjY2VudHJpY2l0aWVzIGlkZW50aWZ5IHRoZSBvYnNlcnZhdGlvbnMgdGhhdCBjb250cmlidXRlIG1vc3Qgc3Ryb25nbHkgdG8gaGV0ZXJvZ2VuZWl0eSB3aXRoaW4gYSBzYW1wbGUuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wMy0xNlQwNDozMzowN1o8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "On Heterogeneity in Wasserstein Space",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Data represented by probability measures arise as empirical distributions, posterior distributions, and feature-based representations of complex objects. We study heterogeneity in a population of probability measures through the expected value of a chosen transform of the pairwise Wasserstein distance. The resulting estimator is unbiased and, under simple moment conditions on the population law, is strongly consistent, asymptotically normal, and equipped with a consistent standard error. This also yields a simple comparison of two populations and remains stable under plug-in approximation when the measures are estimated. The associated empirical eccentricities identify the observations that contribute most strongly to heterogeneity within a sample.",
+    "identifiers": {
+      "arxiv": "2603.14815",
+      "arxiv_versioned": "2603.14815v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2603.14815v1"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-03-16T04:33:07Z",
+    "updated": "2026-03-16T04:33:07Z"
+  }
+}

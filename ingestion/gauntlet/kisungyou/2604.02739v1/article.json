@@ -2,21 +2,56 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2604.02739v1",
-  "initialized_utc": "2026-08-11T08:30:02.394636Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:17.803534Z",
+  "title": "Quotient-Based Posterior Analysis for Euclidean Latent Space Models",
+  "authors": [
+    "Kisung You",
+    "Mauro Giuffrè"
+  ],
+  "abstract": "Latent space models are widely used in statistical network analysis and are often fit by Markov chain Monte Carlo. However, posterior summaries of latent coordinates are not canonical because the likelihood depends only on pairwise distances and is invariant under rigid motions of the latent space. Standard post hoc alignment can aid visualization, but the resulting summaries depend on an arbitrary reference configuration. We propose a quotient-based posterior analysis for Euclidean latent space models using the centered Gram map, which represents identifiable latent structure while removing nonidentifiability. This yields intrinsic posterior summaries of mean structure and uncertainty that can be computed directly from posterior samples, together with basic theoretical guarantees including canonicality, existence, and stability. Through simulations and analyses of the Florentine marriage network and a statisticians' coauthorship network, the proposed framework clarifies when alignment-based summaries are stable, when they become reference-sensitive, and which nodes or relationships are weakly identified. These results show how coherent posterior analysis can reveal latent relational structure beyond a single embedding.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2604.02739",
+    "arxiv_versioned": "2604.02739v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2604.02739v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME",
+    "stat.ML"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2026-04-03T05:21:10Z",
+  "updated": "2026-04-03T05:21:10Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2604.02739v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8605,
+        "sha256": "f8c31107d0d4a6e0b3465668de532361a35e041c7f1c6f6de380201e54e4ac0d",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:17.436509Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2604.02739v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "8eea3962a80aa8b769294f65f7bdec125254c9c8f3d6f51157c6a21192c6278c"
+      }
+    ],
     "latex_source": {
       "entrypoint": "write-arxiv.tex",
       "selection": "single-candidate",
@@ -34,7 +69,32 @@
         "bytes": 462,
         "sha256": "1903c3fb83f713b4226e88cb8d5d72e255b2d9a6d4b9e2bb91089f2e5c9cac00"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2604.02739v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +126,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:30:02.394636Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:17.803534Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +152,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "write-arxiv.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "write-arxiv.tex"
       },
       {
         "name": "literal-inputs-resolved",

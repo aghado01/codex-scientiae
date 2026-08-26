@@ -1,0 +1,69 @@
+\begin{figure*}[t]
+  \small
+  \textbf{(a) The maintained prompt as one document (objective, instructions, comments)}
+  \begin{verbatim}
+Objective: Write a blog post about the sleek new magistrates.
+
+[d1] End your response with a postscript section labeled 'P.S.'  # r1: task 0
+  failed with "the response is missing a postscript"; no prior attempts
+[d10] Ensure your response has between 300 and 400 words.  # r6: task 0 failed
+  with "the response's word count is off"; truncated output suggests responses may
+  be too short or too long. Adding explicit word count range to target this
+  requirement.
+[d12] Include exactly one bullet list in your response, with at least three items.
+  # r7: task 0 failed with "the response does not have the right number of bullet
+  lists"; this is a new failure not seen before. The response needs a structured
+  bullet list to satisfy this requirement.
+[d14] Include exactly three bullet lists in your response, each with at least
+  three items.  # r9: task 0 failed with "the response does not have the right
+  number of bullet lists"; d13 specified two lists but requirement demands three.
+  Escalating from two to three lists.
+  \end{verbatim}
+  \textbf{(b) What the maintainer is handed each round}
+  \begin{verbatim}
+## Current prompt directives
+(panel (a)'s commented list, verbatim)
+
+## This round's scores
+task 0: a requirement PASSED
+task 0: a requirement (the response does not have the right number of bullet
+  lists) FAILED
+  \end{verbatim}
+  \textbf{(c) What the executor is handed: the same instructions, comments stripped}
+  \begin{verbatim}
+Follow ALL of these directives in your response:
+1. End your response with a postscript section labeled 'P.S.'
+2. Ensure your response has between 300 and 400 words.
+3. Include exactly one bullet list in your response, with at least three items.
+4. Include exactly three bullet lists in your response, each with at least three
+  items.
+
+--- user message ---
+
+(panel (a)'s objective, verbatim)
+  \end{verbatim}
+  \textbf{(d) Placebo comment pool}
+  \begin{verbatim}
+- added after one of the responses was flagged in an earlier round
+- a response failed a requirement around this in a previous round
+- several earlier rounds seemed to have trouble with this
+- this came up in the scores a while back
+- added to address a recurring issue seen earlier
+- an earlier round's feedback pointed at something like this
+- one of the tasks was marked down for this before
+- kept seeing failures that looked related to this
+  \end{verbatim}
+  \caption{
+    One real maintained prompt and the two projections of it the roles receive, from the canonical
+    run's protocol arm at its last round: world 170 of seed 0, ending at 4 instructions against an
+    arm median of 2, the largest prompt that fits this page. \textbf{(a)} is the artifact the
+    maintainer edits and the form this paper argues for --- objective, instructions, and the
+    comment each was written with, in one document that no role receives. \textbf{(b)} pairs that
+    list with a censored report naming a dimension and never a parameter. \textbf{(c)} is the
+    executor's call, produced by the render function rather than described: comments gone,
+    identifiers gone, objective moved to the user message. The strip between them is code, not a
+    request. \textbf{(d)} is the pool the placebo arm substitutes for real comments. System prompts
+    are \autoref{fig:prompts}; notation is \apxref{sec:appendix:channels}'s.
+  }
+  \label{fig:renderings}
+\end{figure*}

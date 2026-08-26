@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2506.03221v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2506.03221v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "ExtracTable: Human-in-the-Loop Transformation of Scientific Corpora into Structured Knowledge",
+      "authors": [
+        "Lena John",
+        "Ahmed Malek Ghanmi",
+        "Tim Wittenborg",
+        "Sören Auer",
+        "Oliver Karras"
+      ],
+      "abstract": "As the volume of scientific literature grows, efficient knowledge organization becomes increasingly challenging. Traditional approaches to structuring scientific content are time-consuming and require significant domain expertise, highlighting the need for tool support. We present ExtracTable, a Human-in-the-Loop (HITL) workflow and framework that assists researchers in transforming unstructured publications into structured representations. The workflow combines large language models (LLMs) with user-defined schemas and is designed for downstream integration into knowledge graphs (KGs). Developed and evaluated in the context of the Open Research Knowledge Graph (ORKG), ExtracTable automates key steps such as document preprocessing and data extraction while ensuring user oversight through validation. In an evaluation with ORKG community participants following the Quality Improvement Paradigm (QIP), ExtracTable demonstrated high usability and practical value. Participants gave it an average System Usability Scale (SUS) score of 84.17 (A+, the highest rating). The time to progress from a research interest to literature-based insights was reduced from between 4 hours and 2 weeks to an average of 24:40 minutes. By streamlining corpus creation and structured data extraction for knowledge graph integration, ExtracTable leverages LLMs and user models to accelerate literature reviews. However, human validation remains essential to ensure quality, and future work will address improving extraction accuracy and entity linking to existing knowledge resources.",
+      "doi": "10.1007/978-3-032-05409-8_27",
+      "arxiv_id": "2506.03221v3",
+      "published": "2025-06-03T09:12:52Z",
+      "updated": "2025-07-18T09:35:18Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2506.03221v3",
+      "pdf_url": "https://arxiv.org/pdf/2506.03221v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.DL"
+      ],
+      "external_ids": {
+        "arxiv": "2506.03221v3",
+        "doi": "10.1007/978-3-032-05409-8_27"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2506.03221v3",
+          "url": "https://arxiv.org/abs/2506.03221v3",
+          "doi": "10.1007/978-3-032-05409-8_27",
+          "arxiv_id": "2506.03221v3",
+          "published": "2025-06-03T09:12:52Z",
+          "updated": "2025-07-18T09:35:18Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2506.03221v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:51.128611Z",
+      "sha256": "b288d15737057cb42380920ac2a0e596a53ee402183263c7b090ebd5ffed8f53",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvRVlYd1Z0VkM2VTVxcTlDV3hOYUc0RDMzOVk0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwNi4wMzIyMXYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjUxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA2LjAzMjIxdjMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwNi4wMzIyMXYzPC9pZD4KICAgIDx0aXRsZT5FeHRyYWNUYWJsZTogSHVtYW4taW4tdGhlLUxvb3AgVHJhbnNmb3JtYXRpb24gb2YgU2NpZW50aWZpYyBDb3Jwb3JhIGludG8gU3RydWN0dXJlZCBLbm93bGVkZ2U8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNS0wNy0xOFQwOTozNToxOFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjUwNi4wMzIyMXYzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjUwNi4wMzIyMXYzIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+QXMgdGhlIHZvbHVtZSBvZiBzY2llbnRpZmljIGxpdGVyYXR1cmUgZ3Jvd3MsIGVmZmljaWVudCBrbm93bGVkZ2Ugb3JnYW5pemF0aW9uIGJlY29tZXMgaW5jcmVhc2luZ2x5IGNoYWxsZW5naW5nLiBUcmFkaXRpb25hbCBhcHByb2FjaGVzIHRvIHN0cnVjdHVyaW5nIHNjaWVudGlmaWMgY29udGVudCBhcmUgdGltZS1jb25zdW1pbmcgYW5kIHJlcXVpcmUgc2lnbmlmaWNhbnQgZG9tYWluIGV4cGVydGlzZSwgaGlnaGxpZ2h0aW5nIHRoZSBuZWVkIGZvciB0b29sIHN1cHBvcnQuIFdlIHByZXNlbnQgRXh0cmFjVGFibGUsIGEgSHVtYW4taW4tdGhlLUxvb3AgKEhJVEwpIHdvcmtmbG93IGFuZCBmcmFtZXdvcmsgdGhhdCBhc3Npc3RzIHJlc2VhcmNoZXJzIGluIHRyYW5zZm9ybWluZyB1bnN0cnVjdHVyZWQgcHVibGljYXRpb25zIGludG8gc3RydWN0dXJlZCByZXByZXNlbnRhdGlvbnMuIFRoZSB3b3JrZmxvdyBjb21iaW5lcyBsYXJnZSBsYW5ndWFnZSBtb2RlbHMgKExMTXMpIHdpdGggdXNlci1kZWZpbmVkIHNjaGVtYXMgYW5kIGlzIGRlc2lnbmVkIGZvciBkb3duc3RyZWFtIGludGVncmF0aW9uIGludG8ga25vd2xlZGdlIGdyYXBocyAoS0dzKS4gRGV2ZWxvcGVkIGFuZCBldmFsdWF0ZWQgaW4gdGhlIGNvbnRleHQgb2YgdGhlIE9wZW4gUmVzZWFyY2ggS25vd2xlZGdlIEdyYXBoIChPUktHKSwgRXh0cmFjVGFibGUgYXV0b21hdGVzIGtleSBzdGVwcyBzdWNoIGFzIGRvY3VtZW50IHByZXByb2Nlc3NpbmcgYW5kIGRhdGEgZXh0cmFjdGlvbiB3aGlsZSBlbnN1cmluZyB1c2VyIG92ZXJzaWdodCB0aHJvdWdoIHZhbGlkYXRpb24uIEluIGFuIGV2YWx1YXRpb24gd2l0aCBPUktHIGNvbW11bml0eSBwYXJ0aWNpcGFudHMgZm9sbG93aW5nIHRoZSBRdWFsaXR5IEltcHJvdmVtZW50IFBhcmFkaWdtIChRSVApLCBFeHRyYWNUYWJsZSBkZW1vbnN0cmF0ZWQgaGlnaCB1c2FiaWxpdHkgYW5kIHByYWN0aWNhbCB2YWx1ZS4gUGFydGljaXBhbnRzIGdhdmUgaXQgYW4gYXZlcmFnZSBTeXN0ZW0gVXNhYmlsaXR5IFNjYWxlIChTVVMpIHNjb3JlIG9mIDg0LjE3IChBKywgdGhlIGhpZ2hlc3QgcmF0aW5nKS4gVGhlIHRpbWUgdG8gcHJvZ3Jlc3MgZnJvbSBhIHJlc2VhcmNoIGludGVyZXN0IHRvIGxpdGVyYXR1cmUtYmFzZWQgaW5zaWdodHMgd2FzIHJlZHVjZWQgZnJvbSBiZXR3ZWVuIDQgaG91cnMgYW5kIDIgd2Vla3MgdG8gYW4gYXZlcmFnZSBvZiAyNDo0MCBtaW51dGVzLiBCeSBzdHJlYW1saW5pbmcgY29ycHVzIGNyZWF0aW9uIGFuZCBzdHJ1Y3R1cmVkIGRhdGEgZXh0cmFjdGlvbiBmb3Iga25vd2xlZGdlIGdyYXBoIGludGVncmF0aW9uLCBFeHRyYWNUYWJsZSBsZXZlcmFnZXMgTExNcyBhbmQgdXNlciBtb2RlbHMgdG8gYWNjZWxlcmF0ZSBsaXRlcmF0dXJlIHJldmlld3MuIEhvd2V2ZXIsIGh1bWFuIHZhbGlkYXRpb24gcmVtYWlucyBlc3NlbnRpYWwgdG8gZW5zdXJlIHF1YWxpdHksIGFuZCBmdXR1cmUgd29yayB3aWxsIGFkZHJlc3MgaW1wcm92aW5nIGV4dHJhY3Rpb24gYWNjdXJhY3kgYW5kIGVudGl0eSBsaW5raW5nIHRvIGV4aXN0aW5nIGtub3dsZWRnZSByZXNvdXJjZXMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkRMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMDYtMDNUMDk6MTI6NTJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5ETCIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TGVuYSBKb2huPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BaG1lZCBNYWxlayBHaGFubWk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlRpbSBXaXR0ZW5ib3JnPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Tw7ZyZW4gQXVlcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+T2xpdmVyIEthcnJhczwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGFyeGl2OmRvaT4xMC4xMDA3Lzk3OC0zLTAzMi0wNTQwOS04XzI3PC9hcnhpdjpkb2k+CiAgICA8bGluayByZWw9InJlbGF0ZWQiIGhyZWY9Imh0dHBzOi8vZG9pLm9yZy8xMC4xMDA3Lzk3OC0zLTAzMi0wNTQwOS04XzI3IiB0aXRsZT0iZG9pIi8+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "ExtracTable: Human-in-the-Loop Transformation of Scientific Corpora into Structured Knowledge",
+    "authors": [
+      "Lena John",
+      "Ahmed Malek Ghanmi",
+      "Tim Wittenborg",
+      "Sören Auer",
+      "Oliver Karras"
+    ],
+    "abstract": "As the volume of scientific literature grows, efficient knowledge organization becomes increasingly challenging. Traditional approaches to structuring scientific content are time-consuming and require significant domain expertise, highlighting the need for tool support. We present ExtracTable, a Human-in-the-Loop (HITL) workflow and framework that assists researchers in transforming unstructured publications into structured representations. The workflow combines large language models (LLMs) with user-defined schemas and is designed for downstream integration into knowledge graphs (KGs). Developed and evaluated in the context of the Open Research Knowledge Graph (ORKG), ExtracTable automates key steps such as document preprocessing and data extraction while ensuring user oversight through validation. In an evaluation with ORKG community participants following the Quality Improvement Paradigm (QIP), ExtracTable demonstrated high usability and practical value. Participants gave it an average System Usability Scale (SUS) score of 84.17 (A+, the highest rating). The time to progress from a research interest to literature-based insights was reduced from between 4 hours and 2 weeks to an average of 24:40 minutes. By streamlining corpus creation and structured data extraction for knowledge graph integration, ExtracTable leverages LLMs and user models to accelerate literature reviews. However, human validation remains essential to ensure quality, and future work will address improving extraction accuracy and entity linking to existing knowledge resources.",
+    "identifiers": {
+      "arxiv": "2506.03221",
+      "arxiv_versioned": "2506.03221v3",
+      "doi": "10.1007/978-3-032-05409-8_27",
+      "external": {
+        "arxiv": "2506.03221v3",
+        "doi": "10.1007/978-3-032-05409-8_27"
+      }
+    },
+    "categories": [
+      "cs.DL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.DL",
+    "published": "2025-06-03T09:12:52Z",
+    "updated": "2025-07-18T09:35:18Z"
+  }
+}

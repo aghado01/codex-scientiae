@@ -2,21 +2,55 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2106.06375v1",
-  "initialized_utc": "2026-08-11T08:29:46.436428Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:31.914623Z",
+  "title": "Parameter Estimation and Model-Based Clustering with Spherical Normal Distribution on the Unit Hypersphere",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "In directional statistics, the von Mises-Fisher (vMF) distribution is one of the most basic and popular probability distributions for data on the unit hypersphere. Recently, the spherical normal (SN) distribution was proposed as an intrinsic counterpart to the vMF distribution by replacing the standard Euclidean norm with the great-circle distance, which is the shortest path joining two points on the unit sphere. We propose numerical approaches for parameter estimation since there are no analytic formula available. We consider the estimation problems in a general setting where non-negative weights are assigned to observations. This leads to a more interesting contribution for model-based clustering on the unit hypersphere by finite mixture model with SN distributions. We validate efficiency of optimization-based estimation procedures and effectiveness of SN mixture model using simulated and real data examples.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2106.06375",
+    "arxiv_versioned": "2106.06375v1",
+    "doi": "10.1016/j.csda.2022.107457",
+    "external": {
+      "arxiv": "2106.06375v1",
+      "doi": "10.1016/j.csda.2022.107457"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2021-06-11T13:28:11Z",
+  "updated": "2021-06-11T13:28:11Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2106.06375v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7771,
+        "sha256": "49c10938de5f9fc7ecd6d825b08d8f6b429fad56e027d0e6c5d7c8476082141f",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:30.936608Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2106.06375v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "30eed8d5bc0889a47c26ac11308accd679cd3f04d87c6b2982ea92ddcaef885f"
+      }
+    ],
     "latex_source": {
       "entrypoint": "spnormal.tex",
       "selection": "single-candidate",
@@ -28,7 +62,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2106.06375v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -60,8 +119,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:46.436428Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:31.914623Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -86,8 +145,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "spnormal.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "spnormal.tex"
       },
       {
         "name": "literal-inputs-resolved",

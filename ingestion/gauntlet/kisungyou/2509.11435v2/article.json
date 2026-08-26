@@ -2,21 +2,56 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2509.11435v2",
-  "initialized_utc": "2026-08-11T08:29:58.739370Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:06.544901Z",
+  "title": "A Particle-Flow Algorithm for Free-Support Wasserstein Barycenters",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "The Wasserstein barycenter extends the Euclidean mean to the space of probability measures by minimizing the weighted sum of squared 2-Wasserstein distances. We develop a free-support algorithm for computing Wasserstein barycenters that avoids entropic regularization and instead follows the formal Riemannian geometry of Wasserstein space. In our approach, barycenter atoms evolve as particles advected by averaged optimal-transport displacements, with barycentric projections of optimal transport plans used in place of Monge maps when the latter do not exist. This yields a geometry-aware particle-flow update that preserves sharp features of the Wasserstein barycenter while remaining computationally tractable. We establish theoretical guarantees, including consistency of barycentric projections, monotone descent and convergence to stationary points, stability with respect to perturbations of the inputs, and resolution consistency as the number of atoms increases. Empirical studies on averaging probability distributions, Bayesian posterior aggregation, image prototypes and classification, and large-scale clustering demonstrate accuracy and scalability of the proposed particle-flow approach, positioning it as a principled alternative to both linear programming and regularized solvers.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2509.11435",
+    "arxiv_versioned": "2509.11435v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2509.11435v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ML",
+    "cs.LG",
+    "stat.CO"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2025-09-14T21:05:04Z",
+  "updated": "2025-09-16T02:50:21Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2509.11435v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8793,
+        "sha256": "19da84584380bb48a7777b9196c18dff1667fcbea148be7bbc6b88e06b2ff845",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:06.161566Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2509.11435v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "66f46b5c845624720ba631b12ed6e527b0bb7f0bef8575363e58d862f6e77aad"
+      }
+    ],
     "latex_source": {
       "entrypoint": "manuscript-arxiv.tex",
       "selection": "single-candidate",
@@ -34,7 +69,32 @@
         "bytes": 390,
         "sha256": "88dedef396ed880791f92f050a04fdb2ea52560eea8916a9a36a31d29cb0d532"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2509.11435v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -66,8 +126,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:58.739370Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:06.544901Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -92,8 +152,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "manuscript-arxiv.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "manuscript-arxiv.tex"
       },
       {
         "name": "literal-inputs-resolved",

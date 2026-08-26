@@ -2,21 +2,56 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2307.15213v2",
-  "initialized_utc": "2026-08-11T08:29:52.476429Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:48.889522Z",
+  "title": "PCA, SVD, and Centering of Data",
+  "authors": [
+    "Donggun Kim",
+    "Kisung You"
+  ],
+  "abstract": "The research detailed in this paper scrutinizes Principal Component Analysis (PCA), a seminal method employed in statistics and machine learning for the purpose of reducing data dimensionality. Singular Value Decomposition (SVD) is often employed as the primary means for computing PCA, a process that indispensably includes the step of centering - the subtraction of the mean location from the data set. In our study, we delve into a detailed exploration of the influence of this critical yet often ignored or downplayed data centering step. Our research meticulously investigates the conditions under which two PCA embeddings, one derived from SVD with centering and the other without, can be viewed as aligned. As part of this exploration, we analyze the relationship between the first singular vector and the mean direction, subsequently linking this observation to the congruity between two SVDs of centered and uncentered matrices. Furthermore, we explore the potential implications arising from the absence of centering in the context of performing PCA via SVD from a spectral analysis standpoint. Our investigation emphasizes the importance of a comprehensive understanding and acknowledgment of the subtleties involved in the computation of PCA. As such, we believe this paper offers a crucial contribution to the nuanced understanding of this foundational statistical method and stands as a valuable addition to the academic literature in the field of statistics.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2307.15213",
+    "arxiv_versioned": "2307.15213v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2307.15213v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME",
+    "stat.ML"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2023-07-27T22:10:28Z",
+  "updated": "2024-04-01T17:10:52Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2307.15213v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9327,
+        "sha256": "1db266328a221302b206a73c2701a59e228c035af9672ae3614464a5bcddc9ab",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:48.621214Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2307.15213v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "0c14245d556a3998a2134cbd15c1835631ba7c0fca1a65e0c48e0d9258519884"
+      }
+    ],
     "latex_source": {
       "entrypoint": "write_CenteringPCA.tex",
       "selection": "single-candidate",
@@ -29,7 +64,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2307.15213v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -61,8 +121,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:52.476429Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:48.889522Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -87,8 +147,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "write_CenteringPCA.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "write_CenteringPCA.tex"
       },
       {
         "name": "literal-inputs-resolved",

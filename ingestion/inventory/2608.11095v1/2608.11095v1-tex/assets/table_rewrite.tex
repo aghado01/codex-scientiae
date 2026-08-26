@@ -1,0 +1,47 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}Xrrrr@{}}
+    \toprule
+    \multicolumn{5}{@{}l}{\textbf{(a)} Anatomy of a rewrite commit} \\
+    \midrule
+    Rewrite commits & \multicolumn{4}{r@{}}{1,353} \\
+    Median instructions killed / born & \multicolumn{4}{r@{}}{46 / 14} \\
+    Events leaving the file empty & \multicolumn{4}{r@{}}{24.4\%} \\
+    Events replacing $\ge$ half the dead text & \multicolumn{4}{r@{}}{38.3\%} \\
+    Events carrying any cross-file migration & \multicolumn{4}{r@{}}{2.9\%} \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textbf{(b)} Event study vs.\ window half-width} \\
+    \midrule
+    Window $w$ & $n$ & $k{=}{-}w$ & $k{=}0$ & $k{=}{+}w$ \\
+    $\pm2$ & 317 & $-3\%$ & $-49\%$ & $-33\%$ \\
+    $\pm3$ & 213 & $-8\%$ & $-53\%$ & $-39\%$ \\
+    $\pm4$ & 158 & $-11\%$ & $-55\%$ & $-40\%$ \\
+    $\pm5$ & 126 & $-16\%$ & $-61\%$ & $-39\%$ \\
+    $\pm10^{\star}$ & 52 & $-29\%$ & $-71\%$ & $-58\%$ \\
+    \midrule
+    \multicolumn{5}{@{}l}{\textbf{(c)} Growth within inter-rewrite segments} \\
+    \midrule
+    Segment & $n$ & Median & Growing & Net $\Delta D$ \\
+    0 & 1,597 & $\times1.33$ & 78.5\% & $+34.0$ \\
+    1 & 543 & $\times1.32$ & 81.6\% & $+34.3$ \\
+    2 & 180 & $\times1.37$ & 82.2\% & $+39.8$ \\
+    3+ & 178 & $\times1.46$ & 86.0\% & $+42.3$ \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    The rewrite is a mass deletion, its shape does not depend on the window it is measured in, and
+    growth after one is no slower than before. \textbf{(a)} What a rewrite commit does, over all
+    such commits in the corpus. \textbf{(b)} The event study of \autoref{fig:massrewrite:event}
+    re-estimated at each window half-width: $D_t$ relative to the version before the file's first
+    rewrite, median over the balanced panel of files observed at every offset, emptying events
+    excluded. Columns are the level $w$ commits before the event, at it, and $w$ after, each
+    relative to the version immediately before it; $\star$ marks the width
+    \autoref{fig:massrewrite:event} draws. $n$ falls with width because a balanced panel keeps
+    only files that outlive the event by the full window; the drop and the rebound do not.
+    \textbf{(c)} Growth within each
+    inter-rewrite segment ($\ge 2$ commits); segment $0$ runs to the first rewrite, segment $k$
+    starts at the $k$-th, so its starting size is what that rewrite left behind. The rewrite
+    threshold itself is held at $0.5$ throughout and is not swept (\S\ref{sec:appendix:censoring}).
+  }
+  \label{tab:rewrite}
+\end{table*}

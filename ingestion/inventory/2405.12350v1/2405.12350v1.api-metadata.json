@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2405.12350v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2405.12350v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "A framework for extraction and transformation of documents",
+      "authors": [
+        "Cristian Riveros",
+        "Markus L. Schmid",
+        "Nicole Schweikardt"
+      ],
+      "abstract": "We present a theoretical framework for the extraction and transformation of text documents. We propose to use a two-phase process where the first phase extracts span-tuples from a document, and the second phase maps the content of the span-tuples into new documents. We base the extraction phase on the framework of document spanners and the transformation phase on the theory of polyregular functions, the class of regular string-to-string functions with polynomial growth. For supporting practical extract-transform scenarios, we propose an extension of document spanners described by regex formulas from span-tuples to so-called multispan-tuples, where variables are mapped to sets of spans. We prove that this extension, called regex multispanners, has the same desirable properties as standard spanners described by regex formulas. In our framework, an Extract-Transform (ET) program is given by a regex multispanner followed by a polyregular function. In this paper, we study the expressibility and evaluation problem of ET programs when the transformation function is linear, called linear ET programs. We show that linear ET programs are equally expressive as non-deterministic streaming string transducers under bag semantics. Moreover, we show that linear ET programs are closed under composition. Finally, we present an enumeration algorithm for evaluating every linear ET program over a document with linear time preprocessing and constant delay.",
+      "doi": null,
+      "arxiv_id": "2405.12350v1",
+      "published": "2024-05-20T19:59:25Z",
+      "updated": "2024-05-20T19:59:25Z",
+      "year": 2024,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2405.12350v1",
+      "pdf_url": "https://arxiv.org/pdf/2405.12350v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.DB",
+        "cs.FL"
+      ],
+      "external_ids": {
+        "arxiv": "2405.12350v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2405.12350v1",
+          "url": "https://arxiv.org/abs/2405.12350v1",
+          "doi": null,
+          "arxiv_id": "2405.12350v1",
+          "published": "2024-05-20T19:59:25Z",
+          "updated": "2024-05-20T19:59:25Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2405.12350v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:44.175400Z",
+      "sha256": "88bb10a169f39f8727c6565ecdd7b9b19c7d8c61e298053626df399760449152",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcnZ1Z1p2ek1oNTZpdkVldk5VUkVQZFlTQ0xZPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjQwNS4xMjM1MHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjQ0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNDA1LjEyMzUwdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjQwNS4xMjM1MHYxPC9pZD4KICAgIDx0aXRsZT5BIGZyYW1ld29yayBmb3IgZXh0cmFjdGlvbiBhbmQgdHJhbnNmb3JtYXRpb24gb2YgZG9jdW1lbnRzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjQtMDUtMjBUMTk6NTk6MjVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI0MDUuMTIzNTB2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI0MDUuMTIzNTB2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PldlIHByZXNlbnQgYSB0aGVvcmV0aWNhbCBmcmFtZXdvcmsgZm9yIHRoZSBleHRyYWN0aW9uIGFuZCB0cmFuc2Zvcm1hdGlvbiBvZiB0ZXh0IGRvY3VtZW50cy4gV2UgcHJvcG9zZSB0byB1c2UgYSB0d28tcGhhc2UgcHJvY2VzcyB3aGVyZSB0aGUgZmlyc3QgcGhhc2UgZXh0cmFjdHMgc3Bhbi10dXBsZXMgZnJvbSBhIGRvY3VtZW50LCBhbmQgdGhlIHNlY29uZCBwaGFzZSBtYXBzIHRoZSBjb250ZW50IG9mIHRoZSBzcGFuLXR1cGxlcyBpbnRvIG5ldyBkb2N1bWVudHMuIFdlIGJhc2UgdGhlIGV4dHJhY3Rpb24gcGhhc2Ugb24gdGhlIGZyYW1ld29yayBvZiBkb2N1bWVudCBzcGFubmVycyBhbmQgdGhlIHRyYW5zZm9ybWF0aW9uIHBoYXNlIG9uIHRoZSB0aGVvcnkgb2YgcG9seXJlZ3VsYXIgZnVuY3Rpb25zLCB0aGUgY2xhc3Mgb2YgcmVndWxhciBzdHJpbmctdG8tc3RyaW5nIGZ1bmN0aW9ucyB3aXRoIHBvbHlub21pYWwgZ3Jvd3RoLgogIEZvciBzdXBwb3J0aW5nIHByYWN0aWNhbCBleHRyYWN0LXRyYW5zZm9ybSBzY2VuYXJpb3MsIHdlIHByb3Bvc2UgYW4gZXh0ZW5zaW9uIG9mIGRvY3VtZW50IHNwYW5uZXJzIGRlc2NyaWJlZCBieSByZWdleCBmb3JtdWxhcyBmcm9tIHNwYW4tdHVwbGVzIHRvIHNvLWNhbGxlZCBtdWx0aXNwYW4tdHVwbGVzLCB3aGVyZSB2YXJpYWJsZXMgYXJlIG1hcHBlZCB0byBzZXRzIG9mIHNwYW5zLiBXZSBwcm92ZSB0aGF0IHRoaXMgZXh0ZW5zaW9uLCBjYWxsZWQgcmVnZXggbXVsdGlzcGFubmVycywgaGFzIHRoZSBzYW1lIGRlc2lyYWJsZSBwcm9wZXJ0aWVzIGFzIHN0YW5kYXJkIHNwYW5uZXJzIGRlc2NyaWJlZCBieSByZWdleCBmb3JtdWxhcy4gSW4gb3VyIGZyYW1ld29yaywgYW4gRXh0cmFjdC1UcmFuc2Zvcm0gKEVUKSBwcm9ncmFtIGlzIGdpdmVuIGJ5IGEgcmVnZXggbXVsdGlzcGFubmVyIGZvbGxvd2VkIGJ5IGEgcG9seXJlZ3VsYXIgZnVuY3Rpb24uCiAgSW4gdGhpcyBwYXBlciwgd2Ugc3R1ZHkgdGhlIGV4cHJlc3NpYmlsaXR5IGFuZCBldmFsdWF0aW9uIHByb2JsZW0gb2YgRVQgcHJvZ3JhbXMgd2hlbiB0aGUgdHJhbnNmb3JtYXRpb24gZnVuY3Rpb24gaXMgbGluZWFyLCBjYWxsZWQgbGluZWFyIEVUIHByb2dyYW1zLiBXZSBzaG93IHRoYXQgbGluZWFyIEVUIHByb2dyYW1zIGFyZSBlcXVhbGx5IGV4cHJlc3NpdmUgYXMgbm9uLWRldGVybWluaXN0aWMgc3RyZWFtaW5nIHN0cmluZyB0cmFuc2R1Y2VycyB1bmRlciBiYWcgc2VtYW50aWNzLiBNb3Jlb3Zlciwgd2Ugc2hvdyB0aGF0IGxpbmVhciBFVCBwcm9ncmFtcyBhcmUgY2xvc2VkIHVuZGVyIGNvbXBvc2l0aW9uLiBGaW5hbGx5LCB3ZSBwcmVzZW50IGFuIGVudW1lcmF0aW9uIGFsZ29yaXRobSBmb3IgZXZhbHVhdGluZyBldmVyeSBsaW5lYXIgRVQgcHJvZ3JhbSBvdmVyIGEgZG9jdW1lbnQgd2l0aCBsaW5lYXIgdGltZSBwcmVwcm9jZXNzaW5nIGFuZCBjb25zdGFudCBkZWxheS48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuREIiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5GTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI0LTA1LTIwVDE5OjU5OjI1WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuREIiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNyaXN0aWFuIFJpdmVyb3M8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1hcmt1cyBMLiBTY2htaWQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk5pY29sZSBTY2h3ZWlrYXJkdDwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "A framework for extraction and transformation of documents",
+    "authors": [
+      "Cristian Riveros",
+      "Markus L. Schmid",
+      "Nicole Schweikardt"
+    ],
+    "abstract": "We present a theoretical framework for the extraction and transformation of text documents. We propose to use a two-phase process where the first phase extracts span-tuples from a document, and the second phase maps the content of the span-tuples into new documents. We base the extraction phase on the framework of document spanners and the transformation phase on the theory of polyregular functions, the class of regular string-to-string functions with polynomial growth. For supporting practical extract-transform scenarios, we propose an extension of document spanners described by regex formulas from span-tuples to so-called multispan-tuples, where variables are mapped to sets of spans. We prove that this extension, called regex multispanners, has the same desirable properties as standard spanners described by regex formulas. In our framework, an Extract-Transform (ET) program is given by a regex multispanner followed by a polyregular function. In this paper, we study the expressibility and evaluation problem of ET programs when the transformation function is linear, called linear ET programs. We show that linear ET programs are equally expressive as non-deterministic streaming string transducers under bag semantics. Moreover, we show that linear ET programs are closed under composition. Finally, we present an enumeration algorithm for evaluating every linear ET program over a document with linear time preprocessing and constant delay.",
+    "identifiers": {
+      "arxiv": "2405.12350",
+      "arxiv_versioned": "2405.12350v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2405.12350v1"
+      }
+    },
+    "categories": [
+      "cs.DB",
+      "cs.FL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.DB",
+    "published": "2024-05-20T19:59:25Z",
+    "updated": "2024-05-20T19:59:25Z"
+  }
+}

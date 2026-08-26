@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2506.05725v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2506.05725v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Large Language Models are Good Relational Learners",
+      "authors": [
+        "Fang Wu",
+        "Vijay Prakash Dwivedi",
+        "Jure Leskovec"
+      ],
+      "abstract": "Large language models (LLMs) have demonstrated remarkable capabilities across various domains, yet their application to relational deep learning (RDL) remains underexplored. Existing approaches adapt LLMs by traversing relational links between entities in a database and converting the structured data into flat text documents. Still, this text-based serialization disregards critical relational structures, introduces redundancy, and often exceeds standard LLM context lengths. We introduce Rel-LLM, a novel architecture that utilizes a graph neural network (GNN)- based encoder to generate structured relational prompts for LLMs within a retrieval-augmented generation (RAG) framework. Unlike traditional text-based serialization approaches, our method preserves the inherent relational structure of databases while enabling LLMs to effectively process and reason over complex entity relationships. Specifically, the GNN encoder extracts a local subgraph around an entity to build feature representations that contain relevant entity relationships and temporal dependencies. These representations are transformed into structured prompts using a denormalization process, effectively allowing the LLM to reason over relational structures. Through extensive experiments, we demonstrate that Rel-LLM outperforms existing methods on key RDL tasks, offering a scalable and efficient approach to integrating LLMs with structured data sources. Code is available at https://github.com/smiles724/Rel-LLM.",
+      "doi": null,
+      "arxiv_id": "2506.05725v1",
+      "published": "2025-06-06T04:07:55Z",
+      "updated": "2025-06-06T04:07:55Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2506.05725v1",
+      "pdf_url": "https://arxiv.org/pdf/2506.05725v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2506.05725v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2506.05725v1",
+          "url": "https://arxiv.org/abs/2506.05725v1",
+          "doi": null,
+          "arxiv_id": "2506.05725v1",
+          "published": "2025-06-06T04:07:55Z",
+          "updated": "2025-06-06T04:07:55Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2506.05725v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:54.615766Z",
+      "sha256": "e8377c7b36a9aabb29b5b657efbf7ed7ad832395ebbfac4be6ad1d940c819546",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvOHRPcXJTOU9mcmhJVWEvUTdnd2VSMGFNbVZNPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwNi4wNTcyNXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjU0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA2LjA1NzI1djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwNi4wNTcyNXYxPC9pZD4KICAgIDx0aXRsZT5MYXJnZSBMYW5ndWFnZSBNb2RlbHMgYXJlIEdvb2QgUmVsYXRpb25hbCBMZWFybmVyczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI1LTA2LTA2VDA0OjA3OjU1WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNTA2LjA1NzI1djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNTA2LjA1NzI1djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5MYXJnZSBsYW5ndWFnZSBtb2RlbHMgKExMTXMpIGhhdmUgZGVtb25zdHJhdGVkIHJlbWFya2FibGUgY2FwYWJpbGl0aWVzIGFjcm9zcyB2YXJpb3VzIGRvbWFpbnMsIHlldCB0aGVpciBhcHBsaWNhdGlvbiB0byByZWxhdGlvbmFsIGRlZXAgbGVhcm5pbmcgKFJETCkgcmVtYWlucyB1bmRlcmV4cGxvcmVkLiBFeGlzdGluZyBhcHByb2FjaGVzIGFkYXB0IExMTXMgYnkgdHJhdmVyc2luZyByZWxhdGlvbmFsIGxpbmtzIGJldHdlZW4gZW50aXRpZXMgaW4gYSBkYXRhYmFzZSBhbmQgY29udmVydGluZyB0aGUgc3RydWN0dXJlZCBkYXRhIGludG8gZmxhdCB0ZXh0IGRvY3VtZW50cy4gU3RpbGwsIHRoaXMgdGV4dC1iYXNlZCBzZXJpYWxpemF0aW9uIGRpc3JlZ2FyZHMgY3JpdGljYWwgcmVsYXRpb25hbCBzdHJ1Y3R1cmVzLCBpbnRyb2R1Y2VzIHJlZHVuZGFuY3ksIGFuZCBvZnRlbiBleGNlZWRzIHN0YW5kYXJkIExMTSBjb250ZXh0IGxlbmd0aHMuIFdlIGludHJvZHVjZSBSZWwtTExNLCBhIG5vdmVsIGFyY2hpdGVjdHVyZSB0aGF0IHV0aWxpemVzIGEgZ3JhcGggbmV1cmFsIG5ldHdvcmsgKEdOTiktIGJhc2VkIGVuY29kZXIgdG8gZ2VuZXJhdGUgc3RydWN0dXJlZCByZWxhdGlvbmFsIHByb21wdHMgZm9yIExMTXMgd2l0aGluIGEgcmV0cmlldmFsLWF1Z21lbnRlZCBnZW5lcmF0aW9uIChSQUcpIGZyYW1ld29yay4gVW5saWtlIHRyYWRpdGlvbmFsIHRleHQtYmFzZWQgc2VyaWFsaXphdGlvbiBhcHByb2FjaGVzLCBvdXIgbWV0aG9kIHByZXNlcnZlcyB0aGUgaW5oZXJlbnQgcmVsYXRpb25hbCBzdHJ1Y3R1cmUgb2YgZGF0YWJhc2VzIHdoaWxlIGVuYWJsaW5nIExMTXMgdG8gZWZmZWN0aXZlbHkgcHJvY2VzcyBhbmQgcmVhc29uIG92ZXIgY29tcGxleCBlbnRpdHkgcmVsYXRpb25zaGlwcy4gU3BlY2lmaWNhbGx5LCB0aGUgR05OIGVuY29kZXIgZXh0cmFjdHMgYSBsb2NhbCBzdWJncmFwaCBhcm91bmQgYW4gZW50aXR5IHRvIGJ1aWxkIGZlYXR1cmUgcmVwcmVzZW50YXRpb25zIHRoYXQgY29udGFpbiByZWxldmFudCBlbnRpdHkgcmVsYXRpb25zaGlwcyBhbmQgdGVtcG9yYWwgZGVwZW5kZW5jaWVzLiBUaGVzZSByZXByZXNlbnRhdGlvbnMgYXJlIHRyYW5zZm9ybWVkIGludG8gc3RydWN0dXJlZCBwcm9tcHRzIHVzaW5nIGEgZGVub3JtYWxpemF0aW9uIHByb2Nlc3MsIGVmZmVjdGl2ZWx5IGFsbG93aW5nIHRoZSBMTE0gdG8gcmVhc29uIG92ZXIgcmVsYXRpb25hbCBzdHJ1Y3R1cmVzLiBUaHJvdWdoIGV4dGVuc2l2ZSBleHBlcmltZW50cywgd2UgZGVtb25zdHJhdGUgdGhhdCBSZWwtTExNIG91dHBlcmZvcm1zIGV4aXN0aW5nIG1ldGhvZHMgb24ga2V5IFJETCB0YXNrcywgb2ZmZXJpbmcgYSBzY2FsYWJsZSBhbmQgZWZmaWNpZW50IGFwcHJvYWNoIHRvIGludGVncmF0aW5nIExMTXMgd2l0aCBzdHJ1Y3R1cmVkIGRhdGEgc291cmNlcy4gQ29kZSBpcyBhdmFpbGFibGUgYXQgaHR0cHM6Ly9naXRodWIuY29tL3NtaWxlczcyNC9SZWwtTExNLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNS0wNi0wNlQwNDowNzo1NVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5GYW5nIFd1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5WaWpheSBQcmFrYXNoIER3aXZlZGk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkp1cmUgTGVza292ZWM8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Large Language Models are Good Relational Learners",
+    "authors": [
+      "Fang Wu",
+      "Vijay Prakash Dwivedi",
+      "Jure Leskovec"
+    ],
+    "abstract": "Large language models (LLMs) have demonstrated remarkable capabilities across various domains, yet their application to relational deep learning (RDL) remains underexplored. Existing approaches adapt LLMs by traversing relational links between entities in a database and converting the structured data into flat text documents. Still, this text-based serialization disregards critical relational structures, introduces redundancy, and often exceeds standard LLM context lengths. We introduce Rel-LLM, a novel architecture that utilizes a graph neural network (GNN)- based encoder to generate structured relational prompts for LLMs within a retrieval-augmented generation (RAG) framework. Unlike traditional text-based serialization approaches, our method preserves the inherent relational structure of databases while enabling LLMs to effectively process and reason over complex entity relationships. Specifically, the GNN encoder extracts a local subgraph around an entity to build feature representations that contain relevant entity relationships and temporal dependencies. These representations are transformed into structured prompts using a denormalization process, effectively allowing the LLM to reason over relational structures. Through extensive experiments, we demonstrate that Rel-LLM outperforms existing methods on key RDL tasks, offering a scalable and efficient approach to integrating LLMs with structured data sources. Code is available at https://github.com/smiles724/Rel-LLM.",
+    "identifiers": {
+      "arxiv": "2506.05725",
+      "arxiv_versioned": "2506.05725v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2506.05725v1"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.AI",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2025-06-06T04:07:55Z",
+    "updated": "2025-06-06T04:07:55Z"
+  }
+}

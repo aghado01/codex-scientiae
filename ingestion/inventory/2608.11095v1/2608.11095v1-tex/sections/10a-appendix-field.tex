@@ -1,0 +1,204 @@
+
+\section{The Field Corpus}
+\label{sec:appendix:corpus}
+
+\subsection{Corpus construction}
+\label{sec:appendix:construction}
+
+We re-derived every version of every file rather than reuse the frame's text. A snapshot supports
+claims about files; only a history supports claims about instructions. The frame is the repository
+list of \citet{chatlatanagulchai2025agentreadmes}, the study that established file-level growth:
+public GitHub repositories carrying at least one \texttt{CLAUDE.md}, \texttt{AGENTS.md}, or
+\texttt{copilot-instructions.md} at their default branch. We cloned each bloblessly and walked the
+full commit history of every tracked context file. \FieldRepos{} repositories yielded
+\FieldMultiVersionFiles{} files with at least two versions, \FieldMatches{} tracked
+version-to-version transitions, and \FieldSpells{} spells.
+
+Walking forward also keeps the measurement symmetric in time. If we had anchored each file's
+instruction set on its final version and searched backwards, we would have conditioned on survival
+to that version. Survival is the quantity under study.
+
+\subsection{Instruction segmentation}
+\label{sec:appendix:matching}
+
+\input{assets/table_gates.tex}
+
+We call one clause-level imperative an \emph{instruction} and everything else in the file
+\emph{payload}. We segment in two steps: we split each file version on markdown structure, taking
+list items and block boundaries, then split any remaining prose at sentence boundaries. We send
+headings, fenced code, tables, whole-line bold labels, and any fragment shorter than
+\SegMinWords{} words to payload, because at that length a line is usually a label and not a rule.
+Payload never enters the risk set. We still count it, though, and report it beside instruction
+count in \autoref{sec:growth}, so a reader can check whether the growth we report comes from
+routing more text into the instruction class as files age.
+
+We fixed the grammar per corpus, before reading the gates, and it remains our largest untested
+degree of freedom on the corpus side. A different grammar would yield a different $|D_t|$. We
+report ratios, so a constant rescaling of $|D_t|$ leaves them alone, but a grammar whose behavior
+drifts with file age would not.
+
+\subsection{Cross-version matching}
+\label{sec:appendix:tracking}
+
+We match instructions across consecutive versions with a three-stage cascade. We first try exact
+string equality, then equality after normalization with case, whitespace and markdown punctuation
+removed, then a fuzzy match above a similarity of \MatchFuzzyThreshold{}. A match at any stage
+counts as \emph{survival}. We take the highest-scoring partner still available, and each
+instruction matches at most once. An unmatched old instruction is a death; an unmatched new one is
+a birth.
+
+The cascade tells a deleted instruction from a reworded one, and \autoref{sec:measurement} rests on
+that separation. A line-level diff scores a rewording as one deletion plus one addition, so a
+line-level count of deletions is equally consistent with zero instruction deletions and with many.
+The matcher therefore bounds every result we take from the corpus. We validated it once, on
+\GateBPool{} hand-annotated transitions, reaching \GateBPrecision{} precision and \GateBRecall{}
+recall against a floor of \GateBFloor{} that we fixed before pulling any data
+(\autoref{tab:gates}). That is a small pool against \FieldMatches{} tracked transitions, and it is
+the only number on the corpus side that the canonical run did not produce. Limitations says so. A
+stratified re-annotation at full scale would close it.
+
+Any error that survives makes our estimate conservative. A missed rewording invents a death at the
+age where the rewording happened, and rewordings fall more often on old, heavily-edited
+instructions than on young ones. Matcher misses therefore add hazard to the old-age tail, which
+biases the estimated slope \emph{toward} zero. A decline measured under that bias is a lower bound
+on the true decline.
+
+\subsection{Competing risks: rewrites and migrations}
+\label{sec:appendix:censoring}
+
+\input{assets/table_rewrite.tex}
+We want the hazard to run over one kind of event only: a maintainer deciding that an instruction is
+no longer worth its place. We censor two other kinds of disappearance as competing risks. A
+\emph{rewrite} is a commit at which at least \RewriteFracThreshold{} of a file's live instructions
+die at once, subject to a floor of \RewriteMinDirectives{} instructions at risk, so that a
+two-instruction file losing one does not qualify. A \emph{migration} is a death whose text turns up
+in a sibling file at the same commit, and we match those repository-wide.
+
+Together the two censor \FieldCensoredDeathShare{} of observed instruction deaths. Rewrite deaths
+on their own outnumber the deletions we estimate the hazard from by
+\FieldRewriteToDeletionRatio{} to one. That is our largest single exposure, and it reads two ways.
+It threatens the estimate, because we fit the deletion hazard on a minority of deaths and a rewrite
+threshold that mistook ordinary pruning for a wholesale rewrite would pull real deletions out of
+the risk set. It also reports a finding: maintainers replace rather than prune, exactly as
+\autoref{eq:ratchet} predicts.
+
+\autoref{tab:rewrite} gathers the checks a reader can run without re-tracking the corpus.
+Panel~(a) shows that the event really is a mass \emph{deletion}. The median event kills far more
+instructions than it births, a quarter of events leave the file with none at all, and fewer than
+half replace even half of the dead text. Panel~(b) re-estimates the event study at every window
+half-width. A balanced panel's composition depends on that width, and without the sweep a reader
+cannot separate our result from our selection. The drop and the rebound both survive it. Panel~(c)
+asks whether the ratchet is self-limiting, which would show up as slower growth after later
+rewrites. Growth after them is faster instead. Cross-file migration does not account for the events
+either: under 3\% of rewrite commits carry any migration death at all.
+
+We omit one check from \autoref{tab:rewrite}: a sweep of the \RewriteFracThreshold{} threshold
+itself. The tracker applies that threshold internally, so varying it means re-running the pipeline
+rather than re-aggregating its output, and we have no such run. Limitations names the audit.
+
+\subsection{Growth in count versus in elaboration}
+\label{sec:appendix:decomposition}
+
+\autoref{sec:growth} splits growth into three components and reports all three. The split
+falsifies our thesis, and the total does not. Suppose files grew mainly by elaborating rules they
+already had. The ratchet would then be a story about verbosity, and counting instructions would
+miss the point. They do not: on the same normalized-lifetime grid and the same estimator as
+\autoref{fig:hero:growth}, mean instruction length relative to each file's own first version peaks
+at \FieldGrowthLenPeakPct{} (over the \FieldGrowthLenFiles{} multi-version files with a defined
+ratio) against the instruction count's \FieldGrowthCountPeakPct{}. Non-instruction payload grows
+\FieldGrowthPayloadPct{} alongside, so the count growth is not text migrating between the
+instruction and payload classes.
+
+We chose both axes for robustness to composition. Normalized lifetime keeps every surviving file
+contributing at every point rather than letting the population thin with age, and dividing by each
+file's own first version removes level composition. Without that second step, a corpus in which
+large files live longer would show growth that is entirely survivorship.
+
+\subsection{The deletion hazard}
+\label{sec:appendix:hazard}
+
+\autoref{fig:hazard} plots a smoothed Nelson--Aalen estimator of deletion risk against instruction
+age. At age $a$ the risk set holds every spell we observed to reach age $a$. A spell leaves that
+set in one of three ways: by deletion, which is the event; by a censored competing risk; or by
+reaching the end of its file's history. The third exit dominates, and it tells us little. An
+instruction still alive at the last commit has a hazard that has not fired yet, which is not the
+same as one that never will.
+
+We count age in commits touching the file, not calendar days. \autoref{eq:hazard} is defined on
+that clock, since $h(a)$ measures risk per review opportunity, and an instruction sitting in a
+dormant repository is never offered one. We report calendar days as corroboration only, because a
+decline on the calendar clock alone would also be consistent with files simply being edited less as
+they age.
+
+We kernel-smooth the rates with a bandwidth of \HazardBandwidthCommits{} commits
+(\HazardBandwidthDays{} days on the calendar clock) over ages $0$ to \HazardAgeMax{}. We drop any
+grid point backed by less than one expected event rather than plot it, so the curve never runs past
+its own support. We take the confidence bands and the log-hazard slope from a bootstrap stratified
+by repository, resampling repositories with replacement rather than spells (\HazardBoot{} draws,
+seed 0). Instructions inside one repository share an author, a segmentation outcome and a
+maintenance culture. A spell-level bootstrap would treat them as independent and understate the
+interval severalfold. We report the median slope across draws, with the 2.5th and 97.5th
+percentiles as its interval.
+
+\subsection{The gamma frailty fit}
+\label{sec:appendix:frailty}
+
+\input{assets/table_frailty.tex}
+
+A hazard that declines across a population signals survival heterogeneity just as readily as
+duration dependence. This is the content-fragility mechanism of \autoref{sec:hazard}: if some
+instructions are intrinsically fragile, they die early, and the ones still alive at old ages are
+the robust remainder. We test it with a \emph{gamma frailty} model, and keep that name for the
+estimator throughout so it is never read as a fourth mechanism. We give each cluster a gamma
+frailty $z$ with mean 1 and variance $\theta$, which makes the population hazard
+$h_{\text{pop}}(a) = h_0(a) / (1 + \theta H_0(a))$. Even a perfectly flat individual baseline
+$h_0$ then produces a declining $h_{\text{pop}}$, at a rate $\theta$ sets. We therefore take the
+presence of frailty for granted and ask only whether it accounts for our slope.
+
+We fit $h_0$ and $\theta$ jointly by piecewise-exponential EM on the risk table, one interval per
+commit of age, with administrative censoring at \HazardAgeMax{} commits. That is a different
+estimator from the bootstrap above, and we label it as such wherever both appear. The headline
+slope stays the Nelson--Aalen bootstrap. \autoref{tab:frailty} carries the EM fit's own no-frailty
+baseline alongside it, so every absorbed share has a stated denominator. Our test suite holds the
+recovery tests, among them a check that a flat baseline at $\theta = 1$ does not read as a
+decline.
+
+We cluster at three levels. We identify repository and file frailty on every spell. We can identify
+frailty shared by instruction \emph{content} only where the same normalized text recurs across at
+least two repositories, so we fit it on that subsample and report the subsample's own no-frailty
+baseline beside it. Content absorbs by far the most, and repository clustering on those same rows
+absorbs almost nothing, which locates the absorbed variance in the instruction text rather than in
+its author. The slope survives all three.
+
+We fit one clustering level at a time, so each $\theta$ is an upper bound on the variance
+attributable to that level alone. We do not fit a crossed repository $\times$ content
+specification.
+
+\subsection{The authorship-turnover interaction}
+\label{sec:appendix:interaction}
+
+\input{assets/table_interaction.tex}
+
+Content fragility and imperfect recall make the same marginal prediction. They diverge on one
+conditional prediction. A fixed per-instruction frailty is a constant, so it gives no reason for
+the age slope to differ between files many people edit and files one person edits. Imperfect
+recall does give a reason: people hold the rationale it says decays, and people leave.
+
+We fit one piecewise-exponential hazard with a file-level gamma frailty on top, which estimates the
+interaction net of the between-file heterogeneity the previous subsection measured. We then
+interact age with an indicator for whether at least two distinct human authors have touched the
+file. We exclude bot commits before the count, because automated formatters and dependency bots
+touch context files, carry no rationale, and would inflate the multi-author stratum with exactly
+the commits the mechanism does not apply to.
+
+Multi-author files are also busier, and file activity could drive an age slope by itself. We
+therefore enter $\log$ commits both as a level and interacted with age, on the same footing as the
+covariate under test. A skeptical reader should check that interaction first. We place it in
+\autoref{tab:interaction} rather than in the body only because the body has room for the term
+under test alone.
+
+This analysis is exploratory. We pre-registered no criterion for it, it is one specification
+rather than a specification curve, and multi-author status proxies for turnover rather than
+measuring it, counting how many people have edited a file without establishing whether the person
+who wrote a given instruction has left. We report it as evidence weighing against a rival account
+and not as a passed gate.

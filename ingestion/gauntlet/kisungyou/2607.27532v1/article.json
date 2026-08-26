@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2607.27532v1",
-  "initialized_utc": "2026-08-26T03:22:05.280196Z",
+  "initialized_utc": "2026-08-26T03:57:42.419922Z",
   "title": "HOMER: Huber-of-Means for Efficient and Robust Estimation in Hilbert Spaces",
   "authors": [
     "Kisung You",
@@ -56,8 +56,11 @@
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
       "declarations": {
-        "title_tex": null,
-        "authors_tex": [],
+        "title_tex": "HOMER: Huber-of-Means for Efficient and Robust Estimation in Hilbert Spaces",
+        "authors_tex": [
+          "Kisung You",
+          "Boram Cho"
+        ],
         "doi": null
       }
     },
@@ -124,8 +127,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:22:05.280196Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:42.419922Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

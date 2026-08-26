@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2605.03266v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2605.03266v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Intrinsic effective sample size for manifold-valued Markov chain Monte Carlo via kernel discrepancy",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Effective sample size is a standard summary of Markov chain Monte Carlo output, but it is usually attached to scalar or Euclidean summaries chosen by the analyst. For manifold-valued samples this choice is not canonical: coordinate-wise effective sample sizes can change under rotations, chart changes, or alternative embeddings of the same underlying path. We propose an intrinsic effective sample size based on kernel discrepancy. The proposed quantity is the number of independent draws that would yield the same expected squared kernel discrepancy between the empirical distribution and the target distribution. This gives an exact finite-sample risk interpretation, an asymptotic integrated-autocorrelation representation, and a coordinate-free diagnostic whenever the kernel respects the geometry of the state space. We establish invariance under transported kernels, operator and principal-direction interpretations, and consistency of a lag-window estimator under boundedness and absolute-regularity conditions. We also discuss valid kernel constructions on manifolds, emphasizing that geodesic Gaussian kernels are not generally positive definite on curved spaces. Sphere experiments illustrate rotation invariance and calibration of the proposed diagnostic against empirical distributional error.",
+      "doi": null,
+      "arxiv_id": "2605.03266v1",
+      "published": "2026-05-05T01:37:41Z",
+      "updated": "2026-05-05T01:37:41Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2605.03266v1",
+      "pdf_url": "https://arxiv.org/pdf/2605.03266v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "math.ST",
+        "stat.CO",
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2605.03266v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2605.03266v1",
+          "url": "https://arxiv.org/abs/2605.03266v1",
+          "doi": null,
+          "arxiv_id": "2605.03266v1",
+          "published": "2026-05-05T01:37:41Z",
+          "updated": "2026-05-05T01:37:41Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2605.03266v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:28.580669Z",
+      "sha256": "cc0dfc0055fef952d0263dfe128530501ef29a649aef78773edc7017b9e5fbfa",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvNU5CeUxjVWlGdDIrNjRvY0JVOFAxOCtqUzNNPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNS4wMzI2NnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjI4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA1LjAzMjY2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNS4wMzI2NnYxPC9pZD4KICAgIDx0aXRsZT5JbnRyaW5zaWMgZWZmZWN0aXZlIHNhbXBsZSBzaXplIGZvciBtYW5pZm9sZC12YWx1ZWQgTWFya292IGNoYWluIE1vbnRlIENhcmxvIHZpYSBrZXJuZWwgZGlzY3JlcGFuY3k8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNS0wNVQwMTozNzo0MVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNS4wMzI2NnYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNS4wMzI2NnYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+RWZmZWN0aXZlIHNhbXBsZSBzaXplIGlzIGEgc3RhbmRhcmQgc3VtbWFyeSBvZiBNYXJrb3YgY2hhaW4gTW9udGUgQ2FybG8gb3V0cHV0LCBidXQgaXQgaXMgdXN1YWxseSBhdHRhY2hlZCB0byBzY2FsYXIgb3IgRXVjbGlkZWFuIHN1bW1hcmllcyBjaG9zZW4gYnkgdGhlIGFuYWx5c3QuIEZvciBtYW5pZm9sZC12YWx1ZWQgc2FtcGxlcyB0aGlzIGNob2ljZSBpcyBub3QgY2Fub25pY2FsOiBjb29yZGluYXRlLXdpc2UgZWZmZWN0aXZlIHNhbXBsZSBzaXplcyBjYW4gY2hhbmdlIHVuZGVyIHJvdGF0aW9ucywgY2hhcnQgY2hhbmdlcywgb3IgYWx0ZXJuYXRpdmUgZW1iZWRkaW5ncyBvZiB0aGUgc2FtZSB1bmRlcmx5aW5nIHBhdGguIFdlIHByb3Bvc2UgYW4gaW50cmluc2ljIGVmZmVjdGl2ZSBzYW1wbGUgc2l6ZSBiYXNlZCBvbiBrZXJuZWwgZGlzY3JlcGFuY3kuIFRoZSBwcm9wb3NlZCBxdWFudGl0eSBpcyB0aGUgbnVtYmVyIG9mIGluZGVwZW5kZW50IGRyYXdzIHRoYXQgd291bGQgeWllbGQgdGhlIHNhbWUgZXhwZWN0ZWQgc3F1YXJlZCBrZXJuZWwgZGlzY3JlcGFuY3kgYmV0d2VlbiB0aGUgZW1waXJpY2FsIGRpc3RyaWJ1dGlvbiBhbmQgdGhlIHRhcmdldCBkaXN0cmlidXRpb24uIFRoaXMgZ2l2ZXMgYW4gZXhhY3QgZmluaXRlLXNhbXBsZSByaXNrIGludGVycHJldGF0aW9uLCBhbiBhc3ltcHRvdGljIGludGVncmF0ZWQtYXV0b2NvcnJlbGF0aW9uIHJlcHJlc2VudGF0aW9uLCBhbmQgYSBjb29yZGluYXRlLWZyZWUgZGlhZ25vc3RpYyB3aGVuZXZlciB0aGUga2VybmVsIHJlc3BlY3RzIHRoZSBnZW9tZXRyeSBvZiB0aGUgc3RhdGUgc3BhY2UuIFdlIGVzdGFibGlzaCBpbnZhcmlhbmNlIHVuZGVyIHRyYW5zcG9ydGVkIGtlcm5lbHMsIG9wZXJhdG9yIGFuZCBwcmluY2lwYWwtZGlyZWN0aW9uIGludGVycHJldGF0aW9ucywgYW5kIGNvbnNpc3RlbmN5IG9mIGEgbGFnLXdpbmRvdyBlc3RpbWF0b3IgdW5kZXIgYm91bmRlZG5lc3MgYW5kIGFic29sdXRlLXJlZ3VsYXJpdHkgY29uZGl0aW9ucy4gV2UgYWxzbyBkaXNjdXNzIHZhbGlkIGtlcm5lbCBjb25zdHJ1Y3Rpb25zIG9uIG1hbmlmb2xkcywgZW1waGFzaXppbmcgdGhhdCBnZW9kZXNpYyBHYXVzc2lhbiBrZXJuZWxzIGFyZSBub3QgZ2VuZXJhbGx5IHBvc2l0aXZlIGRlZmluaXRlIG9uIGN1cnZlZCBzcGFjZXMuIFNwaGVyZSBleHBlcmltZW50cyBpbGx1c3RyYXRlIHJvdGF0aW9uIGludmFyaWFuY2UgYW5kIGNhbGlicmF0aW9uIG9mIHRoZSBwcm9wb3NlZCBkaWFnbm9zdGljIGFnYWluc3QgZW1waXJpY2FsIGRpc3RyaWJ1dGlvbmFsIGVycm9yLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJtYXRoLlNUIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5DTyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNS0wNVQwMTozNzo0MVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUwiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Intrinsic effective sample size for manifold-valued Markov chain Monte Carlo via kernel discrepancy",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Effective sample size is a standard summary of Markov chain Monte Carlo output, but it is usually attached to scalar or Euclidean summaries chosen by the analyst. For manifold-valued samples this choice is not canonical: coordinate-wise effective sample sizes can change under rotations, chart changes, or alternative embeddings of the same underlying path. We propose an intrinsic effective sample size based on kernel discrepancy. The proposed quantity is the number of independent draws that would yield the same expected squared kernel discrepancy between the empirical distribution and the target distribution. This gives an exact finite-sample risk interpretation, an asymptotic integrated-autocorrelation representation, and a coordinate-free diagnostic whenever the kernel respects the geometry of the state space. We establish invariance under transported kernels, operator and principal-direction interpretations, and consistency of a lag-window estimator under boundedness and absolute-regularity conditions. We also discuss valid kernel constructions on manifolds, emphasizing that geodesic Gaussian kernels are not generally positive definite on curved spaces. Sphere experiments illustrate rotation invariance and calibration of the proposed diagnostic against empirical distributional error.",
+    "identifiers": {
+      "arxiv": "2605.03266",
+      "arxiv_versioned": "2605.03266v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2605.03266v1"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG",
+      "math.ST",
+      "stat.CO",
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2026-05-05T01:37:41Z",
+    "updated": "2026-05-05T01:37:41Z"
+  }
+}

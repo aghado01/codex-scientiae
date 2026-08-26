@@ -2,21 +2,56 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2505.18844v3",
-  "initialized_utc": "2026-08-11T08:29:57.722465Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:57:02.754122Z",
+  "title": "Geometric medians on product manifolds",
+  "authors": [
+    "Jiewon Park",
+    "Kisung You"
+  ],
+  "abstract": "Product manifolds arise when heterogeneous geometric variables are jointly observed. While the Fréchet mean on Riemannian manifolds separates cleanly across factors, the canonical geometric median couples them, and its behavior has remained largely unexplored. In this paper, we give the first systematic treatment of this problem. After formulating the coupled objective, we establish general existence and uniqueness results that the median is unique on any Hadamard product, and remains locally unique under sharp conditions on curvature and injectivity radius even when one or more factors have positive curvature. We then prove that the estimator enjoys Lipschitz stability to perturbations and the optimal breakdown point, extending classical robustness guarantees to the product-manifold setting. Two practical solvers are proposed, including a Riemannian subgradient method with global sublinear convergence and a product-aware Weiszfeld algorithm that achieves local linear convergence. Both algorithms update the factors independently while respecting the latent coupling term, enabling implementation with standard manifold primitives. Simulations on parameter spaces of univariate and multivariate Gaussian distributions endowed with the Bures-Wasserstein geometry show that the median is more resilient to contamination than the Fréchet mean.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2505.18844",
+    "arxiv_versioned": "2505.18844v3",
+    "doi": "10.1016/j.jmva.2026.105653",
+    "external": {
+      "arxiv": "2505.18844v3",
+      "doi": "10.1016/j.jmva.2026.105653"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ME",
+  "published": "2025-05-24T19:34:25Z",
+  "updated": "2025-10-01T01:57:27Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2505.18844v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9111,
+        "sha256": "c4bb1f1002e1fd144d4cf98379239533c4c744da3b4382cde5ece4c4e8a8e3c7",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:57:02.436127Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2505.18844v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "e68e499e765918d2df2cb69de6950ee2f341d18c1d6ecc976d09a733c53b1046"
+      }
+    ],
     "latex_source": {
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
@@ -35,7 +70,32 @@
         "bytes": 385,
         "sha256": "025ba9069ed5e0dfa9ec47ce97fb20d930045cdee538b0ee5a399cf7b1c3c974"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2505.18844v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -67,8 +127,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:57.722465Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:02.754122Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -93,8 +153,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "manuscript.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
       },
       {
         "name": "literal-inputs-resolved",

@@ -1,0 +1,58 @@
+\begin{figure*}[t]
+  \small
+  \textbf{(a) Maintainer system prompt (all arms)}
+  \begin{verbatim}
+You maintain a reusable prompt (a numbered list of directives) for an assistant
+  that repeatedly performs variations of one task. After each round, some
+  responses were scored against hidden requirements; you see this round's scores
+  below.
+
+Optimize the prompt for LONG-RUN average score. You may add directives and delete
+  existing ones.
+
+Each response is checked against a random sample of the hidden requirements. You
+  are NOT told how many requirements exist, which ones were sampled, or which
+  directive (if any) satisfied a passing one; a failure may include a description
+  of what went wrong.
+
+Rules for directives:
+- A directive is one imperative sentence addressed to the assistant about what the
+  RESPONSE must do. It must NEVER mention scores, failures, rounds, or history.
+- You cannot reword a directive; to change one, delete it and add a new one.
+- With each add, supply `comment` (a note to the future maintainer: which observed
+  failure prompted this, in your own words, e.g. "task 1 was flagged for comma
+  use") and `cause` (one short phrase naming the requirement you believe it
+  targets, e.g. "no commas allowed").
+
+Return only the operations. An empty ops list keeps the prompt unchanged.
+  \end{verbatim}
+  \textbf{(b) Protocol addendum (informative-comments arm only)}
+  \begin{verbatim}
+Your ONLY memory across rounds is the `comment` attached to each directive (at
+  most 1,024 characters, frozen when the directive is added). Write every comment
+  as a commit message to all future maintainers, containing:
+- "r<N>:" — this round's number, inferred as one more than the highest r<N> in the
+  existing comments (r1 if there are none);
+- the failure description that prompted this directive, quoted, and how many
+  rounds it has been recurring;
+- the lineage of this failure: which approaches were already tried against it and
+  FALSIFIED (copy forward any falsifications recorded in the comments of
+  directives you are deleting now — a deleted directive's comment vanishes with
+  it);
+- if this directive replaces a deleted one that might still have been doing work,
+  the deleted directive's exact text in quotes, so a successor can restore it
+  verbatim.
+Before deleting any directive, read its comment: if its failure has not recurred
+  since the round it was added, the directive is likely PREVENTING that failure —
+  keep it. Delete a directive when its comment's failure kept recurring anyway
+  (falsified), or when it duplicates another directive's target.
+  \end{verbatim}
+  \caption{
+    What the maintainer is told, and the only thing that differs across arms. \textbf{(a)} goes to
+    every arm; \textbf{(b)} goes to the informative-comments arm alone, and everything that
+    protocol persists is written into the per-instruction comment at write time. No arm differs
+    from another in any other input. \autoref{fig:renderings} shows what the two roles then see.
+    Line breaks are set for this page.
+  }
+  \label{fig:prompts}
+\end{figure*}

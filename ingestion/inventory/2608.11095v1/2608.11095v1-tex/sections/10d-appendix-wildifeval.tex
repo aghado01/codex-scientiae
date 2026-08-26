@@ -1,0 +1,63 @@
+
+\section{The WildIFEval Replication}
+\label{sec:appendix:wild}
+
+\subsection{The design grid}
+\label{sec:appendix:wildgrid}
+
+\input{assets/table_wild_grid.tex}
+
+\autoref{sec:wild} reports four contrasts, and \autoref{tab:wildgrid} reports every cell they are
+computed from, so a reader can check the headline against the design rather than against one
+favorable comparison. The grid is the same computation the analysis notebook renders, restricted
+to this suite.
+
+\subsection{Scoring}
+\label{sec:appendix:wildscoring}
+
+WildIFEval ships human-written constraint decompositions and no code verifiers,
+so satisfaction here is an LLM judge rather than \autoref{tab:verifiers}'s programmatic ones. The judge
+is \texttt{claude-haiku-4-5}, prompted with exactly one constraint and one response and asked for a
+boolean --- no prompt $D_t$, no arm label, no history, no sibling constraints --- so nothing in its input
+distinguishes the arms, and two arms producing the same response are scored identically. Both arms are
+judged by the same model in the same call shape, so judge error is common to the contrast rather than
+differential across it. Responses are stored verbatim, so the suite can be re-judged without
+re-generating them, which is what makes the next subsection cost no generation.
+
+\subsection{Judge robustness}
+\label{sec:appendix:judges}
+
+\input{assets/table_judges.tex}
+
+No contrast in \autoref{sec:wild} is a property of the model that graded it. We re-scored all
+\JudgeVerdicts{} stored verdicts under \JudgeAlt{}, a second judge matched to judge~1's capability
+tier so that a disagreement between them is a vendor difference rather than a capability one,
+holding the prompt, schema, token cap and $\text{temperature}{=}0$ fixed so that only the model
+varies. \autoref{tab:judges} is the result: every criterion judge~1 passes keeps its pre-registered
+sign under the second judge, interference and the size criteria keep intervals excluding zero under
+both, and the placebo stays null under both. The two judges also agree on the effect's \emph{size}
+as far as this design can tell. Their per-world difference-in-differences on the
+instruction-following criterion is \JudgeDidPp{} (95\% CI: \JudgeDidCI{}), so the spread
+between their point estimates (\WildDeltaSatPp{} and \JudgeAltDeltaSatPp{}) has no
+evidential support as a judge difference. At $W = \WildWorlds{}$ that is absence of evidence rather
+than equivalence: the interval admits a judge difference as large as \JudgeDidBound{}, and
+closing that needs more worlds rather than more judges.
+
+\subsection{Judge agreement, and the scope of the effect}
+\label{sec:appendix:judgeagreement}
+
+\autoref{tab:judgeagreement} reports agreement, which we record but do not gate on: two judges can
+disagree about absolute difficulty and still rank the arms identically, and it is the ranking
+\autoref{sec:wild} quotes. Judge~1 and \JudgeAlt{} agree on \JudgeAgreePct{} of individual
+verdicts at $\kappa = \JudgeKappa{}$ ($\JudgeKappaCI$), and --- the load-bearing part --- $\kappa$
+does not vary with the arm, so judge noise cannot have produced the arm gap. What we do not measure
+is judge \emph{accuracy}: neither model is ground truth, so a disagreement never says which one is
+right, and every \autoref{sec:wild} rate remains a rate under a named judge. Licensing an accuracy
+claim would take a human-annotated subsample, which we did not run.
+
+The effect is a recovery from seeded noise rather than a general gain. At $D = 0$ the arms separate
+in neither direction consistently: the commented arm sits above its control at $N = 5$ and below
+it at $N = 6$. The commented arm holds satisfaction while the control falls in both strata only at
+$D = 16$, where the prompt carries distractors to prune. A prompt carrying no extraneous
+instructions is outside the scope of this experiment.
+

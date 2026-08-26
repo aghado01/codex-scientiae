@@ -1,0 +1,29 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabular}{@{}llrrrrrr@{}}
+    \toprule
+    Rows & Frailty & Spells & Deaths & Slope & 95\% CI & $\theta$ & Absorbed \\
+    \midrule
+    all spells & no frailty (baseline) & 247,694 & 28,255 & $-0.0506$ & $[-0.0524, -0.0489]$ & -- & -- \\
+     & shared within repository & 247,694 & 28,255 & $-0.0481$ & $[-0.0499, -0.0464]$ & 1.44 & 4.9\% \\
+     & shared within file & 247,694 & 28,255 & $-0.0485$ & $[-0.0502, -0.0467]$ & 1.49 & 4.3\% \\
+    recurring text & no frailty (baseline) & 20,807 & 2,669 & $-0.0513$ & $[-0.0571, -0.0455]$ & -- & -- \\
+     & shared within repository & 20,807 & 2,669 & $-0.0505$ & $[-0.0566, -0.0445]$ & 2.85 & 1.5\% \\
+     & shared by instruction text & 20,807 & 2,669 & $-0.0355$ & $[-0.0414, -0.0296]$ & 3.41 & 30.8\% \\
+    \bottomrule
+  \end{tabular}
+  \caption{
+    Composition shrinks the age slope at every clustering level and never reverses it.
+    Each row is one gamma-frailty specification, fit by piecewise-exponential EM
+    (\S\ref{sec:appendix:frailty}). The columns give the log-hazard slope per commit with its 95\%
+    CI, the fitted frailty variance $\theta$, and the share of that block's no-frailty slope which
+    the clustering absorbs. \emph{Recurring text} restricts to instructions whose text appears in
+    $\ge 2$ repositories, which are the rows where a frailty shared by instruction content can be
+    identified; absorbed shares compare within a block, against the no-frailty fit on those same
+    rows. We censor deaths administratively at 50 commits. A slope of $0$ would put deletion risk
+    flat in instruction age, and a positive slope is what instruction staleness predicts. Content
+    absorbs the most. Repository clustering on those same rows absorbs almost nothing, which puts
+    the absorbed variance in the instruction text rather than in its author.
+  }
+  \label{tab:frailty}
+\end{table*}

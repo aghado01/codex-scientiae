@@ -1,0 +1,104 @@
+\input{assets/table_arms.tex}
+
+\section{Comments Halt the Ratchet and Buy Back Instruction-Following}
+\label{sec:lab}
+
+Prompt comments can permanently halt the unbounded growth of instructions in agentic prompts and, in doing
+so, improve instruction-following through smaller, more robust prompts.
+
+To evaluate prompt effectiveness, we first propose a new evaluation for agentic prompts in task-stationary
+settings (\autoref{sec:testbed}). We use this evaluation to demonstrate that prompt comments enable
+prompts to settle near their theoretically optimal minimum cover (\autoref{sec:protocol}). Finally, we show
+that prompt comments can buy back instruction-following lost to extraneous, noisy instructions in
+real-world prompts (\autoref{sec:wild}).
+
+\subsection{Inverting IFEval makes the minimum cover observable}
+\label{sec:testbed}
+
+In practice, maintainers in agentic coding contexts must learn an effective prompt to satisfy a set of
+unobservable constraints. In order to maximize correctness, this prompt must simultaneously cover all
+constraints while, given well-known issues with instruction-following decay
+\citep{jiang2024followbench, lior2025wildifeval}, being minimal.
+
+Evaluating a prompt therefore requires measuring both its excess size and its correctness, but calculating
+excess size requires minimum cover, which is incomputable in general (\autoref{sec:theory}). Standard
+instruction-following suites offer a path.
+
+By inverting IFEval \citep{zhou2023ifeval}, we can attack the problem. For each benchmark item $(D_j, C_j)$
+--- instructions $D_j$, verifiers $C_j$ --- we apply the following transform:
+
+\begin{enumerate}[nosep,itemsep=2pt,parsep=2pt,topsep=2pt,leftmargin=*]
+  \item \emph{Hide $D_j$.} The item's stated instructions become the reference minimum cover
+    $D_\star$, so $|D_\star|$ is known a priori and excess size is measurable.
+  \item \emph{Keep $C_j$.} Its verifiers become the world's hidden constraint set, run by the
+    harness alone and never named to the maintainer.
+  \item \emph{Generate brief $o_j$.} A stronger model lossily summarizes $D_j$ as a
+    general task objective (``draft a product announcement'').
+\end{enumerate}
+
+A fresh maintainer then reconstructs $D_j$ from $o_j$ over $T$ steps, seeing only censored, noisy feedback
+from $C_j$. Its arm decides whether it may annotate an instruction $d$ with a comment $r_d$ carrying that
+instruction's latent reasoning. The next maintainer reads $D_t$ and every $r_d$; the executor reads only $D_t$.
+
+An instruction tells the executor what to do; a comment tells the next maintainer why. Enforcing that split,
+the harness strips comments before the prompt reaches the executor and rejects any instruction citing a past
+failure, leaving the comment as the only surviving channel for latent reasoning
+(\apxref{sec:appendix:testbed}).
+
+\input{assets/fig_comment_examples.tex}
+
+\subsection{Comments encoding latent reasoning settle the prompt at its cover}
+\label{sec:protocol}
+
+Prompt comments encoding an instruction's latent reasoning settle the prompt at its minimum cover
+(\autoref{fig:hero:lab}). Its latent reasoning summarizes the failure behind its instruction, a hypothesis,
+and how it has fared (\autoref{fig:comment_examples}).
+
+Concretely, across \LabUnits{} maintenance histories, maintainers encoding latent reasoning as prompt
+comments learn prompts at \LabPracticalExcessPct{} excess size against \LabControlExcessPct{} for
+maintainers without them (\LabPracticalDeltaExcessPp{}), at parity constraint satisfaction
+(\autoref{tab:arms}). Arms differ only in the handoff: the
+prompt instructions along with its comments (or not), containing a maintainer's summarized latent reasoning.
+
+As (agentic) maintainers scale, they ratchet harder and prompt comments help them more. Varying the
+maintainer across \CapacityTiers{} tiers at $T{=}\LabT$, the uncommented arm's excess rises from
+\CapacityControlRange{}; at the top tier, prompt comments enable strictly Pareto gains in both constraint
+satisfaction and excess size relative to control (\autoref{tab:capacity}).
+
+Finally, ablations at $T{=}\LabT$ show that a comment must carry outcomes (\autoref{tab:ablations}).
+Comment-shaped noise lands within the noise of the no-comment arm, and a narrative of attempts without
+their outcomes is our worst arm at \LadderFreeformExcessPct{}, handing successors an unvalidated premise to
+extend. Within the schema the two fields recording what happened carry the reduction: dropping the recurrence
+count alone costs \ClauseDropLossPct{} of it.
+
+\subsection{In real prompts, noisy instructions cost correctness and comments buy it back}
+\label{sec:wild}
+
+Extraneous, noisy instructions degrade compliance with the true, correct instructions, and comments
+recover most of that loss.
+
+Inverting WildIFEval \citep{lior2025wildifeval} the same way carries the test to real prompts, and to
+instruction-following rather than count. We convert every benchmark item $(D_j, C_j)$ to a world as in
+\autoref{sec:testbed}, but instead of making the maintainer learn all $|D_j|$ instructions we seed it with
+$|D_j|-K$ true instructions and $G$ noisy ones drawn uniformly from other items' sets $D_{i \neq j}$.
+WildIFEval's constraints are human-written prose and ship with no code verifiers, so we score them with an arm-blind
+LLM judge that sees one constraint and one response and nothing else: no prompt, no arm label, no history.
+Across \WildWorlds{} worlds, for $K{=}1$ and $G{=}\WildDistractors$, those noisy instructions cost
+\WildInterferencePp{} of correctness on the true instructions already in the prompt, \WildCleanSatPct{} at
+$G{=}\WildDistractorsLow{}$ against \WildNoisySatPct{} here (95\% CI: \WildInterferenceCI{}); full
+details are in \apxref{sec:appendix:wildgrid}.
+
+Comments lift satisfaction from \WildControlSatPct{} to \WildCommentSatPct{} over \WildT{} maintenance
+rounds (\WildDeltaSatPp{}, 95\% CI: \WildDeltaSatCI{}), a \WildDeltaSatPct{} relative gain, against an
+uncommented maintainer given the identical prompt. Ablations
+show again that the latent reasoning encoded in the comment drives the behavior: comment-shaped noise lands
+\WildPlaceboDeltaSatPp{} from the uncommented arm (95\% CI: \WildPlaceboDeltaSatCI{}, covering zero).
+Every contrast in this subsection is a rate under one judge, so we re-scored all \JudgeVerdicts{} verdicts
+under a second: the criteria reproduce, and the effect that judge measures differs from the one quoted here
+by \JudgeDidPp{} (\JudgeAltDeltaSatPp{} against \WildDeltaSatPp{}; 95\% CI: \JudgeDidCI{}), which does
+not exclude zero
+(\apxref{sec:appendix:judges}).
+
+Under assignment, then, we see that prompt comments encoding latent reasoning both reduce instruction count
+to its optimal minimum cover and buy back instruction-following in real-world prompts. Next, we contextualize
+and contrast our approach with previous work.

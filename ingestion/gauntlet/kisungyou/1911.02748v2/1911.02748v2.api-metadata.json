@@ -1,0 +1,107 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "1911.02748v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "1911.02748v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Data transforming augmentation for heteroscedastic models",
+      "authors": [
+        "Hyungsuk Tak",
+        "Kisung You",
+        "Sujit K. Ghosh",
+        "Bingyue Su",
+        "Joseph Kelly"
+      ],
+      "abstract": "Data augmentation (DA) turns seemingly intractable computational problems into simple ones by augmenting latent missing data. In addition to computational simplicity, it is now well-established that DA equipped with a deterministic transformation can improve the convergence speed of iterative algorithms such as an EM algorithm or Gibbs sampler. In this article, we outline a framework for the transformation-based DA, which we call data transforming augmentation (DTA), allowing augmented data to be a deterministic function of latent and observed data, and unknown parameters. Under this framework, we investigate a novel DTA scheme that turns heteroscedastic models into homoscedastic ones to take advantage of simpler computations typically available in homoscedastic cases. Applying this DTA scheme to fitting linear mixed models, we demonstrate simpler computations and faster convergence rates of resulting iterative algorithms, compared with those under a non-transformation-based DA scheme. We also fit a Beta-Binomial model using the proposed DTA scheme, which enables sampling approximate marginal posterior distributions that are available only under homoscedasticity. An R package, Rdta, is publicly available at CRAN.",
+      "doi": "10.1080/10618600.2019.1704295",
+      "arxiv_id": "1911.02748v2",
+      "published": "2019-11-07T04:14:01Z",
+      "updated": "2020-01-28T02:53:11Z",
+      "year": 2019,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/1911.02748v2",
+      "pdf_url": "https://arxiv.org/pdf/1911.02748v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "stat.CO"
+      ],
+      "external_ids": {
+        "arxiv": "1911.02748v2",
+        "doi": "10.1080/10618600.2019.1704295"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "1911.02748v2",
+          "url": "https://arxiv.org/abs/1911.02748v2",
+          "doi": "10.1080/10618600.2019.1704295",
+          "arxiv_id": "1911.02748v2",
+          "published": "2019-11-07T04:14:01Z",
+          "updated": "2020-01-28T02:53:11Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=1911.02748v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:20.172932Z",
+      "sha256": "c6f6aa75d560bbc54f26c6cde1c903cf5b2ff22546a85c390694129371b61816",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvaU1EUG5HNElnb0UyQUZVT3E4K05nUHVnTFZNPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MTkxMS4wMjc0OHYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjIwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0xOTExLjAyNzQ4djIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMTkxMS4wMjc0OHYyPC9pZD4KICAgIDx0aXRsZT5EYXRhIHRyYW5zZm9ybWluZyBhdWdtZW50YXRpb24gZm9yIGhldGVyb3NjZWRhc3RpYyBtb2RlbHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyMC0wMS0yOFQwMjo1MzoxMVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMTkxMS4wMjc0OHYyIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMTkxMS4wMjc0OHYyIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+RGF0YSBhdWdtZW50YXRpb24gKERBKSB0dXJucyBzZWVtaW5nbHkgaW50cmFjdGFibGUgY29tcHV0YXRpb25hbCBwcm9ibGVtcyBpbnRvIHNpbXBsZSBvbmVzIGJ5IGF1Z21lbnRpbmcgbGF0ZW50IG1pc3NpbmcgZGF0YS4gSW4gYWRkaXRpb24gdG8gY29tcHV0YXRpb25hbCBzaW1wbGljaXR5LCBpdCBpcyBub3cgd2VsbC1lc3RhYmxpc2hlZCB0aGF0IERBIGVxdWlwcGVkIHdpdGggYSBkZXRlcm1pbmlzdGljIHRyYW5zZm9ybWF0aW9uIGNhbiBpbXByb3ZlIHRoZSBjb252ZXJnZW5jZSBzcGVlZCBvZiBpdGVyYXRpdmUgYWxnb3JpdGhtcyBzdWNoIGFzIGFuIEVNIGFsZ29yaXRobSBvciBHaWJicyBzYW1wbGVyLiBJbiB0aGlzIGFydGljbGUsIHdlIG91dGxpbmUgYSBmcmFtZXdvcmsgZm9yIHRoZSB0cmFuc2Zvcm1hdGlvbi1iYXNlZCBEQSwgd2hpY2ggd2UgY2FsbCBkYXRhIHRyYW5zZm9ybWluZyBhdWdtZW50YXRpb24gKERUQSksIGFsbG93aW5nIGF1Z21lbnRlZCBkYXRhIHRvIGJlIGEgZGV0ZXJtaW5pc3RpYyBmdW5jdGlvbiBvZiBsYXRlbnQgYW5kIG9ic2VydmVkIGRhdGEsIGFuZCB1bmtub3duIHBhcmFtZXRlcnMuIFVuZGVyIHRoaXMgZnJhbWV3b3JrLCB3ZSBpbnZlc3RpZ2F0ZSBhIG5vdmVsIERUQSBzY2hlbWUgdGhhdCB0dXJucyBoZXRlcm9zY2VkYXN0aWMgbW9kZWxzIGludG8gaG9tb3NjZWRhc3RpYyBvbmVzIHRvIHRha2UgYWR2YW50YWdlIG9mIHNpbXBsZXIgY29tcHV0YXRpb25zIHR5cGljYWxseSBhdmFpbGFibGUgaW4gaG9tb3NjZWRhc3RpYyBjYXNlcy4gQXBwbHlpbmcgdGhpcyBEVEEgc2NoZW1lIHRvIGZpdHRpbmcgbGluZWFyIG1peGVkIG1vZGVscywgd2UgZGVtb25zdHJhdGUgc2ltcGxlciBjb21wdXRhdGlvbnMgYW5kIGZhc3RlciBjb252ZXJnZW5jZSByYXRlcyBvZiByZXN1bHRpbmcgaXRlcmF0aXZlIGFsZ29yaXRobXMsIGNvbXBhcmVkIHdpdGggdGhvc2UgdW5kZXIgYSBub24tdHJhbnNmb3JtYXRpb24tYmFzZWQgREEgc2NoZW1lLiBXZSBhbHNvIGZpdCBhIEJldGEtQmlub21pYWwgbW9kZWwgdXNpbmcgdGhlIHByb3Bvc2VkIERUQSBzY2hlbWUsIHdoaWNoIGVuYWJsZXMgc2FtcGxpbmcgYXBwcm94aW1hdGUgbWFyZ2luYWwgcG9zdGVyaW9yIGRpc3RyaWJ1dGlvbnMgdGhhdCBhcmUgYXZhaWxhYmxlIG9ubHkgdW5kZXIgaG9tb3NjZWRhc3RpY2l0eS4gQW4gUiBwYWNrYWdlLCBSZHRhLCBpcyBwdWJsaWNseSBhdmFpbGFibGUgYXQgQ1JBTi48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5NRSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuQ08iIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAxOS0xMS0wN1QwNDoxNDowMVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkh5dW5nc3VrIFRhazwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U3VqaXQgSy4gR2hvc2g8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkJpbmd5dWUgU3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkpvc2VwaCBLZWxseTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGFyeGl2OmRvaT4xMC4xMDgwLzEwNjE4NjAwLjIwMTkuMTcwNDI5NTwvYXJ4aXY6ZG9pPgogICAgPGxpbmsgcmVsPSJyZWxhdGVkIiBocmVmPSJodHRwczovL2RvaS5vcmcvMTAuMTA4MC8xMDYxODYwMC4yMDE5LjE3MDQyOTUiIHRpdGxlPSJkb2kiLz4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Data transforming augmentation for heteroscedastic models",
+    "authors": [
+      "Hyungsuk Tak",
+      "Kisung You",
+      "Sujit K. Ghosh",
+      "Bingyue Su",
+      "Joseph Kelly"
+    ],
+    "abstract": "Data augmentation (DA) turns seemingly intractable computational problems into simple ones by augmenting latent missing data. In addition to computational simplicity, it is now well-established that DA equipped with a deterministic transformation can improve the convergence speed of iterative algorithms such as an EM algorithm or Gibbs sampler. In this article, we outline a framework for the transformation-based DA, which we call data transforming augmentation (DTA), allowing augmented data to be a deterministic function of latent and observed data, and unknown parameters. Under this framework, we investigate a novel DTA scheme that turns heteroscedastic models into homoscedastic ones to take advantage of simpler computations typically available in homoscedastic cases. Applying this DTA scheme to fitting linear mixed models, we demonstrate simpler computations and faster convergence rates of resulting iterative algorithms, compared with those under a non-transformation-based DA scheme. We also fit a Beta-Binomial model using the proposed DTA scheme, which enables sampling approximate marginal posterior distributions that are available only under homoscedasticity. An R package, Rdta, is publicly available at CRAN.",
+    "identifiers": {
+      "arxiv": "1911.02748",
+      "arxiv_versioned": "1911.02748v2",
+      "doi": "10.1080/10618600.2019.1704295",
+      "external": {
+        "arxiv": "1911.02748v2",
+        "doi": "10.1080/10618600.2019.1704295"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "stat.CO"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2019-11-07T04:14:01Z",
+    "updated": "2020-01-28T02:53:11Z"
+  }
+}

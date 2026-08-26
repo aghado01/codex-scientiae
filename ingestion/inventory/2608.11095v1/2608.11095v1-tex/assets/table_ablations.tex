@@ -1,0 +1,26 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}Xrrrr@{}}
+    \toprule
+    & \multicolumn{2}{c}{Excess size} & \multicolumn{2}{c}{Satisfaction} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+    Ablation & $\Delta$ (\%) & $z$ & $\Delta$ (\%) & $z$ \\
+    \midrule
+    comment-shaped noise & $-3.1$ & $-0.33$ & $+3.3$ & $0.77$ \\
+    narrative without outcomes & $+8.8$ & $0.86$ & $-3.3$ & $-0.82$ \\
+    \textsc{commit}, full schema & $-48.9$ & $-2.78$ & $+4.1$ & $0.50$ \\
+    \quad -- round counter & $-47.4$ & $-2.63$ & $-1.9$ & $-0.23$ \\
+    \quad -- recurrence count & $-30.9$ & $-1.83$ & $-3.2$ & $-0.42$ \\
+    \quad -- falsification lineage & $-34.3$ & $-2.14$ & $-9.6$ & $-1.19$ \\
+    \quad -- verbatim restore quote & $-43.5$ & $-2.43$ & $-8.9$ & $-1.09$ \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    A comment must carry outcomes. Every row is that run's arm against its own control.
+    Comment-shaped noise carries control's information at the comment arm's surface form; the
+    clause rows drop each of the \textsc{commit} schema's four fields in turn. $z$ is the paired
+    per-world statistic on the $\Delta$ beside it. $n{=}64$ worlds and one seed for the clause
+    rows; the two content rows are full-pool runs.
+  }
+  \label{tab:ablations}
+\end{table*}

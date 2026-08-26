@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2604.24895v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2604.24895v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Finite Mixture Modeling with Riemannian Gaussian Distributions on Hyperbolic Space",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Hyperbolic space is increasingly used for hierarchical, tree-like, and network-structured data, but likelihood-based density modeling on hyperbolic space remains relatively limited. This paper develops finite mixture modeling with isotropic Riemannian Gaussian distributions on hyperbolic space under the hyperboloid model. We derive the density, radial normalizing constant, and a finite-sum representation involving the complementary error function. We then formulate weighted maximum likelihood estimation, which is the fundamental subproblem in mixture fitting: the location estimator is the weighted Fréchet mean, while the inverse-scale estimator is obtained from a one-dimensional strictly convex profile problem. For finite mixtures, we derive exact EM and generalized EM algorithms. The generalized version replaces exact barycenter solves with truncated hyperbolic majorization-minimization updates. We establish existence and uniqueness of the weighted single-component estimator, singularity of the unrestricted mixture likelihood, existence of a constrained mixture estimator, and monotonicity properties of the EM-type algorithms. Simulations show accurate weighted estimation, reliable mixture recovery, effective model selection, and substantial computational savings from generalized EM. Real network examples based on hyperbolic embeddings illustrate the method as an exploratory likelihood-based clustering tool for non-Euclidean data.",
+      "doi": null,
+      "arxiv_id": "2604.24895v1",
+      "published": "2026-04-27T18:21:29Z",
+      "updated": "2026-04-27T18:21:29Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2604.24895v1",
+      "pdf_url": "https://arxiv.org/pdf/2604.24895v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2604.24895v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2604.24895v1",
+          "url": "https://arxiv.org/abs/2604.24895v1",
+          "doi": null,
+          "arxiv_id": "2604.24895v1",
+          "published": "2026-04-27T18:21:29Z",
+          "updated": "2026-04-27T18:21:29Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2604.24895v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:21.166158Z",
+      "sha256": "0b31587fb88e569a8bd5c4044496236cebc9b067d074a1a9f62041af74a9c64a",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvSFlWRzBoYXFDemdpQ3JEeHFKR0tRZjB2dGl3PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNC4yNDg5NXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjIxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA0LjI0ODk1djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNC4yNDg5NXYxPC9pZD4KICAgIDx0aXRsZT5GaW5pdGUgTWl4dHVyZSBNb2RlbGluZyB3aXRoIFJpZW1hbm5pYW4gR2F1c3NpYW4gRGlzdHJpYnV0aW9ucyBvbiBIeXBlcmJvbGljIFNwYWNlPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDQtMjdUMTg6MjE6MjlaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDQuMjQ4OTV2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDQuMjQ4OTV2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5Pkh5cGVyYm9saWMgc3BhY2UgaXMgaW5jcmVhc2luZ2x5IHVzZWQgZm9yIGhpZXJhcmNoaWNhbCwgdHJlZS1saWtlLCBhbmQgbmV0d29yay1zdHJ1Y3R1cmVkIGRhdGEsIGJ1dCBsaWtlbGlob29kLWJhc2VkIGRlbnNpdHkgbW9kZWxpbmcgb24gaHlwZXJib2xpYyBzcGFjZSByZW1haW5zIHJlbGF0aXZlbHkgbGltaXRlZC4gVGhpcyBwYXBlciBkZXZlbG9wcyBmaW5pdGUgbWl4dHVyZSBtb2RlbGluZyB3aXRoIGlzb3Ryb3BpYyBSaWVtYW5uaWFuIEdhdXNzaWFuIGRpc3RyaWJ1dGlvbnMgb24gaHlwZXJib2xpYyBzcGFjZSB1bmRlciB0aGUgaHlwZXJib2xvaWQgbW9kZWwuIFdlIGRlcml2ZSB0aGUgZGVuc2l0eSwgcmFkaWFsIG5vcm1hbGl6aW5nIGNvbnN0YW50LCBhbmQgYSBmaW5pdGUtc3VtIHJlcHJlc2VudGF0aW9uIGludm9sdmluZyB0aGUgY29tcGxlbWVudGFyeSBlcnJvciBmdW5jdGlvbi4gV2UgdGhlbiBmb3JtdWxhdGUgd2VpZ2h0ZWQgbWF4aW11bSBsaWtlbGlob29kIGVzdGltYXRpb24sIHdoaWNoIGlzIHRoZSBmdW5kYW1lbnRhbCBzdWJwcm9ibGVtIGluIG1peHR1cmUgZml0dGluZzogdGhlIGxvY2F0aW9uIGVzdGltYXRvciBpcyB0aGUgd2VpZ2h0ZWQgRnLDqWNoZXQgbWVhbiwgd2hpbGUgdGhlIGludmVyc2Utc2NhbGUgZXN0aW1hdG9yIGlzIG9idGFpbmVkIGZyb20gYSBvbmUtZGltZW5zaW9uYWwgc3RyaWN0bHkgY29udmV4IHByb2ZpbGUgcHJvYmxlbS4gRm9yIGZpbml0ZSBtaXh0dXJlcywgd2UgZGVyaXZlIGV4YWN0IEVNIGFuZCBnZW5lcmFsaXplZCBFTSBhbGdvcml0aG1zLiBUaGUgZ2VuZXJhbGl6ZWQgdmVyc2lvbiByZXBsYWNlcyBleGFjdCBiYXJ5Y2VudGVyIHNvbHZlcyB3aXRoIHRydW5jYXRlZCBoeXBlcmJvbGljIG1ham9yaXphdGlvbi1taW5pbWl6YXRpb24gdXBkYXRlcy4gV2UgZXN0YWJsaXNoIGV4aXN0ZW5jZSBhbmQgdW5pcXVlbmVzcyBvZiB0aGUgd2VpZ2h0ZWQgc2luZ2xlLWNvbXBvbmVudCBlc3RpbWF0b3IsIHNpbmd1bGFyaXR5IG9mIHRoZSB1bnJlc3RyaWN0ZWQgbWl4dHVyZSBsaWtlbGlob29kLCBleGlzdGVuY2Ugb2YgYSBjb25zdHJhaW5lZCBtaXh0dXJlIGVzdGltYXRvciwgYW5kIG1vbm90b25pY2l0eSBwcm9wZXJ0aWVzIG9mIHRoZSBFTS10eXBlIGFsZ29yaXRobXMuIFNpbXVsYXRpb25zIHNob3cgYWNjdXJhdGUgd2VpZ2h0ZWQgZXN0aW1hdGlvbiwgcmVsaWFibGUgbWl4dHVyZSByZWNvdmVyeSwgZWZmZWN0aXZlIG1vZGVsIHNlbGVjdGlvbiwgYW5kIHN1YnN0YW50aWFsIGNvbXB1dGF0aW9uYWwgc2F2aW5ncyBmcm9tIGdlbmVyYWxpemVkIEVNLiBSZWFsIG5ldHdvcmsgZXhhbXBsZXMgYmFzZWQgb24gaHlwZXJib2xpYyBlbWJlZGRpbmdzIGlsbHVzdHJhdGUgdGhlIG1ldGhvZCBhcyBhbiBleHBsb3JhdG9yeSBsaWtlbGlob29kLWJhc2VkIGNsdXN0ZXJpbmcgdG9vbCBmb3Igbm9uLUV1Y2xpZGVhbiBkYXRhLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDQtMjdUMTg6MjE6MjlaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Finite Mixture Modeling with Riemannian Gaussian Distributions on Hyperbolic Space",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Hyperbolic space is increasingly used for hierarchical, tree-like, and network-structured data, but likelihood-based density modeling on hyperbolic space remains relatively limited. This paper develops finite mixture modeling with isotropic Riemannian Gaussian distributions on hyperbolic space under the hyperboloid model. We derive the density, radial normalizing constant, and a finite-sum representation involving the complementary error function. We then formulate weighted maximum likelihood estimation, which is the fundamental subproblem in mixture fitting: the location estimator is the weighted Fréchet mean, while the inverse-scale estimator is obtained from a one-dimensional strictly convex profile problem. For finite mixtures, we derive exact EM and generalized EM algorithms. The generalized version replaces exact barycenter solves with truncated hyperbolic majorization-minimization updates. We establish existence and uniqueness of the weighted single-component estimator, singularity of the unrestricted mixture likelihood, existence of a constrained mixture estimator, and monotonicity properties of the EM-type algorithms. Simulations show accurate weighted estimation, reliable mixture recovery, effective model selection, and substantial computational savings from generalized EM. Real network examples based on hyperbolic embeddings illustrate the method as an exploratory likelihood-based clustering tool for non-Euclidean data.",
+    "identifiers": {
+      "arxiv": "2604.24895",
+      "arxiv_versioned": "2604.24895v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2604.24895v1"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-04-27T18:21:29Z",
+    "updated": "2026-04-27T18:21:29Z"
+  }
+}

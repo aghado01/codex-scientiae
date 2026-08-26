@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2112.02580v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2112.02580v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Bayesian Optimal Two-sample Tests in High-dimension",
+      "authors": [
+        "Kyoungjae Lee",
+        "Kisung You",
+        "Lizhen Lin"
+      ],
+      "abstract": "We propose optimal Bayesian two-sample tests for testing equality of high-dimensional mean vectors and covariance matrices between two populations. In many applications including genomics and medical imaging, it is natural to assume that only a few entries of two mean vectors or covariance matrices are different. Many existing tests that rely on aggregating the difference between empirical means or covariance matrices are not optimal or yield low power under such setups. Motivated by this, we develop Bayesian two-sample tests employing a divide-and-conquer idea, which is powerful especially when the difference between two populations is sparse but large. The proposed two-sample tests manifest closed forms of Bayes factors and allow scalable computations even in high-dimensions. We prove that the proposed tests are consistent under relatively mild conditions compared to existing tests in the literature. Furthermore, the testable regions from the proposed tests turn out to be optimal in terms of rates. Simulation studies show clear advantages of the proposed tests over other state-of-the-art methods in various scenarios. Our tests are also applied to the analysis of the gene expression data of two cancer data sets.",
+      "doi": null,
+      "arxiv_id": "2112.02580v1",
+      "published": "2021-12-05T14:22:02Z",
+      "updated": "2021-12-05T14:22:02Z",
+      "year": 2021,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2112.02580v1",
+      "pdf_url": "https://arxiv.org/pdf/2112.02580v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME",
+        "math.ST"
+      ],
+      "external_ids": {
+        "arxiv": "2112.02580v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2112.02580v1",
+          "url": "https://arxiv.org/abs/2112.02580v1",
+          "doi": null,
+          "arxiv_id": "2112.02580v1",
+          "published": "2021-12-05T14:22:02Z",
+          "updated": "2021-12-05T14:22:02Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2112.02580v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T04:00:10.536732Z",
+      "sha256": "8beb52de0216e55d4b786184237f1cfbb8982ae2347763f5fbdf4c5fa61f8379",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQmZzRXBVOFA4WkUvREwxbHVxUGNCcmpKVm5BPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjExMi4wMjU4MHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjM0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMTEyLjAyNTgwdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjExMi4wMjU4MHYxPC9pZD4KICAgIDx0aXRsZT5CYXllc2lhbiBPcHRpbWFsIFR3by1zYW1wbGUgVGVzdHMgaW4gSGlnaC1kaW1lbnNpb248L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyMS0xMi0wNVQxNDoyMjowMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjExMi4wMjU4MHYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjExMi4wMjU4MHYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+V2UgcHJvcG9zZSBvcHRpbWFsIEJheWVzaWFuIHR3by1zYW1wbGUgdGVzdHMgZm9yIHRlc3RpbmcgZXF1YWxpdHkgb2YgaGlnaC1kaW1lbnNpb25hbCBtZWFuIHZlY3RvcnMgYW5kIGNvdmFyaWFuY2UgbWF0cmljZXMgYmV0d2VlbiB0d28gcG9wdWxhdGlvbnMuIEluIG1hbnkgYXBwbGljYXRpb25zIGluY2x1ZGluZyBnZW5vbWljcyBhbmQgbWVkaWNhbCBpbWFnaW5nLCBpdCBpcyBuYXR1cmFsIHRvIGFzc3VtZSB0aGF0IG9ubHkgYSBmZXcgZW50cmllcyBvZiB0d28gbWVhbiB2ZWN0b3JzIG9yIGNvdmFyaWFuY2UgbWF0cmljZXMgYXJlIGRpZmZlcmVudC4gTWFueSBleGlzdGluZyB0ZXN0cyB0aGF0IHJlbHkgb24gYWdncmVnYXRpbmcgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiBlbXBpcmljYWwgbWVhbnMgb3IgY292YXJpYW5jZSBtYXRyaWNlcyBhcmUgbm90IG9wdGltYWwgb3IgeWllbGQgbG93IHBvd2VyIHVuZGVyIHN1Y2ggc2V0dXBzLiBNb3RpdmF0ZWQgYnkgdGhpcywgd2UgZGV2ZWxvcCBCYXllc2lhbiB0d28tc2FtcGxlIHRlc3RzIGVtcGxveWluZyBhIGRpdmlkZS1hbmQtY29ucXVlciBpZGVhLCB3aGljaCBpcyBwb3dlcmZ1bCBlc3BlY2lhbGx5IHdoZW4gdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiB0d28gcG9wdWxhdGlvbnMgaXMgc3BhcnNlIGJ1dCBsYXJnZS4gVGhlIHByb3Bvc2VkIHR3by1zYW1wbGUgdGVzdHMgbWFuaWZlc3QgY2xvc2VkIGZvcm1zIG9mIEJheWVzIGZhY3RvcnMgYW5kIGFsbG93IHNjYWxhYmxlIGNvbXB1dGF0aW9ucyBldmVuIGluIGhpZ2gtZGltZW5zaW9ucy4gV2UgcHJvdmUgdGhhdCB0aGUgcHJvcG9zZWQgdGVzdHMgYXJlIGNvbnNpc3RlbnQgdW5kZXIgcmVsYXRpdmVseSBtaWxkIGNvbmRpdGlvbnMgY29tcGFyZWQgdG8gZXhpc3RpbmcgdGVzdHMgaW4gdGhlIGxpdGVyYXR1cmUuIEZ1cnRoZXJtb3JlLCB0aGUgdGVzdGFibGUgcmVnaW9ucyBmcm9tIHRoZSBwcm9wb3NlZCB0ZXN0cyB0dXJuIG91dCB0byBiZSBvcHRpbWFsIGluIHRlcm1zIG9mIHJhdGVzLiBTaW11bGF0aW9uIHN0dWRpZXMgc2hvdyBjbGVhciBhZHZhbnRhZ2VzIG9mIHRoZSBwcm9wb3NlZCB0ZXN0cyBvdmVyIG90aGVyIHN0YXRlLW9mLXRoZS1hcnQgbWV0aG9kcyBpbiB2YXJpb3VzIHNjZW5hcmlvcy4gT3VyIHRlc3RzIGFyZSBhbHNvIGFwcGxpZWQgdG8gdGhlIGFuYWx5c2lzIG9mIHRoZSBnZW5lIGV4cHJlc3Npb24gZGF0YSBvZiB0d28gY2FuY2VyIGRhdGEgc2V0cy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5NRSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09Im1hdGguU1QiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyMS0xMi0wNVQxNDoyMjowMlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkt5b3VuZ2phZSBMZWU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkxpemhlbiBMaW48L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Bayesian Optimal Two-sample Tests in High-dimension",
+    "authors": [
+      "Kyoungjae Lee",
+      "Kisung You",
+      "Lizhen Lin"
+    ],
+    "abstract": "We propose optimal Bayesian two-sample tests for testing equality of high-dimensional mean vectors and covariance matrices between two populations. In many applications including genomics and medical imaging, it is natural to assume that only a few entries of two mean vectors or covariance matrices are different. Many existing tests that rely on aggregating the difference between empirical means or covariance matrices are not optimal or yield low power under such setups. Motivated by this, we develop Bayesian two-sample tests employing a divide-and-conquer idea, which is powerful especially when the difference between two populations is sparse but large. The proposed two-sample tests manifest closed forms of Bayes factors and allow scalable computations even in high-dimensions. We prove that the proposed tests are consistent under relatively mild conditions compared to existing tests in the literature. Furthermore, the testable regions from the proposed tests turn out to be optimal in terms of rates. Simulation studies show clear advantages of the proposed tests over other state-of-the-art methods in various scenarios. Our tests are also applied to the analysis of the gene expression data of two cancer data sets.",
+    "identifiers": {
+      "arxiv": "2112.02580",
+      "arxiv_versioned": "2112.02580v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2112.02580v1"
+      }
+    },
+    "categories": [
+      "stat.ME",
+      "math.ST"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2021-12-05T14:22:02Z",
+    "updated": "2021-12-05T14:22:02Z"
+  }
+}

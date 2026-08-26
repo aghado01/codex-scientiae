@@ -1,0 +1,35 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}Xrrr@{}}
+    \toprule
+    Arm & $N$ & Excess size (\%) & Sat.\ (\%) \\
+    \midrule
+    \multicolumn{4}{@{}l}{\emph{$|D_\star| = 2$}} \\
+    no prompt comments & 423 & $+74.2$ $[+52.2, +98.8]$ & 38.7 \\
+    comment-shaped noise & 423 & $+65.1$ $[+48.2, +84.4]$ & 39.5 \\
+    informative comments & 423 & $-1.1$ $[-9.2, +7.7]$ & 39.0 \\
+    \midrule
+    \multicolumn{4}{@{}l}{\emph{$|D_\star| = 3$}} \\
+    no prompt comments & 129 & $+15.2$ $[+0.5, +31.8]$ & 40.3 \\
+    comment-shaped noise & 129 & $+14.2$ $[-1.8, +32.6]$ & 42.9 \\
+    informative comments & 129 & $-21.2$ $[-28.7, -13.2]$ & 35.7 \\
+    \midrule
+    \multicolumn{4}{@{}l}{\emph{pooled}} \\
+    no prompt comments & 552 & $+60.4$ $[+43.8, +80.7]$ & 39.0 \\
+    comment-shaped noise & 552 & $+53.2$ $[+39.4, +68.7]$ & 40.3 \\
+    informative comments & 552 & $-5.8$ $[-12.0, +1.1]$ & 38.2 \\
+    \bottomrule
+  \end{tabularx}
+  \caption{
+    The ratchet holds in both strata, and the protocol reverses it in both. Each row is an arm
+    within one $|D_\star|$ stratum, with pooled rows below. The columns give units, final excess
+    size $\frac{|D_T|}{|D_\star|}{-}1$ with its 95\% per-world percentile-bootstrap CI, and
+    last-3-step constraint satisfaction. The uncommented arm's CI excludes cover in both strata,
+    far above it where the cover is two instructions and by a smaller margin where it is three, so
+    the pooled result is not carried by one slice. In the three-instruction stratum the protocol
+    arm prunes \emph{below} cover, a cost \S\ref{sec:appendix:calibration} works out. Covers here
+    run to at most three instructions, an order of magnitude below the median context file of
+    \S\ref{sec:growth}.
+  }
+  \label{tab:strata}
+\end{table*}

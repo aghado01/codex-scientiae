@@ -1,0 +1,29 @@
+{
+  "schema": "codex-scientiae/acquisition/0.1",
+  "state": "acquired",
+  "slug": "2506.07658v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2506.07658v3",
+    "provider_roles": [
+      "artifact-origin",
+      "artifact-access",
+      "metadata-authority"
+    ]
+  },
+  "forms": [
+    {
+      "kind": "source",
+      "path": "2506.07658v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 18168236,
+      "sha256": "8d61c266226b6f9f49709b28984e5e85c3e324eb03ae6808a3318f2c47a22547",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/src/2506.07658v3",
+      "candidate_id": "arxiv-source",
+      "fetched_at": "2026-08-11T03:19:31.140093Z",
+      "provider_checksum": null,
+      "local_import": null
+    }
+  ]
+}

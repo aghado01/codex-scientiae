@@ -1,0 +1,26 @@
+\section*{Limitations}
+We fixed three measurement choices and never varied them: the \RewriteFracThreshold{} rewrite threshold,
+applied inside the tracker, which together with the migration rule censors \FieldCensoredDeathShare{} of
+deaths (\apxref{sec:appendix:censoring}); a matcher validated once on \GateBPool{} hand-annotated transitions
+against \FieldMatches{} tracked ones, where a stratified re-annotation at scale would close the gap
+(\apxref{sec:appendix:tracking}); and a per-corpus segmentation grammar, the largest untested degree of
+freedom on the corpus side (\apxref{sec:appendix:matching}). Matcher error that survives biases the age slope
+toward zero, so our decline is a lower bound.
+
+Our controlled experiment demonstrates the mechanism where retention is nearly free: covers of two or three
+instructions against a median file's \FieldOpMedian{}, a \LabT{}-step horizon, one model as both maintainer
+and executor, mechanically verifiable English constraints (\apxref{sec:appendix:regime}). \autoref{sec:wild}
+runs at \WildDistractors{} distractors against \WildCover{} human-written constraints, where retention is
+demonstrably not free, but it \emph{seeds} excess into benchmark prompts rather than growing it in real
+files: it prices what excess costs and what a comment recovers, never whether the ratchet persists at
+that size, for which the repository study stands in. WildIFEval's constraints are prose rather than code, so
+satisfaction there is scored by an arm-blind LLM judge and every rate is a rate under that judge. The
+contrasts reproduce under a second judge whose effect size is not distinguishable from the first's, but
+neither judge is ground truth, so we measure reproduction and agreement rather than accuracy
+(\apxref{sec:appendix:judges}).
+
+We earn our scope on agent context files on public GitHub: \FieldRepos{} repositories carrying
+\texttt{CLAUDE.md}, \texttt{AGENTS.md}, or \texttt{copilot-instructions.md}. We did not measure their
+language distribution, and no result speaks to non-English instructions. \autoref{sec:hazard}'s multi-author
+interaction counts who has edited a file, not whether an instruction's own author has left. Whether
+catastrophic remembering reaches system prompts or agent skill files remains open.\looseness=-1

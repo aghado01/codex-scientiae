@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2208.11929v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2208.11929v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "On the spherical Laplace distribution",
+      "authors": [
+        "Kisung You",
+        "Dennis Shung"
+      ],
+      "abstract": "The von Mises-Fisher (vMF) distribution has long been a mainstay for inference with data on the unit hypersphere in directional statistics. The performance of statistical inference based on the vMF distribution, however, may suffer when there are significant outliers and noise in the data. Based on an analogy of the median as a robust measure of central tendency and its relationship to the Laplace distribution, we proposed the spherical Laplace (SL) distribution, a novel probability measure for modelling directional data. We present a sampling scheme and theoretical results on maximum likelihood estimation. We derive efficient numerical routines for parameter estimation in the absence of closed-form formula. An application of model-based clustering is considered under the finite mixture model framework. Our numerical methods for parameter estimation and clustering are validated using simulated and real data experiments.",
+      "doi": "10.23919/fusion52260.2023.10224108",
+      "arxiv_id": "2208.11929v3",
+      "published": "2022-08-25T08:20:18Z",
+      "updated": "2022-09-07T06:52:23Z",
+      "year": 2022,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2208.11929v3",
+      "pdf_url": "https://arxiv.org/pdf/2208.11929v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2208.11929v3",
+        "doi": "10.23919/fusion52260.2023.10224108"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2208.11929v3",
+          "url": "https://arxiv.org/abs/2208.11929v3",
+          "doi": "10.23919/fusion52260.2023.10224108",
+          "arxiv_id": "2208.11929v3",
+          "published": "2022-08-25T08:20:18Z",
+          "updated": "2022-09-07T06:52:23Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2208.11929v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:38.028694Z",
+      "sha256": "2906805655d11a81ee9cbeff9b9e4a70de697de9f440855a773eabae81fc64eb",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvNHI2TEFHY2xSOG1iV0gzVDYxbG5jVldxcjR3PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjIwOC4xMTkyOXYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjM3WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMjA4LjExOTI5djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjIwOC4xMTkyOXYzPC9pZD4KICAgIDx0aXRsZT5PbiB0aGUgc3BoZXJpY2FsIExhcGxhY2UgZGlzdHJpYnV0aW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjItMDktMDdUMDY6NTI6MjNaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIyMDguMTE5Mjl2MyIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIyMDguMTE5Mjl2MyIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlRoZSB2b24gTWlzZXMtRmlzaGVyICh2TUYpIGRpc3RyaWJ1dGlvbiBoYXMgbG9uZyBiZWVuIGEgbWFpbnN0YXkgZm9yIGluZmVyZW5jZSB3aXRoIGRhdGEgb24gdGhlIHVuaXQgaHlwZXJzcGhlcmUgaW4gZGlyZWN0aW9uYWwgc3RhdGlzdGljcy4gVGhlIHBlcmZvcm1hbmNlIG9mIHN0YXRpc3RpY2FsIGluZmVyZW5jZSBiYXNlZCBvbiB0aGUgdk1GIGRpc3RyaWJ1dGlvbiwgaG93ZXZlciwgbWF5IHN1ZmZlciB3aGVuIHRoZXJlIGFyZSBzaWduaWZpY2FudCBvdXRsaWVycyBhbmQgbm9pc2UgaW4gdGhlIGRhdGEuIEJhc2VkIG9uIGFuIGFuYWxvZ3kgb2YgdGhlIG1lZGlhbiBhcyBhIHJvYnVzdCBtZWFzdXJlIG9mIGNlbnRyYWwgdGVuZGVuY3kgYW5kIGl0cyByZWxhdGlvbnNoaXAgdG8gdGhlIExhcGxhY2UgZGlzdHJpYnV0aW9uLCB3ZSBwcm9wb3NlZCB0aGUgc3BoZXJpY2FsIExhcGxhY2UgKFNMKSBkaXN0cmlidXRpb24sIGEgbm92ZWwgcHJvYmFiaWxpdHkgbWVhc3VyZSBmb3IgbW9kZWxsaW5nIGRpcmVjdGlvbmFsIGRhdGEuIFdlIHByZXNlbnQgYSBzYW1wbGluZyBzY2hlbWUgYW5kIHRoZW9yZXRpY2FsIHJlc3VsdHMgb24gbWF4aW11bSBsaWtlbGlob29kIGVzdGltYXRpb24uIFdlIGRlcml2ZSBlZmZpY2llbnQgbnVtZXJpY2FsIHJvdXRpbmVzIGZvciBwYXJhbWV0ZXIgZXN0aW1hdGlvbiBpbiB0aGUgYWJzZW5jZSBvZiBjbG9zZWQtZm9ybSBmb3JtdWxhLiBBbiBhcHBsaWNhdGlvbiBvZiBtb2RlbC1iYXNlZCBjbHVzdGVyaW5nIGlzIGNvbnNpZGVyZWQgdW5kZXIgdGhlIGZpbml0ZSBtaXh0dXJlIG1vZGVsIGZyYW1ld29yay4gT3VyIG51bWVyaWNhbCBtZXRob2RzIGZvciBwYXJhbWV0ZXIgZXN0aW1hdGlvbiBhbmQgY2x1c3RlcmluZyBhcmUgdmFsaWRhdGVkIHVzaW5nIHNpbXVsYXRlZCBhbmQgcmVhbCBkYXRhIGV4cGVyaW1lbnRzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjItMDgtMjVUMDg6MjA6MThaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD4yOCBwYWdlcywgNiBmaWd1cmVzPC9hcnhpdjpjb21tZW50PgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0ic3RhdC5NRSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RGVubmlzIFNodW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXJ4aXY6ZG9pPjEwLjIzOTE5L0ZVU0lPTjUyMjYwLjIwMjMuMTAyMjQxMDg8L2FyeGl2OmRvaT4KICAgIDxsaW5rIHJlbD0icmVsYXRlZCIgaHJlZj0iaHR0cHM6Ly9kb2kub3JnLzEwLjIzOTE5L0ZVU0lPTjUyMjYwLjIwMjMuMTAyMjQxMDgiIHRpdGxlPSJkb2kiLz4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "On the spherical Laplace distribution",
+    "authors": [
+      "Kisung You",
+      "Dennis Shung"
+    ],
+    "abstract": "The von Mises-Fisher (vMF) distribution has long been a mainstay for inference with data on the unit hypersphere in directional statistics. The performance of statistical inference based on the vMF distribution, however, may suffer when there are significant outliers and noise in the data. Based on an analogy of the median as a robust measure of central tendency and its relationship to the Laplace distribution, we proposed the spherical Laplace (SL) distribution, a novel probability measure for modelling directional data. We present a sampling scheme and theoretical results on maximum likelihood estimation. We derive efficient numerical routines for parameter estimation in the absence of closed-form formula. An application of model-based clustering is considered under the finite mixture model framework. Our numerical methods for parameter estimation and clustering are validated using simulated and real data experiments.",
+    "identifiers": {
+      "arxiv": "2208.11929",
+      "arxiv_versioned": "2208.11929v3",
+      "doi": "10.23919/fusion52260.2023.10224108",
+      "external": {
+        "arxiv": "2208.11929v3",
+        "doi": "10.23919/fusion52260.2023.10224108"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2022-08-25T08:20:18Z",
+    "updated": "2022-09-07T06:52:23Z"
+  }
+}

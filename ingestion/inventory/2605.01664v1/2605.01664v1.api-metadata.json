@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2605.01664v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2605.01664v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "A Hybrid Retrieval and Reranking Framework for Evidence-Grounded Retrieval-Augmented Generation",
+      "authors": [
+        "Fariba Afrin Irany",
+        "Sampson Akwafuo"
+      ],
+      "abstract": "Retrieval-augmented generation (RAG) improves large language model reliability by grounding generated responses in external evidence. However, RAG performance depends on the relevance of retrieved passages, the quality of evidence ranking, and the ability to verify whether generated claims are supported by source documents. This study presents a hybrid retrieval and reranking framework for citation-aware RAG in biomedical and healthcare-related document question answering. The framework uses Amazon Bedrock Knowledge Bases for document ingestion, parsing, chunking, embedding generation, and evidence retrieval. Source PDF documents are stored in Amazon S3, embedded using Amazon Titan Text Embeddings V2, and indexed with Amazon OpenSearch Serverless. Hybrid retrieval first retrieves candidate evidence chunks, and Cohere reranking then prioritizes the most relevant passages before answer generation. The answer-generation stage uses top-ranked evidence chunks to produce controlled, evidence-grounded responses, while a separate judge model evaluates each generated factual claim against the retrieved evidence. The framework was evaluated using 25 biomedical NLP and healthcare transformer queries as a pilot-scale proof-of-concept study. Across the evaluation set, the system retrieved and reranked 500 evidence chunks and generated answers from top-ranked evidence. Claim-level grounding evaluation extracted 200 factual claims, all of which were judged to be supported by retrieved evidence, resulting in 100.0% grounding accuracy. The results suggest that hybrid retrieval, reranking, conservative prompting, and claim-level evaluation can support reliable evidence-grounded RAG responses when sufficient source evidence is available.",
+      "doi": null,
+      "arxiv_id": "2605.01664v1",
+      "published": "2026-05-03T01:33:31Z",
+      "updated": "2026-05-03T01:33:31Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2605.01664v1",
+      "pdf_url": "https://arxiv.org/pdf/2605.01664v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.IR"
+      ],
+      "external_ids": {
+        "arxiv": "2605.01664v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2605.01664v1",
+          "url": "https://arxiv.org/abs/2605.01664v1",
+          "doi": null,
+          "arxiv_id": "2605.01664v1",
+          "published": "2026-05-03T01:33:31Z",
+          "updated": "2026-05-03T01:33:31Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2605.01664v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T04:00:13.880191Z",
+      "sha256": "0635e7ff126ccdf019079295e488e9c45f5d31e1b42fa97cfe72e33c0bcc282e",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvY2xPZjN2RVAwZmsrVVpFZjdvODNVZWR2UUFVPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNS4wMTY2NHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU4OjA5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA1LjAxNjY0djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNS4wMTY2NHYxPC9pZD4KICAgIDx0aXRsZT5BIEh5YnJpZCBSZXRyaWV2YWwgYW5kIFJlcmFua2luZyBGcmFtZXdvcmsgZm9yIEV2aWRlbmNlLUdyb3VuZGVkIFJldHJpZXZhbC1BdWdtZW50ZWQgR2VuZXJhdGlvbjwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA1LTAzVDAxOjMzOjMxWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA1LjAxNjY0djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA1LjAxNjY0djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5SZXRyaWV2YWwtYXVnbWVudGVkIGdlbmVyYXRpb24gKFJBRykgaW1wcm92ZXMgbGFyZ2UgbGFuZ3VhZ2UgbW9kZWwgcmVsaWFiaWxpdHkgYnkgZ3JvdW5kaW5nIGdlbmVyYXRlZCByZXNwb25zZXMgaW4gZXh0ZXJuYWwgZXZpZGVuY2UuIEhvd2V2ZXIsIFJBRyBwZXJmb3JtYW5jZSBkZXBlbmRzIG9uIHRoZSByZWxldmFuY2Ugb2YgcmV0cmlldmVkIHBhc3NhZ2VzLCB0aGUgcXVhbGl0eSBvZiBldmlkZW5jZSByYW5raW5nLCBhbmQgdGhlIGFiaWxpdHkgdG8gdmVyaWZ5IHdoZXRoZXIgZ2VuZXJhdGVkIGNsYWltcyBhcmUgc3VwcG9ydGVkIGJ5IHNvdXJjZSBkb2N1bWVudHMuIFRoaXMgc3R1ZHkgcHJlc2VudHMgYSBoeWJyaWQgcmV0cmlldmFsIGFuZCByZXJhbmtpbmcgZnJhbWV3b3JrIGZvciBjaXRhdGlvbi1hd2FyZSBSQUcgaW4gYmlvbWVkaWNhbCBhbmQgaGVhbHRoY2FyZS1yZWxhdGVkIGRvY3VtZW50IHF1ZXN0aW9uIGFuc3dlcmluZy4gVGhlIGZyYW1ld29yayB1c2VzIEFtYXpvbiBCZWRyb2NrIEtub3dsZWRnZSBCYXNlcyBmb3IgZG9jdW1lbnQgaW5nZXN0aW9uLCBwYXJzaW5nLCBjaHVua2luZywgZW1iZWRkaW5nIGdlbmVyYXRpb24sIGFuZCBldmlkZW5jZSByZXRyaWV2YWwuIFNvdXJjZSBQREYgZG9jdW1lbnRzIGFyZSBzdG9yZWQgaW4gQW1hem9uIFMzLCBlbWJlZGRlZCB1c2luZyBBbWF6b24gVGl0YW4gVGV4dCBFbWJlZGRpbmdzIFYyLCBhbmQgaW5kZXhlZCB3aXRoIEFtYXpvbiBPcGVuU2VhcmNoIFNlcnZlcmxlc3MuIEh5YnJpZCByZXRyaWV2YWwgZmlyc3QgcmV0cmlldmVzIGNhbmRpZGF0ZSBldmlkZW5jZSBjaHVua3MsIGFuZCBDb2hlcmUgcmVyYW5raW5nIHRoZW4gcHJpb3JpdGl6ZXMgdGhlIG1vc3QgcmVsZXZhbnQgcGFzc2FnZXMgYmVmb3JlIGFuc3dlciBnZW5lcmF0aW9uLiBUaGUgYW5zd2VyLWdlbmVyYXRpb24gc3RhZ2UgdXNlcyB0b3AtcmFua2VkIGV2aWRlbmNlIGNodW5rcyB0byBwcm9kdWNlIGNvbnRyb2xsZWQsIGV2aWRlbmNlLWdyb3VuZGVkIHJlc3BvbnNlcywgd2hpbGUgYSBzZXBhcmF0ZSBqdWRnZSBtb2RlbCBldmFsdWF0ZXMgZWFjaCBnZW5lcmF0ZWQgZmFjdHVhbCBjbGFpbSBhZ2FpbnN0IHRoZSByZXRyaWV2ZWQgZXZpZGVuY2UuIFRoZSBmcmFtZXdvcmsgd2FzIGV2YWx1YXRlZCB1c2luZyAyNSBiaW9tZWRpY2FsIE5MUCBhbmQgaGVhbHRoY2FyZSB0cmFuc2Zvcm1lciBxdWVyaWVzIGFzIGEgcGlsb3Qtc2NhbGUgcHJvb2Ytb2YtY29uY2VwdCBzdHVkeS4gQWNyb3NzIHRoZSBldmFsdWF0aW9uIHNldCwgdGhlIHN5c3RlbSByZXRyaWV2ZWQgYW5kIHJlcmFua2VkIDUwMCBldmlkZW5jZSBjaHVua3MgYW5kIGdlbmVyYXRlZCBhbnN3ZXJzIGZyb20gdG9wLXJhbmtlZCBldmlkZW5jZS4gQ2xhaW0tbGV2ZWwgZ3JvdW5kaW5nIGV2YWx1YXRpb24gZXh0cmFjdGVkIDIwMCBmYWN0dWFsIGNsYWltcywgYWxsIG9mIHdoaWNoIHdlcmUganVkZ2VkIHRvIGJlIHN1cHBvcnRlZCBieSByZXRyaWV2ZWQgZXZpZGVuY2UsIHJlc3VsdGluZyBpbiAxMDAuMCUgZ3JvdW5kaW5nIGFjY3VyYWN5LiBUaGUgcmVzdWx0cyBzdWdnZXN0IHRoYXQgaHlicmlkIHJldHJpZXZhbCwgcmVyYW5raW5nLCBjb25zZXJ2YXRpdmUgcHJvbXB0aW5nLCBhbmQgY2xhaW0tbGV2ZWwgZXZhbHVhdGlvbiBjYW4gc3VwcG9ydCByZWxpYWJsZSBldmlkZW5jZS1ncm91bmRlZCBSQUcgcmVzcG9uc2VzIHdoZW4gc3VmZmljaWVudCBzb3VyY2UgZXZpZGVuY2UgaXMgYXZhaWxhYmxlLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5JUiIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA1LTAzVDAxOjMzOjMxWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuSVIiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkZhcmliYSBBZnJpbiBJcmFueTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2FtcHNvbiBBa3dhZnVvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "A Hybrid Retrieval and Reranking Framework for Evidence-Grounded Retrieval-Augmented Generation",
+    "authors": [
+      "Fariba Afrin Irany",
+      "Sampson Akwafuo"
+    ],
+    "abstract": "Retrieval-augmented generation (RAG) improves large language model reliability by grounding generated responses in external evidence. However, RAG performance depends on the relevance of retrieved passages, the quality of evidence ranking, and the ability to verify whether generated claims are supported by source documents. This study presents a hybrid retrieval and reranking framework for citation-aware RAG in biomedical and healthcare-related document question answering. The framework uses Amazon Bedrock Knowledge Bases for document ingestion, parsing, chunking, embedding generation, and evidence retrieval. Source PDF documents are stored in Amazon S3, embedded using Amazon Titan Text Embeddings V2, and indexed with Amazon OpenSearch Serverless. Hybrid retrieval first retrieves candidate evidence chunks, and Cohere reranking then prioritizes the most relevant passages before answer generation. The answer-generation stage uses top-ranked evidence chunks to produce controlled, evidence-grounded responses, while a separate judge model evaluates each generated factual claim against the retrieved evidence. The framework was evaluated using 25 biomedical NLP and healthcare transformer queries as a pilot-scale proof-of-concept study. Across the evaluation set, the system retrieved and reranked 500 evidence chunks and generated answers from top-ranked evidence. Claim-level grounding evaluation extracted 200 factual claims, all of which were judged to be supported by retrieved evidence, resulting in 100.0% grounding accuracy. The results suggest that hybrid retrieval, reranking, conservative prompting, and claim-level evaluation can support reliable evidence-grounded RAG responses when sufficient source evidence is available.",
+    "identifiers": {
+      "arxiv": "2605.01664",
+      "arxiv_versioned": "2605.01664v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2605.01664v1"
+      }
+    },
+    "categories": [
+      "cs.IR"
+    ],
+    "concepts": [],
+    "primary_category": "cs.IR",
+    "published": "2026-05-03T01:33:31Z",
+    "updated": "2026-05-03T01:33:31Z"
+  }
+}

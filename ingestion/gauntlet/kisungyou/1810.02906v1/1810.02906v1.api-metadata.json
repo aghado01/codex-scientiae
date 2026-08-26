@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "1810.02906v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "1810.02906v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Network Distance Based on Laplacian Flows on Graphs",
+      "authors": [
+        "Dianbin Bao",
+        "Kisung You",
+        "Lizhen Lin"
+      ],
+      "abstract": "Distance plays a fundamental role in measuring similarity between objects. Various visualization techniques and learning tasks in statistics and machine learning such as shape matching, classification, dimension reduction and clustering often rely on some distance or similarity measure. It is of tremendous importance to have a distance that can incorporate the underlying structure of the object. In this paper, we focus on proposing such a distance between network objects. Our key insight is to define a distance based on the long term diffusion behavior of the whole network. We first introduce a dynamic system on graphs called Laplacian flow. Based on this Laplacian flow, a new version of diffusion distance between networks is proposed. We will demonstrate the utility of the distance and its advantage over various existing distances through explicit examples. The distance is also applied to subsequent learning tasks such as clustering network objects.",
+      "doi": "10.1109/bigdata55660.2022.10020500",
+      "arxiv_id": "1810.02906v1",
+      "published": "2018-10-05T23:15:24Z",
+      "updated": "2018-10-05T23:15:24Z",
+      "year": 2018,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/1810.02906v1",
+      "pdf_url": "https://arxiv.org/pdf/1810.02906v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "1810.02906v1",
+        "doi": "10.1109/bigdata55660.2022.10020500"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "1810.02906v1",
+          "url": "https://arxiv.org/abs/1810.02906v1",
+          "doi": "10.1109/bigdata55660.2022.10020500",
+          "arxiv_id": "1810.02906v1",
+          "published": "2018-10-05T23:15:24Z",
+          "updated": "2018-10-05T23:15:24Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=1810.02906v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:16.769987Z",
+      "sha256": "2e72332bbdbb96f63a04a9ea5fdc9f64f63269b0509783b212248718fcb06a3a",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvbmVnRVhuakZ2amhrMzArdTU0V0NZQ0pZcm9JPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MTgxMC4wMjkwNnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjE2WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0xODEwLjAyOTA2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMTgxMC4wMjkwNnYxPC9pZD4KICAgIDx0aXRsZT5OZXR3b3JrIERpc3RhbmNlIEJhc2VkIG9uIExhcGxhY2lhbiBGbG93cyBvbiBHcmFwaHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAxOC0xMC0wNVQyMzoxNToyNFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMTgxMC4wMjkwNnYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMTgxMC4wMjkwNnYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+RGlzdGFuY2UgcGxheXMgYSBmdW5kYW1lbnRhbCByb2xlIGluIG1lYXN1cmluZyBzaW1pbGFyaXR5IGJldHdlZW4gb2JqZWN0cy4gVmFyaW91cyB2aXN1YWxpemF0aW9uIHRlY2huaXF1ZXMgYW5kIGxlYXJuaW5nIHRhc2tzIGluIHN0YXRpc3RpY3MgYW5kIG1hY2hpbmUgbGVhcm5pbmcgc3VjaCBhcyBzaGFwZSBtYXRjaGluZywgY2xhc3NpZmljYXRpb24sIGRpbWVuc2lvbiByZWR1Y3Rpb24gYW5kIGNsdXN0ZXJpbmcgb2Z0ZW4gcmVseSBvbiBzb21lIGRpc3RhbmNlIG9yIHNpbWlsYXJpdHkgbWVhc3VyZS4gSXQgaXMgb2YgdHJlbWVuZG91cyBpbXBvcnRhbmNlIHRvIGhhdmUgYSBkaXN0YW5jZSB0aGF0IGNhbiBpbmNvcnBvcmF0ZSB0aGUgdW5kZXJseWluZyBzdHJ1Y3R1cmUgb2YgdGhlIG9iamVjdC4gSW4gdGhpcyBwYXBlciwgd2UgZm9jdXMgb24gcHJvcG9zaW5nIHN1Y2ggYSBkaXN0YW5jZSBiZXR3ZWVuIG5ldHdvcmsgb2JqZWN0cy4gT3VyIGtleSBpbnNpZ2h0IGlzIHRvIGRlZmluZSBhIGRpc3RhbmNlIGJhc2VkIG9uIHRoZSBsb25nIHRlcm0gZGlmZnVzaW9uIGJlaGF2aW9yIG9mIHRoZSB3aG9sZSBuZXR3b3JrLiBXZSBmaXJzdCBpbnRyb2R1Y2UgYSBkeW5hbWljIHN5c3RlbSBvbiBncmFwaHMgY2FsbGVkIExhcGxhY2lhbiBmbG93LiBCYXNlZCBvbiB0aGlzIExhcGxhY2lhbiBmbG93LCBhIG5ldyB2ZXJzaW9uIG9mIGRpZmZ1c2lvbiBkaXN0YW5jZSBiZXR3ZWVuIG5ldHdvcmtzIGlzIHByb3Bvc2VkLiBXZSB3aWxsIGRlbW9uc3RyYXRlIHRoZSB1dGlsaXR5IG9mIHRoZSBkaXN0YW5jZSBhbmQgaXRzIGFkdmFudGFnZSBvdmVyIHZhcmlvdXMgZXhpc3RpbmcgZGlzdGFuY2VzIHRocm91Z2ggZXhwbGljaXQgZXhhbXBsZXMuIFRoZSBkaXN0YW5jZSBpcyBhbHNvIGFwcGxpZWQgdG8gc3Vic2VxdWVudCBsZWFybmluZyB0YXNrcyBzdWNoIGFzIGNsdXN0ZXJpbmcgbmV0d29yayBvYmplY3RzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAxOC0xMC0wNVQyMzoxNToyNFo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUwiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkRpYW5iaW4gQmFvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5MaXpoZW4gTGluPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXJ4aXY6ZG9pPjEwLjExMDkvQmlnRGF0YTU1NjYwLjIwMjIuMTAwMjA1MDA8L2FyeGl2OmRvaT4KICAgIDxsaW5rIHJlbD0icmVsYXRlZCIgaHJlZj0iaHR0cHM6Ly9kb2kub3JnLzEwLjExMDkvQmlnRGF0YTU1NjYwLjIwMjIuMTAwMjA1MDAiIHRpdGxlPSJkb2kiLz4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Network Distance Based on Laplacian Flows on Graphs",
+    "authors": [
+      "Dianbin Bao",
+      "Kisung You",
+      "Lizhen Lin"
+    ],
+    "abstract": "Distance plays a fundamental role in measuring similarity between objects. Various visualization techniques and learning tasks in statistics and machine learning such as shape matching, classification, dimension reduction and clustering often rely on some distance or similarity measure. It is of tremendous importance to have a distance that can incorporate the underlying structure of the object. In this paper, we focus on proposing such a distance between network objects. Our key insight is to define a distance based on the long term diffusion behavior of the whole network. We first introduce a dynamic system on graphs called Laplacian flow. Based on this Laplacian flow, a new version of diffusion distance between networks is proposed. We will demonstrate the utility of the distance and its advantage over various existing distances through explicit examples. The distance is also applied to subsequent learning tasks such as clustering network objects.",
+    "identifiers": {
+      "arxiv": "1810.02906",
+      "arxiv_versioned": "1810.02906v1",
+      "doi": "10.1109/bigdata55660.2022.10020500",
+      "external": {
+        "arxiv": "1810.02906v1",
+        "doi": "10.1109/bigdata55660.2022.10020500"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2018-10-05T23:15:24Z",
+    "updated": "2018-10-05T23:15:24Z"
+  }
+}

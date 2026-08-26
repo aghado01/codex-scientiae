@@ -1,0 +1,40 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabular}{@{}rrrlrrrrrrr@{}}
+    \toprule
+    & & & & & \multicolumn{3}{c}{\textsc{ssr}} & & & \\
+    \cmidrule(lr){6-8}
+    $N$ & $K$ & $D$ & Arm & $n$ & provided & withheld & all & $|D_t|$ & $|D_T|$ & trunc. \\
+    \midrule
+    5 & 1 & 0 & \textsc{control} & 32 & 0.547 & 0.531 & 0.544 & 5.500 & 6.594 & 0.219 \\
+    5 & 1 & 0 & \textsc{placebo} & 32 & 0.578 & 0.500 & 0.562 & 5.250 & 5.781 & 0.188 \\
+    5 & 1 & 0 & \textsc{treatment} & 32 & 0.633 & 0.531 & 0.613 & 5.750 & 6.250 & 0.281 \\
+    \addlinespace
+    5 & 1 & 16 & \textsc{control} & 32 & 0.531 & 0.438 & 0.512 & 14.750 & 14.406 & 0.312 \\
+    5 & 1 & 16 & \textsc{placebo} & 32 & 0.523 & 0.500 & 0.519 & 14.406 & 12.969 & 0.312 \\
+    5 & 1 & 16 & \textsc{treatment} & 32 & 0.656 & 0.500 & 0.625 & 6.500 & 7.031 & 0.250 \\
+    \addlinespace
+    6 & 1 & 0 & \textsc{control} & 32 & 0.688 & 0.531 & 0.661 & 6.656 & 6.969 & 0.375 \\
+    6 & 1 & 0 & \textsc{placebo} & 32 & 0.650 & 0.500 & 0.625 & 6.312 & 6.906 & 0.344 \\
+    6 & 1 & 0 & \textsc{treatment} & 32 & 0.575 & 0.500 & 0.562 & 6.562 & 6.594 & 0.438 \\
+    \addlinespace
+    6 & 1 & 16 & \textsc{control} & 32 & 0.525 & 0.344 & 0.495 & 14.812 & 14.844 & 0.344 \\
+    6 & 1 & 16 & \textsc{placebo} & 32 & 0.569 & 0.406 & 0.542 & 14.969 & 13.688 & 0.344 \\
+    6 & 1 & 16 & \textsc{treatment} & 32 & 0.631 & 0.531 & 0.615 & 7.125 & 7.562 & 0.406 \\
+    \bottomrule
+  \end{tabular}
+  \caption{
+    The arm effect lives where the distractors are. Every design cell of \S\ref{sec:wild} at the
+    final maintenance round: $N$ hidden constraints, $K$ of them withheld from the seeded prompt,
+    $D$ distractors seeded alongside the $N{-}K$ true instructions, one row per arm. The
+    \textsc{ssr} columns give the per-constraint satisfaction rate over the provided $N{-}K$
+    (interference), the withheld $K$ (recovery), and all $N$ (the headline); $|D_t|$ is the prompt
+    the executor saw, $|D_T|$ the prompt after the last round, and trunc.\ the share of responses
+    that hit the executor's token cap, tabulated beside the rates it could otherwise explain. At
+    $D{=}16$ \textsc{treatment} holds all-$N$ \textsc{ssr} at its $D{=}0$ level while
+    \textsc{control} falls in both strata. Size columns are descriptive only: this run's seeded
+    comment states its own falsification, so pruning a distractor needs no inference from the
+    maintainer, and no size claim in this paper cites this run.
+  }
+  \label{tab:wildgrid}
+\end{table*}

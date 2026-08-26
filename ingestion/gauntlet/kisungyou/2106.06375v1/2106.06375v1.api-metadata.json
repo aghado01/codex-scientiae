@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2106.06375v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2106.06375v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Parameter Estimation and Model-Based Clustering with Spherical Normal Distribution on the Unit Hypersphere",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "In directional statistics, the von Mises-Fisher (vMF) distribution is one of the most basic and popular probability distributions for data on the unit hypersphere. Recently, the spherical normal (SN) distribution was proposed as an intrinsic counterpart to the vMF distribution by replacing the standard Euclidean norm with the great-circle distance, which is the shortest path joining two points on the unit sphere. We propose numerical approaches for parameter estimation since there are no analytic formula available. We consider the estimation problems in a general setting where non-negative weights are assigned to observations. This leads to a more interesting contribution for model-based clustering on the unit hypersphere by finite mixture model with SN distributions. We validate efficiency of optimization-based estimation procedures and effectiveness of SN mixture model using simulated and real data examples.",
+      "doi": "10.1016/j.csda.2022.107457",
+      "arxiv_id": "2106.06375v1",
+      "published": "2021-06-11T13:28:11Z",
+      "updated": "2021-06-11T13:28:11Z",
+      "year": 2021,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2106.06375v1",
+      "pdf_url": "https://arxiv.org/pdf/2106.06375v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2106.06375v1",
+        "doi": "10.1016/j.csda.2022.107457"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2106.06375v1",
+          "url": "https://arxiv.org/abs/2106.06375v1",
+          "doi": "10.1016/j.csda.2022.107457",
+          "arxiv_id": "2106.06375v1",
+          "published": "2021-06-11T13:28:11Z",
+          "updated": "2021-06-11T13:28:11Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2106.06375v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:30.936608Z",
+      "sha256": "30eed8d5bc0889a47c26ac11308accd679cd3f04d87c6b2982ea92ddcaef885f",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvaFExYWg1bXBJZndjYklORnJ6T0h6T0dmc0FRPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjEwNi4wNjM3NXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjMwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMTA2LjA2Mzc1djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjEwNi4wNjM3NXYxPC9pZD4KICAgIDx0aXRsZT5QYXJhbWV0ZXIgRXN0aW1hdGlvbiBhbmQgTW9kZWwtQmFzZWQgQ2x1c3RlcmluZyB3aXRoIFNwaGVyaWNhbCBOb3JtYWwgRGlzdHJpYnV0aW9uIG9uIHRoZSBVbml0IEh5cGVyc3BoZXJlPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjEtMDYtMTFUMTM6Mjg6MTFaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIxMDYuMDYzNzV2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzIxMDYuMDYzNzV2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkluIGRpcmVjdGlvbmFsIHN0YXRpc3RpY3MsIHRoZSB2b24gTWlzZXMtRmlzaGVyICh2TUYpIGRpc3RyaWJ1dGlvbiBpcyBvbmUgb2YgdGhlIG1vc3QgYmFzaWMgYW5kIHBvcHVsYXIgcHJvYmFiaWxpdHkgZGlzdHJpYnV0aW9ucyBmb3IgZGF0YSBvbiB0aGUgdW5pdCBoeXBlcnNwaGVyZS4gUmVjZW50bHksIHRoZSBzcGhlcmljYWwgbm9ybWFsIChTTikgZGlzdHJpYnV0aW9uIHdhcyBwcm9wb3NlZCBhcyBhbiBpbnRyaW5zaWMgY291bnRlcnBhcnQgdG8gdGhlIHZNRiBkaXN0cmlidXRpb24gYnkgcmVwbGFjaW5nIHRoZSBzdGFuZGFyZCBFdWNsaWRlYW4gbm9ybSB3aXRoIHRoZSBncmVhdC1jaXJjbGUgZGlzdGFuY2UsIHdoaWNoIGlzIHRoZSBzaG9ydGVzdCBwYXRoIGpvaW5pbmcgdHdvIHBvaW50cyBvbiB0aGUgdW5pdCBzcGhlcmUuIFdlIHByb3Bvc2UgbnVtZXJpY2FsIGFwcHJvYWNoZXMgZm9yIHBhcmFtZXRlciBlc3RpbWF0aW9uIHNpbmNlIHRoZXJlIGFyZSBubyBhbmFseXRpYyBmb3JtdWxhIGF2YWlsYWJsZS4gV2UgY29uc2lkZXIgdGhlIGVzdGltYXRpb24gcHJvYmxlbXMgaW4gYSBnZW5lcmFsIHNldHRpbmcgd2hlcmUgbm9uLW5lZ2F0aXZlIHdlaWdodHMgYXJlIGFzc2lnbmVkIHRvIG9ic2VydmF0aW9ucy4gVGhpcyBsZWFkcyB0byBhIG1vcmUgaW50ZXJlc3RpbmcgY29udHJpYnV0aW9uIGZvciBtb2RlbC1iYXNlZCBjbHVzdGVyaW5nIG9uIHRoZSB1bml0IGh5cGVyc3BoZXJlIGJ5IGZpbml0ZSBtaXh0dXJlIG1vZGVsIHdpdGggU04gZGlzdHJpYnV0aW9ucy4gV2UgdmFsaWRhdGUgZWZmaWNpZW5jeSBvZiBvcHRpbWl6YXRpb24tYmFzZWQgZXN0aW1hdGlvbiBwcm9jZWR1cmVzIGFuZCBlZmZlY3RpdmVuZXNzIG9mIFNOIG1peHR1cmUgbW9kZWwgdXNpbmcgc2ltdWxhdGVkIGFuZCByZWFsIGRhdGEgZXhhbXBsZXMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyMS0wNi0xMVQxMzoyODoxMVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhcnhpdjpkb2k+MTAuMTAxNi9qLmNzZGEuMjAyMi4xMDc0NTc8L2FyeGl2OmRvaT4KICAgIDxsaW5rIHJlbD0icmVsYXRlZCIgaHJlZj0iaHR0cHM6Ly9kb2kub3JnLzEwLjEwMTYvai5jc2RhLjIwMjIuMTA3NDU3IiB0aXRsZT0iZG9pIi8+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Parameter Estimation and Model-Based Clustering with Spherical Normal Distribution on the Unit Hypersphere",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "In directional statistics, the von Mises-Fisher (vMF) distribution is one of the most basic and popular probability distributions for data on the unit hypersphere. Recently, the spherical normal (SN) distribution was proposed as an intrinsic counterpart to the vMF distribution by replacing the standard Euclidean norm with the great-circle distance, which is the shortest path joining two points on the unit sphere. We propose numerical approaches for parameter estimation since there are no analytic formula available. We consider the estimation problems in a general setting where non-negative weights are assigned to observations. This leads to a more interesting contribution for model-based clustering on the unit hypersphere by finite mixture model with SN distributions. We validate efficiency of optimization-based estimation procedures and effectiveness of SN mixture model using simulated and real data examples.",
+    "identifiers": {
+      "arxiv": "2106.06375",
+      "arxiv_versioned": "2106.06375v1",
+      "doi": "10.1016/j.csda.2022.107457",
+      "external": {
+        "arxiv": "2106.06375v1",
+        "doi": "10.1016/j.csda.2022.107457"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2021-06-11T13:28:11Z",
+    "updated": "2021-06-11T13:28:11Z"
+  }
+}

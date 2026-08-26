@@ -2,7 +2,7 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2607.02943v3",
-  "initialized_utc": "2026-08-26T03:22:26.371923Z",
+  "initialized_utc": "2026-08-26T03:57:40.661947Z",
   "title": "Geometric Information Decomposition for Weighted Empirical Measures on the Sphere",
   "authors": [
     "Kisung You",
@@ -55,8 +55,11 @@
       "entrypoint": "manuscript.tex",
       "selection": "single-candidate",
       "declarations": {
-        "title_tex": null,
-        "authors_tex": [],
+        "title_tex": "Geometric Information Decomposition for Weighted Empirical Measures on the Sphere",
+        "authors_tex": [
+          "Kisung You",
+          "Boram Cho"
+        ],
         "doi": null
       }
     },
@@ -123,8 +126,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:22:26.371923Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:57:40.661947Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",

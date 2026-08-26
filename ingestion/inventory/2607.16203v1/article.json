@@ -2,21 +2,62 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2607.16203v1",
-  "initialized_utc": "2026-08-11T03:19:36.991682Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:58:16.271163Z",
+  "title": "DocOCR-Eval: A Correction-Based Framework for OCR Tool Selection Without Ground Truth",
+  "authors": [
+    "Zihan Xu",
+    "Puzhen Wu",
+    "Lawrence Chun Man Lau",
+    "Wei Liu",
+    "Sirui Li",
+    "Yifan Peng",
+    "Yihao Ding"
+  ],
+  "abstract": "Document parsing is a foundational step for document understanding tasks such as visual question answering and key information extraction, as it transforms unstructured scanned images into structured representations by extracting textual, visual, and layout information. While numerous Optical Character Recognition (OCR) engines and multimodal large language models (MLLMs) have been developed for this purpose, selecting an appropriate document parsing solution for a given document collection remains challenging, particularly in label-scarce settings. In this work, we conduct a systematic evaluation of text recognition performance across a diverse set of OCR engines and state-of-the-art MLLMs on multiple scanned document benchmarks spanning different domains and languages. Motivated by the limited contextual reasoning capabilities of many OCR engines and the high cost of manual annotations, we propose DocOCR-Eval, an annotation-free evaluation framework for automatic OCR assessment and selection. DocOCR-Eval employs a three-staged correction and ranking strategy to approximate annotation-based tool ordering without ground-truth labels. We show that aggregating across multiple MLLMs progressively improves alignment with annotation-based rankings. Extensive experiments further demonstrate that reliable OCR tool selection can be achieved in realistic, label-limited settings, providing practical guidance for deploying document parsing systems across diverse real-world document collections.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2607.16203",
+    "arxiv_versioned": "2607.16203v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.16203v1"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.LG",
+    "cs.AI",
+    "cs.CL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.LG",
+  "published": "2026-05-05T10:59:34Z",
+  "updated": "2026-05-05T10:59:34Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.16203v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10321,
+        "sha256": "07939bb813b7330d7b90a8199a7fe5e3d8ae5f4d848a3b5a003807b975c7f778",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:58:16.004074Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.16203v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "4cb5ee0a853d939c50518ca2c86fb2f58e29cb5e272cf1e3754546b23c41400d"
+      }
+    ],
     "latex_source": {
       "entrypoint": "acl_latex.tex",
       "selection": "single-candidate",
@@ -34,7 +75,32 @@
         "bytes": 468,
         "sha256": "6ec882c6f9af5846f92451e57a6b988ae40ad1621988925548ae2e0392c12f00"
       }
-    ]
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.16203v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -59,8 +125,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T03:19:36.991682Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:58:16.271163Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -85,8 +151,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "acl_latex.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "acl_latex.tex"
       },
       {
         "name": "literal-inputs-resolved",

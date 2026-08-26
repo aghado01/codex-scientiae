@@ -1,0 +1,177 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.09867v1",
+  "initialized_utc": "2026-08-26T03:58:31.985408Z",
+  "title": "Stealing Reasoning Traces from Proprietary LLM APIs",
+  "authors": [
+    "Alexander Panfilov",
+    "David Schmotz",
+    "Ilia Shumailov",
+    "Luca Beurer-Kellner",
+    "Joachim Schaeffer",
+    "Ameya Prabhu",
+    "Jonas Geiping",
+    "Maksym Andriushchenko"
+  ],
+  "abstract": "Leading large language model providers now conceal their models' step-by-step reasoning, or chain-of-thought, to protect intellectual property and limit information leakage. Rather than storing these traces server-side, providers return them to the client as blocks of encrypted text, which the client passes back with each subsequent request. Building on prior research, we identify an architectural vulnerability: these encrypted blocks are fully compatible and interchangeable across different sessions, users, and models within a provider's ecosystem. We exploit this compatibility to develop a scalable decryption jailbreak. By injecting an encrypted reasoning trace from a given model into a weaker, and less safeguarded model from the same provider, we force it to decode and output the trace verbatim in plaintext, without ever jailbreaking the more capable model directly. This vulnerability enables four distinct attack vectors. First, it circumvents anti-distillation mechanisms, allowing adversaries to extract a proprietary model's reasoning, as we demonstrate across Anthropic, OpenAI, and Google. Second, it allows for large-scale private data extraction. Developers frequently share session logs publicly, unaware of contents of the encrypted blocks. By decoding 315,320 reasoning blocks scraped from public repositories, we recovered 367 Personally Identifiable Information (PII) artifacts and 182 credentials. Third, it inadvertently reveals hazardous information hidden within the reasoning process, even in cases where the model's final, visible output safely rejects a malicious request. Fourth, attackers can leverage this flaw to execute invisible prompt injections, embedding malicious payloads entirely within encrypted blocks to poison public agentic rollouts. Following responsible disclosure, we propose concrete cryptographic and system-level mitigations to secure client-side reasoning.",
+  "identifiers": {
+    "arxiv": "2608.09867",
+    "arxiv_versioned": "2608.09867v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.09867v1"
+    }
+  },
+  "categories": [
+    "cs.CR",
+    "cs.AI",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CR",
+  "published": "2026-08-10T17:24:50Z",
+  "updated": "2026-08-10T17:24:50Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.09867v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 11763,
+        "sha256": "8b288c9d5257c717478d1a0a480e5ded9a1dfcaa1427cb777014e06261799b08",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:58:26.186446Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.09867v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "18bb9343b47602e456b84a9cc6c340d6e26f1deb6976d6e5377a3a8aad83cd5c"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Stealing Reasoning Traces from Proprietary LLM APIs",
+        "authors_tex": [
+          "\\vspace{-0.2cm}\n\\normalsize \\textbf{Alexander Panfilov}\\textsuperscript{1,\\,2,\\,3,\\,4}* \\quad \\textbf{David Schmotz}\\textsuperscript{2,\\,3,\\,4}*  \\quad \\textbf{Ilia Shumailov}\\textsuperscript{5}* \\quad \\textbf{Luca Beurer-Kellner}\\textsuperscript{6}\\\\[2.5mm]\n\\normalsize \\textbf{Joachim Schaeffer}\\textsuperscript{1} \\quad  \\textbf{Ameya Prabhu}\\textsuperscript{2,\\,4,\\,7\\textdaggerdbl} \\quad \\textbf{Jonas Geiping}\\textsuperscript{2,\\,3,\\,4\\textdaggerdbl} \\quad \\textbf{Maksym Andriushchenko}\\textsuperscript{2,\\,3,\\,4\\textdaggerdbl}\\\\[2.5mm]\n\\small \\textsuperscript{1}MATS Research \\qquad \\textsuperscript{2}ELLIS Institute T\\\"ubingen \\qquad \\textsuperscript{3}Max Planck Institute for Intelligent Systems\\\\[0mm]\n\\small \\textsuperscript{4}T\\\"ubingen AI Center \\qquad \\textsuperscript{5}AI Sequrity Company \\qquad \\textsuperscript{6}Snyk \\qquad \\textsuperscript{7}University of T\\\"ubingen\\\\[2mm]\n\\small *\\,Equal contribution, order decided by dice roll \\qquad \\textsuperscript{\\textdaggerdbl}Equal supervision\\\\[4mm]\n\\small \\href{https://stolen-thoughts.com}{\\textcolor{black}{{\\footnotesize\\faGlobe}\\hspace{0.45em}stolen-thoughts.com}}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 2023,
+        "sha256": "edd9d3301a44508702b8a60f9684db400679523bd1f0eb81cb6c6942ee1bbca2"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.09867v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.09867v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 16738724,
+      "sha256": "70f3741f82b03f5cd64b261015bcdfbe861f8396312a17246b402052292445f2",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.09867v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.09867v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 107,
+      "tex_files": 72,
+      "sha256": "ee40fe6653d4a0d0eae0ed09f1b3cdd9e5e12073f3a185e4c61ec79a6d4d7f03"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.09867v1.pdf",
+      "format": "application/pdf",
+      "bytes": 3849013,
+      "sha256": "eb8697b6ec47c6522d17247359f949426516af8d54263bd8626d1f3e62bcef23"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-26T03:58:31.985408Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 137
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 107
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 72
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

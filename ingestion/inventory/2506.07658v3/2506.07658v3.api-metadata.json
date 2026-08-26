@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2506.07658v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2506.07658v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "From Raw Corpora to Domain Benchmarks: Automated Evaluation of LLM Domain Expertise",
+      "authors": [
+        "Nitin Sharma",
+        "Thomas Wolfers",
+        "Çağatay Yıldız"
+      ],
+      "abstract": "Accurate domain-specific benchmarking of LLMs is essential, specifically in domains with direct implications for humans, such as law, healthcare, and education. However, existing benchmarks are documented to be contaminated and are based on multiple-choice questions, which suffer from inherent biases. To measure domain-specific knowledge in LLMs, we present a deterministic pipeline that transforms raw domain corpora into completion-style benchmarks without relying on other LLMs or costly human annotation. Our approach first extracts domain-specific keywords and related target vocabulary from an input corpus. It then constructs prompt-target pairs where domain-specific words serve as prediction targets. By measuring LLMs' ability to complete these prompts, we provide a direct assessment of domain knowledge at low computational cost. Our pipeline avoids benchmark contamination, enables automated updates with new domain data, and facilitates fair comparisons between base and instruction-tuned (chat) models. We validate our approach by showing that model performances on our benchmark significantly correlate with those on an expert-curated benchmark. We then demonstrate how our benchmark provides insights into knowledge acquisition in domain-adaptive, continual, and general pretraining. Finally, we examine the effects of instruction fine-tuning by comparing base and chat models within our unified evaluation framework. In conclusion, our pipeline enables scalable, domain-specific, LLM-independent, and unbiased evaluation of both base and chat models.",
+      "doi": null,
+      "arxiv_id": "2506.07658v3",
+      "published": "2025-06-09T11:30:12Z",
+      "updated": "2026-03-05T22:36:20Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2506.07658v3",
+      "pdf_url": "https://arxiv.org/pdf/2506.07658v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2506.07658v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2506.07658v3",
+          "url": "https://arxiv.org/abs/2506.07658v3",
+          "doi": null,
+          "arxiv_id": "2506.07658v3",
+          "published": "2025-06-09T11:30:12Z",
+          "updated": "2026-03-05T22:36:20Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2506.07658v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:57:58.421352Z",
+      "sha256": "0bbca1eaa33e89678c01f2b920120b300c5310d84cb1c0ee3bf43d827bbc6442",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvMGtmeSt3SmlaMDN3bk9ZekRhNjZvRzdoVzVrPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwNi4wNzY1OHYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU3OjU4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA2LjA3NjU4djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwNi4wNzY1OHYzPC9pZD4KICAgIDx0aXRsZT5Gcm9tIFJhdyBDb3Jwb3JhIHRvIERvbWFpbiBCZW5jaG1hcmtzOiBBdXRvbWF0ZWQgRXZhbHVhdGlvbiBvZiBMTE0gRG9tYWluIEV4cGVydGlzZTwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTAzLTA1VDIyOjM2OjIwWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNTA2LjA3NjU4djMiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNTA2LjA3NjU4djMiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5BY2N1cmF0ZSBkb21haW4tc3BlY2lmaWMgYmVuY2htYXJraW5nIG9mIExMTXMgaXMgZXNzZW50aWFsLCBzcGVjaWZpY2FsbHkgaW4gZG9tYWlucyB3aXRoIGRpcmVjdCBpbXBsaWNhdGlvbnMgZm9yIGh1bWFucywgc3VjaCBhcyBsYXcsIGhlYWx0aGNhcmUsIGFuZCBlZHVjYXRpb24uIEhvd2V2ZXIsIGV4aXN0aW5nIGJlbmNobWFya3MgYXJlIGRvY3VtZW50ZWQgdG8gYmUgY29udGFtaW5hdGVkIGFuZCBhcmUgYmFzZWQgb24gbXVsdGlwbGUtY2hvaWNlIHF1ZXN0aW9ucywgd2hpY2ggc3VmZmVyIGZyb20gaW5oZXJlbnQgYmlhc2VzLiBUbyBtZWFzdXJlIGRvbWFpbi1zcGVjaWZpYyBrbm93bGVkZ2UgaW4gTExNcywgd2UgcHJlc2VudCBhIGRldGVybWluaXN0aWMgcGlwZWxpbmUgdGhhdCB0cmFuc2Zvcm1zIHJhdyBkb21haW4gY29ycG9yYSBpbnRvIGNvbXBsZXRpb24tc3R5bGUgYmVuY2htYXJrcyB3aXRob3V0IHJlbHlpbmcgb24gb3RoZXIgTExNcyBvciBjb3N0bHkgaHVtYW4gYW5ub3RhdGlvbi4gT3VyIGFwcHJvYWNoIGZpcnN0IGV4dHJhY3RzIGRvbWFpbi1zcGVjaWZpYyBrZXl3b3JkcyBhbmQgcmVsYXRlZCB0YXJnZXQgdm9jYWJ1bGFyeSBmcm9tIGFuIGlucHV0IGNvcnB1cy4gSXQgdGhlbiBjb25zdHJ1Y3RzIHByb21wdC10YXJnZXQgcGFpcnMgd2hlcmUgZG9tYWluLXNwZWNpZmljIHdvcmRzIHNlcnZlIGFzIHByZWRpY3Rpb24gdGFyZ2V0cy4gQnkgbWVhc3VyaW5nIExMTXMnIGFiaWxpdHkgdG8gY29tcGxldGUgdGhlc2UgcHJvbXB0cywgd2UgcHJvdmlkZSBhIGRpcmVjdCBhc3Nlc3NtZW50IG9mIGRvbWFpbiBrbm93bGVkZ2UgYXQgbG93IGNvbXB1dGF0aW9uYWwgY29zdC4gT3VyIHBpcGVsaW5lIGF2b2lkcyBiZW5jaG1hcmsgY29udGFtaW5hdGlvbiwgZW5hYmxlcyBhdXRvbWF0ZWQgdXBkYXRlcyB3aXRoIG5ldyBkb21haW4gZGF0YSwgYW5kIGZhY2lsaXRhdGVzIGZhaXIgY29tcGFyaXNvbnMgYmV0d2VlbiBiYXNlIGFuZCBpbnN0cnVjdGlvbi10dW5lZCAoY2hhdCkgbW9kZWxzLiBXZSB2YWxpZGF0ZSBvdXIgYXBwcm9hY2ggYnkgc2hvd2luZyB0aGF0IG1vZGVsIHBlcmZvcm1hbmNlcyBvbiBvdXIgYmVuY2htYXJrIHNpZ25pZmljYW50bHkgY29ycmVsYXRlIHdpdGggdGhvc2Ugb24gYW4gZXhwZXJ0LWN1cmF0ZWQgYmVuY2htYXJrLiBXZSB0aGVuIGRlbW9uc3RyYXRlIGhvdyBvdXIgYmVuY2htYXJrIHByb3ZpZGVzIGluc2lnaHRzIGludG8ga25vd2xlZGdlIGFjcXVpc2l0aW9uIGluIGRvbWFpbi1hZGFwdGl2ZSwgY29udGludWFsLCBhbmQgZ2VuZXJhbCBwcmV0cmFpbmluZy4gRmluYWxseSwgd2UgZXhhbWluZSB0aGUgZWZmZWN0cyBvZiBpbnN0cnVjdGlvbiBmaW5lLXR1bmluZyBieSBjb21wYXJpbmcgYmFzZSBhbmQgY2hhdCBtb2RlbHMgd2l0aGluIG91ciB1bmlmaWVkIGV2YWx1YXRpb24gZnJhbWV3b3JrLiBJbiBjb25jbHVzaW9uLCBvdXIgcGlwZWxpbmUgZW5hYmxlcyBzY2FsYWJsZSwgZG9tYWluLXNwZWNpZmljLCBMTE0taW5kZXBlbmRlbnQsIGFuZCB1bmJpYXNlZCBldmFsdWF0aW9uIG9mIGJvdGggYmFzZSBhbmQgY2hhdCBtb2RlbHMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMDYtMDlUMTE6MzA6MTJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD4zNiBwYWdlcywgMjQgZmlndXJlcy4gVGhpcmQgdmVyc2lvbjwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5OaXRpbiBTaGFybWE8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlRob21hcyBXb2xmZXJzPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT7Dh2HEn2F0YXkgWcSxbGTEsXo8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "From Raw Corpora to Domain Benchmarks: Automated Evaluation of LLM Domain Expertise",
+    "authors": [
+      "Nitin Sharma",
+      "Thomas Wolfers",
+      "Çağatay Yıldız"
+    ],
+    "abstract": "Accurate domain-specific benchmarking of LLMs is essential, specifically in domains with direct implications for humans, such as law, healthcare, and education. However, existing benchmarks are documented to be contaminated and are based on multiple-choice questions, which suffer from inherent biases. To measure domain-specific knowledge in LLMs, we present a deterministic pipeline that transforms raw domain corpora into completion-style benchmarks without relying on other LLMs or costly human annotation. Our approach first extracts domain-specific keywords and related target vocabulary from an input corpus. It then constructs prompt-target pairs where domain-specific words serve as prediction targets. By measuring LLMs' ability to complete these prompts, we provide a direct assessment of domain knowledge at low computational cost. Our pipeline avoids benchmark contamination, enables automated updates with new domain data, and facilitates fair comparisons between base and instruction-tuned (chat) models. We validate our approach by showing that model performances on our benchmark significantly correlate with those on an expert-curated benchmark. We then demonstrate how our benchmark provides insights into knowledge acquisition in domain-adaptive, continual, and general pretraining. Finally, we examine the effects of instruction fine-tuning by comparing base and chat models within our unified evaluation framework. In conclusion, our pipeline enables scalable, domain-specific, LLM-independent, and unbiased evaluation of both base and chat models.",
+    "identifiers": {
+      "arxiv": "2506.07658",
+      "arxiv_versioned": "2506.07658v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2506.07658v3"
+      }
+    },
+    "categories": [
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2025-06-09T11:30:12Z",
+    "updated": "2026-03-05T22:36:20Z"
+  }
+}

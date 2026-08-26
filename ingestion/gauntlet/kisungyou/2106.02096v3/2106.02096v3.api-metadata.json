@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2106.02096v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2106.02096v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Shape-Preserving Dimensionality Reduction : An Algorithm and Measures of Topological Equivalence",
+      "authors": [
+        "Byeongsu Yu",
+        "Kisung You"
+      ],
+      "abstract": "We introduce a linear dimensionality reduction technique preserving topological features via persistent homology. The method is designed to find linear projection $L$ which preserves the persistent diagram of a point cloud $\\mathbb{X}$ via simulated annealing. The projection $L$ induces a set of canonical simplicial maps from the Rips (or Čech) filtration of $\\mathbb{X}$ to that of $L\\mathbb{X}$. In addition to the distance between persistent diagrams, the projection induces a map between filtrations, called filtration homomorphism. Using the filtration homomorphism, one can measure the difference between shapes of two filtrations directly comparing simplicial complexes with respect to quasi-isomorphism $μ_{\\operatorname{quasi-iso}}$ or strong homotopy equivalence $μ_{\\operatorname{equiv}}$. These $μ_{\\operatorname{quasi-iso}}$ and $μ_{\\operatorname{equiv}}$ measures how much portion of corresponding simplicial complexes is quasi-isomorphic or homotopy equivalence respectively. We validate the effectiveness of our framework with simple examples.",
+      "doi": null,
+      "arxiv_id": "2106.02096v3",
+      "published": "2021-06-03T19:28:52Z",
+      "updated": "2021-06-13T21:03:10Z",
+      "year": 2021,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2106.02096v3",
+      "pdf_url": "https://arxiv.org/pdf/2106.02096v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2106.02096v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2106.02096v3",
+          "url": "https://arxiv.org/abs/2106.02096v3",
+          "doi": null,
+          "arxiv_id": "2106.02096v3",
+          "published": "2021-06-03T19:28:52Z",
+          "updated": "2021-06-13T21:03:10Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2106.02096v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:27.420271Z",
+      "sha256": "83adf7c2a47009776f3d5ae5bd3b863442148022cac2a483100ad2eeed7344dc",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvSTZjYndFZmFtWllhd3VuR1NDQVVrSG41ZXZBPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjEwNi4wMjA5NnYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjI3WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMTA2LjAyMDk2djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjEwNi4wMjA5NnYzPC9pZD4KICAgIDx0aXRsZT5TaGFwZS1QcmVzZXJ2aW5nIERpbWVuc2lvbmFsaXR5IFJlZHVjdGlvbiA6IEFuIEFsZ29yaXRobSBhbmQgTWVhc3VyZXMgb2YgVG9wb2xvZ2ljYWwgRXF1aXZhbGVuY2U8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyMS0wNi0xM1QyMTowMzoxMFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjEwNi4wMjA5NnYzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjEwNi4wMjA5NnYzIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+V2UgaW50cm9kdWNlIGEgbGluZWFyIGRpbWVuc2lvbmFsaXR5IHJlZHVjdGlvbiB0ZWNobmlxdWUgcHJlc2VydmluZyB0b3BvbG9naWNhbCBmZWF0dXJlcyB2aWEgcGVyc2lzdGVudCBob21vbG9neS4gVGhlIG1ldGhvZCBpcyBkZXNpZ25lZCB0byBmaW5kIGxpbmVhciBwcm9qZWN0aW9uICRMJCB3aGljaCBwcmVzZXJ2ZXMgdGhlIHBlcnNpc3RlbnQgZGlhZ3JhbSBvZiBhIHBvaW50IGNsb3VkICRcbWF0aGJie1h9JCB2aWEgc2ltdWxhdGVkIGFubmVhbGluZy4gVGhlIHByb2plY3Rpb24gJEwkIGluZHVjZXMgYSBzZXQgb2YgY2Fub25pY2FsIHNpbXBsaWNpYWwgbWFwcyBmcm9tIHRoZSBSaXBzIChvciDEjGVjaCkgZmlsdHJhdGlvbiBvZiAkXG1hdGhiYntYfSQgdG8gdGhhdCBvZiAkTFxtYXRoYmJ7WH0kLiBJbiBhZGRpdGlvbiB0byB0aGUgZGlzdGFuY2UgYmV0d2VlbiBwZXJzaXN0ZW50IGRpYWdyYW1zLCB0aGUgcHJvamVjdGlvbiBpbmR1Y2VzIGEgbWFwIGJldHdlZW4gZmlsdHJhdGlvbnMsIGNhbGxlZCBmaWx0cmF0aW9uIGhvbW9tb3JwaGlzbS4gVXNpbmcgdGhlIGZpbHRyYXRpb24gaG9tb21vcnBoaXNtLCBvbmUgY2FuIG1lYXN1cmUgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiBzaGFwZXMgb2YgdHdvIGZpbHRyYXRpb25zIGRpcmVjdGx5IGNvbXBhcmluZyBzaW1wbGljaWFsIGNvbXBsZXhlcyB3aXRoIHJlc3BlY3QgdG8gcXVhc2ktaXNvbW9ycGhpc20gJM68X3tcb3BlcmF0b3JuYW1le3F1YXNpLWlzb319JCBvciBzdHJvbmcgaG9tb3RvcHkgZXF1aXZhbGVuY2UgJM68X3tcb3BlcmF0b3JuYW1le2VxdWl2fX0kLiBUaGVzZSAkzrxfe1xvcGVyYXRvcm5hbWV7cXVhc2ktaXNvfX0kIGFuZCAkzrxfe1xvcGVyYXRvcm5hbWV7ZXF1aXZ9fSQgbWVhc3VyZXMgaG93IG11Y2ggcG9ydGlvbiBvZiBjb3JyZXNwb25kaW5nIHNpbXBsaWNpYWwgY29tcGxleGVzIGlzIHF1YXNpLWlzb21vcnBoaWMgb3IgaG9tb3RvcHkgZXF1aXZhbGVuY2UgcmVzcGVjdGl2ZWx5LiBXZSB2YWxpZGF0ZSB0aGUgZWZmZWN0aXZlbmVzcyBvZiBvdXIgZnJhbWV3b3JrIHdpdGggc2ltcGxlIGV4YW1wbGVzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyMS0wNi0wM1QxOToyODo1Mlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PjE4IHBhZ2VzLCAyIGZpZ3VyZXM8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5CeWVvbmdzdSBZdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Shape-Preserving Dimensionality Reduction : An Algorithm and Measures of Topological Equivalence",
+    "authors": [
+      "Byeongsu Yu",
+      "Kisung You"
+    ],
+    "abstract": "We introduce a linear dimensionality reduction technique preserving topological features via persistent homology. The method is designed to find linear projection $L$ which preserves the persistent diagram of a point cloud $\\mathbb{X}$ via simulated annealing. The projection $L$ induces a set of canonical simplicial maps from the Rips (or Čech) filtration of $\\mathbb{X}$ to that of $L\\mathbb{X}$. In addition to the distance between persistent diagrams, the projection induces a map between filtrations, called filtration homomorphism. Using the filtration homomorphism, one can measure the difference between shapes of two filtrations directly comparing simplicial complexes with respect to quasi-isomorphism $μ_{\\operatorname{quasi-iso}}$ or strong homotopy equivalence $μ_{\\operatorname{equiv}}$. These $μ_{\\operatorname{quasi-iso}}$ and $μ_{\\operatorname{equiv}}$ measures how much portion of corresponding simplicial complexes is quasi-isomorphic or homotopy equivalence respectively. We validate the effectiveness of our framework with simple examples.",
+    "identifiers": {
+      "arxiv": "2106.02096",
+      "arxiv_versioned": "2106.02096v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2106.02096v3"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2021-06-03T19:28:52Z",
+    "updated": "2021-06-13T21:03:10Z"
+  }
+}

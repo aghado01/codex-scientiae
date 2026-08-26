@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2504.14164v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2504.14164v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Learning over von Mises-Fisher Distributions via a Wasserstein-like Geometry",
+      "authors": [
+        "Kisung You",
+        "Dennis Shung",
+        "Mauro Giuffrè"
+      ],
+      "abstract": "We introduce a novel, geometry-aware distance metric for the family of von Mises-Fisher (vMF) distributions, which are fundamental models for directional data on the unit hypersphere. Although the vMF distribution is widely employed in a variety of probabilistic learning tasks involving spherical data, principled tools for comparing vMF distributions remain limited, primarily due to the intractability of normalization constants and the absence of suitable geometric metrics. Motivated by the theory of optimal transport, we propose a Wasserstein-like distance that decomposes the discrepancy between two vMF distributions into two interpretable components: a geodesic term capturing the angular separation between mean directions, and a variance-like term quantifying differences in concentration parameters. The derivation leverages a Gaussian approximation in the high-concentration regime to yield a tractable, closed-form expression that respects the intrinsic spherical geometry. We show that the proposed distance exhibits desirable theoretical properties and induces a latent geometric structure on the space of non-degenerate vMF distributions. As a primary application, we develop the efficient algorithms for vMF mixture reduction, enabling structure-preserving compression of mixture models in high-dimensional settings. Empirical results on synthetic datasets and real-world high-dimensional embeddings, including biomedical sentence representations and deep visual features, demonstrate the effectiveness of the proposed geometry in distinguishing distributions and supporting interpretable inference. This work expands the statistical toolbox for directional data analysis by introducing a tractable, transport-inspired distance tailored to the geometry of the hypersphere.",
+      "doi": null,
+      "arxiv_id": "2504.14164v1",
+      "published": "2025-04-19T03:38:15Z",
+      "updated": "2025-04-19T03:38:15Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2504.14164v1",
+      "pdf_url": "https://arxiv.org/pdf/2504.14164v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2504.14164v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2504.14164v1",
+          "url": "https://arxiv.org/abs/2504.14164v1",
+          "doi": null,
+          "arxiv_id": "2504.14164v1",
+          "published": "2025-04-19T03:38:15Z",
+          "updated": "2025-04-19T03:38:15Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2504.14164v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:56:55.671461Z",
+      "sha256": "e293693d1d651cd2201d289279d5ed2cfa6046d6f385ca94f88638fe03d278a4",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQ1NOWW90bGIxNVJrbkRBdDRPQndqVThyNHIwPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwNC4xNDE2NHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjU2OjU1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA0LjE0MTY0djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwNC4xNDE2NHYxPC9pZD4KICAgIDx0aXRsZT5MZWFybmluZyBvdmVyIHZvbiBNaXNlcy1GaXNoZXIgRGlzdHJpYnV0aW9ucyB2aWEgYSBXYXNzZXJzdGVpbi1saWtlIEdlb21ldHJ5PC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjUtMDQtMTlUMDM6Mzg6MTVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI1MDQuMTQxNjR2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI1MDQuMTQxNjR2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PldlIGludHJvZHVjZSBhIG5vdmVsLCBnZW9tZXRyeS1hd2FyZSBkaXN0YW5jZSBtZXRyaWMgZm9yIHRoZSBmYW1pbHkgb2Ygdm9uIE1pc2VzLUZpc2hlciAodk1GKSBkaXN0cmlidXRpb25zLCB3aGljaCBhcmUgZnVuZGFtZW50YWwgbW9kZWxzIGZvciBkaXJlY3Rpb25hbCBkYXRhIG9uIHRoZSB1bml0IGh5cGVyc3BoZXJlLiBBbHRob3VnaCB0aGUgdk1GIGRpc3RyaWJ1dGlvbiBpcyB3aWRlbHkgZW1wbG95ZWQgaW4gYSB2YXJpZXR5IG9mIHByb2JhYmlsaXN0aWMgbGVhcm5pbmcgdGFza3MgaW52b2x2aW5nIHNwaGVyaWNhbCBkYXRhLCBwcmluY2lwbGVkIHRvb2xzIGZvciBjb21wYXJpbmcgdk1GIGRpc3RyaWJ1dGlvbnMgcmVtYWluIGxpbWl0ZWQsIHByaW1hcmlseSBkdWUgdG8gdGhlIGludHJhY3RhYmlsaXR5IG9mIG5vcm1hbGl6YXRpb24gY29uc3RhbnRzIGFuZCB0aGUgYWJzZW5jZSBvZiBzdWl0YWJsZSBnZW9tZXRyaWMgbWV0cmljcy4gTW90aXZhdGVkIGJ5IHRoZSB0aGVvcnkgb2Ygb3B0aW1hbCB0cmFuc3BvcnQsIHdlIHByb3Bvc2UgYSBXYXNzZXJzdGVpbi1saWtlIGRpc3RhbmNlIHRoYXQgZGVjb21wb3NlcyB0aGUgZGlzY3JlcGFuY3kgYmV0d2VlbiB0d28gdk1GIGRpc3RyaWJ1dGlvbnMgaW50byB0d28gaW50ZXJwcmV0YWJsZSBjb21wb25lbnRzOiBhIGdlb2Rlc2ljIHRlcm0gY2FwdHVyaW5nIHRoZSBhbmd1bGFyIHNlcGFyYXRpb24gYmV0d2VlbiBtZWFuIGRpcmVjdGlvbnMsIGFuZCBhIHZhcmlhbmNlLWxpa2UgdGVybSBxdWFudGlmeWluZyBkaWZmZXJlbmNlcyBpbiBjb25jZW50cmF0aW9uIHBhcmFtZXRlcnMuIFRoZSBkZXJpdmF0aW9uIGxldmVyYWdlcyBhIEdhdXNzaWFuIGFwcHJveGltYXRpb24gaW4gdGhlIGhpZ2gtY29uY2VudHJhdGlvbiByZWdpbWUgdG8geWllbGQgYSB0cmFjdGFibGUsIGNsb3NlZC1mb3JtIGV4cHJlc3Npb24gdGhhdCByZXNwZWN0cyB0aGUgaW50cmluc2ljIHNwaGVyaWNhbCBnZW9tZXRyeS4gV2Ugc2hvdyB0aGF0IHRoZSBwcm9wb3NlZCBkaXN0YW5jZSBleGhpYml0cyBkZXNpcmFibGUgdGhlb3JldGljYWwgcHJvcGVydGllcyBhbmQgaW5kdWNlcyBhIGxhdGVudCBnZW9tZXRyaWMgc3RydWN0dXJlIG9uIHRoZSBzcGFjZSBvZiBub24tZGVnZW5lcmF0ZSB2TUYgZGlzdHJpYnV0aW9ucy4gQXMgYSBwcmltYXJ5IGFwcGxpY2F0aW9uLCB3ZSBkZXZlbG9wIHRoZSBlZmZpY2llbnQgYWxnb3JpdGhtcyBmb3Igdk1GIG1peHR1cmUgcmVkdWN0aW9uLCBlbmFibGluZyBzdHJ1Y3R1cmUtcHJlc2VydmluZyBjb21wcmVzc2lvbiBvZiBtaXh0dXJlIG1vZGVscyBpbiBoaWdoLWRpbWVuc2lvbmFsIHNldHRpbmdzLiBFbXBpcmljYWwgcmVzdWx0cyBvbiBzeW50aGV0aWMgZGF0YXNldHMgYW5kIHJlYWwtd29ybGQgaGlnaC1kaW1lbnNpb25hbCBlbWJlZGRpbmdzLCBpbmNsdWRpbmcgYmlvbWVkaWNhbCBzZW50ZW5jZSByZXByZXNlbnRhdGlvbnMgYW5kIGRlZXAgdmlzdWFsIGZlYXR1cmVzLCBkZW1vbnN0cmF0ZSB0aGUgZWZmZWN0aXZlbmVzcyBvZiB0aGUgcHJvcG9zZWQgZ2VvbWV0cnkgaW4gZGlzdGluZ3Vpc2hpbmcgZGlzdHJpYnV0aW9ucyBhbmQgc3VwcG9ydGluZyBpbnRlcnByZXRhYmxlIGluZmVyZW5jZS4gVGhpcyB3b3JrIGV4cGFuZHMgdGhlIHN0YXRpc3RpY2FsIHRvb2xib3ggZm9yIGRpcmVjdGlvbmFsIGRhdGEgYW5hbHlzaXMgYnkgaW50cm9kdWNpbmcgYSB0cmFjdGFibGUsIHRyYW5zcG9ydC1pbnNwaXJlZCBkaXN0YW5jZSB0YWlsb3JlZCB0byB0aGUgZ2VvbWV0cnkgb2YgdGhlIGh5cGVyc3BoZXJlLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMDQtMTlUMDM6Mzg6MTVaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5EZW5uaXMgU2h1bmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1hdXJvIEdpdWZmcsOoPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Learning over von Mises-Fisher Distributions via a Wasserstein-like Geometry",
+    "authors": [
+      "Kisung You",
+      "Dennis Shung",
+      "Mauro Giuffrè"
+    ],
+    "abstract": "We introduce a novel, geometry-aware distance metric for the family of von Mises-Fisher (vMF) distributions, which are fundamental models for directional data on the unit hypersphere. Although the vMF distribution is widely employed in a variety of probabilistic learning tasks involving spherical data, principled tools for comparing vMF distributions remain limited, primarily due to the intractability of normalization constants and the absence of suitable geometric metrics. Motivated by the theory of optimal transport, we propose a Wasserstein-like distance that decomposes the discrepancy between two vMF distributions into two interpretable components: a geodesic term capturing the angular separation between mean directions, and a variance-like term quantifying differences in concentration parameters. The derivation leverages a Gaussian approximation in the high-concentration regime to yield a tractable, closed-form expression that respects the intrinsic spherical geometry. We show that the proposed distance exhibits desirable theoretical properties and induces a latent geometric structure on the space of non-degenerate vMF distributions. As a primary application, we develop the efficient algorithms for vMF mixture reduction, enabling structure-preserving compression of mixture models in high-dimensional settings. Empirical results on synthetic datasets and real-world high-dimensional embeddings, including biomedical sentence representations and deep visual features, demonstrate the effectiveness of the proposed geometry in distinguishing distributions and supporting interpretable inference. This work expands the statistical toolbox for directional data analysis by introducing a tractable, transport-inspired distance tailored to the geometry of the hypersphere.",
+    "identifiers": {
+      "arxiv": "2504.14164",
+      "arxiv_versioned": "2504.14164v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2504.14164v1"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG",
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2025-04-19T03:38:15Z",
+    "updated": "2025-04-19T03:38:15Z"
+  }
+}

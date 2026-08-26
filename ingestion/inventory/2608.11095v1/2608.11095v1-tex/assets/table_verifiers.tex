@@ -1,0 +1,47 @@
+\begin{table*}[t]
+  \centering\small
+  \begin{tabular}{@{}llr>{\raggedright\arraybackslash}p{0.44\textwidth}@{}}
+    \toprule
+    Family & Verifier type & Worlds & Complaint returned on failure \\
+    \midrule
+    keywords & \texttt{existence} & 69 & the response is missing some required content \\
+     & \texttt{forbidden\_words} & 81 & the response contains wording it must not use \\
+     & \texttt{frequency} & 75 & certain wording is not used the right number of times \\
+     & \texttt{letter\_frequency} & 57 & a certain letter does not appear the right number of times \\
+    \addlinespace
+    length & \texttt{number\_paragraphs} & 48 & the response is not split into the right number of paragraphs \\
+     & \texttt{number\_sentences} & 99 & the response has the wrong number of sentences \\
+     & \texttt{number\_words} & 108 & the response's word count is off \\
+    \addlinespace
+    content & \texttt{number\_placeholders} & 42 & the response needs a different number of bracketed placeholders \\
+     & \texttt{postscript} & 36 & the response is missing a postscript \\
+    \addlinespace
+    format & \texttt{json\_format} & 27 & the response is not valid JSON \\
+     & \texttt{multiple\_sections} & 24 & the response is not organized into the expected sections \\
+     & \texttt{number\_bullet\_lists} & 54 & the response does not have the right number of bullet lists \\
+     & \texttt{number\_highlighted\_sections} & 87 & the response needs a different number of highlighted sections \\
+     & \texttt{title} & 36 & the response is missing a properly formatted title \\
+    \addlinespace
+    case & \texttt{capital\_word\_frequency} & 39 & the number of fully-capitalized words is off \\
+     & \texttt{english\_capital} & 42 & the response's letter casing is wrong \\
+     & \texttt{english\_lowercase} & 75 & the response's letter casing is wrong \\
+    \addlinespace
+    punctuation & \texttt{no\_comma} & 87 & the response's punctuation breaks a rule \\
+    \addlinespace
+    start / end & \texttt{end\_checker} & 27 & the response does not end the required way \\
+     & \texttt{quotation} & 69 & the response does not begin and end the required way \\
+    \bottomrule
+  \end{tabular}
+  \caption{
+    The hidden constraint grammar and the only signal the maintainer receives about it. Rows: the
+    verifier types instantiated across the canonical run's worlds, grouped by IFEval family;
+    columns: the number of $(\text{seed}, \text{world})$ pairs whose hidden constraint set contains
+    that type, and the complaint the harness returns when a response fails it. The complaint names
+    a dimension and never a parameter, a threshold, or the verifier's identity --- a maintainer
+    told ``the response's word count is off'' cannot read the target off the feedback, which is
+    the censoring \S\ref{sec:theory} assumes. Every type carries a distinct complaint except the
+    two casing checks, which share one by construction. Counts sum above the world count because
+    a world carries two or three constraints.
+  }
+  \label{tab:verifiers}
+\end{table*}

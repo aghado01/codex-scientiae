@@ -1,0 +1,113 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.09867v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.09867v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Stealing Reasoning Traces from Proprietary LLM APIs",
+      "authors": [
+        "Alexander Panfilov",
+        "David Schmotz",
+        "Ilia Shumailov",
+        "Luca Beurer-Kellner",
+        "Joachim Schaeffer",
+        "Ameya Prabhu",
+        "Jonas Geiping",
+        "Maksym Andriushchenko"
+      ],
+      "abstract": "Leading large language model providers now conceal their models' step-by-step reasoning, or chain-of-thought, to protect intellectual property and limit information leakage. Rather than storing these traces server-side, providers return them to the client as blocks of encrypted text, which the client passes back with each subsequent request. Building on prior research, we identify an architectural vulnerability: these encrypted blocks are fully compatible and interchangeable across different sessions, users, and models within a provider's ecosystem. We exploit this compatibility to develop a scalable decryption jailbreak. By injecting an encrypted reasoning trace from a given model into a weaker, and less safeguarded model from the same provider, we force it to decode and output the trace verbatim in plaintext, without ever jailbreaking the more capable model directly. This vulnerability enables four distinct attack vectors. First, it circumvents anti-distillation mechanisms, allowing adversaries to extract a proprietary model's reasoning, as we demonstrate across Anthropic, OpenAI, and Google. Second, it allows for large-scale private data extraction. Developers frequently share session logs publicly, unaware of contents of the encrypted blocks. By decoding 315,320 reasoning blocks scraped from public repositories, we recovered 367 Personally Identifiable Information (PII) artifacts and 182 credentials. Third, it inadvertently reveals hazardous information hidden within the reasoning process, even in cases where the model's final, visible output safely rejects a malicious request. Fourth, attackers can leverage this flaw to execute invisible prompt injections, embedding malicious payloads entirely within encrypted blocks to poison public agentic rollouts. Following responsible disclosure, we propose concrete cryptographic and system-level mitigations to secure client-side reasoning.",
+      "doi": null,
+      "arxiv_id": "2608.09867v1",
+      "published": "2026-08-10T17:24:50Z",
+      "updated": "2026-08-10T17:24:50Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.09867v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.09867v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2608.09867v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.09867v1",
+          "url": "https://arxiv.org/abs/2608.09867v1",
+          "doi": null,
+          "arxiv_id": "2608.09867v1",
+          "published": "2026-08-10T17:24:50Z",
+          "updated": "2026-08-10T17:24:50Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.09867v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:58:26.186446Z",
+      "sha256": "18bb9343b47602e456b84a9cc6c340d6e26f1deb6976d6e5377a3a8aad83cd5c",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvY2JpSjBjS1dYYzM1eU1rK2pEREhTZTU4Vlp3PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4wOTg2N3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjM2OjU1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjA5ODY3djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4wOTg2N3YxPC9pZD4KICAgIDx0aXRsZT5TdGVhbGluZyBSZWFzb25pbmcgVHJhY2VzIGZyb20gUHJvcHJpZXRhcnkgTExNIEFQSXM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0xMFQxNzoyNDo1MFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4wOTg2N3YxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4wOTg2N3YxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+TGVhZGluZyBsYXJnZSBsYW5ndWFnZSBtb2RlbCBwcm92aWRlcnMgbm93IGNvbmNlYWwgdGhlaXIgbW9kZWxzJyBzdGVwLWJ5LXN0ZXAgcmVhc29uaW5nLCBvciBjaGFpbi1vZi10aG91Z2h0LCB0byBwcm90ZWN0IGludGVsbGVjdHVhbCBwcm9wZXJ0eSBhbmQgbGltaXQgaW5mb3JtYXRpb24gbGVha2FnZS4gUmF0aGVyIHRoYW4gc3RvcmluZyB0aGVzZSB0cmFjZXMgc2VydmVyLXNpZGUsIHByb3ZpZGVycyByZXR1cm4gdGhlbSB0byB0aGUgY2xpZW50IGFzIGJsb2NrcyBvZiBlbmNyeXB0ZWQgdGV4dCwgd2hpY2ggdGhlIGNsaWVudCBwYXNzZXMgYmFjayB3aXRoIGVhY2ggc3Vic2VxdWVudCByZXF1ZXN0LiBCdWlsZGluZyBvbiBwcmlvciByZXNlYXJjaCwgd2UgaWRlbnRpZnkgYW4gYXJjaGl0ZWN0dXJhbCB2dWxuZXJhYmlsaXR5OiB0aGVzZSBlbmNyeXB0ZWQgYmxvY2tzIGFyZSBmdWxseSBjb21wYXRpYmxlIGFuZCBpbnRlcmNoYW5nZWFibGUgYWNyb3NzIGRpZmZlcmVudCBzZXNzaW9ucywgdXNlcnMsIGFuZCBtb2RlbHMgd2l0aGluIGEgcHJvdmlkZXIncyBlY29zeXN0ZW0uIFdlIGV4cGxvaXQgdGhpcyBjb21wYXRpYmlsaXR5IHRvIGRldmVsb3AgYSBzY2FsYWJsZSBkZWNyeXB0aW9uIGphaWxicmVhay4gQnkgaW5qZWN0aW5nIGFuIGVuY3J5cHRlZCByZWFzb25pbmcgdHJhY2UgZnJvbSBhIGdpdmVuIG1vZGVsIGludG8gYSB3ZWFrZXIsIGFuZCBsZXNzIHNhZmVndWFyZGVkIG1vZGVsIGZyb20gdGhlIHNhbWUgcHJvdmlkZXIsIHdlIGZvcmNlIGl0IHRvIGRlY29kZSBhbmQgb3V0cHV0IHRoZSB0cmFjZSB2ZXJiYXRpbSBpbiBwbGFpbnRleHQsIHdpdGhvdXQgZXZlciBqYWlsYnJlYWtpbmcgdGhlIG1vcmUgY2FwYWJsZSBtb2RlbCBkaXJlY3RseS4gVGhpcyB2dWxuZXJhYmlsaXR5IGVuYWJsZXMgZm91ciBkaXN0aW5jdCBhdHRhY2sgdmVjdG9ycy4gRmlyc3QsIGl0IGNpcmN1bXZlbnRzIGFudGktZGlzdGlsbGF0aW9uIG1lY2hhbmlzbXMsIGFsbG93aW5nIGFkdmVyc2FyaWVzIHRvIGV4dHJhY3QgYSBwcm9wcmlldGFyeSBtb2RlbCdzIHJlYXNvbmluZywgYXMgd2UgZGVtb25zdHJhdGUgYWNyb3NzIEFudGhyb3BpYywgT3BlbkFJLCBhbmQgR29vZ2xlLiBTZWNvbmQsIGl0IGFsbG93cyBmb3IgbGFyZ2Utc2NhbGUgcHJpdmF0ZSBkYXRhIGV4dHJhY3Rpb24uIERldmVsb3BlcnMgZnJlcXVlbnRseSBzaGFyZSBzZXNzaW9uIGxvZ3MgcHVibGljbHksIHVuYXdhcmUgb2YgY29udGVudHMgb2YgdGhlIGVuY3J5cHRlZCBibG9ja3MuIEJ5IGRlY29kaW5nIDMxNSwzMjAgcmVhc29uaW5nIGJsb2NrcyBzY3JhcGVkIGZyb20gcHVibGljIHJlcG9zaXRvcmllcywgd2UgcmVjb3ZlcmVkIDM2NyBQZXJzb25hbGx5IElkZW50aWZpYWJsZSBJbmZvcm1hdGlvbiAoUElJKSBhcnRpZmFjdHMgYW5kIDE4MiBjcmVkZW50aWFscy4gVGhpcmQsIGl0IGluYWR2ZXJ0ZW50bHkgcmV2ZWFscyBoYXphcmRvdXMgaW5mb3JtYXRpb24gaGlkZGVuIHdpdGhpbiB0aGUgcmVhc29uaW5nIHByb2Nlc3MsIGV2ZW4gaW4gY2FzZXMgd2hlcmUgdGhlIG1vZGVsJ3MgZmluYWwsIHZpc2libGUgb3V0cHV0IHNhZmVseSByZWplY3RzIGEgbWFsaWNpb3VzIHJlcXVlc3QuIEZvdXJ0aCwgYXR0YWNrZXJzIGNhbiBsZXZlcmFnZSB0aGlzIGZsYXcgdG8gZXhlY3V0ZSBpbnZpc2libGUgcHJvbXB0IGluamVjdGlvbnMsIGVtYmVkZGluZyBtYWxpY2lvdXMgcGF5bG9hZHMgZW50aXJlbHkgd2l0aGluIGVuY3J5cHRlZCBibG9ja3MgdG8gcG9pc29uIHB1YmxpYyBhZ2VudGljIHJvbGxvdXRzLiBGb2xsb3dpbmcgcmVzcG9uc2libGUgZGlzY2xvc3VyZSwgd2UgcHJvcG9zZSBjb25jcmV0ZSBjcnlwdG9ncmFwaGljIGFuZCBzeXN0ZW0tbGV2ZWwgbWl0aWdhdGlvbnMgdG8gc2VjdXJlIGNsaWVudC1zaWRlIHJlYXNvbmluZy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQ1IiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDgtMTBUMTc6MjQ6NTBaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5DUiIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QWxleGFuZGVyIFBhbmZpbG92PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5EYXZpZCBTY2htb3R6PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5JbGlhIFNodW1haWxvdjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+THVjYSBCZXVyZXItS2VsbG5lcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Sm9hY2hpbSBTY2hhZWZmZXI8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkFtZXlhIFByYWJodTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Sm9uYXMgR2VpcGluZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWFrc3ltIEFuZHJpdXNoY2hlbmtvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Stealing Reasoning Traces from Proprietary LLM APIs",
+    "authors": [
+      "Alexander Panfilov",
+      "David Schmotz",
+      "Ilia Shumailov",
+      "Luca Beurer-Kellner",
+      "Joachim Schaeffer",
+      "Ameya Prabhu",
+      "Jonas Geiping",
+      "Maksym Andriushchenko"
+    ],
+    "abstract": "Leading large language model providers now conceal their models' step-by-step reasoning, or chain-of-thought, to protect intellectual property and limit information leakage. Rather than storing these traces server-side, providers return them to the client as blocks of encrypted text, which the client passes back with each subsequent request. Building on prior research, we identify an architectural vulnerability: these encrypted blocks are fully compatible and interchangeable across different sessions, users, and models within a provider's ecosystem. We exploit this compatibility to develop a scalable decryption jailbreak. By injecting an encrypted reasoning trace from a given model into a weaker, and less safeguarded model from the same provider, we force it to decode and output the trace verbatim in plaintext, without ever jailbreaking the more capable model directly. This vulnerability enables four distinct attack vectors. First, it circumvents anti-distillation mechanisms, allowing adversaries to extract a proprietary model's reasoning, as we demonstrate across Anthropic, OpenAI, and Google. Second, it allows for large-scale private data extraction. Developers frequently share session logs publicly, unaware of contents of the encrypted blocks. By decoding 315,320 reasoning blocks scraped from public repositories, we recovered 367 Personally Identifiable Information (PII) artifacts and 182 credentials. Third, it inadvertently reveals hazardous information hidden within the reasoning process, even in cases where the model's final, visible output safely rejects a malicious request. Fourth, attackers can leverage this flaw to execute invisible prompt injections, embedding malicious payloads entirely within encrypted blocks to poison public agentic rollouts. Following responsible disclosure, we propose concrete cryptographic and system-level mitigations to secure client-side reasoning.",
+    "identifiers": {
+      "arxiv": "2608.09867",
+      "arxiv_versioned": "2608.09867v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.09867v1"
+      }
+    },
+    "categories": [
+      "cs.CR",
+      "cs.AI",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CR",
+    "published": "2026-08-10T17:24:50Z",
+    "updated": "2026-08-10T17:24:50Z"
+  }
+}

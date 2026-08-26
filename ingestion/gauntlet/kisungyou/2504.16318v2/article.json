@@ -2,21 +2,54 @@
   "schema": "codex-scientiae/article/0.1",
   "state": "source-ready",
   "slug": "2504.16318v2",
-  "initialized_utc": "2026-08-11T08:29:56.417677Z",
-  "title": null,
-  "authors": [],
-  "abstract": null,
+  "initialized_utc": "2026-08-26T03:56:59.244960Z",
+  "title": "Semantics at an Angle: When Cosine Similarity Works Until It Doesn't",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Cosine similarity has become a standard metric for comparing embeddings in modern machine learning. Its scale-invariance and alignment with model training objectives have contributed to its widespread adoption. However, recent studies have revealed important limitations, particularly when embedding norms carry meaningful semantic information. This informal article offers a reflective and selective examination of the evolution, strengths, and limitations of cosine similarity. We highlight why it performs well in many settings, where it tends to break down, and how emerging alternatives are beginning to address its blind spots. We hope to offer a mix of conceptual clarity and practical perspective, especially for quantitative scientists who think about embeddings not just as vectors, but as geometric and philosophical objects.",
   "identifiers": {
-    "arxiv": null,
-    "arxiv_versioned": null,
-    "doi": null
+    "arxiv": "2504.16318",
+    "arxiv_versioned": "2504.16318v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2504.16318v2"
+    }
   },
-  "categories": [],
-  "primary_category": null,
-  "published": null,
-  "updated": null,
+  "categories": [
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.LG",
+  "published": "2025-04-22T23:31:32Z",
+  "updated": "2025-05-20T15:35:37Z",
   "evidence": {
-    "provider_metadata": [],
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2504.16318v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 6993,
+        "sha256": "9a9f0c7141eab266756f61ba908f5b3bf5f7c640b460e8929c0e63dd18ae4133",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:56:58.937753Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2504.16318v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "51205186faaf8d05cb54bc4d291bc9321c06dfac942a654ef84bf1c1e6de95cc"
+      }
+    ],
     "latex_source": {
       "entrypoint": "CosineSimilarity.tex",
       "selection": "single-candidate",
@@ -28,7 +61,32 @@
         "doi": null
       }
     },
-    "package_control_files": []
+    "package_control_files": [],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2504.16318v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
   },
   "source_forms": [
     {
@@ -60,8 +118,8 @@
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-11T08:29:56.417677Z",
-    "publication": "published-new-tree",
+    "validated_utc": "2026-08-26T03:56:59.244960Z",
+    "publication": "recovered-existing-tree",
     "checks": [
       {
         "name": "gzip-readable",
@@ -86,8 +144,8 @@
       {
         "name": "entrypoint-unambiguous",
         "outcome": "passed",
-        "entrypoint": "CosineSimilarity.tex",
-        "selection": "single-candidate"
+        "selection": "single-candidate",
+        "entrypoint": "CosineSimilarity.tex"
       },
       {
         "name": "literal-inputs-resolved",
