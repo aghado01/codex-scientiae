@@ -1,0 +1,169 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.06696v3",
+  "initialized_utc": "2026-08-26T03:22:15.456225Z",
+  "title": "Heat-Kernel Entropy Profiles and Geometric Effective Sample Size for Weighted Measures on Manifolds",
+  "authors": [
+    "Kisung You",
+    "Boram Cho"
+  ],
+  "abstract": "Weighted empirical measures on compact manifolds appear in importance sampling, particle approximations, posterior summaries, quadrature, and representation learning. Ordinary effective sample size and related weight summaries ignore the geometry of the support. We introduce heat-kernel entropy profiles to measure nonuniformity after intrinsic diffusion at a range of scales. For order-two Rényi entropy, pairwise heat-kernel overlaps give an exact profile and a geometric effective sample size. This effective sample size discounts nearby or duplicate particles. It approaches ordinary effective sample size as overlaps between distinct particles vanish. On compact boundaryless manifolds, we establish profile monotonicity, gESS scale limits, deterministic-weight consistency, and a bounded-ratio result for self-normalized importance sampling. On spheres, the unlogged profile decomposes into spherical-harmonic energies. The first terms are squared mean-resultant and traceless-second-moment energies, which give vMF- and Bingham-type scalar summaries. Experiments identify antipodal, girdle, multimodal, and duplicate-particle structures that weight-only and first-moment summaries miss.",
+  "identifiers": {
+    "arxiv": "2607.06696",
+    "arxiv_versioned": "2607.06696v3",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.06696v3"
+    }
+  },
+  "categories": [
+    "stat.ML",
+    "cs.LG",
+    "stat.ME"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2026-07-07T18:15:09Z",
+  "updated": "2026-07-29T23:48:50Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.06696v3.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8671,
+        "sha256": "bc81f25b48f461eb72bf397f904b9da68b4fad0f1de38cebd256eb4733ca1611",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:22:14.930271Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.06696v3&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "1d6186befd18284b58b3facd79668b695604ed65e2c01cabfcf5a6cb900ef3d8"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "manuscript.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": null,
+        "authors_tex": [],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 304,
+        "sha256": "8c28ff72091eb7e961fb4aeff4b33f73d9ef3ae775dc32a28ced08c733472ce1"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.06696v3",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.06696v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 397869,
+      "sha256": "83e936c11baf822166a81462f587d3ad307b01953da8d278c0b5463760b09dc0",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.06696v3-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.06696v3.tar.gz",
+      "entrypoint": "manuscript.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 12,
+      "tex_files": 1,
+      "sha256": "0a4fa9a4c10f393123acfe034623c41503b0c3cf307d7df1e2eb8e167538f3a9"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.06696v3.pdf",
+      "format": "application/pdf",
+      "bytes": 567910,
+      "sha256": "be75501c7908059792a9428e2020bb7095f2085fed44e5fe9188efd716a02a47"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-26T03:22:15.456225Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 13
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 12
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2606.07926v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2606.07926v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Barycentric Projections of Optimal Transport Plans on Riemannian Manifolds",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Optimal transport couplings are probabilistic objects, while many learning pipelines require deterministic maps. In Euclidean space, barycentric projection converts a coupling into a map by taking conditional expectations, but on a Riemannian manifold curvature and cut loci make this operation nontrivial. We develop a framework for barycentric projections of transport couplings on Riemannian manifolds. The intrinsic projection maps each source point to the conditional Fréchet mean of its destination law and is shown to be the best deterministic representative under squared geodesic loss. The corresponding minimum value is an integrated conditional Fréchet variance, which vanishes exactly for map-induced couplings and therefore defines a conditional-variance Monge defect. We also study a tangential log-exp projection, prove its Euclidean exactness, its compatibility with Brenier-McCann maps in the Monge case, and its interpretation as the first unit Riemannian gradient update for the intrinsic objective. For discrete couplings, both constructions decompose row-wise into weighted Fréchet mean and log-exp problems. Experiments on spherical data, synthetic SPD data, and real EEG covariance matrices support the proposed division of roles: the intrinsic projection is the variational representative, while the tangential projection is a useful local displacement surrogate.",
+      "doi": null,
+      "arxiv_id": "2606.07926v1",
+      "published": "2026-06-06T01:31:58Z",
+      "updated": "2026-06-06T01:31:58Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2606.07926v1",
+      "pdf_url": "https://arxiv.org/pdf/2606.07926v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2606.07926v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2606.07926v1",
+          "url": "https://arxiv.org/abs/2606.07926v1",
+          "doi": null,
+          "arxiv_id": "2606.07926v1",
+          "published": "2026-06-06T01:31:58Z",
+          "updated": "2026-06-06T01:31:58Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2606.07926v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:22:46.555376Z",
+      "sha256": "3fbc56d9bc7eb53fe80754b2464961c637186f45c4ff3e0ed5c5f50fce371af4",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkva0lTbmZTVDdMRFoyc1NkRGo1RWo3SnlBRnprPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNi4wNzkyNnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIyOjQ2WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA2LjA3OTI2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNi4wNzkyNnYxPC9pZD4KICAgIDx0aXRsZT5CYXJ5Y2VudHJpYyBQcm9qZWN0aW9ucyBvZiBPcHRpbWFsIFRyYW5zcG9ydCBQbGFucyBvbiBSaWVtYW5uaWFuIE1hbmlmb2xkczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA2LTA2VDAxOjMxOjU4WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA2LjA3OTI2djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA2LjA3OTI2djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5PcHRpbWFsIHRyYW5zcG9ydCBjb3VwbGluZ3MgYXJlIHByb2JhYmlsaXN0aWMgb2JqZWN0cywgd2hpbGUgbWFueSBsZWFybmluZyBwaXBlbGluZXMgcmVxdWlyZSBkZXRlcm1pbmlzdGljIG1hcHMuIEluIEV1Y2xpZGVhbiBzcGFjZSwgYmFyeWNlbnRyaWMgcHJvamVjdGlvbiBjb252ZXJ0cyBhIGNvdXBsaW5nIGludG8gYSBtYXAgYnkgdGFraW5nIGNvbmRpdGlvbmFsIGV4cGVjdGF0aW9ucywgYnV0IG9uIGEgUmllbWFubmlhbiBtYW5pZm9sZCBjdXJ2YXR1cmUgYW5kIGN1dCBsb2NpIG1ha2UgdGhpcyBvcGVyYXRpb24gbm9udHJpdmlhbC4gV2UgZGV2ZWxvcCBhIGZyYW1ld29yayBmb3IgYmFyeWNlbnRyaWMgcHJvamVjdGlvbnMgb2YgdHJhbnNwb3J0IGNvdXBsaW5ncyBvbiBSaWVtYW5uaWFuIG1hbmlmb2xkcy4gVGhlIGludHJpbnNpYyBwcm9qZWN0aW9uIG1hcHMgZWFjaCBzb3VyY2UgcG9pbnQgdG8gdGhlIGNvbmRpdGlvbmFsIEZyw6ljaGV0IG1lYW4gb2YgaXRzIGRlc3RpbmF0aW9uIGxhdyBhbmQgaXMgc2hvd24gdG8gYmUgdGhlIGJlc3QgZGV0ZXJtaW5pc3RpYyByZXByZXNlbnRhdGl2ZSB1bmRlciBzcXVhcmVkIGdlb2Rlc2ljIGxvc3MuIFRoZSBjb3JyZXNwb25kaW5nIG1pbmltdW0gdmFsdWUgaXMgYW4gaW50ZWdyYXRlZCBjb25kaXRpb25hbCBGcsOpY2hldCB2YXJpYW5jZSwgd2hpY2ggdmFuaXNoZXMgZXhhY3RseSBmb3IgbWFwLWluZHVjZWQgY291cGxpbmdzIGFuZCB0aGVyZWZvcmUgZGVmaW5lcyBhIGNvbmRpdGlvbmFsLXZhcmlhbmNlIE1vbmdlIGRlZmVjdC4gV2UgYWxzbyBzdHVkeSBhIHRhbmdlbnRpYWwgbG9nLWV4cCBwcm9qZWN0aW9uLCBwcm92ZSBpdHMgRXVjbGlkZWFuIGV4YWN0bmVzcywgaXRzIGNvbXBhdGliaWxpdHkgd2l0aCBCcmVuaWVyLU1jQ2FubiBtYXBzIGluIHRoZSBNb25nZSBjYXNlLCBhbmQgaXRzIGludGVycHJldGF0aW9uIGFzIHRoZSBmaXJzdCB1bml0IFJpZW1hbm5pYW4gZ3JhZGllbnQgdXBkYXRlIGZvciB0aGUgaW50cmluc2ljIG9iamVjdGl2ZS4gRm9yIGRpc2NyZXRlIGNvdXBsaW5ncywgYm90aCBjb25zdHJ1Y3Rpb25zIGRlY29tcG9zZSByb3ctd2lzZSBpbnRvIHdlaWdodGVkIEZyw6ljaGV0IG1lYW4gYW5kIGxvZy1leHAgcHJvYmxlbXMuIEV4cGVyaW1lbnRzIG9uIHNwaGVyaWNhbCBkYXRhLCBzeW50aGV0aWMgU1BEIGRhdGEsIGFuZCByZWFsIEVFRyBjb3ZhcmlhbmNlIG1hdHJpY2VzIHN1cHBvcnQgdGhlIHByb3Bvc2VkIGRpdmlzaW9uIG9mIHJvbGVzOiB0aGUgaW50cmluc2ljIHByb2plY3Rpb24gaXMgdGhlIHZhcmlhdGlvbmFsIHJlcHJlc2VudGF0aXZlLCB3aGlsZSB0aGUgdGFuZ2VudGlhbCBwcm9qZWN0aW9uIGlzIGEgdXNlZnVsIGxvY2FsIGRpc3BsYWNlbWVudCBzdXJyb2dhdGUuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUwiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5MRyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA2LTA2VDAxOjMxOjU4WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0ic3RhdC5NTCIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Barycentric Projections of Optimal Transport Plans on Riemannian Manifolds",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Optimal transport couplings are probabilistic objects, while many learning pipelines require deterministic maps. In Euclidean space, barycentric projection converts a coupling into a map by taking conditional expectations, but on a Riemannian manifold curvature and cut loci make this operation nontrivial. We develop a framework for barycentric projections of transport couplings on Riemannian manifolds. The intrinsic projection maps each source point to the conditional Fréchet mean of its destination law and is shown to be the best deterministic representative under squared geodesic loss. The corresponding minimum value is an integrated conditional Fréchet variance, which vanishes exactly for map-induced couplings and therefore defines a conditional-variance Monge defect. We also study a tangential log-exp projection, prove its Euclidean exactness, its compatibility with Brenier-McCann maps in the Monge case, and its interpretation as the first unit Riemannian gradient update for the intrinsic objective. For discrete couplings, both constructions decompose row-wise into weighted Fréchet mean and log-exp problems. Experiments on spherical data, synthetic SPD data, and real EEG covariance matrices support the proposed division of roles: the intrinsic projection is the variational representative, while the tangential projection is a useful local displacement surrogate.",
+    "identifiers": {
+      "arxiv": "2606.07926",
+      "arxiv_versioned": "2606.07926v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2606.07926v1"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2026-06-06T01:31:58Z",
+    "updated": "2026-06-06T01:31:58Z"
+  }
+}

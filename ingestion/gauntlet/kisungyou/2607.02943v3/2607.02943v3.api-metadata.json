@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.02943v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.02943v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Geometric Information Decomposition for Weighted Empirical Measures on the Sphere",
+      "authors": [
+        "Kisung You",
+        "Boram Cho"
+      ],
+      "abstract": "Weighted observations on the unit sphere arise in importance sampling, quadrature, and attention-weighted embeddings. Directional uncertainty is often summarized through a von Mises-Fisher (vMF) fit and its concentration or entropy. This summary uses only mean-direction information. It can miss antipodal, axial, girdle-like, or multimodal structure. We introduce geometric information decomposition (GID), which fits nested maximum-entropy projections to spherical features. Each gap measures the entropy reduction contributed by one feature level. The first gap is the fitted vMF distribution's KL divergence from uniformity. The second measures residual quadratic information, including Fisher-Bingham anisotropy. Later gaps describe finer angular structure. We establish invariance, consistency, alternative-regime asymptotic normality, and quadratic-form null calibration. Circular and spherical experiments include importance-weight calibration and a query-weighted digit projection. The results separate settings where vMF uncertainty is adequate from settings with higher-order structure.",
+      "doi": null,
+      "arxiv_id": "2607.02943v3",
+      "published": "2026-07-03T04:32:25Z",
+      "updated": "2026-07-29T23:42:50Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.02943v3",
+      "pdf_url": "https://arxiv.org/pdf/2607.02943v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2607.02943v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.02943v3",
+          "url": "https://arxiv.org/abs/2607.02943v3",
+          "doi": null,
+          "arxiv_id": "2607.02943v3",
+          "published": "2026-07-03T04:32:25Z",
+          "updated": "2026-07-29T23:42:50Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.02943v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:22:25.557001Z",
+      "sha256": "869bd2b973a2c7c4bc3d444e5466aa58656d8922694dbe5eb8b2b7c5b52ad778",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvMFNxb3Bvc0IwM2Q5NUxyc3F3RENTa29rajF3PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4wMjk0M3YzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIyOjI1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjAyOTQzdjMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wMjk0M3YzPC9pZD4KICAgIDx0aXRsZT5HZW9tZXRyaWMgSW5mb3JtYXRpb24gRGVjb21wb3NpdGlvbiBmb3IgV2VpZ2h0ZWQgRW1waXJpY2FsIE1lYXN1cmVzIG9uIHRoZSBTcGhlcmU8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNy0yOVQyMzo0Mjo1MFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wMjk0M3YzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNy4wMjk0M3YzIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+V2VpZ2h0ZWQgb2JzZXJ2YXRpb25zIG9uIHRoZSB1bml0IHNwaGVyZSBhcmlzZSBpbiBpbXBvcnRhbmNlIHNhbXBsaW5nLCBxdWFkcmF0dXJlLCBhbmQgYXR0ZW50aW9uLXdlaWdodGVkIGVtYmVkZGluZ3MuIERpcmVjdGlvbmFsIHVuY2VydGFpbnR5IGlzIG9mdGVuIHN1bW1hcml6ZWQgdGhyb3VnaCBhIHZvbiBNaXNlcy1GaXNoZXIgKHZNRikgZml0IGFuZCBpdHMgY29uY2VudHJhdGlvbiBvciBlbnRyb3B5LiBUaGlzIHN1bW1hcnkgdXNlcyBvbmx5IG1lYW4tZGlyZWN0aW9uIGluZm9ybWF0aW9uLiBJdCBjYW4gbWlzcyBhbnRpcG9kYWwsIGF4aWFsLCBnaXJkbGUtbGlrZSwgb3IgbXVsdGltb2RhbCBzdHJ1Y3R1cmUuIFdlIGludHJvZHVjZSBnZW9tZXRyaWMgaW5mb3JtYXRpb24gZGVjb21wb3NpdGlvbiAoR0lEKSwgd2hpY2ggZml0cyBuZXN0ZWQgbWF4aW11bS1lbnRyb3B5IHByb2plY3Rpb25zIHRvIHNwaGVyaWNhbCBmZWF0dXJlcy4gRWFjaCBnYXAgbWVhc3VyZXMgdGhlIGVudHJvcHkgcmVkdWN0aW9uIGNvbnRyaWJ1dGVkIGJ5IG9uZSBmZWF0dXJlIGxldmVsLiBUaGUgZmlyc3QgZ2FwIGlzIHRoZSBmaXR0ZWQgdk1GIGRpc3RyaWJ1dGlvbidzIEtMIGRpdmVyZ2VuY2UgZnJvbSB1bmlmb3JtaXR5LiBUaGUgc2Vjb25kIG1lYXN1cmVzIHJlc2lkdWFsIHF1YWRyYXRpYyBpbmZvcm1hdGlvbiwgaW5jbHVkaW5nIEZpc2hlci1CaW5naGFtIGFuaXNvdHJvcHkuIExhdGVyIGdhcHMgZGVzY3JpYmUgZmluZXIgYW5ndWxhciBzdHJ1Y3R1cmUuIFdlIGVzdGFibGlzaCBpbnZhcmlhbmNlLCBjb25zaXN0ZW5jeSwgYWx0ZXJuYXRpdmUtcmVnaW1lIGFzeW1wdG90aWMgbm9ybWFsaXR5LCBhbmQgcXVhZHJhdGljLWZvcm0gbnVsbCBjYWxpYnJhdGlvbi4gQ2lyY3VsYXIgYW5kIHNwaGVyaWNhbCBleHBlcmltZW50cyBpbmNsdWRlIGltcG9ydGFuY2Utd2VpZ2h0IGNhbGlicmF0aW9uIGFuZCBhIHF1ZXJ5LXdlaWdodGVkIGRpZ2l0IHByb2plY3Rpb24uIFRoZSByZXN1bHRzIHNlcGFyYXRlIHNldHRpbmdzIHdoZXJlIHZNRiB1bmNlcnRhaW50eSBpcyBhZGVxdWF0ZSBmcm9tIHNldHRpbmdzIHdpdGggaGlnaGVyLW9yZGVyIHN0cnVjdHVyZS48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5NRSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA3LTAzVDA0OjMyOjI1WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0ic3RhdC5NRSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Qm9yYW0gQ2hvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Geometric Information Decomposition for Weighted Empirical Measures on the Sphere",
+    "authors": [
+      "Kisung You",
+      "Boram Cho"
+    ],
+    "abstract": "Weighted observations on the unit sphere arise in importance sampling, quadrature, and attention-weighted embeddings. Directional uncertainty is often summarized through a von Mises-Fisher (vMF) fit and its concentration or entropy. This summary uses only mean-direction information. It can miss antipodal, axial, girdle-like, or multimodal structure. We introduce geometric information decomposition (GID), which fits nested maximum-entropy projections to spherical features. Each gap measures the entropy reduction contributed by one feature level. The first gap is the fitted vMF distribution's KL divergence from uniformity. The second measures residual quadratic information, including Fisher-Bingham anisotropy. Later gaps describe finer angular structure. We establish invariance, consistency, alternative-regime asymptotic normality, and quadratic-form null calibration. Circular and spherical experiments include importance-weight calibration and a query-weighted digit projection. The results separate settings where vMF uncertainty is adequate from settings with higher-order structure.",
+    "identifiers": {
+      "arxiv": "2607.02943",
+      "arxiv_versioned": "2607.02943v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.02943v3"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-07-03T04:32:25Z",
+    "updated": "2026-07-29T23:42:50Z"
+  }
+}

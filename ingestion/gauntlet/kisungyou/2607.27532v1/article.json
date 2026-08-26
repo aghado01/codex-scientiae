@@ -1,0 +1,168 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.27532v1",
+  "initialized_utc": "2026-08-26T03:22:05.280196Z",
+  "title": "HOMER: Huber-of-Means for Efficient and Robust Estimation in Hilbert Spaces",
+  "authors": [
+    "Kisung You",
+    "Boram Cho"
+  ],
+  "abstract": "Heavy tails weaken high-confidence control for the empirical mean. Geometric median-of-means (MOM) also lacks a threshold that moves toward mean efficiency. We propose \\emph{HOMER}, or Huber-of-Means for Efficient and Robust Estimation. HOMER aggregates block means through a radial Huber center. Its canonical and pseudo-Huber forms bound each block score and interpolate between median-like robustness and the empirical mean. We establish a Hilbert-space majority theorem and a MOM-order deviation bound under a finite second moment. Canonical HOMER recovers the sample mean inside its quadratic region. Pseudo-HOMER approaches the sample mean as the threshold grows. It also admits asymptotic linearity and consistent sandwich covariance estimation around the population block-Huber target. Under a finite third moment, fixed finite-dimensional projections support mean inference at the usual parametric rate. This result requires growing block sizes and counts, with block sizes increasing faster. Heavy-tailed simulations show that HOMER remains stable when a minority of block summaries is displaced. On clean Gaussian data, both versions closely approach the empirical mean's efficiency. Finite-block sandwich intervals undercovered, especially for skewed functional data. Further studies show failure when contamination affects most blocks or compromises ordinary within-block means.",
+  "identifiers": {
+    "arxiv": "2607.27532",
+    "arxiv_versioned": "2607.27532v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.27532v1"
+    }
+  },
+  "categories": [
+    "stat.ML",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "stat.ML",
+  "published": "2026-07-29T23:51:17Z",
+  "updated": "2026-07-29T23:51:17Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.27532v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9117,
+        "sha256": "5cf682210cac34f0fd55c4ab694056303e22342f0ad177e13eac3ad0ff988183",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:22:04.601178Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.27532v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "60123dfeca576968c154f5def691f9017a5a0cfeb06c46d8ef587eecb8346159"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "manuscript.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": null,
+        "authors_tex": [],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 219,
+        "sha256": "617532b3e6913e02fae667c6759390dfa4031514d63891614b45a74f061bb96b"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.27532v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.27532v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 462745,
+      "sha256": "cb3cc675cdbd1574812c7f5302e2799e4c23a43819e74720064bd4ea64ed3fc4",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.27532v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.27532v1.tar.gz",
+      "entrypoint": "manuscript.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 17,
+      "tex_files": 1,
+      "sha256": "76bb784827a5404fe2ae8514ee7457dfc79ee6f7a731d3fda9366dfc09637a6b"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.27532v1.pdf",
+      "format": "application/pdf",
+      "bytes": 517295,
+      "sha256": "8c11c424454bbdf24bac362632eb2d51fe048e4f1ad391c18812ba497619775d"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-26T03:22:05.280196Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 18
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 17
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "manuscript.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

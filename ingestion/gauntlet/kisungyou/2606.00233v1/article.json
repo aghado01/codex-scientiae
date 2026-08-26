@@ -1,0 +1,168 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2606.00233v1",
+  "initialized_utc": "2026-08-26T03:23:02.480691Z",
+  "title": "Density Evolution: A Multiscale View of Density Estimation",
+  "authors": [
+    "Kisung You"
+  ],
+  "abstract": "Density estimation is often presented as a choice among parametric summaries, finite mixtures, and nonparametric smoothers. This review argues for a complementary view: a data set can be studied through a path of densities indexed by smoothing scale, diffusion time, model complexity, density level, or noise level. We call this perspective density evolution. Under this lens, Gaussian kernel density estimation is heat flow from the empirical measure; scale-space methods, critical bandwidths, mode trees, and derivative-significance displays describe the evolution of modal and derivative structure; finite mixtures and mixture reduction provide compressed representations of kernel-like estimates; and cluster trees and persistent homology summarize evolving level-set topology. We review these connections and discuss inference for feature lifetimes, high-dimensional complications, and links with score-based generative diffusion. We also include three elementary structural results: nondegenerate modes move along smooth branches, a natural moment-preserving Gaussianization semigroup is forced to be Ornstein--Uhlenbeck, and shared-covariance Gaussian mixtures become log-concave once component means are sufficiently concentrated. Together, these ideas shift attention from choosing one density estimate to studying the multiscale probability landscape.",
+  "identifiers": {
+    "arxiv": "2606.00233",
+    "arxiv_versioned": "2606.00233v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2606.00233v1"
+    }
+  },
+  "categories": [
+    "math.ST"
+  ],
+  "concepts": [],
+  "primary_category": "math.ST",
+  "published": "2026-05-29T18:08:31Z",
+  "updated": "2026-05-29T18:08:31Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2606.00233v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8721,
+        "sha256": "706870389ef61b99f4f594e72fd73d9a358a02cfd3d3ee702a6eb877c38884d1",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:23:02.030689Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2606.00233v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "6f4538f39ae85336e1847ba8dd9c14a25d969ac30e2f4c6e5d026004a0503997"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "write-manuscript.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Density Evolution: A Multiscale View of Density Estimation",
+        "authors_tex": [
+          "\\fnms{Kisung}~\\snm{You}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 396,
+        "sha256": "8d698db8547460e7d9d5275999caf36c28ec0272cf540f3eeafdc3a13baf77ab"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2606.00233v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2606.00233v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 845386,
+      "sha256": "91d23d45ca3ae8d4b760d22b34c10156f78f47bfd5d1b7411594d9b3006fb77c",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2606.00233v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2606.00233v1.tar.gz",
+      "entrypoint": "write-manuscript.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 11,
+      "tex_files": 1,
+      "sha256": "09145b75d5fff7ea2ac0953dadc41d0e92696f49c0593b29e935aa2f6e43051a"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2606.00233v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1016242,
+      "sha256": "b0fdb74b62aad75baf8a46e1b44f76e860b3556c82baa3357215b2fbd95a930f"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-26T03:23:02.480691Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 12
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 11
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "write-manuscript.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

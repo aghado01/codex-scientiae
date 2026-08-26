@@ -1,0 +1,105 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/aggregated/row_metrics_all.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/aggregated/summary_all.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/eeg_spd/eeg_row_diagnostics.pgf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/eeg_spd/eeg_subject_accuracy.pgf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/eeg_spd/tables/eeg_method_summary.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/eeg_spd/tables/eeg_method_summary.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/eeg_spd/tables/eeg_row_summary.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/eeg_spd/tables/eeg_row_summary.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/figure_index.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/manifest.json"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/spd_synthetic/spd_row_diagnostics.pgf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/spd_synthetic/tables/spd_method_summary.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/spd_synthetic/tables/spd_method_summary.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/spd_synthetic/tables/spd_row_summary.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/spd_synthetic/tables/spd_row_summary.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/sphere_excess_vs_separation.pgf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/sphere_row_diagnostics.pgf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/sphere_tangential_behavior.pgf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/tables/sphere_method_summary.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/tables/sphere_method_summary.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/tables/sphere_row_summary.csv"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/sphere/tables/sphere_row_summary.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "report/table_index.csv"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

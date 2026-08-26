@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2606.00233v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2606.00233v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Density Evolution: A Multiscale View of Density Estimation",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Density estimation is often presented as a choice among parametric summaries, finite mixtures, and nonparametric smoothers. This review argues for a complementary view: a data set can be studied through a path of densities indexed by smoothing scale, diffusion time, model complexity, density level, or noise level. We call this perspective density evolution. Under this lens, Gaussian kernel density estimation is heat flow from the empirical measure; scale-space methods, critical bandwidths, mode trees, and derivative-significance displays describe the evolution of modal and derivative structure; finite mixtures and mixture reduction provide compressed representations of kernel-like estimates; and cluster trees and persistent homology summarize evolving level-set topology. We review these connections and discuss inference for feature lifetimes, high-dimensional complications, and links with score-based generative diffusion. We also include three elementary structural results: nondegenerate modes move along smooth branches, a natural moment-preserving Gaussianization semigroup is forced to be Ornstein--Uhlenbeck, and shared-covariance Gaussian mixtures become log-concave once component means are sufficiently concentrated. Together, these ideas shift attention from choosing one density estimate to studying the multiscale probability landscape.",
+      "doi": null,
+      "arxiv_id": "2606.00233v1",
+      "published": "2026-05-29T18:08:31Z",
+      "updated": "2026-05-29T18:08:31Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2606.00233v1",
+      "pdf_url": "https://arxiv.org/pdf/2606.00233v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.ST"
+      ],
+      "external_ids": {
+        "arxiv": "2606.00233v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2606.00233v1",
+          "url": "https://arxiv.org/abs/2606.00233v1",
+          "doi": null,
+          "arxiv_id": "2606.00233v1",
+          "published": "2026-05-29T18:08:31Z",
+          "updated": "2026-05-29T18:08:31Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2606.00233v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:23:02.030689Z",
+      "sha256": "6f4538f39ae85336e1847ba8dd9c14a25d969ac30e2f4c6e5d026004a0503997",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvdVJwT3JpQWt4OTJSNXVTNC9CV05EUlFHUVJrPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNi4wMDIzM3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIzOjAxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA2LjAwMjMzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNi4wMDIzM3YxPC9pZD4KICAgIDx0aXRsZT5EZW5zaXR5IEV2b2x1dGlvbjogQSBNdWx0aXNjYWxlIFZpZXcgb2YgRGVuc2l0eSBFc3RpbWF0aW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDUtMjlUMTg6MDg6MzFaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDYuMDAyMzN2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDYuMDAyMzN2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkRlbnNpdHkgZXN0aW1hdGlvbiBpcyBvZnRlbiBwcmVzZW50ZWQgYXMgYSBjaG9pY2UgYW1vbmcgcGFyYW1ldHJpYyBzdW1tYXJpZXMsIGZpbml0ZSBtaXh0dXJlcywgYW5kIG5vbnBhcmFtZXRyaWMgc21vb3RoZXJzLiBUaGlzIHJldmlldyBhcmd1ZXMgZm9yIGEgY29tcGxlbWVudGFyeSB2aWV3OiBhIGRhdGEgc2V0IGNhbiBiZSBzdHVkaWVkIHRocm91Z2ggYSBwYXRoIG9mIGRlbnNpdGllcyBpbmRleGVkIGJ5IHNtb290aGluZyBzY2FsZSwgZGlmZnVzaW9uIHRpbWUsIG1vZGVsIGNvbXBsZXhpdHksIGRlbnNpdHkgbGV2ZWwsIG9yIG5vaXNlIGxldmVsLiBXZSBjYWxsIHRoaXMgcGVyc3BlY3RpdmUgZGVuc2l0eSBldm9sdXRpb24uIFVuZGVyIHRoaXMgbGVucywgR2F1c3NpYW4ga2VybmVsIGRlbnNpdHkgZXN0aW1hdGlvbiBpcyBoZWF0IGZsb3cgZnJvbSB0aGUgZW1waXJpY2FsIG1lYXN1cmU7IHNjYWxlLXNwYWNlIG1ldGhvZHMsIGNyaXRpY2FsIGJhbmR3aWR0aHMsIG1vZGUgdHJlZXMsIGFuZCBkZXJpdmF0aXZlLXNpZ25pZmljYW5jZSBkaXNwbGF5cyBkZXNjcmliZSB0aGUgZXZvbHV0aW9uIG9mIG1vZGFsIGFuZCBkZXJpdmF0aXZlIHN0cnVjdHVyZTsgZmluaXRlIG1peHR1cmVzIGFuZCBtaXh0dXJlIHJlZHVjdGlvbiBwcm92aWRlIGNvbXByZXNzZWQgcmVwcmVzZW50YXRpb25zIG9mIGtlcm5lbC1saWtlIGVzdGltYXRlczsgYW5kIGNsdXN0ZXIgdHJlZXMgYW5kIHBlcnNpc3RlbnQgaG9tb2xvZ3kgc3VtbWFyaXplIGV2b2x2aW5nIGxldmVsLXNldCB0b3BvbG9neS4gV2UgcmV2aWV3IHRoZXNlIGNvbm5lY3Rpb25zIGFuZCBkaXNjdXNzIGluZmVyZW5jZSBmb3IgZmVhdHVyZSBsaWZldGltZXMsIGhpZ2gtZGltZW5zaW9uYWwgY29tcGxpY2F0aW9ucywgYW5kIGxpbmtzIHdpdGggc2NvcmUtYmFzZWQgZ2VuZXJhdGl2ZSBkaWZmdXNpb24uIFdlIGFsc28gaW5jbHVkZSB0aHJlZSBlbGVtZW50YXJ5IHN0cnVjdHVyYWwgcmVzdWx0czogbm9uZGVnZW5lcmF0ZSBtb2RlcyBtb3ZlIGFsb25nIHNtb290aCBicmFuY2hlcywgYSBuYXR1cmFsIG1vbWVudC1wcmVzZXJ2aW5nIEdhdXNzaWFuaXphdGlvbiBzZW1pZ3JvdXAgaXMgZm9yY2VkIHRvIGJlIE9ybnN0ZWluLS1VaGxlbmJlY2ssIGFuZCBzaGFyZWQtY292YXJpYW5jZSBHYXVzc2lhbiBtaXh0dXJlcyBiZWNvbWUgbG9nLWNvbmNhdmUgb25jZSBjb21wb25lbnQgbWVhbnMgYXJlIHN1ZmZpY2llbnRseSBjb25jZW50cmF0ZWQuIFRvZ2V0aGVyLCB0aGVzZSBpZGVhcyBzaGlmdCBhdHRlbnRpb24gZnJvbSBjaG9vc2luZyBvbmUgZGVuc2l0eSBlc3RpbWF0ZSB0byBzdHVkeWluZyB0aGUgbXVsdGlzY2FsZSBwcm9iYWJpbGl0eSBsYW5kc2NhcGUuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09Im1hdGguU1QiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNS0yOVQxODowODozMVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09Im1hdGguU1QiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Density Evolution: A Multiscale View of Density Estimation",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Density estimation is often presented as a choice among parametric summaries, finite mixtures, and nonparametric smoothers. This review argues for a complementary view: a data set can be studied through a path of densities indexed by smoothing scale, diffusion time, model complexity, density level, or noise level. We call this perspective density evolution. Under this lens, Gaussian kernel density estimation is heat flow from the empirical measure; scale-space methods, critical bandwidths, mode trees, and derivative-significance displays describe the evolution of modal and derivative structure; finite mixtures and mixture reduction provide compressed representations of kernel-like estimates; and cluster trees and persistent homology summarize evolving level-set topology. We review these connections and discuss inference for feature lifetimes, high-dimensional complications, and links with score-based generative diffusion. We also include three elementary structural results: nondegenerate modes move along smooth branches, a natural moment-preserving Gaussianization semigroup is forced to be Ornstein--Uhlenbeck, and shared-covariance Gaussian mixtures become log-concave once component means are sufficiently concentrated. Together, these ideas shift attention from choosing one density estimate to studying the multiscale probability landscape.",
+    "identifiers": {
+      "arxiv": "2606.00233",
+      "arxiv_versioned": "2606.00233v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2606.00233v1"
+      }
+    },
+    "categories": [
+      "math.ST"
+    ],
+    "concepts": [],
+    "primary_category": "math.ST",
+    "published": "2026-05-29T18:08:31Z",
+    "updated": "2026-05-29T18:08:31Z"
+  }
+}

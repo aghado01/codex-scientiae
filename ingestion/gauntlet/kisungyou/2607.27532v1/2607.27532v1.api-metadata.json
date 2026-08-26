@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.27532v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.27532v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "HOMER: Huber-of-Means for Efficient and Robust Estimation in Hilbert Spaces",
+      "authors": [
+        "Kisung You",
+        "Boram Cho"
+      ],
+      "abstract": "Heavy tails weaken high-confidence control for the empirical mean. Geometric median-of-means (MOM) also lacks a threshold that moves toward mean efficiency. We propose \\emph{HOMER}, or Huber-of-Means for Efficient and Robust Estimation. HOMER aggregates block means through a radial Huber center. Its canonical and pseudo-Huber forms bound each block score and interpolate between median-like robustness and the empirical mean. We establish a Hilbert-space majority theorem and a MOM-order deviation bound under a finite second moment. Canonical HOMER recovers the sample mean inside its quadratic region. Pseudo-HOMER approaches the sample mean as the threshold grows. It also admits asymptotic linearity and consistent sandwich covariance estimation around the population block-Huber target. Under a finite third moment, fixed finite-dimensional projections support mean inference at the usual parametric rate. This result requires growing block sizes and counts, with block sizes increasing faster. Heavy-tailed simulations show that HOMER remains stable when a minority of block summaries is displaced. On clean Gaussian data, both versions closely approach the empirical mean's efficiency. Finite-block sandwich intervals undercovered, especially for skewed functional data. Further studies show failure when contamination affects most blocks or compromises ordinary within-block means.",
+      "doi": null,
+      "arxiv_id": "2607.27532v1",
+      "published": "2026-07-29T23:51:17Z",
+      "updated": "2026-07-29T23:51:17Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.27532v1",
+      "pdf_url": "https://arxiv.org/pdf/2607.27532v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2607.27532v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.27532v1",
+          "url": "https://arxiv.org/abs/2607.27532v1",
+          "doi": null,
+          "arxiv_id": "2607.27532v1",
+          "published": "2026-07-29T23:51:17Z",
+          "updated": "2026-07-29T23:51:17Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.27532v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:22:04.601178Z",
+      "sha256": "60123dfeca576968c154f5def691f9017a5a0cfeb06c46d8ef587eecb8346159",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvakZ6eVI4T3hZRy9acitYMFhkYVBLTXZHMHlZPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4yNzUzMnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIyOjA0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjI3NTMydjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4yNzUzMnYxPC9pZD4KICAgIDx0aXRsZT5IT01FUjogSHViZXItb2YtTWVhbnMgZm9yIEVmZmljaWVudCBhbmQgUm9idXN0IEVzdGltYXRpb24gaW4gSGlsYmVydCBTcGFjZXM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNy0yOVQyMzo1MToxN1o8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNy4yNzUzMnYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNy4yNzUzMnYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+SGVhdnkgdGFpbHMgd2Vha2VuIGhpZ2gtY29uZmlkZW5jZSBjb250cm9sIGZvciB0aGUgZW1waXJpY2FsIG1lYW4uIEdlb21ldHJpYyBtZWRpYW4tb2YtbWVhbnMgKE1PTSkgYWxzbyBsYWNrcyBhIHRocmVzaG9sZCB0aGF0IG1vdmVzIHRvd2FyZCBtZWFuIGVmZmljaWVuY3kuIFdlIHByb3Bvc2UgXGVtcGh7SE9NRVJ9LCBvciBIdWJlci1vZi1NZWFucyBmb3IgRWZmaWNpZW50IGFuZCBSb2J1c3QgRXN0aW1hdGlvbi4gSE9NRVIgYWdncmVnYXRlcyBibG9jayBtZWFucyB0aHJvdWdoIGEgcmFkaWFsIEh1YmVyIGNlbnRlci4gSXRzIGNhbm9uaWNhbCBhbmQgcHNldWRvLUh1YmVyIGZvcm1zIGJvdW5kIGVhY2ggYmxvY2sgc2NvcmUgYW5kIGludGVycG9sYXRlIGJldHdlZW4gbWVkaWFuLWxpa2Ugcm9idXN0bmVzcyBhbmQgdGhlIGVtcGlyaWNhbCBtZWFuLiBXZSBlc3RhYmxpc2ggYSBIaWxiZXJ0LXNwYWNlIG1ham9yaXR5IHRoZW9yZW0gYW5kIGEgTU9NLW9yZGVyIGRldmlhdGlvbiBib3VuZCB1bmRlciBhIGZpbml0ZSBzZWNvbmQgbW9tZW50LiBDYW5vbmljYWwgSE9NRVIgcmVjb3ZlcnMgdGhlIHNhbXBsZSBtZWFuIGluc2lkZSBpdHMgcXVhZHJhdGljIHJlZ2lvbi4gUHNldWRvLUhPTUVSIGFwcHJvYWNoZXMgdGhlIHNhbXBsZSBtZWFuIGFzIHRoZSB0aHJlc2hvbGQgZ3Jvd3MuIEl0IGFsc28gYWRtaXRzIGFzeW1wdG90aWMgbGluZWFyaXR5IGFuZCBjb25zaXN0ZW50IHNhbmR3aWNoIGNvdmFyaWFuY2UgZXN0aW1hdGlvbiBhcm91bmQgdGhlIHBvcHVsYXRpb24gYmxvY2stSHViZXIgdGFyZ2V0LiBVbmRlciBhIGZpbml0ZSB0aGlyZCBtb21lbnQsIGZpeGVkIGZpbml0ZS1kaW1lbnNpb25hbCBwcm9qZWN0aW9ucyBzdXBwb3J0IG1lYW4gaW5mZXJlbmNlIGF0IHRoZSB1c3VhbCBwYXJhbWV0cmljIHJhdGUuIFRoaXMgcmVzdWx0IHJlcXVpcmVzIGdyb3dpbmcgYmxvY2sgc2l6ZXMgYW5kIGNvdW50cywgd2l0aCBibG9jayBzaXplcyBpbmNyZWFzaW5nIGZhc3Rlci4gSGVhdnktdGFpbGVkIHNpbXVsYXRpb25zIHNob3cgdGhhdCBIT01FUiByZW1haW5zIHN0YWJsZSB3aGVuIGEgbWlub3JpdHkgb2YgYmxvY2sgc3VtbWFyaWVzIGlzIGRpc3BsYWNlZC4gT24gY2xlYW4gR2F1c3NpYW4gZGF0YSwgYm90aCB2ZXJzaW9ucyBjbG9zZWx5IGFwcHJvYWNoIHRoZSBlbXBpcmljYWwgbWVhbidzIGVmZmljaWVuY3kuIEZpbml0ZS1ibG9jayBzYW5kd2ljaCBpbnRlcnZhbHMgdW5kZXJjb3ZlcmVkLCBlc3BlY2lhbGx5IGZvciBza2V3ZWQgZnVuY3Rpb25hbCBkYXRhLiBGdXJ0aGVyIHN0dWRpZXMgc2hvdyBmYWlsdXJlIHdoZW4gY29udGFtaW5hdGlvbiBhZmZlY3RzIG1vc3QgYmxvY2tzIG9yIGNvbXByb21pc2VzIG9yZGluYXJ5IHdpdGhpbi1ibG9jayBtZWFucy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5NTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDctMjlUMjM6NTE6MTdaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Cb3JhbSBDaG88L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "HOMER: Huber-of-Means for Efficient and Robust Estimation in Hilbert Spaces",
+    "authors": [
+      "Kisung You",
+      "Boram Cho"
+    ],
+    "abstract": "Heavy tails weaken high-confidence control for the empirical mean. Geometric median-of-means (MOM) also lacks a threshold that moves toward mean efficiency. We propose \\emph{HOMER}, or Huber-of-Means for Efficient and Robust Estimation. HOMER aggregates block means through a radial Huber center. Its canonical and pseudo-Huber forms bound each block score and interpolate between median-like robustness and the empirical mean. We establish a Hilbert-space majority theorem and a MOM-order deviation bound under a finite second moment. Canonical HOMER recovers the sample mean inside its quadratic region. Pseudo-HOMER approaches the sample mean as the threshold grows. It also admits asymptotic linearity and consistent sandwich covariance estimation around the population block-Huber target. Under a finite third moment, fixed finite-dimensional projections support mean inference at the usual parametric rate. This result requires growing block sizes and counts, with block sizes increasing faster. Heavy-tailed simulations show that HOMER remains stable when a minority of block summaries is displaced. On clean Gaussian data, both versions closely approach the empirical mean's efficiency. Finite-block sandwich intervals undercovered, especially for skewed functional data. Further studies show failure when contamination affects most blocks or compromises ordinary within-block means.",
+    "identifiers": {
+      "arxiv": "2607.27532",
+      "arxiv_versioned": "2607.27532v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.27532v1"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2026-07-29T23:51:17Z",
+    "updated": "2026-07-29T23:51:17Z"
+  }
+}

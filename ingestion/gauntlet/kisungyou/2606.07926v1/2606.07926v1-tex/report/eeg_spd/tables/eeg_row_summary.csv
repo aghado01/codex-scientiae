@@ -1,0 +1,2 @@
+V_i_mean,V_i_sem,V_i_std,V_i_count,d_intrinsic_tangent_sq_mean,d_intrinsic_tangent_sq_sem,d_intrinsic_tangent_sq_std,d_intrinsic_tangent_sq_count,split_score_mean,split_score_sem,split_score_std,split_score_count,effective_support_mean,effective_support_sem,effective_support_std,effective_support_count
+1.289406521293187,0.009434645614569507,0.39219085334019077,1728,0.004779385609046081,0.00010199301670009358,0.004239770086602794,1728,0.6666666666666666,6.189408558292804e-18,2.5728888220235454e-16,1728,3.000000000000076,3.095613795697553e-15,1.286822489942233e-13,1728

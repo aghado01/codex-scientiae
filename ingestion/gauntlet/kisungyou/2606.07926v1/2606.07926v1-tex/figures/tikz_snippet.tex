@@ -1,0 +1,159 @@
+\begin{tikzpicture}[
+  >=Latex,
+  manifold/.style={fill=blue!8, draw=blue!35!black, line width=0.75pt},
+  gridline/.style={draw=blue!25!black, line width=0.35pt, opacity=0.55},
+  geodesic/.style={draw=black!62, line width=0.85pt, dashed},
+  meanconnect/.style={draw=black!62, line width=0.85pt, dashed},
+  logvec/.style={-Latex, draw=orange!80!black, line width=0.85pt},
+  meanvec/.style={-Latex, draw=purple!85!black, line width=1.25pt},
+  expmap/.style={-Latex, draw=purple!85!black, line width=1.15pt, densely dashed},
+  point/.style={circle, inner sep=1.7pt, fill=black},
+  dest/.style={circle, inner sep=1.6pt, fill=red!75!black},
+  bary/.style={circle, inner sep=2.0pt, fill=green!45!black},
+  tang/.style={circle, inner sep=2.0pt, fill=purple!80!black},
+  label/.style={font=\scriptsize, inner sep=1pt},  panel/.style={font=\bfseries\small}
+]
+
+% A reusable manifold patch shape, used both for drawing and clipping.
+\def\ManifoldPatch{%
+  (-3.15,-0.86) .. controls (-2.42,0.98) and (-0.72,1.48) .. (0.80,1.20)
+  .. controls (2.48,0.90) and (3.38,-0.18) .. (2.78,-1.02)
+  .. controls (1.70,-1.72) and (-1.92,-1.62) .. (-3.15,-0.86) -- cycle}
+
+% ------------------------------------------------------------------
+% Panel A: intrinsic barycentric projection
+% ------------------------------------------------------------------
+\begin{scope}[shift={(0,0)}]
+  % manifold patch
+  \draw[manifold] \ManifoldPatch;
+
+  % Curves that should visually live on the manifold are clipped to the patch.
+  \begin{scope}
+    \clip \ManifoldPatch;
+    % soft coordinate curves on the manifold
+    \draw[gridline] (-2.65,-0.56) .. controls (-1.55,0.20) and (0.50,0.34) .. (2.55,-0.28);
+    \draw[gridline] (-2.18,-1.04) .. controls (-0.90,-0.42) and (0.90,-0.38) .. (2.55,-0.80);
+    \draw[gridline] (-2.02,0.67) .. controls (-0.55,0.98) and (1.13,0.77) .. (2.55,0.27);
+    \draw[gridline] (-1.95,-1.18) .. controls (-1.66,-0.18) and (-1.63,0.55) .. (-1.33,1.10);
+    \draw[gridline] (0.05,-1.34) .. controls (0.23,-0.35) and (0.23,0.50) .. (0.40,1.28);
+    \draw[gridline] (1.92,-1.14) .. controls (1.58,-0.24) and (1.40,0.44) .. (1.19,1.02);
+
+    % geodesics from intrinsic barycenter to destinations, clipped to stay inside M
+    \coordinate (BAclip) at (0.78,0.02);
+    \coordinate (yAoneclip) at (0.36,0.80);
+    \coordinate (yAtwoclip) at (1.65,0.10);
+    \coordinate (yAthreeclip) at (0.18,-0.74);
+    \draw[geodesic] (BAclip) .. controls (0.60,0.30) and (0.42,0.55) .. (yAoneclip);
+    \draw[geodesic] (BAclip) .. controls (1.12,0.15) and (1.38,0.11) .. (yAtwoclip);
+    \draw[geodesic] (BAclip) .. controls (0.54,-0.28) and (0.32,-0.54) .. (yAthreeclip);
+  \end{scope}
+
+  % points
+  \coordinate (xA) at (-2.28,-0.24);
+  \coordinate (yAone) at (0.36,0.80);
+  \coordinate (yAtwo) at (1.65,0.10);
+  \coordinate (yAthree) at (0.18,-0.74);
+  \coordinate (BA) at (0.78,0.02);
+
+  \node[point] at (xA) {};
+  \node[dest] at (yAone) {};
+  \node[dest] at (yAtwo) {};
+  \node[dest] at (yAthree) {};
+  \node[bary] at (BA) {};
+
+  \node[label, anchor=east] at ($(xA)+(-0.08,0.08)$) {$x$};
+  \node[label, anchor=west] at ($(yAone)+(0.09,0.05)$) {$y_1$};
+  \node[label, anchor=west] at ($(yAtwo)+(0.07,0.02)$) {$y_2$};
+  \node[label, anchor=north] at ($(yAthree)+(0.14,-0.10)$) {$y_3$};
+  \node[label, anchor=south west] at ($(BA)+(-0.02,-0.4)$) {$B_\pi(x)$};
+\end{scope}
+
+% ------------------------------------------------------------------
+% Panel B: tangential barycentric projection
+% ------------------------------------------------------------------
+\begin{scope}[shift={(8.35,0)}]
+  % manifold patch
+  \draw[manifold] \ManifoldPatch;
+
+  \begin{scope}
+    \clip \ManifoldPatch;
+    % coordinate curves
+    \draw[gridline] (-2.65,-0.56) .. controls (-1.55,0.20) and (0.50,0.34) .. (2.55,-0.28);
+    \draw[gridline] (-2.18,-1.04) .. controls (-0.90,-0.42) and (0.90,-0.38) .. (2.55,-0.80);
+    \draw[gridline] (-2.02,0.67) .. controls (-0.55,0.98) and (1.13,0.77) .. (2.55,0.27);
+    \draw[gridline] (-1.95,-1.18) .. controls (-1.66,-0.18) and (-1.63,0.55) .. (-1.33,1.10);
+    \draw[gridline] (0.05,-1.34) .. controls (0.23,-0.35) and (0.23,0.50) .. (0.40,1.28);
+    \draw[gridline] (1.92,-1.14) .. controls (1.58,-0.24) and (1.40,0.44) .. (1.19,1.02);
+
+    % geodesic-like arcs from x to destinations, clipped to remain entirely on M
+    \coordinate (xBclip) at (-2.28,-0.24);
+    \coordinate (yBoneclip) at (0.36,0.80);
+    \coordinate (yBtwoclip) at (1.65,0.10);
+    \coordinate (yBthreeclip) at (0.18,-0.74);
+    \draw[geodesic] (xBclip) .. controls (-1.55,0.50) and (-0.50,0.87) .. (yBoneclip);
+    \draw[geodesic] (xBclip) .. controls (-0.95,0.05) and (0.35,0.17) .. (yBtwoclip);
+    \draw[geodesic] (xBclip) .. controls (-1.10,-0.65) and (-0.32,-0.83) .. (yBthreeclip);
+  \end{scope}
+
+  \coordinate (xB) at (-2.28,-0.24);
+  \coordinate (yBone) at (0.36,0.80);
+  \coordinate (yBtwo) at (1.65,0.10);
+  \coordinate (yBthree) at (0.18,-0.74);
+  \coordinate (TB) at (0.32,0.08);
+
+  % tangent plane: lower, visibly separated from the manifold, horizontally wide,
+  % and vertically tall enough to contain the logarithmic displacement vectors.
+  \coordinate (p0) at (-2.28,-2.28);
+  \coordinate (p1) at (-3.74,-3.05);
+  \coordinate (p2) at (2.40,-3.05);
+  \coordinate (p3) at (2.84,-1.74);
+  \coordinate (p4) at (-3.28,-1.74);
+  \draw[fill=orange!10, draw=orange!55!black, line width=0.60pt, opacity=0.96]
+    (p1) -- (p2) -- (p3) -- (p4) -- cycle;
+  %\node[label, anchor=south east] at ($(p4)+(0.,0.)$) {$T_xM$};
+  \draw[draw=black!35, densely dotted] (xB) -- (p0);
+  \node[label, anchor=east, black!65] at ($(p0)+(-0.02,0.00)$) {$0_x$};
+
+  % destinations and tangential projection on manifold
+  \node[point] at (xB) {};
+  \node[dest] at (yBone) {};
+  \node[dest] at (yBtwo) {};
+  \node[dest] at (yBthree) {};
+  \node[tang] at (TB) {};
+
+  \node[label, anchor=east] at ($(xB)+(-0.08,0.08)$) {$x$};
+  \node[label, anchor=west] at ($(yBone)+(0.09,0.05)$) {$y_1$};
+  \node[label, anchor=west] at ($(yBtwo)+(0.07,0.02)$) {$y_2$};
+  \node[label, anchor=north] at ($(yBthree)+(0.14,-0.10)$) {$y_3$};
+  \node[label, anchor=south west] at ($(TB)+(0.07,0.05)$) {$\widetilde B_\pi(x)$};
+
+  % log vectors in tangent plane
+  \coordinate (vone) at (-0.78,-2.08);
+  \coordinate (vtwo) at (0.60,-2.34);
+  \coordinate (vthree) at (-0.98,-2.56);
+  \coordinate (vmean) at (-0.09,-2.21);
+
+  \draw[logvec] (p0) -- (vone);
+  \draw[logvec] (p0) -- (vtwo);
+  \draw[logvec] (p0) -- (vthree);
+  \draw[meanvec] (p0) -- (vmean);
+
+  % dashed connections from the log-vector endpoints to their average
+  \draw[meanconnect] (vone) -- (vmean);
+  \draw[meanconnect] (vtwo) -- (vmean);
+  \draw[meanconnect] (vthree) -- (vmean);
+
+  \node[label, anchor=south east] at ($(vone)+(-0.2,0)$) {$\log_x(y_1)$};
+  \node[label, anchor=west] at ($(vtwo)+(0.06,0.00)$) {$\log_x(y_2)$};
+  \node[label, anchor=north east] at ($(vthree)+(-0.04,-0.03)$) {$\log_x(y_3)$};
+  \node[label, anchor=south] at ($(vmean)+(-0.1,0.10)$) {$m_\pi(x)$};
+
+  % exponential map from averaged vector back to manifold. The curve is routed
+  % to the right so that it remains visually separated from y_3.
+  \draw[expmap] (vmean)
+    .. controls (1.08,-1.58) and (1.30,-0.50) ..
+    node[label, pos=0.54, anchor=west, xshift=0.14cm, yshift=0.01cm, purple!85!black] {$\exp_x$}
+    (TB);
+\end{scope}
+
+\end{tikzpicture}

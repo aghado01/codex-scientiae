@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.06696v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.06696v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Heat-Kernel Entropy Profiles and Geometric Effective Sample Size for Weighted Measures on Manifolds",
+      "authors": [
+        "Kisung You",
+        "Boram Cho"
+      ],
+      "abstract": "Weighted empirical measures on compact manifolds appear in importance sampling, particle approximations, posterior summaries, quadrature, and representation learning. Ordinary effective sample size and related weight summaries ignore the geometry of the support. We introduce heat-kernel entropy profiles to measure nonuniformity after intrinsic diffusion at a range of scales. For order-two Rényi entropy, pairwise heat-kernel overlaps give an exact profile and a geometric effective sample size. This effective sample size discounts nearby or duplicate particles. It approaches ordinary effective sample size as overlaps between distinct particles vanish. On compact boundaryless manifolds, we establish profile monotonicity, gESS scale limits, deterministic-weight consistency, and a bounded-ratio result for self-normalized importance sampling. On spheres, the unlogged profile decomposes into spherical-harmonic energies. The first terms are squared mean-resultant and traceless-second-moment energies, which give vMF- and Bingham-type scalar summaries. Experiments identify antipodal, girdle, multimodal, and duplicate-particle structures that weight-only and first-moment summaries miss.",
+      "doi": null,
+      "arxiv_id": "2607.06696v3",
+      "published": "2026-07-07T18:15:09Z",
+      "updated": "2026-07-29T23:48:50Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.06696v3",
+      "pdf_url": "https://arxiv.org/pdf/2607.06696v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2607.06696v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.06696v3",
+          "url": "https://arxiv.org/abs/2607.06696v3",
+          "doi": null,
+          "arxiv_id": "2607.06696v3",
+          "published": "2026-07-07T18:15:09Z",
+          "updated": "2026-07-29T23:48:50Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.06696v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:22:14.930271Z",
+      "sha256": "1d6186befd18284b58b3facd79668b695604ed65e2c01cabfcf5a6cb900ef3d8",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvVVFwYks4a2d3dWlvaktkU0lSUldWMlNYTDk0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4wNjY5NnYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIyOjE0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjA2Njk2djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wNjY5NnYzPC9pZD4KICAgIDx0aXRsZT5IZWF0LUtlcm5lbCBFbnRyb3B5IFByb2ZpbGVzIGFuZCBHZW9tZXRyaWMgRWZmZWN0aXZlIFNhbXBsZSBTaXplIGZvciBXZWlnaHRlZCBNZWFzdXJlcyBvbiBNYW5pZm9sZHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNy0yOVQyMzo0ODo1MFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wNjY5NnYzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNy4wNjY5NnYzIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+V2VpZ2h0ZWQgZW1waXJpY2FsIG1lYXN1cmVzIG9uIGNvbXBhY3QgbWFuaWZvbGRzIGFwcGVhciBpbiBpbXBvcnRhbmNlIHNhbXBsaW5nLCBwYXJ0aWNsZSBhcHByb3hpbWF0aW9ucywgcG9zdGVyaW9yIHN1bW1hcmllcywgcXVhZHJhdHVyZSwgYW5kIHJlcHJlc2VudGF0aW9uIGxlYXJuaW5nLiBPcmRpbmFyeSBlZmZlY3RpdmUgc2FtcGxlIHNpemUgYW5kIHJlbGF0ZWQgd2VpZ2h0IHN1bW1hcmllcyBpZ25vcmUgdGhlIGdlb21ldHJ5IG9mIHRoZSBzdXBwb3J0LiBXZSBpbnRyb2R1Y2UgaGVhdC1rZXJuZWwgZW50cm9weSBwcm9maWxlcyB0byBtZWFzdXJlIG5vbnVuaWZvcm1pdHkgYWZ0ZXIgaW50cmluc2ljIGRpZmZ1c2lvbiBhdCBhIHJhbmdlIG9mIHNjYWxlcy4gRm9yIG9yZGVyLXR3byBSw6lueWkgZW50cm9weSwgcGFpcndpc2UgaGVhdC1rZXJuZWwgb3ZlcmxhcHMgZ2l2ZSBhbiBleGFjdCBwcm9maWxlIGFuZCBhIGdlb21ldHJpYyBlZmZlY3RpdmUgc2FtcGxlIHNpemUuIFRoaXMgZWZmZWN0aXZlIHNhbXBsZSBzaXplIGRpc2NvdW50cyBuZWFyYnkgb3IgZHVwbGljYXRlIHBhcnRpY2xlcy4gSXQgYXBwcm9hY2hlcyBvcmRpbmFyeSBlZmZlY3RpdmUgc2FtcGxlIHNpemUgYXMgb3ZlcmxhcHMgYmV0d2VlbiBkaXN0aW5jdCBwYXJ0aWNsZXMgdmFuaXNoLiBPbiBjb21wYWN0IGJvdW5kYXJ5bGVzcyBtYW5pZm9sZHMsIHdlIGVzdGFibGlzaCBwcm9maWxlIG1vbm90b25pY2l0eSwgZ0VTUyBzY2FsZSBsaW1pdHMsIGRldGVybWluaXN0aWMtd2VpZ2h0IGNvbnNpc3RlbmN5LCBhbmQgYSBib3VuZGVkLXJhdGlvIHJlc3VsdCBmb3Igc2VsZi1ub3JtYWxpemVkIGltcG9ydGFuY2Ugc2FtcGxpbmcuIE9uIHNwaGVyZXMsIHRoZSB1bmxvZ2dlZCBwcm9maWxlIGRlY29tcG9zZXMgaW50byBzcGhlcmljYWwtaGFybW9uaWMgZW5lcmdpZXMuIFRoZSBmaXJzdCB0ZXJtcyBhcmUgc3F1YXJlZCBtZWFuLXJlc3VsdGFudCBhbmQgdHJhY2VsZXNzLXNlY29uZC1tb21lbnQgZW5lcmdpZXMsIHdoaWNoIGdpdmUgdk1GLSBhbmQgQmluZ2hhbS10eXBlIHNjYWxhciBzdW1tYXJpZXMuIEV4cGVyaW1lbnRzIGlkZW50aWZ5IGFudGlwb2RhbCwgZ2lyZGxlLCBtdWx0aW1vZGFsLCBhbmQgZHVwbGljYXRlLXBhcnRpY2xlIHN0cnVjdHVyZXMgdGhhdCB3ZWlnaHQtb25seSBhbmQgZmlyc3QtbW9tZW50IHN1bW1hcmllcyBtaXNzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDctMDdUMTg6MTU6MDlaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJzdGF0Lk1MIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Cb3JhbSBDaG88L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Heat-Kernel Entropy Profiles and Geometric Effective Sample Size for Weighted Measures on Manifolds",
+    "authors": [
+      "Kisung You",
+      "Boram Cho"
+    ],
+    "abstract": "Weighted empirical measures on compact manifolds appear in importance sampling, particle approximations, posterior summaries, quadrature, and representation learning. Ordinary effective sample size and related weight summaries ignore the geometry of the support. We introduce heat-kernel entropy profiles to measure nonuniformity after intrinsic diffusion at a range of scales. For order-two Rényi entropy, pairwise heat-kernel overlaps give an exact profile and a geometric effective sample size. This effective sample size discounts nearby or duplicate particles. It approaches ordinary effective sample size as overlaps between distinct particles vanish. On compact boundaryless manifolds, we establish profile monotonicity, gESS scale limits, deterministic-weight consistency, and a bounded-ratio result for self-normalized importance sampling. On spheres, the unlogged profile decomposes into spherical-harmonic energies. The first terms are squared mean-resultant and traceless-second-moment energies, which give vMF- and Bingham-type scalar summaries. Experiments identify antipodal, girdle, multimodal, and duplicate-particle structures that weight-only and first-moment summaries miss.",
+    "identifiers": {
+      "arxiv": "2607.06696",
+      "arxiv_versioned": "2607.06696v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.06696v3"
+      }
+    },
+    "categories": [
+      "stat.ML",
+      "cs.LG",
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ML",
+    "published": "2026-07-07T18:15:09Z",
+    "updated": "2026-07-29T23:48:50Z"
+  }
+}

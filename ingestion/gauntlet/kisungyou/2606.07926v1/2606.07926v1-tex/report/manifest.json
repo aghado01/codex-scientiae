@@ -1,0 +1,47 @@
+{
+  "results_dir": "results",
+  "report_dir": "report",
+  "skip_pgf": false,
+  "experiments": [
+    "all"
+  ],
+  "generated": [
+    "sphere",
+    "spd_synthetic",
+    "eeg_spd"
+  ],
+  "discovered": {
+    "sphere": [
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/sphere_seed0",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/sphere_seed1",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/sphere_seed2",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/sphere_seed3"
+    ],
+    "spd_synthetic": [
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/spd_seed0",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/spd_seed1",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/spd_seed2",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/spd_seed3"
+    ],
+    "eeg_spd": [
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject1",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject2",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject3",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject4",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject5",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject6",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject7",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject8",
+      "/Users/kyou/Desktop/Project-OT-Intrinsic/code/results/eeg_subject9"
+    ]
+  },
+  "figure_conventions": {
+    "titles": "none",
+    "subfigure_labels": "outside_axes",
+    "legend_location": "below_x_axis",
+    "formats": [
+      "png",
+      "pgf"
+    ]
+  }
+}

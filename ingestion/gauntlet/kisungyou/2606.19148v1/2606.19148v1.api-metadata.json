@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2606.19148v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2606.19148v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Fast Computation of Free-Support Wasserstein Medians",
+      "authors": [
+        "Kisung You",
+        "Mauro Giuffré",
+        "Dennis Shung"
+      ],
+      "abstract": "The Wasserstein median is a robust alternative to the Wasserstein barycenter for averaging probability measures, but exact empirical computation can be expensive. A natural metric-space Weiszfeld scheme updates the current candidate by solving a weighted Wasserstein barycenter problem at each outer iteration, producing a nested optimization problem. We propose a direct fixed-weight free-support solver that avoids this inner barycenter loop. At each iteration, the method solves exact optimal transport (OT) subproblems from the current candidate to the input measures, computes barycentric projections of the selected plans, and relocates each support atom to an inverse-distance-weighted average of its projected destinations. For a smoothed median objective, we show that this relocation is the exact minimizer of a tight majorization--minimization surrogate. This yields monotone descent for exact transport subproblems, convex-hull invariance, a finite-time best-residual rate, residual-to-gradient control under differentiability, and fixed-point and stationarity characterizations. We also give smoothing, stability, and resolution-consistency results clarifying the fixed-weight approximation. In exact-OT benchmarks, the direct solver attains median objectives close to tightly solved nested Weiszfeld baselines while using substantially fewer exact transport subproblems. Additional contamination, posterior aggregation, and image-prototype experiments show that the direct solver produces median summaries comparable to nested computation and less sensitive to outlying distributions than Wasserstein barycenters.",
+      "doi": null,
+      "arxiv_id": "2606.19148v1",
+      "published": "2026-06-17T14:50:29Z",
+      "updated": "2026-06-17T14:50:29Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2606.19148v1",
+      "pdf_url": "https://arxiv.org/pdf/2606.19148v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.CO"
+      ],
+      "external_ids": {
+        "arxiv": "2606.19148v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2606.19148v1",
+          "url": "https://arxiv.org/abs/2606.19148v1",
+          "doi": null,
+          "arxiv_id": "2606.19148v1",
+          "published": "2026-06-17T14:50:29Z",
+          "updated": "2026-06-17T14:50:29Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2606.19148v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:22:36.322386Z",
+      "sha256": "a7776dc849107e0786d7e6ae0e618dbb3df7e69cc1510c2a44adf604135c6c30",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvemg3TkU4UEttWTRLUDdHMm1UNk5ZbDJUZ2VrPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNi4xOTE0OHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIyOjM2WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA2LjE5MTQ4djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNi4xOTE0OHYxPC9pZD4KICAgIDx0aXRsZT5GYXN0IENvbXB1dGF0aW9uIG9mIEZyZWUtU3VwcG9ydCBXYXNzZXJzdGVpbiBNZWRpYW5zPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDYtMTdUMTQ6NTA6MjlaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDYuMTkxNDh2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDYuMTkxNDh2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlRoZSBXYXNzZXJzdGVpbiBtZWRpYW4gaXMgYSByb2J1c3QgYWx0ZXJuYXRpdmUgdG8gdGhlIFdhc3NlcnN0ZWluIGJhcnljZW50ZXIgZm9yIGF2ZXJhZ2luZyBwcm9iYWJpbGl0eSBtZWFzdXJlcywgYnV0IGV4YWN0IGVtcGlyaWNhbCBjb21wdXRhdGlvbiBjYW4gYmUgZXhwZW5zaXZlLiBBIG5hdHVyYWwgbWV0cmljLXNwYWNlIFdlaXN6ZmVsZCBzY2hlbWUgdXBkYXRlcyB0aGUgY3VycmVudCBjYW5kaWRhdGUgYnkgc29sdmluZyBhIHdlaWdodGVkIFdhc3NlcnN0ZWluIGJhcnljZW50ZXIgcHJvYmxlbSBhdCBlYWNoIG91dGVyIGl0ZXJhdGlvbiwgcHJvZHVjaW5nIGEgbmVzdGVkIG9wdGltaXphdGlvbiBwcm9ibGVtLiBXZSBwcm9wb3NlIGEgZGlyZWN0IGZpeGVkLXdlaWdodCBmcmVlLXN1cHBvcnQgc29sdmVyIHRoYXQgYXZvaWRzIHRoaXMgaW5uZXIgYmFyeWNlbnRlciBsb29wLiBBdCBlYWNoIGl0ZXJhdGlvbiwgdGhlIG1ldGhvZCBzb2x2ZXMgZXhhY3Qgb3B0aW1hbCB0cmFuc3BvcnQgKE9UKSBzdWJwcm9ibGVtcyBmcm9tIHRoZSBjdXJyZW50IGNhbmRpZGF0ZSB0byB0aGUgaW5wdXQgbWVhc3VyZXMsIGNvbXB1dGVzIGJhcnljZW50cmljIHByb2plY3Rpb25zIG9mIHRoZSBzZWxlY3RlZCBwbGFucywgYW5kIHJlbG9jYXRlcyBlYWNoIHN1cHBvcnQgYXRvbSB0byBhbiBpbnZlcnNlLWRpc3RhbmNlLXdlaWdodGVkIGF2ZXJhZ2Ugb2YgaXRzIHByb2plY3RlZCBkZXN0aW5hdGlvbnMuIEZvciBhIHNtb290aGVkIG1lZGlhbiBvYmplY3RpdmUsIHdlIHNob3cgdGhhdCB0aGlzIHJlbG9jYXRpb24gaXMgdGhlIGV4YWN0IG1pbmltaXplciBvZiBhIHRpZ2h0IG1ham9yaXphdGlvbi0tbWluaW1pemF0aW9uIHN1cnJvZ2F0ZS4gVGhpcyB5aWVsZHMgbW9ub3RvbmUgZGVzY2VudCBmb3IgZXhhY3QgdHJhbnNwb3J0IHN1YnByb2JsZW1zLCBjb252ZXgtaHVsbCBpbnZhcmlhbmNlLCBhIGZpbml0ZS10aW1lIGJlc3QtcmVzaWR1YWwgcmF0ZSwgcmVzaWR1YWwtdG8tZ3JhZGllbnQgY29udHJvbCB1bmRlciBkaWZmZXJlbnRpYWJpbGl0eSwgYW5kIGZpeGVkLXBvaW50IGFuZCBzdGF0aW9uYXJpdHkgY2hhcmFjdGVyaXphdGlvbnMuIFdlIGFsc28gZ2l2ZSBzbW9vdGhpbmcsIHN0YWJpbGl0eSwgYW5kIHJlc29sdXRpb24tY29uc2lzdGVuY3kgcmVzdWx0cyBjbGFyaWZ5aW5nIHRoZSBmaXhlZC13ZWlnaHQgYXBwcm94aW1hdGlvbi4gSW4gZXhhY3QtT1QgYmVuY2htYXJrcywgdGhlIGRpcmVjdCBzb2x2ZXIgYXR0YWlucyBtZWRpYW4gb2JqZWN0aXZlcyBjbG9zZSB0byB0aWdodGx5IHNvbHZlZCBuZXN0ZWQgV2Vpc3pmZWxkIGJhc2VsaW5lcyB3aGlsZSB1c2luZyBzdWJzdGFudGlhbGx5IGZld2VyIGV4YWN0IHRyYW5zcG9ydCBzdWJwcm9ibGVtcy4gQWRkaXRpb25hbCBjb250YW1pbmF0aW9uLCBwb3N0ZXJpb3IgYWdncmVnYXRpb24sIGFuZCBpbWFnZS1wcm90b3R5cGUgZXhwZXJpbWVudHMgc2hvdyB0aGF0IHRoZSBkaXJlY3Qgc29sdmVyIHByb2R1Y2VzIG1lZGlhbiBzdW1tYXJpZXMgY29tcGFyYWJsZSB0byBuZXN0ZWQgY29tcHV0YXRpb24gYW5kIGxlc3Mgc2Vuc2l0aXZlIHRvIG91dGx5aW5nIGRpc3RyaWJ1dGlvbnMgdGhhbiBXYXNzZXJzdGVpbiBiYXJ5Y2VudGVycy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ic3RhdC5DTyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA2LTE3VDE0OjUwOjI5WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0ic3RhdC5DTyIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2lzdW5nIFlvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWF1cm8gR2l1ZmZyw6k8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkRlbm5pcyBTaHVuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Fast Computation of Free-Support Wasserstein Medians",
+    "authors": [
+      "Kisung You",
+      "Mauro Giuffré",
+      "Dennis Shung"
+    ],
+    "abstract": "The Wasserstein median is a robust alternative to the Wasserstein barycenter for averaging probability measures, but exact empirical computation can be expensive. A natural metric-space Weiszfeld scheme updates the current candidate by solving a weighted Wasserstein barycenter problem at each outer iteration, producing a nested optimization problem. We propose a direct fixed-weight free-support solver that avoids this inner barycenter loop. At each iteration, the method solves exact optimal transport (OT) subproblems from the current candidate to the input measures, computes barycentric projections of the selected plans, and relocates each support atom to an inverse-distance-weighted average of its projected destinations. For a smoothed median objective, we show that this relocation is the exact minimizer of a tight majorization--minimization surrogate. This yields monotone descent for exact transport subproblems, convex-hull invariance, a finite-time best-residual rate, residual-to-gradient control under differentiability, and fixed-point and stationarity characterizations. We also give smoothing, stability, and resolution-consistency results clarifying the fixed-weight approximation. In exact-OT benchmarks, the direct solver attains median objectives close to tightly solved nested Weiszfeld baselines while using substantially fewer exact transport subproblems. Additional contamination, posterior aggregation, and image-prototype experiments show that the direct solver produces median summaries comparable to nested computation and less sensitive to outlying distributions than Wasserstein barycenters.",
+    "identifiers": {
+      "arxiv": "2606.19148",
+      "arxiv_versioned": "2606.19148v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2606.19148v1"
+      }
+    },
+    "categories": [
+      "stat.CO"
+    ],
+    "concepts": [],
+    "primary_category": "stat.CO",
+    "published": "2026-06-17T14:50:29Z",
+    "updated": "2026-06-17T14:50:29Z"
+  }
+}

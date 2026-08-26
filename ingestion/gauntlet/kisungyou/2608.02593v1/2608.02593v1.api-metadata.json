@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.02593v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.02593v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Exact Likelihood and Sampling for Riemannian Gaussian Distributions on Correlation Matrices",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Correlation matrices arise when marginal scales are removed from covariance matrices, yet a normalized likelihood must account for both quotient distance and quotient volume. We propose a Riemannian Gaussian model for full-rank correlation matrices under quotient-affine geometry. The distribution is proper and has finite radial moments. We derive exact score and profiled-scale equations and recover Fisher-transformed Gaussian inference for two-dimensional matrices. In higher dimension, a curvature calculation shows that the normalizing constant can vary with the center. Exact maximum likelihood and Fréchet estimation may therefore have different population targets. We develop chart-based methods for evaluating the normalizer, fitting the likelihood, and sampling. Numerical studies verify the analytic case and compare integration, estimation, and sampling procedures across dimensions and dispersion regimes. A rolling-finance application and a controlled prior study illustrate both the value and computational cost of the model. The method is most reliable in small to moderate dimensions, while proposal efficiency and numerical conditioning deteriorate near the boundary and at larger dispersion.",
+      "doi": null,
+      "arxiv_id": "2608.02593v1",
+      "published": "2026-08-03T17:57:59Z",
+      "updated": "2026-08-03T17:57:59Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.02593v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.02593v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2608.02593v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.02593v1",
+          "url": "https://arxiv.org/abs/2608.02593v1",
+          "doi": null,
+          "arxiv_id": "2608.02593v1",
+          "published": "2026-08-03T17:57:59Z",
+          "updated": "2026-08-03T17:57:59Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.02593v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:21:52.723496Z",
+      "sha256": "bbc96085decbd2d2a0663a4fb1791d99557562bc89405e7ec82a5515a3bfdf00",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvVGMvVG9yWS9IVUxka0NudHI3NjhZM0N4NDJZPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4wMjU5M3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIxOjUyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjAyNTkzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4wMjU5M3YxPC9pZD4KICAgIDx0aXRsZT5FeGFjdCBMaWtlbGlob29kIGFuZCBTYW1wbGluZyBmb3IgUmllbWFubmlhbiBHYXVzc2lhbiBEaXN0cmlidXRpb25zIG9uIENvcnJlbGF0aW9uIE1hdHJpY2VzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDgtMDNUMTc6NTc6NTlaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDguMDI1OTN2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDguMDI1OTN2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkNvcnJlbGF0aW9uIG1hdHJpY2VzIGFyaXNlIHdoZW4gbWFyZ2luYWwgc2NhbGVzIGFyZSByZW1vdmVkIGZyb20gY292YXJpYW5jZSBtYXRyaWNlcywgeWV0IGEgbm9ybWFsaXplZCBsaWtlbGlob29kIG11c3QgYWNjb3VudCBmb3IgYm90aCBxdW90aWVudCBkaXN0YW5jZSBhbmQgcXVvdGllbnQgdm9sdW1lLiBXZSBwcm9wb3NlIGEgUmllbWFubmlhbiBHYXVzc2lhbiBtb2RlbCBmb3IgZnVsbC1yYW5rIGNvcnJlbGF0aW9uIG1hdHJpY2VzIHVuZGVyIHF1b3RpZW50LWFmZmluZSBnZW9tZXRyeS4gVGhlIGRpc3RyaWJ1dGlvbiBpcyBwcm9wZXIgYW5kIGhhcyBmaW5pdGUgcmFkaWFsIG1vbWVudHMuIFdlIGRlcml2ZSBleGFjdCBzY29yZSBhbmQgcHJvZmlsZWQtc2NhbGUgZXF1YXRpb25zIGFuZCByZWNvdmVyIEZpc2hlci10cmFuc2Zvcm1lZCBHYXVzc2lhbiBpbmZlcmVuY2UgZm9yIHR3by1kaW1lbnNpb25hbCBtYXRyaWNlcy4gSW4gaGlnaGVyIGRpbWVuc2lvbiwgYSBjdXJ2YXR1cmUgY2FsY3VsYXRpb24gc2hvd3MgdGhhdCB0aGUgbm9ybWFsaXppbmcgY29uc3RhbnQgY2FuIHZhcnkgd2l0aCB0aGUgY2VudGVyLiBFeGFjdCBtYXhpbXVtIGxpa2VsaWhvb2QgYW5kIEZyw6ljaGV0IGVzdGltYXRpb24gbWF5IHRoZXJlZm9yZSBoYXZlIGRpZmZlcmVudCBwb3B1bGF0aW9uIHRhcmdldHMuIFdlIGRldmVsb3AgY2hhcnQtYmFzZWQgbWV0aG9kcyBmb3IgZXZhbHVhdGluZyB0aGUgbm9ybWFsaXplciwgZml0dGluZyB0aGUgbGlrZWxpaG9vZCwgYW5kIHNhbXBsaW5nLiBOdW1lcmljYWwgc3R1ZGllcyB2ZXJpZnkgdGhlIGFuYWx5dGljIGNhc2UgYW5kIGNvbXBhcmUgaW50ZWdyYXRpb24sIGVzdGltYXRpb24sIGFuZCBzYW1wbGluZyBwcm9jZWR1cmVzIGFjcm9zcyBkaW1lbnNpb25zIGFuZCBkaXNwZXJzaW9uIHJlZ2ltZXMuIEEgcm9sbGluZy1maW5hbmNlIGFwcGxpY2F0aW9uIGFuZCBhIGNvbnRyb2xsZWQgcHJpb3Igc3R1ZHkgaWxsdXN0cmF0ZSBib3RoIHRoZSB2YWx1ZSBhbmQgY29tcHV0YXRpb25hbCBjb3N0IG9mIHRoZSBtb2RlbC4gVGhlIG1ldGhvZCBpcyBtb3N0IHJlbGlhYmxlIGluIHNtYWxsIHRvIG1vZGVyYXRlIGRpbWVuc2lvbnMsIHdoaWxlIHByb3Bvc2FsIGVmZmljaWVuY3kgYW5kIG51bWVyaWNhbCBjb25kaXRpb25pbmcgZGV0ZXJpb3JhdGUgbmVhciB0aGUgYm91bmRhcnkgYW5kIGF0IGxhcmdlciBkaXNwZXJzaW9uLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDgtMDNUMTc6NTc6NTlaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJzdGF0Lk1FIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5LaXN1bmcgWW91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Exact Likelihood and Sampling for Riemannian Gaussian Distributions on Correlation Matrices",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Correlation matrices arise when marginal scales are removed from covariance matrices, yet a normalized likelihood must account for both quotient distance and quotient volume. We propose a Riemannian Gaussian model for full-rank correlation matrices under quotient-affine geometry. The distribution is proper and has finite radial moments. We derive exact score and profiled-scale equations and recover Fisher-transformed Gaussian inference for two-dimensional matrices. In higher dimension, a curvature calculation shows that the normalizing constant can vary with the center. Exact maximum likelihood and Fréchet estimation may therefore have different population targets. We develop chart-based methods for evaluating the normalizer, fitting the likelihood, and sampling. Numerical studies verify the analytic case and compare integration, estimation, and sampling procedures across dimensions and dispersion regimes. A rolling-finance application and a controlled prior study illustrate both the value and computational cost of the model. The method is most reliable in small to moderate dimensions, while proposal efficiency and numerical conditioning deteriorate near the boundary and at larger dispersion.",
+    "identifiers": {
+      "arxiv": "2608.02593",
+      "arxiv_versioned": "2608.02593v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.02593v1"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-08-03T17:57:59Z",
+    "updated": "2026-08-03T17:57:59Z"
+  }
+}

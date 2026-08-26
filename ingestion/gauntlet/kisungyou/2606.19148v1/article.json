@@ -1,0 +1,172 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2606.19148v1",
+  "initialized_utc": "2026-08-26T03:22:36.673893Z",
+  "title": "Fast Computation of Free-Support Wasserstein Medians",
+  "authors": [
+    "Kisung You",
+    "Mauro Giuffré",
+    "Dennis Shung"
+  ],
+  "abstract": "The Wasserstein median is a robust alternative to the Wasserstein barycenter for averaging probability measures, but exact empirical computation can be expensive. A natural metric-space Weiszfeld scheme updates the current candidate by solving a weighted Wasserstein barycenter problem at each outer iteration, producing a nested optimization problem. We propose a direct fixed-weight free-support solver that avoids this inner barycenter loop. At each iteration, the method solves exact optimal transport (OT) subproblems from the current candidate to the input measures, computes barycentric projections of the selected plans, and relocates each support atom to an inverse-distance-weighted average of its projected destinations. For a smoothed median objective, we show that this relocation is the exact minimizer of a tight majorization--minimization surrogate. This yields monotone descent for exact transport subproblems, convex-hull invariance, a finite-time best-residual rate, residual-to-gradient control under differentiability, and fixed-point and stationarity characterizations. We also give smoothing, stability, and resolution-consistency results clarifying the fixed-weight approximation. In exact-OT benchmarks, the direct solver attains median objectives close to tightly solved nested Weiszfeld baselines while using substantially fewer exact transport subproblems. Additional contamination, posterior aggregation, and image-prototype experiments show that the direct solver produces median summaries comparable to nested computation and less sensitive to outlying distributions than Wasserstein barycenters.",
+  "identifiers": {
+    "arxiv": "2606.19148",
+    "arxiv_versioned": "2606.19148v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2606.19148v1"
+    }
+  },
+  "categories": [
+    "stat.CO"
+  ],
+  "concepts": [],
+  "primary_category": "stat.CO",
+  "published": "2026-06-17T14:50:29Z",
+  "updated": "2026-06-17T14:50:29Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2606.19148v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9841,
+        "sha256": "7424af066158046af61bf659f459de43563283913f383ded6daf909e9dd06855",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-26T03:22:36.322386Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2606.19148v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "a7776dc849107e0786d7e6ae0e618dbb3df7e69cc1510c2a44adf604135c6c30"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Fast Computation of Free-Support Wasserstein Medians",
+        "authors_tex": [
+          "\\fnm{Kisung} \\sur{You}",
+          "\\fnm{Mauro} \\sur{Giuffr\\`{e}}",
+          "\\fnm{Dennis} \\sur{Shung}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 477,
+        "sha256": "e88f512d288fd07e5a2f00fef19b78335106d8d2c3d9802fe97a2e6590584cc7"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2606.19148v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2606.19148v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1678722,
+      "sha256": "2801b23d272ba850a9c23967281998ec259a43abce2b41852b3e60b483a14645",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2606.19148v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2606.19148v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 13,
+      "tex_files": 1,
+      "sha256": "86299ac4becd825c9909bfc1722598e5b9fcf89418277cdac314ceeba6cbce9c"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2606.19148v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1743820,
+      "sha256": "e50c91cafe07f3df1ab2af0bb6b1557bbfdf074e65c39239f6860fe3ecad26cc"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-26T03:22:36.673893Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 14
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 13
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

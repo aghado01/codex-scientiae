@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.13713v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.13713v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Hyperbolic Latent Position Models for Hierarchical Bipartite Data",
+      "authors": [
+        "Kisung You"
+      ],
+      "abstract": "Binary bipartite data often combine row and column heterogeneity with hierarchical interaction, as when students answer exercises organized by prerequisites or legislators vote on nested policy areas. Fixed-dimensional Euclidean volume grows only polynomially with radius, whereas branching hierarchies expand exponentially. Hyperbolic space matches this growth, and its rooted Gromov product measures shared ancestry. We propose the \\emph{HypErbolic Latent Position model for bipartite Interaction data} (HELPI), which places both object types in hyperbolic space while separating geometric interaction from additive propensities. With unrestricted main effects, a hyperbolic-distance predictor is likelihood-equivalent to a rooted Gromov-product predictor. Radial depth is absorbed by additive terms, leaving a root-invariant projected hierarchy signal as the identified geometric target. We establish identification and posterior contraction results and develop augmented variational procedures for binary outcomes. Simulations support recovery of hierarchical interaction and clarify weak-branch regimes. In Junyi Academy data, curriculum anchors yield an interpretable geometry with temporal prediction close to item-response benchmarks, while distinguishing attempted exercises from unconditional mastery. In U.S. House roll calls, flexible HELPI variants improve on additive and two-parameter logistic benchmarks and recover party and policy structure without using party labels during fitting.",
+      "doi": null,
+      "arxiv_id": "2608.13713v1",
+      "published": "2026-08-13T19:16:35Z",
+      "updated": "2026-08-13T19:16:35Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.13713v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.13713v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "stat.ME"
+      ],
+      "external_ids": {
+        "arxiv": "2608.13713v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.13713v1",
+          "url": "https://arxiv.org/abs/2608.13713v1",
+          "doi": null,
+          "arxiv_id": "2608.13713v1",
+          "published": "2026-08-13T19:16:35Z",
+          "updated": "2026-08-13T19:16:35Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.13713v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:21:40.283483Z",
+      "sha256": "612b2ea041ca386332afec365c2b2edd99254901bb6dfbf8218b39c8107a9471",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvKzcrblBjSUw1SzRtRW1wRHRUeWJ2U0dWZzlvPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4xMzcxM3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjIxOjQwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjEzNzEzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xMzcxM3YxPC9pZD4KICAgIDx0aXRsZT5IeXBlcmJvbGljIExhdGVudCBQb3NpdGlvbiBNb2RlbHMgZm9yIEhpZXJhcmNoaWNhbCBCaXBhcnRpdGUgRGF0YTwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA4LTEzVDE5OjE2OjM1WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA4LjEzNzEzdjEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA4LjEzNzEzdjEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5CaW5hcnkgYmlwYXJ0aXRlIGRhdGEgb2Z0ZW4gY29tYmluZSByb3cgYW5kIGNvbHVtbiBoZXRlcm9nZW5laXR5IHdpdGggaGllcmFyY2hpY2FsIGludGVyYWN0aW9uLCBhcyB3aGVuIHN0dWRlbnRzIGFuc3dlciBleGVyY2lzZXMgb3JnYW5pemVkIGJ5IHByZXJlcXVpc2l0ZXMgb3IgbGVnaXNsYXRvcnMgdm90ZSBvbiBuZXN0ZWQgcG9saWN5IGFyZWFzLiBGaXhlZC1kaW1lbnNpb25hbCBFdWNsaWRlYW4gdm9sdW1lIGdyb3dzIG9ubHkgcG9seW5vbWlhbGx5IHdpdGggcmFkaXVzLCB3aGVyZWFzIGJyYW5jaGluZyBoaWVyYXJjaGllcyBleHBhbmQgZXhwb25lbnRpYWxseS4gSHlwZXJib2xpYyBzcGFjZSBtYXRjaGVzIHRoaXMgZ3Jvd3RoLCBhbmQgaXRzIHJvb3RlZCBHcm9tb3YgcHJvZHVjdCBtZWFzdXJlcyBzaGFyZWQgYW5jZXN0cnkuIFdlIHByb3Bvc2UgdGhlIFxlbXBoe0h5cEVyYm9saWMgTGF0ZW50IFBvc2l0aW9uIG1vZGVsIGZvciBiaXBhcnRpdGUgSW50ZXJhY3Rpb24gZGF0YX0gKEhFTFBJKSwgd2hpY2ggcGxhY2VzIGJvdGggb2JqZWN0IHR5cGVzIGluIGh5cGVyYm9saWMgc3BhY2Ugd2hpbGUgc2VwYXJhdGluZyBnZW9tZXRyaWMgaW50ZXJhY3Rpb24gZnJvbSBhZGRpdGl2ZSBwcm9wZW5zaXRpZXMuIFdpdGggdW5yZXN0cmljdGVkIG1haW4gZWZmZWN0cywgYSBoeXBlcmJvbGljLWRpc3RhbmNlIHByZWRpY3RvciBpcyBsaWtlbGlob29kLWVxdWl2YWxlbnQgdG8gYSByb290ZWQgR3JvbW92LXByb2R1Y3QgcHJlZGljdG9yLiBSYWRpYWwgZGVwdGggaXMgYWJzb3JiZWQgYnkgYWRkaXRpdmUgdGVybXMsIGxlYXZpbmcgYSByb290LWludmFyaWFudCBwcm9qZWN0ZWQgaGllcmFyY2h5IHNpZ25hbCBhcyB0aGUgaWRlbnRpZmllZCBnZW9tZXRyaWMgdGFyZ2V0LiBXZSBlc3RhYmxpc2ggaWRlbnRpZmljYXRpb24gYW5kIHBvc3RlcmlvciBjb250cmFjdGlvbiByZXN1bHRzIGFuZCBkZXZlbG9wIGF1Z21lbnRlZCB2YXJpYXRpb25hbCBwcm9jZWR1cmVzIGZvciBiaW5hcnkgb3V0Y29tZXMuIFNpbXVsYXRpb25zIHN1cHBvcnQgcmVjb3Zlcnkgb2YgaGllcmFyY2hpY2FsIGludGVyYWN0aW9uIGFuZCBjbGFyaWZ5IHdlYWstYnJhbmNoIHJlZ2ltZXMuIEluIEp1bnlpIEFjYWRlbXkgZGF0YSwgY3VycmljdWx1bSBhbmNob3JzIHlpZWxkIGFuIGludGVycHJldGFibGUgZ2VvbWV0cnkgd2l0aCB0ZW1wb3JhbCBwcmVkaWN0aW9uIGNsb3NlIHRvIGl0ZW0tcmVzcG9uc2UgYmVuY2htYXJrcywgd2hpbGUgZGlzdGluZ3Vpc2hpbmcgYXR0ZW1wdGVkIGV4ZXJjaXNlcyBmcm9tIHVuY29uZGl0aW9uYWwgbWFzdGVyeS4gSW4gVS5TLiBIb3VzZSByb2xsIGNhbGxzLCBmbGV4aWJsZSBIRUxQSSB2YXJpYW50cyBpbXByb3ZlIG9uIGFkZGl0aXZlIGFuZCB0d28tcGFyYW1ldGVyIGxvZ2lzdGljIGJlbmNobWFya3MgYW5kIHJlY292ZXIgcGFydHkgYW5kIHBvbGljeSBzdHJ1Y3R1cmUgd2l0aG91dCB1c2luZyBwYXJ0eSBsYWJlbHMgZHVyaW5nIGZpdHRpbmcuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0xM1QxOToxNjozNVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09InN0YXQuTUUiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpc3VuZyBZb3U8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Hyperbolic Latent Position Models for Hierarchical Bipartite Data",
+    "authors": [
+      "Kisung You"
+    ],
+    "abstract": "Binary bipartite data often combine row and column heterogeneity with hierarchical interaction, as when students answer exercises organized by prerequisites or legislators vote on nested policy areas. Fixed-dimensional Euclidean volume grows only polynomially with radius, whereas branching hierarchies expand exponentially. Hyperbolic space matches this growth, and its rooted Gromov product measures shared ancestry. We propose the \\emph{HypErbolic Latent Position model for bipartite Interaction data} (HELPI), which places both object types in hyperbolic space while separating geometric interaction from additive propensities. With unrestricted main effects, a hyperbolic-distance predictor is likelihood-equivalent to a rooted Gromov-product predictor. Radial depth is absorbed by additive terms, leaving a root-invariant projected hierarchy signal as the identified geometric target. We establish identification and posterior contraction results and develop augmented variational procedures for binary outcomes. Simulations support recovery of hierarchical interaction and clarify weak-branch regimes. In Junyi Academy data, curriculum anchors yield an interpretable geometry with temporal prediction close to item-response benchmarks, while distinguishing attempted exercises from unconditional mastery. In U.S. House roll calls, flexible HELPI variants improve on additive and two-parameter logistic benchmarks and recover party and policy structure without using party labels during fitting.",
+    "identifiers": {
+      "arxiv": "2608.13713",
+      "arxiv_versioned": "2608.13713v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.13713v1"
+      }
+    },
+    "categories": [
+      "stat.ME"
+    ],
+    "concepts": [],
+    "primary_category": "stat.ME",
+    "published": "2026-08-13T19:16:35Z",
+    "updated": "2026-08-13T19:16:35Z"
+  }
+}

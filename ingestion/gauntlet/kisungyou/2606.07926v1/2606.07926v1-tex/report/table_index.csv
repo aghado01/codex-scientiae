@@ -1,0 +1,7 @@
+table,path,n_rows,n_columns
+eeg_method_summary,eeg_spd/tables/eeg_method_summary.csv,5,65
+eeg_row_summary,eeg_spd/tables/eeg_row_summary.csv,1,16
+spd_method_summary,spd_synthetic/tables/spd_method_summary.csv,5,53
+spd_row_summary,spd_synthetic/tables/spd_row_summary.csv,1,16
+sphere_method_summary,sphere/tables/sphere_method_summary.csv,5,41
+sphere_row_summary,sphere/tables/sphere_row_summary.csv,1,16
