@@ -280,8 +280,29 @@ def _braced_content(text: str, open_brace: int) -> str | None:
     return None
 
 
+_TITLE_COMMANDS = ("title", "aistatstitle", "icmltitle")
+_GENERIC_AUTHOR_COMMAND = "author"
+_DOI_COMMANDS = ("doi", "DOI")
+_DOI_URL_COMMANDS = ("href", "url")
+_PLACEHOLDER_AUTHOR = re.compile(
+    r"^(?:(?:first|second|third|fourth)\s+)?author(?:\s+name)?$",
+    re.IGNORECASE,
+)
+_AISTATS_AUTHOR_SPLIT = re.compile(r"\\(?:And|AND|and)(?![A-Za-z])")
+_JMLR_NAME = re.compile(
+    r"\\name(?![A-Za-z])\s*(.*?)(?=\\(?:name|email|addr|AND|and)(?![A-Za-z])|\\\\|\Z)",
+    re.DOTALL,
+)
+_DECLARED_DOI = re.compile(
+    r"(?:https?://(?:dx\.)?doi\.org/|doi:\s*)?(10\.\d{4,9}/[^\s\\{}]+)",
+    re.IGNORECASE,
+)
+
+
 def _command_values(text: str, command: str) -> tuple[str, ...]:
-    pattern = re.compile(re.escape(f"\\{command}") + r"\s*(?:\[[^\]]*\]\s*)?\{")
+    pattern = re.compile(
+        r"\\" + re.escape(command) + r"(?![A-Za-z])\s*(?:\[[^\]]*\]\s*)?\{"
+    )
     values: list[str] = []
     for match in pattern.finditer(text):
         value = _braced_content(text, match.end() - 1)
@@ -290,14 +311,113 @@ def _command_values(text: str, command: str) -> tuple[str, ...]:
     return tuple(values)
 
 
+def _preamble(text: str) -> str:
+    match = _DOCUMENT_MARKER.search(text)
+    return text[: match.start()] if match else text
+
+
+def _collapse_tex_line(value: str) -> str:
+    return " ".join(value.replace("\r", " ").replace("\n", " ").split())
+
+
+def _usable_author(value: str) -> bool:
+    collapsed = _collapse_tex_line(value)
+    if not collapsed or collapsed in {"~", "."}:
+        return False
+    if _PLACEHOLDER_AUTHOR.match(collapsed):
+        return False
+    if re.search(r"\bfirst author name\b", collapsed, flags=re.IGNORECASE):
+        return False
+    return True
+
+
+def _split_aistats_authors(block: str) -> tuple[str, ...]:
+    names: list[str] = []
+    for part in _AISTATS_AUTHOR_SPLIT.split(block):
+        head = re.split(r"\\\\", part, maxsplit=1)[0]
+        collapsed = _collapse_tex_line(head)
+        if _usable_author(collapsed):
+            names.append(collapsed)
+    return tuple(names)
+
+
+def _jmlr_names(text: str) -> tuple[str, ...]:
+    names: list[str] = []
+    for match in _JMLR_NAME.finditer(text):
+        collapsed = _collapse_tex_line(match.group(1))
+        if _usable_author(collapsed):
+            names.append(collapsed)
+    return tuple(names)
+
+
+def _normalize_declared_doi(value: str) -> str | None:
+    match = _DECLARED_DOI.search(value.strip().rstrip(".,;"))
+    if match is None:
+        return None
+    doi = match.group(1).rstrip(".,;")
+    while doi.endswith("}"):
+        doi = doi[:-1]
+    return doi or None
+
+
+def _declared_title(text: str) -> str | None:
+    for command in _TITLE_COMMANDS:
+        values = _command_values(text, command)
+        if values:
+            return values[0]
+    return None
+
+
+def _declared_authors(text: str) -> tuple[str, ...]:
+    specialized: list[str] = []
+    aistats = _command_values(text, "aistatsauthor")
+    if aistats:
+        specialized.extend(_split_aistats_authors(aistats[0]))
+    specialized.extend(
+        value
+        for value in _command_values(text, "icmlauthor")
+        if _usable_author(value)
+    )
+    specialized.extend(
+        value
+        for value in _command_values(text, "IEEEauthorblockN")
+        if _usable_author(value)
+    )
+    specialized.extend(_jmlr_names(text))
+    if specialized:
+        return tuple(specialized)
+    return tuple(
+        value for value in _command_values(text, _GENERIC_AUTHOR_COMMAND) if _usable_author(value)
+    )
+
+
+def _declared_doi(text: str) -> str | None:
+    for command in _DOI_COMMANDS:
+        for value in _command_values(text, command):
+            parsed = _normalize_declared_doi(value) or (
+                value.strip() if value.strip().startswith("10.") else None
+            )
+            if parsed:
+                return parsed
+    preamble = _preamble(text)
+    for command in _DOI_URL_COMMANDS:
+        for value in _command_values(preamble, command):
+            parsed = _normalize_declared_doi(value)
+            if parsed:
+                return parsed
+    title = _declared_title(text)
+    if title:
+        parsed = _normalize_declared_doi(title)
+        if parsed:
+            return parsed
+    return None
+
+
 def _embedded_metadata(text: str) -> EmbeddedLatexMetadata:
-    titles = _command_values(text, "title")
-    authors = _command_values(text, "author")
-    dois = _command_values(text, "doi")
     return EmbeddedLatexMetadata(
-        title_tex=titles[0] if titles else None,
-        authors_tex=authors,
-        doi=dois[0] if dois else None,
+        title_tex=_declared_title(text),
+        authors_tex=_declared_authors(text),
+        doi=_declared_doi(text),
     )
 
 

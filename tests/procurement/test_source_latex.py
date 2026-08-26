@@ -240,6 +240,98 @@ class LatexSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(LatexSourceError, r"LaTeX subfile target 'missing'"):
             inspect_latex_source_tree(tree)
 
+    def test_class_specific_title_author_and_doi_declarations_are_collected(self) -> None:
+        cases = (
+            (
+                "aistats",
+                "\\documentclass{article}\n"
+                "\\runningtitle{Short}\n"
+                "\\runningauthor{You and Cho}\n"
+                "\\aistatstitle{Geometric Information Decomposition}\n"
+                "\\aistatsauthor{\n"
+                "  Kisung You \\\\\n"
+                "  Baruch College\n"
+                "  \\And\n"
+                "  Boram Cho \\\\\n"
+                "  Affiliation\n"
+                "}\n"
+                "\\begin{document}x\\end{document}\n",
+                "Geometric Information Decomposition",
+                ("Kisung You", "Boram Cho"),
+                None,
+            ),
+            (
+                "icml",
+                "\\documentclass{article}\n"
+                "\\icmltitle{Project Alexandria}\n"
+                "\\icmlauthor{Ada Lovelace}{equal}\n"
+                "\\icmlauthor{Author Name}{yy}\n"
+                "\\icmlauthor{Grace Hopper}{equal}\n"
+                "\\begin{document}x\\end{document}\n",
+                "Project Alexandria",
+                ("Ada Lovelace", "Grace Hopper"),
+                None,
+            ),
+            (
+                "ieee",
+                "\\documentclass{article}\n"
+                "\\title{An IEEE Paper}\n"
+                "\\author{\n"
+                "\\IEEEauthorblockN{1\\textsuperscript{st} Ada Lovelace}\n"
+                "\\IEEEauthorblockA{University}\n"
+                "\\and\n"
+                "\\IEEEauthorblockN{2\\textsuperscript{nd} Grace Hopper}\n"
+                "}\n"
+                "\\begin{document}x\\end{document}\n",
+                "An IEEE Paper",
+                (
+                    "1\\textsuperscript{st} Ada Lovelace",
+                    "2\\textsuperscript{nd} Grace Hopper",
+                ),
+                None,
+            ),
+            (
+                "jmlr",
+                "\\documentclass{article}\n"
+                "\\title{Rdimtools}\n"
+                "\\author{\n"
+                "\\name Kisung You \\email kyou@nd.edu \\\\\n"
+                "\\addr Notre Dame\n"
+                "\\AND\n"
+                "\\name Dennis Shung \\\\\n"
+                "\\addr Yale\n"
+                "}\n"
+                "\\href{https://doi.org/10.1016/j.simpa.2022.100414}{DOI}\n"
+                "\\begin{document}\n"
+                "\\href{https://doi.org/10.9999/bibliography}{bib}\n"
+                "\\end{document}\n",
+                "Rdimtools",
+                ("Kisung You", "Dennis Shung"),
+                "10.1016/j.simpa.2022.100414",
+            ),
+            (
+                "title-footnote-doi",
+                "\\documentclass{article}\n"
+                "\\title{On the Wasserstein median\\footnote{"
+                "available online: \\url{https://doi.org/10.1080/10618600.2024.2374580}.}}\n"
+                "\\author{Kisung You}\n"
+                "\\begin{document}x\\end{document}\n",
+                "On the Wasserstein median\\footnote{"
+                "available online: \\url{https://doi.org/10.1080/10618600.2024.2374580}.}",
+                ("Kisung You",),
+                "10.1080/10618600.2024.2374580",
+            ),
+        )
+        for name, source, title, authors, doi in cases:
+            with self.subTest(name=name):
+                tree = self.root / name
+                tree.mkdir()
+                (tree / "main.tex").write_text(source, encoding="utf-8")
+                inspection = inspect_latex_source_tree(tree)
+                self.assertEqual(title, inspection.embedded_metadata.title_tex)
+                self.assertEqual(authors, inspection.embedded_metadata.authors_tex)
+                self.assertEqual(doi, inspection.embedded_metadata.doi)
+
 
 if __name__ == "__main__":
     unittest.main()
