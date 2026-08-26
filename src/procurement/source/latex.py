@@ -163,6 +163,9 @@ def _entrypoint(
         raise LatexSourceError("no LaTeX entrypoint with a document class declaration was found")
     if len(candidates) == 1:
         return candidates[0], "single-candidate"
+    roots = [candidate for candidate in candidates if "/" not in candidate]
+    if len(roots) == 1:
+        return roots[0], "unique-root"
     preferred = ([f"{slug}.tex"] if slug else []) + ["main.tex"]
     for leaf in preferred:
         hits = [
@@ -238,6 +241,8 @@ def _resolve_inputs(
                     None,
                 )
                 if selected is None:
+                    selected = _unique_casefold_path(candidates, by_path)
+                if selected is None:
                     raise LatexSourceError(
                         f"unresolved LaTeX {command} target {literal!r} "
                         f"referenced by {relative!r}"
@@ -259,6 +264,27 @@ def _resolve_inputs(
         total += len(encoded)
         output.append(piece)
     return "".join(output), digests
+
+
+def _unique_casefold_path(
+    candidates: Sequence[str],
+    by_path: dict[str, _TreeEntry],
+) -> str | None:
+    hits: list[str] = []
+    seen: set[str] = set()
+    inventory = list(by_path)
+    for candidate in candidates:
+        folded = candidate.casefold()
+        matches = [path for path in inventory if path.casefold() == folded]
+        if len(matches) != 1:
+            continue
+        path = matches[0]
+        if path not in seen:
+            hits.append(path)
+            seen.add(path)
+    if len(hits) == 1:
+        return hits[0]
+    return None
 
 
 def _braced_content(text: str, open_brace: int) -> str | None:
@@ -368,6 +394,29 @@ def _declared_title(text: str) -> str | None:
     return None
 
 
+_ICML_CENTER_SPLIT = re.compile(r"(?:\\quad|\\\\)")
+
+
+def _icml_center_authors(text: str) -> tuple[str, ...]:
+    if not _command_values(text, "icmltitle"):
+        return ()
+    marker = "\\textbf{"
+    start = text.find(marker)
+    if start < 0:
+        return ()
+    block = _braced_content(text, start + len(marker) - 1)
+    if block is None:
+        return ()
+    names: list[str] = []
+    for part in _ICML_CENTER_SPLIT.split(block):
+        collapsed = _collapse_tex_line(part)
+        collapsed = re.sub(r"^\\textbf\{|\}$", "", collapsed).strip()
+        collapsed = re.sub(r"\\vspace\s*\{[^}]*\}?\s*$", "", collapsed).strip()
+        if _usable_author(collapsed) and "$^" in collapsed:
+            names.append(collapsed)
+    return tuple(names)
+
+
 def _declared_authors(text: str) -> tuple[str, ...]:
     specialized: list[str] = []
     aistats = _command_values(text, "aistatsauthor")
@@ -384,6 +433,7 @@ def _declared_authors(text: str) -> tuple[str, ...]:
         if _usable_author(value)
     )
     specialized.extend(_jmlr_names(text))
+    specialized.extend(_icml_center_authors(text))
     if specialized:
         return tuple(specialized)
     return tuple(

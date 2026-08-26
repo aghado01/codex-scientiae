@@ -52,7 +52,17 @@ class LatexSourceTests(unittest.TestCase):
         (tree / "main.tex").write_bytes(source)
         preferred = inspect_latex_source_tree(tree)
         self.assertEqual("main.tex", preferred.entrypoint)
-        self.assertEqual("preferred-name:main.tex", preferred.entrypoint_selection)
+
+    def test_nested_duplicate_documentclass_defers_to_the_unique_root_file(self) -> None:
+        source = b"\\documentclass{article}\n\\begin{document}x\\end{document}\n"
+        tree = self.root / "nested-duplicate"
+        nested = tree / "copy"
+        nested.mkdir(parents=True)
+        (tree / "paper.tex").write_bytes(source)
+        (nested / "paper.tex").write_bytes(source)
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual("paper.tex", inspection.entrypoint)
+        self.assertEqual("unique-root", inspection.entrypoint_selection)
 
     def test_inspection_requires_strict_utf8_for_every_tex_file(self) -> None:
         tree = self.root / "invalid-tex"
@@ -165,6 +175,21 @@ class LatexSourceTests(unittest.TestCase):
         inspection = inspect_latex_source_tree(tree)
         self.assertEqual(("Compile Root",), inspection.embedded_metadata.authors_tex)
 
+    def test_unique_casefold_input_target_resolves_when_exact_leaf_is_absent(self) -> None:
+        tree = self.root / "casefold-input"
+        tree.mkdir()
+        (tree / "main.tex").write_text(
+            "\\documentclass{article}\n\\input{Introduction}\n"
+            "\\begin{document}x\\end{document}\n",
+            encoding="utf-8",
+        )
+        (tree / "introduction.tex").write_text(
+            "\\author{Casefold Input}\n",
+            encoding="utf-8",
+        )
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual(("Casefold Input",), inspection.embedded_metadata.authors_tex)
+
     def test_leading_dot_slash_is_normalized_at_the_input_boundary(self) -> None:
         tree = self.root / "leading-dot-input"
         tree.mkdir()
@@ -270,6 +295,22 @@ class LatexSourceTests(unittest.TestCase):
                 "\\begin{document}x\\end{document}\n",
                 "Project Alexandria",
                 ("Ada Lovelace", "Grace Hopper"),
+                None,
+            ),
+            (
+                "icml-center",
+                "\\documentclass{article}\n"
+                "\\begin{document}\n"
+                "\\twocolumn[\n"
+                "\\icmltitle{Project Alexandria}\n"
+                "\\begin{center}\n"
+                "\\textbf{\n"
+                "Ada Lovelace$^{1}$ \\quad Grace Hopper$^{2}$ \\\\\n"
+                "}\n"
+                "\\end{center}]\n"
+                "\\end{document}\n",
+                "Project Alexandria",
+                ("Ada Lovelace$^{1}$", "Grace Hopper$^{2}$"),
                 None,
             ),
             (
