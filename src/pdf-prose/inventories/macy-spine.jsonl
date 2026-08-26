@@ -1,6 +1,0 @@
-{"id":"guillemet-open","pattern":"«","kind":"guillemet-open","source":"macy-spine","level":"Character","scope":"WholeMaster"}
-{"id":"guillemet-close","pattern":"»","kind":"guillemet-close","source":"macy-spine","level":"Character","scope":"WholeMaster"}
-{"id":"page-marker","pattern":"\\[\\d+\\]","kind":"page-marker","source":"macy-spine","level":"Character","scope":"WholeMaster"}
-{"id":"figure-cue","pattern":"(?:Figure|Fig\\.|FIGURE)\\s+\\d+","kind":"figure-cue","source":"macy-spine","level":"Character","scope":"WholeMaster"}
-{"id":"float-hole","pattern":"\uFFFC","kind":"float-hole","source":"macy-spine","level":"Character","scope":"WholeMaster"}
-{"id":"speaker-start","pattern":"\\b(?:Pitts|Shannon|Teuber|McCulloch|Savage|Wiener|Bigelow|Hutchinson|Mead|Bateson|MacKay|Licklider):","kind":"speaker-start","source":"macy-spine","level":"Character","scope":"WholeMaster"}
