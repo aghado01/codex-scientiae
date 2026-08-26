@@ -133,19 +133,27 @@ in binding coverage, not a change in the corpus.
    test for the first artifact that is supposed to *be* the document, and a human can adjudicate
    it in under a minute.
 
-## Open question this surfaces
+## Ruled during drafting — T20
 
-`WalkNode.section.title` is `ContentPart[]`, and titles carry markup — `\emph`, inline math,
-`\ref`. Titles therefore inherit the hole discipline recursively. Cheapest ruling: titles use the
-same anchor vocabulary as body prose, no new machinery. Needs an owner ruling or an explicit
-deferral before emission.
+**Section titles inherit the hole discipline recursively** (owner ruling, 2026-08-26; recorded as
+T20 in [decisions.md](../planning/decisions.md)).
+
+`WalkNode.section.title` is `ContentPart[]` and titles carry markup — `\emph`, inline math,
+`\ref`. Title content therefore folds under the same rules as body prose and admits the same
+anchor vocabulary. No separate title machinery: a title containing an unresolved invocation
+carries a hole anchor exactly as a paragraph would, and its UTF-16 length counts toward the hole
+fraction. Titles are also inside the coverage ledger, so a dropped title cannot pass silently
+either.
 
 ## Provenance
 
 Sketched in session with the owner, 2026-08-26, from a reading of the landed B-wave contracts.
-Companion context: the pdf-prose pilot (added `9d8a28d9`, since removed from the tree) was an
-independent reach for the same object from the PDF side — contiguous prose in reading order with
-non-prose anchored out. Its disposable doccer witness demonstrated the anchored-hole discipline
-this brief adopts for unresolved invocations: each float collapsed to a single `U+FFFC` occupying
-one code unit, so a non-text object still held coordinates in the spine. Recoverable at
-`git show 9d8a28d9:src/pdf-prose/witness-doccer-spine.ps1` if the mechanism is wanted.
+Companion context: the pdf-prose pilot (added `9d8a28d9`) was an independent reach for the same
+object from the PDF side — contiguous prose in reading order with non-prose anchored out. Its
+disposable doccer witness demonstrated the anchored-hole discipline this brief adopts for
+unresolved invocations: each float collapsed to a single `U+FFFC` occupying one code unit, so a
+non-text object still held coordinates in the spine.
+
+The pilot has been evicted from the tree to `graveyard/codex-scientiae/src/pdf-prose` (WIP —
+residue cleanup outstanding). Also recoverable at
+`git show 9d8a28d9:src/pdf-prose/witness-doccer-spine.ps1`.
