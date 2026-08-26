@@ -1,0 +1,95 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.16753v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.16753v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Mathematics in the age of AI",
+      "authors": [
+        "Terence Tao"
+      ],
+      "abstract": "An essay, based on a public lecture delivered at the 2026 International Congress of Mathematicians, on how the mathematical community might respond to the arrival of artificial intelligence tools that are capable of performing research-level mathematical tasks. Rather than debating the capabilities of such tools, we condition on the hypothesis that these capabilities will arrive, and examine instead a question that is orthogonal to it: what the goals and values of mathematical research actually are. The problem-solving component of mathematics is used as a case study.",
+      "doi": null,
+      "arxiv_id": "2608.16753v1",
+      "published": "2026-08-17T15:59:47Z",
+      "updated": "2026-08-17T15:59:47Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.16753v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.16753v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.HO"
+      ],
+      "external_ids": {
+        "arxiv": "2608.16753v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.16753v1",
+          "url": "https://arxiv.org/abs/2608.16753v1",
+          "doi": null,
+          "arxiv_id": "2608.16753v1",
+          "published": "2026-08-17T15:59:47Z",
+          "updated": "2026-08-17T15:59:47Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.16753v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-26T03:24:40.479370Z",
+      "sha256": "27e51bb6c62a4d1fb2a0d16adca2bcfd7f2a42596f285b38413195a1902fceda",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvOEM1eS9mRmNxZFFRTE93RlU5c3pCWmpYcm9JPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4xNjc1M3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI2VDAzOjI0OjQwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjE2NzUzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xNjc1M3YxPC9pZD4KICAgIDx0aXRsZT5NYXRoZW1hdGljcyBpbiB0aGUgYWdlIG9mIEFJPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDgtMTdUMTU6NTk6NDdaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDguMTY3NTN2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDguMTY3NTN2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkFuIGVzc2F5LCBiYXNlZCBvbiBhIHB1YmxpYyBsZWN0dXJlIGRlbGl2ZXJlZCBhdCB0aGUgMjAyNiBJbnRlcm5hdGlvbmFsIENvbmdyZXNzIG9mIE1hdGhlbWF0aWNpYW5zLCBvbiBob3cgdGhlIG1hdGhlbWF0aWNhbCBjb21tdW5pdHkgbWlnaHQgcmVzcG9uZCB0byB0aGUgYXJyaXZhbCBvZiBhcnRpZmljaWFsIGludGVsbGlnZW5jZSB0b29scyB0aGF0IGFyZSBjYXBhYmxlIG9mIHBlcmZvcm1pbmcgcmVzZWFyY2gtbGV2ZWwgbWF0aGVtYXRpY2FsIHRhc2tzLiBSYXRoZXIgdGhhbiBkZWJhdGluZyB0aGUgY2FwYWJpbGl0aWVzIG9mIHN1Y2ggdG9vbHMsIHdlIGNvbmRpdGlvbiBvbiB0aGUgaHlwb3RoZXNpcyB0aGF0IHRoZXNlIGNhcGFiaWxpdGllcyB3aWxsIGFycml2ZSwgYW5kIGV4YW1pbmUgaW5zdGVhZCBhIHF1ZXN0aW9uIHRoYXQgaXMgb3J0aG9nb25hbCB0byBpdDogd2hhdCB0aGUgZ29hbHMgYW5kIHZhbHVlcyBvZiBtYXRoZW1hdGljYWwgcmVzZWFyY2ggYWN0dWFsbHkgYXJlLiBUaGUgcHJvYmxlbS1zb2x2aW5nIGNvbXBvbmVudCBvZiBtYXRoZW1hdGljcyBpcyB1c2VkIGFzIGEgY2FzZSBzdHVkeS48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0ibWF0aC5ITyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA4LTE3VDE1OjU5OjQ3WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+MTIgcGFnZXMsIGZvdXIgZmlndXJlcy4gU3VibWl0dGVkIHRvIHRoZSBQcm9jZWVkaW5ncyBvZiB0aGUgSUNNIDIwMjY8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJtYXRoLkhPIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UZXJlbmNlIFRhbzwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Mathematics in the age of AI",
+    "authors": [
+      "Terence Tao"
+    ],
+    "abstract": "An essay, based on a public lecture delivered at the 2026 International Congress of Mathematicians, on how the mathematical community might respond to the arrival of artificial intelligence tools that are capable of performing research-level mathematical tasks. Rather than debating the capabilities of such tools, we condition on the hypothesis that these capabilities will arrive, and examine instead a question that is orthogonal to it: what the goals and values of mathematical research actually are. The problem-solving component of mathematics is used as a case study.",
+    "identifiers": {
+      "arxiv": "2608.16753",
+      "arxiv_versioned": "2608.16753v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.16753v1"
+      }
+    },
+    "categories": [
+      "math.HO"
+    ],
+    "concepts": [],
+    "primary_category": "math.HO",
+    "published": "2026-08-17T15:59:47Z",
+    "updated": "2026-08-17T15:59:47Z"
+  }
+}
