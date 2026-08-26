@@ -2,6 +2,28 @@
 
 Newest first. Evidence pointers are to commits, discussion docs, and artifact runs.
 
+- **2026-08-26 — walk projection landed, `texdig-census/0.4`** (`081034f1`,
+  [brief](../briefs/walk-projection-prose-spine-20260826_100238.md)): W1–W3 as a pure projection
+  over the landed B-wave stores — no expansion, no binding work, no new scan. `compile/walk.ts`
+  folds `SourceOccurrence` reading order, `InvocationOccurrence.binding` hole locations, and
+  existing census roles into `section | paragraph | anchor` plus minimal zone records. Two design
+  errors caught by reading the output rather than the plan: the preamble was laundering
+  `\documentclass`/`\usepackage`/`\newcommand` arguments into the spine (walk now opens at
+  begin-document), and invocations were consuming only their token, so macro arguments read as
+  prose (now consume the binding-dependent hull; generic-environment fences consumed, interiors
+  keep flowing). Hole = a zone carrying `unresolved`; a bound macro-site is known-but-unexpanded,
+  not a hole. Walk ledger tiles the entered BODY extent exactly. Version bumped because the
+  emitted surface changed and `texdig-summary-v03` pins it with `const`; every historical `$id`
+  untouched, the nine 0.3 row shapes unchanged. New schemas enforce referential TYPING via
+  id-grammar patterns; referential EXISTENCE asserted in Pester. Verified 146/146 `tests/TeXdig`
+  (13 new, incl. two-run byte determinism on `walk.jsonl`/`zones.jsonl`) and 263 passed / 3
+  skipped across `tests/jsonl_engine`.
+- **2026-08-26 — T20 ruled** (`998ead46`): section titles inherit the walk's hole discipline
+  recursively; same anchor vocabulary as body prose, inside the same ledger.
+- **2026-08-26 — Cut-2 resequenced** (`aa58f28e`): `walk` pulled ahead of `macros`/`pointers`/
+  `zones`; the dependency on the macro tier was false. C-waves reframed as hole-filling with hole
+  fraction as the acceptance measure.
+
 - **2026-08-13 — planning canon minted** (this tier): decisions/roadmap/ledger seeded from the
   0.2/0.3 remediation arc; Sol-plan decisions restated for owner re-ruling.
 - **2026-08-13 — runstamp convention settled** (`7816325`): owner ruled `YYYYMMDD_HHmmss[_NN]`;

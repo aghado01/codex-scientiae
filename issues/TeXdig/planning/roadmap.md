@@ -32,36 +32,29 @@ Ordering within a phase is the current recommendation, not a contract.
 - Mis-stamped `artifacts/test-runs/` directory cleanup (owner; T13).
 - Keep `src/TeXdig/README.md` agreeing with this canon as waves land.
 
-## Phase: walk projection — the prose spine (pulled ahead of Cut 2)
+## Phase: walk follow-ons (W1–W3 landed `081034f1`; see [ledger](ledger.md))
 
-Resequenced 2026-08-26; sketch in
-[the walk brief](../briefs/walk-projection-prose-spine-20260826_100238.md).
+The spine emits. What remains is what landing it exposed:
 
-`walk` sat fourth in the Cut-2 order, behind `macros` → `pointers` → `zones`. That was a false
-dependency. The spine is a **pure projection over landed B-wave stores**: `SourceOccurrence`
-`enterSeq`/`exitSeq` supplies reading order across includes (B1), `InvocationOccurrence`
-`binding.state` supplies located holes (B3), and the census already emits the `paragraph-break`,
-`section`, `text-run`, `float`, `verbatim` and `include-directive` roles the fold consumes. No
-expansion, no binding work, no new scan.
+1. **Unbound invocations leak their arguments into the spine.** The walk consumes an invocation's
+   binding-dependent hull, so an unbound name has a token-only hull and its argument text reads as
+   prose (`\title{...}`, `\begin{lemma}[Key Lemma]`, `\begin{flushright}` in `mini_article`).
+   This is not fixable in the walk: whether argument text is prose is exactly what binding decides.
+   It resolves as binding coverage improves, which makes it **direct evidence for T15's priority**
+   rather than a separate defect. Until then, hole fraction *understates* what is unknown.
+2. **Reading test on a real paper**, not just `mini_article`. Run the bounded gauntlet and read the
+   spine of a Voroninski or kisungyou deposit end to end.
+3. **Batch deployment.** `Get-TeXdigBatchJob` already carries the 0.4 store surface and its tests
+   pass; the walk needs no adapter change. Deploy the gauntlet through batch-executor and record
+   hole fraction per document as the first corpus-wide baseline — it is the series that must
+   fall monotonically as the C-waves land.
+4. **Walk-level diagnostics.** The walk currently emits no diagnostic codes of its own. Whether a
+   leaked-argument or unentered-source condition should fire one is open, and rides the close-list's
+   fire-or-strike sweep rather than preceding it.
 
-The point of the reorder is that everything downstream then **fills holes in a document that
-already exists**, instead of assembling a document out of evidence at the end.
-
-- W1: emit `walk.jsonl` (`section` | `paragraph` | `anchor`) with the four-way anchor taxonomy —
-  `zone` (permanent) vs the three hole kinds `unbound` / `indeterminate` / `unentered-source`.
-- W2: mint minimal `zone` records (`id`, `kind`, `span`, `text` only) so anchors have targets
-  while the zones tier stays deferred. The `zone:` id grammar is stable under T2; the record grows.
-- W3: extend the coverage ledger one tier up — every UTF-16 unit of every entered source is in a
-  paragraph, in a section title (T20), inside an anchored zone's span, or explicit residue.
-  Emit **hole fraction** per document into `summary.json`.
-
-Prerequisite: close-list item 3 (coverage honesty) lands first, so the walk ledger is not
-calibrated against a known-distorted one. T15, the dead-code sweep, T18, gauntlet shape,
-determinism proof and schema hygiene do **not** block W1–W3 — they remain release-gate work and
-the walk landing does not discharge them.
-
-Acceptance is the reading test: concatenate `paragraph` content in `seq` order on `mini_article`
-and read it. If it reads as continuous prose, the projection works.
+Close-list item 3 (coverage honesty) remains worth landing before the walk ledger is trusted as a
+baseline: the walk ledger is computed independently of `census/coverage.ts`, so it is not distorted
+by the clamp, but cross-checking the two is not meaningful until the clamp is gone.
 
 ## Phase: C-waves — elaboration (hole-filling, post-walk)
 
