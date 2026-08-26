@@ -48,7 +48,16 @@ For every new or changed test file:
   reset `$LASTEXITCODE` so it cannot contaminate the runner result.
 - Do not add per-file manifests, sidecars, workload profiles, scheduler locks, or custom batch logic.
 
-At minimum, verify the file through the public batch entrypoint (the batch run directory must already exist):
+At minimum, verify the file through the public batch entrypoint. Omit `-RunDirectory` and the run
+mints `artifacts/test-runs/YYYYMMDD_HHmmss[_NN]` for itself and points `TEMP`/`TMP`/`TMPDIR` at
+`{run}/temp`, so the artifact boundary is satisfied without setting three environment variables:
+
+```pwsh
+pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 -MaxWorkers 1
+```
+
+Supply `-RunDirectory` when you own the root — it must already exist, and nothing about the
+environment is touched:
 
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 `
@@ -154,9 +163,14 @@ addresses, and native XML. Both lanes share one worker budget, cancellation path
 order.
 
 Caller-owned repository run directories belong under
-`artifacts/test-runs/YYYYMMDD_HHmmss[_NN]`. The repository `.codex/` tree is client-owned state and is not
-a test-run or scratch destination. Direct successful runs remove their caller-owned root after accepting
-the outcome; retained failed-run evidence remains under the same `artifacts/test-runs/` tier.
+`artifacts/test-runs/YYYYMMDD_HHmmss[_NN]`. `New-TestRunDir` in `src/logistics/run-paths.ps1` is the
+minting authority for that stamp and `tests/parallel.ps1` calls it when `-RunDirectory` is omitted; do
+not format a stamp by hand. `_NN` is a same-second collision sequence, not a label — a run directory
+never carries a description. Its sibling `New-ModuleRunDir` mints the other runstamped tier,
+`artifacts/{module}/runs/{stamp}/{slug}/`, from the same format. The repository `.codex/` tree is
+client-owned state and is not a test-run or scratch destination. Direct successful runs remove their
+caller-owned root after accepting the outcome; retained failed-run evidence remains under the same
+`artifacts/test-runs/` tier.
 
 One concise Information-stream line reports total, succeeded, failed, timed-out, cancelled,
 infrastructure-error, and duration values. The shell writes the exact in-memory executor record to the
