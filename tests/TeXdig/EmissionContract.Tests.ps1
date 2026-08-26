@@ -13,7 +13,9 @@ BeforeAll {
         'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
         'bindings.jsonl' = 'codex-scientiae/texdig-bindings/0.3'
         'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
-        'summary.json' = 'codex-scientiae/texdig-summary/0.3'
+        'walk.jsonl' = 'codex-scientiae/texdig-walk/0.4'
+        'zones.jsonl' = 'codex-scientiae/texdig-zones/0.4'
+        'summary.json' = 'codex-scientiae/texdig-summary/0.4'
     }
     $script:ExpectedEmittedStores = @(
         'sources.jsonl'
@@ -24,12 +26,12 @@ BeforeAll {
         'claims.jsonl'
         'coverage.json'
         'diagnostics.jsonl'
+        'walk.jsonl'
+        'zones.jsonl'
         'summary.json'
     )
     $script:ExpectedDeferredStores = @(
         'expansion.jsonl'
-        'walk.jsonl'
-        'zones.jsonl'
         'macros.jsonl'
         'references.jsonl'
         'pointers.jsonl'
@@ -50,17 +52,21 @@ BeforeAll {
 
 Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
     Context 'Versioned summary schemas' {
-        It 'preserves 0.2 and publishes the exact 0.3 surface' {
+        It 'preserves 0.2 and 0.3 history and publishes the exact 0.4 surface' {
             $schemaRoot = Join-Path $script:RepositoryRoot 'src/jsonl_engine/schemas'
             $prior = Get-Content -LiteralPath (Join-Path $schemaRoot 'texdig-summary.schema.json') `
                 -Raw | ConvertFrom-Json
-            $current = Get-Content -LiteralPath (Join-Path $schemaRoot `
+            $historic = Get-Content -LiteralPath (Join-Path $schemaRoot `
                 'texdig-summary-v03.schema.json') -Raw | ConvertFrom-Json
+            $current = Get-Content -LiteralPath (Join-Path $schemaRoot `
+                'texdig-summary-v04.schema.json') -Raw | ConvertFrom-Json
 
             $prior.'$id' | Should -BeExactly 'codex-scientiae/texdig-summary/0.2'
             $prior.properties.schema.const | Should -BeExactly 'texdig-census/0.2'
-            $current.'$id' | Should -BeExactly 'codex-scientiae/texdig-summary/0.3'
-            $current.properties.schema.const | Should -BeExactly 'texdig-census/0.3'
+            $historic.'$id' | Should -BeExactly 'codex-scientiae/texdig-summary/0.3'
+            $historic.properties.schema.const | Should -BeExactly 'texdig-census/0.3'
+            $current.'$id' | Should -BeExactly 'codex-scientiae/texdig-summary/0.4'
+            $current.properties.schema.const | Should -BeExactly 'texdig-census/0.4'
             (@($current.properties.stores.properties.emitted.const) -join '|') |
                 Should -BeExactly ($script:ExpectedEmittedStores -join '|')
             (@($current.properties.stores.properties.deferred.const) -join '|') |
@@ -99,7 +105,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             Test-Path -LiteralPath $summaryPath -PathType Leaf | Should -BeTrue
 
             $summary = Get-Content -LiteralPath $summaryPath -Raw | ConvertFrom-Json
-            $summary.schema | Should -BeExactly 'texdig-census/0.3'
+            $summary.schema | Should -BeExactly 'texdig-census/0.4'
             $summary.runtime.node | Should -BeExactly $script:ExpectedNodeVersion
             @($summary.storeSchemas.PSObject.Properties).Count |
                 Should -Be $script:ExpectedStoreSchemas.Count
@@ -173,7 +179,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json', 'sources.jsonl') }
@@ -190,7 +196,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -207,7 +213,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'another_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -224,7 +230,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = 'v0.0.0' }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -258,7 +264,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             New-Item -ItemType Directory -Path $outDir -Force | Out-Null
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 stores = @{ emitted = @('summary.json') }
             } | ConvertTo-Json -Depth 4 |
@@ -279,7 +285,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             $storeSchemas['claims.jsonl'] = 'codex-scientiae/texdig-claims/0.1'
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $storeSchemas
                 stores = @{ emitted = @('summary.json') }
@@ -300,7 +306,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             Set-Content -LiteralPath (Join-Path $outDir 'extra.jsonl') -Value '{}'
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{ emitted = @($script:ExpectedEmittedStores) + @('extra.jsonl') }
@@ -320,7 +326,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             }
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{
@@ -345,7 +351,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             $permuted[1], $permuted[2] = $permuted[2], $permuted[1]
             @{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{
@@ -371,7 +377,7 @@ Describe 'TeXdig runner emission contract' -Tag 'TeXdig', 'EmissionContract' {
             }
             $summary = [ordered]@{
                 slug = 'mini_article'
-                schema = 'texdig-census/0.3'
+                schema = 'texdig-census/0.4'
                 runtime = @{ node = $script:ExpectedNodeVersion }
                 storeSchemas = $script:ExpectedStoreSchemas
                 stores = @{

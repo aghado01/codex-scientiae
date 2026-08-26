@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-walk/0.4",
+  "title": "TeXdig 0.4 walk node",
+  "description": "One row of walk.jsonl: the traversal-serialized prose spine. Sections and paragraphs carry content; an anchor marks a placement where a zone interrupts the prose flow. Content is stored ONLY in the array form (text runs alternating with verbatim zone refs). Referential TYPING is enforced here by id-grammar patterns; referential EXISTENCE (every ref resolving to a zone in the same bundle) is not expressible in JSON Schema and is checked by the emitter.",
+  "type": "object",
+  "required": ["id", "seq", "kind", "span", "includeChain"],
+  "properties": {
+    "id": { "$ref": "#/$defs/walkId" },
+    "seq": { "type": "integer", "minimum": 0 },
+    "kind": { "enum": ["section", "paragraph", "anchor"] },
+    "span": { "$ref": "#/$defs/span" },
+    "includeChain": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "command": { "type": "string", "minLength": 1 },
+    "level": { "type": "integer", "minimum": 0 },
+    "title": { "$ref": "#/$defs/content" },
+    "content": { "$ref": "#/$defs/content" },
+    "zone": { "$ref": "#/$defs/zoneId" }
+  },
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "title": "section",
+      "properties": { "kind": { "const": "section" } },
+      "required": ["command", "level", "title"],
+      "not": { "anyOf": [{ "required": ["content"] }, { "required": ["zone"] }] }
+    },
+    {
+      "title": "paragraph",
+      "properties": { "kind": { "const": "paragraph" } },
+      "required": ["content"],
+      "not": { "anyOf": [{ "required": ["command"] }, { "required": ["level"] }, { "required": ["title"] }, { "required": ["zone"] }] }
+    },
+    {
+      "title": "anchor",
+      "properties": { "kind": { "const": "anchor" } },
+      "required": ["zone"],
+      "not": { "anyOf": [{ "required": ["command"] }, { "required": ["level"] }, { "required": ["title"] }, { "required": ["content"] }] }
+    }
+  ],
+  "$defs": {
+    "walkId": { "type": "string", "pattern": "^walk:[0-9a-f]{64}$" },
+    "zoneId": { "type": "string", "pattern": "^zone:[0-9a-f]{64}$" },
+    "span": {
+      "type": "object",
+      "required": ["sourceId", "startUtf16", "endUtf16"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "startUtf16": { "type": "integer", "minimum": 0 },
+        "endUtf16": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "content": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["text"],
+            "properties": { "text": { "type": "string" } },
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["ref"],
+            "properties": { "ref": { "$ref": "#/$defs/zoneId" } },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}

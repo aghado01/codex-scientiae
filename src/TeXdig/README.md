@@ -62,7 +62,7 @@ results are attributed to the verified fingerprint; a manifest value alone is no
 ## Emitted stores
 
 One runstamped container per document — one document per batch-executor job, the job container is
-the document container (`Writes` root). UTF-8 without BOM, LF rows. TeXdig 0.3 emits exactly nine
+the document container (`Writes` root). UTF-8 without BOM, LF rows. TeXdig 0.4 emits exactly eleven
 stores:
 
 | Store | Schema | Content |
@@ -75,19 +75,20 @@ stores:
 | `claims.jsonl` | `codex-scientiae/texdig-claims/0.2` | Physical pillar claims |
 | `coverage.json` | `codex-scientiae/texdig-coverage/0.2` | Per-source UTF-16 coverage accounting |
 | `diagnostics.jsonl` | `codex-scientiae/texdig-diagnostics/0.3` | Registered census and execution diagnostics |
-| `summary.json` | `codex-scientiae/texdig-summary/0.3` | Runtime, fingerprint, exact store identities, counts, and coverage totals |
+| `walk.jsonl` | `codex-scientiae/texdig-walk/0.4` | Traversal-serialized prose spine: sections, paragraphs, and placement anchors in reading order; content as text-run/zone-ref arrays |
+| `zones.jsonl` | `codex-scientiae/texdig-zones/0.4` | Minimal zone records the walk mints: id, kind, span, exact slice, and an `unresolved` verdict where content is not knowable. Cut 2 GROWS these ids, it does not create new ones |
+| `summary.json` | `codex-scientiae/texdig-summary/0.4` | Runtime, fingerprint, exact store identities, counts, and coverage totals |
 
 The retained 0.2 schemas remain immutable historical contracts. The unchanged source, claim, and
-coverage row shapes therefore retain their 0.2 schema identities inside a 0.3 bundle. The summary
+coverage row shapes therefore retain their 0.2 schema identities inside a 0.4 bundle, and the nine
+0.3 row shapes are unchanged by the walk. The summary
 records `occurrenceCount`, `bindingRowCount`, and `invocationCount` beside the physical census counts.
 
-Eight stores remain explicitly deferred in 0.3:
+Six stores remain explicitly deferred in 0.4:
 
 | Store | Content |
 | --- | --- |
 | `expansion.jsonl` | C-wave, resource-bounded expansion results and origin chains |
-| `walk.jsonl` | Traversal-serialized structure: sections, paragraphs, anchors in reading order; content as text-run/ref arrays; `includeChain` context |
-| `zones.jsonl` | Compiled closure-sealed units (math, diagrams, verbatim, floats, theorem-like): slice, closure, per-name binding verdicts, isolability, validation |
 | `macros.jsonl` | Physical declaration/specimen store: exact signature, normalized argument spec, body evidence, lexical `nameRefs`, body fingerprint |
 | `references.jsonl` | Canonical reference items: appearance-normalized ordinal + basis, source label register, per-field provenance |
 | `pointers.jsonl` | Label declarations and pointer sites (pointer-hood derived transitively from definition bodies, never a fixed vocabulary), resolution edges |
@@ -113,7 +114,7 @@ not materialize `macros.jsonl` or expand a macro body. Expansion remains a C-wav
 
 ## Versioning
 
-`texdig-census/0.3` is a source-regenerated contract. `0.1` and `0.2` bundles remain immutable
+`texdig-census/0.4` is a source-regenerated contract. `0.1`, `0.2`, and `0.3` bundles remain immutable
 historical evidence. No JSONL-only conversion can recover omitted empty arguments, exact raw
 signatures, occurrence identity, binding history, or rejected local-frame coordinates.
 

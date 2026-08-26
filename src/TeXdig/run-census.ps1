@@ -37,7 +37,7 @@ $script:ArticleSearchRoots = @(
     (Join-Path $script:RepoRoot 'ingestion/inventory')
 )
 
-# Exact publication surface for texdig-census/0.3. The PowerShell runner is a
+# Exact publication surface for texdig-census/0.4. The PowerShell runner is a
 # process boundary, so it validates the worker's declared store identities
 # instead of treating an umbrella schema match as sufficient.
 $script:TeXdigCensusStoreSchemas = [ordered]@{
@@ -49,7 +49,9 @@ $script:TeXdigCensusStoreSchemas = [ordered]@{
     'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
     'bindings.jsonl' = 'codex-scientiae/texdig-bindings/0.3'
     'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
-    'summary.json' = 'codex-scientiae/texdig-summary/0.3'
+    'walk.jsonl' = 'codex-scientiae/texdig-walk/0.4'
+    'zones.jsonl' = 'codex-scientiae/texdig-zones/0.4'
+    'summary.json' = 'codex-scientiae/texdig-summary/0.4'
 }
 $script:TeXdigCensusEmittedStores = @(
     'sources.jsonl'
@@ -60,12 +62,12 @@ $script:TeXdigCensusEmittedStores = @(
     'claims.jsonl'
     'coverage.json'
     'diagnostics.jsonl'
+    'walk.jsonl'
+    'zones.jsonl'
     'summary.json'
 )
 $script:TeXdigCensusDeferredStores = @(
     'expansion.jsonl'
-    'walk.jsonl'
-    'zones.jsonl'
     'macros.jsonl'
     'references.jsonl'
     'pointers.jsonl'
@@ -254,7 +256,7 @@ function Read-TeXdigPublishedSummary {
     if ([string] $summary.slug -cne $ExpectedSlug) {
         throw "TeXdig: published summary slug '$($summary.slug)' does not match '$ExpectedSlug' in '$RunDirectory'"
     }
-    if ([string] $summary.schema -cne 'texdig-census/0.3') {
+    if ([string] $summary.schema -cne 'texdig-census/0.4') {
         throw "TeXdig: published summary has unsupported schema '$($summary.schema)' in '$RunDirectory'"
     }
     $runtimeProperty = Find-TeXdigExactJsonProperty -InputObject $summary -Name 'runtime'

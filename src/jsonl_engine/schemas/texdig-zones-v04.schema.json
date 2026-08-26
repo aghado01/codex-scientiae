@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/texdig-zones/0.4",
+  "title": "TeXdig 0.4 zone stub",
+  "description": "One row of zones.jsonl as the walk projection mints it: id, kind, span, and the exact source slice. The Cut-2 zones tier GROWS these same zone: ids with closure, names, isolable, and validation — it does not create new ones. Presence of `unresolved` is the definition of a HOLE: a macro-site without it is a bound site awaiting expansion, not a gap in knowledge.",
+  "type": "object",
+  "required": ["id", "seq", "kind", "span", "text"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^zone:[0-9a-f]{64}$" },
+    "seq": { "type": "integer", "minimum": 0 },
+    "kind": {
+      "enum": [
+        "math-inline",
+        "math-display",
+        "diagram",
+        "verbatim",
+        "float",
+        "theorem-like",
+        "macro-site",
+        "unentered-source"
+      ]
+    },
+    "span": {
+      "type": "object",
+      "required": ["sourceId", "startUtf16", "endUtf16"],
+      "properties": {
+        "sourceId": { "type": "string", "minLength": 1 },
+        "startUtf16": { "type": "integer", "minimum": 0 },
+        "endUtf16": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "text": { "type": "string" },
+    "unresolved": {
+      "type": "object",
+      "required": ["reason"],
+      "properties": {
+        "reason": { "enum": ["unbound", "indeterminate", "deferred", "unentered-source"] },
+        "name": { "type": "string" },
+        "causeIds": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^bind:" }
+        },
+        "detail": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

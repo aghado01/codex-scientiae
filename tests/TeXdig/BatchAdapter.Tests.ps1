@@ -10,7 +10,9 @@ BeforeAll {
         'occurrences.jsonl' = 'codex-scientiae/texdig-occurrences/0.3'
         'bindings.jsonl' = 'codex-scientiae/texdig-bindings/0.3'
         'invocations.jsonl' = 'codex-scientiae/texdig-invocations/0.3'
-        'summary.json' = 'codex-scientiae/texdig-summary/0.3'
+        'walk.jsonl' = 'codex-scientiae/texdig-walk/0.4'
+        'zones.jsonl' = 'codex-scientiae/texdig-zones/0.4'
+        'summary.json' = 'codex-scientiae/texdig-summary/0.4'
     }
     $script:ExpectedEmittedStores = @(
         'sources.jsonl'
@@ -21,12 +23,12 @@ BeforeAll {
         'claims.jsonl'
         'coverage.json'
         'diagnostics.jsonl'
+        'walk.jsonl'
+        'zones.jsonl'
         'summary.json'
     )
     $script:ExpectedDeferredStores = @(
         'expansion.jsonl'
-        'walk.jsonl'
-        'zones.jsonl'
         'macros.jsonl'
         'references.jsonl'
         'pointers.jsonl'
@@ -84,7 +86,7 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
             $script:Jobs[0].Parameters.NodePath | Should -Be $script:Jobs[0].Metadata.NodePath
             Test-Path -LiteralPath $script:Jobs[0].Parameters.NodePath -PathType Leaf | Should -BeTrue
             $script:Jobs[0].Metadata.Slug | Should -Be "mini_article"
-            $script:Jobs[0].Metadata.StoreSchema | Should -Be "texdig-census/0.3"
+            $script:Jobs[0].Metadata.StoreSchema | Should -Be "texdig-census/0.4"
             $script:Jobs[0].Metadata.TreeSha256 | Should -Not -BeNullOrEmpty
             $script:Jobs[0].Metadata.ContainerContract | Should -Be "JobContainerIsDocumentContainer"
             $script:Jobs[0].EstimatedCost | Should -BeGreaterThan 1
@@ -134,7 +136,7 @@ Describe "TeXdig batch adapter" -Tag "TeXdig", "BatchAdapter" {
         It "produces the same census the direct runner produces" {
             $summary = Get-Content -Raw (Join-Path $script:JobDirectory "summary.json") | ConvertFrom-Json
             $summary.slug | Should -Be "mini_article"
-            $summary.schema | Should -Be "texdig-census/0.3"
+            $summary.schema | Should -Be "texdig-census/0.4"
             (@($summary.stores.emitted) -join '|') |
                 Should -BeExactly ($script:ExpectedEmittedStores -join '|')
             (@($summary.stores.deferred) -join '|') |

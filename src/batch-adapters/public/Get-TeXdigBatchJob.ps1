@@ -49,7 +49,7 @@ function Get-TeXdigBatchJob {
             Adapter = 'texdig-batch'
             AddressingContract = 'RunDirectory/texdig-jobs'
             ContainerContract = 'JobContainerIsDocumentContainer'
-            StoreSchema = 'texdig-census/0.3'
+            StoreSchema = 'texdig-census/0.4'
             Slug = $manifest.Slug
             RepositoryRelativePath = $relativePath
             ArticleDirectory = $articleDirectory

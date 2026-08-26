@@ -31,7 +31,10 @@ import type {
   InvocationOccurrence,
   ScopeFrame,
   SourceOccurrence,
+  WalkNode,
+  ZoneStub,
 } from "../core/contracts.ts";
+import type { WalkCoverage } from "../compile/walk.ts";
 import {
   CENSUS_SCHEMA_VERSION,
   CENSUS_DEFERRED_STORES,
@@ -56,6 +59,12 @@ export interface EmitBundle {
   occurrences: SourceOccurrence[];
   bindings: BindingRow[];
   invocations: InvocationOccurrence[];
+  /** Walk projection: the prose spine, seq-ordered. */
+  walk: WalkNode[];
+  /** Minimal zone records every anchor and inline ref points at. */
+  zones: ZoneStub[];
+  /** Walk-level ledger, one row per (root occurrence, source). */
+  walkCoverage: WalkCoverage[];
   claims: PillarClaim[];
   coverage: SourceCoverage[];
   diagnostics: Diagnostic[];
@@ -1663,7 +1672,19 @@ function writeBundle(bundle: EmitBundle, resolvedOutDir: string): CensusSummary 
   const diagContent = bundle.diagnostics.map(d => JSON.stringify(d)).join("\n") + (bundle.diagnostics.length > 0 ? "\n" : "");
   fs.writeFileSync(diagnosticsPath, diagContent, { encoding: "utf-8" });
 
-  // 9. summary.json
+  // 9. walk.jsonl
+  const walkPath = path.join(resolvedOutDir, "walk.jsonl");
+  const walkContent = bundle.walk.map(row => JSON.stringify(row)).join("\n")
+    + (bundle.walk.length > 0 ? "\n" : "");
+  fs.writeFileSync(walkPath, walkContent, { encoding: "utf-8" });
+
+  // 10. zones.jsonl
+  const zonesPath = path.join(resolvedOutDir, "zones.jsonl");
+  const zonesContent = bundle.zones.map(row => JSON.stringify(row)).join("\n")
+    + (bundle.zones.length > 0 ? "\n" : "");
+  fs.writeFileSync(zonesPath, zonesContent, { encoding: "utf-8" });
+
+  // 11. summary.json
   let totalUtf16 = 0;
   let claimedUtf16 = 0;
   let residueUtf16 = 0;
@@ -1691,6 +1712,31 @@ function writeBundle(bundle: EmitBundle, resolvedOutDir: string): CensusSummary 
     diagnosticCounts[d.severity] = (diagnosticCounts[d.severity] || 0) + 1;
   }
 
+  let walkEntered = 0;
+  let walkProse = 0;
+  let walkZone = 0;
+  let walkHole = 0;
+  let walkResidue = 0;
+  for (const row of bundle.walkCoverage) {
+    walkEntered += row.lengthUtf16;
+    walkProse += row.proseUtf16;
+    walkZone += row.zoneUtf16;
+    walkHole += row.holeUtf16;
+    walkResidue += row.residueUtf16;
+  }
+  let sectionCount = 0;
+  let paragraphCount = 0;
+  let anchorCount = 0;
+  for (const node of bundle.walk) {
+    if (node.kind === "section") sectionCount++;
+    else if (node.kind === "paragraph") paragraphCount++;
+    else anchorCount++;
+  }
+  let holeCount = 0;
+  for (const zone of bundle.zones) {
+    if (zone.unresolved) holeCount++;
+  }
+
   const summary: CensusSummary = {
     schema: CENSUS_SCHEMA_VERSION,
     slug: bundle.slug,
@@ -1706,6 +1752,8 @@ function writeBundle(bundle: EmitBundle, resolvedOutDir: string): CensusSummary 
         "claims.jsonl",
         "coverage.json",
         "diagnostics.jsonl",
+        "walk.jsonl",
+        "zones.jsonl",
         "summary.json",
       ],
       // Runtime-derived 0.1 stores are deliberately withdrawn until occurrence-
@@ -1726,6 +1774,19 @@ function writeBundle(bundle: EmitBundle, resolvedOutDir: string): CensusSummary 
       claimedUtf16,
       residueUtf16,
       residueSegments,
+    },
+    walk: {
+      sectionCount,
+      paragraphCount,
+      anchorCount,
+      zoneCount: bundle.zones.length,
+      holeCount,
+      enteredUtf16: walkEntered,
+      proseUtf16: walkProse,
+      zoneUtf16: walkZone,
+      holeUtf16: walkHole,
+      residueUtf16: walkResidue,
+      holeFraction: walkEntered === 0 ? 0 : walkHole / walkEntered,
     },
   };
 

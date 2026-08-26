@@ -10,9 +10,15 @@
  * stripping (unions and const objects, no enums/namespaces).
  */
 
-export const CENSUS_SCHEMA_VERSION = "texdig-census/0.3" as const;
+/**
+ * 0.4 adds the walk projection: `walk.jsonl` and the minimal `zones.jsonl`
+ * leave the deferred set. Row shapes of the nine 0.3 stores are unchanged, so
+ * their schema identities hold; `summary.json` moves because its store lists
+ * are pinned by `const` in the validator.
+ */
+export const CENSUS_SCHEMA_VERSION = "texdig-census/0.4" as const;
 
-/** Normative schema identities for every store emitted by the 0.3 census. */
+/** Normative schema identities for every store emitted by the census. */
 export const CENSUS_STORE_SCHEMAS = {
   "sources.jsonl": "codex-scientiae/texdig-sources/0.2",
   "entities.jsonl": "codex-scientiae/texdig-entities/0.3",
@@ -22,14 +28,14 @@ export const CENSUS_STORE_SCHEMAS = {
   "occurrences.jsonl": "codex-scientiae/texdig-occurrences/0.3",
   "bindings.jsonl": "codex-scientiae/texdig-bindings/0.3",
   "invocations.jsonl": "codex-scientiae/texdig-invocations/0.3",
-  "summary.json": "codex-scientiae/texdig-summary/0.3",
+  "walk.jsonl": "codex-scientiae/texdig-walk/0.4",
+  "zones.jsonl": "codex-scientiae/texdig-zones/0.4",
+  "summary.json": "codex-scientiae/texdig-summary/0.4",
 } as const;
 
-/** Contract-tier stores that 0.3 explicitly does not emit yet. */
+/** Contract-tier stores the census explicitly does not emit yet. */
 export const CENSUS_DEFERRED_STORES = [
   "expansion.jsonl",
-  "walk.jsonl",
-  "zones.jsonl",
   "macros.jsonl",
   "references.jsonl",
   "pointers.jsonl",
@@ -551,5 +557,24 @@ export interface CensusSummary {
     claimedUtf16: number;
     residueUtf16: number;
     residueSegments: number;
+  };
+  /**
+   * Walk-level ledger. `holeFraction` is the tracked quality signal: it must
+   * fall monotonically as the binding tier lands and never rise. A rise is a
+   * regression in binding coverage, not a change in the corpus.
+   */
+  walk: {
+    sectionCount: number;
+    paragraphCount: number;
+    anchorCount: number;
+    zoneCount: number;
+    /** Zones carrying an `unresolved` verdict. */
+    holeCount: number;
+    enteredUtf16: number;
+    proseUtf16: number;
+    zoneUtf16: number;
+    holeUtf16: number;
+    residueUtf16: number;
+    holeFraction: number;
   };
 }

@@ -26,6 +26,7 @@ import { buildUtensilsIndex, backfillLexicalOnly } from "../census/backfill-uten
 import { generatePillarClaims, type SpineRun } from "../census/claims.ts";
 import { computeSourceCoverage } from "../census/coverage.ts";
 import { emitCensusBundle } from "../census/emit.ts";
+import { projectWalk } from "../compile/walk.ts";
 import { compileExecution } from "../compile/execution.ts";
 import type {
   CensusEntity,
@@ -436,6 +437,16 @@ export async function runCensus(options: CliArgs) {
   });
   allDiagnostics.push(...execution.diagnostics);
 
+  // Walk projection: pure projection over the stores above. No expansion.
+  const walk = projectWalk({
+    entities: allEntities,
+    claims: allClaims,
+    occurrences: execution.occurrences,
+    invocations: execution.invocations,
+    sources: graph.sources,
+    rawContents: graph.rawContents,
+  });
+
   // Emit bundle (entrypoint reported with on-disk casing when it resolved)
   const summary = emitCensusBundle(
     {
@@ -447,6 +458,9 @@ export async function runCensus(options: CliArgs) {
       occurrences: execution.occurrences,
       bindings: execution.bindings,
       invocations: execution.invocations,
+      walk: walk.nodes,
+      zones: walk.zones,
+      walkCoverage: walk.coverage,
       claims: allClaims,
       coverage: allCoverage,
       diagnostics: allDiagnostics,
@@ -466,6 +480,9 @@ export async function runCensus(options: CliArgs) {
   console.log(`Claims: ${allClaims.length}`);
   console.log(`Coverage: claimed ${summary.coverage.claimedUtf16} / ${summary.coverage.totalUtf16} UTF-16 units (${summary.coverage.residueSegments} residue segments)`);
   console.log(`Diagnostics: ${allDiagnostics.length} total (${summary.diagnosticCounts.defect || 0} defects, ${summary.diagnosticCounts.warning || 0} warnings, ${summary.diagnosticCounts.info || 0} info)`);
+  console.log(`Walk: ${summary.walk.sectionCount} sections, ${summary.walk.paragraphCount} paragraphs, ${summary.walk.anchorCount} anchors, ${summary.walk.zoneCount} zones (${summary.walk.holeCount} holes)`);
+  console.log(`Walk coverage: prose ${summary.walk.proseUtf16} + zone ${summary.walk.zoneUtf16} + residue ${summary.walk.residueUtf16} / ${summary.walk.enteredUtf16} entered UTF-16 units`);
+  console.log(`Hole fraction: ${(summary.walk.holeFraction * 100).toFixed(2)}%`);
 
   return summary;
 }

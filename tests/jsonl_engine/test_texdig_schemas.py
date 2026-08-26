@@ -559,3 +559,155 @@ def test_texdig_invocation_argument_sources_are_correlated() -> None:
     }
     with pytest.raises(ValidationError):
         validator.validate(unbound_with_arguments)
+
+
+# ---------------------------------------------------------------------------
+# 0.4 — the walk projection. 0.2 and 0.3 above stay exactly as published; the
+# walk and the minimal zones leave the deferred set and summary moves with them.
+# ---------------------------------------------------------------------------
+
+V04_SCHEMAS = {
+    "texdig-walk-v04": "codex-scientiae/texdig-walk/0.4",
+    "texdig-zones-v04": "codex-scientiae/texdig-zones/0.4",
+    "texdig-summary-v04": "codex-scientiae/texdig-summary/0.4",
+}
+
+_WALK_ID = "walk:" + "a" * 64
+_ZONE_ID = "zone:" + "b" * 64
+
+
+def _v04_summary() -> dict[str, object]:
+    summary = _v03_summary()
+    summary["schema"] = "texdig-census/0.4"
+    stores = summary["stores"]
+    assert isinstance(stores, dict)
+    emitted = [s for s in stores["emitted"] if s != "summary.json"]
+    stores["emitted"] = emitted + ["walk.jsonl", "zones.jsonl", "summary.json"]
+    stores["deferred"] = [
+        s for s in stores["deferred"] if s not in ("walk.jsonl", "zones.jsonl")
+    ]
+    schemas = summary["storeSchemas"]
+    assert isinstance(schemas, dict)
+    schemas["walk.jsonl"] = V04_SCHEMAS["texdig-walk-v04"]
+    schemas["zones.jsonl"] = V04_SCHEMAS["texdig-zones-v04"]
+    schemas["summary.json"] = V04_SCHEMAS["texdig-summary-v04"]
+    summary["walk"] = {
+        "sectionCount": 1,
+        "paragraphCount": 2,
+        "anchorCount": 1,
+        "zoneCount": 3,
+        "holeCount": 1,
+        "enteredUtf16": 100,
+        "proseUtf16": 60,
+        "zoneUtf16": 30,
+        "holeUtf16": 10,
+        "residueUtf16": 10,
+        "holeFraction": 0.1,
+    }
+    return summary
+
+
+def _v04_specimens() -> dict[str, list[dict[str, object]]]:
+    return {
+        "texdig-walk-v04": [
+            {
+                "id": _WALK_ID,
+                "seq": 0,
+                "kind": "paragraph",
+                "content": [{"text": "prose "}, {"ref": _ZONE_ID}],
+                "span": _span(0, 20),
+                "includeChain": ["main.tex"],
+            }
+        ],
+        "texdig-zones-v04": [
+            {
+                "id": _ZONE_ID,
+                "seq": 1,
+                "kind": "macro-site",
+                "span": _span(6, 20),
+                "text": "\foo{bar}",
+                "unresolved": {"reason": "unbound", "name": "foo"},
+            }
+        ],
+        "texdig-summary-v04": [_v04_summary()],
+    }
+
+
+def test_texdig_v04_schemas_are_discoverable_under_unique_names() -> None:
+    catalog = SchemaCatalog()
+    for name, schema_id in V04_SCHEMAS.items():
+        assert catalog.has_schema(name)
+        assert catalog.get_schema(name)["$id"] == schema_id
+
+
+def test_texdig_v04_specimens_cover_every_promoted_store() -> None:
+    catalog = SchemaCatalog()
+    specimens = _v04_specimens()
+    assert set(specimens) == set(V04_SCHEMAS)
+    for name, rows in specimens.items():
+        validator = catalog.get_validator(name)
+        for row in rows:
+            validator.validate(row)
+
+
+def test_texdig_v03_summary_rejects_the_v04_store_surface() -> None:
+    """History stays history: a 0.4 summary must not validate as 0.3."""
+    validator = SchemaCatalog().get_validator("texdig-summary-v03")
+    with pytest.raises(ValidationError):
+        validator.validate(_v04_summary())
+
+
+def test_walk_node_union_is_closed_and_ids_are_typed() -> None:
+    validator = SchemaCatalog().get_validator("texdig-walk-v04")
+    paragraph = _v04_specimens()["texdig-walk-v04"][0]
+    validator.validate(paragraph)
+
+    section = {
+        "id": _WALK_ID,
+        "seq": 0,
+        "kind": "section",
+        "command": "subsection*",
+        "level": 3,
+        "title": [{"text": "Introduction"}],
+        "span": _span(0, 24),
+        "includeChain": [],
+    }
+    validator.validate(section)
+    anchor = {
+        "id": _WALK_ID,
+        "seq": 0,
+        "kind": "anchor",
+        "zone": _ZONE_ID,
+        "span": _span(0, 24),
+        "includeChain": [],
+    }
+    validator.validate(anchor)
+
+    for corrupt in (
+        # a paragraph may not carry section or anchor fields
+        {**paragraph, "level": 2},
+        {**paragraph, "zone": _ZONE_ID},
+        # a section without its title is not a section
+        {k: v for k, v in section.items() if k != "title"},
+        # referential TYPING: a walk id is not a zone id and vice versa
+        {**anchor, "zone": _WALK_ID},
+        {**paragraph, "id": _ZONE_ID},
+        {**paragraph, "content": [{"ref": "ent:macro-invocation@main.tex:0-4"}]},
+    ):
+        with pytest.raises(ValidationError):
+            validator.validate(corrupt)
+
+
+def test_zone_hole_verdict_is_closed() -> None:
+    validator = SchemaCatalog().get_validator("texdig-zones-v04")
+    zone = _v04_specimens()["texdig-zones-v04"][0]
+    validator.validate(zone)
+    # A bound macro site is NOT a hole: absence of `unresolved` is the contract.
+    validator.validate({k: v for k, v in zone.items() if k != "unresolved"})
+    for corrupt in (
+        {**zone, "kind": "not-a-zone-kind"},
+        {**zone, "unresolved": {"reason": "guessed"}},
+        {**zone, "unresolved": {"reason": "indeterminate", "causeIds": ["occ:" + "1" * 64]}},
+    ):
+        with pytest.raises(ValidationError):
+            validator.validate(corrupt)

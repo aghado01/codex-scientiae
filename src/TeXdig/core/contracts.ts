@@ -293,7 +293,42 @@ export type ZoneKind =
   | "diagram"
   | "verbatim"
   | "float"
-  | "theorem-like";
+  | "theorem-like"
+  /** A control-sequence site the walk did not expand. A hole only when `unresolved` is present. */
+  | "macro-site"
+  /** An include the traversal did not enter (cycle cut or deferred context): a missing subtree. */
+  | "unentered-source";
+
+/**
+ * Why a zone's content is not knowable at this tier. Presence of this field is
+ * the definition of a HOLE — `macro-site` without it is a bound site awaiting
+ * expansion, not a gap in knowledge. Hole extents are what `holeFraction`
+ * measures, and it must fall monotonically as the binding tier lands.
+ */
+export interface ZoneUnresolved {
+  reason: "unbound" | "indeterminate" | "deferred" | "unentered-source";
+  /** Control-sequence name, or the source id of the subtree not entered. */
+  name?: string;
+  /** Verbatim `bind:` causes from `invocations.jsonl` for the indeterminate case. */
+  causeIds?: string[];
+  detail?: string;
+}
+
+/**
+ * W2 minimal zone: everything the walk projection can mint deterministically.
+ * The Cut-2 zones tier GROWS these same `zone:` ids with `closure`, `names`,
+ * `isolable`, and `validation` — it does not create new ones. See `Zone` below
+ * for the grown form.
+ */
+export interface ZoneStub {
+  id: string; // zone:...
+  seq: Seq;
+  kind: ZoneKind;
+  span: SourceSpan;
+  /** Exact source slice — never printRaw, never expanded. */
+  text: string;
+  unresolved?: ZoneUnresolved;
+}
 
 /**
  * Per-name binding verdict. `bound-out-of-scope` is the third state agy's

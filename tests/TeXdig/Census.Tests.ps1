@@ -40,7 +40,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $script:Run.ResidueUtf16 | Should -Be 12
         }
 
-        It "emits exactly the nine 0.3 bundle stores" {
+        It "emits exactly the eleven 0.4 bundle stores" {
             $expected = @(
                 'sources.jsonl'
                 'entities.jsonl'
@@ -50,6 +50,8 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
                 'claims.jsonl'
                 'coverage.json'
                 'diagnostics.jsonl'
+                'walk.jsonl'
+                'zones.jsonl'
                 'summary.json'
             )
             $published = @(Get-ChildItem -LiteralPath $script:OutDir -File |
@@ -369,7 +371,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
         }
 
         It "conforms to the 0.3 summary, source identity, and runtime contract" {
-            $script:Summary.schema | Should -Be "texdig-census/0.3"
+            $script:Summary.schema | Should -Be "texdig-census/0.4"
             $script:Summary.slug | Should -Be "mini_article"
             $script:Summary.sourceCount | Should -Be 7
 
@@ -380,7 +382,7 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $script:Summary.runtime.node | Should -Be $script:Run.NodeVersion
         }
 
-        It "declares exactly the nine 0.3 stores and their normative schemas" {
+        It "declares exactly the eleven 0.4 stores and their normative schemas" {
             $expectedSchemas = [ordered]@{
                 'sources.jsonl'     = 'codex-scientiae/texdig-sources/0.2'
                 'entities.jsonl'    = 'codex-scientiae/texdig-entities/0.3'
@@ -390,7 +392,9 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
                 'claims.jsonl'      = 'codex-scientiae/texdig-claims/0.2'
                 'coverage.json'     = 'codex-scientiae/texdig-coverage/0.2'
                 'diagnostics.jsonl' = 'codex-scientiae/texdig-diagnostics/0.3'
-                'summary.json'      = 'codex-scientiae/texdig-summary/0.3'
+                'walk.jsonl'        = 'codex-scientiae/texdig-walk/0.4'
+                'zones.jsonl'       = 'codex-scientiae/texdig-zones/0.4'
+                'summary.json'      = 'codex-scientiae/texdig-summary/0.4'
             }
 
             (@($script:Summary.stores.emitted) -join '|') |
@@ -412,11 +416,9 @@ Describe "TeXdig Stage 1 Census Engine" -Tag "TeXdig", "Census", "Cut1" {
             $script:Run.InvocationCount | Should -Be $script:Summary.invocationCount
         }
 
-        It "explicitly defers exactly the eight post-B stores" {
+        It "explicitly defers exactly the six post-walk stores" {
             (@($script:Summary.stores.deferred) -join '|') | Should -BeExactly (@(
                 'expansion.jsonl'
-                'walk.jsonl'
-                'zones.jsonl'
                 'macros.jsonl'
                 'references.jsonl'
                 'pointers.jsonl'
