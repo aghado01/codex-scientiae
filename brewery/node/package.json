@@ -9,6 +9,7 @@
     "npm": ">=11"
   },
   "dependencies": {
+    "@types/node": "26.2.0",
     "@unified-latex/unified-latex": "1.8.4",
     "@unified-latex/unified-latex-util-environments": "1.8.4",
     "@unified-latex/unified-latex-util-macros": "1.8.4",
@@ -20,6 +21,7 @@
     "latex-utensils": "7.0.0",
     "markdownlint": "0.41.1",
     "mupdf": "1.28.0",
-    "node-tikzjax": "1.0.5"
+    "node-tikzjax": "1.0.5",
+    "typescript": "7.0.2"
   }
 }

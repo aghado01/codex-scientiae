@@ -490,7 +490,10 @@ class TestProviderPlanning(unittest.TestCase):
             self.assertEqual(plan.deposit_slug, "hep-th_9901001v2")
             self.assertEqual(tuple(item.kind for item in plan.payloads), ("source", "pdf", "html"))
             self.assertEqual(len(plan.payloads[0].candidates), 2)
-            self.assertIn("/e-print/hep-th/9901001v2", plan.payloads[0].candidates[0].url)
+            self.assertEqual(plan.payloads[0].candidates[0].candidate_id, "arxiv-source")
+            self.assertIn("/src/hep-th/9901001v2", plan.payloads[0].candidates[0].url)
+            self.assertEqual(plan.payloads[0].candidates[1].candidate_id, "arxiv-export-eprint")
+            self.assertIn("/e-print/hep-th/9901001v2", plan.payloads[0].candidates[1].url)
             self.assertEqual(plan.payloads[0].maximum_bytes, 1000)
 
         asyncio.run(exercise())

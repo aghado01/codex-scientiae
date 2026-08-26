@@ -188,6 +188,52 @@ class TestArxivProvider(unittest.TestCase):
             "(topology) AND (cat:math.AT OR cat:cs.CG) AND submittedDate:[202001010000 TO 202012312359]",
         )
 
+    def test_batch_query_retrieves_multiple_works(self) -> None:
+        observed_params: dict[str, str] = {}
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            for k, v in request.url.params.items():
+                observed_params[k] = v
+            return httpx.Response(200, content=ARXIV_FEED.encode(), headers={"content-type": "application/atom+xml"})
+
+        async def exercise() -> None:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                provider = ArxivProvider(
+                    HttpClient(raw),
+                    ProviderHttpSettings(
+                        base_url="https://arxiv.example/api/query",
+                        min_interval_seconds=0,
+                        timeout_seconds=5,
+                    ),
+                )
+                works = await provider.get_works_batch(["2008.10579v1", "math.GT/0309136"])
+                self.assertEqual(len(works), 2)
+                self.assertEqual(observed_params["id_list"], "2008.10579v1,math.GT/0309136")
+                self.assertEqual(observed_params["max_results"], "2")
+
+                metadata_list = await provider.get_metadata_batch(["2008.10579v1", "math.GT/0309136"])
+                self.assertEqual(len(metadata_list), 2)
+
+        asyncio.run(exercise())
+
+    def test_arxiv_headers_contain_no_email_and_use_browser_profile(self) -> None:
+        async def exercise() -> None:
+            async with httpx.AsyncClient() as raw:
+                provider = ArxivProvider(
+                    HttpClient(raw),
+                    ProviderHttpSettings(
+                        base_url="https://arxiv.example/api/query",
+                        min_interval_seconds=0,
+                        timeout_seconds=5,
+                    ),
+                    secrets=RuntimeSecrets(contact_email="private@example.test"),
+                )
+                self.assertNotIn("private@example.test", provider._headers["User-Agent"])
+                self.assertNotIn("mailto", provider._headers["User-Agent"])
+                self.assertIn("Mozilla/5.0", provider._headers["User-Agent"])
+
+        asyncio.run(exercise())
+
 
 class TestZenodoProvider(unittest.TestCase):
     def test_maps_record_and_pdf_manifest(self) -> None:

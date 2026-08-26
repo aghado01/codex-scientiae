@@ -289,8 +289,6 @@ class MetadataService:
             return identifier
         provider = artifact.name.casefold()
         if provider == "arxiv":
-            if metadata_provider.casefold() == "openalex":
-                return None
             return f"arxiv:{split_arxiv_id(identifier).versionless}"
         if provider == "zenodo":
             return split_zenodo_id(identifier).doi

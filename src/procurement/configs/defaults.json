@@ -20,9 +20,11 @@
       "base_url": "https://export.arxiv.org/api/query",
       "artifact_base_url": "https://arxiv.org",
       "secondary_artifact_base_url": "https://export.arxiv.org",
-      "min_interval_seconds": 3.0,
+      "min_interval_seconds": 3.2,
+      "jitter_seconds": 0.8,
       "timeout_seconds": 30,
-      "max_attempts": 3
+      "max_attempts": 4,
+      "retry_rate_limits": true
     },
     "zenodo": {
       "base_url": "https://zenodo.org/api/records",

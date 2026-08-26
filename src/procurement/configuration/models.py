@@ -20,8 +20,10 @@ class ProviderHttpSettings(BaseModel):
     artifact_base_url: str | None = None
     secondary_artifact_base_url: str | None = None
     min_interval_seconds: float = Field(ge=0)
+    jitter_seconds: float = Field(default=0.0, ge=0)
     timeout_seconds: float = Field(gt=0)
     max_attempts: int = Field(default=3, ge=1)
+    retry_rate_limits: bool = Field(default=False)
 
 
 class CatalogSettings(BaseModel):

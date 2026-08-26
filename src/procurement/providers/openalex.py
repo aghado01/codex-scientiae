@@ -105,6 +105,8 @@ class OpenAlexProvider:
         match = re.match(r"^https?://openalex\.org/(.+)$", value, flags=re.IGNORECASE)
         if match:
             return match.group(1)
+        if value.lower().startswith("arxiv:"):
+            return f"https://arxiv.org/abs/{value.split(':', 1)[1].strip()}"
         doi = normalize_doi(value)
         if value.lower().startswith(
             (

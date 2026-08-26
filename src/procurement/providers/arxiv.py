@@ -20,7 +20,7 @@ from procurement.domain.discovery import SearchPage, SearchRequest
 from procurement.domain.metadata import ArtifactReference, RetrievedMetadata
 from procurement.domain.works import SourceReference, WorkRecord
 from procurement.errors import IdentifierError, ProviderPayloadError, ProviderRecordNotFoundError
-from procurement.transport.http import HttpClient, RequestPolicy
+from procurement.transport.http import HttpClient, RequestPolicy, browser_headers
 from procurement.identifiers import normalize_doi, split_arxiv_id
 from procurement.providers.base import (
     Capability,
@@ -100,11 +100,14 @@ class ArxivProvider:
     ) -> None:
         self._http = http
         self._url = settings.base_url
-        self._headers = {"User-Agent": secrets.user_agent("codex-scientiae-arxiv/0.1")}
+        self._headers = browser_headers()
         self._policy = RequestPolicy(
             min_interval_seconds=settings.min_interval_seconds,
+            jitter_seconds=settings.jitter_seconds,
             timeout_seconds=settings.timeout_seconds,
             max_attempts=settings.max_attempts,
+            retry_rate_limits=settings.retry_rate_limits or True,
+            max_retry_after_seconds=120.0,
         )
         self._artifact_base_url = (settings.artifact_base_url or "https://arxiv.org").rstrip("/")
         self._secondary_artifact_base_url = (
@@ -246,6 +249,18 @@ class ArxivProvider:
             raise ProviderRecordNotFoundError(f"arXiv returned no record for {identifier!r}")
         return feed.works[0]
 
+    async def get_works_batch(self, identifiers: list[str]) -> list[WorkRecord]:
+        """Query multiple arXiv identifiers in one Atom query."""
+        if not identifiers:
+            return []
+        normalized = [split_arxiv_id(i).versioned for i in identifiers]
+        feed = self.parse_feed(
+            await self._query(
+                {"id_list": ",".join(normalized), "max_results": len(normalized)}
+            )
+        )
+        return list(feed.works)
+
     async def get_metadata(self, identifier: str) -> RetrievedMetadata:
         """Return normalized metadata with the exact decoded arXiv Atom payload."""
 
@@ -262,29 +277,43 @@ class ArxivProvider:
             raise ProviderRecordNotFoundError(f"arXiv returned no record for {identifier!r}")
         return retrieved_metadata(feed.works[0], document)
 
+    async def get_metadata_batch(self, identifiers: list[str]) -> list[RetrievedMetadata]:
+        """Return normalized metadata and Atom document for multiple identifiers."""
+        if not identifiers:
+            return []
+        normalized = [split_arxiv_id(i).versioned for i in identifiers]
+        document = await self._http.get_document(
+            self._url,
+            params={"id_list": ",".join(normalized), "max_results": len(normalized)},
+            headers=self._headers,
+            rate_key=self.name,
+            policy=self._policy,
+        )
+        feed = self.parse_feed(document.text)
+        return [retrieved_metadata(w, document) for w in feed.works]
+
     async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
         """Resolve one request to version-pinned arXiv artifact routes."""
 
         if request.provider.casefold() != self.name:
             raise ValueError("arXiv cannot plan an acquisition for another provider")
         requested = split_arxiv_id(request.identifier)
-        retrieved = await self.get_metadata(requested.versioned)
-        returned_raw = retrieved.work.arxiv_id
-        if returned_raw is None:
-            raise ProviderPayloadError("arXiv metadata omitted the returned identifier")
-        returned = split_arxiv_id(returned_raw)
-        if returned.version is None:
-            raise ProviderPayloadError("arXiv metadata did not resolve an exact artifact version")
-        if requested.versionless.casefold() != returned.versionless.casefold():
-            raise ProviderPayloadError(
-                f"arXiv returned {returned.versioned!r} for artifact {requested.versionless!r}"
-            )
-        if requested.version is not None and requested.versioned.casefold() != returned.versioned.casefold():
-            raise ProviderPayloadError(
-                f"arXiv returned {returned.versioned!r} for version-pinned request {requested.versioned!r}"
-            )
+        if requested.version is not None:
+            identifier = requested.versioned
+        else:
+            retrieved = await self.get_metadata(requested.versioned)
+            returned_raw = retrieved.work.arxiv_id
+            if returned_raw is None:
+                raise ProviderPayloadError("arXiv metadata omitted the returned identifier")
+            returned = split_arxiv_id(returned_raw)
+            if returned.version is None:
+                raise ProviderPayloadError("arXiv metadata did not resolve an exact artifact version")
+            if requested.versionless.casefold() != returned.versionless.casefold():
+                raise ProviderPayloadError(
+                    f"arXiv returned {returned.versioned!r} for artifact {requested.versionless!r}"
+                )
+            identifier = returned.versioned
 
-        identifier = returned.versioned
         slug = artifact_slug(self.name, identifier)
         encoded = quote(identifier, safe="/")
         primary_host = urlsplit(self._artifact_base_url).hostname
@@ -305,13 +334,13 @@ class ArxivProvider:
                         maximum_bytes=self._artifact_limits.source_bytes,
                         candidates=(
                             RetrievalCandidate(
-                                candidate_id="arxiv-export-eprint",
-                                url=f"{self._secondary_artifact_base_url}/e-print/{encoded}",
+                                candidate_id="arxiv-source",
+                                url=f"{self._artifact_base_url}/src/{encoded}",
                                 allowed_hosts=allowed_hosts,
                             ),
                             RetrievalCandidate(
-                                candidate_id="arxiv-source",
-                                url=f"{self._artifact_base_url}/src/{encoded}",
+                                candidate_id="arxiv-export-eprint",
+                                url=f"{self._secondary_artifact_base_url}/e-print/{encoded}",
                                 allowed_hosts=allowed_hosts,
                             ),
                         ),

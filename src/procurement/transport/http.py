@@ -6,6 +6,7 @@ import asyncio
 import hashlib
 import json
 import os
+import random
 import time
 from collections.abc import Awaitable, Callable, Mapping
 from concurrent.futures import ThreadPoolExecutor
@@ -32,6 +33,42 @@ _DOWNLOAD_CHUNK_BYTES = 1024 * 1024
 _SENSITIVE_QUERY_PARAMETERS = frozenset(
     {"access_token", "api-key", "api_key", "apikey", "key", "mailto", "token"}
 )
+
+DEFAULT_BROWSER_USER_AGENTS: tuple[str, ...] = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
+)
+
+
+def random_browser_user_agent() -> str:
+    """Return a random modern desktop browser User-Agent."""
+
+    return random.choice(DEFAULT_BROWSER_USER_AGENTS)
+
+
+def browser_headers(
+    *,
+    user_agent: str | None = None,
+    accept: str = "*/*",
+) -> dict[str, str]:
+    """Generate standard desktop browser headers without personal identity markers."""
+
+    ua = user_agent or random_browser_user_agent()
+    return {
+        "User-Agent": ua,
+        "Accept": accept,
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+    }
 
 
 @dataclass(frozen=True, slots=True)
@@ -65,6 +102,7 @@ class RequestPolicy:
     """Bounded request timing and retry policy."""
 
     min_interval_seconds: float = 0.0
+    jitter_seconds: float = 0.0
     timeout_seconds: float = 30.0
     max_attempts: int = 3
     backoff_seconds: float = 0.4
@@ -73,15 +111,22 @@ class RequestPolicy:
     )
     rate_limit_statuses: frozenset[int] = field(default_factory=lambda: frozenset({429}))
     retry_rate_limits: bool = False
-    max_retry_after_seconds: float = 30.0
+    max_retry_after_seconds: float = 120.0
+    cooldown_on_429_seconds: float = 60.0
     max_decoded_body_bytes: int = MAX_API_RESPONSE_BYTES
 
     def __post_init__(self) -> None:
         if self.min_interval_seconds < 0 or self.timeout_seconds <= 0:
             raise ValueError("request timing values must be positive")
+        if self.jitter_seconds < 0:
+            raise ValueError("jitter_seconds must not be negative")
         if self.max_attempts < 1:
             raise ValueError("max_attempts must be at least one")
-        if self.backoff_seconds < 0 or self.max_retry_after_seconds < 0:
+        if (
+            self.backoff_seconds < 0
+            or self.max_retry_after_seconds < 0
+            or self.cooldown_on_429_seconds < 0
+        ):
             raise ValueError("retry timing values must not be negative")
         if self.max_decoded_body_bytes < 1:
             raise ValueError("max_decoded_body_bytes must be at least one")
@@ -182,24 +227,49 @@ class _WorkerDownloadSink:
 class RateLimiter:
     """Per-key monotonic request clocks shared by concurrent provider calls."""
 
-    def __init__(self, *, clock: Clock = time.monotonic, sleep: Sleeper = asyncio.sleep) -> None:
+    def __init__(
+        self,
+        *,
+        clock: Clock = time.monotonic,
+        sleep: Sleeper = asyncio.sleep,
+        jitter_generator: Callable[[float], float] | None = None,
+    ) -> None:
         self._clock = clock
         self._sleep = sleep
+        self._jitter_generator = jitter_generator or (
+            lambda max_j: random.uniform(0, max_j) if max_j > 0 else 0.0
+        )
         self._last_request: dict[str, float] = {}
         self._locks: dict[str, asyncio.Lock] = {}
 
-    async def wait(self, key: str, interval_seconds: float) -> None:
-        if interval_seconds <= 0:
+    async def wait(
+        self,
+        key: str,
+        interval_seconds: float,
+        jitter_seconds: float = 0.0,
+    ) -> None:
+        if interval_seconds <= 0 and jitter_seconds <= 0:
             return
         lock = self._locks.setdefault(key, asyncio.Lock())
         async with lock:
             now = self._clock()
             last = self._last_request.get(key)
+            jitter = self._jitter_generator(jitter_seconds) if jitter_seconds > 0 else 0.0
+            effective_interval = interval_seconds + jitter
             if last is not None:
-                remaining = interval_seconds - (now - last)
+                remaining = effective_interval - (now - last)
                 if remaining > 0:
                     await self._sleep(remaining)
             self._last_request[key] = self._clock()
+
+    def penalize(self, key: str, seconds: float) -> None:
+        """Lock out subsequent requests on this key for a cooldown period."""
+
+        if seconds <= 0:
+            return
+        now = self._clock()
+        current = self._last_request.get(key, now)
+        self._last_request[key] = max(current, now) + seconds
 
 
 class HttpClient:
@@ -279,6 +349,7 @@ class HttpClient:
                     await self._limiter.wait(
                         rate_key or host,
                         policy.min_interval_seconds,
+                        policy.jitter_seconds,
                     )
                     request = self._client.build_request(
                         "GET",
@@ -322,12 +393,14 @@ class HttpClient:
                 await response.aclose()
                 message = self._response_message(response)
                 if response.status_code in policy.rate_limit_statuses:
+                    has_explicit_retry_after = bool(response.headers.get("retry-after"))
+                    retry_default = policy.backoff_seconds * (2 ** (attempt - 1))
+                    if not has_explicit_retry_after:
+                        retry_default = max(policy.cooldown_on_429_seconds, retry_default)
+                    delay = self._retry_after_seconds(response, default=retry_default)
+                    self._limiter.penalize(key, delay)
                     if not policy.retry_rate_limits or attempt == policy.max_attempts:
                         raise ProviderRateLimitError(message, status_code=response.status_code)
-                    delay = self._retry_after_seconds(
-                        response,
-                        default=policy.backoff_seconds * (2 ** (attempt - 1)),
-                    )
                     if delay > policy.max_retry_after_seconds:
                         raise ProviderRateLimitError(message, status_code=response.status_code)
                     last_error = ProviderRateLimitError(
@@ -485,7 +558,11 @@ class HttpClient:
                             "artifact route left its allowed hosts or safe transport at "
                             f"{self._evidence_url(current_url)}"
                         )
-                    await self._limiter.wait(rate_key or host, policy.min_interval_seconds)
+                    await self._limiter.wait(
+                        rate_key or host,
+                        policy.min_interval_seconds,
+                        policy.jitter_seconds,
+                    )
                     request = self._client.build_request(
                         "GET",
                         current_url,
@@ -520,17 +597,22 @@ class HttpClient:
                     status = response.status_code
                     message = self._response_message(response)
                     retry_default = policy.backoff_seconds * (2 ** (attempt - 1))
+                    has_explicit_retry_after = bool(response.headers.get("retry-after"))
+                    if status in policy.rate_limit_statuses and not has_explicit_retry_after:
+                        retry_default = max(policy.cooldown_on_429_seconds, retry_default)
                     retry_after = self._retry_after_seconds(response, default=retry_default)
                     await response.aclose()
                     response = None
                     if status in policy.rate_limit_statuses:
+                        delay = retry_after
+                        self._limiter.penalize(rate_key or host, delay)
                         error = ProviderRateLimitError(message, status_code=status)
                         if not policy.retry_rate_limits or attempt == policy.max_attempts:
                             raise error
-                        if retry_after > policy.max_retry_after_seconds:
+                        if delay > policy.max_retry_after_seconds:
                             raise error
                         last_error = error
-                        await self._sleep(retry_after)
+                        await self._sleep(delay)
                         continue
                     error = ProviderHttpError(message, status_code=status)
                     if status not in policy.retry_statuses or attempt == policy.max_attempts:

@@ -253,6 +253,46 @@ class TestMetadataService(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "must begin with the artifact provider"):
             DepositMetadataBundle.model_validate(success_before_failure)
 
+    def test_openalex_fallback_for_arxiv(self) -> None:
+        arxiv = FakeMetadataProvider("arxiv", failure=ProviderError("Atom unavailable"))
+        openalex = FakeMetadataProvider(
+            "openalex",
+            metadata_result(
+                "openalex",
+                work(
+                    "openalex",
+                    "W123",
+                    arxiv_id="2008.10579",
+                    concepts=("Optimization",),
+                ),
+                b'{"id":"W123"}',
+            ),
+        )
+        service = MetadataService(
+            ProviderCatalog(
+                [
+                    ProviderBinding(arxiv, frozenset({Capability.METADATA}), AUTHORITY_ROLES),
+                    ProviderBinding(
+                        openalex,
+                        frozenset({Capability.METADATA}),
+                        AGGREGATOR_ROLES,
+                    ),
+                ]
+            ),
+            ("openalex",),
+        )
+
+        result = asyncio.run(
+            service.collect(
+                deposit_slug="2008.10579v1",
+                artifact_provider="arxiv",
+                identifier="2008.10579v1",
+            )
+        )
+
+        self.assertEqual(result.route, "aggregator-fallback")
+        self.assertEqual(openalex.identifiers, ["arxiv:2008.10579"])
+
     def test_access_only_provider_uses_doi_aggregator_fallback(self) -> None:
         scihub = DeclaredProvider("scihub")
         semantic = FakeMetadataProvider(

@@ -38,6 +38,39 @@ class TestRateLimiter(unittest.TestCase):
         asyncio.run(exercise())
         self.assertEqual(sleeps, [1.0])
 
+    def test_jitter_and_penalize_extend_waits(self) -> None:
+        now = [0.0]
+        sleeps: list[float] = []
+
+        async def sleep(seconds: float) -> None:
+            sleeps.append(seconds)
+            now[0] += seconds
+
+        async def exercise() -> None:
+            limiter = RateLimiter(
+                clock=lambda: now[0],
+                sleep=sleep,
+                jitter_generator=lambda max_j: max_j * 0.5,
+            )
+            await limiter.wait("a", 1.0, jitter_seconds=0.4)
+            await limiter.wait("a", 1.0, jitter_seconds=0.4)
+            limiter.penalize("a", 10.0)
+            await limiter.wait("a", 1.0, jitter_seconds=0.0)
+
+        asyncio.run(exercise())
+        self.assertEqual(sleeps, [1.2, 11.0])
+
+
+class TestBrowserHeaders(unittest.TestCase):
+    def test_browser_headers_omits_email_and_generates_desktop_defaults(self) -> None:
+        headers = procurement_http.browser_headers()
+        self.assertIn("User-Agent", headers)
+        self.assertIn("Mozilla/5.0", headers["User-Agent"])
+        self.assertNotIn("mailto", headers["User-Agent"])
+        self.assertNotIn("@", headers["User-Agent"])
+        self.assertEqual(headers["Sec-Fetch-Dest"], "document")
+        self.assertEqual(headers["Sec-Fetch-Mode"], "navigate")
+
 
 class TestHttpClient(unittest.TestCase):
     def test_get_follows_only_bounded_same_host_safe_redirects(self) -> None:
@@ -205,10 +238,12 @@ class TestHttpClient(unittest.TestCase):
     def test_request_policy_rejects_nonsensical_boundaries(self) -> None:
         invalid = (
             {"min_interval_seconds": -1},
+            {"jitter_seconds": -1},
             {"timeout_seconds": 0},
             {"max_attempts": 0},
             {"backoff_seconds": -1},
             {"max_retry_after_seconds": -1},
+            {"cooldown_on_429_seconds": -1},
             {"max_decoded_body_bytes": 0},
         )
         for values in invalid:
