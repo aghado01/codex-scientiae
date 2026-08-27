@@ -6,11 +6,7 @@ param(
     [string[]] $Path = @($PSScriptRoot),
     [AllowEmptyCollection()] [string[]] $PesterPath = @(),
     [AllowEmptyCollection()] [string[]] $PytestPath = @(),
-    # Caller-owned. Omit it and the run mints artifacts/test-runs/{stamp}[_NN] through the
-    # logistics minting authority (src/logistics/run-paths.ps1, New-TestRunDir) and points
-    # TEMP/TMP/TMPDIR at {run}/temp so the artifact boundary is satisfied without three manual
-    # environment variables. Supply it and nothing about the environment is touched.
-    [string] $RunDirectory,
+    [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
     [ValidateSet('Pester', 'Pytest', 'All')]
     [string] $Framework = 'All',
     [ValidateNotNullOrEmpty()] [string] $RepositoryRoot =
@@ -46,19 +42,6 @@ param(
 )
 
 $sourceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../src'))
-
-if ([string]::IsNullOrWhiteSpace($RunDirectory)) {
-    # One minting authority for the stamp; this script does not format its own.
-    . ([System.IO.Path]::Combine($sourceRoot, 'logistics', 'run-paths.ps1'))
-    $RunDirectory = New-TestRunDir -ArtifactsRoot (
-        [System.IO.Path]::Combine($RepositoryRoot, 'artifacts'))
-    $mintedTemp = Join-Path $RunDirectory 'temp'
-    New-Item -ItemType Directory -Force -Path $mintedTemp | Out-Null
-    foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
-        Set-Item -LiteralPath "env:$name" -Value $mintedTemp
-    }
-    Write-Information "parallel.ps1: minted run directory $RunDirectory" -InformationAction Continue
-}
 $adaptersManifest = [System.IO.Path]::Combine($sourceRoot, 'batch-adapters', 'adapters.psd1')
 $executorManifest = [System.IO.Path]::Combine(
     $sourceRoot, 'batch-executor', 'batch-executor.psd1')

@@ -48,20 +48,26 @@ For every new or changed test file:
   reset `$LASTEXITCODE` so it cannot contaminate the runner result.
 - Do not add per-file manifests, sidecars, workload profiles, scheduler locks, or custom batch logic.
 
-At minimum, verify the file through the public batch entrypoint. Omit `-RunDirectory` and the run
-mints `artifacts/test-runs/YYYYMMDD_HHmmss[_NN]` for itself and points `TEMP`/`TMP`/`TMPDIR` at
-`{run}/temp`, so the artifact boundary is satisfied without setting three environment variables:
+At minimum, verify the file through `tests/batch.ps1`, the house-convention caller. It mints
+`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`, points `TEMP`/`TMP`/`TMPDIR` at a job-local tree,
+and forwards every other argument to `tests/parallel.ps1` verbatim:
 
 ```pwsh
-pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 -MaxWorkers 1
+pwsh -File tests/batch.ps1 -Framework Pester -PesterPath tests/<owner>/<behavior>.Tests.ps1 -MaxWorkers 1
 ```
 
-Supply `-RunDirectory` when you own the root — it must already exist, and nothing about the
-environment is touched:
+`{suite}` is the `tests/<owner>` segment the batch selected; a batch spanning several owners is
+named `mixed`. Pass `-RunDirectory` to own the root yourself — the temp convention still applies,
+so a caller never has to set three environment variables by hand.
+
+`tests/parallel.ps1` remains the batch shell and takes `-RunDirectory` as **mandatory**. That is
+deliberate: it is held to a thinness contract (`tests/batch-adapters/parallel.Tests.ps1`) that
+forbids it from minting a run directory, naming the artifacts tier, or touching the environment.
+Call it directly when you own the root and the environment:
 
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss) -MaxWorkers 1
+  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss) -MaxWorkers 1
 ```
 
 A compliant file selects the expected tests by exact path, reports real failures as nonzero, cleans its
@@ -98,7 +104,7 @@ inherit an ambient machine temp directory:
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/<owner>/test_<behavior>.py `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss) -MaxWorkers 1
+  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss) -MaxWorkers 1
 ```
 
 The admitted contract requires an exact-file container, native JUnit, declared
@@ -148,12 +154,12 @@ freeze this ownership boundary.
 
 ```pwsh
 pwsh -File tests/parallel.ps1 `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss)
+  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss)
 pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/jsonl_engine `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss_01) -MaxWorkers 4
+  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss_01) -MaxWorkers 4
 pwsh -File tests/parallel.ps1 -Framework All `
   -PesterPath tests/jsonl_engine-client/jsonl_engine-client-module.Tests.ps1 -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss_02) -MaxWorkers 2
+  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss_02) -MaxWorkers 2
 ```
 
 The shell imports the canonical `batch-adapters` (`adapters.psd1`) and `batch-executor` manifests, asks the
@@ -163,14 +169,15 @@ addresses, and native XML. Both lanes share one worker budget, cancellation path
 order.
 
 Caller-owned repository run directories belong under
-`artifacts/test-runs/YYYYMMDD_HHmmss[_NN]`. `New-TestRunDir` in `src/logistics/run-paths.ps1` is the
-minting authority for that stamp and `tests/parallel.ps1` calls it when `-RunDirectory` is omitted; do
-not format a stamp by hand. `_NN` is a same-second collision sequence, not a label — a run directory
-never carries a description. Its sibling `New-ModuleRunDir` mints the other runstamped tier,
-`artifacts/{module}/runs/{stamp}/{slug}/`, from the same format. The repository `.codex/` tree is
+`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`. `New-TestSuiteRunDir` in
+`src/logistics/run-paths.ps1` is the minting authority for that stamp and `tests/batch.ps1` calls
+it; do not format a stamp by hand. `_NN` is a same-second collision sequence, not a label — a run
+directory never carries a description. Its sibling `New-ModuleRunDir` mints the other runstamped
+tier, `artifacts/{module}/{stamp}/{slug}/`, from the same format; there is no `runs/` segment in
+either, because the stamp under a module already IS the run. The repository `.codex/` tree is
 client-owned state and is not a test-run or scratch destination. Direct successful runs remove their
 caller-owned root after accepting the outcome; retained failed-run evidence remains under the same
-`artifacts/test-runs/` tier.
+`artifacts/tests/` tier.
 
 One concise Information-stream line reports total, succeeded, failed, timed-out, cancelled,
 infrastructure-error, and duration values. The shell writes the exact in-memory executor record to the
@@ -215,12 +222,12 @@ Python project environment. `requirements.txt` is a generated runtime-only compa
 dependency authority.
 
 Pytest processes require an explicit `--basetemp` plus `TEMP`, `TMP`, and `TMPDIR` beneath a compact
-caller-owned runstamp in `artifacts/test-runs/`. The public batch shell supplies those boundaries:
+caller-owned runstamp in `artifacts/tests/`. The public batch shell supplies those boundaries:
 
 ```pwsh
 pwsh -File tests/parallel.ps1 -Framework Pytest `
   -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory (Resolve-Path artifacts/test-runs/YYYYMMDD_HHmmss)
+  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss)
 ```
 
 The cache provider is disabled in repository configuration because `.pytest_cache` is neither evidence nor
@@ -251,7 +258,7 @@ selected outcomes. `test_deposit.py` contributes 26 methods plus 27 subtests, or
 passed and two symlink cases skipped. A two-worker multilingual gate paired it with the five-test Pester
 deposit container: both jobs succeeded in 9.641 seconds, retained their separate native reports, and left
 the pytest job-local `json-scratch` empty under
-`artifacts/test-runs/deposit-parity-hardened-20260808`.
+`artifacts/tests/<suite>/YYYYMMDD_HHmmss` (never a labelled directory).
 
 The earlier procurement Python migration snapshot contained 26 files and 357 collected methods; its full
 public pytest batch passed all 26 independent containers and native JUnit reported 495 observed outcomes.

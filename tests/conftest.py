@@ -35,7 +35,7 @@ def pytest_configure(config: pytest.Config) -> None:
     basetemp = config.getoption("basetemp")
     if not basetemp:
         raise pytest.UsageError(
-            "pytest requires an explicit --basetemp under artifacts/test-runs; "
+            "pytest requires an explicit --basetemp under the repository artifacts root; "
             "use the repository test entrypoint"
         )
     _require_artifact_path(str(basetemp), label="pytest basetemp")
