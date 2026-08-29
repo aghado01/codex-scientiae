@@ -18,9 +18,12 @@ from procurement.domain.works import WorkIdentityAnchor
 from procurement.source.contracts import ArchiveLimits
 from procurement.source.extraction import SourceArchiveExtractor
 from procurement.source.latex import LatexSourceInspection, LatexSourceInspector
-from procurement.errors import SourceMaterializationError
+from procurement.configuration import ArtifactLimitSettings
+from procurement.errors import AcquisitionConflictError, AcquisitionError, SourceMaterializationError
 from procurement.identifiers import is_doi, normalize_doi
+from procurement.operations.acquisition import adopt_existing_artifact
 from procurement.operations.metadata import MetadataService
+from procurement.storage.acquisitions import collate_acquisition
 from procurement.runtime.concurrency import await_boundary
 from procurement.source.findings import build_source_findings
 from procurement.storage.acquisitions import AcquisitionItem
@@ -44,6 +47,7 @@ class SourceMaterializationService:
         archive_limits: ArchiveLimits | None = None,
         article_deposit: Callable[..., DepositResult] = deposit_procurement_article,
         lock_timeout: float = 60.0,
+        pdf_bytes: int | None = None,
     ) -> None:
         if lock_timeout <= 0:
             raise ValueError("lock_timeout must be positive")
@@ -54,6 +58,11 @@ class SourceMaterializationService:
         self._inspector = LatexSourceInspector(limits)
         self._article_deposit = article_deposit
         self._lock_timeout = lock_timeout
+        self._pdf_bytes = (
+            ArtifactLimitSettings().pdf_bytes if pdf_bytes is None else pdf_bytes
+        )
+        if self._pdf_bytes <= 0:
+            raise ValueError("pdf_bytes must be positive")
 
     async def materialize(
         self,
@@ -75,6 +84,7 @@ class SourceMaterializationService:
             identity_anchor=request.identity_anchor,
             requested_mode=request.metadata_mode,
             receipt_has_pdf=receipt_pdf is not None,
+            rebuild=request.rebuild,
         )
         metadata: DepositMetadataBundle | None = None
         if request.metadata_mode == "required":
@@ -143,6 +153,44 @@ class SourceMaterializationService:
             raise SourceMaterializationError("PDF artifact has an unexpected media type")
         return source, pdf
 
+    def _adopt_unreceipted_pdf(
+        self,
+        acq: AcquisitionItem,
+        manifest: AcquisitionManifest,
+        pdf_form: AcquiredArtifact | None,
+    ) -> tuple[AcquisitionManifest, AcquiredArtifact | None]:
+        if pdf_form is not None:
+            return manifest, pdf_form
+        pdf_leaf = f"{manifest.slug}.pdf"
+        if not acq.exists(acq.artifact_path(pdf_leaf)):
+            return manifest, None
+        try:
+            adopted = adopt_existing_artifact(
+                acq,
+                kind="pdf",
+                target_leaf=pdf_leaf,
+                media_type="application/pdf",
+                payload_kind="pdf",
+                minimum_bytes=5,
+                maximum_bytes=self._pdf_bytes,
+                maximum_expanded_source_bytes=1,
+            )
+        except (AcquisitionError, AcquisitionConflictError) as exc:
+            raise SourceMaterializationError(
+                f"unreceipted PDF at the source deposit is not a valid PDF: "
+                f"'{acq.artifact_path(pdf_leaf)}': {exc}"
+            ) from exc
+        published = collate_acquisition(
+            manifest,
+            AcquisitionManifest(
+                slug=manifest.slug,
+                artifact=manifest.artifact,
+                forms=(adopted,),
+            ),
+        )
+        acq.publish_manifest(published)
+        return published, adopted
+
     def _materialize(
         self,
         request: SourceMaterializationRequest,
@@ -168,6 +216,7 @@ class SourceMaterializationService:
             ):
                 raise SourceMaterializationError("acquisition identity changed before preparation")
             source_form, pdf_form = self._forms(manifest)
+            manifest, pdf_form = self._adopt_unreceipted_pdf(acq, manifest, pdf_form)
             source_path = acq.validate_form(source_form)
             pdf_source = (
                 acq.validate_form(pdf_form)
@@ -179,6 +228,7 @@ class SourceMaterializationService:
                 identity_anchor=request.identity_anchor,
                 requested_mode=request.metadata_mode,
                 receipt_has_pdf=pdf_form is not None,
+                rebuild=request.rebuild,
             )
             metadata = proposed_metadata
             if request.metadata_mode == "required":
@@ -209,6 +259,7 @@ class SourceMaterializationService:
                 metadata,
                 identity_anchor=request.identity_anchor,
                 main_tex=request.main_tex or "",
+                overwrite=request.rebuild,
             )
 
     def _publish(
@@ -224,6 +275,7 @@ class SourceMaterializationService:
         *,
         identity_anchor: WorkIdentityAnchor | None,
         main_tex: str,
+        overwrite: bool = False,
     ) -> SourceMaterializationResult:
         if source_path.parent != item.directory:
             raise SourceMaterializationError(
@@ -301,6 +353,7 @@ class SourceMaterializationService:
                 pdf=pdf_leaf,
                 lock_timeout=self._lock_timeout,
                 publication_root=item.publication_root,
+                overwrite=overwrite,
             )
             item.assert_current()
             acq.assert_current()

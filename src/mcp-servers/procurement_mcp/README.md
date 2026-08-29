@@ -53,7 +53,8 @@ and validates its source in place, and publishes `article.json` last. The receip
 the extracted tree is `{slug}-tex/`. Its typed
 metadata strategy is `artifact-identity`, `explicit-doi`, or `omit`; the first two reuse or persist
 `{slug}.api-metadata.json`, while omit never calls a metadata provider. An explicit DOI is cross-checked
-against any DOI declared by the validated LaTeX closure. It does not acquire bytes or
+against any DOI declared by the validated LaTeX closure. Default publication freezes PDF inclusion;
+`rebuild=true` replaces a stale sentinel from current receipt evidence. It does not acquire bytes or
 rebuild an inventory.
 
 `procure_source` is acquire then materialize in lock-step at one destination. It requires a catalog
@@ -71,13 +72,16 @@ The intended compositions are:
 - Procure one source-ready leaf: `procure_source` into a catalog name or workspace-relative destination.
 - Get bytes only: plan and acquire, or import a configured local file, then stop at `acquisition.json`.
 - Materialize an existing receipt: `materialize_source_deposit` on that same destination leaf.
+- Rebuild a stale sentinel after later forms land: `materialize_source_deposit` with `rebuild=true`, then
+  `rebuild_article_inventory` with `force=true`.
 - Refresh a catalog: rebuild `inventory.jsonl` across any pre-existing direct-child articles, without
   reacquiring or unpacking them.
 
-The first source-ready publication freezes both metadata mode and PDF inclusion. Later acquisition can add
-staged forms, but materialization refuses any form-set change that would mutate the immutable article.
-Interrupted pre-sentinel components are validated and adopted on retry; private tree scratch is swept under
-the source lease. Inventory replacement is generation-pinned and requires an explicit `force` request.
+The first source-ready publication freezes metadata mode and PDF inclusion. Later acquisition can add
+staged forms. Default materialization refuses a form-set change; `materialize_source_deposit` with
+`rebuild=true` rewrites `article.json` from the current receipt. Interrupted pre-sentinel components are
+validated and adopted on retry; private tree scratch is swept under the source lease. Inventory
+replacement is generation-pinned and requires an explicit `force` request.
 
 A PDF-only acquisition can be receipted and can motivate an explicit DOI lookup, but the current
 materializer does not mint `article.json` from a lone PDF. That route requires a separately versioned PDF

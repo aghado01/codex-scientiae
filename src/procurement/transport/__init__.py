@@ -6,6 +6,8 @@ from procurement.transport.http import (
     HttpDownload,
     RateLimiter,
     RequestPolicy,
+    browser_headers,
+    default_rate_clock_path,
 )
 
 __all__ = [
@@ -14,4 +16,6 @@ __all__ = [
     "HttpDownload",
     "RateLimiter",
     "RequestPolicy",
+    "browser_headers",
+    "default_rate_clock_path",
 ]

@@ -85,6 +85,10 @@ expansion, source inspection, archive/PDF copies, metadata publication, tree ins
 `article.json` publication use those retained generations. Inventory rebuild separately pins its catalog
 generation across sentinel reads and publication.
 
+`HttpClient` uses HTTP/2. arXiv Atom and artifact routes send a rotating desktop browser profile
+(`User-Agent` plus `Sec-Fetch-*`) per request. Provider floors share a file-locked clock at
+`~/.Codex/procurement/rate-clock.json` (`CODEX_PROCUREMENT_RATE_CLOCK` overrides the path).
+
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are
 bounded, redirect-confined, content-checked, locally SHA-256 measured, and checked against provider-native
@@ -93,9 +97,10 @@ lengths remain directly comparable. Non-loopback artifact routes require HTTPS a
 plaintext HTTP. Metadata requests likewise require HTTPS or loopback HTTP and may follow only bounded
 same-host redirects.
 Successful forms are monotonically collated into schema-validated `acquisition.json` within the pinned item
-generation. Lock, validation, hashing, and publication work runs outside the MCP event loop. That
+generation. A valid unreceipted file already at the planned destination leaf is adopted in place (`custody: adopted`) instead of treated as an occupant. Local import of matching destination bytes is receipted without overwrite. Lock, validation, hashing, and publication work runs outside the MCP event loop. That
 receipt makes no unpacked or source-ready claim; `article.json` remains the canonical sentinel, currently
-published by the validated LaTeX-source profile.
+published by the validated LaTeX-source profile. Default materialize refuses a later form-set change;
+`rebuild=true` replaces that sentinel from current acquisition evidence and preserves `initialized_utc`.
 HTML is a staged acquisition form reserved for a future source-profile consumer; current materialization
 consumes gzip source and optional PDF forms only.
 Background jobs remain deferred until the synchronous operations have a separate lifecycle contract.

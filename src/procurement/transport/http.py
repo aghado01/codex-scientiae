@@ -14,9 +14,11 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from functools import partial
+from pathlib import Path
 from typing import Any, BinaryIO, TypeVar
 
 import httpx
+from filelock import FileLock, Timeout as FileLockTimeout
 
 from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
@@ -30,9 +32,19 @@ Sleeper = Callable[[float], Awaitable[None]]
 UtcNow = Callable[[], datetime]
 _T = TypeVar("_T")
 _DOWNLOAD_CHUNK_BYTES = 1024 * 1024
+_RATE_CLOCK_ENV = "CODEX_PROCUREMENT_RATE_CLOCK"
 _SENSITIVE_QUERY_PARAMETERS = frozenset(
     {"access_token", "api-key", "api_key", "apikey", "key", "mailto", "token"}
 )
+
+
+def default_rate_clock_path() -> Path:
+    """Return the shared rate-clock file, honoring an explicit environment override."""
+
+    override = os.environ.get(_RATE_CLOCK_ENV, "").strip()
+    if override:
+        return Path(override)
+    return Path.home() / ".Codex" / "procurement" / "rate-clock.json"
 
 DEFAULT_BROWSER_USER_AGENTS: tuple[str, ...] = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -225,22 +237,31 @@ class _WorkerDownloadSink:
 
 
 class RateLimiter:
-    """Per-key monotonic request clocks shared by concurrent provider calls."""
+    """Per-key request clocks, optionally file-locked across processes."""
 
     def __init__(
         self,
         *,
-        clock: Clock = time.monotonic,
+        clock: Clock | None = None,
         sleep: Sleeper = asyncio.sleep,
         jitter_generator: Callable[[float], float] | None = None,
+        state_path: str | Path | None = None,
+        lock_timeout: float = 60.0,
     ) -> None:
-        self._clock = clock
+        if lock_timeout <= 0:
+            raise ValueError("lock_timeout must be positive")
+        self._state_path = Path(state_path) if state_path is not None else None
+        if clock is None:
+            self._clock = time.time if self._state_path is not None else time.monotonic
+        else:
+            self._clock = clock
         self._sleep = sleep
         self._jitter_generator = jitter_generator or (
             lambda max_j: random.uniform(0, max_j) if max_j > 0 else 0.0
         )
         self._last_request: dict[str, float] = {}
         self._locks: dict[str, asyncio.Lock] = {}
+        self._lock_timeout = lock_timeout
 
     async def wait(
         self,
@@ -252,24 +273,96 @@ class RateLimiter:
             return
         lock = self._locks.setdefault(key, asyncio.Lock())
         async with lock:
-            now = self._clock()
-            last = self._last_request.get(key)
             jitter = self._jitter_generator(jitter_seconds) if jitter_seconds > 0 else 0.0
             effective_interval = interval_seconds + jitter
-            if last is not None:
-                remaining = effective_interval - (now - last)
-                if remaining > 0:
-                    await self._sleep(remaining)
-            self._last_request[key] = self._clock()
+            if self._state_path is None:
+                now = self._clock()
+                last = self._last_request.get(key)
+                if last is not None:
+                    remaining = effective_interval - (now - last)
+                    if remaining > 0:
+                        await self._sleep(remaining)
+                self._last_request[key] = self._clock()
+                return
+            remaining = await self._run_sync(self._reserve, key, effective_interval)
+            if remaining > 0:
+                await self._sleep(remaining)
 
     def penalize(self, key: str, seconds: float) -> None:
         """Lock out subsequent requests on this key for a cooldown period."""
 
         if seconds <= 0:
             return
+        if self._state_path is None:
+            now = self._clock()
+            current = self._last_request.get(key, now)
+            self._last_request[key] = max(current, now) + seconds
+            return
+        self._mutate_state(lambda data: self._penalize_state(data, key, seconds))
+
+    async def _run_sync(self, function: Callable[..., _T], *args: object) -> _T:
+        loop = asyncio.get_running_loop()
+        future = loop.run_in_executor(None, partial(function, *args))
+        return await await_boundary(future)
+
+    def _reserve(self, key: str, effective_interval: float) -> float:
+        def mutate(data: dict[str, float]) -> float:
+            now = self._clock()
+            last = data.get(key)
+            next_ok = now if last is None else max(now, last + effective_interval)
+            data[key] = next_ok
+            return max(0.0, next_ok - now)
+
+        return self._mutate_state(mutate)
+
+    def _penalize_state(self, data: dict[str, float], key: str, seconds: float) -> None:
         now = self._clock()
-        current = self._last_request.get(key, now)
-        self._last_request[key] = max(current, now) + seconds
+        current = data.get(key, now)
+        data[key] = max(current, now) + seconds
+
+    def _mutate_state(self, mutator: Callable[[dict[str, float]], _T]) -> _T:
+        if self._state_path is None:
+            raise RuntimeError("rate clock has no state path")
+        path = self._state_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        lease = FileLock(f"{path}.lock", timeout=self._lock_timeout)
+        try:
+            lease.acquire()
+        except FileLockTimeout as exc:
+            raise ProviderHttpError(
+                f"could not acquire shared rate clock within {self._lock_timeout}s"
+            ) from exc
+        try:
+            data = _read_rate_clock(path)
+            result = mutator(data)
+            _write_rate_clock(path, data)
+            return result
+        finally:
+            lease.release()
+
+
+def _read_rate_clock(path: Path) -> dict[str, float]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+        return {}
+    keys = payload.get("keys") if isinstance(payload, dict) else None
+    if not isinstance(keys, dict):
+        return {}
+    parsed: dict[str, float] = {}
+    for name, value in keys.items():
+        if isinstance(name, str) and isinstance(value, (int, float)):
+            parsed[name] = float(value)
+    return parsed
+
+
+def _write_rate_clock(path: Path, data: dict[str, float]) -> None:
+    payload = json.dumps({"keys": data}, separators=(",", ":"), ensure_ascii=True)
+    temporary = path.with_name(path.name + ".tmp")
+    temporary.write_text(payload + "\n", encoding="utf-8")
+    os.replace(temporary, path)
 
 
 class HttpClient:
@@ -282,8 +375,9 @@ class HttpClient:
         rate_limiter: RateLimiter | None = None,
         sleep: Sleeper = asyncio.sleep,
         utc_now: UtcNow = lambda: datetime.now(timezone.utc),
+        http2: bool = True,
     ) -> None:
-        self._client = client or httpx.AsyncClient(follow_redirects=False)
+        self._client = client or httpx.AsyncClient(follow_redirects=False, http2=http2)
         self._owns_client = client is None
         self._limiter = rate_limiter or RateLimiter(sleep=sleep)
         self._sleep = sleep

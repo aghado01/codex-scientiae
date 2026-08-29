@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import gzip
+import hashlib
 import os
 from collections.abc import Callable, Mapping
 from concurrent.futures import ThreadPoolExecutor
@@ -16,8 +17,10 @@ from typing import BinaryIO, TypeVar
 from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.domain.acquisition.planning import (
     ArtifactAcquisitionRequest,
+    ArtifactKind,
     ArtifactPlan,
     ArtifactPlanSummary,
+    ChecksumExpectation,
     PlannedArtifact,
 )
 from procurement.domain.acquisition.receipts import (
@@ -28,7 +31,7 @@ from procurement.domain.acquisition.receipts import (
 )
 from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
 from procurement.runtime.concurrency import await_boundary
-from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy
+from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy, browser_headers
 from procurement.providers.base import Capability
 from procurement.providers.catalog import ProviderCatalog
 from procurement.storage.acquisitions import (
@@ -92,6 +95,88 @@ def validate_pdf_payload(
         suffix = handle.read()
     if prefix != b"%PDF-" or b"%%EOF" not in suffix:
         raise AcquisitionError("PDF payload lacks its required header or end marker")
+
+
+def validate_html_payload(
+    path: str | Path,
+    *,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> None:
+    """Validate that one payload starts as an HTML document."""
+
+    try:
+        with _open_payload(path, publication_root) as handle:
+            head = handle.read(8192).decode("utf-8", errors="strict").casefold()
+    except UnicodeDecodeError as exc:
+        raise AcquisitionError("HTML payload is not valid UTF-8") from exc
+    if "<html" not in head and "<!doctype html" not in head:
+        raise AcquisitionError("HTML payload lacks an HTML document marker")
+
+
+def adopt_existing_artifact(
+    item: AcquisitionItem,
+    *,
+    kind: ArtifactKind,
+    target_leaf: str,
+    media_type: str,
+    payload_kind: str,
+    minimum_bytes: int,
+    maximum_bytes: int,
+    maximum_expanded_source_bytes: int,
+    expected_bytes: int | None = None,
+    checksum: ChecksumExpectation | None = None,
+) -> AcquiredArtifact:
+    """Receipt one validated unreceipted occupant already at its planned leaf."""
+
+    path = item.artifact_path(target_leaf)
+    size, digest = item.measure_file(path)
+    if size < minimum_bytes:
+        raise AcquisitionError(
+            f"existing {kind} is smaller than {minimum_bytes} bytes"
+        )
+    if size > maximum_bytes:
+        raise AcquisitionError(
+            f"existing {kind} exceeds the configured {maximum_bytes}-byte limit"
+        )
+    if expected_bytes is not None and size != expected_bytes:
+        raise AcquisitionError(
+            f"existing {kind} has {size} bytes; expected {expected_bytes}"
+        )
+    if checksum is not None:
+        if checksum.algorithm == "sha256":
+            observed = digest
+        elif checksum.algorithm == "md5":
+            hasher = hashlib.md5()
+            with item.open_file(path, "rb") as handle:
+                while chunk := handle.read(1024 * 1024):
+                    hasher.update(chunk)
+            observed = hasher.hexdigest()
+        else:
+            raise AcquisitionError(
+                f"unsupported occupant checksum algorithm {checksum.algorithm!r}"
+            )
+        if observed != checksum.digest:
+            raise AcquisitionError(
+                f"existing {kind} does not match its provider checksum"
+            )
+    if payload_kind == "gzip":
+        validate_gzip_payload(
+            path,
+            maximum_expanded_bytes=maximum_expanded_source_bytes,
+            publication_root=item.publication_root,
+        )
+    elif payload_kind == "pdf":
+        validate_pdf_payload(path, publication_root=item.publication_root)
+    else:
+        validate_html_payload(path, publication_root=item.publication_root)
+    return AcquiredArtifact(
+        kind=kind,
+        path=target_leaf,
+        format=media_type,
+        bytes=size,
+        sha256=digest,
+        custody="adopted",
+    )
 
 
 class _AsyncAcquisitionTransaction:
@@ -165,7 +250,6 @@ class AcquisitionService:
         *,
         catalogs: ArticleCatalogRoots | None = None,
         provider_policies: Mapping[str, RequestPolicy] | None = None,
-        user_agent: str = "codex-scientiae-procurement/0.1",
         maximum_expanded_source_bytes: int = 4 * 1024 * 1024 * 1024,
     ) -> None:
         self._catalog = catalog
@@ -175,7 +259,6 @@ class AcquisitionService:
         self._policies = {
             name.casefold(): policy for name, policy in (provider_policies or {}).items()
         }
-        self._headers = {"User-Agent": user_agent}
         self._maximum_expanded_source_bytes = maximum_expanded_source_bytes
 
     def _item_store(self, catalog: str | None) -> AcquisitionStore:
@@ -241,9 +324,41 @@ class AcquisitionService:
 
                 target = item.artifact_path(payload.target_leaf)
                 if await transaction.run(item.exists, target):
-                    raise AcquisitionConflictError(
-                        f"unreceipted artifact occupies the planned target: '{target}'"
+                    try:
+                        form = await transaction.run(
+                            adopt_existing_artifact,
+                            item,
+                            kind=payload.kind,
+                            target_leaf=payload.target_leaf,
+                            media_type=payload.media_type,
+                            payload_kind=payload.payload_kind,
+                            minimum_bytes=payload.minimum_bytes,
+                            maximum_bytes=payload.maximum_bytes,
+                            maximum_expanded_source_bytes=self._maximum_expanded_source_bytes,
+                            expected_bytes=payload.expected_bytes,
+                            checksum=payload.checksum,
+                        )
+                    except (AcquisitionError, AcquisitionConflictError) as exc:
+                        raise AcquisitionConflictError(
+                            "unreceipted artifact at the planned target is not a valid "
+                            f"{payload.kind}: '{target}': {exc}"
+                        ) from exc
+                    manifest = await transaction.run(
+                        self._publish_adopted,
+                        item,
+                        plan,
+                        manifest,
+                        form,
                     )
+                    known[form.kind] = form
+                    outcomes.append(
+                        AcquisitionOutcome(
+                            kind=form.kind,
+                            status="already-present",
+                            path=form.path,
+                        )
+                    )
+                    continue
 
                 acquired, errors = await self._acquire_payload(
                     transaction,
@@ -331,7 +446,7 @@ class AcquisitionService:
                     str(partial),
                     publication_root=item.publication_root,
                     allowed_hosts=candidate.allowed_hosts,
-                    headers=self._headers,
+                    headers=browser_headers(),
                     rate_key=plan.artifact.provider,
                     policy=policy,
                     hash_algorithms=algorithms,
@@ -393,6 +508,22 @@ class AcquisitionService:
         item.delete_journal()
         return published
 
+    @staticmethod
+    def _publish_adopted(
+        item: AcquisitionItem,
+        plan: ArtifactPlan,
+        manifest: AcquisitionManifest | None,
+        form: AcquiredArtifact,
+    ) -> AcquisitionManifest:
+        incoming = AcquisitionManifest(
+            slug=plan.deposit_slug,
+            artifact=plan.artifact,
+            forms=(form,),
+        )
+        published = collate_acquisition(manifest, incoming)
+        item.publish_manifest(published)
+        return published
+
     def _validate_download(
         self,
         item: AcquisitionItem,
@@ -430,18 +561,4 @@ class AcquisitionService:
         elif payload.payload_kind == "pdf":
             validate_pdf_payload(path, publication_root=item.publication_root)
         else:
-            self._validate_html(path, publication_root=item.publication_root)
-
-    @staticmethod
-    def _validate_html(
-        path: Path,
-        *,
-        publication_root: PinnedPublicationRoot | None = None,
-    ) -> None:
-        try:
-            with _open_payload(path, publication_root) as handle:
-                head = handle.read(8192).decode("utf-8", errors="strict").casefold()
-        except UnicodeDecodeError as exc:
-            raise AcquisitionError("HTML payload is not valid UTF-8") from exc
-        if "<html" not in head and "<!doctype html" not in head:
-            raise AcquisitionError("HTML payload lacks an HTML document marker")
+            validate_html_payload(path, publication_root=item.publication_root)

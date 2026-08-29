@@ -65,7 +65,13 @@ def acquired_artifact_schema_extra(schema: dict[str, Any]) -> None:
                     "local_import": {"type": "null"},
                 }
             },
-            "else": {
+        },
+        {
+            "if": {
+                "properties": {"custody": {"const": "local-import"}},
+                "required": ["custody"],
+            },
+            "then": {
                 "properties": {
                     "origin_url": {"type": "null"},
                     "candidate_id": {"type": "null"},
@@ -74,7 +80,22 @@ def acquired_artifact_schema_extra(schema: dict[str, Any]) -> None:
                     "local_import": {"not": {"type": "null"}},
                 }
             },
-        }
+        },
+        {
+            "if": {
+                "properties": {"custody": {"const": "adopted"}},
+                "required": ["custody"],
+            },
+            "then": {
+                "properties": {
+                    "origin_url": {"type": "null"},
+                    "candidate_id": {"type": "null"},
+                    "fetched_at": {"type": "null"},
+                    "provider_checksum": {"type": "null"},
+                    "local_import": {"type": "null"},
+                }
+            },
+        },
     ]
 
 

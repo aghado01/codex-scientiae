@@ -100,7 +100,6 @@ class ArxivProvider:
     ) -> None:
         self._http = http
         self._url = settings.base_url
-        self._headers = browser_headers()
         self._policy = RequestPolicy(
             min_interval_seconds=settings.min_interval_seconds,
             jitter_seconds=settings.jitter_seconds,
@@ -119,7 +118,7 @@ class ArxivProvider:
         return await self._http.get_text(
             self._url,
             params=params,
-            headers=self._headers,
+            headers=browser_headers(),
             rate_key=self.name,
             policy=self._policy,
         )
@@ -268,7 +267,7 @@ class ArxivProvider:
         document = await self._http.get_document(
             self._url,
             params={"id_list": normalized, "max_results": 1},
-            headers=self._headers,
+            headers=browser_headers(),
             rate_key=self.name,
             policy=self._policy,
         )
@@ -285,7 +284,7 @@ class ArxivProvider:
         document = await self._http.get_document(
             self._url,
             params={"id_list": ",".join(normalized), "max_results": len(normalized)},
-            headers=self._headers,
+            headers=browser_headers(),
             rate_key=self.name,
             policy=self._policy,
         )

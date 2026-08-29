@@ -57,7 +57,7 @@ class AcquiredArtifact(DomainModel):
     format: str = Field(min_length=1)
     bytes: int = Field(ge=1)
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    custody: Literal["provider-download", "local-import"] = "provider-download"
+    custody: Literal["provider-download", "local-import", "adopted"] = "provider-download"
     origin_url: str | None = Field(
         default=None,
         json_schema_extra={"format": "uri", "pattern": SAFE_ARTIFACT_URL_PATTERN},
@@ -88,7 +88,7 @@ class AcquiredArtifact(DomainModel):
                 )
             if self.local_import is not None:
                 raise ValueError("provider-download custody cannot name a local import")
-        else:
+        elif self.custody == "local-import":
             if self.local_import is None:
                 raise ValueError("local-import custody requires local_import provenance")
             if any(
@@ -103,6 +103,19 @@ class AcquiredArtifact(DomainModel):
                 raise ValueError(
                     "local-import custody cannot claim provider download provenance"
                 )
+        else:
+            if self.local_import is not None:
+                raise ValueError("adopted custody cannot name a local import")
+            if any(
+                value is not None
+                for value in (
+                    self.origin_url,
+                    self.candidate_id,
+                    self.fetched_at,
+                    self.provider_checksum,
+                )
+            ):
+                raise ValueError("adopted custody cannot claim provider download provenance")
         if self.fetched_at is not None and (
             self.fetched_at.tzinfo is None or self.fetched_at.utcoffset() is None
         ):

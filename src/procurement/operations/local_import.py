@@ -257,8 +257,33 @@ class LocalImportService:
 
                 destination = item.artifact_path(target_leaf)
                 if item.exists(destination):
-                    raise AcquisitionConflictError(
-                        f"unreceipted artifact occupies the local-import target: '{destination}'"
+                    dest_size, dest_digest = item.measure_file(destination)
+                    if dest_size != size or dest_digest != digest:
+                        raise AcquisitionConflictError(
+                            f"unreceipted artifact occupies the local-import target: '{destination}'"
+                        )
+                    incoming = AcquisitionManifest(
+                        slug=request.deposit_slug,
+                        artifact=artifact,
+                        forms=(form,),
+                    )
+                    manifest = collate_acquisition(manifest, incoming)
+                    item.publish_manifest(manifest)
+                    for value in manifest.forms:
+                        item.validate_form(value)
+                    require_current(
+                        inbox_root,
+                        label="local-import inbox",
+                        error=AcquisitionConflictError,
+                    )
+                    return _result(
+                        item,
+                        manifest,
+                        AcquisitionOutcome(
+                            kind=kind,
+                            status="already-present",
+                            path=form.path,
+                        ),
                     )
 
                 item.write_journal(artifact, partial, form)

@@ -173,11 +173,14 @@ class SourceDepositItem:
         identity_anchor: WorkIdentityAnchor | None = None,
         requested_mode: MetadataMode,
         receipt_has_pdf: bool,
+        rebuild: bool = False,
     ) -> ExistingSourceDeposit | None:
         """Validate immutable optional forms, metadata mode, and reusable evidence."""
 
         if type(receipt_has_pdf) is not bool:
             raise TypeError("receipt_has_pdf must be a boolean")
+        if type(rebuild) is not bool:
+            raise TypeError("rebuild must be a boolean")
         self.assert_current()
         article = self.read_article()
         bundle = self.read_metadata(
@@ -214,7 +217,7 @@ class SourceDepositItem:
         article_has_pdf = any(
             form.get("role") == "pdf-source" for form in article["source_forms"]
         )
-        if article_has_pdf != receipt_has_pdf:
+        if article_has_pdf != receipt_has_pdf and not rebuild:
             frozen = "included" if article_has_pdf else "omitted"
             requested = "include" if receipt_has_pdf else "omit"
             raise SourceMaterializationError(
@@ -539,6 +542,7 @@ class SourceDepositStore:
         identity_anchor: WorkIdentityAnchor | None = None,
         requested_mode: MetadataMode,
         receipt_has_pdf: bool,
+        rebuild: bool = False,
     ) -> ExistingSourceDeposit | None:
         """Inspect immutable evidence without creating a document directory."""
 
@@ -550,6 +554,7 @@ class SourceDepositStore:
                 identity_anchor=identity_anchor,
                 requested_mode=requested_mode,
                 receipt_has_pdf=receipt_has_pdf,
+                rebuild=rebuild,
             )
 
 

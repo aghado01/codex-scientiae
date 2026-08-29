@@ -25,6 +25,7 @@ def register_materialization_tools(server: MCPServer) -> None:
         ctx: Context[AppContext],
         main_tex: MainTexPath | None = None,
         metadata: SourceMetadataInput | None = None,
+        rebuild: bool = False,
     ) -> SourceMaterializationResult:
         """Validate one destination acquisition in place and publish article.json using one metadata strategy."""
 
@@ -37,5 +38,6 @@ def register_materialization_tools(server: MCPServer) -> None:
                 acquisition_slug=acquisition_slug,
                 main_tex=main_tex,
                 metadata=metadata or ArtifactIdentityMetadata(),
+                rebuild=rebuild,
             )
         )

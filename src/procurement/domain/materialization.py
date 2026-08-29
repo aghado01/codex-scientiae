@@ -124,6 +124,7 @@ class SourceMaterializationRequest(DomainModel):
         json_schema_extra={"pattern": PORTABLE_TEX_PATH_PATTERN},
     )
     metadata: SourceMetadataInput = Field(default_factory=ArtifactIdentityMetadata)
+    rebuild: bool = False
 
     @field_validator("catalog", mode="before")
     @classmethod
@@ -173,7 +174,7 @@ class SourceMaterializationResult(DomainModel):
 
     catalog: str = Field(min_length=1)
     slug: str = Field(min_length=1, json_schema_extra={"pattern": PORTABLE_LEAF_PATTERN})
-    status: Literal["deposited", "already-deposited"]
+    status: Literal["deposited", "already-deposited", "rebuilt"]
     created: bool
     artifact: ArtifactReference
     acquisition_manifest_path: str = Field(min_length=1)

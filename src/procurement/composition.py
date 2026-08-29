@@ -30,7 +30,12 @@ from procurement.storage.roots import (
     ProcurementRootCatalog,
 )
 from procurement.storage.source_deposits import SourceDepositStore
-from procurement.transport.http import HttpClient, RequestPolicy
+from procurement.transport.http import (
+    HttpClient,
+    RateLimiter,
+    RequestPolicy,
+    default_rate_clock_path,
+)
 
 
 def build_application(
@@ -88,7 +93,12 @@ def build_application(
         ) from exc
 
     secrets = secrets or RuntimeSecrets.from_environment()
-    http = http or HttpClient()
+    http = http or HttpClient(
+        rate_limiter=RateLimiter(
+            state_path=default_rate_clock_path(),
+            lock_timeout=settings.acquisition.lock_timeout_seconds,
+        ),
+    )
     try:
         provider_catalog = factories.build(
             settings.providers,
@@ -103,8 +113,10 @@ def build_application(
             if provider_settings is not None:
                 policies[binding.name] = RequestPolicy(
                     min_interval_seconds=provider_settings.min_interval_seconds,
+                    jitter_seconds=provider_settings.jitter_seconds,
                     timeout_seconds=provider_settings.timeout_seconds,
                     max_attempts=provider_settings.max_attempts,
+                    retry_rate_limits=provider_settings.retry_rate_limits,
                 )
         article_catalog_roots = ArticleCatalogRoots(roots, workspace_root=root)
         catalog_service = ArticleCatalogService(article_catalog_roots)
@@ -118,7 +130,6 @@ def build_application(
             acquisition_store,
             catalogs=article_catalog_roots,
             provider_policies=policies,
-            user_agent=secrets.user_agent(),
             maximum_expanded_source_bytes=settings.acquisition.limits.expanded_source_bytes,
         )
         local_import_service = LocalImportService(
@@ -142,6 +153,7 @@ def build_application(
                 max_entries=settings.acquisition.limits.archive_entries,
             ),
             lock_timeout=settings.acquisition.lock_timeout_seconds,
+            pdf_bytes=settings.acquisition.limits.pdf_bytes,
         )
         procure_service = ProcureService(acquisition_service, materialization_service)
         roots.assert_current()
