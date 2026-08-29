@@ -13,11 +13,17 @@ from pathlib import Path
 from unittest import mock
 
 import httpx
+from filelock import FileLock
 
 from jsonl_engine.publication import PinnedPublicationRoot
 import procurement.transport.http as procurement_http
 from procurement.errors import ProviderHttpError, ProviderPayloadError, ProviderRateLimitError
-from procurement.transport.http import HttpClient, RateLimiter, RequestPolicy
+from procurement.transport.http import (
+    HttpClient,
+    RateLimiter,
+    RequestPolicy,
+    default_rate_clock_path,
+)
 
 
 class TestRateLimiter(unittest.TestCase):
@@ -60,6 +66,84 @@ class TestRateLimiter(unittest.TestCase):
         asyncio.run(exercise())
         self.assertEqual(sleeps, [1.2, 11.0])
 
+    def test_file_backed_clock_is_shared_across_instances(self) -> None:
+        now = [1000.0]
+        sleeps: list[float] = []
+
+        async def sleep(seconds: float) -> None:
+            sleeps.append(seconds)
+            now[0] += seconds
+
+        async def exercise(path: Path) -> None:
+            first = RateLimiter(
+                clock=lambda: now[0], sleep=sleep, state_path=path
+            )
+            second = RateLimiter(
+                clock=lambda: now[0], sleep=sleep, state_path=path
+            )
+            await first.wait("arxiv", 1.0)
+            await second.wait("arxiv", 1.0)
+            first.penalize("arxiv", 10.0)
+            await second.wait("arxiv", 1.0)
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(Path(root) / "rate-clock.json"))
+        self.assertEqual(sleeps, [1.0, 11.0])
+
+    def test_corrupt_clock_file_is_treated_as_empty(self) -> None:
+        async def exercise(path: Path) -> None:
+            path.write_text("not-json", encoding="utf-8")
+            limiter = RateLimiter(
+                clock=lambda: 5.0,
+                sleep=lambda _seconds: asyncio.sleep(0),
+                state_path=path,
+            )
+            await limiter.wait("arxiv", 1.0)
+
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / "rate-clock.json"
+            asyncio.run(exercise(path))
+            payload = path.read_text(encoding="utf-8")
+        self.assertIn('"arxiv":5.0', payload.replace(" ", ""))
+
+    def test_file_clock_lock_wait_does_not_block_the_event_loop(self) -> None:
+        async def exercise(path: Path) -> None:
+            lease = FileLock(f"{path}.lock", timeout=2)
+            lease.acquire()
+            limiter = RateLimiter(
+                clock=lambda: 1.0,
+                sleep=lambda _seconds: asyncio.sleep(0),
+                state_path=path,
+                lock_timeout=2,
+            )
+            task = asyncio.create_task(limiter.wait("arxiv", 1.0))
+            ticks = 0
+
+            async def ticker() -> None:
+                nonlocal ticks
+                for _ in range(5):
+                    await asyncio.sleep(0.01)
+                    ticks += 1
+
+            tick = asyncio.create_task(ticker())
+            try:
+                await asyncio.sleep(0.05)
+                self.assertFalse(task.done())
+                self.assertGreater(ticks, 0)
+            finally:
+                lease.release()
+            await asyncio.wait_for(task, timeout=1)
+            await tick
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(Path(root) / "rate-clock.json"))
+
+    def test_default_rate_clock_path_honors_environment(self) -> None:
+        with mock.patch.dict(
+            os.environ, {"CODEX_PROCUREMENT_RATE_CLOCK": "clock.json"}, clear=False
+        ):
+            self.assertEqual(default_rate_clock_path(), Path("clock.json"))
+
 
 class TestBrowserHeaders(unittest.TestCase):
     def test_browser_headers_omits_email_and_generates_desktop_defaults(self) -> None:
@@ -73,6 +157,14 @@ class TestBrowserHeaders(unittest.TestCase):
 
 
 class TestHttpClient(unittest.TestCase):
+    def test_owned_client_enables_http2(self) -> None:
+        client = HttpClient()
+        try:
+            pool = client._client._transport._pool
+            self.assertTrue(getattr(pool, "_http2", False))
+        finally:
+            asyncio.run(client.close())
+
     def test_get_follows_only_bounded_same_host_safe_redirects(self) -> None:
         calls: list[str] = []
 

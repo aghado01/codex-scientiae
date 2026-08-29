@@ -323,6 +323,7 @@ def request(
     metadata_mode: str = "omit",
     main_tex: str | None = None,
     metadata: object | None = None,
+    rebuild: bool = False,
 ) -> SourceMaterializationRequest:
     if metadata is None:
         metadata = (
@@ -335,6 +336,7 @@ def request(
         acquisition_slug=SLUG,
         metadata=metadata,
         main_tex=main_tex,
+        rebuild=rebuild,
     )
 
 
@@ -822,6 +824,32 @@ def test_later_pdf_enrichment_fails_before_copying_or_mutating_article(
     assert tree_main.read_bytes() == tree_bytes
 
 
+def test_explicit_rebuild_adds_later_pdf_and_preserves_initialized_utc(
+    layout: Layout,
+) -> None:
+    stage_source(layout, tar_gzip_source())
+    materializer = service(layout, RejectingMetadataService())
+    first = asyncio.run(materializer.materialize(request()))
+    article_path = Path(first.article_path)
+    initialized = json.loads(article_path.read_bytes())["initialized_utc"]
+    add_pdf_to_receipt(layout)
+
+    rebuilt = asyncio.run(materializer.materialize(request(rebuild=True)))
+    article = json.loads(article_path.read_bytes())
+
+    assert rebuilt.status == "rebuilt"
+    assert rebuilt.created is False
+    assert rebuilt.pdf_path == str(layout.catalog_root / SLUG / f"{SLUG}.pdf")
+    assert article["initialized_utc"] == initialized
+    assert [form["role"] for form in article["source_forms"]] == [
+        "latex-source-archive",
+        "latex-source-tree",
+        "pdf-source",
+    ]
+    second = asyncio.run(materializer.materialize(request()))
+    assert second.status == "already-deposited"
+
+
 def test_pdf_inclusion_is_idempotent_when_frozen_present(layout: Layout) -> None:
     stage_source(layout, tar_gzip_source())
     staged_pdf = add_pdf_to_receipt(layout)
@@ -850,6 +878,25 @@ def test_pdf_inclusion_is_idempotent_when_frozen_present(layout: Layout) -> None
         "latex-source-tree",
         "pdf-source",
     ]
+
+
+def test_unreceipted_pdf_is_adopted_during_materialization(layout: Layout) -> None:
+    stage_source(layout, tar_gzip_source())
+    pdf_path = layout.catalog_root / SLUG / f"{SLUG}.pdf"
+    pdf_path.write_bytes(PDF)
+
+    result = asyncio.run(service(layout, RejectingMetadataService()).materialize(request()))
+    article = json.loads(Path(result.article_path).read_bytes())
+    assert result.pdf_path == str(pdf_path)
+    assert [form["role"] for form in article["source_forms"]] == [
+        "latex-source-archive",
+        "latex-source-tree",
+        "pdf-source",
+    ]
+    receipt = json.loads((layout.catalog_root / SLUG / "acquisition.json").read_bytes())
+    pdf_form = next(form for form in receipt["forms"] if form["kind"] == "pdf")
+    assert pdf_form["custody"] == "adopted"
+    assert pdf_form["sha256"] == hashlib.sha256(PDF).hexdigest()
 
 
 @pytest.mark.parametrize("condition", ("missing", "tampered"))

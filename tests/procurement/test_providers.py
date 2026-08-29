@@ -6,6 +6,7 @@ import asyncio
 import base64
 import json
 import unittest
+from unittest import mock
 
 import httpx
 
@@ -216,9 +217,27 @@ class TestArxivProvider(unittest.TestCase):
 
         asyncio.run(exercise())
 
-    def test_arxiv_headers_contain_no_email_and_use_browser_profile(self) -> None:
+    def test_arxiv_atom_sends_rotating_browser_headers_without_email(self) -> None:
+        captured: list[str] = []
+        agents = (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 "
+            "(KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
+        )
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            captured.append(request.headers.get("user-agent") or "")
+            self.assertEqual(request.headers.get("sec-fetch-dest"), "document")
+            self.assertEqual(request.headers.get("sec-fetch-mode"), "navigate")
+            return httpx.Response(
+                200,
+                content=ARXIV_FEED.encode(),
+                headers={"content-type": "application/atom+xml"},
+            )
+
         async def exercise() -> None:
-            async with httpx.AsyncClient() as raw:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
                 provider = ArxivProvider(
                     HttpClient(raw),
                     ProviderHttpSettings(
@@ -228,11 +247,27 @@ class TestArxivProvider(unittest.TestCase):
                     ),
                     secrets=RuntimeSecrets(contact_email="private@example.test"),
                 )
-                self.assertNotIn("private@example.test", provider._headers["User-Agent"])
-                self.assertNotIn("mailto", provider._headers["User-Agent"])
-                self.assertIn("Mozilla/5.0", provider._headers["User-Agent"])
+                with mock.patch(
+                    "procurement.providers.arxiv.browser_headers",
+                    side_effect=[
+                        {
+                            "User-Agent": agents[0],
+                            "Sec-Fetch-Dest": "document",
+                            "Sec-Fetch-Mode": "navigate",
+                        },
+                        {
+                            "User-Agent": agents[1],
+                            "Sec-Fetch-Dest": "document",
+                            "Sec-Fetch-Mode": "navigate",
+                        },
+                    ],
+                ):
+                    await provider.get_works_batch(["2008.10579v1"])
+                    await provider.get_works_batch(["2008.10579v1"])
 
         asyncio.run(exercise())
+        self.assertEqual(captured, list(agents))
+        self.assertTrue(all("mailto" not in agent and "@" not in agent for agent in captured))
 
 
 class TestZenodoProvider(unittest.TestCase):

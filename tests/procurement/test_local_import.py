@@ -180,6 +180,39 @@ def test_same_bytes_are_idempotent_and_changed_bytes_conflict(service_layout) ->
     assert not (staging / "manual-paper" / ".download.part").exists()
 
 
+def test_matching_unreceipted_destination_is_receipted_without_overwrite(
+    service_layout,
+) -> None:
+    service, inbox, staging = service_layout()
+    (inbox / "paper.pdf").write_bytes(PDF)
+    dest = staging / "manual-paper"
+    dest.mkdir()
+    occupant = dest / "manual-paper.pdf"
+    occupant.write_bytes(PDF)
+
+    result = run_import(service, "paper.pdf")
+
+    assert result.outcomes[0].status == "already-present"
+    assert result.manifest is not None
+    assert result.manifest.forms[0].custody == "local-import"
+    assert occupant.read_bytes() == PDF
+    assert not (dest / ".download.part").exists()
+
+
+def test_mismatched_unreceipted_destination_still_conflicts(service_layout) -> None:
+    service, inbox, staging = service_layout()
+    (inbox / "paper.pdf").write_bytes(PDF)
+    dest = staging / "manual-paper"
+    dest.mkdir()
+    occupant = dest / "manual-paper.pdf"
+    occupant.write_bytes(PDF.replace(b"<<>>", b"<</Title(x)>>"))
+
+    with pytest.raises(AcquisitionConflictError, match="occupies the local-import target"):
+        run_import(service, "paper.pdf")
+    assert occupant.read_bytes() == PDF.replace(b"<<>>", b"<</Title(x)>>")
+    assert not (dest / "acquisition.json").exists()
+
+
 def test_invalid_kind_truncated_payload_and_kind_limits_publish_nothing(service_layout) -> None:
     service, inbox, staging = service_layout(pdf_bytes=len(PDF) - 1)
     candidates = {

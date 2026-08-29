@@ -750,6 +750,40 @@ class TestStreamedDownloads(unittest.TestCase):
 
 
 class TestAcquisitionService(unittest.TestCase):
+    def test_artifact_download_sends_browser_headers(self) -> None:
+        seen: dict[str, str] = {}
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            seen["ua"] = request.headers.get("user-agent") or ""
+            seen["sec"] = request.headers.get("sec-fetch-dest") or ""
+            return httpx.Response(
+                200,
+                content=PDF,
+                headers={"content-type": "application/pdf"},
+            )
+
+        async def exercise(root: str) -> None:
+            with opened_acquisition_store(root) as store:
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    service, _planner = acquisition_service(
+                        artifact_plan((planned_artifact("pdf"),)),
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
+                    )
+                    await service.acquire(
+                        ArtifactAcquisitionRequest(
+                            provider="arxiv",
+                            identifier="2008.10579v1",
+                            artifacts=("pdf",),
+                        )
+                    )
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(root))
+        self.assertIn("Mozilla/5.0", seen["ua"])
+        self.assertEqual(seen["sec"], "document")
+        self.assertNotIn("codex-scientiae-procurement", seen["ua"])
+
     def test_store_rejects_an_unretained_path_dependency(self) -> None:
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaisesRegex(
@@ -1024,6 +1058,77 @@ class TestAcquisitionService(unittest.TestCase):
         with tempfile.TemporaryDirectory() as root:
             asyncio.run(exercise(root))
         self.assertEqual(calls, 1)
+
+    def test_unreceipted_planned_target_is_adopted_without_download(self) -> None:
+        calls = 0
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            nonlocal calls
+            calls += 1
+            return httpx.Response(
+                200,
+                content=PDF,
+                headers={"content-type": "application/pdf"},
+            )
+
+        async def exercise(root: str) -> None:
+            with opened_acquisition_store(root) as store:
+                slug = "2008.10579v1"
+                leaf = Path(root) / slug
+                leaf.mkdir()
+                (leaf / f"{slug}.pdf").write_bytes(PDF)
+                async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                    service, _planner = acquisition_service(
+                        artifact_plan((planned_artifact("pdf"),)),
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
+                    )
+                    result = await service.acquire(
+                        ArtifactAcquisitionRequest(
+                            provider="arxiv", identifier=slug, artifacts=("pdf",)
+                        )
+                    )
+            self.assertEqual(result.outcomes[0].status, "already-present")
+            form = result.manifest.forms[0]
+            self.assertEqual(form.kind, "pdf")
+            self.assertEqual(form.custody, "adopted")
+            self.assertIsNone(form.origin_url)
+            self.assertEqual(form.sha256, hashlib.sha256(PDF).hexdigest())
+            payload = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
+            jsonschema.Draft202012Validator(acquisition_manifest_schema()).validate(payload)
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(root))
+        self.assertEqual(calls, 0)
+
+    def test_invalid_unreceipted_target_still_conflicts(self) -> None:
+        async def exercise(root: str) -> None:
+            with opened_acquisition_store(root) as store:
+                slug = "2008.10579v1"
+                leaf = Path(root) / slug
+                leaf.mkdir()
+                (leaf / f"{slug}.pdf").write_bytes(b"not a pdf")
+                async with httpx.AsyncClient(
+                    transport=httpx.MockTransport(
+                        lambda _request: httpx.Response(200, content=PDF)
+                    )
+                ) as raw:
+                    service, _planner = acquisition_service(
+                        artifact_plan((planned_artifact("pdf"),)),
+                        HttpClient(raw, utc_now=lambda: NOW),
+                        store,
+                    )
+                    with self.assertRaisesRegex(
+                        AcquisitionConflictError, "not a valid pdf"
+                    ):
+                        await service.acquire(
+                            ArtifactAcquisitionRequest(
+                                provider="arxiv", identifier=slug, artifacts=("pdf",)
+                            )
+                        )
+
+        with tempfile.TemporaryDirectory() as root:
+            asyncio.run(exercise(root))
 
     def test_partial_outcome_keeps_independently_valid_payload(self) -> None:
         def handler(request: httpx.Request) -> httpx.Response:
