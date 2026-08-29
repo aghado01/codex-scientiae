@@ -1,0 +1,47 @@
+The ever-growing popularity of large language models (LLM) across many domains has brought a significant limitation to center stage: their tendency to ``hallucinate'' -- which is often used to describe the generation of inaccurate information.
+But what are hallucinations, and what causes them?
+A considerable body of research has sought to define, taxonomize, and understand hallucinations through extrinsic, behavioral analysis, primarily examining how users perceive such errors \citep{bang2023multitask, ji2023survey, huang2023survey, rawte2023troubling}.
+However, this approach does not adequately address how these errors are encoded within the LLMs.
+% This gap limits our ability to develop targeted solutions that address the root causes of hallucinations, or reason about the nature of these errors.
+Alternatively, another line of work has explored the internal representations of LLMs, suggesting that LLMs encode signals of truthfulness \citep[\textit{inter alia}]{kadavath2022language, li2024inference, chen2024inside}.
+However, these analyses were typically restricted to detecting errors---determining whether a generated output contains inaccuracies---without delving deeper into how such signals are represented and could be leveraged to understand or mitigate hallucinations.
+
+In this work, we reveal that the internal representations of LLMs encode much more information about truthfulness than previously recognized.
+Through a series of experiments, we train classifiers on these internal representations to predict various features related to the truthfulness of generated outputs.
+Our findings reveal the patterns and types of information encoded in model representations, linking this intrinsic data to extrinsic LLM behavior.
+This enhances our ability to detect errors (while understanding the limitations of error detection), and may guide the development of more nuanced strategies based on error types and mitigation methods that make use of the model's internal knowledge.
+Our experiments are designed to be general, covering a broad array of LLM limitations.
+While the term ``hallucinations'' is widely used, it lacks a universally accepted definition \citep{venkit2024confidently}.
+Our framework adopts a broad interpretation, considering hallucinations to encompass all errors produced by an LLM, including factual inaccuracies, biases, common-sense reasoning failures, and other real-world errors.
+This approach enables us to draw general conclusions about model errors from a broad perspective.
+
+Our first step is identifying \textit{where} truthfulness signals are encoded in LLMs.
+Previous studies have suggested methods for detecting errors in LLM outputs using intermediate representations, logits, or probabilities, implying that LLMs may encode signals of truthfulness \citep{kadavath2022language, li2024inference, chen2024inside}. 
+Focusing on long-form generations, which reflect real-world usage of LLMs, our analysis uncovers a key oversight: the choice of token used to extract these signals (Section \ref{sec:detection}).
+We find that \textbf{truthfulness information is concentrated in the exact answer tokens} -- e.g., “Hartford” in “The capital of Connecticut is Hartford, an iconic city...".
+Recognizing this nuance \textbf{significantly improves error detection} strategies across the board, revealing that truthfulness encoding is stronger than previously observed.
+
+From this point forward, we concentrate on our most effective strategy: a classifier trained on intermediate LLM representations within the exact answer tokens, referred to as `probing classifiers' \citep{belinkov2021probingclassifierspromisesshortcomings}.
+This approach helps us explore what these representations reveal about LLMs.
+Our demonstration that a trained probing classifier can predict errors suggests that LLMs encode information related to their own truthfulness.
+However, we find that probing classifiers do not generalize across different tasks (Section \ref{sec:generalization}).
+Generalization occurs only within tasks requiring similar skills (e.g., factual retrieval), indicating the \textbf{truthfulness information is ``skill-specific'' and varies across different tasks}.
+For tasks involving different skills, e.g., sentiment analysis, these classifiers are no better--or worse--than logit-based uncertainty predictors, challenging the idea of a ``universal truthfulness'' encoding proposed in previous work \citep{marks2023geometry,slobodkin-etal-2023-curious}.
+Instead, our results indicate that LLMs encode multiple, distinct notions of truth.
+Thus, deploying trainable error detectors in practical applications should be undertaken with caution.
+
+% After establishing the limitations of error detection and examining how error encoding differs across tasks, w
+We next find evidence that \textbf{LLMs encode not only error detection signals but also more nuanced information about error types}.
+Delving deeper into errors within a single task, we taxonomize its errors based on responses across repeated samples (Section \ref{sec:error_types}).
+For example, the same error being consistently generated is different from an error that is generated occasionally among many other distinct errors.
+Using a different set of probing classifiers, we find that error types are predictable from the LLM representations, drawing a connection between the models's internal representations and its external behavior.
+% This raises an interesting possibility that \textbf{LLMs encode not only truthfulness signals but also more nuanced information about error types}.
+This classification offers a more nuanced understanding of errors, enabling developers to predict error patterns and implement more targeted mitigation strategies.
+
+Finally, we find that the truthfulness signals encoded in LLMs can also differentiate between correct and incorrect answers for the same question (Section \ref{sec:choosing_correct_answer}).
+% Finally, we investigate the alignment between the LLM's internal representations and its external behavior (Section \ref{sec:choosing_correct_answer}).
+Results highlight a significant misalignment between LLM's internal representations and its external behavior in some cases.
+% where the model's internal encoding contradicts its behavior.
+\textbf{The model's internal encoding may identify the correct answer--yet it frequently generates an incorrect response}.
+This discrepancy reveals that the LLM’s external behavior may misrepresent its abilities, potentially pointing to new strategies for reducing errors by utilizing its existing strengths.
+Overall, our model-centric framework provides a deeper understanding of LLM errors, suggesting potential directions for improvements in error analysis and mitigation.

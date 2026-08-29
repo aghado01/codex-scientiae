@@ -1,0 +1,109 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2410.02707v4",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2410.02707v4",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "LLMs Know More Than They Show: On the Intrinsic Representation of LLM Hallucinations",
+      "authors": [
+        "Hadas Orgad",
+        "Michael Toker",
+        "Zorik Gekhman",
+        "Roi Reichart",
+        "Idan Szpektor",
+        "Hadas Kotek",
+        "Yonatan Belinkov"
+      ],
+      "abstract": "Large language models (LLMs) often produce errors, including factual inaccuracies, biases, and reasoning failures, collectively referred to as \"hallucinations\". Recent studies have demonstrated that LLMs' internal states encode information regarding the truthfulness of their outputs, and that this information can be utilized to detect errors. In this work, we show that the internal representations of LLMs encode much more information about truthfulness than previously recognized. We first discover that the truthfulness information is concentrated in specific tokens, and leveraging this property significantly enhances error detection performance. Yet, we show that such error detectors fail to generalize across datasets, implying that -- contrary to prior claims -- truthfulness encoding is not universal but rather multifaceted. Next, we show that internal representations can also be used for predicting the types of errors the model is likely to make, facilitating the development of tailored mitigation strategies. Lastly, we reveal a discrepancy between LLMs' internal encoding and external behavior: they may encode the correct answer, yet consistently generate an incorrect one. Taken together, these insights deepen our understanding of LLM errors from the model's internal perspective, which can guide future research on enhancing error analysis and mitigation.",
+      "doi": null,
+      "arxiv_id": "2410.02707v4",
+      "published": "2024-10-03T17:31:31Z",
+      "updated": "2025-05-18T11:18:56Z",
+      "year": 2024,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2410.02707v4",
+      "pdf_url": "https://arxiv.org/pdf/2410.02707v4",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2410.02707v4"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2410.02707v4",
+          "url": "https://arxiv.org/abs/2410.02707v4",
+          "doi": null,
+          "arxiv_id": "2410.02707v4",
+          "published": "2024-10-03T17:31:31Z",
+          "updated": "2025-05-18T11:18:56Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2410.02707v4&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-27T06:32:22.289328Z",
+      "sha256": "07448133ec390f8f094edbbcb4974a9142d2038d45592b542ad51bdb2b090a14",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvZ2VOL0g4Qk1SZjJjU1NFS0V6ZFdpaGEreWxnPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjQxMC4wMjcwN3Y0JmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI3VDA2OjMyOjIxWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNDEwLjAyNzA3djQiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjQxMC4wMjcwN3Y0PC9pZD4KICAgIDx0aXRsZT5MTE1zIEtub3cgTW9yZSBUaGFuIFRoZXkgU2hvdzogT24gdGhlIEludHJpbnNpYyBSZXByZXNlbnRhdGlvbiBvZiBMTE0gSGFsbHVjaW5hdGlvbnM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNS0wNS0xOFQxMToxODo1Nlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjQxMC4wMjcwN3Y0IiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjQxMC4wMjcwN3Y0IiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+TGFyZ2UgbGFuZ3VhZ2UgbW9kZWxzIChMTE1zKSBvZnRlbiBwcm9kdWNlIGVycm9ycywgaW5jbHVkaW5nIGZhY3R1YWwgaW5hY2N1cmFjaWVzLCBiaWFzZXMsIGFuZCByZWFzb25pbmcgZmFpbHVyZXMsIGNvbGxlY3RpdmVseSByZWZlcnJlZCB0byBhcyAiaGFsbHVjaW5hdGlvbnMiLiBSZWNlbnQgc3R1ZGllcyBoYXZlIGRlbW9uc3RyYXRlZCB0aGF0IExMTXMnIGludGVybmFsIHN0YXRlcyBlbmNvZGUgaW5mb3JtYXRpb24gcmVnYXJkaW5nIHRoZSB0cnV0aGZ1bG5lc3Mgb2YgdGhlaXIgb3V0cHV0cywgYW5kIHRoYXQgdGhpcyBpbmZvcm1hdGlvbiBjYW4gYmUgdXRpbGl6ZWQgdG8gZGV0ZWN0IGVycm9ycy4gSW4gdGhpcyB3b3JrLCB3ZSBzaG93IHRoYXQgdGhlIGludGVybmFsIHJlcHJlc2VudGF0aW9ucyBvZiBMTE1zIGVuY29kZSBtdWNoIG1vcmUgaW5mb3JtYXRpb24gYWJvdXQgdHJ1dGhmdWxuZXNzIHRoYW4gcHJldmlvdXNseSByZWNvZ25pemVkLiBXZSBmaXJzdCBkaXNjb3ZlciB0aGF0IHRoZSB0cnV0aGZ1bG5lc3MgaW5mb3JtYXRpb24gaXMgY29uY2VudHJhdGVkIGluIHNwZWNpZmljIHRva2VucywgYW5kIGxldmVyYWdpbmcgdGhpcyBwcm9wZXJ0eSBzaWduaWZpY2FudGx5IGVuaGFuY2VzIGVycm9yIGRldGVjdGlvbiBwZXJmb3JtYW5jZS4gWWV0LCB3ZSBzaG93IHRoYXQgc3VjaCBlcnJvciBkZXRlY3RvcnMgZmFpbCB0byBnZW5lcmFsaXplIGFjcm9zcyBkYXRhc2V0cywgaW1wbHlpbmcgdGhhdCAtLSBjb250cmFyeSB0byBwcmlvciBjbGFpbXMgLS0gdHJ1dGhmdWxuZXNzIGVuY29kaW5nIGlzIG5vdCB1bml2ZXJzYWwgYnV0IHJhdGhlciBtdWx0aWZhY2V0ZWQuIE5leHQsIHdlIHNob3cgdGhhdCBpbnRlcm5hbCByZXByZXNlbnRhdGlvbnMgY2FuIGFsc28gYmUgdXNlZCBmb3IgcHJlZGljdGluZyB0aGUgdHlwZXMgb2YgZXJyb3JzIHRoZSBtb2RlbCBpcyBsaWtlbHkgdG8gbWFrZSwgZmFjaWxpdGF0aW5nIHRoZSBkZXZlbG9wbWVudCBvZiB0YWlsb3JlZCBtaXRpZ2F0aW9uIHN0cmF0ZWdpZXMuIExhc3RseSwgd2UgcmV2ZWFsIGEgZGlzY3JlcGFuY3kgYmV0d2VlbiBMTE1zJyBpbnRlcm5hbCBlbmNvZGluZyBhbmQgZXh0ZXJuYWwgYmVoYXZpb3I6IHRoZXkgbWF5IGVuY29kZSB0aGUgY29ycmVjdCBhbnN3ZXIsIHlldCBjb25zaXN0ZW50bHkgZ2VuZXJhdGUgYW4gaW5jb3JyZWN0IG9uZS4gVGFrZW4gdG9nZXRoZXIsIHRoZXNlIGluc2lnaHRzIGRlZXBlbiBvdXIgdW5kZXJzdGFuZGluZyBvZiBMTE0gZXJyb3JzIGZyb20gdGhlIG1vZGVsJ3MgaW50ZXJuYWwgcGVyc3BlY3RpdmUsIHdoaWNoIGNhbiBndWlkZSBmdXR1cmUgcmVzZWFyY2ggb24gZW5oYW5jaW5nIGVycm9yIGFuYWx5c2lzIGFuZCBtaXRpZ2F0aW9uLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjQtMTAtMDNUMTc6MzE6MzFaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5DTCIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFkYXMgT3JnYWQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1pY2hhZWwgVG9rZXI8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlpvcmlrIEdla2htYW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlJvaSBSZWljaGFydDwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SWRhbiBTenBla3RvcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFkYXMgS290ZWs8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPllvbmF0YW4gQmVsaW5rb3Y8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "LLMs Know More Than They Show: On the Intrinsic Representation of LLM Hallucinations",
+    "authors": [
+      "Hadas Orgad",
+      "Michael Toker",
+      "Zorik Gekhman",
+      "Roi Reichart",
+      "Idan Szpektor",
+      "Hadas Kotek",
+      "Yonatan Belinkov"
+    ],
+    "abstract": "Large language models (LLMs) often produce errors, including factual inaccuracies, biases, and reasoning failures, collectively referred to as \"hallucinations\". Recent studies have demonstrated that LLMs' internal states encode information regarding the truthfulness of their outputs, and that this information can be utilized to detect errors. In this work, we show that the internal representations of LLMs encode much more information about truthfulness than previously recognized. We first discover that the truthfulness information is concentrated in specific tokens, and leveraging this property significantly enhances error detection performance. Yet, we show that such error detectors fail to generalize across datasets, implying that -- contrary to prior claims -- truthfulness encoding is not universal but rather multifaceted. Next, we show that internal representations can also be used for predicting the types of errors the model is likely to make, facilitating the development of tailored mitigation strategies. Lastly, we reveal a discrepancy between LLMs' internal encoding and external behavior: they may encode the correct answer, yet consistently generate an incorrect one. Taken together, these insights deepen our understanding of LLM errors from the model's internal perspective, which can guide future research on enhancing error analysis and mitigation.",
+    "identifiers": {
+      "arxiv": "2410.02707",
+      "arxiv_versioned": "2410.02707v4",
+      "doi": null,
+      "external": {
+        "arxiv": "2410.02707v4"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2024-10-03T17:31:31Z",
+    "updated": "2025-05-18T11:18:56Z"
+  }
+}

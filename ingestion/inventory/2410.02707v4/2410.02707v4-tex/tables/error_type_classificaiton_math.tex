@@ -1,0 +1,16 @@
+\begin{table}[t]
+    \centering
+    \caption{AUC scores for error type classification (Math). Error types are predictable from the inner model representations, indicating the encoding of fine-grained information on errors.}
+    \begin{tabular}{l|llll}
+    \toprule
+       Error type & Mistral-7b & Mistral-Instr-7b & Llama3-8b & Llama3-Instr-8b \\
+       \midrule
+         (A) Refuses to answer & - & - & - & - \\
+         (B) Consistently correct & $0.85 \scriptscriptstyle{\pm 0.017}$ & $0.84 \scriptscriptstyle{\pm 0.007}$ & $0.83 \scriptscriptstyle{\pm 0.020}$ & $0.87 \scriptscriptstyle{\pm 0.006}$ \\
+         (C) Consistently incorrect & $0.85 \scriptscriptstyle{\pm 0.026}$ & $0.85 \scriptscriptstyle{\pm 0.003}$ & $0.69 \scriptscriptstyle{\pm 0.032}$ & $0.91 \scriptscriptstyle{\pm 0.007}$ \\
+         (D) Two competing & - & $0.76 \scriptscriptstyle{\pm 0.020}$ & $0.57 \scriptscriptstyle{\pm 0.001}$ & $0.79 \scriptscriptstyle{\pm 0.006}$ \\
+         (E) Many answers & $0.74 \scriptscriptstyle{\pm 0.010}$ & $0.79 \scriptscriptstyle{\pm 0.015}$ & $0.69 \scriptscriptstyle{\pm0.041}$ & $0.90 \scriptscriptstyle{\pm 0.008}$ \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:error_type_classification_math}
+\end{table}

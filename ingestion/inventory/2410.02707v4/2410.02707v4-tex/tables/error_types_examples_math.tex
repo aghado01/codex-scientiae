@@ -1,0 +1,18 @@
+\begin{table}[h]
+\centering
+\caption{Examples of error types in Math, Mistral-7B-Instruct. Correct answer is in \textbf{bold}.}
+\begin{tabular}{|l|l|l|}
+\toprule
+\textbf{Type of error} & \textbf{Question} & \textbf{Answers} \\
+\midrule
+\makecell[l]{Consistently \\ correct} & \makecell[l]{If John travels 15 miles on a bike \\ ride, and Jill travels 5 miles less,\\ how many miles does Jim travel \\if he travels only 20\% as far as Jill?	} & ``\textbf{2}'': $30$ \\
+\midrule
+\makecell[l]{Consistently \\ incorrect} & \makecell[l]{Joy has 30 pencils, and Colleen \\ has 50 pencils. If they bought the \\ pencils at \$4 each at the store,\\ how much more money did \\ Colleen pay than Joy for her pencils?} & \makecell[l]{“\textbf{80\$}”: 1, \\ “16\$”: $29$ (correct)} \\
+\midrule
+\makecell[l]{Many different \\ answers}	& \makecell[l]{If the first skyscraper was built 100\\ years ago, how many years in the \\ future will it be 5 years before \\ its 200th anniversary of being built?} & \makecell[l]{``\textbf{95}'': $14$, \\ ``91'': $1$, \\``87'': $1$,\\ ``15'': $2$,\\ ``96'': $1$, \\ ``Six'': $1$, \\ ``202 '': $1$, \\ ``2035'': $1$, \\ ``195'': $1$, \\ ``49'': $1$,  \\``101'': $1$, \\ ``199'': $1$, \\ ``3 years before the\\ 200th anniversary'': $1$, \\ ``203 years after it was \\built'': $1$, \\``196'': $1$, \\``2043'': $1$}\\
+\midrule
+Two competing answers & \makecell[l]{David did 27 more push-ups but 7 \\ less crunches than Zachary in gym \\class today. If Zachary did 5 push-\\ups and 17 crunches.How many more\\ crunches than push-ups did Zachary do?	} & ``\textbf{12}'':5, ``1'': 5 $x$ \\
+\bottomrule
+\end{tabular}
+\label{tab:error_types_math}
+\end{table}

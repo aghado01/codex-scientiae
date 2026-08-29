@@ -1,0 +1,39 @@
+
+
+\vspace{-7pt}
+\section{Related work}
+\vspace{-3pt}
+
+
+\textbf{Visuomotor Policy Acceleration.}
+High-speed manipulation has been extensively studied in classical robotics, especially in motion planning and trajectory optimization~\cite{cmu-motion-plan-jeff}.
+%
+However, these techniques are not directly applicable to visuomotor policy learning, where actions must be predicted end-to-end from high-dimensional sensory observations.
+%
+In policy learning, robot manipulation policies often remain slow, yet performance is still primarily evaluated by success rate~\cite{pi_05, bidex, via, dp, manip_as_in_sim}, with comparatively less attention to task completion time.
+%
+Recent works~\cite{rtc, demospeedup, arachchige2025sail} have begun to address this gap. For example, DemoSpeedup~\cite{demospeedup} accelerates imitation policies by using action entropy to identify which parts of demonstrations can be safely downsampled, while SAIL~\cite{arachchige2025sail} frames this problem as a full-stack engineering involving policy consistency, robot dynamics, and latency-aware scheduling.
+%
+In contrast, our work identifies action chunking as a key algorithmic bottleneck for fast visuomotor control. We therefore introduce B-spline Policy (BSP), which replaces fixed discrete action chunks with continuous B-spline curves, enabling smooth and fast manipulation.
+
+
+\textbf{B-spline Action Representations.} 
+%
+Discrete-time action chunking is widely used in visuomotor policy learning~\cite{act, dp, bidex, via, factor-dp, pi_05, re3sim}.
+%
+While fixed-length action chunking has been shown to stabilize long-horizon visuomotor learning~\cite{block2023provbc, mobile-aloha}, it imposes a uniform temporal resolution that fails to capture the inherently non-uniform structure of manipulation tasks.
+%
+%
+% Spline has been widely used in classical motion planning~\cite{to-pnp-with-bsplines,to-via-bsplines,bsplines-based-trajectory-design} and computer graphics~\cite{bspline-in-cad-cg,intro-bspline-graphics}, we introduce a B-spline action representation that offers advantages over discrete-time action chunks and enables effective policy acceleration.
+% 
+In classical motion planning, actions are often parameterized as continuous-time curves, such as B'ezier curves~\cite{bezier-for-robot-motion-plan} and splines~\cite{to-via-bsplines, bsplines-based-trajectory-design, bspline-on-gcs}. These representations provide intrinsic smoothness and analytic derivatives~\cite{grotjahn2002model, an1987experimental}. Motivated by these properties, we adopt B-splines as a continuous action representation for accelerating learned visuomotor policies.
+%
+% Most closely related to our work, BEAST~\cite{beast} fits each action chunk with a B-spline using uniform knot spacing and quantizes the spline parameters for discrete modeling. In contrast, we adopt a continuous formulation with non-uniformly allocated knots and control points, which are directly predicted by our policy.
+%
+% Most closely related to our work, BEAST~\cite{beast} proposes a B-spline encoded action tokenizer for efficient action sequence modeling and decoding in VLA policies. 
+% %
+% In contrast, BSP turns B-splines into a control-oriented continuous action representation and execution pipeline for accelerating real-robot manipulation.
+%
+Closely related to our work, BEAST~\cite{beast} proposes a B-spline encoded action tokenizer for efficient action sequence modeling and decoding in VLA policies. DMPs~\cite{ijspeert2013dynamical} represent robot motions as stable, temporally scalable dynamical systems with learnable forcing terms.
+%
+In contrast, BSP uses B-splines not as a trajectory encoding or motion primitive, but as a control-oriented continuous action representation and execution pipeline for accelerating end-to-end visuomotor policies.

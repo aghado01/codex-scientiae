@@ -1,0 +1,19 @@
+\begin{table}[h]
+\centering
+\caption{Examples of error types in TriviaQA, Mistral-7B-Instruct. Correct answer is in \textbf{bold}.}
+\begin{tabular}{|l|l|l|}
+\toprule
+\textbf{Type of error} & \textbf{Question} & \textbf{Answers} \\
+\midrule
+\makecell[l]{Consistently \\ correct} & \makecell[l]{What clothing-part metaphorically \\ classifies workers/jobs according\\ to white or blue?} & ``\textbf{collar}'': $30$ \\
+\midrule
+\makecell[l]{Consistently \\ incorrect} & \makecell[l]{Which town in southeast Wales \\ became a UNESCO World Heritage \\ Site in 2000?
+} & \makecell[l]{\textbf{``Blaenavon''}: 1, \\ ``Caerleon'': 29} \\
+\midrule
+\makecell[l]{Many different \\ answers}	&\makecell[l]{Published in 2013 who wrote \\ the novel 'The Kill List'?}  &\makecell[l]{``\textbf{Frederick Forsyth}'': 1, \\ ``Jerry Patterson'': $1$,\\ ``Edward Lee'': $1$,  \\ ``Barry Lancet'': $4$ \\``Jeremy Holiday'': $1$, \\ ``Barry Lincoff'': $1$, \\ ``Jim Marrs'': $1$, \\ ``John Marrs'': $1$, \\ ``Anthony Lacy'': $1$, \\ ``Daniel Kraus'': $1$, \\``Ron Bass'': $1$, \\ ``David Martiniello'': $2$, \\ ``Eric Lustbader'': $1$, \\ ``Barbie Latza Nadeau'': $1$, \\ ``James Swallow'': $1$, \\ ``Mark Sullivan'': $1$, \\ ``Alex Binotto'': $1$, \\ ``David Baldacci'': $1$, \\ ``Bill Cosores'': $1$, \\ ``Frederic J. Brown'': $1$, \\ ``Ron Capps and Tate Foley'': $1$, \\ ``Barbie Wilde'': $1$, \\ ``NO ANSWER'': $3$} \\
+\midrule
+Two competing answers & \makecell[l]{What is the only letter of the \\ alphabet which does  not appear \\ in any of the names of the 50 \\ American states?} & \makecell[l]{``\textbf{The letter q}'': 15, \\ ``The letter X'': 15}\\
+\bottomrule
+\end{tabular}
+\label{tab:error_types_triviaqa}
+\end{table}

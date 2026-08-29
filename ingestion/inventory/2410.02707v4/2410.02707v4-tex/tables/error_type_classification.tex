@@ -1,0 +1,16 @@
+\begin{table}[t]
+    \centering
+    \caption{AUC scores for error type classification (TriviaQA). Error types are predictable from the inner model representations, indicating the encoding of fine-grained information on errors.}
+    \begin{tabular}{l|llll}
+    \toprule
+       Error type & Mistral-7b & Mistral-Instr-7b & Llama3-8b & Llama3-Instr-8b \\
+       \midrule
+         (A) Refuses to answer & $0.86 \scriptscriptstyle{\pm 0.002}$ & $0.85 \scriptscriptstyle{\pm 0.011}$ & $0.87 \scriptscriptstyle{\pm 0.002}$ & $0.88 \scriptscriptstyle{\pm 0.014}$ \\
+         (B) Consistently correct & $0.88 \scriptscriptstyle{\pm 0.001}$ & $0.82 \scriptscriptstyle{\pm 0.008}$ & $0.86 \scriptscriptstyle{\pm 0.001}$  & $0.81 \scriptscriptstyle{\pm 0.002}$ \\
+         (C) Consistently incorrect & $0.59 \scriptscriptstyle{\pm 0.002}$ & $0.67 \scriptscriptstyle{\pm 0.002}$ & $0.59 \scriptscriptstyle{\pm 0.002}$ & $0.64 \scriptscriptstyle{\pm 0.003}$\\
+         (D) Two competing & $0.63 \scriptscriptstyle{\pm 0.002}$ & $0.68 \scriptscriptstyle{\pm 0.006}$ & $0.61 \scriptscriptstyle{\pm 0.001}$ & $0.65 \scriptscriptstyle{\pm 0.004}$ \\
+         (E) Many answers &  $0.90 \scriptscriptstyle{\pm 0.001}$ & $0.84 \scriptscriptstyle{\pm 0.003}$ & $0.89 \scriptscriptstyle{\pm 0.001}$ & $0.89 \scriptscriptstyle{\pm 0.001}$ \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:error_type_classification}
+\end{table}

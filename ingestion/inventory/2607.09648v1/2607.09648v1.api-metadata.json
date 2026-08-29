@@ -1,0 +1,107 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.09648v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.09648v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "B-spline Policy: Accelerating Manipulation Policies via B-spline Action Representations",
+      "authors": [
+        "Xiaoshen Han",
+        "Haoyu Xiong",
+        "Haonan Chen",
+        "Chaoqi Liu",
+        "Antonio Torralba",
+        "Yuke Zhu",
+        "Yilun Du"
+      ],
+      "abstract": "In this work, we present B-spline Policy (BSP), an action representation designed for accelerating robot manipulation policies. Rather than predicting discrete-time action chunks, BSP parameterizes actions as continuous B-spline curves defined by a set of knots and control points. This representation yields smooth, time-continuous trajectories that can be temporally scaled and executed by low-level controllers at higher frequencies and speeds. We show that B-spline-parameterized actions can be seamlessly integrated into standard policy learning pipelines by directly predicting B-spline parameters. Experiments on simulated and real-world tasks demonstrate that BSP significantly reduces task completion time, achieving substantial improvements over baseline methods while maintaining strong success rates. More results: https://b-spline-policy.github.io",
+      "doi": null,
+      "arxiv_id": "2607.09648v1",
+      "published": "2026-07-10T17:46:32Z",
+      "updated": "2026-07-10T17:46:32Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.09648v1",
+      "pdf_url": "https://arxiv.org/pdf/2607.09648v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.RO"
+      ],
+      "external_ids": {
+        "arxiv": "2607.09648v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.09648v1",
+          "url": "https://arxiv.org/abs/2607.09648v1",
+          "doi": null,
+          "arxiv_id": "2607.09648v1",
+          "published": "2026-07-10T17:46:32Z",
+          "updated": "2026-07-10T17:46:32Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.09648v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-27T23:04:59.457235Z",
+      "sha256": "abb10d159a19a9a9312b4b5c0994c88f1b7d1e7fd0d4c9b9c8a3233ded1ef820",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvbVFKL20wN1Zmci9wc3VaSEs3L0MyWVg3c3Y4PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4wOTY0OHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI3VDIzOjA0OjU5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjA5NjQ4djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wOTY0OHYxPC9pZD4KICAgIDx0aXRsZT5CLXNwbGluZSBQb2xpY3k6IEFjY2VsZXJhdGluZyBNYW5pcHVsYXRpb24gUG9saWNpZXMgdmlhIEItc3BsaW5lIEFjdGlvbiBSZXByZXNlbnRhdGlvbnM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNy0xMFQxNzo0NjozMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wOTY0OHYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNy4wOTY0OHYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+SW4gdGhpcyB3b3JrLCB3ZSBwcmVzZW50IEItc3BsaW5lIFBvbGljeSAoQlNQKSwgYW4gYWN0aW9uIHJlcHJlc2VudGF0aW9uIGRlc2lnbmVkIGZvciBhY2NlbGVyYXRpbmcgcm9ib3QgbWFuaXB1bGF0aW9uIHBvbGljaWVzLiBSYXRoZXIgdGhhbiBwcmVkaWN0aW5nIGRpc2NyZXRlLXRpbWUgYWN0aW9uIGNodW5rcywgQlNQIHBhcmFtZXRlcml6ZXMgYWN0aW9ucyBhcyBjb250aW51b3VzIEItc3BsaW5lIGN1cnZlcyBkZWZpbmVkIGJ5IGEgc2V0IG9mIGtub3RzIGFuZCBjb250cm9sIHBvaW50cy4gVGhpcyByZXByZXNlbnRhdGlvbiB5aWVsZHMgc21vb3RoLCB0aW1lLWNvbnRpbnVvdXMgdHJhamVjdG9yaWVzIHRoYXQgY2FuIGJlIHRlbXBvcmFsbHkgc2NhbGVkIGFuZCBleGVjdXRlZCBieSBsb3ctbGV2ZWwgY29udHJvbGxlcnMgYXQgaGlnaGVyIGZyZXF1ZW5jaWVzIGFuZCBzcGVlZHMuIFdlIHNob3cgdGhhdCBCLXNwbGluZS1wYXJhbWV0ZXJpemVkIGFjdGlvbnMgY2FuIGJlIHNlYW1sZXNzbHkgaW50ZWdyYXRlZCBpbnRvIHN0YW5kYXJkIHBvbGljeSBsZWFybmluZyBwaXBlbGluZXMgYnkgZGlyZWN0bHkgcHJlZGljdGluZyBCLXNwbGluZSBwYXJhbWV0ZXJzLiBFeHBlcmltZW50cyBvbiBzaW11bGF0ZWQgYW5kIHJlYWwtd29ybGQgdGFza3MgZGVtb25zdHJhdGUgdGhhdCBCU1Agc2lnbmlmaWNhbnRseSByZWR1Y2VzIHRhc2sgY29tcGxldGlvbiB0aW1lLCBhY2hpZXZpbmcgc3Vic3RhbnRpYWwgaW1wcm92ZW1lbnRzIG92ZXIgYmFzZWxpbmUgbWV0aG9kcyB3aGlsZSBtYWludGFpbmluZyBzdHJvbmcgc3VjY2VzcyByYXRlcy4gTW9yZSByZXN1bHRzOiBodHRwczovL2Itc3BsaW5lLXBvbGljeS5naXRodWIuaW88L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuUk8iIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNy0xMFQxNzo0NjozMlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLlJPIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaWFvc2hlbiBIYW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkhhb3l1IFhpb25nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5IYW9uYW4gQ2hlbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q2hhb3FpIExpdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QW50b25pbyBUb3JyYWxiYTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WXVrZSBaaHU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPllpbHVuIER1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "B-spline Policy: Accelerating Manipulation Policies via B-spline Action Representations",
+    "authors": [
+      "Xiaoshen Han",
+      "Haoyu Xiong",
+      "Haonan Chen",
+      "Chaoqi Liu",
+      "Antonio Torralba",
+      "Yuke Zhu",
+      "Yilun Du"
+    ],
+    "abstract": "In this work, we present B-spline Policy (BSP), an action representation designed for accelerating robot manipulation policies. Rather than predicting discrete-time action chunks, BSP parameterizes actions as continuous B-spline curves defined by a set of knots and control points. This representation yields smooth, time-continuous trajectories that can be temporally scaled and executed by low-level controllers at higher frequencies and speeds. We show that B-spline-parameterized actions can be seamlessly integrated into standard policy learning pipelines by directly predicting B-spline parameters. Experiments on simulated and real-world tasks demonstrate that BSP significantly reduces task completion time, achieving substantial improvements over baseline methods while maintaining strong success rates. More results: https://b-spline-policy.github.io",
+    "identifiers": {
+      "arxiv": "2607.09648",
+      "arxiv_versioned": "2607.09648v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.09648v1"
+      }
+    },
+    "categories": [
+      "cs.RO"
+    ],
+    "concepts": [],
+    "primary_category": "cs.RO",
+    "published": "2026-07-10T17:46:32Z",
+    "updated": "2026-07-10T17:46:32Z"
+  }
+}

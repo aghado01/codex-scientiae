@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering
+\caption{Examples of questions where Mistral-7b-Instruct consistently provided incorrect answers but occasionally generated the correct one. In these instances, the probe successfully identified the right answer. For each question, the model was sampled 30 times.}
+\begin{tabular}{l|lr|lr}
+\toprule
+\textbf{Question} & \textbf{\makecell[l]{Wrong \\ Answer}} & \textbf{Count} & \textbf{\makecell[l]{Correct \\ Answer}} & \textbf{Count} \\
+\midrule
+\makecell[l]{Which town in southeast\\ Wales became a UNESCO \\ World Heritage Site in 2000?} & Caerleon & 29 & Blaenavon & 1 \\    
+\midrule
+\makecell[l]{From her first US film musical \\ "Down   Argentina Way" (1940),\\ who became famous for  \\ extravagant hats, jewellery and \\ dresses?} & \makecell[l]{Betty \\Grable} & 27 & \makecell[l]{Carmen \\Miranda} & 1 \\
+\midrule
+\makecell[l]{Men Against the Sea and \\ Pitcairn's  Island were two \\ sequels to what famous novel?} & \makecell[l]{Robinson\\ Crusoe} & 18 & \makecell[l]{Mutiny on \\the Bounty} & 2              \\
+\midrule
+\makecell[l]{Which is the only property on a \\   traditional UK Monopoly board \\which s south of the River \\Thames?} & \makecell[l]{Coventry \\Street} & 17 & \makecell[l]{Old Kent \\Road} & 3 \\
+\midrule
+\makecell[l]{Which French Canadian became\\ Prime   Minister of\\ Canada in 1968?} & \makecell[l]{Jean\\ Chrétien} & 21 & \makecell[l]{Pierre \\ Elliott \\ Trudeau}  & 4 \\
+
+\bottomrule
+\end{tabular}
+\label{tab:choose_answer_qualitative}
+\end{table}

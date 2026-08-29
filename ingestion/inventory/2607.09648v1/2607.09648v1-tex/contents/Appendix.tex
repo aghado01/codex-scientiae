@@ -1,0 +1,336 @@
+\clearpage
+\appendix
+\section{Appendix}
+\subsection{Implement Details}
+
+\noindent\textbf{B-spline action representation. }
+We represent action trajectories using cubic B-splines with degree $k=3$.
+In simulation, we follow standard benchmark settings and use a delta end-effector action space.
+In real-world experiments, we use absolute joint-position actions.
+
+\noindent\textbf{Adaptive b-spline fitting from demonstrations. }
+We fit a B-spline to each demonstration trajectory using the adaptive knot insertion procedure in Alg.~\ref{alg:spline-compress}.
+For most tasks, we use a small fitting tolerance $\varepsilon=0.002$ to preserve high-precision behaviors.
+For Push-T, we use $\varepsilon=1$ because the action magnitude is substantially larger than in the other benchmarks, with values ranging roughly from $0$ to $512$.
+
+\noindent\textbf{Model training of \our.} 
+We train \our model to predict a fixed-size parameter segment consisting of 16 knots and their corresponding control points, including six boundary-support knots.
+Because observations are not aligned to knot or control-point indices, at each observation step, the model predicts the nearest future segment containing the next 16 knots and control points.
+In simulation, all models use the RoboMimic visual encoder.
+In real-world experiments, diffusion uses the same visual encoder, whereas the regression uses a DINOv2 visual encoder.
+
+\noindent\textbf{Model training of action-chunk policies.} 
+For a fair comparison, all action-chunk baseline policies (Diffusion/Regression) are also trained to predict 16 future actions.
+Each baseline is trained for the same number of epochs as its B-spline counterpart.
+The visual encoder is the same as \our.
+
+\noindent\textbf{DemoSpeedup.} We implement the DemoSpeedup based on the diffusion policy. 
+The method uses two key hyperparameters, which are the downsampling rates for the precision and non-precision phases.
+We found that downsampling the precision phase by a factor $\ge 2$ prevents the policy from completing the task reliably.
+We therefore set the precision-phase downsampling rate to 1.
+For the non-precision phase, we use a downsampling rate of 4 for \pickcube\ and \cleantable.
+We use 2 for \stackunstack\ because it requires higher accuracy.
+
+\noindent\textbf{Controller.}
+In simulation, actions are delta end-effector commands.
+We sample B-spline actions at 100\,Hz, but we do not apply segment alignment because it does not have a clear physical interpretation for delta actions.
+In real-world experiments, actions are absolute joint positions.
+We sample actions from each predicted B-spline segment at 100\,Hz.
+For phase alignment, we set the search window to $[0,\lambda T^{\mathrm{inf}}]$ with $\lambda T^{\mathrm{inf}} = u_{\max}(S)/2$, where $u_{\max}(S)$ denotes the segment horizon in the spline parameter domain.
+
+% \noindent\textbf{PD controller with feedforward terms.}
+% In Eq.~\ref{eq:ff} of the main text, $\boldsymbol{q}, \dot{\boldsymbol{q}}$ are the measured joint positions and velocities; $\boldsymbol{q}_d, \dot{\boldsymbol{q}}_d, \ddot{\boldsymbol{q}}_d$ are the desired joint positions, velocities, and accelerations, computed by evaluating the B-spline trajectory and its first and second derivatives at the current sample time. $\boldsymbol{K}_p, \boldsymbol{K}_d$ are diagonal positive-definite gain matrices; $\boldsymbol{M}(\boldsymbol{q})$ is the manipulator inertia matrix; $\boldsymbol{C}(\boldsymbol{q}, \dot{\boldsymbol{q}})$ captures Coriolis and centripetal effects; and $\boldsymbol{g}(\boldsymbol{q})$ denotes gravitational torques.
+
+% \subsection{Discussion}
+% % not sure if we need to add this
+
+% \noindent\textbf{Relationship to DemoSpeedup.}
+% DemoSpeedup partitions trajectories into precision and non-precision phases using action entropy and applies a higher downsampling rate to the non-precision phase.
+% It requires training a separate policy for each choice of downsampling rates, which is expensive when sweeping speed settings.
+% In contrast, \our enables speed changes at inference time via temporal scaling of a continuous trajectory.
+% Besides, the two approaches are actually complementary.
+% Entropy-based phase-dependent speed scheduling can also be applied on top of \our.
+
+% \noindent\textbf{Relationship to SAIL.} SAIL~\cite{arachchige2025sail} also focuses on enabling faster-than-demonstration execution of visuomotor policies. It proposed a full-stack system, which is orthogonal to our learning representation. The main focus of our work is to propose a new action representation, which is more friendly for the robot to finish tasks faster. 
+
+% \noindent\textbf{Relationship to post-hoc spline smoothing.}
+% A natural simplified variant is to fit a B-spline online to each waypoint chunk predicted by a standard policy and then execute it with the same high-rate controller pipeline, and segment align scheme as \our.
+% While this might speed up simple tasks, it remains limited by the waypoint representation: the policy still learns discrete samples at a fixed temporal resolution.
+% In contrast, \our directly predicts a \emph{non-uniform} spline parameterization, allocating more knots to rapidly changing phases and fewer to smooth segments.
+% Moreover, chunk-wise online fitting is inherently local, whereas fitting splines from full demonstrations can capture global structure during preprocessing, with more room for optimization.
+% Empirically, \our improves success rates at the original speed on most tasks compared to the discrete action representation. We hypothesize that non-uniform knot placement contributes to this effect.
+
+\noindent\textbf{Knot validity projection.}
+A valid B-spline requires a nondecreasing knot vector, which standard imitation-learning regressors do not enforce. In practice predicted knots are almost always monotonic; for any knot $u_i$ that violates the constraint we apply $u_i \leftarrow \max(u_i,\, u_{i-1} + \delta)$ with a small constant $\delta > 0$, restoring validity with minimal perturbation.
+
+\noindent\textbf{Inference techniques.} During inference, pipelined execution with segmentment alignment is applied. Here we detailed the complete procedure in Algorithm~\ref{alg:pipeline-inference}.
+
+\begin{table}[h]
+\centering
+\setlength{\tabcolsep}{10.0pt}
+\begin{tabular}{c|cc}
+\toprule
+Push-T & Score & Compression Ratio \\
+\midrule
+$\varepsilon{=}0.5$ & 0.52 & 1.12 \\
+$\varepsilon{=}1$   & 0.65 & 1.34 \\
+$\varepsilon{=}2$   & 0.62 & 1.73 \\
+$\varepsilon{=}4$   & 0.63 & 2.36 \\
+$\varepsilon{=}8$   & 0.65 & 3.34 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Ablation on fitting error tolerance.}
+We report the success rate and the compression ratio under different maximum fitting errors $\varepsilon$.}
+\label{tab:pushT_fit_error}
+\end{table}
+
+
+\begin{algorithm}[h]
+% \setlength{\intextsep}{0pt}
+% \setlength{\columnsep}{6pt}
+% \begin{wrapfloat}{algorithm}[24]{r}{0.5\textwidth}
+\caption{Inference pipeline}
+\label{alg:pipeline-inference}
+\textbf{Input:} policy $\pi$, speedup factor $m$, inference budget $\delta^{\text{budget}}$ \\
+\textbf{State:} current B-spline segment $S$, segment start time $t_0$, in-flight inference flag \quad in\_flight
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Initialize:} $S \leftarrow \pi(o_{\text{recent}})$,\quad $t_0 \leftarrow \text{now}()$,\quad in\_flight $\leftarrow$ false.
+\item \textbf{Loop (control at high rate):}
+\begin{enumerate}[leftmargin=1.2em]
+\item $t_{\text{real}} \leftarrow \text{now}() - t_0$, \quad $u \leftarrow m \cdot t_{\text{real}}$ \hfill(\textit{Speedup})
+\item Execute $a \leftarrow S(u)$ \hfill(\textit{Sample})
+\item \textbf{If} $(u_{\max}(S) - u) < \delta^{\text{budget}}$ and in\_flight = false:
+\begin{enumerate}[leftmargin=1.2em]
+\item Launch asynchronous inference to obtain a new segment $S_{\text{new}} \leftarrow \pi(o_{\text{recent}})$
+\item Set in\_flight $\leftarrow$ true
+\end{enumerate}
+\item \textbf{On inference completion:} let $T^{\text{inf}}$ be the measured inference latency.
+\begin{enumerate}[leftmargin=1.2em]
+\item Compute alignment time $t^\star$ by Eq.~\eqref{eq:align-time} (using $S_{\text{new}}$ and $a_{\text{last}}$)
+\item Swap $S \leftarrow S_{\text{new}}$
+\item Update $t_0 \leftarrow \text{now}() - \frac{t^\star}{m}$ \hfill(\textit{Segment align})
+\item Set in\_flight $\leftarrow$ false
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+% \end{wrapfloat}
+\end{algorithm}
+
+\subsection{Additional experiments results}
+
+
+\noindent\textbf{Ablation on fitting error tolerance.}
+Representing actions with B-splines introduces a fitting tolerance $\varepsilon$.
+This typically yields fewer knot and control point pairs than the original demonstrations.
+Tab.~\ref{tab:pushT_fit_error} reports success rate and compression ratio under different tolerances.
+We define the compression ratio as the number of original actions divided by the number of knot--control-point pairs.
+As $\varepsilon$ increases, the compression ratio increases substantially while success rate remains relatively stable.
+This suggests that performance is not highly sensitive to $\varepsilon$ within a reasonable range, and a moderately larger tolerance can reduce computational cost.
+
+% \subsection{Details of B-Spline Definition and Properties}
+% \subsection{Physical meaning of B-Spline}
+
+
+% \begin{equation*}
+% \begin{aligned}
+% B_{i,3}(x) &=
+% \frac{x - t_i}{t_{i+3} - t_i} B_{i,2}(x) +
+% \frac{t_{i+4} - x}{t_{i+4} - t_{i+1}} B_{i+1,2}(x) \\
+% B_{i,2}(x) &=
+% \frac{x - t_i}{t_{i+2} - t_i} B_{i,1}(x) +
+% \frac{t_{i+3} - x}{t_{i+3} - t_{i+1}} B_{i+1,1}(x) \\
+% B_{i,1}(x) &=
+% \frac{x - t_i}{t_{i+1} - t_i} B_{i,0}(x) +
+% \frac{t_{i+2} - x}{t_{i+2} - t_{i+1}} B_{i+1,0}(x) \\
+% &=\frac{x - t_i}{t_{i+1} - t_i}
+% \end{aligned}
+% \end{equation*}
+
+% \[
+% h_r := t_{i+r+1}-t_{i+r},\qquad r=0,1,2,3.
+% \]
+
+% \[
+% B_{i,3}(x)=
+% \begin{cases}
+% \displaystyle \frac{(x-t_i)^3}{h_0\,(h_0+h_1)\,(h_0+h_1+h_2)},
+% & t_i\le x<t_{i+1},\\[12pt]
+
+% \displaystyle \frac{A_3 u^3 + A_2 u^2 + A_1 u + A_0}{D_1},
+% & t_{i+1}\le x<t_{i+2},\quad (u=x-t_{i+1}),\\[12pt]
+
+% \displaystyle \frac{C_3 v^3 + C_2 v^2 + C_1 v + C_0}{D_2},
+% & t_{i+2}\le x<t_{i+3},\quad (v=x-t_{i+2}),\\[12pt]
+
+% \displaystyle \frac{(t_{i+4}-x)^3}{h_3\,(h_2+h_3)\,(h_1+h_2+h_3)},
+% & t_{i+3}\le x<t_{i+4},\\[10pt]
+% 0,& \text{otherwise}.
+% \end{cases}
+% \]
+
+% % --- Piece on [t_{i+1}, t_{i+2}) ---
+% \[
+% D_1 = h_1\,(h_0+h_1)\,(h_1+h_2)\,(h_0+h_1+h_2)\,(h_1+h_2+h_3),
+% \]
+% \[
+% S := h_1^2 + 2h_1h_2 + h_1h_3 + h_2^2 + h_2h_3,
+% \]
+% \[
+% \begin{aligned}
+% A_3 &= -\Big(h_0^2 + 3h_0h_1 + 2h_0h_2 + h_0h_3 + 3h_1^2 + 4h_1h_2 + 2h_1h_3 + h_2^2 + h_2h_3\Big),\\
+% A_2 &= 3h_1\,S,\\
+% A_1 &= 3h_0h_1\,S,\\
+% A_0 &= h_0^2h_1\,S.
+% \end{aligned}
+% \]
+
+% % --- Piece on [t_{i+2}, t_{i+3}) ---
+% \[
+% D_2 = h_2\,(h_1+h_2)\,(h_2+h_3)\,(h_0+h_1+h_2)\,(h_1+h_2+h_3),
+% \]
+% \[
+% \begin{aligned}
+% C_3 &= h_0h_1 + 2h_0h_2 + h_0h_3 + h_1^2 + 4h_1h_2 + 2h_1h_3 + 3h_2^2 + 3h_2h_3 + h_3^2,\\
+% C_2 &= -3\Big(h_0h_2^2 + h_0h_2h_3 + 2h_1h_2^2 + 2h_1h_2h_3 + 2h_2^3 + 3h_2^2h_3 + h_2h_3^2\Big),\\
+% C_1 &= -3\Big(h_0h_1h_2^2 + h_0h_1h_2h_3 + h_1^2h_2^2 + h_1^2h_2h_3\Big)
+%       +3\Big(h_2^4 + 2h_2^3h_3 + h_2^2h_3^2\Big),\\
+% C_0 &= \;h_0h_2^4 + 2h_1h_2^4 + 2h_1^2h_2^3 + 2h_0h_1h_2^3 + 2h_0h_2^3h_3 + 4h_1h_2^3h_3\\
+% &\quad + 3h_0h_1h_2^2h_3 + 3h_1^2h_2^2h_3 + h_0h_2^2h_3^2 + 2h_1h_2^2h_3^2 + h_0h_1h_2h_3^2 + h_1^2h_2h_3^2.
+% \end{aligned}
+% \]
+
+% \[
+% a(x) = c_{i-3} B_{i-3}(x) + c_{i-2} B_{i-2}(x)  + c_{i-1} B_{i-1}(x) + c_iB_i(x) (t_i \le x \le t_{i+1} )
+% \]
+
+% Let $(t_i, $
+
+% \begin{equation}
+% \tau = K_p(q_d - q) + K_d(\dot q_d - \dot q) .
+% \end{equation}
+
+% \begin{equation}
+% M(q)\ddot q + C(q,\dot q)\dot q + g(q) = \tau .
+% \end{equation}
+
+% \begin{equation}
+% \tau_{\mathrm{ff}} =
+% M(q_d)\ddot q_d + C(q_d,\dot q_d)\dot q_d + g(q_d) .
+% \end{equation}
+
+% \begin{equation}
+% \tau_{\mathrm{apply}} = \tau_{\mathrm{ff}} + K_p(q_d - q) + K_d(\dot q_d - \dot q) .
+% \end{equation}
+
+% Let $I=[a,b]$ and let $S^p_{\tau}$ denote the spline space of degree $p$
+% over a knot partition $\tau$ on $I$ (equivalently representable using a B-spline basis).
+% A classical result in spline approximation states that, as the mesh size $|\tau|\to 0$,
+% these spline spaces are dense in $C(I)$ in the uniform norm.
+% Consequently, for any continuous parametric curve $\gamma:I\to\mathbb{R}^d$
+% and any $\varepsilon>0$, there exists a B-spline curve $c:I\to\mathbb{R}^d$ such that
+% \[
+% \|\gamma-c\|_{\infty}
+% := \sup_{t\in I}\|\gamma(t)-c(t)\|_2
+% < \varepsilon.
+% \]
+
+% For the zeroth degree,
+% \begin{equation}
+% B_{i,0}(u) =
+% \begin{cases}
+% 1, & t_i \le u < t_{i+1},\\
+% 0, & \text{otherwise},
+% \end{cases}
+% \end{equation}
+% and for $k \ge 1$,
+% \begin{equation}
+% B_{i,k}(u) = \alpha_{i,k}(u)\, B_{i,k-1}(u) \;+\; \beta_{i,k}(u)\, B_{i+1,k-1}(u),
+% \end{equation}
+% where the blending weights are
+% \begin{equation}
+% \alpha_{i,k}(u) = \frac{u - t_i}{t_{i+k} - t_i}, 
+% \qquad
+% \beta_{i,k}(u) = \frac{t_{i+k+1} - u}{t_{i+k+1} - t_{i+1}}.
+% \end{equation}
+% By convention, if a denominator is zero (which can occur with repeated knots), the corresponding
+% fraction is taken to be zero.
+
+% \section{}
+
+% \begin{figure}
+%     \begin{minipage}[t]{0.5\linewidth}
+%     \vspace{20pt}
+%     \centering
+%     % \includegraphics[width=0.98\linewidth]{images/data-fitting-3.pdf}
+%     \includegraphics[width=1.\linewidth]{images/data-fitting-4.pdf}
+%     \end{minipage}
+%     \begin{minipage}[t]{0.48\linewidth}
+%     \vspace{5pt}
+%     % \vspace{-90pt}
+%     \caption{\textbf{Fitting a B-spline.} We show a concept visualization of how we fit a B-spline. Given a sequence of waypoints, we apply Algorithm~\ref{alg:spline-compress} to fit a B-spline, which adaptively selects knot locations and estimates control points such that the fitting error remains below a prescribed threshold.}
+%     \label{fig:data-fitting}
+%     \end{minipage}
+%     \vspace{-20pt}
+% \end{figure}
+
+
+% \begin{algorithm}[t]
+%     \caption{Adaptive B-spline Trajectory Fitting}
+%     \label{alg:spline-compress}
+    
+%     \textbf{Input:}
+%     Trajectory samples $\{(t_i, x_i)\}_{i=1}^N$, 
+%     error tolerance $\varepsilon$,
+%     (optional) maximum number of knots $K_{\max}$\\
+%     \textbf{Output:}
+%     Knot set $\mathcal{K}$ and spline $g$
+    
+%     \begin{enumerate}[leftmargin=1.2em]
+    
+%     \item \textbf{Initialize:}
+%           Set $\mathcal{K} \gets \{t_1, t_N\}$ (boundary knots only).
+    
+%     \item \textbf{Repeat until convergence or knot budget exhausted:}
+    
+%         \begin{enumerate}[leftmargin=1.2em]
+    
+%         \item \textbf{spline fitting.}  
+%               Fit a spline $g(\cdot)$ on $(t_i, x_i)$ using current knots $\mathcal{K}$.
+    
+%         \item \textbf{Error evaluation.}  
+%               Compute reconstruction errors
+%               \[
+%                   e_i = |g(t_i) - x_i|, 
+%                   \quad E = \max_i e_i .
+%               \]
+%               If $E \le \varepsilon$, stop.
+    
+%         \item \textbf{Interval error accumulation.}  
+%               Partition the domain into intervals $[k_j, k_{j+1})$ for all consecutive knots $k_j \in \mathcal{K}$.
+%               For each interval compute
+%               \[
+%                   E_j = \sum_{i : t_i \in [k_j, k_{j+1})} e_i^2 .
+%               \]
+    
+%         \item \textbf{Select the worst interval.}
+%               \[
+%                   j^\star = \arg\max_j E_j .
+%               \]
+    
+%         \item \textbf{Insert a new knot.}  
+%               Choose the sample point with the largest error in this interval:
+%               \[
+%                   t_{\text{new}}
+%                   = \arg\max_{t_i \in [k_{j^\star},\, k_{j^\star+1})} e_i .
+%               \]
+%               Update $\mathcal{K} \gets \mathcal{K} \cup \{t_{\text{new}}\}$.
+    
+%         \end{enumerate}
+    
+%     \end{enumerate}
+    
+%     \textbf{return} $\mathcal{K}$ and spline $g$
+    
+%     \end{algorithm}
+
+% \section{More experiments}

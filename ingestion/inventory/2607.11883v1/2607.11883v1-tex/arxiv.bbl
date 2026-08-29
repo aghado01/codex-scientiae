@@ -1,0 +1,273 @@
+\begin{thebibliography}{53}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Blier and Ollivier(2018)]{blier2018description}
+L{\'e}onard Blier and Yann Ollivier.
+\newblock The description length of deep learning models.
+\newblock \emph{Advances in Neural Information Processing Systems}, 31, 2018.
+
+\bibitem[Dawid(1984)]{dawid1984present}
+A~Philip Dawid.
+\newblock Present position and potential developments: Some personal views: Statistical theory: The prequential approach.
+\newblock \emph{Journal of the Royal Statistical Society: Series A (General)}, 147\penalty0 (2):\penalty0 278--290, 1984.
+
+\bibitem[Dettmers et~al.(2022)Dettmers, Lewis, Belkada, and Zettlemoyer]{dettmers2022gpt3}
+Tim Dettmers, Mike Lewis, Younes Belkada, and Luke Zettlemoyer.
+\newblock {GPT3.int8()}: 8-bit matrix multiplication for transformers at scale.
+\newblock \emph{Advances in neural information processing systems}, 35:\penalty0 30318--30332, 2022.
+
+\bibitem[Dey et~al.(2025)Dey, Zhang, Noci, Li, Bordelon, Bergsma, Pehlevan, Hanin, and Hestness]{dey2026don}
+Nolan Dey, Bin Zhang, Lorenzo Noci, Mufan Li, Blake Bordelon, Shane Bergsma, Cengiz Pehlevan, Boris Hanin, and Joel Hestness.
+\newblock Don't be lazy: {CompleteP} enables compute-efficient deep transformers.
+\newblock \emph{Advances in Neural Information Processing Systems}, 38:\penalty0 137707--137739, 2025.
+
+\bibitem[Dubey et~al.(2024)Dubey, Jauhri, Pandey, Kadian, Al-Dahle, Letman, et~al.]{dubey2024llama}
+Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, et~al.
+\newblock The llama 3 herd of models.
+\newblock \emph{arXiv preprint arXiv:2407.21783}, 2024.
+
+\bibitem[Feldman(1998)]{feldman1998information}
+David Feldman.
+\newblock Information theory, excess entropy.
+\newblock 1998.
+
+\bibitem[Finzi et~al.(2026)Finzi, Qiu, Jiang, Izmailov, Kolter, and Wilson]{finzi2026entropy}
+Marc Finzi, Shikai Qiu, Yiding Jiang, Pavel Izmailov, J~Zico Kolter, and Andrew~Gordon Wilson.
+\newblock From entropy to epiplexity: Rethinking information for computationally bounded intelligence.
+\newblock \emph{arXiv preprint arXiv:2601.03220}, 2026.
+
+\bibitem[Finzi et~al.(2025)Finzi, Kapoor, Granziol, Gu, De~Sa, Kolter, and Wilson]{finzi2025compute}
+Marc~Anton Finzi, Sanyam Kapoor, Diego Granziol, Anming Gu, Christopher De~Sa, J~Zico Kolter, and Andrew~Gordon Wilson.
+\newblock Compute-optimal {LLMs} provably generalize better with scale.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Flamich et~al.(2020)Flamich, Havasi, and Hern{\'a}ndez-Lobato]{flamich2020compressing}
+Gergely Flamich, Marton Havasi, and Jos{\'e}~Miguel Hern{\'a}ndez-Lobato.
+\newblock Compressing images by encoding their latent representations with relative entropy coding.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:\penalty0 16131--16141, 2020.
+
+\bibitem[Frankle and Carbin(2019)]{frankle2018lottery}
+Jonathan Frankle and Michael Carbin.
+\newblock The lottery ticket hypothesis: Finding sparse, trainable neural networks.
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+
+\bibitem[Frantar et~al.(2023)Frantar, Ashkboos, Hoefler, and Alistarh]{frantar2023gptq}
+Elias Frantar, Saleh Ashkboos, Torsten Hoefler, and Dan Alistarh.
+\newblock {GPTQ}: Accurate post-training quantization for generative pre-trained transformers.
+\newblock In \emph{International Conference on Learning Representations}, 2023.
+
+\bibitem[Gale et~al.(2019)Gale, Elsen, and Hooker]{gale2019state}
+Trevor Gale, Erich Elsen, and Sara Hooker.
+\newblock The state of sparsity in deep neural networks.
+\newblock \emph{arXiv preprint arXiv:1902.09574}, 2019.
+
+\bibitem[{Gemma Team}(2024)]{gemma2024}
+{Gemma Team}.
+\newblock Gemma 2: Improving open language models at a practical size.
+\newblock \emph{arXiv preprint arXiv:2408.00118}, 2024.
+
+\bibitem[Gr{\"u}nwald(2007)]{grunwald2007minimum}
+Peter~D Gr{\"u}nwald.
+\newblock \emph{The minimum description length principle}.
+\newblock MIT press, 2007.
+
+\bibitem[H{\"a}gele et~al.(2024)H{\"a}gele, Bakouch, Kosson, Ben~Allal, Von~Werra, and Jaggi]{hagele2024scaling}
+Alexander H{\"a}gele, Elie Bakouch, Atli Kosson, Loubna Ben~Allal, Leandro Von~Werra, and Martin Jaggi.
+\newblock Scaling laws and compute-optimal training beyond fixed training durations.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:\penalty0 76232--76264, 2024.
+
+\bibitem[Han et~al.(2015)Han, Mao, and Dally]{han2015deep}
+Song Han, Huizi Mao, and William~J Dally.
+\newblock Deep compression: Compressing deep neural networks with pruning, trained quantization and huffman coding.
+\newblock \emph{arXiv preprint arXiv:1510.00149}, 2015.
+
+\bibitem[Hassibi et~al.(1993)Hassibi, Stork, and Wolff]{hassibi1993optimal}
+Babak Hassibi, David~G Stork, and Gregory~J Wolff.
+\newblock Optimal brain surgeon and general network pruning.
+\newblock In \emph{IEEE international conference on neural networks}, pages 293--299. IEEE, 1993.
+
+\bibitem[Hinton et~al.(2015)Hinton, Vinyals, and Dean]{hinton2015distilling}
+Geoffrey Hinton, Oriol Vinyals, and Jeff Dean.
+\newblock Distilling the knowledge in a neural network.
+\newblock \emph{arXiv preprint arXiv:1503.02531}, 2015.
+
+\bibitem[Hinton and Zemel(1993)]{hinton1993autoencoders}
+Geoffrey~E Hinton and Richard~S Zemel.
+\newblock Autoencoders, minimum description length and {Helmholtz} free energy.
+\newblock \emph{Advances in neural information processing systems}, 6, 1993.
+
+\bibitem[Hoffmann et~al.(2022)Hoffmann, Borgeaud, Mensch, Buchatskaya, Cai, Rutherford, Casas, Hendricks, Welbl, Clark, et~al.]{hoffmann2022training}
+Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza Rutherford, Diego de~Las Casas, Lisa~Anne Hendricks, Johannes Welbl, Aidan Clark, et~al.
+\newblock Training compute-optimal large language models.
+\newblock \emph{arXiv preprint arXiv:2203.15556}, 2022.
+
+\bibitem[Hu et~al.(2022)Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, and Chen]{hu2022lora}
+Edward~J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu~Wang, and Weizhu Chen.
+\newblock {LoRA}: Low-rank adaptation of large language models.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Kalimeris et~al.(2019)Kalimeris, Kaplun, Nakkiran, Edelman, Yang, Barak, and Zhang]{kalimeris2019sgd}
+Dimitris Kalimeris, Gal Kaplun, Preetum Nakkiran, Benjamin Edelman, Tristan Yang, Boaz Barak, and Haofeng Zhang.
+\newblock {SGD} on neural networks learns functions of increasing complexity.
+\newblock \emph{Advances in neural information processing systems}, 32, 2019.
+
+\bibitem[Kaplan et~al.(2020)Kaplan, McCandlish, Henighan, Brown, Chess, Child, Gray, Radford, Wu, and Amodei]{kaplan2020scaling}
+Jared Kaplan, Sam McCandlish, Tom Henighan, Tom~B Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei.
+\newblock Scaling laws for neural language models.
+\newblock \emph{arXiv preprint arXiv:2001.08361}, 2020.
+
+\bibitem[LeCun et~al.(1989)LeCun, Denker, and Solla]{lecun1989optimal}
+Yann LeCun, John Denker, and Sara Solla.
+\newblock Optimal brain damage.
+\newblock \emph{Advances in neural information processing systems}, 2, 1989.
+
+\bibitem[Lee et~al.(2018)Lee, Ajanthan, and Torr]{lee2018snip}
+Namhoon Lee, Thalaiyasingam Ajanthan, and Philip~HS Torr.
+\newblock {SNIP}: Single-shot network pruning based on connection sensitivity.
+\newblock \emph{arXiv preprint arXiv:1810.02340}, 2018.
+
+\bibitem[Li and El~Gamal(2018)]{li2018strong}
+Cheuk~Ting Li and Abbas El~Gamal.
+\newblock Strong functional representation lemma and applications to coding theorems.
+\newblock \emph{IEEE Transactions on Information Theory}, 64\penalty0 (11):\penalty0 6967--6978, 2018.
+
+\bibitem[Li et~al.(2018)Li, Farkhoor, Liu, and Yosinski]{li2018measuring}
+Chunyuan Li, Heerad Farkhoor, Rosanne Liu, and Jason Yosinski.
+\newblock Measuring the intrinsic dimension of objective landscapes.
+\newblock In \emph{International Conference on Learning Representations}, 2018.
+
+\bibitem[Lin et~al.(2024)Lin, Tang, Tang, Yang, Chen, Wang, Xiao, Dang, Gan, and Han]{lin2024awq}
+Ji~Lin, Jiaming Tang, Haotian Tang, Shang Yang, Wei-Ming Chen, Wei-Chen Wang, Guangxuan Xiao, Xingyu Dang, Chuang Gan, and Song Han.
+\newblock {AWQ}: Activation-aware weight quantization for on-device {LLM} compression and acceleration.
+\newblock In \emph{Proceedings of Machine Learning and Systems (MLSys)}, 2024.
+
+\bibitem[Liu et~al.(2021)Liu, Wang, Kasai, Hajishirzi, and Smith]{liu2021probing}
+Leo~Z Liu, Yizhong Wang, Jungo Kasai, Hannaneh Hajishirzi, and Noah~A Smith.
+\newblock Probing across time: What does roberta know and when?
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2021}, pages 820--842, 2021.
+
+\bibitem[Lotfi et~al.(2022)Lotfi, Finzi, Kapoor, Potapczynski, Goldblum, and Wilson]{lotfi2022pac}
+Sanae Lotfi, Marc Finzi, Sanyam Kapoor, Andres Potapczynski, Micah Goldblum, and Andrew~G Wilson.
+\newblock Pac-bayes compression bounds so tight that they can explain generalization.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 31459--31473, 2022.
+
+\bibitem[Lotfi et~al.(2023)Lotfi, Finzi, Kuang, Rudner, Goldblum, and Wilson]{lotfi2023non}
+Sanae Lotfi, Marc Finzi, Yilun Kuang, Tim~GJ Rudner, Micah Goldblum, and Andrew~Gordon Wilson.
+\newblock Non-vacuous generalization bounds for large language models.
+\newblock \emph{arXiv preprint arXiv:2312.17173}, 2023.
+
+\bibitem[Lotfi et~al.(2024)Lotfi, Kuang, Amos, Goldblum, Finzi, and Wilson]{lotfi2024unlocking}
+Sanae Lotfi, Yilun Kuang, Brandon Amos, Micah Goldblum, Marc Finzi, and Andrew~Gordon Wilson.
+\newblock Unlocking tokens as data points for generalization bounds on larger language models.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:\penalty0 9229--9256, 2024.
+
+\bibitem[{Meta AI}(2025)]{meta2025llama4}
+{Meta AI}.
+\newblock The llama 4 herd: The beginning of a new era of natively multimodal {AI} innovation.
+\newblock \url{https://ai.meta.com/blog/llama-4-multimodal-intelligence/}, 2025.
+
+\bibitem[Morris et~al.(2025)Morris, Sitawarin, Guo, Kokhlikyan, Suh, Rush, Chaudhuri, and Mahloujifar]{morris2025much}
+John~X Morris, Chawin Sitawarin, Chuan Guo, Narine Kokhlikyan, G~Edward Suh, Alexander~M Rush, Kamalika Chaudhuri, and Saeed Mahloujifar.
+\newblock How much do language models memorize?
+\newblock \emph{arXiv preprint arXiv:2505.24832}, 2025.
+
+\bibitem[Nagel et~al.(2020)Nagel, Amjad, Van~Baalen, Louizos, and Blankevoort]{nagel2020up}
+Markus Nagel, Rana~Ali Amjad, Mart Van~Baalen, Christos Louizos, and Tijmen Blankevoort.
+\newblock Up or down? adaptive rounding for post-training quantization.
+\newblock In \emph{International conference on machine learning}, pages 7197--7206. PMLR, 2020.
+
+\bibitem[Nakkiran et~al.(2020)Nakkiran, Neyshabur, and Sedghi]{nakkiran2020deep}
+Preetum Nakkiran, Behnam Neyshabur, and Hanie Sedghi.
+\newblock The deep bootstrap framework: Good online learners are good offline generalizers.
+\newblock \emph{arXiv preprint arXiv:2010.08127}, 2020.
+
+\bibitem[Penedo et~al.(2024)Penedo, Kydl{\'\i}{\v{c}}ek, Ben~Allal, Lozhkov, Mitchell, Raffel, Von~Werra, and Wolf]{penedo2024fineweb}
+Guilherme Penedo, Hynek Kydl{\'\i}{\v{c}}ek, Loubna Ben~Allal, Anton Lozhkov, Margaret Mitchell, Colin Raffel, Leandro Von~Werra, and Thomas Wolf.
+\newblock The {FineWeb} datasets: Decanting the web for the finest text data at scale.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~37, 2024.
+
+\bibitem[Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and Sutskever]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 1\penalty0 (8):\penalty0 9, 2019.
+
+\bibitem[Rissanen(1978)]{rissanen1978modeling}
+Jorma Rissanen.
+\newblock Modeling by shortest data description.
+\newblock \emph{Automatica}, 14\penalty0 (5):\penalty0 465--471, 1978.
+
+\bibitem[Rissanen(1983)]{rissanen1983universal}
+Jorma Rissanen.
+\newblock A universal prior for integers and estimation by minimum description length.
+\newblock \emph{The Annals of Statistics}, 11\penalty0 (2):\penalty0 416--431, 1983.
+
+\bibitem[Rissanen(1984)]{rissanen2003universal}
+Jorma Rissanen.
+\newblock Universal coding, information, prediction, and estimation.
+\newblock \emph{IEEE Transactions on Information Theory}, 30\penalty0 (4):\penalty0 629--636, 1984.
+
+\bibitem[Saphra and Lopez(2019)]{saphra2019understanding}
+Naomi Saphra and Adam Lopez.
+\newblock Understanding learning dynamics of language models with {SVCCA}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)}, pages 3257--3267, 2019.
+
+\bibitem[Shalev-Shwartz and Ben-David(2014)]{shalev2014understanding}
+Shai Shalev-Shwartz and Shai Ben-David.
+\newblock \emph{Understanding machine learning: From theory to algorithms}.
+\newblock Cambridge university press, 2014.
+
+\bibitem[Theis and Ahmed(2022)]{theis2022algorithms}
+Lucas Theis and Noureldin~Y Ahmed.
+\newblock Algorithms for the communication of samples.
+\newblock In \emph{International Conference on Machine Learning}, pages 21308--21328. PMLR, 2022.
+
+\bibitem[Tseng et~al.(2024)Tseng, Chee, Sun, Kuleshov, and De~Sa]{tseng2024quip}
+Albert Tseng, Jerry Chee, Qingyao Sun, Volodymyr Kuleshov, and Christopher De~Sa.
+\newblock {QuIP}\#: Even better {LLM} quantization with {Hadamard} incoherence and lattice codebooks.
+\newblock \emph{arXiv preprint arXiv:2402.04396}, 2024.
+
+\bibitem[Valle-P{\'e}rez et~al.(2019)Valle-P{\'e}rez, Camargo, and Louis]{valleperez2019deep}
+Guillermo Valle-P{\'e}rez, Chico~Q Camargo, and Ard~A Louis.
+\newblock Deep learning generalizes because the parameter-function map is biased towards simple functions.
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+
+\bibitem[Whitney et~al.(2020)Whitney, Song, Brandfonbrener, Altosaar, and Cho]{whitney2020evaluating}
+William~F Whitney, Min~Jae Song, David Brandfonbrener, Jaan Altosaar, and Kyunghyun Cho.
+\newblock Evaluating representations by the complexity of learning low-loss predictors.
+\newblock \emph{arXiv preprint arXiv:2009.07368}, 2020.
+
+\bibitem[Wilson(2025)]{wilson2025deep}
+Andrew~Gordon Wilson.
+\newblock Deep learning is not so mysterious or different.
+\newblock In \emph{International Conference on Machine Learning}, 2025.
+
+\bibitem[Yang et~al.(2025)Yang, Li, Yang, et~al.]{yang2025qwen3}
+An~Yang, Anfeng Li, Baosong Yang, et~al.
+\newblock Qwen3 technical report.
+\newblock \emph{arXiv preprint arXiv:2505.09388}, 2025.
+
+\bibitem[Yang et~al.(2022)Yang, Hu, Babuschkin, Sidor, Liu, Farhi, Ryder, Pachocki, Chen, and Gao]{yang2022tensor}
+Greg Yang, Edward~J Hu, Igor Babuschkin, Szymon Sidor, Xiaodong Liu, David Farhi, Nick Ryder, Jakub Pachocki, Weizhu Chen, and Jianfeng Gao.
+\newblock Tensor programs v: Tuning large neural networks via zero-shot hyperparameter transfer.
+\newblock \emph{arXiv preprint arXiv:2203.03466}, 2022.
+
+\bibitem[Yang et~al.(2023)Yang, Yu, Zhu, and Hayou]{yang2023feature}
+Greg Yang, Dingli Yu, Chen Zhu, and Soufiane Hayou.
+\newblock Feature learning in infinite-depth neural networks.
+\newblock In \emph{NeurIPS 2023 Workshop on Mathematics of Modern Machine Learning}, 2023.
+
+\bibitem[Zhang et~al.(2020)Zhang, Li, Dou, and Wu]{zhang2020measuring}
+Xiao Zhang, Xingjian Li, Dejing Dou, and Ji~Wu.
+\newblock Measuring information transfer in neural networks.
+\newblock \emph{arXiv preprint arXiv:2009.07624}, 2020.
+
+\bibitem[Zhou et~al.(2018)Zhou, Veitch, Austern, Adams, and Orbanz]{zhou2018non}
+Wenda Zhou, Victor Veitch, Morgane Austern, Ryan~P Adams, and Peter Orbanz.
+\newblock Non-vacuous generalization bounds at the {ImageNet} scale: a {PAC-Bayesian} compression approach.
+\newblock \emph{arXiv preprint arXiv:1804.05862}, 2018.
+
+\end{thebibliography}

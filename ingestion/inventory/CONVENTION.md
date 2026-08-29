@@ -90,9 +90,10 @@ published `{slug}-tex/` without an article, a retry re-extracts privately and ac
 fingerprint matches. An existing equivalent article is validated and returned idempotently without rewrite.
 Any changed archive, tree, provider projection, PDF fact, or other immutable evidence is a conflict.
 
-There is intentionally no general in-place update path. A PDF or other form discovered after publication
-requires a future explicit versioned migration/publication operation; the deposit verb does not rewrite the
-existing article to add it.
+Default materialize refuses a form-set change that would mutate the existing sentinel. An explicit
+`materialize_source_deposit` with `rebuild=true` rebuilds `article.json` from the current acquisition
+evidence (preserving `initialized_utc`) and is the path for a later PDF or other missing form. Rebuild
+the catalog inventory afterwards with `force=true`.
 
 ## Upstream package-control metadata
 

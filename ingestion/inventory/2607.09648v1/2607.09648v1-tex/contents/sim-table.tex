@@ -1,0 +1,101 @@
+\begin{table*}[t]
+  \centering
+  \vspace{-6pt}
+
+  \captionsetup[subtable]{
+    justification=centering,
+    singlelinecheck=false,
+    font=footnotesize,
+    skip=2pt
+  }
+
+  % ---------------- Left subtable (a) ----------------
+  \begin{subtable}[t]{0.58\textwidth}
+    \begin{minipage}[t][0.26\textheight][t]{\linewidth}
+    \centering
+    \fontsize{6.3pt}{7.3pt}\selectfont
+    \renewcommand{\arraystretch}{0.92}
+    \setlength{\tabcolsep}{2.0pt}
+
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{l|cccccc}
+      \toprule
+      Configuration 
+      & PushT 
+      & \makecell{Lift} 
+      & \makecell{Turn off\\sink faucet} 
+      & \makecell{Coffee\\press button} 
+      & \makecell{Turn off\\microwave} 
+      & \makecell{Close\\door} \\
+      \midrule
+
+      Diff. 1X Base  & 72\%            & 100\%             & 79\%            & 93\%            & 77\%            & 27\% \\
+      Diff. 1X +BSP  & \greenNum{75\%} & \greenNum{100\%}  & \greenNum{85\%} & \greenNum{94\%} & \greenNum{89\%} & \greenNum{46\%} \\
+      \midrule
+      Reg. 1X Base   & 63\%            & \greenNum{99\%}   & 84\%            & 89\%            & 93\%            & 40\% \\
+      Reg. 1X +BSP   & \greenNum{66\%} & 91\%              & \greenNum{94\%} & \greenNum{93\%} & \greenNum{97\%} & \greenNum{60\%} \\
+
+      \bottomrule
+    \end{tabular}
+    }
+
+    \caption{\textbf{Sim results.}}
+    \label{tab:sim-results}
+    \end{minipage}
+  \end{subtable}
+  \hfill
+  % ---------------- Right subtable (b) ----------------
+  \begin{subtable}[t]{0.39\textwidth}
+    \begin{minipage}[t][0.26\textheight][t]{\linewidth}
+    \centering
+    \fontsize{5.8pt}{6.8pt}\selectfont
+    \renewcommand{\arraystretch}{0.88}
+    \setlength{\tabcolsep}{1.4pt}
+
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{c|cc|cc|cc}
+      \toprule
+      Metric
+      & \multicolumn{6}{c}{\textbf{Diffusion Policy}} \\
+      \cmidrule(lr){2-7}
+
+      &
+      \multicolumn{2}{c|}{1X}
+      & \multicolumn{2}{c|}{2X}
+      & \multicolumn{2}{c}{4X} \\
+      \cmidrule(lr){2-3}
+      \cmidrule(lr){4-5}
+      \cmidrule(lr){6-7}
+
+      &
+      Diff.
+      & \makecell{Diff. +\\BSP}
+      & Diff.
+      & \makecell{Diff. +\\BSP}
+      & Diff.
+      & \makecell{Diff. +\\BSP} \\
+      \midrule
+
+      \pushtcellMetric
+      & \cellSRtime{0.47}{12.24s}
+      & \cellSRtime{\greenNum{0.65}}{\purpleNum{7.20s}}
+      & \cellSRtime{0.57}{9.22s}
+      & \cellSRtime{\greenNum{0.71}}{\purpleNum{4.89s}}
+      & \cellSRtime{0.59}{7.19s}
+      & \cellSRtime{\greenNum{0.73}}{\purpleNum{2.87s}} \\
+
+      \bottomrule
+    \end{tabular}
+    }
+
+    \caption{\textbf{PushT-speedup results.}}
+    \label{tab:pusht}
+    \end{minipage}
+  \end{subtable}
+
+  \vspace{-90pt}
+  \caption{\textbf{Simulation results.} In Table (a), we report average score on pushT and average success rate across other simulation benchmarks.
+  In Table (b), we report the average score and average time for the PushT speedup.}
+  \label{tab:combined-sim-real-results}
+  \vspace{-10pt}
+\end{table*}

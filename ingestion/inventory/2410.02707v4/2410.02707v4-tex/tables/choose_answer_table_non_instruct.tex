@@ -1,0 +1,47 @@
+\begin{table}[t]
+    \centering
+    \caption{Various answer choice strategies, non-instruct models.}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l|llll|llll|llll}
+    \toprule
+    & \multicolumn{12}{c}{\textbf{Mistral-7b}} \\
+    \cmidrule(lr){2-13}
+    & \multicolumn{4}{c}{\textbf{TriviaQA}} & \multicolumn{4}{c}{\textbf{Math}} & \multicolumn{4}{c}{\textbf{Winobias}} \\
+    \cmidrule(lr){2-5} \cmidrule(lr){6-9} \cmidrule(lr){10-13}
+       \textbf{Error type}  & Greedy & Random & Majority & Probing & Greedy & Random & Majority & Probing & Greedy & Random & Majority & Probing \\
+       \midrule
+         All & $0.63$ \tiny $\pm 0.003$ & $0.54$ \tiny $\pm 0.004$ & $0.65$ \tiny $\pm 0.002$ & $0.62$ \tiny $\pm 0.003$ & $0.25$ \tiny $\pm 0.018$ & $0.36$ \tiny $\pm 0.022$ & $0.49$ \tiny $\pm 0.019$ & $0.60$ \tiny $\pm 0.017$ & $0.69$ \tiny $\pm 0.016$ & $0.58$ \tiny $\pm 0.009$ & $0.62$ \tiny $\pm 0.009$ & $0.83$ \tiny $\pm 0.006$ \\
+         (A) Refuses to answer & $0.08$ \tiny $\pm 0.015$ & $0.04$ \tiny $\pm 0.009$ & $0.00$ \tiny $\pm 0.000$ & $0.13$ \tiny $\pm 0.007$ & $0.01$ \tiny $\pm 0.009$ & $0.04$ \tiny $\pm 0.019$ & $0.00$ \tiny $\pm 0.000$ & $0.22$ \tiny $\pm 0.033$ & - & - & - & - \\
+         \hspace{1em} (B1) All & $1.00$ \tiny $\pm 0.000$ & $1.00$ \tiny $\pm 0.000$ & $1.00$ \tiny $\pm 0.000$ & $1.00$ \tiny $\pm 0.000$ & - & - & - & - & - & - & - & - \\
+         \hspace{1em} (B2) Most & $0.98$ \tiny $\pm 0.001$ & $0.84$ \tiny $\pm 0.009$ & $1.00$ \tiny $\pm 0.000$ & $0.91$ \tiny $\pm 0.002$ & $0.96$ \tiny $\pm 0.024$ & $0.84$ \tiny $\pm 0.031$ & $1.00$ \tiny $\pm 0.000$ & $0.86$ \tiny $\pm 0.041$ & $0.96$ \tiny $\pm 0.004$ & $0.73$ \tiny $\pm 0.009$ & $0.95$ \tiny $\pm 0.003$ & $0.91$ \tiny $\pm 0.009$ \\
+         (C) Consistently incorrect & & & & \\
+         \hspace{1em} (C1) All & $0.00$ \tiny $\pm 0.003$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & - & - & - & - & - & - & - & - \\
+        \hspace{1em} (C2) Most & $0.03$ \tiny $\pm 0.014$ & $0.20$ \tiny $\pm 0.008$ & $0.00$ \tiny $\pm 0.000$ & $0.27$ \tiny $\pm 0.036$ & - & - & - & - & $0.19$ \tiny $\pm 0.010$ & $0.30$ \tiny $\pm 0.026$ & $0.00$ \tiny $\pm 0.000$ & $0.70$ \tiny $\pm 0.007$ \\
+         (D) Two competing & $0.48$ \tiny $\pm 0.006$ & $0.36$ \tiny $\pm 0.008$ & $0.52$ \tiny $\pm 0.015$ & $0.54$ \tiny $\pm 0.016$ & - & - & - & - & $0.73$ \tiny $\pm 0.018$ & $0.54$ \tiny $\pm 0.022$ & $0.47$ \tiny $\pm 0.030$ & $0.85$ \tiny $\pm 0.019$ \\
+         (E) Many answers  \\
+         \hspace{1em} (E1) Non correct & $0.01$ \tiny $\pm 0.004$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.01$ \tiny $\pm 0.010$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & - & - & - & - \\
+         \hspace{1em} (E2) Correct appears &  $0.38$ \tiny $\pm 0.009$ & $0.21$ \tiny $\pm 0.006$ & $0.42$ \tiny $\pm 0.015$ & $0.38$ \tiny $\pm 0.009$ & $0.09$ \tiny $\pm 0.010$ & $0.17$ \tiny $\pm 0.034$ & $0.36$ \tiny $\pm 0.020$ & $0.62$ \tiny $\pm 0.035$ & - & - & - & - \\
+         \midrule
+     & \multicolumn{12}{c}{\textbf{Llama-8b}} \\
+    \cmidrule(lr){2-13}
+             & \multicolumn{4}{c}{\textbf{TriviaQA}} & \multicolumn{4}{c}{\textbf{Math}} & \multicolumn{4}{c}{\textbf{Winobias}} \\
+    \cmidrule(lr){2-5} \cmidrule(lr){6-9} \cmidrule(lr){10-13}
+       \textbf{Error type}  & Greedy & Sampling & Majority & Probing & Greedy & Sampling & Majority & Probing & Greedy & Sampling & Majority & Probing \\
+       \midrule
+         All & $0.66$ \tiny $\pm 0.002$ & $0.58$ \tiny $\pm 0.003$ & $\textbf{0.68}$ \tiny $\pm 0.003$ & $\textbf{0.68}$ \tiny $\pm 0.002$ & $0.30$ \tiny $\pm 0.023$ & $0.47$ \tiny $\pm 0.022$ & $0.62$ \tiny $\pm 0.014$ & $0.70$ \tiny $\pm 0.021$ & $0.73$ \tiny $\pm 0.011$ & $0.61$ \tiny $\pm 0.005$ & $0.66$ \tiny $\pm 0.016$ & $\textbf{0.84}$ \tiny $\pm 0.006$ \\
+         (A) Refuses to answer & $0.08$ \tiny $\pm 0.005$ & $0.07$ \tiny $\pm 0.011$ & $0.00$ \tiny $\pm 0.000$ & $\textbf{0.16}$ \tiny $\pm 0.011$ & $0.00$ \tiny $\pm 0.007$ & $0.04$ \tiny $\pm 0.015$ & $0.00$ \tiny $\pm 0.000$ & $0.25$ \tiny $\pm 0.025$ & - & - & - & - \\
+         (B) Consistently correct \\
+         \hspace{1em} (B1) All & $1.00$ \tiny $\pm 0.000$ & $1.00$ \tiny $\pm 0.000$ & $1.00$ \tiny $\pm 0.000$ & $1.00$ \tiny $\pm 0.000$ & - & - & - & - & - & - & - & - \\
+         \hspace{1em} (B2) Most &  $0.98$ \tiny $\pm 0.001$ & $0.87$ \tiny $\pm 0.002$ & $\textbf{1.00}$ \tiny $\pm 0.000$ & $0.95$ \tiny $\pm 0.002$ & $0.77$ \tiny $\pm 0.024$ & $0.88$ \tiny $\pm 0.025$ & $1.00$ \tiny $\pm 0.000$ & $0.97$ \tiny $\pm 0.014$ & $0.98$ \tiny $\pm 0.005$ & $0.75$ \tiny $\pm 0.004$ & $\textbf{1.00}$ \tiny $\pm 0.000$ & $0.94$ \tiny $\pm 0.003$ \\
+         (C) Consistently incorrect \\
+         \hspace{1em} (C1) All & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$  & - & - & - & - & - & - & - & - \\
+         \hspace{1em} (C2) Most & $0.06$ \tiny $\pm 0.013$ & $0.18$ \tiny $\pm 0.009$ & $0.00$ \tiny $\pm 0.000$ & $\textbf{0.35}$ \tiny $\pm 0.043$  & - & - & - & - & $0.25$ \tiny $\pm 0.026$ & $0.29$ \tiny $\pm 0.023$ & $0.00$ \tiny $\pm 0.000$ & $\textbf{0.65}$ \tiny $\pm 0.022$ \\
+         (D) Two competing & $0.44$ \tiny $\pm 0.029$ & $0.42$ \tiny $\pm 0.035$ & $0.53$ \tiny $\pm 0.020$ & $\textbf{0.66}$ \tiny $\pm 0.030$  & - & - & - & -  & $0.73$ \tiny $\pm 0.025$ & $0.47$ \tiny $\pm 0.019$ & $0.41$ \tiny $\pm 0.037$ & $\textbf{0.86}$ \tiny $\pm 0.014$ \\
+         (E) Many answers \\
+         \hspace{1em} (E1) Non correct & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & $0.00$ \tiny $\pm 0.000$ & - & - & - & - \\
+         \hspace{1em} (E2) Correct appears & $0.46$ \tiny $\pm 0.009$ & $0.34$ \tiny $\pm 0.009$ & $0.53$ \tiny $\pm 0.007$ & $\textbf{0.54}$ \tiny $\pm 0.005$ & $0.14$ \tiny $\pm 0.015$ & $0.17$ \tiny $\pm 0.025$ & $0.44$ \tiny $\pm 0.047$ & $0.65$ \tiny $\pm 0.031$ & - & - & - & - \\
+    \bottomrule
+    \end{tabular}
+    }
+    \label{tab:performance_after_probing_appendix_non_instruct}
+\end{table}

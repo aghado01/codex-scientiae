@@ -118,11 +118,18 @@
       "files": 15,
       "tex_files": 1,
       "sha256": "de22e0ef6c91bf1b6b61d515e76ef9bf4c535255aafe0bd41e3cf588b5ca9478"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2506.03221v3.pdf",
+      "format": "application/pdf",
+      "bytes": 1561020,
+      "sha256": "69b0e40ff570f34f6ca6984afceefd11e4d7bb3ed0c452667083a1ee67607bcc"
     }
   ],
   "validation": {
     "status": "valid",
-    "validated_utc": "2026-08-26T03:57:51.512022Z",
+    "validated_utc": "2026-08-29T20:09:50.623237Z",
     "publication": "recovered-existing-tree",
     "checks": [
       {

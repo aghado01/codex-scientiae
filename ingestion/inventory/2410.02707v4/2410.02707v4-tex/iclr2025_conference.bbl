@@ -1,0 +1,547 @@
+\begin{thebibliography}{95}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allauzen(2007)]{DBLP:conf/interspeech/Allauzen07}
+Alexandre Allauzen.
+\newblock Error detection in confusion network.
+\newblock In \emph{8th Annual Conference of the International Speech Communication Association, {INTERSPEECH} 2007, Antwerp, Belgium, August 27-31, 2007}, pp.\  1749--1752. {ISCA}, 2007.
+\newblock \doi{10.21437/INTERSPEECH.2007-490}.
+\newblock URL \url{https://doi.org/10.21437/Interspeech.2007-490}.
+
+\bibitem[Azaria \& Mitchell(2023)Azaria and Mitchell]{azaria2023internal}
+Amos Azaria and Tom Mitchell.
+\newblock The internal state of an llm knows when it’s lying.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2023}, pp.\  967--976, 2023.
+
+\bibitem[Bang et~al.(2023)Bang, Cahyawijaya, Lee, Dai, Su, Wilie, Lovenia, Ji, Yu, Chung, et~al.]{bang2023multitask}
+Yejin Bang, Samuel Cahyawijaya, Nayeon Lee, Wenliang Dai, Dan Su, Bryan Wilie, Holy Lovenia, Ziwei Ji, Tiezheng Yu, Willy Chung, et~al.
+\newblock A multitask, multilingual, multimodal evaluation of chatgpt on reasoning, hallucination, and interactivity.
+\newblock \emph{arXiv preprint arXiv:2302.04023}, 2023.
+
+\bibitem[Belinkov(2021)]{belinkov2021probingclassifierspromisesshortcomings}
+Yonatan Belinkov.
+\newblock Probing classifiers: Promises, shortcomings, and advances, 2021.
+\newblock URL \url{https://arxiv.org/abs/2102.12452}.
+
+\bibitem[Bell et~al.(2019)Bell, Yannakoudakis, and Rei]{DBLP:conf/bea/BellYR19}
+Samuel~J. Bell, Helen Yannakoudakis, and Marek Rei.
+\newblock Context is key: Grammatical error detection with contextual word representations.
+\newblock In Helen Yannakoudakis, Ekaterina Kochmar, Claudia Leacock, Nitin Madnani, Ildik{\'{o}} Pil{\'{a}}n, and Torsten Zesch (eds.), \emph{Proceedings of the Fourteenth Workshop on Innovative Use of {NLP} for Building Educational Applications, BEA@ACL 2019, Florence, Italy, August 2, 2019}, pp.\  103--115. Association for Computational Linguistics, 2019.
+\newblock \doi{10.18653/V1/W19-4410}.
+\newblock URL \url{https://doi.org/10.18653/v1/w19-4410}.
+
+\bibitem[Bommasani et~al.(2021)Bommasani, Hudson, Adeli, Altman, Arora, von Arx, Bernstein, Bohg, Bosselut, Brunskill, et~al.]{bommasani2021opportunities}
+Rishi Bommasani, Drew~A Hudson, Ehsan Adeli, Russ Altman, Simran Arora, Sydney von Arx, Michael~S Bernstein, Jeannette Bohg, Antoine Bosselut, Emma Brunskill, et~al.
+\newblock On the opportunities and risks of foundation models.
+\newblock \emph{arXiv preprint arXiv:2108.07258}, 2021.
+
+\bibitem[Brunner et~al.(2020)Brunner, Liu, Pascual, Richter, Ciaramita, and Wattenhofer]{brunner2020identifiability}
+Gino Brunner, Yang Liu, Damian Pascual, Oliver Richter, Massimiliano Ciaramita, and Roger Wattenhofer.
+\newblock On identifiability in transformers.
+\newblock In \emph{8th International Conference on Learning Representations (ICLR 2020)(virtual)}. International Conference on Learning Representations, 2020.
+
+\bibitem[B{\"u}rger et~al.(2024)B{\"u}rger, Hamprecht, and Nadler]{burger2024truth}
+Lennart B{\"u}rger, Fred~A Hamprecht, and Boaz Nadler.
+\newblock Truth is universal: Robust detection of lies in llms.
+\newblock \emph{arXiv preprint arXiv:2407.12831}, 2024.
+
+\bibitem[Burns et~al.(2022)Burns, Ye, Klein, and Steinhardt]{burns2022discovering}
+Collin Burns, Haotian Ye, Dan Klein, and Jacob Steinhardt.
+\newblock Discovering latent knowledge in language models without supervision.
+\newblock \emph{arXiv preprint arXiv:2212.03827}, 2022.
+
+\bibitem[Caines et~al.(2020)Caines, Bentz, Knill, Rei, and Buttery]{DBLP:conf/coling/CainesBKRB20}
+Andrew Caines, Christian Bentz, Kate~M. Knill, Marek Rei, and Paula Buttery.
+\newblock Grammatical error detection in transcriptions of spoken english.
+\newblock In Donia Scott, N{\'{u}}ria Bel, and Chengqing Zong (eds.), \emph{Proceedings of the 28th International Conference on Computational Linguistics, {COLING} 2020, Barcelona, Spain (Online), December 8-13, 2020}, pp.\  2144--2162. International Committee on Computational Linguistics, 2020.
+\newblock \doi{10.18653/V1/2020.COLING-MAIN.195}.
+\newblock URL \url{https://doi.org/10.18653/v1/2020.coling-main.195}.
+
+\bibitem[CH-Wang et~al.(2023)CH-Wang, Durme, Eisner, and Kedzie]{chwang2023androids}
+Sky CH-Wang, Benjamin~Van Durme, Jason Eisner, and Chris Kedzie.
+\newblock Do androids know they're only dreaming of electric sheep?, 2023.
+
+\bibitem[Chen et~al.(2024)Chen, Liu, Chen, Gu, Wu, Tao, Fu, and Ye]{chen2024inside}
+Chao Chen, Kai Liu, Ze~Chen, Yi~Gu, Yue Wu, Mingyuan Tao, Zhihang Fu, and Jieping Ye.
+\newblock {INSIDE}: {LLM}s' internal states retain the power of hallucination detection.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=Zj12nzlQbz}.
+
+\bibitem[Chen et~al.(2013)Chen, Ananthakrishnan, Kumar, Prasad, and Natarajan]{DBLP:conf/icassp/ChenAKPN13}
+Wei Chen, Sankaranarayanan Ananthakrishnan, Rohit Kumar, Rohit Prasad, and Prem Natarajan.
+\newblock {ASR} error detection in a conversational spoken language translation system.
+\newblock In \emph{{IEEE} International Conference on Acoustics, Speech and Signal Processing, {ICASSP} 2013, Vancouver, BC, Canada, May 26-31, 2013}, pp.\  7418--7422. {IEEE}, 2013.
+\newblock \doi{10.1109/ICASSP.2013.6639104}.
+\newblock URL \url{https://doi.org/10.1109/ICASSP.2013.6639104}.
+
+\bibitem[Cheng \& Duan(2020)Cheng and Duan]{cheng-duan-2020-chinese}
+Yong Cheng and Mofan Duan.
+\newblock {C}hinese grammatical error detection based on {BERT} model.
+\newblock In Erhong YANG, Endong XUN, Baolin ZHANG, and Gaoqi RAO (eds.), \emph{Proceedings of the 6th Workshop on Natural Language Processing Techniques for Educational Applications}, pp.\  108--113, Suzhou, China, December 2020. Association for Computational Linguistics.
+\newblock URL \url{https://aclanthology.org/2020.nlptea-1.15}.
+
+\bibitem[Chuang et~al.(2024)Chuang, Xie, Luo, Kim, Glass, and He]{chuang2024dola}
+Yung-Sung Chuang, Yujia Xie, Hongyin Luo, Yoon Kim, James~R. Glass, and Pengcheng He.
+\newblock Dola: Decoding by contrasting layers improves factuality in large language models.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=Th6NyL07na}.
+
+\bibitem[Elhage et~al.(2021)Elhage, Nanda, Olsson, Henighan, Joseph, Mann, Askell, Bai, Chen, Conerly, et~al.]{elhage2021mathematical}
+Nelson Elhage, Neel Nanda, Catherine Olsson, Tom Henighan, Nicholas Joseph, Ben Mann, Amanda Askell, Yuntao Bai, Anna Chen, Tom Conerly, et~al.
+\newblock A mathematical framework for transformer circuits.
+\newblock \emph{Transformer Circuits Thread}, 1\penalty0 (1):\penalty0 12, 2021.
+
+\bibitem[Errattahi et~al.(2015)Errattahi, Hannani, and Ouahmane]{DBLP:conf/icnlsp/ErrattahiHO15}
+Rahhal Errattahi, Asmaa~El Hannani, and Hassan Ouahmane.
+\newblock Automatic speech recognition errors detection and correction: {A} review.
+\newblock In Mourad Abbas and Ahmed Abdelali (eds.), \emph{1st International Conference on Natural Language and Speech Processing, {ICNLSP} 2015, Algiers, Algeria, October 18-19, 2015}, volume 128 of \emph{Procedia Computer Science}, pp.\  32--37. Elsevier, 2015.
+\newblock \doi{10.1016/J.PROCS.2018.03.005}.
+\newblock URL \url{https://doi.org/10.1016/j.procs.2018.03.005}.
+
+\bibitem[Flickinger et~al.(2016)Flickinger, Goodman, and Packard]{DBLP:conf/bea/FlickingerGP16}
+Dan Flickinger, Michael~Wayne Goodman, and Woodley Packard.
+\newblock Uw-stanford system description for {AESW} 2016 shared task on grammatical error detection.
+\newblock In Joel~R. Tetreault, Jill Burstein, Claudia Leacock, and Helen Yannakoudakis (eds.), \emph{Proceedings of the 11th Workshop on Innovative Use of {NLP} for Building Educational Applications, BEA@NAACL-HLT 2016, June 16, 2016, San Diego, California, {USA}}, pp.\  105--111. The Association for Computer Linguistics, 2016.
+\newblock \doi{10.18653/V1/W16-0511}.
+\newblock URL \url{https://doi.org/10.18653/v1/w16-0511}.
+
+\bibitem[Gao et~al.(2023)Gao, Dai, Pasupat, Chen, Chaganty, Fan, Zhao, Lao, Lee, Juan, et~al.]{gao2023rarr}
+Luyu Gao, Zhuyun Dai, Panupong Pasupat, Anthony Chen, Arun~Tejasvi Chaganty, Yicheng Fan, Vincent Zhao, Ni~Lao, Hongrae Lee, Da-Cheng Juan, et~al.
+\newblock Rarr: Researching and revising what language models say, using language models.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  16477--16508, 2023.
+
+\bibitem[Gekhman et~al.(2020)Gekhman, Aharoni, Beryozkin, Freitag, and Macherey]{gekhman-etal-2020-kobe}
+Zorik Gekhman, Roee Aharoni, Genady Beryozkin, Markus Freitag, and Wolfgang Macherey.
+\newblock {K}o{BE}: Knowledge-based machine translation evaluation.
+\newblock In Trevor Cohn, Yulan He, and Yang Liu (eds.), \emph{Findings of the Association for Computational Linguistics: EMNLP 2020}, pp.\  3200--3207, Online, November 2020. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.findings-emnlp.287}.
+\newblock URL \url{https://aclanthology.org/2020.findings-emnlp.287}.
+
+\bibitem[Gekhman et~al.(2022)Gekhman, Zverinski, Mallinson, and Beryozkin]{gekhman-etal-2022-red}
+Zorik Gekhman, Dina Zverinski, Jonathan Mallinson, and Genady Beryozkin.
+\newblock {RED}-{ACE}: Robust error detection for {ASR} using confidence embeddings.
+\newblock In Yoav Goldberg, Zornitsa Kozareva, and Yue Zhang (eds.), \emph{Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing}, pp.\  2800--2808, Abu Dhabi, United Arab Emirates, December 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.emnlp-main.180}.
+\newblock URL \url{https://aclanthology.org/2022.emnlp-main.180}.
+
+\bibitem[Gekhman et~al.(2023)Gekhman, Herzig, Aharoni, Elkind, and Szpektor]{gekhman-etal-2023-trueteacher}
+Zorik Gekhman, Jonathan Herzig, Roee Aharoni, Chen Elkind, and Idan Szpektor.
+\newblock {T}rue{T}eacher: Learning factual consistency evaluation with large language models.
+\newblock In Houda Bouamor, Juan Pino, and Kalika Bali (eds.), \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pp.\  2053--2070, Singapore, December 2023. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2023.emnlp-main.127}.
+\newblock URL \url{https://aclanthology.org/2023.emnlp-main.127}.
+
+\bibitem[Gekhman et~al.(2024)Gekhman, Yona, Aharoni, Eyal, Feder, Reichart, and Herzig]{gekhman2024does}
+Zorik Gekhman, Gal Yona, Roee Aharoni, Matan Eyal, Amir Feder, Roi Reichart, and Jonathan Herzig.
+\newblock Does fine-tuning llms on new knowledge encourage hallucinations?, 2024.
+
+\bibitem[Gekhman et~al.(2025)Gekhman, David, Orgad, Ofek, Belinkov, Szpector, Herzig, and Reichart]{gekhman2025inside}
+Zorik Gekhman, Eyal~Ben David, Hadas Orgad, Eran Ofek, Yonatan Belinkov, Idan Szpector, Jonathan Herzig, and Roi Reichart.
+\newblock Inside-out: Hidden factual knowledge in llms.
+\newblock \emph{arXiv preprint arXiv:2503.15299}, 2025.
+
+\bibitem[Geva et~al.(2023)Geva, Bastings, Filippova, and Globerson]{geva2023dissecting}
+Mor Geva, Jasmijn Bastings, Katja Filippova, and Amir Globerson.
+\newblock Dissecting recall of factual associations in auto-regressive language models.
+\newblock \emph{arXiv preprint arXiv:2304.14767}, 2023.
+
+\bibitem[Gottesman \& Geva(2024)Gottesman and Geva]{gottesman2024estimating}
+Daniela Gottesman and Mor Geva.
+\newblock Estimating knowledge in large language models without generating a single token.
+\newblock In \emph{Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP 2024)}, Miami, Florida, 2024. Association for Computational Linguistics.
+
+\bibitem[Guerreiro et~al.(2023)Guerreiro, Voita, and Martins]{guerreiro2023looking}
+Nuno~M Guerreiro, Elena Voita, and Andr{\'e}~FT Martins.
+\newblock Looking for a needle in a haystack: A comprehensive study of hallucinations in neural machine translation.
+\newblock In \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics}, pp.\  1059--1075, 2023.
+
+\bibitem[Harnad(2024)]{harnad2024language}
+Stevan Harnad.
+\newblock Language writ large: Llms, chatgpt, grounding, meaning and understanding.
+\newblock \emph{arXiv preprint arXiv:2402.02243}, 2024.
+
+\bibitem[Honovich et~al.(2021)Honovich, Choshen, Aharoni, Neeman, Szpektor, and Abend]{honovich-etal-2021-q2}
+Or~Honovich, Leshem Choshen, Roee Aharoni, Ella Neeman, Idan Szpektor, and Omri Abend.
+\newblock $q^{2}$: {E}valuating factual consistency in knowledge-grounded dialogues via question generation and question answering.
+\newblock In Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (eds.), \emph{Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pp.\  7856--7870, Online and Punta Cana, Dominican Republic, November 2021. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2021.emnlp-main.619}.
+\newblock URL \url{https://aclanthology.org/2021.emnlp-main.619}.
+
+\bibitem[Honovich et~al.(2022)Honovich, Aharoni, Herzig, Taitelbaum, Kukliansy, Cohen, Scialom, Szpektor, Hassidim, and Matias]{honovich-etal-2022-true-evaluating}
+Or~Honovich, Roee Aharoni, Jonathan Herzig, Hagai Taitelbaum, Doron Kukliansy, Vered Cohen, Thomas Scialom, Idan Szpektor, Avinatan Hassidim, and Yossi Matias.
+\newblock {TRUE}: Re-evaluating factual consistency evaluation.
+\newblock In Marine Carpuat, Marie-Catherine de~Marneffe, and Ivan~Vladimir Meza~Ruiz (eds.), \emph{Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}, pp.\  3905--3920, Seattle, United States, July 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.naacl-main.287}.
+\newblock URL \url{https://aclanthology.org/2022.naacl-main.287}.
+
+\bibitem[Huang et~al.(2023{\natexlab{a}})Huang, Yu, Ma, Zhong, Feng, Wang, Chen, Peng, Feng, Qin, et~al.]{huang2023survey}
+Lei Huang, Weijiang Yu, Weitao Ma, Weihong Zhong, Zhangyin Feng, Haotian Wang, Qianglong Chen, Weihua Peng, Xiaocheng Feng, Bing Qin, et~al.
+\newblock A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions.
+\newblock \emph{arXiv preprint arXiv:2311.05232}, 2023{\natexlab{a}}.
+
+\bibitem[Huang et~al.(2023{\natexlab{b}})Huang, Song, Wang, Chen, and Ma]{huang2023look}
+Yuheng Huang, Jiayang Song, Zhijie Wang, Huaming Chen, and Lei Ma.
+\newblock Look before you leap: An exploratory study of uncertainty measurement for large language models.
+\newblock \emph{arXiv preprint arXiv:2307.10236}, 2023{\natexlab{b}}.
+
+\bibitem[Ji et~al.(2023)Ji, Lee, Frieske, Yu, Su, Xu, Ishii, Bang, Madotto, and Fung]{ji2023survey}
+Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Ye~Jin Bang, Andrea Madotto, and Pascale Fung.
+\newblock Survey of hallucination in natural language generation.
+\newblock \emph{ACM Computing Surveys}, 55\penalty0 (12):\penalty0 1--38, 2023.
+
+\bibitem[Jiang et~al.(2023)Jiang, Sablayrolles, Mensch, Bamford, Chaplot, de~las Casas, Bressand, Lengyel, Lample, Saulnier, Lavaud, Lachaux, Stock, Scao, Lavril, Wang, Lacroix, and Sayed]{jiang2023mistral7b}
+Albert~Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra~Singh Chaplot, Diego de~las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio~Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven~Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William~El Sayed.
+\newblock Mistral 7b, 2023.
+\newblock URL \url{https://arxiv.org/abs/2310.06825}.
+
+\bibitem[Joshi et~al.(2017)Joshi, Choi, Weld, and Zettlemoyer]{joshi2017triviaqa}
+Mandar Joshi, Eunsol Choi, Daniel~S Weld, and Luke Zettlemoyer.
+\newblock Triviaqa: A large scale distantly supervised challenge dataset for reading comprehension.
+\newblock In \emph{Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  1601--1611, 2017.
+
+\bibitem[Kadavath et~al.(2022)Kadavath, Conerly, Askell, Henighan, Drain, Perez, Schiefer, Hatfield-Dodds, DasSarma, Tran-Johnson, et~al.]{kadavath2022language}
+Saurav Kadavath, Tom Conerly, Amanda Askell, Tom Henighan, Dawn Drain, Ethan Perez, Nicholas Schiefer, Zac Hatfield-Dodds, Nova DasSarma, Eli Tran-Johnson, et~al.
+\newblock Language models (mostly) know what they know.
+\newblock \emph{arXiv preprint arXiv:2207.05221}, 2022.
+
+\bibitem[Kasewa et~al.(2018)Kasewa, Stenetorp, and Riedel]{DBLP:conf/emnlp/KasewaS018}
+Sudhanshu Kasewa, Pontus Stenetorp, and Sebastian Riedel.
+\newblock Wronging a right: Generating better errors to improve grammatical error detection.
+\newblock In Ellen Riloff, David Chiang, Julia Hockenmaier, and Jun'ichi Tsujii (eds.), \emph{Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, Brussels, Belgium, October 31 - November 4, 2018}, pp.\  4977--4983. Association for Computational Linguistics, 2018.
+\newblock URL \url{https://aclanthology.org/D18-1541/}.
+
+\bibitem[Kotek et~al.(2023)Kotek, Dockum, and Sun]{kotek2023gender}
+Hadas Kotek, Rikker Dockum, and David Sun.
+\newblock Gender bias and stereotypes in large language models.
+\newblock In \emph{Proceedings of the ACM collective intelligence conference}, pp.\  12--24, 2023.
+
+\bibitem[Kryscinski et~al.(2020)Kryscinski, McCann, Xiong, and Socher]{kryscinski-etal-2020-evaluating}
+Wojciech Kryscinski, Bryan McCann, Caiming Xiong, and Richard Socher.
+\newblock Evaluating the factual consistency of abstractive text summarization.
+\newblock In Bonnie Webber, Trevor Cohn, Yulan He, and Yang Liu (eds.), \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pp.\  9332--9346, Online, November 2020. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.emnlp-main.750}.
+\newblock URL \url{https://aclanthology.org/2020.emnlp-main.750}.
+
+\bibitem[Kuhn et~al.(2023)Kuhn, Gal, and Farquhar]{kuhn2023semantic}
+Lorenz Kuhn, Yarin Gal, and Sebastian Farquhar.
+\newblock Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+\newblock URL \url{https://openreview.net/forum?id=VD-AYtP0dve}.
+
+\bibitem[Kwiatkowski et~al.(2019)Kwiatkowski, Palomaki, Redfield, Collins, Parikh, Alberti, Epstein, Polosukhin, Kelcey, Devlin, Lee, Toutanova, Jones, Chang, Dai, Uszkoreit, Le, and Petrov]{natural_qurstions}
+Tom Kwiatkowski, Jennimaria Palomaki, Olivia Redfield, Michael Collins, Ankur Parikh, Chris Alberti, Danielle Epstein, Illia Polosukhin, Matthew Kelcey, Jacob Devlin, Kenton Lee, Kristina~N. Toutanova, Llion Jones, Ming-Wei Chang, Andrew Dai, Jakob Uszkoreit, Quoc Le, and Slav Petrov.
+\newblock Natural questions: a benchmark for question answering research.
+\newblock \emph{Transactions of the Association of Computational Linguistics}, 2019.
+
+\bibitem[Laban et~al.(2022)Laban, Schnabel, Bennett, and Hearst]{laban-etal-2022-summac}
+Philippe Laban, Tobias Schnabel, Paul~N. Bennett, and Marti~A. Hearst.
+\newblock {S}umma{C}: Re-visiting {NLI}-based models for inconsistency detection in summarization.
+\newblock \emph{Transactions of the Association for Computational Linguistics}, 10:\penalty0 163--177, 2022.
+\newblock \doi{10.1162/tacl_a_00453}.
+\newblock URL \url{https://aclanthology.org/2022.tacl-1.10}.
+
+\bibitem[Levinstein \& Herrmann(2024)Levinstein and Herrmann]{levinstein2024still}
+Benjamin~A Levinstein and Daniel~A Herrmann.
+\newblock Still no lie detector for language models: Probing empirical and conceptual roadblocks.
+\newblock \emph{Philosophical Studies}, pp.\  1--27, 2024.
+
+\bibitem[Lewis et~al.(2020)Lewis, Perez, Piktus, Petroni, Karpukhin, Goyal, K{\"u}ttler, Lewis, Yih, Rockt{\"a}schel, et~al.]{lewis2020retrieval}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich K{\"u}ttler, Mike Lewis, Wen-tau Yih, Tim Rockt{\"a}schel, et~al.
+\newblock Retrieval-augmented generation for knowledge-intensive nlp tasks.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:\penalty0 9459--9474, 2020.
+
+\bibitem[Li et~al.(2024)Li, Patel, Vi{\'e}gas, Pfister, and Wattenberg]{li2024inference}
+Kenneth Li, Oam Patel, Fernanda Vi{\'e}gas, Hanspeter Pfister, and Martin Wattenberg.
+\newblock Inference-time intervention: Eliciting truthful answers from a language model.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem[Li \& Wang(2024)Li and Wang]{DBLP:conf/acl/0101W24}
+Wei Li and Houfeng Wang.
+\newblock Detection-correction structure via general language model for grammatical error correction.
+\newblock In Lun{-}Wei Ku, Andre Martins, and Vivek Srikumar (eds.), \emph{Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), {ACL} 2024, Bangkok, Thailand, August 11-16, 2024}, pp.\  1748--1763. Association for Computational Linguistics, 2024.
+\newblock URL \url{https://aclanthology.org/2024.acl-long.96}.
+
+\bibitem[Liang et~al.(2024)Liang, Song, Zheng, Wang, Yu, Li, Li, Wang, Wang, Xiong, et~al.]{liang2024internal}
+Xun Liang, Shichao Song, Zifan Zheng, Hanyu Wang, Qingchen Yu, Xunkai Li, Rong-Hua Li, Yi~Wang, Zhonghao Wang, Feiyu Xiong, et~al.
+\newblock Internal consistency and self-feedback in large language models: A survey.
+\newblock \emph{arXiv preprint arXiv:2407.14507}, 2024.
+
+\bibitem[Lin et~al.(2021)Lin, Hilton, and Evans]{lin2021truthfulqa}
+Stephanie Lin, Jacob Hilton, and Owain Evans.
+\newblock Truthfulqa: Measuring how models mimic human falsehoods.
+\newblock \emph{arXiv preprint arXiv:2109.07958}, 2021.
+
+\bibitem[Liu et~al.(2023)Liu, Casper, Hadfield-Menell, and Andreas]{liu-etal-2023-cognitive}
+Kevin Liu, Stephen Casper, Dylan Hadfield-Menell, and Jacob Andreas.
+\newblock Cognitive dissonance: Why do language model outputs disagree with internal representations of truthfulness?
+\newblock In Houda Bouamor, Juan Pino, and Kalika Bali (eds.), \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pp.\  4791--4797, Singapore, December 2023. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2023.emnlp-main.291}.
+\newblock URL \url{https://aclanthology.org/2023.emnlp-main.291}.
+
+\bibitem[Liu et~al.(2022)Liu, Zhang, Brockett, Mao, Sui, Chen, and Dolan]{liu-etal-2022-token}
+Tianyu Liu, Yizhe Zhang, Chris Brockett, Yi~Mao, Zhifang Sui, Weizhu Chen, and Bill Dolan.
+\newblock A token-level reference-free hallucination detection benchmark for free-form text generation.
+\newblock In Smaranda Muresan, Preslav Nakov, and Aline Villavicencio (eds.), \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  6723--6737, Dublin, Ireland, May 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.acl-long.464}.
+\newblock URL \url{https://aclanthology.org/2022.acl-long.464}.
+
+\bibitem[Lo(2019)]{lo-2019-yisi}
+Chi-kiu Lo.
+\newblock {Y}i{S}i - a unified semantic {MT} quality evaluation and estimation metric for languages with different levels of available resources.
+\newblock In Ond{\v{r}}ej Bojar, Rajen Chatterjee, Christian Federmann, Mark Fishel, Yvette Graham, Barry Haddow, Matthias Huck, Antonio~Jimeno Yepes, Philipp Koehn, Andr{\'e} Martins, Christof Monz, Matteo Negri, Aur{\'e}lie N{\'e}v{\'e}ol, Mariana Neves, Matt Post, Marco Turchi, and Karin Verspoor (eds.), \emph{Proceedings of the Fourth Conference on Machine Translation (Volume 2: Shared Task Papers, Day 1)}, pp.\  507--513, Florence, Italy, August 2019. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/W19-5358}.
+\newblock URL \url{https://aclanthology.org/W19-5358}.
+
+\bibitem[Maas et~al.(2011)Maas, Daly, Pham, Huang, Ng, and Potts]{imdb_dataset}
+Andrew~L. Maas, Raymond~E. Daly, Peter~T. Pham, Dan Huang, Andrew~Y. Ng, and Christopher Potts.
+\newblock Learning word vectors for sentiment analysis.
+\newblock In \emph{Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies}, pp.\  142--150, Portland, Oregon, USA, June 2011. Association for Computational Linguistics.
+\newblock URL \url{http://www.aclweb.org/anthology/P11-1015}.
+
+\bibitem[Manakul et~al.(2023)Manakul, Liusie, and Gales]{manakul2023selfcheckgpt}
+Potsawee Manakul, Adian Liusie, and Mark Gales.
+\newblock Selfcheckgpt: Zero-resource black-box hallucination detection for generative large language models.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pp.\  9004--9017, 2023.
+
+\bibitem[Marks \& Tegmark(2023)Marks and Tegmark]{marks2023geometry}
+Samuel Marks and Max Tegmark.
+\newblock The geometry of truth: Emergent linear structure in large language model representations of true/false datasets.
+\newblock \emph{arXiv preprint arXiv:2310.06824}, 2023.
+
+\bibitem[McGowan et~al.(2023)McGowan, Gui, Dobbs, Shuster, Cotter, Selloni, Goodman, Srivastava, Cecchi, and Corcoran]{mcgowan2023chatgpt}
+Alessia McGowan, Yunlai Gui, Matthew Dobbs, Sophia Shuster, Matthew Cotter, Alexandria Selloni, Marianne Goodman, Agrima Srivastava, Guillermo~A Cecchi, and Cheryl~M Corcoran.
+\newblock Chatgpt and bard exhibit spontaneous citation fabrication during psychiatry literature search.
+\newblock \emph{Psychiatry Research}, 326:\penalty0 115334, 2023.
+
+\bibitem[Meng et~al.(2022)Meng, Bau, Andonian, and Belinkov]{meng2022locating}
+Kevin Meng, David Bau, Alex Andonian, and Yonatan Belinkov.
+\newblock Locating and editing factual associations in {GPT}.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2022.
+\newblock arXiv:2202.05262.
+
+\bibitem[Millidge(2023)]{millidge2023llms}
+Beren Millidge.
+\newblock {LLMs confabulate not hallucinate}.
+\newblock \emph{Beren's Blog}, March 2023.
+\newblock URL \url{https://www.beren.io/2023-03-19-LLMs-confabulate-not-hallucinate/}.
+
+\bibitem[Mishra \& Kaur(2013)Mishra and Kaur]{mishra2013survey}
+Ritika Mishra and Navjot Kaur.
+\newblock A survey of spelling error detection and correction techniques.
+\newblock \emph{International Journal of Computer Trends and Technology}, 4\penalty0 (3):\penalty0 372--374, 2013.
+
+\bibitem[nostalgebraist(2020)]{nostalgebraist2020logitlens}
+nostalgebraist.
+\newblock Interpreting gpt: The logit lens.
+\newblock \texttt{LessWrong blog post}, 2020.
+\newblock URL \url{https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens}.
+\newblock Accessed: 2024-11-18.
+
+\bibitem[Olah et~al.(2023)Olah, Elhage, Nanda, Schubert, Filan, et~al.]{olah2023monosemantic}
+Chris Olah, Nelson Elhage, Neel Nanda, Catherine Schubert, Daniel Filan, et~al.
+\newblock Towards monosemanticity: Decomposing language models with dictionary learning.
+\newblock \emph{Transformer Circuits Thread}, 2023.
+\newblock URL \url{https://transformer-circuits.pub/2023/monosemantic-features/index.html}.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos, Cournapeau, Brucher, Perrot, and Duchesnay]{scikit-learn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel, M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos, D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay.
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830, 2011.
+
+\bibitem[Pellegrini \& Trancoso(2009)Pellegrini and Trancoso]{DBLP:conf/ltconf/PellegriniT09}
+Thomas Pellegrini and Isabel Trancoso.
+\newblock Error detection in broadcast news {ASR} using markov chains.
+\newblock In Zygmunt Vetulani (ed.), \emph{Human Language Technology. Challenges for Computer Science and Linguistics - 4th Language and Technology Conference, {LTC} 2009, Poznan, Poland, November 6-8, 2009, Revised Selected Papers}, volume 6562 of \emph{Lecture Notes in Computer Science}, pp.\  59--69. Springer, 2009.
+\newblock \doi{10.1007/978-3-642-20095-3\_6}.
+\newblock URL \url{https://doi.org/10.1007/978-3-642-20095-3\_6}.
+
+\bibitem[Pu et~al.(2021)Pu, Chung, Parikh, Gehrmann, and Sellam]{pu-etal-2021-learning}
+Amy Pu, Hyung~Won Chung, Ankur Parikh, Sebastian Gehrmann, and Thibault Sellam.
+\newblock Learning compact metrics for {MT}.
+\newblock In Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (eds.), \emph{Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pp.\  751--762, Online and Punta Cana, Dominican Republic, November 2021. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2021.emnlp-main.58}.
+\newblock URL \url{https://aclanthology.org/2021.emnlp-main.58}.
+
+\bibitem[Rao et~al.(2020)Rao, Yang, and Zhang]{rao-etal-2020-overview}
+Gaoqi Rao, Erhong Yang, and Baolin Zhang.
+\newblock Overview of {NLPTEA}-2020 shared task for {C}hinese grammatical error diagnosis.
+\newblock In Erhong YANG, Endong XUN, Baolin ZHANG, and Gaoqi RAO (eds.), \emph{Proceedings of the 6th Workshop on Natural Language Processing Techniques for Educational Applications}, pp.\  25--35, Suzhou, China, December 2020. Association for Computational Linguistics.
+\newblock URL \url{https://aclanthology.org/2020.nlptea-1.4}.
+
+\bibitem[Rateike et~al.(2023)Rateike, Cintas, Wamburu, Akumu, and Speakman]{rateike2023weakly}
+Miriam Rateike, Celia Cintas, John Wamburu, Tanya Akumu, and Skyler Speakman.
+\newblock Weakly supervised detection of hallucinations in llm activations.
+\newblock \emph{arXiv preprint arXiv:2312.02798}, 2023.
+
+\bibitem[Rawte et~al.(2023)Rawte, Chakraborty, Pathak, Sarkar, Tonmoy, Chadha, Sheth, and Das]{rawte2023troubling}
+Vipula Rawte, Swagata Chakraborty, Agnibh Pathak, Anubhav Sarkar, SM~Tonmoy, Aman Chadha, Amit~P Sheth, and Amitava Das.
+\newblock The troubling emergence of hallucination in large language models--an extensive definition, quantification, and prescriptive remediations.
+\newblock \emph{arXiv preprint arXiv:2310.04988}, 2023.
+
+\bibitem[Rei et~al.(2020)Rei, Stewart, Farinha, and Lavie]{rei-etal-2020-comet}
+Ricardo Rei, Craig Stewart, Ana~C Farinha, and Alon Lavie.
+\newblock {COMET}: A neural framework for {MT} evaluation.
+\newblock In Bonnie Webber, Trevor Cohn, Yulan He, and Yang Liu (eds.), \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pp.\  2685--2702, Online, November 2020. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.emnlp-main.213}.
+\newblock URL \url{https://aclanthology.org/2020.emnlp-main.213}.
+
+\bibitem[Rei et~al.(2022{\natexlab{a}})Rei, C.~de Souza, Alves, Zerva, Farinha, Glushkova, Lavie, Coheur, and Martins]{rei-etal-2022-comet}
+Ricardo Rei, Jos{\'e}~G. C.~de Souza, Duarte Alves, Chrysoula Zerva, Ana~C Farinha, Taisiya Glushkova, Alon Lavie, Luisa Coheur, and Andr{\'e} F.~T. Martins.
+\newblock {COMET}-22: Unbabel-{IST} 2022 submission for the metrics shared task.
+\newblock In Philipp Koehn, Lo{\"\i}c Barrault, Ond{\v{r}}ej Bojar, Fethi Bougares, Rajen Chatterjee, Marta~R. Costa-juss{\`a}, Christian Federmann, Mark Fishel, Alexander Fraser, Markus Freitag, Yvette Graham, Roman Grundkiewicz, Paco Guzman, Barry Haddow, Matthias Huck, Antonio Jimeno~Yepes, Tom Kocmi, Andr{\'e} Martins, Makoto Morishita, Christof Monz, Masaaki Nagata, Toshiaki Nakazawa, Matteo Negri, Aur{\'e}lie N{\'e}v{\'e}ol, Mariana Neves, Martin Popel, Marco Turchi, and Marcos Zampieri (eds.), \emph{Proceedings of the Seventh Conference on Machine Translation (WMT)}, pp.\  578--585, Abu Dhabi, United Arab Emirates (Hybrid), December 2022{\natexlab{a}}. Association for Computational Linguistics.
+\newblock URL \url{https://aclanthology.org/2022.wmt-1.52}.
+
+\bibitem[Rei et~al.(2022{\natexlab{b}})Rei, Treviso, Guerreiro, Zerva, Farinha, Maroti, C.~de Souza, Glushkova, Alves, Coheur, Lavie, and Martins]{rei-etal-2022-cometkiwi}
+Ricardo Rei, Marcos Treviso, Nuno~M. Guerreiro, Chrysoula Zerva, Ana~C Farinha, Christine Maroti, Jos{\'e}~G. C.~de Souza, Taisiya Glushkova, Duarte Alves, Luisa Coheur, Alon Lavie, and Andr{\'e} F.~T. Martins.
+\newblock {C}omet{K}iwi: {IST}-unbabel 2022 submission for the quality estimation shared task.
+\newblock In Philipp Koehn, Lo{\"\i}c Barrault, Ond{\v{r}}ej Bojar, Fethi Bougares, Rajen Chatterjee, Marta~R. Costa-juss{\`a}, Christian Federmann, Mark Fishel, Alexander Fraser, Markus Freitag, Yvette Graham, Roman Grundkiewicz, Paco Guzman, Barry Haddow, Matthias Huck, Antonio Jimeno~Yepes, Tom Kocmi, Andr{\'e} Martins, Makoto Morishita, Christof Monz, Masaaki Nagata, Toshiaki Nakazawa, Matteo Negri, Aur{\'e}lie N{\'e}v{\'e}ol, Mariana Neves, Martin Popel, Marco Turchi, and Marcos Zampieri (eds.), \emph{Proceedings of the Seventh Conference on Machine Translation (WMT)}, pp.\  634--645, Abu Dhabi, United Arab Emirates (Hybrid), December 2022{\natexlab{b}}. Association for Computational Linguistics.
+\newblock URL \url{https://aclanthology.org/2022.wmt-1.60}.
+
+\bibitem[Sakaguchi et~al.(2021)Sakaguchi, Bras, Bhagavatula, and Choi]{sakaguchi2021winogrande}
+Keisuke Sakaguchi, Ronan~Le Bras, Chandra Bhagavatula, and Yejin Choi.
+\newblock Winogrande: An adversarial winograd schema challenge at scale.
+\newblock \emph{Communications of the ACM}, 64\penalty0 (9):\penalty0 99--106, 2021.
+
+\bibitem[Salles et~al.(2020)Salles, Evers, and Farisco]{salles2020anthropomorphism}
+Arleen Salles, Kathinka Evers, and Michele Farisco.
+\newblock Anthropomorphism in ai.
+\newblock \emph{AJOB neuroscience}, 11\penalty0 (2):\penalty0 88--95, 2020.
+
+\bibitem[Scialom et~al.(2021)Scialom, Dray, Lamprier, Piwowarski, Staiano, Wang, and Gallinari]{scialom-etal-2021-questeval}
+Thomas Scialom, Paul-Alexis Dray, Sylvain Lamprier, Benjamin Piwowarski, Jacopo Staiano, Alex Wang, and Patrick Gallinari.
+\newblock {Q}uest{E}val: Summarization asks for fact-based evaluation.
+\newblock In Marie-Francine Moens, Xuanjing Huang, Lucia Specia, and Scott Wen-tau Yih (eds.), \emph{Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pp.\  6594--6604, Online and Punta Cana, Dominican Republic, November 2021. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2021.emnlp-main.529}.
+\newblock URL \url{https://aclanthology.org/2021.emnlp-main.529}.
+
+\bibitem[Sellam et~al.(2020)Sellam, Das, and Parikh]{sellam-etal-2020-bleurt}
+Thibault Sellam, Dipanjan Das, and Ankur Parikh.
+\newblock {BLEURT}: Learning robust metrics for text generation.
+\newblock In Dan Jurafsky, Joyce Chai, Natalie Schluter, and Joel Tetreault (eds.), \emph{Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pp.\  7881--7892, Online, July 2020. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.acl-main.704}.
+\newblock URL \url{https://aclanthology.org/2020.acl-main.704}.
+
+\bibitem[Serapio-Garc{\'\i}a et~al.(2023)Serapio-Garc{\'\i}a, Safdari, Crepy, Sun, Fitz, Romero, Abdulhai, Faust, and Matari{\'c}]{serapio2023personality}
+Greg Serapio-Garc{\'\i}a, Mustafa Safdari, Cl{\'e}ment Crepy, Luning Sun, Stephen Fitz, Peter Romero, Marwa Abdulhai, Aleksandra Faust, and Maja Matari{\'c}.
+\newblock Personality traits in large language models.
+\newblock \emph{arXiv preprint arXiv:2307.00184}, 2023.
+
+\bibitem[Simhi et~al.(2024)Simhi, Herzig, Szpektor, and Belinkov]{simhi2024constructing}
+Adi Simhi, Jonathan Herzig, Idan Szpektor, and Yonatan Belinkov.
+\newblock Constructing benchmarks and interventions for combating hallucinations in llms, 2024.
+
+\bibitem[Slobodkin et~al.(2023)Slobodkin, Goldman, Caciularu, Dagan, and Ravfogel]{slobodkin-etal-2023-curious}
+Aviv Slobodkin, Omer Goldman, Avi Caciularu, Ido Dagan, and Shauli Ravfogel.
+\newblock The curious case of hallucinatory (un)answerability: Finding truths in the hidden states of over-confident large language models.
+\newblock In Houda Bouamor, Juan Pino, and Kalika Bali (eds.), \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pp.\  3607--3625, Singapore, December 2023. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2023.emnlp-main.220}.
+\newblock URL \url{https://aclanthology.org/2023.emnlp-main.220}.
+
+\bibitem[Snyder et~al.(2023)Snyder, Moisescu, and Zafar]{snyder2023earlydetectionhallucinationsfactual}
+Ben Snyder, Marius Moisescu, and Muhammad~Bilal Zafar.
+\newblock On early detection of hallucinations in factual question answering, 2023.
+\newblock URL \url{https://arxiv.org/abs/2312.14183}.
+
+\bibitem[Sun et~al.(2024)Sun, Yin, Guo, Wu, Qiu, and Zhao]{sun2024benchmarking}
+Yuhong Sun, Zhangyue Yin, Qipeng Guo, Jiawen Wu, Xipeng Qiu, and Hui Zhao.
+\newblock Benchmarking hallucination in large language models based on unanswerable math word problem.
+\newblock \emph{CoRR}, 2024.
+
+\bibitem[Taubenfeld et~al.(2025)Taubenfeld, Sheffer, Ofek, Feder, Goldstein, Gekhman, and Yona]{taubenfeld2025confidence}
+Amir Taubenfeld, Tom Sheffer, Eran Ofek, Amir Feder, Ariel Goldstein, Zorik Gekhman, and Gal Yona.
+\newblock Confidence improves self-consistency in llms.
+\newblock \emph{arXiv preprint arXiv:2502.06233}, 2025.
+
+\bibitem[Tian et~al.(2023{\natexlab{a}})Tian, Mitchell, Yao, Manning, and Finn]{tian2023fine}
+Katherine Tian, Eric Mitchell, Huaxiu Yao, Christopher~D Manning, and Chelsea Finn.
+\newblock Fine-tuning language models for factuality.
+\newblock \emph{arXiv preprint arXiv:2311.08401}, 2023{\natexlab{a}}.
+
+\bibitem[Tian et~al.(2023{\natexlab{b}})Tian, Mitchell, Zhou, Sharma, Rafailov, Yao, Finn, and Manning]{tian2023just}
+Katherine Tian, Eric Mitchell, Allan Zhou, Archit Sharma, Rafael Rafailov, Huaxiu Yao, Chelsea Finn, and Christopher~D Manning.
+\newblock Just ask for calibration: Strategies for eliciting calibrated confidence scores from language models fine-tuned with human feedback.
+\newblock \emph{arXiv preprint arXiv:2305.14975}, 2023{\natexlab{b}}.
+
+\bibitem[Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, et~al.]{touvron2023llama}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timoth{\'e}e Lacroix, Baptiste Rozi{\`e}re, Naman Goyal, Eric Hambro, Faisal Azhar, et~al.
+\newblock Llama: Open and efficient foundation language models.
+\newblock \emph{arXiv preprint arXiv:2302.13971}, 2023.
+
+\bibitem[Varshney et~al.(2023)Varshney, Yao, Zhang, Chen, and Yu]{varshney2023stitch}
+Neeraj Varshney, Wenlin Yao, Hongming Zhang, Jianshu Chen, and Dong Yu.
+\newblock A stitch in time saves nine: Detecting and mitigating hallucinations of llms by validating low-confidence generation, 2023.
+
+\bibitem[Venkit et~al.(2024)Venkit, Chakravorti, Gupta, Biggs, Srinath, Goswami, Rajtmajer, and Wilson]{venkit2024confidently}
+Pranav~Narayanan Venkit, Tatiana Chakravorti, Vipul Gupta, Heidi Biggs, Mukund Srinath, Koustava Goswami, Sarah Rajtmajer, and Shomir Wilson.
+\newblock " confidently nonsensical?'': A critical survey on the perspectives and challenges of'hallucinations' in nlp.
+\newblock \emph{arXiv preprint arXiv:2404.07461}, 2024.
+
+\bibitem[Wang \& Sennrich(2020)Wang and Sennrich]{wang-sennrich-2020-exposure}
+Chaojun Wang and Rico Sennrich.
+\newblock On exposure bias, hallucination and domain shift in neural machine translation.
+\newblock In Dan Jurafsky, Joyce Chai, Natalie Schluter, and Joel Tetreault (eds.), \emph{Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pp.\  3544--3552, Online, July 2020. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.acl-main.326}.
+\newblock URL \url{https://aclanthology.org/2020.acl-main.326}.
+
+\bibitem[Wang \& Tan(2020)Wang and Tan]{DBLP:conf/ijcnn/Wang020}
+Quanbin Wang and Ying Tan.
+\newblock Grammatical error detection with self attention by pairwise training.
+\newblock In \emph{2020 International Joint Conference on Neural Networks, {IJCNN} 2020, Glasgow, United Kingdom, July 19-24, 2020}, pp.\  1--7. {IEEE}, 2020.
+\newblock \doi{10.1109/IJCNN48605.2020.9206715}.
+\newblock URL \url{https://doi.org/10.1109/IJCNN48605.2020.9206715}.
+
+\bibitem[Williams et~al.(2018)Williams, Nangia, and Bowman]{mnli}
+Adina Williams, Nikita Nangia, and Samuel Bowman.
+\newblock A broad-coverage challenge corpus for sentence understanding through inference.
+\newblock In \emph{Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers)}, pp.\  1112--1122. Association for Computational Linguistics, 2018.
+\newblock URL \url{http://aclweb.org/anthology/N18-1101}.
+
+\bibitem[Yang et~al.(2018)Yang, Qi, Zhang, Bengio, Cohen, Salakhutdinov, and Manning]{yang2018hotpotqa}
+Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William Cohen, Ruslan Salakhutdinov, and Christopher~D Manning.
+\newblock Hotpotqa: A dataset for diverse, explainable multi-hop question answering.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}, pp.\  2369--2380, 2018.
+
+\bibitem[Yin et~al.(2024)Yin, Srinivasa, and Chang]{yin2024characterizing}
+Fan Yin, Jayanth Srinivasa, and Kai-Wei Chang.
+\newblock Characterizing truthfulness in large language model generations with local intrinsic dimension.
+\newblock In \emph{Proceedings of the 41st International Conference on Machine Learning}, Vienna, Austria, 2024.
+
+\bibitem[Yona et~al.(2024)Yona, Aharoni, and Geva]{yona2024largelanguagemodelsfaithfully}
+Gal Yona, Roee Aharoni, and Mor Geva.
+\newblock Can large language models faithfully express their intrinsic uncertainty in words?, 2024.
+\newblock URL \url{https://arxiv.org/abs/2405.16908}.
+
+\bibitem[Yuksekgonul et~al.(2023)Yuksekgonul, Chandrasekaran, Jones, Gunasekar, Naik, Palangi, Kamar, and Nushi]{yuksekgonul2023attention}
+Mert Yuksekgonul, Varun Chandrasekaran, Erik Jones, Suriya Gunasekar, Ranjita Naik, Hamid Palangi, Ece Kamar, and Besmira Nushi.
+\newblock Attention satisfies: A constraint-satisfaction lens on factual errors of language models.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2023.
+
+\bibitem[Zhang et~al.(2019)Zhang, Han, Liu, Jiang, Sun, and Liu]{zhang-etal-2019-ernie}
+Zhengyan Zhang, Xu~Han, Zhiyuan Liu, Xin Jiang, Maosong Sun, and Qun Liu.
+\newblock {ERNIE}: Enhanced language representation with informative entities.
+\newblock In Anna Korhonen, David Traum, and Llu{\'\i}s M{\`a}rquez (eds.), \emph{Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics}, pp.\  1441--1451, Florence, Italy, July 2019. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/P19-1139}.
+\newblock URL \url{https://aclanthology.org/P19-1139}.
+
+\bibitem[Zhao et~al.(2018)Zhao, Wang, Yatskar, Ordonez, and Chang]{zhao2018gender}
+Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, and Kai-Wei Chang.
+\newblock Gender bias in coreference resolution: Evaluation and debiasing methods.
+\newblock \emph{arXiv preprint arXiv:1804.06876}, 2018.
+
+\bibitem[Zhou et~al.(2005)Zhou, Shi, Feng, and Sears]{DBLP:journals/taslp/ZhouSFS05}
+Lina Zhou, Yongmei Shi, Jinjuan Feng, and Andrew Sears.
+\newblock Data mining for detecting errors in dictation speech recognition.
+\newblock \emph{{IEEE} Trans. Speech Audio Process.}, 13\penalty0 (5-1):\penalty0 681--688, 2005.
+\newblock \doi{10.1109/TSA.2005.851874}.
+\newblock URL \url{https://doi.org/10.1109/TSA.2005.851874}.
+
+\bibitem[Zou et~al.(2023)Zou, Phan, Chen, Campbell, Guo, Ren, Pan, Yin, Mazeika, Dombrowski, Goel, Li, Byun, Wang, Mallen, Basart, Koyejo, Song, Fredrikson, Kolter, and Hendrycks]{zou2023representationengineeringtopdownapproach}
+Andy Zou, Long Phan, Sarah Chen, James Campbell, Phillip Guo, Richard Ren, Alexander Pan, Xuwang Yin, Mantas Mazeika, Ann-Kathrin Dombrowski, Shashwat Goel, Nathaniel Li, Michael~J. Byun, Zifan Wang, Alex Mallen, Steven Basart, Sanmi Koyejo, Dawn Song, Matt Fredrikson, J.~Zico Kolter, and Dan Hendrycks.
+\newblock Representation engineering: A top-down approach to ai transparency, 2023.
+\newblock URL \url{https://arxiv.org/abs/2310.01405}.
+
+\end{thebibliography}

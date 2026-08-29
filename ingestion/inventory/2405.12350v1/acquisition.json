@@ -24,6 +24,19 @@
       "fetched_at": "2026-08-11T03:19:24.875982Z",
       "provider_checksum": null,
       "local_import": null
+    },
+    {
+      "kind": "pdf",
+      "path": "2405.12350v1.pdf",
+      "format": "application/pdf",
+      "bytes": 533700,
+      "sha256": "9607149f87e20d7974628d9ecf8d05195ff99f7e6f121ec8b630d628e1614ca6",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/pdf/2405.12350v1",
+      "candidate_id": "arxiv-pdf",
+      "fetched_at": "2026-08-27T23:05:19.197662Z",
+      "provider_checksum": null,
+      "local_import": null
     }
   ]
 }

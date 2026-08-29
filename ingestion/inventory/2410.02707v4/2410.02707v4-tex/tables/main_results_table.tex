@@ -1,0 +1,30 @@
+\begin{table}[t]
+    \centering
+    \caption{Comparison of error detection techniques using AUC metric, across different models and datasets. The best-performing method is \textbf{bolded}. Using exact answer tokens is useful for many cases, especially probing.}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l|lll|lll}
+    \toprule
+     & \multicolumn{3}{c}{\textbf{Mistral-7b-Instruct}} & \multicolumn{3}{c}{\textbf{Llama 3-8b-Instruct}} \\
+     \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+     & TriviaQA & Winobias & Math & TriviaQA & Winobias & Math \\
+     \midrule
+    Logits-mean & $0.60$ \tiny$\pm 0.009$ & $0.56$ \tiny$\pm 0.017$ & $0.55$ \tiny$\pm 0.029$ & $0.66$ \tiny$\pm 0.005$ & $0.60$ \tiny$\pm 0.026$ & $0.75$ \tiny$\pm 0.018$ \\
+    Logits-mean-exact & $0.68$ \tiny$\pm 0.007$ & $0.54$ \tiny$\pm 0.012$ & $0.51$ \tiny$\pm 0.005$  & $0.71$ \tiny$\pm 0.006$ & $0.55$ \tiny$\pm 0.019$ & $0.80$ \tiny$\pm 0.021$ \\
+Logits-min & $0.63$ \tiny$\pm 0.008$ & $0.59$ \tiny$\pm 0.012$ & $0.51$ \tiny$\pm 0.017$ & $0.74$ \tiny$\pm 0.007$ & $0.61$ \tiny$\pm 0.024$ & $0.75$ \tiny$\pm 0.016$ \\
+Logits-min-exact & $0.75$ \tiny$\pm 0.006$ & $0.53$ \tiny$\pm 0.013$ & $0.71$ \tiny$\pm 0.009$ & $0.79$ \tiny$\pm 0.006$ & $0.61$ \tiny$\pm 0.019$ & $0.89$ \tiny$\pm 0.018$\\
+p(True) & $0.66$ \tiny$\pm 0.006$ & $0.45$ \tiny$\pm 0.021$ & $0.48$ \tiny$\pm 0.022$ & $0.73$ \tiny$\pm 0.008$ & $0.59$ \tiny$\pm 0.020$ & $0.62$ \tiny$\pm 0.017$ \\
+p(True)-exact & $0.74$ \tiny$\pm 0.003$ & $0.40$ \tiny$\pm 0.021$ & $0.60$ \tiny$\pm 0.025$  & $0.73$ \tiny$\pm 0.005$ & $0.63$ \tiny$\pm 0.014$ & $0.59$ \tiny$\pm 0.018$ \\
+\midrule
+\textbf{Probe @ token} \\
+\midrule
+
+Last generated [-1] & $0.71$ \tiny$\pm 0.006$ & $0.82$ \tiny$\pm 0.004$ & $0.74$ \tiny$\pm 0.008$ & $0.81$ \tiny$\pm 0.005$ & $0.86$ \tiny$\pm 0.007$ & $0.82$ \tiny$\pm 0.016$ \\
+Before last generated [-2] & $0.73$ \tiny$\pm 0.004$ & $0.85$ \tiny$\pm 0.004$ & $0.74$ \tiny$\pm 0.007$ & $0.75$ \tiny$\pm 0.005$ & $0.88$ \tiny$\pm 0.005$ & $0.79$ \tiny$\pm 0.020$ \\
+End of question & $0.76$ \tiny$\pm 0.008$ & $0.82$ \tiny$\pm 0.011$ & $0.72$ \tiny$\pm 0.007$ & $0.77$ \tiny$\pm 0.007$ & $0.80$ \tiny$\pm 0.018$ & $0.72$ \tiny$\pm 0.023$ \\
+\midrule
+Exact & $\textbf{0.85}$ \tiny$\pm 0.004$ & $\textbf{0.92}$ \tiny$\pm 0.005$ & $\textbf{0.92}$ \tiny$\pm 0.008$ & $\textbf{0.83}$ \tiny$\pm 0.002$ & $\textbf{0.93}$ \tiny$\pm 0.004$ & $\textbf{0.95}$ \tiny$\pm 0.027$ \\
+     \bottomrule
+    \end{tabular}
+    }
+    \label{tab:error_detection}
+\end{table}

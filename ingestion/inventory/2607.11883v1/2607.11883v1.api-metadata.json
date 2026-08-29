@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.11883v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.11883v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Requential Coding: Pushing the Limits of Model Compression with Self-Generated Training Data",
+      "authors": [
+        "Shikai Qiu",
+        "Marc Finzi",
+        "Yujia Zheng",
+        "Kun Zhang",
+        "Andrew Gordon Wilson"
+      ],
+      "abstract": "Compression is fundamental to intelligence. A model that can represent its training data as a short code has discovered regularities that enable generalization. Large neural networks may learn functions far simpler than their parameter counts suggest, but it is challenging to construct codes that realize this simplicity. Parameter-based methods such as quantization produce code lengths that scale with model size, insensitive to how much information the parameters store. Prequential coding bypasses this issue by compressing the training trajectory, but codes the exact data sequence regardless of how much the model learns, yielding large codes when the data has high entropy. We introduce requential coding, where a teacher model selects training samples drawn from the student's own distribution. The student's code records only these selections, which cost bits only where teacher and student disagree. The resulting code length is independent of parameter count and data entropy, and often orders of magnitude shorter than the prequential counterpart, with an advantage that grows with scale. This compression sheds light on phenomena inaccessible to prior compressors. Holding loss fixed, larger models and ensembles compress to much smaller sizes despite more parameters. Plugged into a PAC-Bayes bound, the requential code yields state-of-the-art generalization guarantees for billion-parameter LLMs, outperforming bounds built on aggressive post-training quantization even granted zero error. The bound tightens with scale in the compute-optimal regime, as models become increasingly compressible relative to dataset size. The same code predicts that models gradually overfit when trained for multiple epochs. It also isolates the learnable information in a dataset from its unpredictable, random content, revealing that lower-entropy text holds far more learnable structure than higher-entropy image data.",
+      "doi": null,
+      "arxiv_id": "2607.11883v1",
+      "published": "2026-07-13T17:58:50Z",
+      "updated": "2026-07-13T17:58:50Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.11883v1",
+      "pdf_url": "https://arxiv.org/pdf/2607.11883v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2607.11883v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.11883v1",
+          "url": "https://arxiv.org/abs/2607.11883v1",
+          "doi": null,
+          "arxiv_id": "2607.11883v1",
+          "published": "2026-07-13T17:58:50Z",
+          "updated": "2026-07-13T17:58:50Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.11883v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-27T23:05:11.144131Z",
+      "sha256": "d82c8c5951799dfd5323eba85bbd511d9eb1adc997f38e178f268dcbdedb0601",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQk5rT0Jsb3NnZmladlBSMmJid2pKQWp5UTdvPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4xMTg4M3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTI3VDIzOjA1OjExWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjExODgzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4xMTg4M3YxPC9pZD4KICAgIDx0aXRsZT5SZXF1ZW50aWFsIENvZGluZzogUHVzaGluZyB0aGUgTGltaXRzIG9mIE1vZGVsIENvbXByZXNzaW9uIHdpdGggU2VsZi1HZW5lcmF0ZWQgVHJhaW5pbmcgRGF0YTwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA3LTEzVDE3OjU4OjUwWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA3LjExODgzdjEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA3LjExODgzdjEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5Db21wcmVzc2lvbiBpcyBmdW5kYW1lbnRhbCB0byBpbnRlbGxpZ2VuY2UuIEEgbW9kZWwgdGhhdCBjYW4gcmVwcmVzZW50IGl0cyB0cmFpbmluZyBkYXRhIGFzIGEgc2hvcnQgY29kZSBoYXMgZGlzY292ZXJlZCByZWd1bGFyaXRpZXMgdGhhdCBlbmFibGUgZ2VuZXJhbGl6YXRpb24uIExhcmdlIG5ldXJhbCBuZXR3b3JrcyBtYXkgbGVhcm4gZnVuY3Rpb25zIGZhciBzaW1wbGVyIHRoYW4gdGhlaXIgcGFyYW1ldGVyIGNvdW50cyBzdWdnZXN0LCBidXQgaXQgaXMgY2hhbGxlbmdpbmcgdG8gY29uc3RydWN0IGNvZGVzIHRoYXQgcmVhbGl6ZSB0aGlzIHNpbXBsaWNpdHkuIFBhcmFtZXRlci1iYXNlZCBtZXRob2RzIHN1Y2ggYXMgcXVhbnRpemF0aW9uIHByb2R1Y2UgY29kZSBsZW5ndGhzIHRoYXQgc2NhbGUgd2l0aCBtb2RlbCBzaXplLCBpbnNlbnNpdGl2ZSB0byBob3cgbXVjaCBpbmZvcm1hdGlvbiB0aGUgcGFyYW1ldGVycyBzdG9yZS4gUHJlcXVlbnRpYWwgY29kaW5nIGJ5cGFzc2VzIHRoaXMgaXNzdWUgYnkgY29tcHJlc3NpbmcgdGhlIHRyYWluaW5nIHRyYWplY3RvcnksIGJ1dCBjb2RlcyB0aGUgZXhhY3QgZGF0YSBzZXF1ZW5jZSByZWdhcmRsZXNzIG9mIGhvdyBtdWNoIHRoZSBtb2RlbCBsZWFybnMsIHlpZWxkaW5nIGxhcmdlIGNvZGVzIHdoZW4gdGhlIGRhdGEgaGFzIGhpZ2ggZW50cm9weS4gV2UgaW50cm9kdWNlIHJlcXVlbnRpYWwgY29kaW5nLCB3aGVyZSBhIHRlYWNoZXIgbW9kZWwgc2VsZWN0cyB0cmFpbmluZyBzYW1wbGVzIGRyYXduIGZyb20gdGhlIHN0dWRlbnQncyBvd24gZGlzdHJpYnV0aW9uLiBUaGUgc3R1ZGVudCdzIGNvZGUgcmVjb3JkcyBvbmx5IHRoZXNlIHNlbGVjdGlvbnMsIHdoaWNoIGNvc3QgYml0cyBvbmx5IHdoZXJlIHRlYWNoZXIgYW5kIHN0dWRlbnQgZGlzYWdyZWUuIFRoZSByZXN1bHRpbmcgY29kZSBsZW5ndGggaXMgaW5kZXBlbmRlbnQgb2YgcGFyYW1ldGVyIGNvdW50IGFuZCBkYXRhIGVudHJvcHksIGFuZCBvZnRlbiBvcmRlcnMgb2YgbWFnbml0dWRlIHNob3J0ZXIgdGhhbiB0aGUgcHJlcXVlbnRpYWwgY291bnRlcnBhcnQsIHdpdGggYW4gYWR2YW50YWdlIHRoYXQgZ3Jvd3Mgd2l0aCBzY2FsZS4gVGhpcyBjb21wcmVzc2lvbiBzaGVkcyBsaWdodCBvbiBwaGVub21lbmEgaW5hY2Nlc3NpYmxlIHRvIHByaW9yIGNvbXByZXNzb3JzLiBIb2xkaW5nIGxvc3MgZml4ZWQsIGxhcmdlciBtb2RlbHMgYW5kIGVuc2VtYmxlcyBjb21wcmVzcyB0byBtdWNoIHNtYWxsZXIgc2l6ZXMgZGVzcGl0ZSBtb3JlIHBhcmFtZXRlcnMuIFBsdWdnZWQgaW50byBhIFBBQy1CYXllcyBib3VuZCwgdGhlIHJlcXVlbnRpYWwgY29kZSB5aWVsZHMgc3RhdGUtb2YtdGhlLWFydCBnZW5lcmFsaXphdGlvbiBndWFyYW50ZWVzIGZvciBiaWxsaW9uLXBhcmFtZXRlciBMTE1zLCBvdXRwZXJmb3JtaW5nIGJvdW5kcyBidWlsdCBvbiBhZ2dyZXNzaXZlIHBvc3QtdHJhaW5pbmcgcXVhbnRpemF0aW9uIGV2ZW4gZ3JhbnRlZCB6ZXJvIGVycm9yLiBUaGUgYm91bmQgdGlnaHRlbnMgd2l0aCBzY2FsZSBpbiB0aGUgY29tcHV0ZS1vcHRpbWFsIHJlZ2ltZSwgYXMgbW9kZWxzIGJlY29tZSBpbmNyZWFzaW5nbHkgY29tcHJlc3NpYmxlIHJlbGF0aXZlIHRvIGRhdGFzZXQgc2l6ZS4gVGhlIHNhbWUgY29kZSBwcmVkaWN0cyB0aGF0IG1vZGVscyBncmFkdWFsbHkgb3ZlcmZpdCB3aGVuIHRyYWluZWQgZm9yIG11bHRpcGxlIGVwb2Nocy4gSXQgYWxzbyBpc29sYXRlcyB0aGUgbGVhcm5hYmxlIGluZm9ybWF0aW9uIGluIGEgZGF0YXNldCBmcm9tIGl0cyB1bnByZWRpY3RhYmxlLCByYW5kb20gY29udGVudCwgcmV2ZWFsaW5nIHRoYXQgbG93ZXItZW50cm9weSB0ZXh0IGhvbGRzIGZhciBtb3JlIGxlYXJuYWJsZSBzdHJ1Y3R1cmUgdGhhbiBoaWdoZXItZW50cm9weSBpbWFnZSBkYXRhLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5MRyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA3LTEzVDE3OjU4OjUwWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+Q29kZSBhdmFpbGFibGUgYXQgaHR0cHM6Ly9naXRodWIuY29tL3NoaWthaXFpdS9yZXF1ZW50aWFsLWNvZGluZzwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkxHIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TaGlrYWkgUWl1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NYXJjIEZpbnppPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZdWppYSBaaGVuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S3VuIFpoYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbmRyZXcgR29yZG9uIFdpbHNvbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Requential Coding: Pushing the Limits of Model Compression with Self-Generated Training Data",
+    "authors": [
+      "Shikai Qiu",
+      "Marc Finzi",
+      "Yujia Zheng",
+      "Kun Zhang",
+      "Andrew Gordon Wilson"
+    ],
+    "abstract": "Compression is fundamental to intelligence. A model that can represent its training data as a short code has discovered regularities that enable generalization. Large neural networks may learn functions far simpler than their parameter counts suggest, but it is challenging to construct codes that realize this simplicity. Parameter-based methods such as quantization produce code lengths that scale with model size, insensitive to how much information the parameters store. Prequential coding bypasses this issue by compressing the training trajectory, but codes the exact data sequence regardless of how much the model learns, yielding large codes when the data has high entropy. We introduce requential coding, where a teacher model selects training samples drawn from the student's own distribution. The student's code records only these selections, which cost bits only where teacher and student disagree. The resulting code length is independent of parameter count and data entropy, and often orders of magnitude shorter than the prequential counterpart, with an advantage that grows with scale. This compression sheds light on phenomena inaccessible to prior compressors. Holding loss fixed, larger models and ensembles compress to much smaller sizes despite more parameters. Plugged into a PAC-Bayes bound, the requential code yields state-of-the-art generalization guarantees for billion-parameter LLMs, outperforming bounds built on aggressive post-training quantization even granted zero error. The bound tightens with scale in the compute-optimal regime, as models become increasingly compressible relative to dataset size. The same code predicts that models gradually overfit when trained for multiple epochs. It also isolates the learnable information in a dataset from its unpredictable, random content, revealing that lower-entropy text holds far more learnable structure than higher-entropy image data.",
+    "identifiers": {
+      "arxiv": "2607.11883",
+      "arxiv_versioned": "2607.11883v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.11883v1"
+      }
+    },
+    "categories": [
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2026-07-13T17:58:50Z",
+    "updated": "2026-07-13T17:58:50Z"
+  }
+}

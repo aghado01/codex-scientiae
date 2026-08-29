@@ -1,0 +1,174 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.09648v1",
+  "initialized_utc": "2026-08-27T23:05:00.316359Z",
+  "title": "B-spline Policy: Accelerating Manipulation Policies via B-spline Action Representations",
+  "authors": [
+    "Xiaoshen Han",
+    "Haoyu Xiong",
+    "Haonan Chen",
+    "Chaoqi Liu",
+    "Antonio Torralba",
+    "Yuke Zhu",
+    "Yilun Du"
+  ],
+  "abstract": "In this work, we present B-spline Policy (BSP), an action representation designed for accelerating robot manipulation policies. Rather than predicting discrete-time action chunks, BSP parameterizes actions as continuous B-spline curves defined by a set of knots and control points. This representation yields smooth, time-continuous trajectories that can be temporally scaled and executed by low-level controllers at higher frequencies and speeds. We show that B-spline-parameterized actions can be seamlessly integrated into standard policy learning pipelines by directly predicting B-spline parameters. Experiments on simulated and real-world tasks demonstrate that BSP significantly reduces task completion time, achieving substantial improvements over baseline methods while maintaining strong success rates. More results: https://b-spline-policy.github.io",
+  "identifiers": {
+    "arxiv": "2607.09648",
+    "arxiv_versioned": "2607.09648v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.09648v1"
+    }
+  },
+  "categories": [
+    "cs.RO"
+  ],
+  "concepts": [],
+  "primary_category": "cs.RO",
+  "published": "2026-07-10T17:46:32Z",
+  "updated": "2026-07-10T17:46:32Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.09648v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7863,
+        "sha256": "358a8a12c1c3de2f438d9a6a6b5b4274d5e28a56b06cc465a151c8cf383e6895",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-27T23:04:59.457235Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.09648v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "abb10d159a19a9a9312b4b5c0994c88f1b7d1e7fd0d4c9b9c8a3233ded1ef820"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "example.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "B-spline Policy: Accelerating Manipulation Policies via B-spline Action Representations",
+        "authors_tex": [
+          "{\\bfseries\nXiaoshen Han$^{1}$\\thanks{Equal contribution.}\n\\quad\nHaoyu Xiong$^{2}$\\footnotemark[1]}\\\\[0.5em]\n{\\bfseries\nHaonan Chen$^{1}$ \\quad\nChaoqi Liu$^{1}$ \\quad\nAntonio Torralba$^{2}$ \\quad\nYuke Zhu$^{3}$ \\quad\nYilun Du$^{1}$}\\\\[0.5em]\n{\\normalfont\n$^{1}$Harvard \\quad\n$^{2}$MIT \\quad\n$^{3}$UT Austin}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 385,
+        "sha256": "99ab30f4a3d964eb46cf38b52d87db3592cc3a87924d962f3d19d9f9eb9220ca"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.09648v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.09648v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1427977,
+      "sha256": "6ad0865869cbaf37b78c074f41e7d425927aa6670a4eebd872fa83631d4c542d",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.09648v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.09648v1.tar.gz",
+      "entrypoint": "example.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 19,
+      "tex_files": 9,
+      "sha256": "6dcc764c39f1acb19cc044ca392ef726f457609d172e8fed620ddfbb305463cb"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.09648v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1718282,
+      "sha256": "95a283c498946d7e5f99ce2721d85b2c9543d84e77d848407cd61f6b6eb251d6"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-27T23:05:00.316359Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 21
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 19
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 9
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "example.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

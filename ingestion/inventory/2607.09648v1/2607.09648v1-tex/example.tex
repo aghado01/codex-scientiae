@@ -1,0 +1,172 @@
+\documentclass{article}
+
+% \usepackage{corl_2026} % Use this for the initial submission.
+% \usepackage[final]{corl_2026} % Uncomment for the camera-ready ``final'' version.
+\usepackage[preprint]{corl_2026} % Uncomment for pre-prints (e.g., arxiv); This is like ``final'', but will remove the CORL footnote.
+
+
+
+\usepackage[table]{xcolor}
+
+\definecolor{lightblue}{HTML}{E6F2FF}
+\newcommand{\greenNum}[1]{\cellcolor{lightblue}{#1}}
+
+
+\definecolor{lightpurple}{HTML}{F2E6FF}
+\newcommand{\purpleNum}[1]{\cellcolor{lightpurple}{#1}}
+
+
+\usepackage{times}
+
+% numbers option provides compact numerical references in the text. 
+\usepackage{multicol}
+\usepackage[font=small]{caption}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{xurl}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{tabularx}
+% \usepackage[
+%     bookmarks=true,
+%     colorlinks=true,
+%     backref=page,               % link from reference to main paper
+%     linkcolor=brown,            % color of links in paper (e.g. tables, figs)
+%     citecolor=RoyalPurple!75,   % color of citation
+%     urlcolor=Maroon             % color of url link
+% ]{hyperref}
+\usepackage{amsmath}
+\usepackage{comment}
+% \usepackage[numbers,sort&compress]{natbib}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\makeatletter
+\let\labelindent\relax
+\makeatother
+\usepackage{algpseudocode} % 
+% \usepackage{algorithmic}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs} 
+% \usepackage{cuted}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\our}{B-spline policy\xspace}
+\newcommand{\pickcube}{Cube Picking\xspace}
+\newcommand{\cleantable}{Table Cleaning\xspace}
+\newcommand{\stackunstack}{Speed Stacking\xspace}
+\newcommand{\putpillow}{Tshirt Folding\xspace}
+\newcommand{\todo}[1]{\textcolor{red}{TODO #1}\xspace}
+\newcommand{\cellSRtime}[2]{\makecell{#1\\#2}}
+\newcommand{\cellSRbold}[2]{\makecell{\textbf{#1}\\#2}}     % bold SR only
+\newcommand{\cellTimebold}[2]{\makecell{#1\\\textbf{#2}}}   % bold time only
+\newcommand{\cellBothbold}[2]{\makecell{\textbf{#1}\\\textbf{#2}}} % bold both
+\newcommand{\cellTODO}{\makecell{TODO\\--}}
+\newcommand{\cellMetric}{\makecell{\textit{Success rate}\\\textit{Avg. time}}}
+
+\newcommand{\pushtcellMetric}{\makecell{\textit{Avg. score}\\\textit{Avg. time}}}
+\newcommand{\COMMENT}[1]{\textcolor{red}{[COMMENT: #1]}}
+\newcommand{\haonan}[1]{\textcolor{blue}{\scriptsize{[Haonan: #1]}}}
+\newcommand{\ourweb}{\href{https://bspline-policy.github.io/}{bspline-policy.github.io}}
+\newcommand{\xshenhan}[1]{\textcolor{green}{\scriptsize{[Haonan: #1]}}}
+\renewcommand{\thefootnote}{[\arabic{footnote}]}
+\newenvironment{sidealgorithm}[2]{%
+  \refstepcounter{algorithm}%
+  \hrule height 0.8pt
+  \vspace{2pt}
+  \noindent\textbf{Algorithm~\thealgorithm} #1
+  \label{#2}
+  \vspace{2pt}
+  \hrule height 0.4pt
+  \vspace{0.45em}
+  \small
+}{%
+  \vspace{0.3em}
+  \hrule height 0.8pt
+}
+
+\pdfinfo{
+   /Author (Xiaoshen Han)
+   /Title  (B-spline Policy)
+   /CreationDate (D:20260223120000)
+   /Subject (Robots)
+   /Keywords (Robots;Action representation;Fast manipulation)
+}
+
+\title{B-spline Policy: Accelerating Manipulation Policies via B-spline Action Representations}
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+
+% NOTE: authors will be visible only in the camera-ready and preprint versions (i.e., when using the option 'final' or 'preprint'). 
+% 	For the init
+% Haoyu Xiong$^2$\quad
+% Haonan Chen$^1$\quad
+% Chaoqi Liu$^1$\quad
+% Yuke Zhu$^3$\quad
+% Minghuan Liu$^3$\quad
+% Yilun Du$^1$
+% $^{1}$Harvard\quad
+% $^{2}$MIT\quad
+% $^{3}$UT Austin
+\author{
+{\bfseries
+Xiaoshen Han$^{1}$\thanks{Equal contribution.}
+\quad
+Haoyu Xiong$^{2}$\footnotemark[1]}\\[0.5em]
+{\bfseries
+Haonan Chen$^{1}$ \quad
+Chaoqi Liu$^{1}$ \quad
+Antonio Torralba$^{2}$ \quad
+Yuke Zhu$^{3}$ \quad
+Yilun Du$^{1}$}\\[0.5em]
+{\normalfont
+$^{1}$Harvard \quad
+$^{2}$MIT \quad
+$^{3}$UT Austin}
+}
+\begin{document}
+\maketitle
+
+%===============================================================================
+\vspace{-20pt}
+\begin{abstract} In this work, we present B-spline Policy (BSP), an action representation designed for accelerating robot manipulation policies. Rather than predicting discrete-time action chunks, BSP parameterizes actions as continuous B-spline curves defined by a set of knots and control points. This representation yields smooth, time-continuous trajectories that can be temporally scaled and executed by low-level controllers at higher frequencies and speeds. We show that B-spline–parameterized actions can be seamlessly integrated into standard policy learning pipelines by directly predicting B-spline parameters. Experiments on simulated and real-world tasks demonstrate that BSP significantly reduces task completion time, achieving substantial improvements over baseline methods while maintaining strong success rates.
+More results: \href{https://b-spline-policy.github.io/}{B-spline-policy.github.io}
+\end{abstract}
+
+% Two or three meaningful keywords should be added here
+\keywords{Fast manipulation; Visuomotor policy speedup; Action representation} 
+
+%===============================================================================
+\input{contents/introduction_v1}
+% Describe the fig1 in intro and explain how to make it faster (temporal scaling in the intro has a paragraph talking about temporal scaling and fig1. add success rate in fig1)
+\input{contents/related-works}
+\input{contents/method}
+% introduce the proposal . 3.A 
+\input{contents/experiments}
+% \newpage
+
+\clearpage
+% The acknowledgments are automatically included only in the final and preprint versions of the paper.
+% \acknowledgments{If a paper is accepted, the final camera-ready version will (and probably should) include acknowledgments. All acknowledgments go at the end of the paper, including thanks to reviewers who gave useful comments, to colleagues who contributed to the ideas, and to funding agencies and corporate sponsors that provided financial support.}
+
+%===============================================================================
+
+% no \bibliographystyle is required, since the corl style is automatically used.
+\bibliography{example}  % .bib
+
+\input{contents/Appendix}
+
+\end{document}

@@ -1,0 +1,66 @@
+\begin{table}[t]
+    \centering
+    \caption{Comparison of error detection performance (AUC) on Mistral-7B-Instruct.}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l|lllll}
+    \toprule
+     & \multicolumn{5}{c}{\textbf{Mistral-7B-Instruct}} \\
+     \cmidrule(lr){2-6}
+     & TriviaQA & Winobias & Math & Movies & IMDB \\
+     \midrule
+     Logits-mean & $0.60$ \tiny$\pm 0.009$ & $0.56$ \tiny$\pm 0.017$ & $0.55$ \tiny$\pm 0.029$ & $0.63$ \tiny$\pm 0.005$ & $0.57$ \tiny$\pm 0.006$ \\
+Logits-mean-exact & $0.68$ \tiny$\pm 0.007$ & $0.54$ \tiny$\pm 0.012$ & $0.51$ \tiny$\pm 0.005$ & $0.70$ \tiny$\pm 0.004$ & $0.87$ \tiny$\pm 0.007$ \\
+Logits-min & $0.63$ \tiny$\pm 0.008$ & $0.59$ \tiny$\pm 0.012$ & $0.51$ \tiny$\pm 0.017$ & $0.66$ \tiny$\pm 0.008$ & $0.52$ \tiny$\pm 0.007$ \\
+Logits-min-exact & $0.75$ \tiny$\pm 0.006$ & $0.53$ \tiny$\pm 0.013$ & $0.71$ \tiny$\pm 0.009$ & $0.74$ \tiny$\pm 0.005$ & $0.87$ \tiny$\pm 0.007$ \\
+Logits-max & $0.54$ \tiny$\pm 0.005$ & $0.53$ \tiny$\pm 0.012$ & $0.54$ \tiny$\pm 0.039$ & $0.54$ \tiny$\pm 0.004$ & $0.47$ \tiny$\pm 0.004$ \\
+Logits-max-exact & $0.55$ \tiny$\pm 0.004$ & $0.54$ \tiny$\pm 0.011$ & $0.32$ \tiny$\pm 0.015$ & $0.61$ \tiny$\pm 0.006$ & $0.87$ \tiny$\pm 0.007$ \\
+Probas-mean & $0.60$ \tiny$\pm 0.007$ & $0.58$ \tiny$\pm 0.018$ & $0.56$ \tiny$\pm 0.028$ & $0.61$ \tiny$\pm 0.002$ & $0.54$ \tiny$\pm 0.008$ \\
+Probas-mean-exact & $0.71$ \tiny$\pm 0.003$ & $0.57$ \tiny$\pm 0.015$ & $0.71$ \tiny$\pm 0.014$ & $0.74$ \tiny$\pm 0.006$ & $0.84$ \tiny$\pm 0.007$ \\
+Probas-min & $0.59$ \tiny$\pm 0.008$ & $0.58$ \tiny$\pm 0.014$ & $0.50$ \tiny$\pm 0.025$ & $0.60$ \tiny$\pm 0.008$ & $0.51$ \tiny$\pm 0.010$ \\
+Probas-min-exact & $0.74$ \tiny$\pm 0.004$ & $0.57$ \tiny$\pm 0.016$ & $0.75$ \tiny$\pm 0.011$ & $0.73$ \tiny$\pm 0.006$ & $0.84$ \tiny$\pm 0.007$ \\
+Probas-max & $0.50$ \tiny$\pm 0.006$ & $0.41$ \tiny$\pm 0.010$ & $0.53$ \tiny$\pm 0.009$ & $0.51$ \tiny$\pm 0.005$ & $0.48$ \tiny$\pm 0.004$ \\
+Probas-max-exact & $0.51$ \tiny$\pm 0.007$ & $0.54$ \tiny$\pm 0.010$ & $0.45$ \tiny$\pm 0.015$ & $0.60$ \tiny$\pm 0.003$ & $0.84$ \tiny$\pm 0.007$ \\
+p(True) & $0.68$ \tiny$\pm 0.005$ & $0.45$ \tiny$\pm 0.021$ & $0.48$ \tiny$\pm 0.026$ & $0.62$ \tiny$\pm 0.005$ & $0.62$ \tiny$\pm 0.009$ \\
+p(True)-exact & $0.74$ \tiny$\pm 0.003$ & $0.40$ \tiny$\pm 0.021$ & $0.60$ \tiny$\pm 0.025$ & $0.69$ \tiny$\pm 0.008$ & $0.60$ \tiny$\pm 0.009$ \\
+\midrule
+\textbf{Probe @ token} \\
+\midrule
+
+Last generated [-1] & $0.71$ \tiny$\pm 0.006$ & $0.82$ \tiny$\pm 0.004$ & $0.74$ \tiny$\pm 0.008$ & $0.72$ \tiny$\pm 0.005$ & $0.92$ \tiny$\pm 0.010$ \\
+Before last generated [-2] & $0.73$ \tiny$\pm 0.004$ & $0.85$ \tiny$\pm 0.004$ & $0.74$ \tiny$\pm 0.007$ & $0.72$ \tiny$\pm 0.006$ & $0.94$ \tiny$\pm 0.006$ \\
+End of question & $0.76$ \tiny$\pm 0.008$ & $0.82$ \tiny$\pm 0.011$ & $0.72$ \tiny$\pm 0.007$ & $0.74$ \tiny$\pm 0.003$ & $0.96$ \tiny$\pm 0.006$ \\
+\midrule
+Exact answer last & $0.85$ \tiny$\pm 0.004$ & $\textbf{0.92}$ \tiny$\pm 0.005$ & $\textbf{0.92}$ \tiny$\pm 0.008$ & $0.81$ \tiny$\pm 0.003$ & $\textbf{0.97}$ \tiny$\pm 0.005$ \\
+Exact answer last+1 & $\textbf{0.86}$ \tiny$\pm 0.006$ & $0.88$ \tiny$\pm 0.006$ & $0.90$ \tiny$\pm 0.010$ & $\textbf{0.82}$ \tiny$\pm 0.003$ & $0.96$ \tiny$\pm 0.006$ \\
+     \midrule
+    & HotpotQA & HotpotQA-WC & Winogrande & NLI & NQ-WC \\
+    \midrule
+    Logits-mean & $0.61$ \tiny$\pm 0.002$ & $0.55$ \tiny$\pm 0.009$ & $0.59$ \tiny$\pm 0.004$ & $0.64$ \tiny$\pm 0.006$ & $0.71$ \tiny$\pm 0.008$ \\
+Logits-mean-exact & $0.66$ \tiny$\pm 0.009$ & $0.55$ \tiny$\pm 0.004$ & $0.49$ \tiny$\pm 0.004$ & $0.57$ \tiny$\pm 0.004$ & $0.69$ \tiny$\pm 0.009$ \\
+Logits-min & $0.61$ \tiny$\pm 0.003$ & $0.53$ \tiny$\pm 0.013$ & $0.61$ \tiny$\pm 0.003$ & $0.62$ \tiny$\pm 0.002$ & $0.67$ \tiny$\pm 0.008$ \\
+Logits-min-exact & $0.77$ \tiny$\pm 0.004$ & $0.67$ \tiny$\pm 0.013$ & $0.48$ \tiny$\pm 0.004$ & $0.54$ \tiny$\pm 0.005$ & $0.69$ \tiny$\pm 0.006$ \\
+Logits-max & $0.53$ \tiny$\pm 0.008$ & $0.51$ \tiny$\pm 0.011$ & $0.52$ \tiny$\pm 0.006$ & $0.59$ \tiny$\pm 0.008$ & $0.63$ \tiny$\pm 0.011$ \\
+Logits-max-exact & $0.51$ \tiny$\pm 0.011$ & $0.41$ \tiny$\pm 0.010$ & $0.49$ \tiny$\pm 0.007$ & $0.64$ \tiny$\pm 0.003$ & $0.63$ \tiny$\pm 0.013$ \\
+Probas-mean & $0.63$ \tiny$\pm 0.003$ & $0.56$ \tiny$\pm 0.010$ & $0.58$ \tiny$\pm 0.005$ & $0.62$ \tiny$\pm 0.005$ & $0.68$ \tiny$\pm 0.010$ \\
+Probas-mean-exact & $0.72$ \tiny$\pm 0.006$ & $0.66$ \tiny$\pm 0.010$ & $0.46$ \tiny$\pm 0.004$ & $0.57$ \tiny$\pm 0.003$ & $0.65$ \tiny$\pm 0.008$ \\
+Probas-min & $0.58$ \tiny$\pm 0.003$ & $0.52$ \tiny$\pm 0.008$ & $0.59$ \tiny$\pm 0.002$ & $0.58$ \tiny$\pm 0.008$ & $0.65$ \tiny$\pm 0.014$ \\
+Probas-min-exact & $0.76$ \tiny$\pm 0.004$ & $0.68$ \tiny$\pm 0.010$ & $0.46$ \tiny$\pm 0.005$ & $0.57$ \tiny$\pm 0.003$ & $0.66$ \tiny$\pm 0.008$ \\
+Probas-max & $0.50$ \tiny$\pm 0.005$ & $0.53$ \tiny$\pm 0.003$ & $0.48$ \tiny$\pm 0.007$ & $0.52$ \tiny$\pm 0.007$ & $0.51$ \tiny$\pm 0.005$ \\
+Probas-max-exact & $0.46$ \tiny$\pm 0.010$ & $0.46$ \tiny$\pm 0.010$ & $0.48$ \tiny$\pm 0.004$ & $0.53$ \tiny$\pm 0.004$ & $0.52$ \tiny$\pm 0.018$ \\
+p(True) & $0.54$ \tiny$\pm 0.006$ & $0.54$ \tiny$\pm 0.004$ & $0.53$ \tiny$\pm 0.003$ & $0.58$ \tiny$\pm 0.003$ & $0.57$ \tiny$\pm 0.006$ \\
+p(True)-exact & $0.60$ \tiny$\pm 0.008$ & $0.48$ \tiny$\pm 0.005$ & $0.57$ \tiny$\pm 0.011$ & $0.65$ \tiny$\pm 0.004$ & $0.57$ \tiny$\pm 0.009$ \\
+\midrule
+\textbf{Probe @ token} \\
+\midrule
+
+Last generated [-1] & $0.72$ \tiny$\pm 0.005$ & $0.64$ \tiny$\pm 0.005$ & $0.74$ \tiny$\pm 0.005$ & $0.85$ \tiny$\pm 0.004$ & $0.82$ \tiny$\pm 0.006$ \\
+Before last generated [-2] & $0.73$ \tiny$\pm 0.006$ & $0.64$ \tiny$\pm 0.004$ & $0.76$ \tiny$\pm 0.004$ & $0.87$ \tiny$\pm 0.002$ & $0.84$ \tiny$\pm 0.009$ \\
+End of question & $0.80$ \tiny$\pm 0.003$ & $0.63$ \tiny$\pm 0.003$ & $0.71$ \tiny$\pm 0.007$ & $0.79$ \tiny$\pm 0.004$ & $0.85$ \tiny$\pm 0.010$ \\
+\midrule
+Exact answer last & $0.85$ \tiny$\pm 0.003$ & $0.75$ \tiny$\pm 0.006$ & $\textbf{0.84}$ \tiny$\pm 0.005$ & $\textbf{0.93}$ \tiny$\pm 0.003$ & $0.86$ \tiny$\pm 0.003$ \\
+Exact answer last+1 & $\textbf{0.85}$ \tiny$\pm 0.002$ & $\textbf{0.76}$ \tiny$\pm 0.004$ & $0.80$ \tiny$\pm 0.004$ & $0.92$ \tiny$\pm 0.004$ & $\textbf{0.87}$ \tiny$\pm 0.006$ \\
+     \bottomrule
+    \end{tabular}
+    }
+    \label{tab:mistral_instruct_error_detection}
+\end{table}

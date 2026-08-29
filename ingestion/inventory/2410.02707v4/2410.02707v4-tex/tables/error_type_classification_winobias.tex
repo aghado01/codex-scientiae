@@ -1,0 +1,16 @@
+\begin{table}[t]
+    \centering
+    \caption{AUC scores for error type classification (Winobias).}
+    \begin{tabular}{l|llll}
+    \toprule
+       Error type & Mistral-7b & Mistral-Instr-7b & Llama3-8b & Llama3-Instr-8b \\
+       \midrule
+         (A) Refuses to answer & - & - & - & - \\
+         (B) Consistently correct & $0.83\scriptscriptstyle{\pm 0.004}$ & $0.88 \scriptscriptstyle{\pm 0.002}$ & $0.84 \scriptscriptstyle{\pm 0.003}$ & $0.89 \scriptscriptstyle{\pm 0.003}$ \\
+         (C) Consistently incorrect & $0.83 \scriptscriptstyle{\pm 0.004}$ & $0.88 \scriptscriptstyle{\pm 0.002}$ & $0.79 \scriptscriptstyle{\pm 0.004}$ & $0.90 \scriptscriptstyle{\pm 0.003}$ \\
+         (D) Two competing & $0.68 \scriptscriptstyle{\pm 0.004}$ & $0.58 \scriptscriptstyle{\pm 0.015}$ & $0.74 \scriptscriptstyle{\pm 0.005}$ & $0.88 \scriptscriptstyle{\pm 0.004}$ \\
+         (E) Many answers & - & - & - & - \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:error_type_classification_winobias}
+\end{table}
