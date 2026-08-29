@@ -155,7 +155,7 @@ class TestCliBoundary(unittest.TestCase):
             [
                 "capabilities", "info", "count", "deposit", "build-inventory", "head", "tail",
                 "range", "get", "select", "find", "validate-json", "verify", "sig", "snapshot",
-                "schemas", "json",
+                "inspect-prefix", "repair-prefix", "schemas", "json",
             ],
             capabilities["verbs"],
         )

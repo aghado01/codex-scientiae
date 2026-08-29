@@ -48,6 +48,7 @@ BeforeAll {
         'Get-JsonlEngineCapability'
         'Get-JsonlHead'
         'Get-JsonlInfo'
+        'Get-JsonlPrefix'
         'Get-JsonlRange'
         'Get-JsonlRecord'
         'Get-JsonlSchema'
@@ -57,6 +58,7 @@ BeforeAll {
         'New-JsonlEngineInputFile'
         'New-JsonlSnapshot'
         'Read-JsonDocument'
+        'Repair-JsonlPrefix'
         'Select-JsonlPath'
         'Test-JsonlStore'
     )
@@ -95,9 +97,11 @@ Describe 'jsonl_engine-client module' {
         $default.protocol | Should -Be 'codex-scientiae/jsonl_engine-cli'
         $default.version | Should -Be 1
         $default.framing | Should -BeTrue
-        @($default.verbs).Count | Should -Be 16
+        @($default.verbs).Count | Should -Be 19
         @($default.verbs) | Should -Contain 'deposit'
         @($default.verbs) | Should -Contain 'validate-json'
+        @($default.verbs) | Should -Contain 'inspect-prefix'
+        @($default.verbs) | Should -Contain 'repair-prefix'
         $explicit | ConvertTo-Json -Compress | Should -Be ($default | ConvertTo-Json -Compress)
         { Get-JsonlEngineCapability -PythonPath (Join-Path $TestDrive 'missing-python.exe') } |
             Should -Throw '*interpreter not found*'

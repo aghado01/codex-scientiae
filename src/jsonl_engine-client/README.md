@@ -68,14 +68,15 @@ compatibility spellings.
 - `Get-JsonlInfo`, `Get-JsonlCount`, `Get-JsonlHead`, `Get-JsonlTail`, `Get-JsonlRange`, and
   `Get-JsonlRecord`
 - `Select-JsonlPath` and `Find-JsonlRecord`
-- `Test-JsonlStore`, `Get-JsonlSignature`, and `New-JsonlSnapshot`
+- `Test-JsonlStore`, `Get-JsonlSignature`, `Get-JsonlPrefix`, `New-JsonlSnapshot`, and
+  `Repair-JsonlPrefix`
 - `Get-JsonlSchema` and `Read-JsonDocument`
 
-The engine currently advertises 16 stable verbs through `Get-JsonlEngineCapability`:
+The engine currently advertises 19 stable verbs through `Get-JsonlEngineCapability`:
 `capabilities`, `info`, `count`, `deposit`, `build-inventory`, `head`, `tail`, `range`, `get`, `select`, `find`,
-`validate-json`, `verify`, `sig`, `snapshot`, `schemas`, and `json`. Verbs without an ergonomic PowerShell
-wrapper remain available through the low-level command. In particular, authoritative schema validation uses
-this exact positional surface:
+`validate-json`, `verify`, `sig`, `snapshot`, `inspect-prefix`, `repair-prefix`, `schemas`, and `json`.
+Verbs without an ergonomic PowerShell wrapper remain available through the low-level command. In
+particular, authoritative schema validation uses this exact positional surface:
 
 ```text
 python -m jsonl_engine --framed validate-json <path> <schema>

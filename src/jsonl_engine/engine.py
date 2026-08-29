@@ -85,6 +85,7 @@ class JsonlEngine:
         lock_timeout: float = 60.0,
         require_absent: bool = False,
         publication_root: Optional["PinnedPublicationRoot"] = None,
+        recover_uncommitted: bool = False,
     ):
         self.discipline = discipline
         self.codec = codec
@@ -106,6 +107,9 @@ class JsonlEngine:
         self.lock_timeout = lock_timeout
         self.require_absent = require_absent
         self.publication_root = publication_root
+        self.recover_uncommitted = recover_uncommitted
+        if recover_uncommitted and discipline is not Discipline.APPEND:
+            raise ValueError("recover_uncommitted applies only to append discipline")
         if publication_root is not None and discipline is not Discipline.CREATE:
             raise ValueError("a pinned publication root currently requires create discipline")
 
@@ -177,6 +181,8 @@ class JsonlEngine:
             self._emit_sig = self.emit_sig or self._lexists(self.sig_path)
 
             if self.discipline == Discipline.APPEND and self._lexists(self.output_path):
+                if self.recover_uncommitted:
+                    self._recover_uncommitted_tail()
                 self._adopt_existing()
             else:
                 self._file = self._open(self.tmp_path, "wb")
@@ -304,6 +310,35 @@ class JsonlEngine:
             self.publication_root.publish(staged, destination, overwrite=overwrite)
         else:
             publish_staged_file(staged, destination, overwrite=overwrite)
+
+    def _recover_uncommitted_tail(self) -> None:
+        """Drop an unterminated tail before adoption. Caller holds the write lease.
+
+        Physical terminator bound only. A complete line that is not JSON is still a repair_prefix
+        concern. After the prefix is published, sidecars that described the longer file are
+        removed so the store is unsigned until this transaction commits.
+        """
+        from .inspect import _replace_with_prefix, complete_prefix
+
+        terminator = self.eol.terminator(self.encoding)
+        file_size = os.path.getsize(self.output_path)
+        if file_size == 0:
+            return
+        with open(self.output_path, "rb") as probe:
+            probe.seek(-min(len(terminator), file_size), os.SEEK_END)
+            tail = probe.read()
+        if tail == terminator:
+            return
+        bound = complete_prefix(self.output_path)
+        if bound >= file_size:
+            return
+        _replace_with_prefix(self.output_path, bound)
+        for sidecar in (self.jidx_path, self.sig_path):
+            if self._lexists(sidecar):
+                try:
+                    self._remove(sidecar)
+                except OSError:
+                    pass
 
     def _adopt_existing(self) -> None:
         """Carry the published store into this transaction's tmp file, in one pass.

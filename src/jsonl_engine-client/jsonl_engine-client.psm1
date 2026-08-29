@@ -42,7 +42,9 @@ Export-ModuleMember -Function @(
     'Find-JsonlRecord'
     'Test-JsonlStore'
     'Get-JsonlSignature'
+    'Get-JsonlPrefix'
     'New-JsonlSnapshot'
+    'Repair-JsonlPrefix'
     'Get-JsonlSchema'
     'Read-JsonDocument'
 )

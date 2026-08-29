@@ -25,7 +25,7 @@ import sys
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional
 
 from .deposit import deposit_article
-from .inspect import inspect_store, snapshot
+from .inspect import inspect_prefix, inspect_store, repair_prefix, snapshot
 from .inventory_catalog import build_inventory, load_article_paths_json
 from .kinds.article import ArticleManifest, ArticleMetadataExtension
 from .policy import Eol
@@ -55,6 +55,8 @@ STABLE_VERBS = (
     "verify",
     "sig",
     "snapshot",
+    "inspect-prefix",
+    "repair-prefix",
     "schemas",
     "json",
 )
@@ -304,6 +306,85 @@ def _cmd_snapshot(args: argparse.Namespace) -> int:
     return 0
 
 
+def _prefix_policy(path: str) -> tuple:
+    """Encoding and terminator witnessed by an engine signature, else the engine defaults."""
+    store = _declared_store(path)
+    return store.encoding, store.eol
+
+
+def _cmd_inspect_prefix(args: argparse.Namespace) -> int:
+    encoding, eol = _prefix_policy(args.path)
+    scan = inspect_prefix(
+        args.path,
+        encoding=encoding,
+        eol=eol,
+        collect_records=bool(args.collect),
+    )
+    payload = {
+        "path": scan.path,
+        "exists": scan.exists,
+        "valid": scan.valid,
+        "size": scan.size,
+        "valid_prefix_bytes": scan.valid_prefix_bytes,
+        "record_count": scan.record_count,
+        "error_line": scan.error_line,
+        "error": scan.error,
+    }
+    if args.collect:
+        payload["records"] = list(scan.records)
+    _emit_for(args, [payload])
+    return 0
+
+
+def _cmd_repair_prefix(args: argparse.Namespace) -> int:
+    encoding, eol = _prefix_policy(args.path)
+    scan = inspect_prefix(args.path, encoding=encoding, eol=eol)
+    bound = scan.valid_prefix_bytes if args.bytes is None else args.bytes
+    removed = max(scan.size - bound, 0)
+    needed = scan.exists and bound < scan.size
+    if not args.apply:
+        _emit_for(
+            args,
+            [{
+                "path": scan.path,
+                "needed": needed,
+                "applied": False,
+                "valid_prefix_bytes": scan.valid_prefix_bytes,
+                "committed_bytes": bound,
+                "removed_bytes": removed if needed else 0,
+                "error_line": scan.error_line,
+                "error": scan.error,
+            }],
+        )
+        return 0
+    if not needed:
+        raise ValueError(
+            f"repair prefix must remove at least one byte from a {scan.size}-byte store"
+        )
+    receipt = repair_prefix(
+        args.path,
+        bound,
+        backup_label=args.backup_label,
+    )
+    _emit_for(
+        args,
+        [{
+            "path": receipt.path,
+            "needed": True,
+            "applied": True,
+            "backup": receipt.backup_path,
+            "original_bytes": receipt.original_bytes,
+            "committed_bytes": receipt.committed_bytes,
+            "removed_bytes": receipt.removed_bytes,
+            "signed": receipt.signed,
+            "indexed": receipt.indexed,
+            "error_line": scan.error_line,
+            "error": scan.error,
+        }],
+    )
+    return 0
+
+
 def _cmd_schemas(args: argparse.Namespace) -> int:
     catalog = get_schema_catalog()
     _emit_for(
@@ -476,6 +557,41 @@ def _build_parser() -> argparse.ArgumentParser:
         "snapshot", "copy the complete-record prefix elsewhere", _cmd_snapshot, views=False
     )
     snap.add_argument("destination")
+
+    inspect_prefix_cmd = store_verb(
+        "inspect-prefix",
+        "walk records until the first framing or JSON failure",
+        _cmd_inspect_prefix,
+        views=False,
+    )
+    inspect_prefix_cmd.add_argument(
+        "--collect",
+        action="store_true",
+        help="include decoded records up to the valid prefix",
+    )
+
+    repair_prefix_cmd = store_verb(
+        "repair-prefix",
+        "preview or publish a complete-record prefix onto the store",
+        _cmd_repair_prefix,
+        views=False,
+    )
+    repair_prefix_cmd.add_argument(
+        "--apply",
+        action="store_true",
+        help="perform the write; without this flag the command only reports",
+    )
+    repair_prefix_cmd.add_argument(
+        "--bytes",
+        type=int,
+        default=None,
+        help="byte length to keep; default is the inspected valid prefix",
+    )
+    repair_prefix_cmd.add_argument(
+        "--backup-label",
+        default="corrupt",
+        help="lowercase filesystem-safe token used in the sibling .bak name",
+    )
 
     schemas = sub.add_parser("schemas", help="schemas the engine ships")
     schemas.set_defaults(handler=_cmd_schemas)

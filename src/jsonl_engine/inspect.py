@@ -16,19 +16,46 @@ Two bounds are worth having, and they answer different questions:
 
 The second is the stronger one. A signed prefix is a population someone committed to, so reading
 there gives a view that verifies, rather than merely a view that is not torn.
+
+inspect_prefix walks records until the first framing or JSON failure and reports that valid prefix.
+It does not take the write lease. repair_prefix is a writer: it takes the lease, copies the live
+file to a sibling .bak, and publishes the kept prefix onto the store.
 """
 
 from __future__ import annotations
 
+import hashlib
 import os
+import re
+import struct
 import tempfile
 from dataclasses import dataclass
-from typing import BinaryIO, Optional
+from datetime import datetime, timezone
+from typing import Any, BinaryIO, Callable, Dict, List, Optional, Tuple
 
-from .policy import Eol
-from .sidecar import StorePaths, store_paths
+from .policy import DEFAULT_ENCODING, Codec, Eol
+from .sidecar import (
+    SIG_SCHEMA_ID,
+    StorePaths,
+    get_ticks_offset,
+    lock_path,
+    store_paths,
+    temp_write_path,
+)
+from .writer import publish_staged_file, write_json
 
-__all__ = ["StoreInfo", "inspect_store", "complete_prefix", "snapshot"]
+__all__ = [
+    "StoreInfo",
+    "StorePrefixScan",
+    "StoreRepairReceipt",
+    "inspect_store",
+    "inspect_prefix",
+    "complete_prefix",
+    "repair_prefix",
+    "snapshot",
+]
+
+_REPAIR_LABEL = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
 
 
 @dataclass(frozen=True)
@@ -213,3 +240,399 @@ def snapshot(source: str, destination: str, *, limit: Optional[int] = None) -> i
                 # uniquely named scratch remains isolated and identifiable as transaction debris.
                 pass
             raise
+
+
+@dataclass(frozen=True)
+class StorePrefixScan:
+    """How far a store parses as complete JSONL records under a declared policy."""
+
+    path: str
+    exists: bool
+    valid: bool
+    size: int
+    valid_prefix_bytes: int
+    record_count: int
+    error_line: Optional[int] = None
+    error: Optional[str] = None
+    records: Tuple[Any, ...] = ()
+
+
+@dataclass(frozen=True)
+class StoreRepairReceipt:
+    """Result of publishing a complete-record prefix onto the live store."""
+
+    path: str
+    backup_path: str
+    original_bytes: int
+    committed_bytes: int
+    removed_bytes: int
+    signed: bool
+    indexed: bool
+
+
+def inspect_prefix(
+    path: str,
+    *,
+    encoding: str = DEFAULT_ENCODING,
+    eol: Eol = Eol.LF,
+    validator: Optional[Callable[[Any, int], None]] = None,
+    collect_records: bool = False,
+) -> StorePrefixScan:
+    """Walk records until the first framing or JSON failure. Does not take the write lease.
+
+    `complete_prefix` is the last terminator. This bound may be shorter: a complete line that is
+    not JSON, or that the optional validator refuses, is excluded together with everything after it.
+    """
+    target = store_paths(path).artifact
+    if not os.path.lexists(target):
+        return StorePrefixScan(target, False, True, 0, 0, 0)
+
+    if os.path.islink(target):
+        return StorePrefixScan(
+            target,
+            True,
+            False,
+            0,
+            0,
+            0,
+            error="JSONL data path must not be a symbolic link",
+        )
+    if not os.path.isfile(target):
+        return StorePrefixScan(
+            target,
+            True,
+            False,
+            0,
+            0,
+            0,
+            error="JSONL data path is not a regular file",
+        )
+
+    # Local import: reader imports complete-prefix helpers from this module.
+    from .reader import loads
+
+    terminator = eol.terminator(encoding)
+    records: List[Any] = []
+    valid_prefix = 0
+    record_count = 0
+
+    with open(target, "rb") as handle:
+        size = os.fstat(handle.fileno()).st_size
+        for line_number, line in enumerate(handle, start=1):
+            try:
+                record = _parse_prefix_line(
+                    line,
+                    line_number=line_number,
+                    path=target,
+                    encoding=encoding,
+                    terminator=terminator,
+                    loads=loads,
+                )
+                if validator is not None:
+                    try:
+                        validator(record, line_number)
+                    except ValueError:
+                        raise
+                    except Exception as exc:
+                        raise ValueError(str(exc)) from exc
+            except ValueError as exc:
+                return StorePrefixScan(
+                    target,
+                    True,
+                    False,
+                    size,
+                    valid_prefix,
+                    record_count,
+                    error_line=line_number,
+                    error=str(exc),
+                    records=tuple(records),
+                )
+            record_count += 1
+            valid_prefix += len(line)
+            if collect_records:
+                records.append(record)
+
+        if os.fstat(handle.fileno()).st_size != size:
+            raise ValueError(f"JSONL data changed while it was inspected: {target}")
+
+    return StorePrefixScan(
+        target,
+        True,
+        True,
+        size,
+        valid_prefix,
+        record_count,
+        records=tuple(records),
+    )
+
+
+def _parse_prefix_line(
+    line: bytes,
+    *,
+    line_number: int,
+    path: str,
+    encoding: str,
+    terminator: bytes,
+    loads: Callable[..., Any],
+) -> Any:
+    """Frame one physical line and parse it as JSON. Returns the decoded value."""
+    where = f"line {line_number}"
+    if not line.endswith(b"\n"):
+        raise ValueError(f"{where} is not terminated")
+    if not line.endswith(terminator):
+        raise ValueError(
+            f"{where} does not end with the declared {terminator!r} terminator"
+        )
+    body = line[: -len(terminator)]
+    if not body.strip():
+        raise ValueError(f"{where} is blank")
+    if b"\r" in body:
+        raise ValueError(f"{where} contains a CR inside the record")
+    return loads(
+        body,
+        path=path,
+        encoding=encoding,
+        require_object=False,
+        record=line_number - 1,
+    )
+
+
+def _copy_entire_file(source: str, destination: str) -> None:
+    """Copy `source` byte-for-byte to `destination` through an adjacent temporary file.
+
+    Unlike snapshot(), this does not require a complete-record bound: a repair backup must keep
+    the torn tail that is about to be dropped.
+    """
+    source_path = store_paths(source).artifact
+    destination_path = os.path.abspath(destination)
+    if _paths_equivalent(source_path, destination_path):
+        raise ValueError(
+            f"backup source and destination identify the same file: '{source_path}'"
+        )
+    parent = os.path.dirname(destination_path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+    temporary = temp_write_path(destination_path)
+    try:
+        with open(source_path, "rb") as src, open(temporary, "xb") as dst:
+            while True:
+                block = src.read(1 << 20)
+                if not block:
+                    break
+                dst.write(block)
+            dst.flush()
+            os.fsync(dst.fileno())
+        publish_staged_file(temporary, destination_path, overwrite=True)
+    except BaseException:
+        if os.path.lexists(temporary):
+            try:
+                os.remove(temporary)
+            except OSError:
+                pass
+        raise
+
+
+def _replace_with_prefix(path: str, bound: int) -> None:
+    """Replace `path` with its first `bound` bytes through an adjacent temporary file.
+
+    Caller holds the write lease. `bound` must already be a complete-record boundary.
+    """
+    target = store_paths(path).artifact
+    temporary = temp_write_path(target)
+    try:
+        with open(target, "rb") as src, open(temporary, "xb") as dst:
+            remaining = bound
+            while remaining:
+                block = src.read(min(1 << 20, remaining))
+                if not block:
+                    raise OSError(
+                        f"source ended at byte {bound - remaining} before prefix bound {bound}"
+                    )
+                dst.write(block)
+                remaining -= len(block)
+            dst.flush()
+            os.fsync(dst.fileno())
+        publish_staged_file(temporary, target, overwrite=True)
+    except BaseException:
+        if os.path.lexists(temporary):
+            try:
+                os.remove(temporary)
+            except OSError:
+                pass
+        raise
+
+
+def repair_prefix(
+    path: str,
+    committed_bytes: int,
+    *,
+    backup_label: str = "corrupt",
+    lock_timeout: float = 60.0,
+) -> StoreRepairReceipt:
+    """Publish the complete-record prefix of `path` onto the store. Takes the write lease."""
+    if isinstance(committed_bytes, bool) or not isinstance(committed_bytes, int) or committed_bytes < 0:
+        raise ValueError("committed_bytes must be a nonnegative integer")
+    if not isinstance(backup_label, str) or _REPAIR_LABEL.fullmatch(backup_label) is None:
+        raise ValueError("backup_label must be a lowercase filesystem-safe name")
+
+    from filelock import FileLock, Timeout
+
+    target = store_paths(path).artifact
+    lease = FileLock(lock_path(target), timeout=lock_timeout)
+    try:
+        lease.acquire()
+    except Timeout as exc:
+        raise TimeoutError(
+            f"Could not acquire the write lease for {target} within {lock_timeout}s "
+            f"(lock file: {lock_path(target)})."
+        ) from exc
+
+    try:
+        if not os.path.lexists(target):
+            raise FileNotFoundError(f"JSONL data does not exist: {target}")
+        if os.path.islink(target) or not os.path.isfile(target):
+            raise ValueError(f"JSONL data path is not a regular file: {target}")
+
+        size = os.path.getsize(target)
+        if committed_bytes >= size:
+            raise ValueError(
+                f"repair prefix must remove at least one byte from a {size}-byte store"
+            )
+        if committed_bytes:
+            with open(target, "rb") as handle:
+                _validate_record_boundary(handle, committed_bytes, size=size)
+
+        paths = store_paths(target)
+        had_index = os.path.isfile(paths.jidx)
+        had_signature = os.path.isfile(paths.sig)
+        policy = _read_signature_policy(paths.sig) if had_signature else None
+
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
+        backup_path = f"{target}.{backup_label}-{stamp}.bak"
+        _copy_entire_file(target, backup_path)
+        _replace_with_prefix(target, committed_bytes)
+
+        signed = False
+        indexed = False
+        try:
+            signed, indexed = _rebuild_repaired_sidecars(
+                paths,
+                had_index=had_index,
+                had_signature=had_signature,
+                policy=policy,
+            )
+        except (OSError, ValueError, TypeError):
+            _discard_sidecars(paths)
+        return StoreRepairReceipt(
+            path=target,
+            backup_path=backup_path,
+            original_bytes=size,
+            committed_bytes=committed_bytes,
+            removed_bytes=size - committed_bytes,
+            signed=signed,
+            indexed=indexed,
+        )
+    finally:
+        lease.release()
+
+
+def _read_signature_policy(sig_path: str) -> Optional[Dict[str, Any]]:
+    from .reader import read_json
+
+    try:
+        raw = read_json(sig_path, require_object=True)
+    except (OSError, ValueError):
+        return None
+    if not isinstance(raw, dict) or raw.get("schema") != SIG_SCHEMA_ID:
+        return None
+    return raw
+
+
+def _discard_sidecars(paths: StorePaths) -> None:
+    for sidecar in (paths.jidx, paths.sig):
+        if os.path.lexists(sidecar):
+            try:
+                os.remove(sidecar)
+            except OSError:
+                pass
+
+
+def _rebuild_repaired_sidecars(
+    paths: StorePaths,
+    *,
+    had_index: bool,
+    had_signature: bool,
+    policy: Optional[Dict[str, Any]],
+) -> Tuple[bool, bool]:
+    """Rewrite sidecars that existed before repair so they describe the kept prefix."""
+    if not had_index and not had_signature:
+        return False, False
+
+    offsets: List[int] = []
+    hasher = hashlib.sha256()
+    offset = 0
+    with open(paths.artifact, "rb") as handle:
+        for line in handle:
+            hasher.update(line)
+            offsets.append(offset)
+            offset += len(line)
+
+    published = os.stat(paths.artifact, follow_symlinks=False)
+    file_size = published.st_size
+    ticks = (published.st_mtime_ns // 100) + get_ticks_offset()
+
+    indexed = False
+    signed = False
+    jidx_tmp = temp_write_path(paths.jidx) if had_index else ""
+    sig_tmp = temp_write_path(paths.sig) if had_signature else ""
+    try:
+        if had_index:
+            with open(jidx_tmp, "wb") as handle:
+                handle.write(b"JSOI")
+                handle.write(struct.pack("<i", 2))
+                handle.write(struct.pack("<i", len(offsets)))
+                handle.write(struct.pack("<q", file_size))
+                handle.write(struct.pack("<q", ticks))
+                for item in offsets:
+                    handle.write(struct.pack("<q", item))
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(jidx_tmp, paths.jidx)
+            jidx_tmp = ""
+            indexed = True
+        if had_signature:
+            payload = {
+                "schema": SIG_SCHEMA_ID,
+                "sha256": hasher.hexdigest(),
+                "line_count": len(offsets),
+                "file_size": file_size,
+                "ticks": ticks,
+                "discipline": (
+                    policy.get("discipline") if policy else "create"
+                ),
+                "encoding": policy.get("encoding") if policy else DEFAULT_ENCODING,
+                "codec": policy.get("codec") if policy else Codec.UNICODE.value,
+                "eol": policy.get("eol") if policy else Eol.LF.value,
+                "metadata": dict(policy.get("metadata") or {}) if policy else {},
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            }
+            write_json(
+                sig_tmp,
+                payload,
+                encoding=DEFAULT_ENCODING,
+                codec=Codec.ASCII,
+                indent=2,
+                atomic=False,
+            )
+            os.replace(sig_tmp, paths.sig)
+            sig_tmp = ""
+            signed = True
+        return signed, indexed
+    except BaseException:
+        for tmp in (jidx_tmp, sig_tmp):
+            if tmp and os.path.lexists(tmp):
+                try:
+                    os.remove(tmp)
+                except OSError:
+                    pass
+        raise

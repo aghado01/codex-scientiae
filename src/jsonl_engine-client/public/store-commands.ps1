@@ -304,6 +304,56 @@ function Get-JsonlSignature {
         -TimeoutSeconds $TimeoutSeconds
 }
 
+function Get-JsonlPrefix {
+    <# Walk records until the first framing or JSON failure. Does not mutate the store. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory, Position = 0)] [string] $Path,
+        [switch] $Collect,
+        [switch] $AsHashtable,
+        [switch] $AsFrame,
+        [string] $PythonPath = '',
+        [ValidateRange(1, 3600)] [int] $TimeoutSeconds = 300
+    )
+    $resolvedPath = Resolve-JsonlEnginePathArgument -Path $Path
+    $arguments = [System.Collections.Generic.List[string]]::new()
+    $arguments.Add($resolvedPath)
+    if ($Collect) { $arguments.Add('--collect') }
+    Invoke-SingleJsonlEngineValue -Verb inspect-prefix -Argument $arguments.ToArray() `
+        -AsHashtable:$AsHashtable -AsFrame:$AsFrame -PythonPath $PythonPath `
+        -TimeoutSeconds $TimeoutSeconds
+}
+
+function Repair-JsonlPrefix {
+    <# Preview or publish a complete-record prefix onto the store. Dry-run unless -Apply. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory, Position = 0)] [string] $Path,
+        [switch] $Apply,
+        [int] $Bytes,
+        [string] $BackupLabel = '',
+        [switch] $AsHashtable,
+        [switch] $AsFrame,
+        [string] $PythonPath = '',
+        [ValidateRange(1, 3600)] [int] $TimeoutSeconds = 300
+    )
+    $resolvedPath = Resolve-JsonlEnginePathArgument -Path $Path
+    $arguments = [System.Collections.Generic.List[string]]::new()
+    $arguments.Add($resolvedPath)
+    if ($Apply) { $arguments.Add('--apply') }
+    if ($PSBoundParameters.ContainsKey('Bytes')) {
+        $arguments.Add('--bytes')
+        $arguments.Add([string]$Bytes)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($BackupLabel)) {
+        $arguments.Add('--backup-label')
+        $arguments.Add($BackupLabel)
+    }
+    Invoke-SingleJsonlEngineValue -Verb repair-prefix -Argument $arguments.ToArray() `
+        -AsHashtable:$AsHashtable -AsFrame:$AsFrame -PythonPath $PythonPath `
+        -TimeoutSeconds $TimeoutSeconds
+}
+
 function New-JsonlSnapshot {
     <# Copy the complete-record prefix byte-for-byte to a new destination. #>
     [CmdletBinding()]

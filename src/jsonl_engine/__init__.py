@@ -46,7 +46,16 @@ from .reader import (
     read_json_or_none,
 )
 from .engine import Discipline, JsonlEngine
-from .inspect import StoreInfo, complete_prefix, inspect_store, snapshot
+from .inspect import (
+    StoreInfo,
+    StorePrefixScan,
+    StoreRepairReceipt,
+    complete_prefix,
+    inspect_prefix,
+    inspect_store,
+    repair_prefix,
+    snapshot,
+)
 from .schemas import IDENTITY_KEYWORD, SchemaCatalog, get_schema_catalog
 from .kinds import (
     MAX_ARTICLE_MANIFEST_BYTES,
@@ -107,8 +116,12 @@ __all__ = [
     "read_json_or_none",
     # inspection
     "StoreInfo",
+    "StorePrefixScan",
+    "StoreRepairReceipt",
     "inspect_store",
+    "inspect_prefix",
     "complete_prefix",
+    "repair_prefix",
     "snapshot",
     # schemas
     "IDENTITY_KEYWORD",
