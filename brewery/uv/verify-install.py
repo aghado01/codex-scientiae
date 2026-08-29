@@ -6,6 +6,7 @@ import asyncio
 import json
 from importlib.metadata import distribution
 
+import httpx
 from mcp import Client
 
 from procurement_mcp.server import create_server
@@ -21,6 +22,12 @@ async def _verify() -> dict[str, object]:
     expected = "procurement_mcp.server:main"
     if entry_points.get("scientiae-procurement") != expected:
         raise RuntimeError("scientiae-procurement entry point is missing or incorrect")
+
+    try:
+        http_client = httpx.AsyncClient(http2=True, follow_redirects=False)
+    except ImportError as exc:
+        raise RuntimeError("httpx HTTP/2 extra is not installed") from exc
+    await http_client.aclose()
 
     async with Client(create_server()) as client:
         tools = await client.list_tools()

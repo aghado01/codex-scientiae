@@ -2,8 +2,11 @@
 
 This recipe restores the Python lane without using an ambient Python or uv installation. `pin.json`
 records the uv release archives and digests for supported Windows architectures. `.python-version`
-selects the uv-managed Python release, `pyproject.toml` declares dependencies, and `uv.lock` fixes the
-complete environment.
+selects the uv-managed Python release. The venv package graph is pinned at the repository root:
+`pyproject.toml` declares runtime dependencies, `uv.lock` freezes the resolved graph, and
+`requirements.txt` is the generated compatibility export. `restore-uv.ps1` is the cold-start path
+that materializes `.venv` from that lock. A live `uv pip install` into an existing environment is
+not the pin; a clone on another machine only sees what this recipe restores.
 
 ```pwsh
 ./brewery/uv/restore-uv.ps1
