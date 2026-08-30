@@ -1,8 +1,9 @@
 """Reading a store another process is appending to.
 
-A writer publishes a replacement by rename, so a reader never sees half of one. It can see half of
-an APPEND, which extends the file in place. The answer is a bound rather than a lock: a reader
-takes no lease, because one long scan would stall every writer and a reader has nothing to protect.
+CREATE publishes a replacement by rename, so a reader never sees half of one. APPEND extends the
+file in place, so a reader can see a record in progress. The answer is a bound rather than a lock:
+a reader takes no lease, because one long scan would stall every writer and a reader has nothing
+to protect.
 """
 
 import os

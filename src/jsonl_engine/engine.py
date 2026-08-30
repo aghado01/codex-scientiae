@@ -6,9 +6,10 @@ and a SHA-256 signature (.sig) accumulated during the write.
 
 Offsets are captured from file.tell() as each record is written.
 
-commit() publishes the .jsonl atomically, stats the published file, then writes and renames the
-sidecars. The index records that file's length and last-write time; ticks are integer arithmetic on
-st_mtime_ns.
+CREATE commit() publishes the .jsonl by rename, stats the published file, then writes and renames
+the sidecars. APPEND to an existing store extends that file in place, fsyncs it, then writes the
+same sidecars. The index records that file's length and last-write time; ticks are integer
+arithmetic on st_mtime_ns.
 
 Discipline selects create, append, or sealed. SEALED refuses to open this engine for writing and
 does not mark the artifact on disk, so it constrains the declaring kind rather than the path.
@@ -63,8 +64,8 @@ __all__ = [
 
 
 class Discipline(Enum):
-    CREATE = "create"  # Replaces or creates fresh output
-    APPEND = "append"  # Publishes existing records plus new records as one replacement
+    CREATE = "create"  # Replaces or creates fresh output by rename
+    APPEND = "append"  # Extends an existing store in place; absent path uses create publication
     SEALED = "sealed"  # Immutable; write attempt raises PermissionError
 
 
@@ -134,6 +135,12 @@ class JsonlEngine:
         self._file = None
         self._committed = False
         self._poisoned: Optional[str] = None
+        self._in_place = False
+        self._adopted_bytes = 0
+        self._adopted_mtime_ns = 0
+        self._adopted_atime_ns = 0
+        self._payload_durable = False
+        self._sidecar_destinations_mutated = False
         # Resolved at __enter__ against what is on disk; see the invariant there.
         self._emit_index = emit_index
         self._emit_sig = emit_sig
@@ -173,6 +180,12 @@ class JsonlEngine:
             self._file = None
             self._committed = False
             self._poisoned = None
+            self._in_place = False
+            self._adopted_bytes = 0
+            self._adopted_mtime_ns = 0
+            self._adopted_atime_ns = 0
+            self._payload_durable = False
+            self._sidecar_destinations_mutated = False
 
             # A commit must not leave a sidecar describing bytes it replaced. A sidecar already on
             # disk is therefore rebuilt whether or not this write asked for one: its presence is a
@@ -341,11 +354,11 @@ class JsonlEngine:
                     pass
 
     def _adopt_existing(self) -> None:
-        """Carry the published store into this transaction's tmp file, in one pass.
+        """Scan the published store in place, then open it for append.
 
-        The adoption copy, hash, framing check, and offset capture happen together, so the store is
-        never held in memory. A conflicting valid signature requires one preliminary hash pass to
-        establish that it still witnesses the bytes before its policy can be trusted.
+        Hash, framing, and offset capture happen in one read pass. The existing bytes are not
+        copied. A conflicting valid signature requires one preliminary hash pass to establish that
+        it still witnesses the bytes before its policy can be trusted.
 
         Adoption validates. A record this engine would refuse to read is one it refuses to extend:
         appending to a store with invalid framing or non-JSON values produces a longer store the
@@ -361,7 +374,7 @@ class JsonlEngine:
         terminator = self.eol.terminator(self.encoding)
         file_size = os.path.getsize(self.output_path)
 
-        # O(1) precheck so a large store fails before it is copied rather than after.
+        # O(1) precheck so a large store fails before any write handle is opened.
         if file_size > 0:
             with open(self.output_path, "rb") as probe:
                 probe.seek(-min(len(terminator), file_size), os.SEEK_END)
@@ -372,23 +385,31 @@ class JsonlEngine:
                     f"{self.eol.value.upper()} terminator, found {tail!r}): {self.output_path}"
                 )
 
-        self._file = open(self.tmp_path, "wb")
         offset = 0
         with open(self.output_path, "rb") as src:
             for index, line in enumerate(src):
                 body = self._check_adopted(line, index, terminator)
                 # This is JsonlStore's strict parser, including non-finite-number and object checks.
                 loads(body, path=self.output_path, encoding=self.encoding, record=index)
-                written = self._file.write(line)
-                if written != len(line):
-                    raise OSError(
-                        f"short write while adopting record {index}: wrote {written!r} of "
-                        f"{len(line)} bytes"
-                    )
                 self.hasher.update(line)
                 self.offsets.append(offset)
                 offset += len(line)
         self.line_count = len(self.offsets)
+        self._adopted_bytes = offset
+        adopted_info = os.stat(self.output_path, follow_symlinks=False)
+        self._adopted_mtime_ns = adopted_info.st_mtime_ns
+        self._adopted_atime_ns = getattr(
+            adopted_info, "st_atime_ns", int(adopted_info.st_atime * 1_000_000_000)
+        )
+        self._in_place = True
+        self._file = self._open(self.output_path, "r+b")
+        self._file.seek(0, os.SEEK_END)
+        end = self._file.tell()
+        if end != self._adopted_bytes:
+            raise ValueError(
+                f"Cannot append to {self.output_path}: scanned {self._adopted_bytes} bytes "
+                f"but the destination size is {end}"
+            )
 
     def _check_existing_signature_policy(self) -> None:
         """Refuse a conflicting policy witnessed by a current engine signature.
@@ -510,17 +531,19 @@ class JsonlEngine:
         self.line_count += 1
 
     def commit(self, stage_metadata: Optional[Dict[str, Any]] = None) -> None:
-        """Publish the store, then write and rename its sidecars.
+        """Make the JSONL bytes durable, then write and rename its sidecars.
 
-        The ordering is forced, not incidental. Both sidecars record the published file's byte
-        length and last-write ticks, and neither exists until the .jsonl is at its final path, so
-        publication has to come first. That leaves a window in which the store is published and its
-        sidecars are not yet in place.
+        CREATE publishes by renaming scratch onto the destination. APPEND to an existing store
+        fsyncs the extended file in place. Both then write sidecars against the durable bytes.
 
-        A store is signed by default and an unsigned one is a valid state, so the window is
-        survivable -- but it must not be silent. If a sidecar step fails, any sidecar left over
-        from a previous commit now describes bytes that are gone; those are removed so the store
-        reads as unsigned rather than as wrongly signed, and the error names what is on disk.
+        Sidecars record byte length and last-write ticks, so they cannot be written first. That
+        leaves a window: CREATE has a replacement with no new signature yet; APPEND has a longer
+        file whose previous signature still describes the adopted prefix. at_signature is the
+        reader for that window.
+
+        If a sidecar step fails after CREATE replaced the file, leftover sidecars describe bytes
+        that are gone and are removed. If it fails after an in-place extend and no new sidecar
+        landed, the previous signature is left in place.
         """
         if self._poisoned is not None:
             raise RuntimeError(
@@ -531,32 +554,58 @@ class JsonlEngine:
         if self._file and not self._file.closed:
             try:
                 self._file.flush()
+                if self._in_place:
+                    os.fsync(self._file.fileno())
                 self._file.close()
             except BaseException as exc:
                 self._poisoned = f"finalizing scratch: {type(exc).__name__}: {exc}"
                 raise
+            self._file = None
 
-        # 1. Atomically publish .jsonl scratch -> final .jsonl FIRST
-        self._publish(
-            self.tmp_path,
-            self.output_path,
-            overwrite=not self.require_absent,
-        )
+        if self._in_place:
+            self._payload_durable = True
+        else:
+            # Atomically publish .jsonl scratch -> final .jsonl FIRST
+            self._publish(
+                self.tmp_path,
+                self.output_path,
+                overwrite=not self.require_absent,
+            )
+            self._payload_durable = True
 
         try:
             self._write_sidecars(stage_metadata)
         except BaseException as exc:
-            stranded = self._discard_stale_sidecars()
-            raise RuntimeError(
-                f"{self.output_path} was published but its sidecars were not written "
-                f"({type(exc).__name__}: {exc}). "
-                + (
-                    f"Removed now-stale {', '.join(stranded)} from a previous commit; "
-                    if stranded
-                    else ""
+            if self._in_place and not self._sidecar_destinations_mutated:
+                self._discard_sidecar_temps()
+                stranded: List[str] = []
+            else:
+                stranded = self._discard_stale_sidecars()
+            if self._in_place:
+                outcome = (
+                    f"{self.output_path} was extended but its sidecars were not rewritten "
+                    f"({type(exc).__name__}: {exc}). "
                 )
-                + "the store is intact and unsigned; re-run the write to sign it."
-            ) from exc
+                if stranded:
+                    outcome += f"Removed now-stale {', '.join(stranded)}; "
+                    outcome += "the store is intact and unsigned; re-run the write to sign it."
+                else:
+                    outcome += (
+                        "previous signature still describes the adopted prefix; "
+                        "re-run the write to sign the extension."
+                    )
+            else:
+                outcome = (
+                    f"{self.output_path} was published but its sidecars were not written "
+                    f"({type(exc).__name__}: {exc}). "
+                    + (
+                        f"Removed now-stale {', '.join(stranded)} from a previous commit; "
+                        if stranded
+                        else ""
+                    )
+                    + "the store is intact and unsigned; re-run the write to sign it."
+                )
+            raise RuntimeError(outcome) from exc
 
         self._committed = True
 
@@ -625,8 +674,10 @@ class JsonlEngine:
         #    method exists to refuse. os.replace raises, which is the point.
         if self._emit_index:
             self._replace(self.jidx_tmp, self.jidx_path)
+            self._sidecar_destinations_mutated = True
         if self._emit_sig:
             self._replace(self.sig_tmp, self.sig_path)
+            self._sidecar_destinations_mutated = True
 
     def _discard_stale_sidecars(self) -> List[str]:
         """Remove sidecars describing bytes this commit replaced. Returns what was removed."""
@@ -647,6 +698,41 @@ class JsonlEngine:
                         pass
         return removed
 
+    def _discard_sidecar_temps(self) -> None:
+        """Remove unpublished sidecar scratch. Destination sidecars are left alone."""
+        for tmp_file in (self.jidx_tmp, self.sig_tmp):
+            if tmp_file and self._lexists(tmp_file):
+                try:
+                    self._remove(tmp_file)
+                except OSError:
+                    pass
+
+    def _rollback_in_place(self) -> None:
+        """Restore the adopted prefix after an uncommitted in-place append.
+
+        The live handle must be closed first: Windows refuses replace while this process holds it.
+        """
+        if self._file is not None and not self._file.closed:
+            try:
+                self._file.close()
+            except BaseException:
+                pass
+        self._file = None
+        if not self._lexists(self.output_path):
+            return
+        size = os.path.getsize(self.output_path)
+        if size == self._adopted_bytes:
+            return
+        from .inspect import _replace_with_prefix
+
+        _replace_with_prefix(self.output_path, self._adopted_bytes)
+        # Prefix replace is a new file generation. Restore the adopted timestamps so a .jidx/.sig
+        # that still describes those bytes remains current rather than stale-by-mtime.
+        os.utime(
+            self.output_path,
+            ns=(self._adopted_atime_ns, self._adopted_mtime_ns),
+        )
+
     def _write_jidx_v2(self, target_jidx_path: str, file_size: int, ticks: int) -> None:
         """
         Writes binary JSOI v2 index format:
@@ -664,8 +750,9 @@ class JsonlEngine:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
-            # Clean up temporary files if uncommitted or on exception
-            if not self._committed or exc_type is not None:
+            if not self._committed:
+                if self._in_place and not self._payload_durable:
+                    self._rollback_in_place()
                 self._discard_transaction_scratch()
             elif self._file and not self._file.closed:
                 self._file.close()

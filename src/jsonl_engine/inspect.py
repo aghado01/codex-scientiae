@@ -1,8 +1,8 @@
 """Physical inspection and stable views of a store that may be actively appended.
 
-This engine publishes both CREATE and APPEND transactions by rename, so its readers never see a
-half-written replacement. A foreign or uncoordinated producer may still extend a file in place;
-reading that file to EOF while the write is active can expose a torn final record.
+CREATE publishes a replacement by rename, so a reader never sees half of one. APPEND extends the
+destination in place; reading that file to EOF while the write is active can expose a torn final
+record. A foreign or uncoordinated producer can do the same.
 
 The fix is a bound plus a captured file generation, not a lock. Readers do not take the write lease
 -- one long scan would stall every writer, and a reader has nothing to protect. Instead a reader

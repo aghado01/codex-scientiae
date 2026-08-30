@@ -127,7 +127,7 @@ class TestAdoptionRefuses(unittest.TestCase):
                 _extend(path, [{"n": 3}])
             self.assertIn("unterminated", str(caught.exception))
 
-    def test_non_finite_json_extension_is_rejected_before_copy(self):
+    def test_non_finite_json_extension_is_rejected_before_any_write(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = self._corrupt(tmpdir, b'{"n":NaN}\n')
             with self.assertRaises(ValueError) as caught:
@@ -206,6 +206,123 @@ class TestAdoptionRefuses(unittest.TestCase):
                 replacement.append({"n": 2})
                 replacement.commit()
             self.assertEqual([{"n": 2}], list(JsonlStore(path)))
+
+
+class TestInPlaceAppend(unittest.TestCase):
+    """APPEND extends the published file; an uncommitted transaction restores the adopted prefix."""
+
+    def test_append_to_an_absent_path_still_publishes_by_rename(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path, discipline=Discipline.APPEND) as engine:
+                self.assertFalse(engine._in_place)
+                engine.append({"n": 1})
+                self.assertTrue(os.path.lexists(engine.tmp_path))
+                engine.commit()
+            self.assertEqual([{"n": 1}], list(JsonlStore(path)))
+            self.assertTrue(JsonlStore(path).verify())
+
+    def test_it_does_not_stage_a_copy_of_the_published_bytes(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            _seed(path, [{"n": 1}, {"n": 2}])
+            engine = JsonlEngine(output_path=path, discipline=Discipline.APPEND)
+            with engine:
+                self.assertTrue(engine._in_place)
+                self.assertFalse(os.path.lexists(engine.tmp_path))
+                engine.append({"n": 3})
+                self.assertFalse(os.path.lexists(engine.tmp_path))
+                engine.commit()
+            self.assertEqual([{"n": 1}, {"n": 2}, {"n": 3}], list(JsonlStore(path)))
+            self.assertTrue(JsonlStore(path).verify())
+
+    def test_at_signature_still_verifies_the_adopted_commit_during_the_extend(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            _seed(path, [{"n": n} for n in range(3)])
+            with JsonlEngine(output_path=path, discipline=Discipline.APPEND) as engine:
+                engine.append({"n": 3})
+                view = JsonlStore(path).at_signature()
+                self.assertEqual([{"n": n} for n in range(3)], list(view))
+                self.assertTrue(view.verify())
+                engine.commit()
+            self.assertEqual([{"n": n} for n in range(4)], list(JsonlStore(path)))
+            self.assertTrue(JsonlStore(path).verify())
+
+    def test_an_uncommitted_transaction_restores_the_adopted_bytes_and_signature(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            _seed(path, [{"n": 1}])
+            before = open(path, "rb").read()
+            with JsonlEngine(output_path=path, discipline=Discipline.APPEND) as engine:
+                engine.append({"n": 2})
+            with open(path, "rb") as handle:
+                self.assertEqual(before, handle.read())
+            self.assertTrue(JsonlStore(path).verify())
+            self.assertEqual([{"n": 1}], list(JsonlStore(path)))
+
+    def test_a_poisoned_mid_append_rolls_back_to_the_adopted_prefix(self):
+        class FailAfterPassthrough:
+            def __init__(self, handle):
+                self.handle = handle
+                self.fail = False
+
+            @property
+            def closed(self):
+                return self.handle.closed
+
+            def tell(self):
+                return self.handle.tell()
+
+            def write(self, raw):
+                if self.fail:
+                    raise OSError("simulated append failure")
+                return self.handle.write(raw)
+
+            def flush(self):
+                self.handle.flush()
+
+            def close(self):
+                self.handle.close()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            _seed(path, [{"n": 1}])
+            before = open(path, "rb").read()
+            with JsonlEngine(output_path=path, discipline=Discipline.APPEND) as engine:
+                wrapper = FailAfterPassthrough(engine._file)
+                engine._file = wrapper
+                engine.append({"n": 2})
+                wrapper.fail = True
+                with self.assertRaisesRegex(OSError, "simulated append failure"):
+                    engine.append({"n": 3})
+                with self.assertRaisesRegex(RuntimeError, "poisoned"):
+                    engine.commit()
+            with open(path, "rb") as handle:
+                self.assertEqual(before, handle.read())
+            self.assertTrue(JsonlStore(path).verify())
+            self.assertEqual([{"n": 1}], list(JsonlStore(path)))
+
+    def test_sidecar_failure_after_extend_keeps_the_previous_signature(self):
+        from unittest import mock
+
+        from jsonl_engine import engine as engine_module
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            _seed(path, [{"n": 1}])
+            with mock.patch.object(engine_module, "write_json", side_effect=OSError("disk full")):
+                with JsonlEngine(output_path=path, discipline=Discipline.APPEND) as engine:
+                    engine.append({"n": 2})
+                    with self.assertRaises(RuntimeError) as caught:
+                        engine.commit()
+            message = str(caught.exception)
+            self.assertIn("was extended but its sidecars were not rewritten", message)
+            self.assertIn("previous signature still describes the adopted prefix", message)
+            view = JsonlStore(path).at_signature()
+            self.assertEqual([{"n": 1}], list(view))
+            self.assertTrue(view.verify())
+            self.assertEqual([{"n": 1}, {"n": 2}], list(JsonlStore(path).at_length()))
 
 
 if __name__ == "__main__":
