@@ -17,10 +17,12 @@ The restore performs this sequence:
 1. download and verify the pinned uv archive inside `artifacts/uv/restore/`;
 2. publish `uv.exe` to the ignored `packages/uv/` shelf;
 3. install the pinned managed Python under `packages/python/`;
-4. synchronize `.venv` from `uv.lock`;
-5. remove any obsolete uv executable previously copied into `.venv`;
-6. verify the runtime dependency group and procurement MCP registration;
-7. generate project-root-relative MCP registrations.
+4. stop processes holding this checkout's `.venv` or `scientiae-procurement` (`-SkipOccupantStop`
+   leaves them, and restore then fails if Windows cannot replace the console script);
+5. synchronize `.venv` from `uv.lock`;
+6. remove any obsolete uv executable previously copied into `.venv`;
+7. verify the runtime dependency group and procurement MCP registration;
+8. generate project-root-relative MCP registrations.
 
 Successful restore scratch is removed. The uv package cache remains under `artifacts/uv/cache/` and is
 disposable. Failed restore scratch remains under its compact runstamp for diagnosis. Neither activation nor

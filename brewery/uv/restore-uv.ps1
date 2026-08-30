@@ -6,11 +6,14 @@
 .DESCRIPTION
   pin.json is the uv bootstrap authority. The verified executable is published under packages/uv,
   managed Python is installed under packages/python, and uv synchronizes .venv from uv.lock. All
-  download, cache, and temporary paths remain below the repository artifacts tree.
+  download, cache, and temporary paths remain below the repository artifacts tree. Before the
+  project sync, restore stops processes that hold this checkout's .venv or the procurement MCP
+  console script so Windows can replace those executables.
 #>
 [CmdletBinding()]
 param(
-    [switch] $SkipRegistration
+    [switch] $SkipRegistration,
+    [switch] $SkipOccupantStop
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,6 +26,7 @@ $cacheRoot = Join-Path $artifactsRoot 'uv/cache'
 $downloadRoot = Join-Path $cacheRoot 'downloads'
 $restoreRoot = Join-Path $artifactsRoot 'uv/restore'
 $pinPath = Join-Path $PSScriptRoot 'pin.json'
+. (Join-Path $PSScriptRoot 'venv-occupants.ps1')
 
 function Assert-Descendant([string] $Path, [string] $Parent, [string] $Label) {
     $full = [System.IO.Path]::GetFullPath($Path)
@@ -152,6 +156,9 @@ try {
 
     & $packageUv python install $pythonVersion
     if ($LASTEXITCODE -ne 0) { throw "uv python install failed ($LASTEXITCODE)" }
+    if (-not $SkipOccupantStop) {
+        Stop-ProjectVenvOccupants -RepositoryRoot $repoRoot
+    }
     & $packageUv sync --project $repoRoot --locked --managed-python --python $pythonVersion `
         --no-install-project
     if ($LASTEXITCODE -ne 0) { throw "uv dependency sync failed ($LASTEXITCODE)" }
