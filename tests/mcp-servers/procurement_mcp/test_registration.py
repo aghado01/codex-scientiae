@@ -120,11 +120,11 @@ EXPECTED_TOOL_SCHEMA_FINGERPRINTS = {
     ),
     "acquire_artifact": (
         "fb50c041c2a09d27b3afccc0fb92a34b4c1e7e02acbadb4431c072e5b9ea65be",
-        "22055189a8e472069a57ef5ac69659cf8e9a7996859e951232f417fecb47e5d9",
+        "03e49a8f3fc789df5ec98c67f62aac1855c21d29423cb56ea9ddfe4f280df8b4",
     ),
     "get_acquisition_receipt": (
         "6bbf739c9f788380ed239108898ab423d93cccf4bf8a05f7a8bdac80ce10a769",
-        "8e4855dcd86b6b0b2d504727b6f2eb1d00a88117cbbc2e969e719224eae94358",
+        "fe0973ed47a0a8ef5c029bcd0634e42a89d0f6a711ec045e6ea38a3856f85f94",
     ),
     "list_local_import_inboxes": (
         "67da7e440d1ce50441a2e9ea583d0cabfa91cc525cff23b7bfa9492248570ee9",
@@ -132,15 +132,15 @@ EXPECTED_TOOL_SCHEMA_FINGERPRINTS = {
     ),
     "import_local_artifact": (
         "2ef4a4128d6165268892cec819e636e489b6ab64663561c8ef94803b37bf2d93",
-        "22055189a8e472069a57ef5ac69659cf8e9a7996859e951232f417fecb47e5d9",
+        "03e49a8f3fc789df5ec98c67f62aac1855c21d29423cb56ea9ddfe4f280df8b4",
     ),
     "materialize_source_deposit": (
-        "49a3becdd600516e17ce26292ec771403d6448d228c6b6fe990ca974fd110faa",
-        "61df49265c2edce3f75fd58a6dd3d1f87506b1fdd057436e38d3dc5b2f3e35d8",
+        "156b969f062a7a670788f5007fbffb50c81e6a8c345d6c83a78ef28cf06b0dc8",
+        "b16860d004d0820030fd7c1c5901bd020a017ce87e15779f8cef9e271b536c09",
     ),
     "procure_source": (
         "ca484e01a85ad25a2263a7a709c89d5170d42b4dd00d6c321aa02b2d876a36f8",
-        "cc2bdf124857327a83e98598463234dcb05c890951f7bcaaaf1c557fbab93b6a",
+        "37468e9d693a7d6b4a81e3f5e35d8a4e688bb5357c23ef1d635e8b61375e229a",
     ),
     "list_article_catalogs": (
         "ef85e025d007a79adaa3e623977170de3b328742c9ca6a395b4525f1f4736e3a",
