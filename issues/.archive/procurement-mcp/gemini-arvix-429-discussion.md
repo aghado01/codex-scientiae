@@ -1,25 +1,3 @@
-Viewed rate-policy.md:1-18
-Searched for "arxiv"
-Searched for "procurement"
-Searched for "arxiv"
-Viewed arxiv.ps1:1-800
-Listed directory issues
-Listed directory mcp-servers
-Listed directory procurement
-Listed directory arxiv-async
-Listed directory browser-fetcher
-Viewed sockets-httphandler-fetch-engine.md:1-103
-Viewed playwright-web-acquisition-brief.md:1-202
-Viewed limits.py:1-7
-Searched for "rate"
-Viewed http.py:1-670
-Viewed arxiv.py:1-367
-Viewed acquisition.py:1-448
-Viewed loader.py:1-27
-Viewed models.py:1-126
-Searched for "429"
-Viewed agy-procurement-review-20260812.md:1-800
-Viewed defaults.json:1-58
 
 Based on [rate-policy.md](file:///d:/aghado01/codex-scientiae/issues/mcp-servers/rate-policy.md), the legacy PowerShell implementation in [arxiv.ps1](file:///d:/aghado01/graveyard/codex-scientiae/src/procurement/arxiv.ps1), and current arXiv/Fastly rate-limiting behavior, here is an analysis of what was omitted during the Python migration, why arXiv 429s are so aggressive, and the strategies available to alleviate them.
 
