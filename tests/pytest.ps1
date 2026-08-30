@@ -80,6 +80,7 @@ function Set-PytestProcessEnvironment {
     $StartInfo.Environment['TEMP'] = $TempPath
     $StartInfo.Environment['TMPDIR'] = $TempPath
     $StartInfo.Environment['CODEX_JSON_SCRATCH_ROOT'] = $JsonScratchPath
+    $StartInfo.Environment['CODEX_PROCUREMENT_RATE_CLOCK'] = Join-Path $TempPath 'procurement-rate-clock.json'
 }
 
 function Invoke-PytestCapturedProcess {

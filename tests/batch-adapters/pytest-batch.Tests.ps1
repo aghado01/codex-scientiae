@@ -260,6 +260,7 @@ def test_runner_environment():
     assert os.environ["TMP"] == os.environ["TEMP"] == os.environ["TMPDIR"]
     assert Path(tempfile.gettempdir()) == Path(os.environ["TEMP"])
     assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
+    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["TEMP"])
 '@
         $resultPath = Join-Path $fixture.RunDirectory 'direct/pytest.xml'
         $tempPath = Join-Path $fixture.RunDirectory 'direct/temp'
@@ -267,7 +268,8 @@ def test_runner_environment():
         foreach ($name in @('PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'CODEX_REGEN_FIXTURES',
                 'PYTHONPATH', 'PYTHONHOME',
                 'PYTEST_DISABLE_PLUGIN_AUTOLOAD', 'PYTHONDONTWRITEBYTECODE',
-                'TMP', 'TEMP', 'TMPDIR', 'CODEX_JSON_SCRATCH_ROOT')) {
+                'TMP', 'TEMP', 'TMPDIR', 'CODEX_JSON_SCRATCH_ROOT',
+                'CODEX_PROCUREMENT_RATE_CLOCK')) {
             $saved[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
         }
         try {
@@ -321,6 +323,7 @@ def test_pass(tmp_path):
     assert os.environ["TMP"] == os.environ["TEMP"] == os.environ["TMPDIR"]
     assert Path(tempfile.gettempdir()) == Path(os.environ["TEMP"])
     assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
+    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["TEMP"])
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert "PYTEST_ADDOPTS" not in os.environ

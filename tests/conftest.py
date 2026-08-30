@@ -53,3 +53,11 @@ def pytest_configure(config: pytest.Config) -> None:
         raise pytest.UsageError("pytest must run with Python bytecode writes disabled")
 
     tempfile.tempdir = str(next(iter(resolved.values())))
+
+    clock = os.environ.get("CODEX_PROCUREMENT_RATE_CLOCK")
+    if clock:
+        _require_artifact_path(clock, label="CODEX_PROCUREMENT_RATE_CLOCK")
+    else:
+        os.environ["CODEX_PROCUREMENT_RATE_CLOCK"] = str(
+            next(iter(resolved.values())) / "procurement-rate-clock.json"
+        )
