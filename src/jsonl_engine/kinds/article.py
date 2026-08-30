@@ -64,11 +64,12 @@ class ArticleManifest(BaseStore):
     RECORD_SCHEMA = "article.schema.json"
     NAME_FORMAT = "article.json"
 
-    def publish(self, values: Dict[str, Any]) -> str:
+    def publish(self, values: Dict[str, Any], *, overwrite: bool = False) -> str:
         """Mint, validate, and create one article manifest atomically.
 
-        An article is an immutable source-ready sentinel. Existing-file validation and idempotent
-        return are deposit-service concerns; this primitive never replaces an existing article.
+        An article is an immutable source-ready sentinel by default. Existing-file validation and
+        idempotent return are deposit-service concerns. ``overwrite=True`` is the explicit rebuild
+        path; this primitive still does not infer replacement.
         """
         record = self.validate_record(self.mint(values))
         out_path = self.get_output_path()
@@ -81,7 +82,7 @@ class ArticleManifest(BaseStore):
             encoding=self.ENCODING,
             codec=self.CODEC,
             indent=2,
-            overwrite=False,
+            overwrite=overwrite,
             publication_root=root,
         )
         if root is not None:

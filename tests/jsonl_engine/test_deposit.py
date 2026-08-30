@@ -483,6 +483,38 @@ class TestDepositCreation(unittest.TestCase):
             with open(fixture.article_path, "rb") as handle:
                 self.assertEqual(handle.read(), article_before)
 
+    def test_overwrite_rebuilds_existing_article_to_include_pdf(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fixture = DepositFixture(tmpdir)
+            first = deposit_article(**fixture.kwargs())
+            self.assertEqual(first.status, "deposited")
+            initialized = first.article["initialized_utc"]
+            self.assertFalse(
+                any(
+                    form["role"] == "pdf-source"
+                    for form in first.article["source_forms"]
+                )
+            )
+
+            fixture.pdf_name = f"{fixture.slug}.pdf"
+            fixture.pdf_path = os.path.join(fixture.document_dir, fixture.pdf_name)
+            with open(fixture.pdf_path, "wb") as handle:
+                handle.write(fixture.pdf_bytes)
+
+            rebuilt = deposit_article(**fixture.kwargs(overwrite=True))
+            self.assertEqual(rebuilt.status, "rebuilt")
+            self.assertFalse(rebuilt.created)
+            self.assertEqual(rebuilt.article["initialized_utc"], initialized)
+            roles = [form["role"] for form in rebuilt.article["source_forms"]]
+            self.assertIn("pdf-source", roles)
+            with open(fixture.article_path, encoding="utf-8") as handle:
+                on_disk = json.load(handle)
+            self.assertEqual(on_disk["initialized_utc"], initialized)
+            self.assertIn(
+                "pdf-source",
+                [form["role"] for form in on_disk["source_forms"]],
+            )
+
     def test_aggregator_metadata_does_not_become_artifact_provenance_or_categories(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             fixture = DepositFixture(tmpdir, slug="doi-example")

@@ -1,8 +1,9 @@
 """Article deposit assembly and immutable publication.
 
 The service fingerprints deposited forms, projects optional metadata, validates the article schema,
-and creates ``article.json``. Compatible existing articles are returned unchanged. The caller owns
-source-tree coordination for the complete call.
+and creates ``article.json``. Compatible existing articles are returned unchanged. ``overwrite=True``
+is an explicit rebuild: it replaces the sentinel from current evidence and preserves
+``initialized_utc``. The caller owns source-tree coordination for the complete call.
 """
 
 from __future__ import annotations
@@ -918,6 +919,7 @@ def _publish_article_transaction(
     pdf: Optional[str],
     pdf_full: Optional[str],
     lock_timeout: float,
+    overwrite: bool = False,
 ) -> DepositResult:
     kind = ArticleManifest(
         target_dir=publication_root.path,
@@ -969,13 +971,20 @@ def _publish_article_transaction(
         tree_root.assert_current()
         created_here = False
         if publication_root.lexists(article_path):
-            article = _existing_article(
-                kind,
-                article_path,
-                candidate,
-                publication_root,
-            )
-            status = "already-deposited"
+            if overwrite:
+                existing, _raw = _read_existing_article(kind, article_path, publication_root)
+                candidate["initialized_utc"] = existing["initialized_utc"]
+                kind.publish(candidate, overwrite=True)
+                article = candidate
+                status = "rebuilt"
+            else:
+                article = _existing_article(
+                    kind,
+                    article_path,
+                    candidate,
+                    publication_root,
+                )
+                status = "already-deposited"
         else:
             try:
                 kind.publish(candidate)
@@ -1043,6 +1052,7 @@ def _deposit_article_pinned(
     metadata_extension: Optional[ArticleMetadataExtension] = None,
     pdf: Optional[str] = None,
     lock_timeout: float = 60.0,
+    overwrite: bool = False,
 ) -> DepositResult:
     """Create or validate one article within an already retained document generation."""
 
@@ -1159,6 +1169,7 @@ def _deposit_article_pinned(
             pdf=pdf,
             pdf_full=pdf_full,
             lock_timeout=lock_timeout,
+            overwrite=overwrite,
         )
 
 
@@ -1183,13 +1194,15 @@ def deposit_article(
     pdf: Optional[str] = None,
     lock_timeout: float = 60.0,
     publication_root: PinnedPublicationRoot | None = None,
+    overwrite: bool = False,
 ) -> DepositResult:
     """Create or validate one source-ready ``article.json`` deposit.
 
     The archive, source tree, evidence inputs, and sentinel are read or published through one
     retained document generation. A caller may supply its active document pin; standalone callers
     receive an operation-scoped pin. The source tree is retained independently through both
-    fingerprint passes and sentinel publication.
+    fingerprint passes and sentinel publication. ``overwrite=True`` rebuilds an existing sentinel
+    from current evidence and preserves ``initialized_utc``.
     """
 
     try:
@@ -1217,6 +1230,7 @@ def deposit_article(
                 metadata_extension=metadata_extension,
                 pdf=pdf,
                 lock_timeout=lock_timeout,
+                overwrite=overwrite,
             )
     except (DepositError, TimeoutError):
         raise
