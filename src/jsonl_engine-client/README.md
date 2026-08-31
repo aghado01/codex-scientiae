@@ -58,7 +58,13 @@ does not disappear from the pipeline. `-AsHashtable` preserves case-distinct JSO
 
 Bounded reads use `-View Complete` by default. `-View Signed` selects the prefix attested by `.sig`,
 and `-View Physical` reads to EOF. `-AtSignature` and `-Unbounded` remain temporary mutually exclusive
-compatibility spellings.
+compatibility spellings. CREATE publishes JSONL by rename; APPEND to an existing store extends it in
+place, so `-View Signed` is the reader while the file may be longer than its `.sig`.
+
+`Get-JsonlPrefix` (`inspect-prefix`) walks records until the first framing or JSON failure and does
+not mutate the store. `New-JsonlSnapshot` copies a complete-record prefix to another path.
+`Repair-JsonlPrefix` (`repair-prefix`) is a dry-run unless `-Apply`; it publishes a kept prefix onto
+the live store.
 
 ## Public commands
 
@@ -110,9 +116,10 @@ or define domain schemas. Calls cross the runtime boundary once per artifact or 
 record in a producer loop. The PowerShell-native logger, the self-contained reader MCP, and tolerant
 human-authored patch reader therefore remain independent.
 
-Whole-artifact mutation verbs are admitted only when the Python CLI exposes the corresponding engine
-transaction. `deposit` is the first such application boundary. It is intentionally available through
-`Invoke-JsonlEngineCommand`, rather than a domain-named cmdlet in this generic client:
+Store mutation verbs are admitted only when the Python CLI exposes the corresponding engine
+transaction. `repair-prefix` truncates a store onto a complete-record prefix (`Repair-JsonlPrefix
+-Apply`). `deposit` remains an application boundary on `Invoke-JsonlEngineCommand`, not a
+domain-named cmdlet in this generic client:
 
 ```text
 python -m jsonl_engine --framed deposit
@@ -146,6 +153,8 @@ facts, and witnesses measured file generations before and after publication. If 
 drift after this transaction created the sentinel, it removes only the exact candidate it published while
 holding the article lease; it refuses rollback if another actor replaced the article. Python also projects
 provider evidence, applies both `article.schema.json` and `ArticleManifest` semantic relations, and publishes
-or idempotently validates the immutable `{document-dir}/article.json` without clobbering an existing file.
+or idempotently validates `{document-dir}/article.json`. This CLI verb does not take `--overwrite`; an
+existing differing sentinel is a conflict. Explicit rebuild is `deposit_article(..., overwrite=True)` or
+MCP `materialize_source_deposit` with `rebuild=true`.
 The verb returns exactly one value frame containing `status`, `created`, `article_path`, `archive_path`,
 `source_path`, and the flat `article` object; a conflict or validation failure returns no value frame.

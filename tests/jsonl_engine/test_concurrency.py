@@ -1,8 +1,9 @@
 """Concurrent writers on one artifact.
 
-The engine publishes by rename, which is atomic on its own. The transaction around it is not: a
-commit publishes the store and then writes two sidecars against the file it just published. Two
-writers interleaving across that sequence leave a store signed by neither.
+CREATE publishes by rename, which is atomic on its own. APPEND extends an existing store in place.
+The sidecar transaction is not atomic with either payload write: commit makes the JSONL durable,
+then writes two sidecars against that file. Two writers interleaving across that sequence leave a
+store signed by neither.
 """
 
 import os

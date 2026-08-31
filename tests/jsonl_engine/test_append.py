@@ -1,4 +1,4 @@
-"""APPEND discipline: adopting a published store into a new transaction.
+"""APPEND discipline: scan-adopting a published store, then extending it in place.
 
 Adoption is the one write path that reads. What it accepts has to match what the reader accepts,
 or the engine produces stores that can be extended but not read.

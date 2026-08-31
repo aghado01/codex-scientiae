@@ -1,8 +1,8 @@
 """The write path: sidecar transaction, and the two ways a kind can produce a store.
 
-commit() publishes before it can build sidecars, because both record the published file's length
-and ticks. These cover what happens in that window, and that the streamed and buffered writers are
-interchangeable.
+CREATE commit() publishes by rename before it can build sidecars. APPEND fsyncs the extended file
+in place, then writes the same sidecars. Both record the durable file's length and ticks. These
+cover what happens in that window, and that the streamed and buffered writers are interchangeable.
 """
 
 import hashlib

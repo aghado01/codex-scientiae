@@ -11,7 +11,7 @@ The slash-command name is `procurement-request`. MCP tools are snake_case (`proc
 3. `catalog` is a configured name (`inventory`) or a workspace-relative folder (`ingestion/<collection>/<topic>`). Missing folders are created. Refuse absolute paths and `..`.
 4. Do not `acquire_artifact` into staging and then copy. Do not rename `arXiv-{slug}.tar.gz` to `{slug}.tar.gz`. The unpacked tree is `{slug}-tex/`.
 
-A lone PDF cannot mint `article.json`. Fresh preprints often have no journal DOI in the arXiv Atom feed; that is not a failure. Do not use metadata `omit` unless asked. Do not rewrite an existing `article.json`.
+A lone PDF cannot mint `article.json`. Fresh preprints often have no journal DOI in the arXiv Atom feed; that is not a failure. Do not use metadata `omit` unless asked. `procure_source` does not rewrite an existing `article.json`. If the sentinel is missing a form the receipt now has, see Inventory view.
 
 ## Bytes only or local files
 
