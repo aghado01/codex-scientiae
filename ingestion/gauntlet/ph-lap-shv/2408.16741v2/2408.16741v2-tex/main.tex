@@ -1,0 +1,3033 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{todonotes}
+\usetikzlibrary{arrows.meta,
+                decorations.markings}
+\usetikzlibrary{topaths,calc}
+\usepackage{pgfplots}
+\usepackage{adjustbox}
+% \usepackage{mathrsfs} % fancy maths latters
+\usepackage{subcaption} %side by side diagrams
+\usepackage{caption} %customises captions
+\usepackage{floatrow}
+\usepackage{nicematrix}
+\usepackage{authblk}
+\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+% \usepackage{algorithm,algpseudocode}
+\usepackage{appendix}
+\usepackage{comment}
+
+\usepackage{bbm}
+\usepackage{bm}
+
+\usepackage[capitalise]{cleveref}
+\usepackage{placeins}
+
+
+\newcommand{\Keywords}[1]{\vspace{3mm}\par\noindent\hspace*{10mm}
+\parbox{140mm}{\small {\textbf {\textit{Key words}}:} \rm #1}\par}
+
+\newcommand{\Classification}[1]{\vspace{3mm}\par\noindent\hspace*{10mm}
+\parbox{140mm}{\small {\textbf {\textit {2020 Mathematics Subject Classification}}:} \rm #1}\vspace{3mm}\par}
+
+\newcommand{\Email}[1]{\ifthenelse{\equal{#1}{}}{}{\par\noindent {\rm E-mail: }{\it  #1} \par}}
+\newcommand{\EmailMarked}[1]{\ifthenelse{\equal{#1}{}}{}{\par\noindent $^*$~{\rm E-mail: }{\it  #1} \par}}
+\newcommand{\URLaddress}[1]{\ifthenelse{\equal{#1}{}}{}{\par\noindent {\rm URL: }{\tt  #1} \par}}
+\newcommand{\URLaddressMarked}[1]{\ifthenelse{\equal{#1}{}}{}{\par\noindent $^*$~{\rm URL: }{\tt  #1} \par}}
+\newcommand{\EmailD}[1]{\ifthenelse{\equal{#1}{}}{}{\par\noindent {$\phantom{^{{\rm a)}}}$~\rm E-mail: }{\it  #1} \par}}
+\newcommand{\EmailDD}[1]{\ifthenelse{\equal{#1}{}}{}{\par\noindent {$\phantom{{}^{\dag^1}}$~\rm E-mail: }{\it  #1} \par}}
+\newcommand{\Address}[1]{\vspace{2mm}\par\noindent {\it #1} \par}
+
+
+
+\newtheorem{resultx}{Result}
+\renewcommand{\theresultx}{\Alph{resultx}}
+
+% Set the desired style for all theorem-like environments
+\theoremstyle{definition}
+
+% 1. Define the "master" environment. 
+% This creates a counter named 'theorem' that resets with each new section.
+\newtheorem{theorem}{Theorem}[section]
+
+% 2. Define all other environments to use the 'theorem' counter.
+% Notice they all have '[theorem]' instead of '[section]'.
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
+
+
+
+\newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
+
+\newcommand{\bigId}{\mbox{\normalfont\Large\bfseries Id}}
+
+\newcommand{\bigT}{\mbox{\normalfont\Large\bfseries T}}
+
+\newcommand{\diag}{\mathrm{diag}}
+
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\im}{\mathrm{im}}
+\newcommand{\Null}{\mathrm{Null}}
+\newcommand{\id}{\mathrm{Id}}
+\newcommand{\epsmach}{\epsilon_{\text{m}}}
+%\usepackage{titling}
+%\predate{}
+%\postdate{}
+\date{} % clear date
+
+\bibliographystyle{alpha}% the mandatory bibstyle
+\pgfplotsset{compat=1.18}
+
+\title{The persistent Laplacian of non-branching complexes}
+% --- Define your title block information ---
+\author[1]{Magnus Bakke Botnan}
+\author[1]{Rui Dong}
+\affil[1]{Department of Mathematics, Vrije Universiteit Amsterdam, The Netherlands}
+% --- End of title block information ---
+
+\begin{document}
+\maketitle
+
+%\Address{Department of Mathematics, Vrije Universiteit Amsterdam, The Netherlands.}
+%\Email{\href{m.b.botnan@vu.nl}{m.b.botnan@vu.nl}, \href{r.dong@vu.nl}{r.dong@vu.nl}}
+
+
+
+
+
+\begin{abstract}
+Non-branching matrices are real matrices with entries in $\{-1,0,1\}$, where each row contains at most two non-zero entries. Such matrices naturally arise in the study of Laplacians of pseudomanifolds and cubical complexes. 
+We show that a basis for the kernel of a non-branching matrix can be computed in near-linear time. 
+Especially,
+the basis has the special property that the supports of all the column vectors in it are disjoint with each other.
+Building on this result, we show that the up persistent Laplacian can be computed in near-linear time for a pair of such spaces and its eigenvalues can be more efficiently computed via computing singular values.
+In addition to that,
+we analyze the arithmetic operations of up persistent Laplacian with respect to a non-branching filtration.
+Furthermore, we show that the up persistent Laplacian of $q$-non-branching simplicial complexes can be represented as the Laplacian of an associated hypergraph, thus providing a higher-dimensional generalization of the Kron reduction,
+as well as a Cheeger-type inequality.
+Finally, we highlight the efficiency of our method on image data.
+\end{abstract}
+
+
+\section{Introduction}
+The eigenvectors and eigenvalues of the Laplacian for graphs carry important structural information about the underlying graph and have found numerous applications throughout the sciences \cite{von2007tutorial,lim2020hodge}. Recently, extending these ideas to (filtrations) of simplicial complexes and hypergraphs have become an active topic of research with significant potential. In this paper, our focus lies with the persistent Laplacian  \cite{MR4164275, pers_lap,gen_pers_lap}, which is a generalization of the classical Laplacian to pairs of spaces. Specifically, for a pair of simplicial, or cubical, complexes $\KK \hookrightarrow \LL$, the $q$-th persistent Laplacian $\triangle_q^{\KK, \LL}$ is defined as the sum of the up persistent Laplacian $\triangle_{q, \mathrm{up}}^{\KK, \LL}$ and the standard down Laplacian $\triangle_{q, \mathrm{down}}^{\KK}$ on $\KK$ . It is worth remarking that this allows for a generalized version of the celebrated Hodge theorem \cite{pers_lap}: the nullity of $\triangle_q^{\KK, \LL}$ is equal to the $q$-th persistent Betti number of the pair $\KK \hookrightarrow \LL$. Additionally, the spectra of $\triangle_q^{\KK, \LL}$ encode finer geometric information of a dataset, which cannot be extracted via standard TDA techniques such as persistent homology \cite{davies23c,wei2023}. 
+
+The bottleneck in computing the persistent Laplacian is the computation of $\triangle_{q, \mathrm{up}}^{\KK, \LL}$, for which two algorithms were recently proposed in \cite{pers_lap}, both with cubic time complexity. Specifically, if the number of $q$-simplices and $(q+1)$-simplices of $\LL$ are denoted by $n_q^\LL$ and $n_{q+1}^\LL$, respectively, the time complexity of computing the up persistent Laplacian $\triangle_{q, \mathrm{up}}^{\KK, \LL}$ is
+\[
+O\left(n_q^\LL (n_{q+1}^\LL)^2 + (n_{q+1}^\LL)^3\right) \qquad \text{or}\qquad 
+O\left( (n_q^\LL)^3 \right),
+\]
+depending on whether Gaussian elimination or the Moore–Penrose pseudoinverse of a matrix is used. For further details, see \cite[Algorithm 3.1, Algorithm 4.1]{pers_lap}, and for a recent survey of persistent Laplacians, we refer to \cite{wei2023}.
+
+\subsection{Overview and contributions}
+The goal of this paper is to study the computational and mathematical properties of the persistent Laplacian of $\KK\hookrightarrow \LL$, where $\LL$ is \emph{$q$-non-branching}. That is, any $q$-simplex ($q$-cube) in $\LL$ is the boundary of at most two different $(q+1)$-simplices (($q+1$)-cubes). Equivalently, each row of the $(q+1)$-boundary matrix contains at most two non-zero entries, which are either $1$ or $-1$. We shall refer to matrices with this pattern as \emph{non-branching matrices}. Examples of such complexes are $(q+1)$-pseudomanifolds, e.g., $(q+1)$-dimensional simplicial complexes in $\mathbb{R}^{q+1}$, and $(q+1)$-dimensional cubical complexes. The latter is particularly relevant for the analysis of image data; see \cref{subsec:cubical}. 
+
+%derive an efficient algorithm for computing the persistent Laplacian of $\KK\hookrightarrow \LL$, where $\LL$ is \emph{$q$-non-branching}. That is, any $q$-simplex ($q$-cube) in $\LL$ is the boundary of at most two different $(q+1)$-simplices (($q+1$)-cubes). Equivalently, each row of the $(q+1)$-boundary matrix contains at most two non-zero entries, which are either $1$ or $-1$. We shall refer to matrices with this pattern as \emph{non-branching matrices}. Examples of such complexes are $(q+1)$-pseudomanifolds, e.g., $(q+1)$-dimensional simplicial complexes in $\mathbb{R}^{q+1}$, and $(q+1)$-dimensional cubical complexes. The latter is particularly relevant for the analysis of image data; see \cref{subsec:cubical}. 
+
+In \cref{sec:non_brch_mtx}, we prove the following result:
+
+\begin{resultx}[\cref{thm:weakfactor} and \cref{prop:alg_weak_red}]
+    Let $D$ be a non-branching matrix without zero columns. Then, there exist matrices $R \in M_{k \times l}(\mathbb{R})$ and $V \in M_{l \times l}(\mathbb{R})$ computable in $O(k\times\alpha(l)+l)$ arithmetic operations such that $R = DV$, where $\alpha(\cdot)$ is the inverse Ackermann function,
+    and $V$ is upper-triangular with entries in $\{-1, 0, 1\}$, the non-zero columns of $R$ are linearly independent,
+    {and the supports of the columns in $V$ which have more than one non-zero entries are disjoint to each other.}
+    %and the columns of $V$ with more than one non-zero entry are orthogonal to each other. 
+    Moreover, these columns correspond precisely to the zero columns of $R$.
+\end{resultx}
+
+The key observation is that $D^T$ can be interpreted as the incidence matrix of a graph with loops. 
+%Constructing this hypergraph requires $O(k \, l)$ operations and constitutes the primary bottleneck in our computations. 
+If $D$ is provided as a sparse matrix, 
+we can apply the Disjoint-Union (DSU) algorithm to find the connected components in near-linear time. 
+Furthermore, since the rank of $D$ can be immediately derived from $R$, the rank of $D$ is also computable in linear time for sparse inputs. This observation was first made for regular matrices (see Definition~\ref{def:reg_mtrx}) in \cite{twononzero}. While the rank computation in \cite{twononzero} is related to our central strategy, it does not incorporate matrix factorizations as described above. 
+By leveraging the theory of graph with loops, our method extends to a broader class of matrices, which is crucial for the computation of the persistent Laplacian.
+
+
+
+\iffalse
+\begin{remark}
+    As a consequence of \cref{thm:weakfactor}, the persistent homology in degree $q+1$ of a $(q+1)$-dimensional filtered $q$-non-branching complex can be computed in $O(n_{q+1}\times n_q)$ where $n_q$ is the number of $q$-simplices. Furthermore, if the $(q+1)$-st boundary matrix is represented as a sparse matrix, this results in an $O(n_{q+1} + n_q)$ algorithm. 
+\end{remark}
+\fi
+
+
+In \cref{sec:up_pers_lap}, we focus on the efficient computation of the persistent Laplacian and its eigenvalues, 
+we show the following two results, where $n_q^\LL$ denotes the number of $q$-simplices in $\LL$, and similarly for the other cases:
+
+\begin{resultx}[\cref{prop:alg_lap}]\label{result:lap_arithm}
+    Let $\KK \hookrightarrow \LL$ be simplicial complexes, where $\LL$ is $q$-non-branching. Then, the up persistent Laplacian $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ can be computed in 
+    \[
+    O\left((n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL) + n_{q+1}^\LL+(n_q^\KK)^2\right)
+    \]
+    arithmetic operations,
+    {here $\alpha(\cdot)$ is the inverse Ackermann function.}
+\end{resultx}
+\begin{remark}\label{rem:full-laplacian}
+The \emph{$q$-th persistent Laplacian}, $\Delta_q^{\KK, \LL}: C_q^\KK \to C_q^\KK$, is defined as the sum of the up persistent Laplacian $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ and the down Laplacian $\Delta_{q, \mathrm{down}}^{\KK}$ (see \cref{subsec:sp_cmplx}).
+Consequently, the ``persistent" aspect is captured exclusively by $\Delta_{q, \mathrm{up}}^{\KK, \LL}$. This makes the up Laplacian the primary focus from a computational perspective, particularly when analyzing how topological features persist.
+
+The down Laplacian $\Delta_{q, \mathrm{down}}^{\KK}$, which depends solely on $\KK$, can be constructed using the matrix representation of the $q$-th boundary operator ($B_q^\KK$), its transpose, and diagonal matrices containing the weights of $q$-simplices and $(q-1)$-simplices, as detailed in \cref{sec:eigenvalues}. Alternatively, $\Delta_{q, \mathrm{down}}^{\KK}$ can be computed directly in quadratic time (in the number of $q$-simplices) as the difference between a diagonal matrix and a generalized adjacency matrix (see, e.g., \cite[SM1]{pers_lap}). In particular, we see that the computational cost, even in the non-branching setting, is dominated by the up persistent part.
+\end{remark}
+
+Additionally, for simplicial filtrations, we have the following results.
+
+\begin{resultx}[\cref{prop:time_filtration}]\label{result:filt}
+Let $\KK_0\hookrightarrow\KK_1 \hookrightarrow\cdots\hookrightarrow \KK_m\hookrightarrow \LL$ be a simplicial complex filtration where $\LL$ is $q$-non-branching and each $\KK_i$ contains exactly one more $q$-simplex than $\KK_{i-1}$.
+Then the sequence of up persistent Laplacians $\{\Delta_{q, \mathrm{up}}^{\KK_i, \LL}\}_{i=0}^m$ can be computed in 
+\[
+O\left((m+1)\times (n_q^{\KK_m})^2+(m+1)\times n_{q+1}^\LL+(n_q^\LL-n_q^{\KK_m}+m)\times \alpha(n_{q+1}^\LL)\right)
+\]
+arithmetic operations.
+%\todo{Shouldn't this be the same as the result above when $m=0$?}
+\end{resultx}
+
+The proof of \cref{result:filt} has the following corollary which is important when considering eigenvalues in \cref{sec:eigenvalues}.
+\begin{resultx}[\cref{cor:filt}]
+    The sequences of matrix pairings $\left\{\big(B_{q+1}^{\LL, \KK_i}, W_{q+1}^{\LL, \KK_i}\big)\right\}_{i=0}^m$ and the matrix products 
+$\left\{(W_q^{\KK_i})^{-1/2}B_{q+1}^{\LL, \KK_i} (W_{q+1}^{\LL, \KK_i})^{1/2}\right\}_{i=0}^m$ can be computed in 
+\[
+O\left((n_q^\LL-n_q^{\KK_m}+m)\times \alpha(n_{q+1}^\LL) + (m+1)\times (n_{q+1}^\LL + n_q^{\KK_m})\right)
+\]
+arithmetic operations.
+\end{resultx}
+
+\setcounter{theorem}{0}
+
+In \cref{subsec:kron_red}, we study the theoretical properties of the up persistent Laplacian for non-branching complexes. It was shown in \cite[Section 4.3]{pers_lap} that when $\KK \hookrightarrow \LL$ are graphs (1-dimensional simplicial complexes), the up persistent Laplacian $\Delta_{0, \mathrm{up}}^{\KK, \LL}$ can be identified as the Laplacian of a weighted graph $\widetilde{\KK}$. This is referred to as the \emph{Kron reduction} \cite{MR3017573}. While this is not generally true for simplicial complexes \cite[Remark 4.12]{pers_lap}, we show in \cref{subsec:kron_red} that $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ coincides with the Laplacian of a weighted oriented hypergraph, provided $\LL$ is $q$-non-branching. We also prove a Cheeger-type inequality for the up persistent Laplacian in \cref{prop:realcheeger}. Intuitively speaking, a pair of non-branching simplicial complexes forms a collection of polyhedra, and the minimal non-zero eigenvalue of $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ is related to the ratio of the area to the volume of each polyhedron.
+
+In \cref{sec:eigenvalues} we discuss our efficient approach to tackling the high computational cost of determining eigenvalues for persistent Laplacians. We detail how leveraging the singular values of related sparse matrices allows for the rapid computation of the top $k$ eigenvalues for both up and down Laplacians.
+
+In \cref{subsec:cubical}, we highlight the efficiency of our algorithm on image data.
+
+The paper concludes with a discussion in \cref{sec:discussion}.
+
+
+
+
+\begin{comment}
+    
+
+\iffalse
+One main advantage of TDA is that it can extract topological features of a dataset, 
+e.g., 
+connected components, 
+loops, 
+voids,
+which are difficult to be captured by traditional statistical methods.
+A typical approach of TDA is to construct a multiscale family of simplicial complexes (collection of vertices, edges, triangles, etc.) from a dataset,
+and then detect the behavior the persistent homology groups over scales.
+There are more than one way to represent the persistent homology,
+some common methods contain persistence barcodes \cite{barcodes}, 
+persistence diagrams \cite{MR2572029},
+persistence landscapes \cite{MR3317230}.
+An applicable representation of persistent homology should be stable,
+in the sense that a slight perturbation of original dataset should result in only a slight modification in the representation.
+For instance,
+the persistence diagrams are stable with respect to the bottleneck distance \cite{MR2279866, MR2572029}. % cite{}
+
+Although persistent homology has been applied in a lot of different disciplines, 
+it has its own limitations.
+The drawback of persistent homology is that it characterizes only topological features of a dataset,
+and it is difficult to extract more tiny geometrical information of a dataset via persistent homology.
+Compared with that,
+persistent Laplacians can capture not only the topological information of persistent homology via the kernel space but also geometrical information via the spectra.
+
+The algebraic stability property of persistent Laplacian is also investigated recently in \cite{liu2023}.
+\fi 
+
+\paragraph{Contributions}
+The incidence matrix is a commonly used representation in algebraic graph theory to analyze the structure of a graph. More precisely, the incidence matrix $B$ of a directed graph $G$ is a $\{0, 1, -1\}$-matrix, where the rows correspond to the vertices and the columns correspond to the edges of $G$. Notably, in each column of the incidence matrix $B$, there are exactly two non-zero entries: one $1$ and one $-1$. This pattern of matrices has been studied in \cite{twononzero}.
+
+
+%the computation of the $q$-th up persistent Laplacian $\Delta_{q, \mathrm{up}}^{K, L}$ relies on the incidence matrix $B^L_{q+1}$ associated with the boundary matrix $\partial_{q+1}^L: C_{q+1}^L\to C_{q}^L$.
+In this paper,
+we thoroughly analysis the structure of a non-branching matrix and give an algorithm of computing its column reduction with quadratic time complexity in Section \ref{sec:non_brch_mtx}.
+As an application,
+we present another algorithm of computing up persistent Laplacians with respect with quadratic time complexity in the case of non-branching simplicial complexes in Section \ref{sec:up_pers_lap}.
+% It is not only faster than that algorithms given by Memoli et al. in \cite{pers_lap}.
+Moreover,
+we show that the the up persistent Laplacian over a pair of non-branching simplicial complex is equivalent to the Laplacian over a hypergraph, 
+which can be regarded as a generalization of Kron reduction.
+ We list an overview of our results as follows:
+ 
+ \begin{enumerate}
+ \item In Section \ref{sec:non_brch_mtx} we first give the formal definition of a non-branching matrix over $\mathbb{R}$ in Section \ref{subsec:non_branching_def}.
+ %a general ring $R$ where $1\neq -1$ and $2$ is not a zero divisor,
+ we then discuss about the weak column reduction of regular matrices, irregular matrices, and row-singular matrices in Section \ref{subsec:reg_mtx}, Section \ref{subsec:irreg_mtx}, and Section \ref{subsec:singular_mtx} respectively.
+ Finally in Section \ref{subsec:non_branching_mtx} we submit the main result of computing column reduction of a general non-branching matrix in Theorem \ref{thm:main_thm}.
+ We also show that the column reduction of a non-branching matrix can be done in quadratic arithmetic operations (or linear if a non-branching matrix is stored as a sparse matrix),
+ which is faster than computing Gaussian elimination.
+ 
+% and then regard it as an incidence matrix with respect to a directed graph or an oriented hypergraph
+% so that to give an algorithm to compute its column reduction.
+ 
+ \item In Section \ref{sec:up_pers_lap} we present an application to compute the up persistent Laplacian with respect to a non-branching simplicial complexes.
+ We present the main result of this section in Theorem \ref{prop:pers_lap} in Section \ref{subsec:regular_form},
+ which shows that the computation of up persistent Laplacian takes quadratic arithmetic operations.
+ In Section \ref{subsec:kron_red} we exhibit a Cheeger-type inequality with respect to an up persistent Laplacian in Proposition \ref{prop:cheeger},
+intuitively speaking,
+a pair of non-branching simplicial complexes forms a collection of polyhedra, 
+and the $\lambda_{\min}$ is less than the ratio between the area and volume of each polyhedron.
+%In Section \ref{subsec:simp_filt} we discuss the up persistent Laplacian of a special case of non-branching simplicial complex filtration.
+In Section \ref{subsec:cubical} we apply our algorithm to compute the up persistent Laplacians in cubical complexes,
+and we show that our algorithm is faster than the algorithm given in \cite{gen_pers_lap}.
+
+  \end{enumerate}
+\end{comment}
+
+
+
+% we show that if all the $q$-simplices in $\LL$ are non-branching and all the $(q+1)$-simplices in $\LL$ are {\color{red}orientation-compatible},
+% it is not necessary to compute (pseudo)inverse,
+%and the computation of $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ can have quadratic time complexity.
+%The other contribution of this paper is that we show $\Delta_{q,\mathrm{up}}^{\KK, \LL}$ is equivalent to the Laplacian of a weighted hypergraph,
+%which can be regarded as a higher dimensional generalization of the Kron reduction.
+
+\section{Column reduction of non-branching matrices}\label{sec:non_brch_mtx} % with at most two $\pm 1$ per row
+In this section, we prove the following central theorem for \emph{non-branching matrices}, i.e., real matrices with elements in $\{-1,0,1\}$ and for which every row contains at most two non-zero entries.
+For a vector $v$,
+we refer to the non-zero values as  \emph{support values} of $v$,
+and the corresponding indices as \emph{support indices} of $v$. 
+
+\begin{theorem}
+\label{thm:weakfactor}
+    Let $D$ be a non-branching matrix without zero columns. 
+    Then, one can find matrices $R\in M_{k\times l}(\mathbb{R})$ and $V\in M_{l\times l}(\mathbb{R})$
+    %in $O(k\, l)$ arithmetic operations 
+    such that $R=DV$, where $V$ is upper-triangular with entries in $\{-1,0,1\}$, the non-zero columns of $R$ are linearly independent, 
+    and the support indices of columns in $V$ are mutually disjoint. Furthermore, the $i$-th column of $V$ has more than one non-zero entry if and only if the $i$-th column of $R$ is zero.
+\end{theorem}
+We refer to such a matrix factorization as a \emph{weak column reduction} of $D$. The matrix $R$ is not \emph{column reduced} in the sense of the ``standard algorithm'' \cite[Ch.~VII.1]{edelsbrunner2010computational} as multiple columns may have their pivots (lowest non-zero entry) at the same row. Note that the columns of $V$ with more than one non-zero entry constitute an orthogonal basis for the kernel of $D$.
+
+%First, we introduce some basic definitions with respect to non-branching matrices over $\mathbb{R}$ in subsection \ref{subsec:non_branching_def},
+%then we present a method to compute the column reduction 
+%when a non-branching matrix $D$ is regular in subsection \ref{subsec:reg_mtx}
+%and irregular or singular in subsection %\ref{subsec:irrg_sing_mtx} 
+%respectively.
+%Finally,
+%we present the method to compute the column reduction of a general non-branching matrix in Theorem \ref{thm:D_gen} of subsection \ref{subsec:non_branching_mtx},
+%and we show that the column reduction of a $k\times l$ non-branching matrix can be done in $O(kl)$ arithmetic operations.
+
+\iffalse
+\begin{remark}
+While the exposition in this section is for matrices over the field $\mathbb{R}$, the algorithm applies verbatim to any unital ring $R$ for which $2$ is not a zero divisor. 
+
+% Check: support of a vector, in a remark 
+
+% assuming constant time of arithmetic operations
+\end{remark}
+\fi
+
+It will be useful to decompose a non-branching matrix $D$ into its \emph{orientable} and \emph{non-orientable} components. The following definition is inspired by the structure of the $k$-th boundary map of an oriented $k$-pseudomanifold. 
+\begin{remark}
+In this section, we focus on matrices with real-valued entries. However, \cref{thm:weakfactor} extends verbatim to arbitrary unital rings that admit constant-time arithmetic operations. In fact, for rings of characteristic~2, the arguments simplify, as every non-branching matrix can be considered oriented.
+\end{remark}
+\subsection{Oriented matrices}\label{subsec:non_branching_def}
+%It will be useful to decompose a non-branching matrix $D$ into its \emph{orientable} and \emph{non-orientable} components. The following definition is inspired by the structure of the $k$-th boundary map of an oriented $k$-pseudomanifold. 
+
+%Throughout this section,
+%we assume $D$ is non-branching.
+
+\begin{definition}\label{def:orit_mtrx}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a non-branching matrix.
+We say $D$ is \emph{oriented} if each row in $D$ contains at most one $1$ and at most one $-1$.
+We say $D$ is \emph{orientable} if it can be made oriented by switching the signs of columns. Otherwise, $D$ is \emph{non-orientable}.
+\end{definition}
+
+\begin{example}
+Consider the following matrices:
+\[
+D_1
+=
+\begin{bmatrix}
+1 & 0  & -1 \\
+1 & -1  & 0 \\
+0 & -1 & 1 \\
+0 & 0 & -1\\
+\end{bmatrix},
+\quad
+D_2
+=
+\begin{bmatrix}
+1 & 0  & 0 \\
+1 & 1  & 0 \\
+0 & -1 & -1 \\
+0 & 0 & 1\\
+\end{bmatrix},
+\quad
+D_3
+=
+\begin{bmatrix}
+1 & 0  & -1 \\
+1 & 1  & 0 \\
+0 & 1 & -1 \\
+0 & 0 & 1\\
+\end{bmatrix}.
+\]
+The matrix $D_1$ is oriented. 
+The matrix $D_2$ is not oriented but is orientable since we can convert $D_2$ to be an oriented matrix by switching the sign of the second column of $D_2$,
+i.e.,
+\[
+D_2
+=
+\begin{bmatrix}
+1 & 0  & 0 \\
+1 & 1  & 0 \\
+0 & -1 & -1 \\
+0 & 0 & 1\\
+\end{bmatrix}
+%\longrightarrow 
+\xlongrightarrow{\text{multiply the $2$nd column by $-1$}}
+\begin{bmatrix}
+1 & 0  & 0 \\
+1 & -1  & 0 \\
+0 & 1 & -1 \\
+0 & 0 & 1\\
+\end{bmatrix}.
+\]
+The matrix $D_3$ is non-orientable.
+\end{example}
+
+\begin{definition}
+\label{def:reg_mtrx}
+We say a non-branching matrix $D\in M_{k\times l}(\mathbb{R})$ is 
+\begin{enumerate}
+    \item \emph{Non-row-singular} if each row in $D$ contains either two or zero non-zero entries,
+and we say $D$ is \emph{row-singular} if there is some row in $D$ with exactly one non-zero entry.
+    \item \emph{Regular} (resp. \emph{regulable}) if it is both non-row-singular and oriented (resp. \emph{orientable}).
+\item \emph{Irregular} if it is both non-row-singular and non-orientable.
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+Consider the matrices $D_4$ and $D_5$ as follows.
+\[
+D_4
+=
+\begin{bmatrix}
+1 & 0  & -1 \\
+1 & 1  & 0 \\
+0 & -1 & -1 \\
+\end{bmatrix},
+\quad
+D_5
+=
+\begin{bmatrix}
+1 & 0  & -1 \\
+1 & 1  & 0 \\
+0 & 1 & -1 \\
+\end{bmatrix}.
+\]
+Both $D_4$ and $D_5$ are non-row-singular,
+since each row in $D_4$ and $D_5$ contains $2$ non-zero entries.
+% Moreover,
+%neither of the two matrices is regular according to Definition \ref{def:reg_mtrx}.
+Furthermore, $D_4$ is regulable since it can be oriented by switching the sign of the second column:
+\[
+D_4
+=
+\begin{bmatrix}
+1 & 0  & -1\\
+1 & 1  & 0 \\
+0 & -1 & -1 \\
+\end{bmatrix}
+%\longrightarrow 
+\xlongrightarrow{\text{multiply the $2nd$ column by $-1$}}
+\begin{bmatrix}
+1 & 0  & -1 \\
+1 & -1  & 0 \\
+0 & 1 & -1 \\
+\end{bmatrix}.
+\]
+On the other hand, $D_5$ is irregular.
+\end{example}
+
+%\input{alg_reort_file}
+
+\subsection{Regular matrices}\label{subsec:reg_mtx}
+In this subsection,  $D$ is assumed to be a regular matrix (\cref{def:reg_mtrx}). Without loss of generality, we shall assume that $D$ has a non-zero entry in every column and every row. In particular, since every column contains precisely two non-zero entries with opposite signs, its transpose $D^T$ is the incidence matrix of a directed graph $G$. The following fundamental result from algebraic graph theory will be important; see e.g. \cite[Theorem 8.3.1]{MR1829620} for a proof.
+
+\begin{lemma}\label{lemma:grph_cmpnt}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a regular matrix (without zero columns or zero rows). The transpose matrix $D^T$ can be regarded as an incidence matrix of a directed graph $G$,
+which has $(l-\mathrm{rank}(D))$ weakly connected components\footnote{ A weakly connected component in a directed graph is a connected component in the underlying undirected graph.}.
+\end{lemma}
+
+\begin{remark}
+    One can also consider $D^T$ as the $1$-st boundary operator in simplicial homology with real coefficient, in which case it follows that $\beta_0(G) = l - \mathrm{rank}(D^T)$, and $\beta_0$ measures precisely the number of weakly connected components. 
+\end{remark}
+
+Let us introduce the following notation. We use the symbol $[k]$ to denote the index set $\{1, 2, \cdots ,k\}$.
+%Let $D\in M_{k\times l}(R)$ be a $k\times l$ matrix in $R$.
+For $\emptyset\neq I\subset [k]$ and $\emptyset \neq J \subset [l]$,
+we let $D(I, J)$ denote the submatrix of $D$ consisting of the rows and columns indexed by $I$ and $J$, respectively. 
+We use $D(:, J)$ and $D(I, :)$ to denote $D([k], J)$ and $D(I, [l])$, respectively, 
+and $m$:$n$ denotes the indices $\{m, m+1,\cdots, n\}$ when $m<n$. 
+We also use $D(:, -1)$ and $D(-1, :)$ to denote the last column and last row of $D$ respectively.
+Let $G$ denote the graph associated to $D^T$, and denote its weakly connected components $G_i$ for $1\leq i\leq r$. For a connected component $G_i$, let $C_i$ denote the column indices in $D$ corresponding to the vertices in $G_i$. That is, $(D(:, C_i))^T$ is the incidence matrix associated with $G_i$ for each $1\leq i\leq r$. Furthermore, for two sets of column indices $C_i$, $C_j$,
+we denote by $C_i\#C_j$ the concatenation of $C_i$ and $C_j$,
+i.e.,
+$C_i\#C_j:=(c_i^{1}, \cdots, c_i^{l_i}, c_j^1, \cdots, c_{j}^{l_j})$,
+here $C_i=(c_i^1,\cdots, c_i^{l_i})$, 
+% (resp. $C_j=(c_j^1,\cdots, c_j^{l_j})$),
+% $l_i$ is the cardinality of $C_i$,
+and similarly for $C_j$.
+
+\begin{lemma}\label{lem:simpleprod}
+    The sum of column vectors $\sum_{j\in C_i} D(:,j)=0$ 
+    for each $C_i$ with $1\leq i\leq r$.
+    
+    \begin{comment}
+        
+    That is, 
+    \[D(:,C_i) \cdot 
+\begin{bmatrix}
+1 & 0 & \cdots & 1\\
+0 & \ddots & \cdots & 1\\
+0 & 0 & \ddots & \vdots\\
+0 & 0 & \cdots & 1
+\end{bmatrix} = 0.\]
+\end{comment}
+\end{lemma}
+
+\begin{proof}
+    Since every row contains precisely one +1 and one -1, the result is immediate.
+\end{proof}
+
+%We denote by $\widehat{D}\coloneqq D(:, C_1\#\cdots\#C_r)$,
+%which is a column rearrangement of $D$.
+
+%The action of rearranging the  matrix $D$ is equivalent to finding connected components of a directed graph $G$.
+%There are several algorithms that can be applied, %to find connected components in a directed graph $G$,
+%two common used ones are the Depth-First Search algorithm (DFS) and the Breadth-First Search algorithm (BFS),
+%we refer to \cite{cormen2022introduction, MR3890038} for more %details about algorithms to find connected components.
+%In this paper,
+%we first construct the adjacency list from the incidence matrix $D^T$,
+%the time complexity is $O(kl)$ since we need to scan over all %vertices and all edges.
+%We then apply the DFS to rearrange columns of $D$,
+%the time complexity of DFS is $O(k+l)$.
+%Hence the time complexity of rearranging columns of $D$ is $O(kl)$.
+%We exhibit the ColumnRearrange\_Regular in Algorithm \ref{alg:col_ra_reg},
+%which is modified from \cite[\textrm{Algorithm 8.1}]{MR3890038}.
+
+
+
+% \input{alg_col_ra_regular_file.tex}
+
+\begin{lemma}\label{lem:Ul}
+%Let $D$ be a $k\times l$ regular matrix without zero columns. 
+Let $U_l$ be the $l\times l$ upper-triangular matrix with $1$'s on the diagonal, and with $U_l(j, c_i^{l_i}) =1$ for all $j\in C_i$. 
+    Then, the zero columns of $DU_l$ are given by the following column indices $I = \{c_1^{l_1}, \ldots, c_r^{l_r}\}$. Furthermore, the non-zero columns of $DU_l$ are linearly independent. 
+\end{lemma}
+\begin{proof}
+That $(DU_l)(:,I)$ is the zero matrix, is immediate from \cref{lem:simpleprod}. Furthermore, note that $(DU_l)(:,[l]\setminus I) = D(:, [k]\setminus I)$. Hence, the columns in $I$ are precisely the zero columns. According to \cref{lemma:grph_cmpnt},
+the rank of $D$ is equal to $(l-r)$. 
+We conclude that
+all the non-zero columns of $DU_l$ are linearly independent.
+\end{proof}
+\begin{example}
+\label{ex:LemmaU}
+Consider the following regular matrix $D$:
+\[D
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [1] & [2] & [3] & [4] & [5] & [6] & [7]\\
+[13] & 1 & 0 & -1 & 0 & 0 & 0 & 0\\
+[35] & 0 & 0 & 1 & 0 & -1 & 0 & 0\\
+[42] & 0 & -1 & 0 & 1 & 0 & 0 & 0\\
+[51] & -1 & 0 & 0 & 0 & 1 & 0 & 0\\
+[46] & 0 & 0 & 0 & 1 & 0 & -1 & 0\\
+[47] & 0 & 0 & 0 & 1 & 0 & 0 & -1\\
+\end{bNiceMatrix}.\] 
+We observe that the associated directed graph $G$ has two connected components, and the corresponding sets of vertices are $C_1=\{1, 3, 5\}$ and $C_2=\{2, 4, 6, 7\}$; see \cref{fig_example}. From \cref{lem:Ul}, we obtain 
+\[
+U_7
+=
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & 0 & 1\\
+0 & 0 & 1 & 0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1 & 0 & 0 & 1\\
+0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 1 & 1\\
+0 & 0 & 0 & 0 & 0 & 0 & 1\\
+\end{bmatrix},\qquad\qquad
+R=DU_7=
+\begin{bmatrix}
+1 & 0 & -1 & 0 & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & -1 & 0 & 1 & 0 & 0 & 0\\
+-1 & 0 & 0 & 0 & 0 & 0 & 0\\
+  0 & 0 & 0 & 1 & 0 & -1 & 0\\
+ 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+\end{bmatrix}.\] 
+\end{example}
+\input{fig_exmple}
+
+\begin{comment}
+    
+\begin{lemma}\label{lemma:regular_form}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a regular matrix.
+and $\widehat{D}=D(:, C_1\#\cdots \#C_r)$ be the column rearrangement of $D$.
+%obtained by the algorithm ColumnRearrange\_Regular.
+We denote by $T_{l}$ an $l \times l$ upper triangular matrix with all entries above diagonal equal to $1$,
+that is,
+$$
+T_l
+=
+\begin{bmatrix}
+1 & 1 & \cdots & 1\\
+0 & \ddots & \cdots & 1\\
+0 & 0 & \ddots & \vdots\\
+0 & 0 & \cdots & 1
+\end{bmatrix}.
+$$
+Then the product $\widehat{D}T_l$ contains $r$ zero columns.
+Moreover,
+if we let $l_j$ be the cardinality of the column-index set $C_j$ with $1\leq j\leq r$,
+the indices of zero columns in $\widehat{D}T_l$ can be expressed as $\{l_1, l_1+l_2, \cdots, \sum_{j\leq r}l_j=l\}$,
+% $\dim(\Null(D))=r$,
+and all the non-zero columns of $\widehat{D}T_{l}$ are linearly independent.
+\end{lemma}
+
+\begin{proof}
+We denote by $G$ the directed graph whose incidence matrix is equal to $D^T$,
+and $G_1,\cdots, G_r$ the weakly connected components of $G$.
+%Let $l_j$ be the cardinality of the column-index set $C_j$ with $1\leq j\leq r$.
+Consider the submatrix $D(:, C_j)$.
+Since each row contains exact one $1$ and one $-1$,
+the sum of each row is equal to $0$,
+that is,
+the last column of the product $D(:, C_j)\,T_{l_j}$ is a zero column.
+Therefore,
+the product $D(:, C_1\#C_2\#\cdots\#C_r)\,T_{l}$ contains $r$ zero columns.
+According to Lemma \ref{lemma:grph_cmpnt},
+the rank of $D$ is equal to $(l-r)$,
+hence,
+all the non-zero columns of $\widehat{D}T_{l}$ are linearly independent.
+\end{proof}
+
+
+From the proof of Lemma \ref{lemma:regular_form},
+we observe that 
+%when $D$ is a matrix over $\mathbb{R}$ 
+computing the column reduction of a regular matrix $D$ is equivalent to finding connected components of the directed graph $G$ with incidence matrix $D^T$,
+hence the time complexity is $O(kl)$.
+\end{comment}
+
+We say that a square matrix $E$ is a \emph{flag matrix} if $E$ is a diagonal matrix with diagonal entries in $\{-1,1\}$. Summarized, we have the following proposition.
+
+\begin{proposition}
+\label{prop:regular}
+    Let $D$ be a $k\times l$ regulable matrix. Then, $R=DV$ is a weak column reduction, where $V = EU_l$ for $E$ a flag matrix such that $DE$ is oriented. 
+  %Furthermore, the matrices $R$, $U_l$, and $E$ can be computed in $O(k\,l)$ arithmetic operations.
+\end{proposition}
+\begin{comment}
+\begin{remark}\label{rmk:regulable}
+When the matrix $D$ is regulable while not regular,
+there exists a diagonal matrix $E$ with diagonal entries being $\pm 1$ such that $DE$ is regular,
+%we refer to the matrix $E$ as \emph{reorientation}.
+The column reduction of $D$ can be then derived from $DE\,T_{l}$.
+We refer to the matrix $E$ as a \emph{flag matrix}.
+\end{remark}
+\end{comment}
+
+\subsection{Irregular matrices}\label{subsec:irreg_mtx}
+
+In the case that $D\in M_{k\times l}(\mathbb{R})$ is irregular as defined in \cref{def:reg_mtrx},
+the matrix $D^T$ can no longer be regarded as the incidence matrix of any directed graph. However, 
+if we take the absolute value of all entries in $D$, denoting the resulting matrix by $|D|$,
+then $\left(|D|\right)^T$ is the incidence matrix of an \emph{undirected} graph $G$ with vertices given by the columns of $D$ as in the previous section. The incidence matrix for a graph with loops is given in \cref{def:incd_mtx_undir}.
+
+\begin{lemma}\label{lemma:no_ort_cmpt}
+Let $D\in M_{k\times l}(\mathbb{R})$ be an irregular matrix.
+Suppose the matrix $D$ has no zero-columns and zero-rows.
+Then, the matrix $D$ has full column rank if the undirected graph $G$ associated with $\left(|D|\right)^T$ has only one connected component.
+\end{lemma}
+
+\begin{proof}
+Suppose $D$ does not have full column rank. Then,
+there is a non-zero vector $v=(v_1,\cdots, v_l)^T\in \mathbb{R}^l$ such that $Dv=0$. 
+%Without loss of generality,
+Notice that the vertices corresponding to columns  $j_1$ and $j_2$ are connected in $G$ if and only if there exists some $i$ such that $D(i,j_1)D(i,j_2) \neq 0$. 
+Assume that $v_1=a$. This forces that $v_j$ is either $a$ or $-a$, where $j$ is any vertex connected to vertex $v_1$ in $G$. Since $G$ is connected, we must have that $v\in \{\pm a\}^l$. We may assume that $a=1$. 
+Thus there exists a diagonal matrix $E$ with diagonal entries being either $1$ or $-1$ such that the product $Ev=\boldsymbol{1}_l$,
+and therefore $Dv=DE^{-1}\boldsymbol{1}_l=0$.
+However, this contradicts that $D$ is irregular and therefore non-orientable. 
+\end{proof}
+
+\begin{remark}
+    The $q$-th boundary matrix of a connected non-orientable $q$-dimensional pseudomanifold $M$ is irregular. We recover the well-known identity $H_q(M; \mathbb{R}) = 0$. So for instance, $H_2(\mathbb{RP}^2;\mathbb{R}) = 0.$
+\end{remark}
+
+% \subsection{Column reduction of singular matrices}
+\subsection{Row-singular matrices}\label{subsec:singular_mtx}
+If $D \in M_{k \times l}(\mathbb{R})$ is row-singular, 
+we can interpret $(|D|)^T$ as the incidence matrix of an undirected graph with loops,
+recall that $|D|=(|d_{ij}|)$ for $D=(d_{ij})$.
+
+
+%an oriented \emph{hypergraph} $H$.
+
+
+
+
+
+
+%It is well-known that an unoriented hypergraph can be represented as a bipartite graph $T$, where one partition consists of vertices corresponding to hyperedges and the other to the vertices of the hypergraph. Edges in $T$ connect a hyperedge to the vertices it contains. In $H$, two vertices are said to be connected if they belong to the same connected component of $T$. The vertices of $T$ can thus be grouped into connected components. For further details on oriented hypergraphs, see Appendix~\ref{appdx_hg} and references~\cite{MR4433789, MR4236395, MR2954488}.
+
+
+\begin{lemma}\label{lemma:sig_cmpt}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a row-singular matrix without zero-columns and zero-rows.
+Let $G$ be the undirected graph with loops whose incidence matrix is equal to $|D|^T$.
+%We can regard $D^T$ as an incidence matrix with respect to a hypergraph $H$.
+The matrix $D$ has full column rank if the associated graph $G$ has only one connected component.
+\end{lemma}
+
+\begin{proof}
+%Suppose the oriented hypergraph $H$ is connected,
+To prove that $D$ has full column rank,
+it is enough to prove that $Dv=0$ if and only if $v=(v_1,\cdots, v_l)\in R^l$ is the zero vector.
+Since the undirected graph $G$ is connected by assumption,
+we obtain that 
+ $|v_1|=\cdots=|v_l|$ as in the proof of \cref{lemma:no_ort_cmpt}.
+%for any two components $v_i, v_j$ of the vector $v$ either $v_i=v_j$ or $v_i=-v_j$.
+However,
+since $D$ is row-singular,
+there must be some row containing only one non-zero entry, and thus $v_j=0$ for some $j$. It follows that $v=(v_1,\cdots, v_l)=0$.
+\end{proof}
+
+\begin{remark}
+    When $D$ is row-singular, each edge in $G$ contains either one or two vertices. 
+    %Considering our construction of the bipartite graph $T$ above, 
+    we see that the loops in $G$ will not be relevant in the computation of connected components. Therefore, we can ignore the loops, and find the connected components of $G$ by running any algorithm for computing connected components in graphs.
+    % This shows that the connected components of $G$ can be found in $O(k+l)$ arithmetic operations as well. 
+\end{remark}
+
+\subsection{Wrapping up the proof of  \cref{thm:weakfactor}}\label{subsec:non_branching_mtx}
+To prove \cref{thm:weakfactor}, we first regard $|D|^T$ as the incidence matrix of an undirected graph $G$ (with loops).
+Decomposing $G$ into its connected components, we write 
+\[
+G = \left(\bigcup_{i=1}^r G_i\right) \bigcup \left(\bigcup_{i=1}^q \bar{G}_i\right)\bigcup \left(\bigcup_{i=1}^s \widetilde{G}_i\right),
+\]
+and correspondingly for the column indices
+\[
+C = \left(\bigcup_{i=1}^r C_i\right) \bigcup \left(\bigcup_{i=1}^q \bar{C}_i\right)\bigcup \left(\bigcup_{i=1}^s \widetilde{C}_i\right).\]
+That is, $D(:,C_i)$ is the incidence matrix for $G_i$, and likewise for the other components. The notation is chosen such that $D(:, C_i)$ is a regulable matrix, $D(:, \bar{C}_i)$ is irregular, and $D(:, \widetilde{C}_i)$ is row-singular. As above, we let $(c_i^{1}, \ldots, c_i^{l_i})$ denote the ordered list of column indices in $C_i$. 
+Collecting all our results, we now prove the following theorem, from which \cref{thm:weakfactor} is an immediate corollary. 
+\begin{theorem}\label{thm:main_thm}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a non-branching matrix without zero columns. Then,
+$R = D(EU)$
+is a weak column reduction of $D$, where $E$ is a flag matrix such that $(DE)(:,C_i)$ is oriented (and thus regular) for each regulable component $C_i$, and $U$ is the upper-triangular matrix with $1$'s on the diagonal and $U(c_i^{j}, c_i^{1}) = 1$ for all $1\leq i \leq r$.
+%Moreover, $E$, $U$ and $R$ can be computed in $O(k\, l)$ arithmetic operations.
+\end{theorem}
+\begin{proof}
+Observe that if $\widehat{G}_i$ and $\widehat{G}_j$ are any two components of $G$, then there is no row $k$ such that $D(k, \widehat{C}_i) \neq 0$ and $D(k, \widehat{C}_j) \neq 0$. Hence, columns coming from different components of $G$ are automatically linearly independent. By \cref{lemma:no_ort_cmpt} and \cref{lemma:sig_cmpt}, the restriction of $D$ to the irregular and row-singular components is of maximal column rank, and therefore need no further reduction. It now follows from \cref{lemma:sig_cmpt}, that the stated decomposition is a weak column reduction.
+
+%Constructing $G$ takes $O(k\, l)$ and finding the decomposition of $G$ into its components can be done in $O(k+l)$ time and space using any standard algorithm for finding connected components. Once this is done, we can iterate over the components to determine which ones are row-singular. For each non-row-singular component $C$, we can then determine $D(:,C)$ is orientable (and orient it) in $O(k\, |C_i|)$; see \cref{prop:orient}. In conclusion, the regular columns and $E$ can be extracted in $O(k\,l)$. The matrix $U$ is now straightforward to construct from the regular column indices. 
+\end{proof}
+
+\begin{comment}
+
+We regard $D^T$ as an incidence matrix with respect to an oriented hypergraph $H$,
+% Consider all the components of $H$,
+and rearrange columns of the matrix $D$ according to the components in $H$ as
+\begin{equation}\label{eq:rearrange_D}
+D
+\to
+D(:, 
+\underbrace{C_1\#\cdots \#C_r}_{\textrm{regulable}}
+\# 
+\underbrace{\overline{C}_1\# \cdots\overline{C}_q}_{\mathrm{irregular}}
+\#
+\underbrace{\widetilde{C}_1\# \cdots\#\widetilde{C}_s}_{\mathrm{singular}}
+),
+\end{equation}
+such that each submatrix $D\left(:, C_i\right)$ (resp. $D\left(:, \overline{C}_j\right)$ or $D(:, \widetilde{D}_k)$) is regulable (resp. irregular or singular ).
+According to Lemma \ref{lemma:regular_form}, Lemma \ref{lemma:no_ort_cmpt} and Lemma \ref{lemma:sig_cmpt},
+only $D(:, C_1\#\cdots \# C_r)$ contributes to zero columns in the column reduction of $D$.
+
+
+
+%We denote by $H_i$ a component of $H$ and $\left(D(:, C_i)\right)^T$ the associated incidence matrix.
+%If $D(:, C_i)$ is non-singular and orientable,
+%we can always change $D(:, C_i)$ into a regular matrix by changing the signs of columns in $D(:, C_i)$.
+%We first orient all such non-singular orientable sub-matrices,
+%for the simplicity of notation,
+%we still denote all such oriented components as $H_i$ and the associated incidence matrices as $D(:, C_i)$ for $i\leq r$,
+%and we denote the remaining components as $\widetilde{H}_j$ with their associated incidence matrices as $D(:, \widetilde{C}_j)$ for $j\leq s$,
+%i.e.,
+%$D(:, \widetilde{C}_j)$ is either singular or irregular.
+
+
+%and we denote by $\widehat{D}$ the column rearrangement
+
+%the associated incidence matrix $D(:, C_i)$
+
+%We denote by $H_1,\cdots,  H_r$ the components that are directed graphs,
+
+
+
+\begin{lemma}\label{lemma:D}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a non-branching matrix.
+Suppose $D$ has no zero-columns or zero-rows.
+Rearrange columns in $D$ as in \eqref{eq:rearrange_D},
+then the column rank of $D$ is equal to $l-r$.
+\end{lemma}
+
+\begin{proof}
+We observe that according to Lemma \ref{lemma:no_ort_cmpt} and Lemma \ref{lemma:sig_cmpt} each submatrix $D(:, \overline{C}_j)$ and $D(:, \widetilde{C}_k)$ in \eqref{eq:rearrange_D} has full column rank,
+and according to Lemma \ref{lemma:regular_form} each submatrix $D(:, C_i)$ contributes to a zero column in $D$.
+Moreover,
+since all the column index set 
+$C_1,\cdots, C_r$, 
+$\overline{C}_1\# \cdots\overline{C}_q$ and
+$
+\widetilde{C}_1\# \cdots\#\widetilde{C}_s$ correspond to the vertices of different components in the oriented hypergraph,
+thus the column rank of $D$ is equal to $l-r$.
+\end{proof}
+
+Recall from Remark \ref{rmk:regulable} at the end of subsection \ref{subsec:non_branching_mtx} that there is a flag matrix $E$ such that $D(:, C_1\#\cdots \#C_r)E$ is regular.
+Lemma \ref{lemma:D} implies that the column reduction of $D$ only relies on the submatrix $D(:, C_1\#\cdots \#C_r)$.
+We submit the column reduction of $D$ in the following theorem:
+ 
+\begin{theorem}\label{thm:D_gen}
+Let $D\in M_{k\times l}(\mathbb{R})$ be a non-branching matrix without zero-columns and zero-rows.
+Let $\Omega$ be a column rearrangement action matrix such that
+$$
+D\Omega
+=
+D(:, 
+\underbrace{C_1\#\cdots \#C_r}_{\textrm{regulable}}
+\# 
+\underbrace{\overline{C}_1\# \cdots\overline{C}_q}_{\mathrm{irregular}}
+\#
+\underbrace{\widetilde{C}_1\# \cdots\#\widetilde{C}_s}_{\mathrm{singular}}
+).
+$$
+Denote by $l_i$ the cardinality of index set $C_i$ for each $1\leq i\leq r$,
+and $\widehat{l}:=\sum_{i\leq r} l_i$. 
+Let $E$ be an $\widehat{l} \times \widehat{l}$ flag matrix such that 
+$
+D(:, C_1\#\cdots \#C_r)E
+$ 
+is regular,
+and let 
+$$
+T_{\widehat{l}}
+=
+\begin{bmatrix}
+1 & 1 & \cdots & 1\\
+0 & \ddots & \cdots & 1\\
+0 & 0 & \ddots & \vdots\\
+0 & 0 & \cdots & 1
+\end{bmatrix}_{\widehat{l}\times \widehat{l}}
+$$
+be an $\widehat{l} \times \widehat{l}$ upper triangular matrix with all entries above diagonal equal to $1$.
+Then the column reduction of $D$ can be written in the form as
+$$
+R=D\Omega \left((E\, T_{\widehat{l}})\oplus \id_{l-\widehat{l}}\right),
+$$
+here $R$ contains $r$ zero columns,
+whose column indices are 
+$\left\{l_1, l_1+l_2, \cdots, \sum_{i\leq r} l_i \right\}$,
+and moreover,
+all the non-zero columns in $R$ are linearly independent.
+\end{theorem}
+
+\begin{proof}
+Since the matrix 
+$D(:, C_1\#\cdots \#C_r)E$
+is regular,
+the theorem is followed directly from Lemma \ref{lemma:regular_form}.
+\end{proof}
+
+\begin{remark}\label{rmk:linear_time}
+A pseudocode for constructing adjacent list from a non-branching matrix $D$ is given in Algorithm \ref{alg_adjlist},
+and a pseudocode for rearranging columns of $D$ is given in Algorithm \ref{alg:col_ra_gen}.
+Finding adjacent lists of all vertices from a matrix $D\in M_{k\times l}(\mathbb{R})$ costs $O(k\times l)$,
+and finding connected components from adjacent lists costs $O(k+l)$ \cite[Section 8.3.1]{MR3890038}.
+Thus to compute rank of a non-branching matrix $D$ can be done in $O(kl)$ arithmetic operations. 
+However,
+if the input of $D$ is in the pattern of a sparse matrix,
+the arithmetic operations can be linear,
+i.e.,
+$O(k+l)$.
+\end{remark}
+
+\input{alg_adjlist.tex}
+
+\input{alg_col_ra_general_file.tex}
+
+\end{comment}
+
+\subsection{Algorithms and running times}
+In this section we analyze the time complexity of computing weak column reduction.
+Since a non-branching matrix $D$ is sparse,
+we assume that the input matrix $D$ is in a format of sparse matrix.
+There are several different options, 
+such as
+Compressed Sparse Column (CSC),
+Compressed Sparse Row (CSR),
+and Coordinate (COO).
+
+The key algorithm in computing weak column reduction with respect to a $k\times l$ non-branching matrix $D$ is to find connected components, with input being an incidence matrix.
+There are multiple algorithms that can achieve this,
+such as depth-first-search (DFS),
+Breadth-First Search (BFS),
+and Union-Find (Disjoint Set Union, DSU).
+We refer to \cite{cormen2022introduction} for more details about graph algorithms.
+In this work we apply DSU based on the following reasons:
+Firstly,
+our input data is an incidence matrix with respect to a graph,
+by applying DFS or BFS one has to first convert an incidence matrix to adjacency lists,
+which will take $O(kl)$,
+while DSU has near-linear time $O(k \, \alpha (l))$,
+here $\alpha (l)$ is the inverse Ackermann function,
+an extremely slow-growing function.
+\footnote{For any practical values of $l$,
+$\alpha(l)$ never exceeds $5$.
+}
+Secondly,
+DSU excels for dynamic graphs,
+i.e.,
+edges and loops varies,
+this happens when computing boundary matrices with respect to a non-branching simplicial filtration. This will become important in \cref{sec:filtration}.
+
+Suppose the input $D\in M_{k\times l}(\mathbb{R})$ is a non-branching sparse (CSR format) matrix.
+Recall that $|D|$ is the matrix whose non-zero entries are the absolute values of those in $D$.
+It is easy to see that the computation of $|D|$ from $D$ takes $O(k)$.
+We consider $|D|$ as the transpose of an incidence matrix with respect to an undirected graph with loops,
+that is,
+we regard each column in $|D|$ as a vertex,
+and each row as an edge or a loop.
+We first apply DSU (see \cref{alg:dsu} in \cref{appdx_codes}) to find all components,
+which takes $O(k\alpha(l))$,
+recall that in DSU algorithm, 
+two operations \textsc{Union} (see \cref{alg:union} in \cref{appdx_codes}) and
+\textsc{Find} (see \cref{alg:find} in \cref{appdx_codes}) are used to merge two sets and find the root of a component, respectively,
+and the components are stored in the list ``parent'' that contains the root of each vertex. 
+We then need to find the vertices having self-loops and their corresponding roots,
+% i.e,
+%the columns of $|D|$ that have at least one entry which is the only non-zero entry in its corresponding row.
+when $|D|$ is stored in the CSR format,
+it takes $O(k)$.
+\footnote{This can be done by scanning over the CSR format index pointer.}
+Next we need to filter out these roots, 
+which takes $O(k+l)$ if we traverse the list of parents once and use a hash map to track indices for all roots.
+
+We then need to reorient a non-branching matrix so that filter out all the irregular components.
+The main idea is to check if we can ensure that each entry in the column sum is not equal to $2$ and $-2$ by flipping the column signs of $D$.
+If this is impossible,
+then the matrix $D$ is non-orientable.
+We initialize the flag list to be $l$ copies of $1$s,
+and scan over rows of $D$,
+if the column sum is $2$ or $-2$,
+we flip the flag list.
+The \textsc{Reorientation} algorithm is shown in \cref{alg:reort}. 
+Since $D$ is stored in CSR format,
+finding the column indices of non-zero entries in each row takes $O(1)$,
+hence the time complexity of \textsc{Reorientation} is $O(k)$.
+
+We summarize the time complexity analysis in the following proposition.
+
+\begin{proposition}
+\label{prop:alg_weak_red}
+Let $D\in M_{k\times l}(\mathbb{R})$ non-branching matrix.
+The time complexity of weak column reduction \cref{alg:weak_red} is $O(k\times \alpha(l) + l)$.
+\end{proposition}
+
+\begin{proof}
+%We finally summarize the \textsc{weakcolumnreduction} algorithm in \cref{alg:weak_red}.
+Recall that \textsc{DSU} takes $O(k\times \alpha({l}))$,
+and the procedure of searching roots with respect to loops takes $O(l)$ since the size of vertices is $l$.
+%In \cref{alg:weak_red},
+Retrieving the column partition $\{I_r\}_{r}$ and the corresponding row partition $\{J_r\}_r$ takes $O(l)$ and $O(k)$, respectively,
+computing $\textsc{\text{Reorientation}}(D_r)$ takes $O(|J_r|)$,
+and updating $E(I_r, I_r)$ takes $O(I_r)$,
+therefore,
+%\cref{alg:weak_red}
+it takes $O(k\times \alpha(l)+l)$.
+\end{proof}
+
+\begin{remark}
+The following shows that a DSU based approach is faster than simply applying Gaussian column reduction. Consider the $k\times (k+1)$ matrix 
+\[
+D = 
+\begin{bmatrix}
+1 & -1 & 0  & 0 & \cdots & 0\\
+1 & 0 & -1 & 0 & \cdots & 0\\
+1 & 0 & 0  & -1 & \cdots & 0\\
+\vdots & \vdots & \vdots & \vdots & \ddots & \vdots\\
+1 & 0 & 0 & 0 & \cdots & -1
+\end{bmatrix},
+\]
+and observe that the Gaussian column elimination of $D$ needs to add two columns iteratively $k$ times,
+which will cost $O(k^2)$. In contrast,
+the weak column reduction takes a near-linear time according to \cref{prop:alg_weak_red}.
+\end{remark}
+
+\input{alg_reort_file_2}
+
+
+\input{alg_weak_reduction}
+
+
+
+\iffalse
+\begin{proposition}
+\label{prop:orient}
+    If $D$ is a $k\times l$ non-branching matrix, then one can determine if $D$ is orientable in $O(k)$ arithmetic operations.
+\end{proposition}
+
+\begin{proof}
+Let \( G \) be a graph where the vertices correspond to the column vectors of \( D \). An edge is included between two vertices if the columns corresponding to its endpoints have a non-zero entry in a common row. Since multiple such rows may exist, associate a fixed row in \( D \) with each edge.
+
+Choose any spanning forest of \( G \) by iterating over the edges, keeping a representative vertex for each tree. Fixing a sign for each of the representative vertices assigns a sign to every other vertex (column) in \( G \). The signs are chosen such that the sum of the entries of the row corresponding to each edge adds up to \( 0 \), which is necessary for \( D \) to be orientable. Furthermore, \( D \) is orientable if and only if these signs are compatible with all of the rows in \( D \). To check if this is the case, maintain a list \( l[i] \) indexed by the columns, where each entry is an element of \( \{-1, 1\} \) and is determined by the orientation induced by the spanning forest traversal. Then, iterate over the rows of $D$ and check if each row with two non-zero entries, \( a \) (at column index \( i \)) and \( b \) (at column index \( j \)), satisfies the condition: $
+a \cdot l[i] + b \cdot l[j] = 0.$ 
+Due to our assumption that each row contains at most two non-zero entries,
+the computation takes $O(k)$.
+
+\begin{comment}
+The compatibility of an edge can be easily checked by adding together the two corresponding column vectors (after fixing their signs) and checking if the resulting vector has sup-norm of less than 2. 
+
+%In Algorithm \ref{alg:reort}, 
+We leverage that we don't have to wait until after building the  spanning tree to determine if the remaining edges are compatible. As we iterate over the columns, each new column adds a vertex to $G$, together with edges connecting it to the columns preceding it. The first edge (under any ordering) is part of the spanning tree and thus determines the sign, and the remaining edges must be checked for compatibility. This can be efficiently done in one go: if $v$ denotes the sum of the $k$ first columns and $c$ denotes the $(k+1)$-st column, then the first $k+1$ columns of $D$ are orientable if and only if $||v+c||_\infty<2$ or $||v-c||_\infty < 2$. In conclusion, the algorithm runs in $O(k\,l)$ as we need to add a $O(l)$ vectors of length $k$. 
+\end{comment}
+\end{proof}
+\fi
+
+
+
+\iffalse
+\begin{proposition}
+% \label{prop:regular}
+    Let $D$ be a $k\times l$ regulable matrix. Then, $R=DV$ is a weak column reduction, where $V = EU_l$ for $E$ a flag matrix such that $DE$ is oriented. Furthermore, the matrices $R$, $U_l$, and $E$ can be computed in $O(k\,l)$ arithmetic operations.
+\end{proposition}
+\begin{comment}
+\begin{remark}\label{rmk:regulable}
+When the matrix $D$ is regulable while not regular,
+there exists a diagonal matrix $E$ with diagonal entries being $\pm 1$ such that $DE$ is regular,
+%we refer to the matrix $E$ as \emph{reorientation}.
+The column reduction of $D$ can be then derived from $DE\,T_{l}$.
+We refer to the matrix $E$ as a \emph{flag matrix}.
+\end{remark}
+\end{comment}
+
+\begin{lemma}
+   The sets $\{C_i\}_{i=1}^r$ can be computed in $O(k\, l)$. 
+\end{lemma}
+\begin{proof}
+    The connected components of $G$ can be computed from the incidence matrix $D^T$ in time $O(k+l)$ using e.g. a depth-first search (DFS). The bottleneck is thus to build the graph $G$, which requires an iteration over all the entries in $D^T$. The result follows. 
+\end{proof}
+
+
+\begin{proposition}
+Moreover, $E$, $U$ and $R$ can be computed in $O(k\, l)$ arithmetic operations.
+\end{proposition}
+
+\begin{proof}
+Constructing $G$ takes $O(k\, l)$ and finding the decomposition of $G$ into its components can be done in $O(k+l)$ time and space using any standard algorithm for finding connected components. Once this is done, we can iterate over the components to determine which ones are row-singular. For each non-row-singular component $C$, we can then determine $D(:,C)$ is orientable (and orient it) in $O(k\, |C_i|)$; see \cref{prop:orient}. In conclusion, the regular columns and $E$ can be extracted in $O(k\,l)$. The matrix $U$ is now straightforward to construct from the regular column indices. 
+\end{proof}
+
+\fi
+
+\section{A faster algorithm for the up persistent Laplacian}\label{sec:up_pers_lap}
+In this section, we leverage our results from \cref{sec:non_brch_mtx} to compute the up persistent Laplacian. We start by defining non-branching simplicial complexes and recalling the definition of up persistent Laplacians as introduced in \cite{pers_lap}. In \cref{subsec:regular_form}, we present the main result of this section, \cref{prop:pers_lap}, which establishes that the computation of the up persistent Laplacian can be achieved using quadratic arithmetic operations for non-branching simplicial complexes.
+
+\begin{comment}
+    
+In subsection \ref{subsec:kron_red} we regard an up persistent Laplacian as a Laplacian over an oriented hypergraph,
+and present a Cheeger-type inequality in 
+Proposition \ref{prop:cheeger}.
+%Then in Section \ref{subsec:simp_filt} we present the computation of up persistent Laplacian in a special case of simplicial filtration. 
+Finally in Section \ref{subsec:cubical} we implement our method on the image dataset,
+which shows that our algorithm runs faster than the algorithm given in \cite{pers_lap}.
+\end{comment}
+
+
+\subsection{Background material}\label{subsec:sp_cmplx}
+
+Let $\LL$ be a simplicial complex.
+We denote by $S_{q}^\LL$ the set of all $q$-simplices in $\LL$.
+
+\begin{definition}
+%Let $\LL$ be a simplicial (resp. cubical) complex.
+We say a $q$-simplex in $\LL$ is \emph{non-branching} if it is a face of at most two $(q+1)$-simplices,
+and we say $\LL$ is \emph{$q$-non-branching} if all the $q$-simplices $S_q^\LL\subset \LL$ are \emph{non-branching}.
+\end{definition}
+When the dimension is clear from context, we simply refer to $\LL$ as \emph{non-branching}. 
+\begin{remark}
+    
+Observe that if $\LL$ is a $(q+1)$-dimensional pseudomanifold \cite{MR575168}, then
+the collection $\LL$ is non-branching.
+This is also the case for cubical complexes \cite{MR3025945},
+since each $q$-cube is the face of at most two $(q+1)$-cubes.
+\end{remark}
+
+Choose an orientation for each simplex $\sigma \in S_q^\LL$,
+and denote the set of oriented $q$-simplices as $\bar{S}_q^\LL$.
+Let $C_q^\LL$ be the chain group over $\mathbb{R}$ generated by $\bar{S}_q^\LL$,
+and denote by $\partial_q^\LL\colon C_q^\LL\to C_{q-1}^\LL$ the boundary operator. We associate to each simplex a positive weight via the function $w^\LL\colon \LL\to \mathbb{R}^+$, and we say $\LL$ is \emph{unweighted} if $w^\LL\equiv 1$. Moreover, we let $w_q^\LL$ denote the restriction of $w^\LL$ to $C_q^\LL$. An inner product over $C_q^\LL$ can be defined by
+\[
+\langle [\sigma_1], [\sigma_2]\rangle_{w_q^\LL}
+\coloneqq
+\delta_{\sigma_1\sigma_2}\cdot \left(w_q^\LL(\sigma_1)\right)^{-1},
+\]
+where $\delta_{\sigma_1\sigma_2}$ is equal to $1$ if and only if $\sigma_1=\sigma_2$,
+otherwise it is equal to $0$.
+We denote by $\left(\partial_q^\LL\right)^\ast: C_{q-1}^\LL\to C_q^\LL$ the adjoint of $\partial_q^\LL$ with respect to this inner product.
+
+\begin{definition}
+\label{total:lap}    
+The \emph{$q$-th up Laplacian} is $\triangle^{\LL}_{q,\mathrm{up}}\coloneqq \partial_{q+1}^{\LL}\circ \left(\partial_{q+1}^{\LL}\right)^\ast$,
+the \emph{$q$-th down Laplacian} is
+$\triangle^{\LL}_{q, \mathrm{down}}\coloneqq
+\left(\partial_q^\LL\right)^\ast\circ\partial_q^\LL
+$,
+and the \emph{$q$-th combinatorial Laplacian} $\triangle_q^\LL: C_q^\LL\to C_q^\LL$ is defined as 
+$
+ \triangle_q^{\LL}\coloneqq
+ \triangle^{\LL}_{q,\mathrm{up}} + 
+ \triangle_{q, \mathrm{down}}^\LL.
+$
+\end{definition}
+
+For a pair of simplicial complexes $\KK\hookrightarrow \LL$, let $C_q^{\LL, \KK}$ be the subspace of $C_q^\LL$ defined as:
+\[
+C_q^{\LL, \KK}:= \{c\in C_q^\LL: \partial_q^\LL(c)\in C_{q-1}^\KK\}\subset C_q^\LL,
+\]
+and let $\partial_{q}^{\LL, \KK}:= \partial_q^\LL\Big |_{C_{q}^{\LL, \KK}}$ be the boundary operator restricted to $C_q^{\LL, \KK}$.
+
+\begin{definition}[\cite{pers_lap}]
+\label{def:perslap}
+The \emph{$q$-th up persistent Laplacian} $\triangle_{q, \mathrm{up}}^{\KK, \LL}: C_q^\KK\to C_q^\KK$ is 
+\[
+ \triangle_{q, \mathrm{up}}^{\KK, \LL}\coloneqq \partial_{q+1}^{\LL, \KK}\circ \left(\partial_{q+1}^{\LL, \KK}\right)^\ast,
+\]
+and the \emph{$q$-th persistent Laplacian} $\triangle_{q}^{\KK, \LL}: C_q^\KK\to C_q^\KK$ is
+\[
+ \triangle_{q}^{\KK, \LL}\coloneqq \partial_{q+1}^{\LL, \KK}\circ \left(\partial_{q+1}^{\LL, \KK}\right)^\ast +
+ \left(\partial_q^\KK\right)^\ast \circ \partial_q^\KK.
+\]
+\end{definition}
+
+\begin{figure}
+\centering
+\begin{tikzcd}
+\centering
+     C_{q+1}^\KK\arrow{rr}{\partial_{q+1}^\KK}\arrow[hookrightarrow,dashed,gray]{dd} && C_q^\KK\arrow[rr,shift left=.75ex,blue,"\partial_q^\KK"]\arrow[hookrightarrow,dashed,gray]{dd}\arrow[dl,blue,"\left(\partial_{q+1}^{\LL, \KK}\right)^*" {yshift=-2pt, xshift=-7pt}] && C_{q-1}^\KK\arrow[hookrightarrow,dashed,gray]{dd}\arrow[ll,shift left=.75ex,blue,"\left(\partial_q^\KK\right)^*"]\\
+      &C_{q+1}^{\LL, \KK}\arrow[hookrightarrow,dashed,gray]{dl}\arrow[ur,shift left=.75ex,blue,"\partial_{q+1}^{\LL, \KK}"]&& \,\,\,\,\,\,\,\,\,\, & \\
+        C_{q+1}^\LL\arrow{rr}{\partial_{q+1}^\LL}  && C_q^\LL\arrow{rr}{\partial_q^\LL} && C_{q-1}^\LL
+\end{tikzcd}
+\caption{The relevant morphisms in the definition of the persistent Laplacian $\triangle_{q}^{\KK, \LL}$.}
+\label{fig_dig_per_lap}
+\end{figure}
+
+The commutative diagram associated with $\triangle_{q}^{\KK, \LL}$ is displayed in \cref{fig_dig_per_lap}. In this paper, we shall restrict our attention to the up persistent Laplacian $\triangle_{q, \mathrm{up}}^{\KK, \LL}$; see \cref{rem:full-laplacian}.
+
+We recall the matrix representation of $\triangle_{q, \mathrm{up}}^{\KK, \LL}$ in the following theorem.
+
+\begin{theorem}[{\cite[Theorem 3.1]{pers_lap}}]\label{thm_memoli}
+Assume $n_{q+1}^{\LL, \KK}\coloneqq \dim(C_{q+1}^{\LL, \KK})>0$.
+Fix any basis of $C_{q+1}^{\LL, \KK}\subset C_{q+1}^{\LL}$, represented as a matrix $Z\in \mathbb{R}^{n_{q+1}^\LL\times n_{q+1}^{\LL, \KK}}$, and let $B_{q+1}^{\LL, \KK}$ be the corresponding matrix representation of $\partial_{q+1}^{\LL, \KK}$.
+Let $W_{q}^\KK$ and $W_q^\LL$ denote the diagonal weight matrix representations of $w_{q}^\KK$ and $w_q^\LL$, respectively. The matrix representation $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ of $\triangle_{q, \mathrm{up}}^{\KK, \LL}$ can be expressed as:
+\begin{equation}\label{eqn:per_lap}
+\Delta_{q, \mathrm{up}}^{\KK, \LL}
+=
+B_{q+1}^{\LL, \KK} W_{q}^{\LL, \KK}\left(B_{q+1}^{\LL, \KK}\right)^{T}(W_q^\KK)^{-1},
+\end{equation}
+where $W_{q}^{\LL, \KK}:=\left(Z^T (W_{q+1}^\LL)^{-1} Z\right)^{-1}$.
+\end{theorem}
+
+We need to recall one more lemma. First, sort all the $q$-simplices $\bar{S}_q^\LL$,
+and denote this ordered set by $[n_q^\LL]$. Let $I_q^\KK$ denote the indices of the $q$-simplices $S_q^\KK$ in $\LL$, and let $I_q^{\LL, \KK}:=[n_{q}^\LL]\backslash I_q^\KK$ denote the indices of $q$-simplices in $\LL$ but not in $\KK$. Lastly, let $D_{q+1}^{\LL, \KK}\coloneqq B_{q+1}^\LL(I_q^{\LL, \KK}, :)$.
+%We then consider about the up persistent Laplacian over a pair of $q$-non-branching simplicial (resp. cubical) complexes. 
+As is evident from \eqref{eqn:per_lap}, the key point of computing $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ is to find expressions for $B_{q+1}^{\LL, \KK}$ and $Z$, and this can be done via \cref{thm:weakfactor}.
+The following lemma is a corollary of \cite[Lemma 3.4]{pers_lap}.
+
+\begin{lemma}\label{lemma:pers_lap_memoli}
+Let $\KK\hookrightarrow \LL$ be a pair of  simplicial complexes where $\LL$ is $q$-non-branching, and let $R_{q+1}^{\LL}:= D_{q+1}^{\LL, \KK} Y$ be a weak column reduction of $D_{q+1}^{\LL}$.
+Moreover, let $I\subset [n_{q+1}^\LL]$ be the index set of $0$ columns of $R_{q+1}^\LL$.
+Then, the following hold:
+\begin{enumerate}
+    \item If $I=\emptyset$,
+    then $C_{q+1}^{\LL, \KK}=\{0\}$.
+    \item If $I\neq \emptyset$ and $Z\coloneqq Y(:, I)$,
+    then the columns of $Z$ constitute a basis for $C_{q+1}^{\LL, \KK}$.
+    Moreover,
+    $B_{q+1}^{\LL, \KK}\coloneqq (B_{q+1}^\LL Y)(I_q^{\KK}, I)$ is the matrix representation of $\partial_{q+1}^{\LL, \KK}$.
+\end{enumerate}
+\end{lemma}
+
+\subsection{Computation of the up persistent Laplacian}\label{subsec:regular_form}
+Let $\KK\hookrightarrow \LL$ be an inclusion of simplicial complexes for which $\LL$ is $q$-non-branching.
+In this section, 
+we compute the matrix representation of the up persistent Laplacian $\Delta_{q, \textrm{up}}^{\KK, \LL}$.
+%Let $B_{q+1}^\LL$ be a representation of the boundary operator $\partial_{q+1}^\LL: C_{q+1}^\LL\to C_q^\LL$.
+%Denote by $D_{q+1}^{\LL}\coloneqq B_{q+1}^\LL(I_q^{\LL, \KK}, :)$,
+%we can compute the up persistent Laplacian $\Delta_{q, up}^{\KK, \LL}$ via computing the weak column reduction of $D_{q+1}^\LL$.
+%Since $D_{q+1}^\LL$ is non-branching,
+%thus we only need to fix the zero columns and apply Theorem \ref{thm:weakfactor} to the remaining non-zero columns in $D_{q+1}^\LL$.
+We denote by $C_0=(c_0^1, c_0^2, \cdots, c_0^h)$ the indices of zero columns in $D_{q+1}^{\LL, \KK}$,
+and decompose the column indices $C$ of $D_{q+1}^{\LL, \KK}$ as
+\begin{equation}
+\label{eq:decomp}
+C = C_0 \bigcup
+\left(\bigcup_{i=1}^r C_i\right) \bigcup 
+\left(\bigcup_{i=1}^q \bar{C}_i\right)\bigcup \left(\bigcup_{i=1}^s \widetilde{C}_i\right).
+\end{equation}
+Following the notation at the beginning of \cref{subsec:non_branching_mtx}, noting that $D_{q+1}^{\LL}$ is non-branching. According to \cref{thm:weakfactor},
+there is an upper-triangular matrix $V$ with entries in $\{-1, 0, 1\}$ such that $R=D_{q+1}^{\LL, \KK} V$ is a weak column reduction.
+Moreover,
+the $\{c_{1}^{l_1}, \cdots, c_r^{l_r}\}$ columns in $V$ form an orthogonal basis (with respect to the standard inner product) for the kernel of the matrix $D_{q+1}^{\LL, \KK}$ with the 0-columns removed.
+
+\begin{proposition}\label{prop:pers_lap}
+Let $R=D_{q+1}^{\LL,\KK}V$ be a weak column reduction.
+Then the following hold:
+\begin{enumerate}
+    \item The matrix $R$ contains $(h+r)$ zero columns,
+    and the corresponding column indices are 
+    \[\{c_0^1, \cdots, c_0^h, c_1^{l_1},\cdots, c_r^{l_r}\}.\]
+    \item The submatrix $Z:=V(:, \{c_0^1, \cdots, c_0^h, c_1^{l_1},\cdots, c_r^{l_r}\})$ constitutes a basis of $C_{q+1}^{\LL, \KK}$.
+    \item For 
+    $b_j:= B_{q+1}^\LL(I_q^\KK, C_j)V(C_j, c_j^{l_j})$ \[B_{q+1}^{\LL, \KK}
+    \coloneqq 
+    B_{q+1}^\LL(I_q^{\KK}, C_0) \#
+    \begin{bmatrix}
+    b_1 & b_2 & \cdots & b_r
+    \end{bmatrix}
+    \]
+    is the matrix representation of $\partial_{q+1}^{\LL, \KK}$ with respect to the basis $Z$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+    The first statement follows immediately from  \cref{thm:main_thm} if we fix the zero columns of $D_{q+1}^{\LL, \KK}$ and compute a weak column reduction from its non-zero columns. The second statement is then a corollary of  \cref{lemma:pers_lap_memoli}.
+    The third statement follows from \cref{lemma:pers_lap_memoli} as well.
+    In fact, according to \cref{lemma:pers_lap_memoli} we have 
+    $B_{q+1}^{\LL, \KK}=B_{q+1}^\LL(I_q^\KK, :)V\left(:, \{c_0^1,\cdots, c_0^{h}, c_1^{l_1}, \cdots, c_r^{l_r}\}\right)$.
+    Recall that $\{c_0^1,\cdots, c_0^h\}$ are the indices of zero columns in $D_{q+1}^{\LL, \KK}$ and therefore for each $1\leq i \leq h$ the column vector $V\left(:, c_0^i\right)$ contains only one $1$ at row $c_0^i$ and all the remaining entries are $0$'s.
+    Therefore,
+    $B_{q+1}^\LL(I_q^\KK, :)V\left(:, C_0\right)=B_{q+1}^\LL(I_q^{\KK}, C_0)$.
+    It thus remains to prove that $b_j=B_{q+1}^\LL(I_q^\KK, :)V(:, c_j^{l_j})$ for each $1\leq j\leq r$.
+    In fact,
+    according to  \cref{thm:main_thm}, the elements of $V(C_j, c_j^{l_j})$ are in $\{-1, 1\}$, and all remaining entries in the $c_j^{l_j}$-row are $0$'s. Therefore,  $B_{q+1}^\LL(I_q^\KK, :)V(:, c_j^{l_j})=B_{q+1}^\LL(I_q^\KK, C_j)V(C_j, c_j^{l_j})$ and the third statement is proved.
+\end{proof}
+We arrive at our main result in this section, where we follow the notation from the previous proposition, let $s_j:=\sum\limits_{k\in C_j}\frac{1}{W_{q+1}^\LL(k, k)}$ for $1\leq j\leq r$, and $S=\diag(s_1, s_2,\cdots, s_r)$ be a diagonal matrix.
+\begin{theorem}
+    \label{thm:fastcomputation}
+    %For $W_q^\KK$ and $W_q^\LL$ denote the diagonal weight matrix representation of $w_q^\KK$ and $w_q^\LL$ respectively.
+    Let $\KK \hookrightarrow \LL$ be simplicial complexes, where $\LL$ is $q$-non-branching. The up persistent Laplacian $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ is given by 
+    \begin{equation}\label{eq:uplap_1}
+    \Delta_{q, \mathrm{up}}^{\KK, \LL}
+    =
+    B_{q+1}^{\LL, \KK} W_{q+1}^{\LL, \KK}\left(B_{q+1}^{\LL, \KK}\right)^{T}(W_{q}^\KK)^{-1},
+    \end{equation}
+    where $W_{q+1}^{\LL, \KK}$ equals the diagonal matrix $W_{q+1}^{\LL}(C_0, C_0) \oplus S^{-1}$.
+    %Moreover,
+     %$\Delta_{q, \mathrm{up}}^{\KK, \LL}$ can be computed in 
+     %$O\left(n_{q+1}^\LL \times(n_{q}^\LL - n_q^\KK) + n_{q+1}^\LL \times n_q^\KK + (n_q^\KK)^2\right)$ arithmetic operations.
+\end{theorem}
+\begin{proof}
+    Since the columns of $V(:, \{c_1^{l_1}\cdots, c_r^{l_r}\})$ are orthogonal to each other (with respect to the standard inner product), the statement is immediate from Equation \eqref{eqn:per_lap} and \cref{prop:pers_lap}.
+
+    \iffalse
+    With respect to the arithmetic operations,
+    we first observe that according to \cref{thm:main_thm}, it takes $O\left((n_{q}^\LL - n_q^\KK)\times n_{q+1}^\LL \right)$ to compute the weak column reduction of $D_{q+1}^{\LL, \KK}$,
+    and it takes $O(n_q^\KK\times n_{q+1}^\LL)$ and $O(n_{q+1}^\LL)$ to compute the matrix $B_{q+1}^{\LL, \KK}$ and $S$ respectively.
+    Since the matrix $B_{q+1}^{\LL, \KK}$ is non-branching and $S$ is diagonal,
+    the products of all matrices can be computed in $O((n_q^\KK)^2)$.
+    Combined, we arrive at the bound in the statement.
+    \fi
+\end{proof}
+
+\begin{example}\label{ex_2}
+Consider the pair of simplicial complexes $\KK\hookrightarrow \LL$ in \cref{fig_mobius}. Here, the simplicial complex $\LL$ is a triangulation of the of M\"obius strip, and $\KK$ is its boundary. The matrix representations of $\partial_2^{\LL}$ and $D_2^{\LL, \KK}$ can be expressed as:
+\[
+B_2^{\LL}
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [134] & [124] & [245] & [235] & [135]\\
+[34] & 1 & 0 & 0 & 0 &0 \\
+[14] & -1 & -1 & 0 & 0 & 0 \\
+[13] & 1 & 0 & 0 & 0 & 1\\
+[24] & 0 & 1 & 1 & 0 & 0 \\
+[12] & 0 & 1 & 0 & 0 & 0\\
+[45] & 0 & 0 & 1 & 0 & 0\\
+[25] & 0 & 0 & -1 & -1 & 0 \\
+[35] & 0 & 0 & 0 & 1 & 1 \\
+[23] & 0 & 0 & 0 & 1 & 0\\
+[15] & 0 & 0 & 0 & 0 & -1\\
+\end{bNiceMatrix},\qquad\qquad 
+D_2^{\LL, \KK}
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [134] & [124] & [245] & [235] & [135]\\
+[14] & -1 & -1 & 0 & 0 & 0 \\
+[13] & 1 & 0 & 0 & 0 & 1 \\
+[24] & 0 & 1 & 1 & 0 & 0 \\
+[25] & 0 & 0 & -1 & -1 & 0 \\
+[35] & 0 & 0 & 0 & 1 & 1 \\
+\end{bNiceMatrix}.
+\]
+\input{fig_mobius_file.tex}
+It is easy to check that $D_2^{\LL, \KK}$ is irregular (\cref{def:reg_mtrx}), and that there is only one component in the undirected graph associated to $|D_2^{\LL, \KK}|^T$. Hence $D_2^{\LL, \KK}$ has full column rank and thus $\Delta_{1, \mathrm{up}}^{\KK, \LL}=0$.
+\end{example}
+
+In the following proposition we show that the up persistent Laplacian $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ can be computed in quadratic arithmetic operations,
+given that the input data are in the format of sparse (CSR) matrix.
+We exhibit the pseudocode of computing up persistent Laplacian in \cref{alg:pers_lap}.
+
+\begin{proposition}
+\label{prop:alg_lap}
+Let $\KK\hookrightarrow \LL$ be a pair of simplicial complexes as described in \cref{thm:fastcomputation}.
+The up persistent Laplacian $\Delta_{q, \text{up}}^{\KK, \LL}$ can be computed in $O\left((n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL) + n_{q+1}^\LL+(n_q^\KK)^2\right)$.
+\end{proposition}
+
+\begin{proof}
+Computing the weak column reduction of the matrix $D_{q+1}^{\LL, \KK}$ takes $O\left((n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL) + n_{q+1}^\LL\right)$ according to \cref{prop:alg_weak_red}.
+Since the matrix $B_{q+1}^\LL$ is non-branching and $W_{q+1}^{\LL, \KK}$ is diagonal,
+there are at most $2n_{q}^\KK$ non-zero entries in $B_{q+1}^{\LL,\KK}$ and $n_{q}^\KK$ non-zero entries in $W_{q+1}^{\LL, \KK}$, respectively,
+hence the computation of $B_{q+1}^{\LL, \KK}$ and $W_{q+1}^{\LL, \KK}$ takes $O(n_q^\KK)$.
+Finally,
+computing the matrix product of $\Delta_{q, \text{up}}^{\KK, \LL}$ takes $O((n_q^\KK)^2)$.
+To sum up,
+it takes $O\left((n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL) + n_{q+1}^\LL+(n_q^\KK)^2\right)$ to compute $\Delta_{q, \text{up}}^{\KK, \LL}$.
+\end{proof}
+
+\input{alg_lap}
+
+\begin{remark}\label{rmk:cmpt_time}
+In \cref{prop:alg_lap},
+we notice that the quadratic arithmetic operations of $\Delta_{q, \text{up}}^{\KK, \LL}$ is due to the matrix product operation, 
+which is reasonable since even if all the matrices $B_{q+1}^{\LL, \KK}$, $W_{q+1}^{\LL, \KK}$ and $W_q^\KK$ are in the sparse format, 
+we have to scan over every entry of $\Delta_{q, \text{up}}^{\KK, \LL}$.
+Therefore if we only compute the pair of matrices $(B_{q+1}^{\LL, \KK}, W_{q+1}^{\LL, \KK})$ instead of the up persistent Laplacian $\Delta_{q, \text{up}}^{\KK, \LL}$ explicitly,
+it takes $O\left((n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL) + n_{q+1}^\LL+n_q^\KK\right)$ arithmetic operations.
+\end{remark}
+\begin{comment}
+
+\subsection{Computation of eigenvalues}
+
+In real-world applications,
+the eigenvalues of $\Delta_{q, \text{up}}^{\KK, \LL}$ usually play a more important role than the up persistent Laplacian itself,
+however,
+the arithmetic operations of computing the eigenvalues is cubic in general,
+in more detail,
+it takes $O\left(k(n_q^{\KK})^2\right)$ to compute the $k$ largest eigenvalues of $\Delta_{q, \text{up}}^{\KK, \LL}$.
+Recall from \cref{thm:fastcomputation} that $\Delta_{q, \text{up}}^{\KK, \LL} = B_{q+1}^{\LL, \KK} W_{q+1}^{\LL, \KK}\left(B_{q+1}^{\LL, \KK}\right)^{T}(W_{q}^\KK)^{-1}$,
+it implies in \cref{rmk:cmpt_time} that we can compute eigenvalues of $\Delta_{q, \text{up}}^{\KK, \LL}$ via computing the singular values of $(W_q^{\KK})^{-1/2}B_{q+1}^{\LL, \KK} (W_{q+1}^{\LL, \KK})^{1/2}$ more efficiently.
+In fact,
+since the matrix  is non-branching,
+it takes $O\left(k(n^{\KK}_q+n_{q+1}^{\LL})\right)$ arithmetic operations to compute its first $k$ singular values using the Golub-Kahan-Lanczos (GKL) algorithm,
+since the eigenvalue problem is not the main topic of this work,
+we refer the reader to \cite{MR3024913, MR1792141} for more details about the GKL algorithm and summarize the result in the following proposition:
+\begin{proposition}\label{prop:gkl}
+Let $\KK\hookrightarrow \LL$ be a pair of simplicial complexes as described in \cref{thm:fastcomputation}.
+The first $k$ largest singular values of 
+$(W_q^{\KK})^{-1/2}B_{q+1}^{\LL, \KK} (W_{q+1}^{\LL, \KK})^{1/2}$ can be iteratively computed in $O\left(k(n^{\KK}_q+n_{q+1}^{\LL})\right)$.
+\end{proposition} 
+\end{comment}
+
+
+\subsection{The up persistent Laplacian for filtrations}\label{sec:filtration}
+
+One advantage of DSU algorithm is that it 
+supports near-constant amortized time complexity 
+in handling dynamic graphs that only undergo edge additions.
+As a result,
+we can compute the weak column reduction with respect to a sequence of non-branching matrices efficiently. 
+
+\iffalse
+Let $D^0$ be a $k\times l$ non-branching matrix.
+%and $D^1$ be another non-branching matrix that has exact one more row than $D^0$.
+Let $C^0$, $C^1$ be the column indices of $D^0$, $D^1$ respectively.
+Recall from \cref{subsec:non_branching_mtx} that
+we can regard $|D^0|^T$ as the incidence matrix of an undirected graph $G^0$,
+and column indices $C^0$ of $D$ as vertices of $G^0$,
+we can decompose $G^0$ and $C^0$ as 
+\[
+\begin{aligned}
+G^0 &= \left(\bigcup_{i=1}^r G_i^0\right) \bigcup \left(\bigcup_{i=1}^q \bar{G}_i^0\right)\bigcup \left(\bigcup_{i=1}^s \widetilde{G}_i^0\right),\\
+C^0 &= 
+ \left(\bigcup_{i=1}^r C_i^0\right) \bigcup \left(\bigcup_{i=1}^q \bar{C}_i^0\right)\bigcup \left(\bigcup_{i=1}^s \widetilde{C}_i^0\right),
+\end{aligned}
+\]
+respectively,
+here each component $G_i^0$ corresponds to a regulable matrix $D^0(:, C_i^0)$,
+and according to \cref{thm:main_thm} the weak column reduction of $D^0$ relies only on the components $\bigcup_{i=1}^r G_i^0$.
+Suppose we have another non-branching matrix $D^1$ which has exactly one more row than $D^0$,
+and denote by $G^1$, $C^1$ the undirected graph and column indices associated with $D^1$.
+We observe that $G^1$ contains exactly one more edge or loop than $G^0$,
+which either connects two components of $G^0$ together,
+or adds an additional edge or loop to some specific component of $G^0$.
+Hence to derive the weak column reduction of $D^1$ from that of $D^0$,
+we only need to detect which components (resp., component) the the vertices (resp., vertex) of this additional edge (resp., loop) belong to,
+which will take $O(l)$.
+As a result,
+if $D^0$ is a $k\times l$ non-branching matrix,
+we can compute the weak column reduction of both $D^0$ and $D^1$ in time complexity $O(k\times l + l)$.
+We can then perform an iterative induction and obtain the following lemma:
+\fi
+
+\begin{lemma}\label{lemma:D_filtration}
+Let $\{D_0, D_1, \cdots, D_m\}$ be a sequence of non-branching matrices where each $D_{i}$ contains exactly one more row than $D_{i-1}$ for each $1\leq i\leq m$.
+Suppose $D_0$ is a $k\times l$ matrix,
+then we can find all the weak column reduction of all $\{D_0, D_1, \cdots, D_m\}$ in
+$$O\left(m\times (k+m+l) + (k+m)\times \alpha(l)\right)$$ arithmetic operations.
+% $O(k\times l + m\times l)$ 
+\end{lemma}
+
+\begin{proof}
+Without loss of generality,
+we assume that in the matrix $D_{i}$ the last row is the one more extra row than $D_{i-1}$ for each $1\leq i\leq m$.
+We denote by $G_i$ the undirected graph whose incidence matrix is $|D_i|^T$.
+According to \cref{prop:alg_weak_red} it takes $O(k\times \alpha(l)+l)$ to compute the weak column reduction with respect to $D_0$.
+
+To compute that of $D_1$, 
+we need to first find the connected components of $G_1$,
+since $G_1$ contains exactly one more edge or loop than $G_0$,
+either two components in $G_0$ are getting connected or one component in $G_0$ is added one more self-loop,
+hence we only need to apply \textsc{Union} and \textsc{Find} actions once hence the arithmetic operation is $\alpha(l)$.
+According to the proof of \cref{thm:weakfactor} in \cref{subsec:non_branching_mtx},
+to compute the weak column reduction of $D_1$ we only need to check whether the new component in $G_1$ is regular or not.
+In more detail,
+suppose $C_1, C_2, \cdots, C_r$ are the regulable components in $D_0$,
+i.e.,
+$D_0(:, C_i)$ is a regulable matrix for each $1\leq i\leq r$,
+and the weak column reduction is $R_0=D_0 E_0 V_0$.
+In the case that the row vector $D_1(-1, :)$ contains one non-zero entry,
+whose column index is $j_1$,
+we then only need to check if $j_1$ is in any of the regulable components,
+if so,
+say,
+$j_1\in C_i$
+,
+then $R_1$ is given by replacing $R_0(:, j_1)$ by $D_0(:, j_1)$ and 
+adding one more additional row vector $D_1(-1, :)$ in the bottom.
+If $j_1$ does not belong to any of $C_i$ for $1\leq i\leq r$,
+it means that the regulable components are not affected by this additional loop,
+hence we can get $R_1$ simply be appending the row vector $D_1(-1, :)$ in the bottom of the matrix $R_0$.
+Similarly,
+in the case that the row vector $D_1(-1, :)$ contains two non-zero entries,
+that $D_1(-1, j_1)=1$ and $D_1(-1, j_2)=-1$,
+with the corresponding column indices being $j_1 < j_2$,
+if $j_1\in C_{i_1}$ and $j_2\in C_{i_2}$ for some $1\leq i_1, i_2\leq r$,
+then the \textsc{Union} action unite the two sets $C_{i_1}$ and $C_{i_2}$ into one set,
+and to compute $R_1$,
+we only need to replace $R_0(:, j_1)$ by $D_{0}(:, j_1)$,
+and append one more additional row vector 
+$\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+]
+   &            & j_1 &  \\
+0 & \cdots & 1   & 0  \cdots & 0\\
+\end{bNiceMatrix},$
+in the bottom.
+In the other cases,
+the discussions are similar.
+Notice that in each case to calculate $R_1$ we only apply column action to one or two columns in $R_0$ and append an extra row in the bottom of $R_0$,
+thus it costs $O(k+l)$ arithmetic operations.
+In a similar manner,
+we can calculate $E_1$ and $V_1$ out of $E_0$ and $V_0$ in $O(l)$.
+Hence the weak column reduction of $D_1$ can be computed in $O(k+l)$.
+Similarly,
+we can compute the weak column reduction of $D_i$ from that of $D_{i-1}$ for $1\leq i\leq m$.
+Thus to sum up it takes $O\left(m\times (k+m+l) + (k+m)\times \alpha(l)\right)$.
+\end{proof}
+
+\begin{remark}\label{rmk:filt_weak_red}
+In some situations,
+we are only interested in the null space of $R_i$ and it is not necessary to write out $R_i$ explicitly.
+On the other hand, 
+in the proof of \cref{lemma:D_filtration} we observe that when computing $R_i$,
+only by applying \textsc{Union} and \textsc{Find} once we can get the indices of zero columns in $R_i$,
+which takes $O(\alpha(l))$.
+Therefore it takes $O\left((k+m)\times \alpha(l)+l\right)$ to find the dimension of null spaces of each matrix in $\{D_0, \cdots, D_m\}$. 
+\end{remark}
+
+\iffalse
+Consider a simplicial filtration $\KK_0\hookrightarrow\KK_1\hookrightarrow \LL$ where $\KK_1$ contains exactly one more $q$-simplex than $\KK_0$.
+According to \cref{lemma:D_filtration} the weak column reduction of $D_{q+1}^{\LL, \KK_1}$ and $D_{q+1}^{\LL, \KK_0}$ can be calculated in $O(n_{q+1}^\LL\times (n_q^\LL-n_q^{\KK_1}) + n_{q+1}^\LL)$ arithmetic operations,
+and it takes $O(n_{q}^{\KK_1}\times n_{q+1}^\LL+n_q^{\KK_1})$ to calculate both $B_{q+1}^{\LL, \KK_1}$ and $B_{q+1}^{\LL, \KK_0}$,
+finally it takes $O((n_q^{\KK_1})^2)$ and $O((n_q^{\KK_0})^2)$ to compute $\Delta_{q, \mathrm{up}}^{\KK_1, \LL}$ and $\Delta_{q, \mathrm{up}}^{\KK_0, \LL}$.
+Therefore in total the time complexity of computing the two up persistent Laplacians $\Delta_{q, \mathrm{up}}^{\KK_1, \LL}$ and $\Delta_{q, \mathrm{up}}^{\KK_0, \LL}$ is 
+$O(n_{q+1}^\LL\times (n_q^\LL-n_q^{\KK_1}) +
+n_{q+1}^\LL + O(n_{q}^{\KK_1}\times n_{q+1}^\LL+n_q^{\KK_1}) + 
+(n_q^{\KK_1})^2
+).$
+By induction,
+we have the following proposition:
+\fi
+
+Let $\KK_0\hookrightarrow\KK_1 \hookrightarrow\cdots\hookrightarrow \KK_m\hookrightarrow \LL$ be a $q$-non-branching simplicial filtration where each $\KK_i$ contains exactly one more $q$-simplex than $\KK_{i-1}$ for each $1\leq i\leq m$.
+Without loss of generality,
+we assume that the set of $q$-simplices $S_q^{\KK_i}$ in $\KK_i$ is ordered such that the additional $q$-simplex of $\KK_i$ is at the end of $S_q^{\KK_i}$,
+and $S_q^{\KK_m}=\{\sigma_i|\sigma_i\in S_q^{\LL}\}_{i=1}^{n_q^{\KK_m}}$.
+
+
+
+
+\begin{proposition}\label{prop:time_filtration}
+The sequence of up persistent Laplacians $\{\Delta_{q, \mathrm{up}}^{\KK_i, \LL}\}_{i=0}^m$ can be computed in 
+\[
+O\left((m+1)\times (n_q^{\KK_m})^2+(m+1)\times n_{q+1}^\LL+(n_q^\LL-n_q^{\KK_m}+m)\times \alpha(n_{q+1}^\LL)\right)
+\]
+arithmetic operations.
+\end{proposition}
+
+\begin{proof}
+%Let $B_{q+1}^{i}$ be the boundary matrix with respect to $\partial_{q+1}^{\KK_i}$.
+According to \cref{prop:alg_lap},
+it takes $O\left((n_q^\LL-n_q^{\KK_m})\times \alpha(n_{q+1}^\LL) + n_{q+1}^\LL+(n_q^{\KK_m})^2\right)$ to compute $\Delta_q^{\KK_m, \LL}$.
+Let $D_{q+1}^{\LL, \KK_i}:=B_{q+1}^\LL(I_{q}^{\LL, \KK_i}, :)$ and $R^{i}=D_{q+1}^{\LL, \KK_i}E^{i}V^{i}$ be the weak column reduction of $D_{q+1}^{\LL, \KK_i}$.
+We then evaluate the arithmetic operations of computing $\Delta_q^{\KK_{m-1}, \LL}$.
+First we need to find the indices of zero columns in $R^{m-1}$,
+according to \cref{rmk:filt_weak_red} it costs nearly constant arithmetic operation $O(\alpha(n_{q+1}^\LL))$,
+besides that,
+we also need to compute $E^{m-1}$ and $V^{m-1}$,
+which costs $O(n_{q+1}^\LL)$ as explained in the proof of \cref{lemma:D_filtration}.
+We then need to compute $B_{q+1}^{\LL, \KK_{m-1}}$.
+Recall that the columns in $B_{q+1}^{\LL, \KK_i}$ are one-to-one corresponding to the regulable components in $D_{q+1}^{\LL, \KK_i}$,
+thus we can derive $B_{q+1}^{\LL, \KK_{m-1}}$ from $B_{q+1}^{\LL, \KK_m}$ by modifying one or two columns and removing one row,
+which costs $O(n_{q}^{\KK_m})$.
+Computing $W_{q+1}^{\LL, \KK_{m-1}}$ from $W_{q+1}^{\LL, \KK_{m}}$ costs $O(1)$,
+therefore it takes $O(\alpha(n_{q+1}^\LL)+n_{q+1}^\LL+n_q^{\KK_m}+(n_{q}^{\KK_{m-1}})^2)$ to compute $\Delta_{q, \mathrm{up}}^{\KK_{m-1}, \LL}$,
+where the quadratic term comes from computing the matrix product.
+By iteration,
+we obtain the arithmetic operations of $\{\Delta_{q, \mathrm{up}}^{\KK_i, \LL}\}_{i=0}^m$.
+%we conclude that it takes $O\left(m\times (n_q^{\KK_m})^2+m\times n_{q+1}^\LL+(n_q^\LL-n_q^{\KK_m}+m)\times \alpha(n_{q+1}^\LL)\right)$ to compute all the up persistent Laplacians $\{\Delta_{q, \mathrm{up}}^{\KK_i, \LL}\}_{i=0}^m$.
+\end{proof}
+
+In \cref{prop:time_filtration} we showed that our algorithm requires cubic arithmetic operations to compute the set $\{\Delta_{q, \mathrm{up}}^{\KK_i, \LL}\}_{i=0}^m$. This cubic running time results from the need to perform matrix product operations, and although the matrices $B_{q+1}^{\LL, \KK_i}$, $W_{q+1}^{\LL, \KK}$ and $W_q^{\KK_i}$ are non-branching, 
+it is not guaranteed the matrix $\Delta_{q, \mathrm{up}}^{\KK_i, \LL}$ is sparse. 
+
+\begin{example}\label{ex:dense}
+  Consider the pair of simplicial complexes $\KK\hookrightarrow \LL$ in \cref{fig:dense_example}. By a direct calculation we obtain that 
+$B_{2}^{\LL, \KK}
+=
+\begin{bmatrix}
+    1 & -1 & 1 & -1
+\end{bmatrix}^T$,
+and hence $\Delta_{1, \text{up}}^{\KK, \LL}$ is dense. In particular, obtaining each of the up persistent Laplacians in the filtration requires a quadratic number of arithmetic operations. This example generalizes to more edges (larger matrices) by triangulating an $n$-gon and letting $\KK$ be the outer boundary.
+\input{fig_bdry_opr_ex_file}
+
+\end{example}
+
+
+However,
+if we do not need to compute the up persistent Laplacians explicitly (e.g., if we only want the eigenvalues; see \cref{sec:eigenvalues}), the arithmetic operations can be reduced to be quadratic. We summarize the result in the following corollary:
+
+\begin{corollary}\label{cor:filt}
+The sequences of matrix pairings $\left\{\big(B_{q+1}^{\LL, \KK_i}, W_{q+1}^{\LL, \KK_i}\big)\right\}_{i=0}^m$ and the matrix products 
+\[\left\{(W_q^{\KK_i})^{-1/2}B_{q+1}^{\LL, \KK_i} (W_{q+1}^{\LL, \KK_i})^{1/2}\right\}_{i=0}^m\] 
+can be computed in 
+\[
+O\left((n_q^\LL-n_q^{\KK_m}+m)\times \alpha(n_{q+1}^\LL) + (m+1)\times (n_{q+1}^\LL + n_q^{\KK_m})\right)
+\]
+arithmetic operations.
+\end{corollary}
+%\todo{i suppose $m$ should be shifted here too}
+
+
+
+\iffalse
+{\color{blue}One advantage of \cref{prop:time_filtration} than that of \cite{pers_lap} in the case of non-branching filtration is that it is allowed to have a gap between $\KK_m$ and $\LL$,
+therefore if the $q$-simplices between $\KK_m$ and $\LL$ are not interested,
+we do not have to refine the simplicial complexes between $\KK_m$ and $\LL$ to achieve a simplexwise filtration.
+
+Another advantage is that in the case of computing non-zero eigenvalues,
+we can compute that of the dual Laplacian,
+i.e.,
+$
+\widetilde{\Delta}_{q, \mathrm{up}}^{\KK, \LL}
+    :=
+    \left(B_{q+1}^{\LL, \KK}\right)^{T}(W_{q}^\KK)^{-1}B_{q+1}^{\LL, \KK} S^{-1}.
+$
+Since in practice the matrix $B_{q+1}^{\LL, \KK}$ contains much fewer columns than rows,
+the size of $\widetilde{\Delta}_{q, \mathrm{up}}^{\KK_i, \LL}$ is usually much smaller than that of $\Delta_{q, \mathrm{up}}^{\KK_i, \LL}$.
+
+
+
+[extend their explicit running time] say more about why it seems unlikely to achieve sub-cubic running times. compare eigenvalues of up + down with pers lap, use $B^T$ and svd to compute eigenvalues in quadratic). in practice: we want all eigenvalues, we can do this in quartic time, and this is probably the best since computing the eigenvalues of down for a fixed L anyways takes cubic, and you need to do this for a linear number of L)}
+\fi
+
+
+\section{A generalized Kron reduction and a Cheeger inequality}\label{subsec:kron_red}
+
+In graph theory, the eigenvalues of the graph Laplacian (specifically, the up Laplacian) encode crucial information about connectivity, clustering, and expansion. For instance, the smallest non-zero eigenvalue reflects how well-connected the graph is, as captured by the Cheeger inequalities. Recently, a Cheeger-type inequality for the Hodge Laplacian on simplicial complexes was established in~\cite{jost2023cheeger}, and a Cheeger inequality for the persistent graph Laplacian was given in~\cite{pers_lap}. However, as noted in~\cite{wei2023}, very little is known about the topological interpretation of the eigenvalues and eigenvectors of persistent Laplacians. In this section, we show that the setting of non-branching complexes provides a clearer understanding of the eigenvalues of the up persistent Laplacian.
+
+Concretely, in \cref{sec:kron}, we show that $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ coincides with the Laplacian of a weighted oriented hypergraph, under the assumption that $\LL$ is unweighted and $q$-non-branching. The relevant theory for hypergraphs is provided in \cref{appdx_hg}. This type of reduction—where the persistent (graph) Laplacian is replaced by the Laplacian of a single graph—is known as a \emph{Kron reduction}. However, as shown in~\cite[Section SM5]{pers_lap}, one cannot, in general, replace the up persistent Laplacian of a pair of simplicial complexes with the Laplacian of a single simplicial complex. Exploring generalizations of Kron reduction to the simplicial setting is therefore left by the authors as an open direction for future work. Our result thus provides a partial answer to this open problem.
+
+Leveraging the connection to hypergraphs, we establish a Cheeger-type inequality for the smallest non-zero eigenvalue in \cref{sec:cheeger}. To the best of our knowledge, this is the first result of its kind for the up persistent Laplacian of simplicial complexes.
+
+\begin{remark}
+While we do not make the statements explicit, all of the following results apply verbatim to the case of cubical complexes.
+\end{remark}
+
+
+\subsection{The Kron reduction}
+\label{sec:kron}
+Let $\LL$ be an unweighted $q$-non-branching simplicial complex. 
+Recall that $C_j$ is a column-index subset of $B_{q+1}^\LL$ associated with the vertices of a connected component in a hypergraph, 
+and $l_j = |C_j|$ is the cardinality of $C_j$. 
+Note that $B_{q+1}^\LL(:, C_j)$ corresponds to $l_j$ distinct $(q+1)$-simplices,
+%Since $B_{q+1}^\LL(:, C_j)$ is an oriented representation, 
+and \cref{prop:pers_lap} implies that the column vector $B_{q+1}^{\LL, \KK}(:, j)$ is equal to the column sum of $B_{q+1}^\LL(:, C_j)$. Therefore, the column $B_{q+1}^{\LL, \KK}(:, j)$ can be interpreted as the boundary of a $(q+1)$-dimensional polyhedron formed by the union of the $l_j$ $(q+1)$-simplices.
+
+In fact, we can interpret $B_{q+1}^{\LL, \KK}$ as the incidence matrix of an oriented  hypergraph $\widetilde{\KK}=(V, E)$, where each vertex corresponds to a $q$-simplex in $\KK$, and where the hyperedges are given by the boundaries of connected polyhedra in $\LL$.  Furthermore, since $\LL$ is unweighted, we recall from \cref{thm:fastcomputation} that
+the up persistent Laplacian can be written as
+\[
+\Delta_{q, \mathrm{up}}^{\KK, \LL}
+=
+B_{q+1}^{\LL, \KK} \big(\id_h\oplus S^{-1}\big)\left(B_{q+1}^{\LL, \KK}\right)^{T},
+\]
+where $S^{-1}=\diag(l_1^{-1}, \cdots, l_r^{-1})$.
+Therefore, if we regard $(\id_h\oplus S^{-1})$ as the hyperedge weights of the oriented hypergraph $\widetilde{\KK}$, the up persistent Laplacian $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ coincides with the hypergraph Laplacian (\cref{def:laphyper}) of $\widetilde{\KK}$.
+Summarized, we have the following.
+\begin{proposition}\label{prop:cheeger}
+%Let $\LL$ be an unweighted $q$-non-branching simplicial complexes,
+%and $\KK\hookrightarrow \LL$ be a sub-simplicial complex.
+% and $S_{q+1}^\LL\subset \LL$ is orientation-compatible.
+%Assume $\LL$ is unweighted.
+%Let $B_{q+1}^\LL$ be a representation of the boundary operator $\partial_{q+1}^\LL$,  
+%and let $B_{q+1}^{\LL, \KK}$ be the matrix representation of $\partial_{q+1}^{\LL, \KK}$.
+Let $\LL$ be an unweighted $q$-non-branching simplicial complex. Then, the up persistent Laplacian takes the form
+ \[\Delta_{q, \mathrm{up}}^{\KK, \LL}=B_{q+1}^{\LL, \KK}\left(\id_h\oplus S^{-1}\right)(B_{q+1}^{\LL, \KK})^T\]
+which coincides with the hypergraph Laplacian of the weighted oriented hypergraph $\widetilde{\KK}$.
+\end{proposition}
+
+
+On the other hand,
+we can also consider the dual hypergraph (\cref{def_dual_hg}) $\widetilde{\KK}_{\textrm{dual}}$,
+i.e.,
+we regard each polyhedron in $\LL$ as a vertex, and each $q$-simplex as a hyperedge. That is, we take the transpose of the incidence matrix of $\widetilde{\KK}$, to obtain a hypergraph where the vertex weights are given by $\id_h\oplus S^{-1}$ and the hyperedges are unweighted (weights $\equiv$ 1). The following is immediate.
+
+\begin{proposition}
+Let $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ be the Laplacian associated with the dual the hypergraph $\widetilde{\KK}_{\textrm{\textrm{dual}}}$.
+Then, $
+\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}
+=
+(\id_h\oplus S^{-1})(B_{q+1}^{\LL, \KK})^TB_{q+1}^{\LL, \KK}.$
+\end{proposition}
+
+The following simple observation will be important in the next section.
+
+
+\begin{lemma}\label{lemma:same_eig_val}
+$\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ and $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ have the same non-zero eigenvalues.
+\end{lemma}
+
+\begin{proof}
+If $\lambda$ is a non-zero eigenvalue of $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$,
+then there is an eigenvector $v$ such that
+$(\id_h\oplus S^{-1})(B_{q+1}^{\LL, \KK})^TB_{q+1}^{\LL, \KK}v=\lambda v$.
+Multiplying by $B_{q+1}^{\LL, \KK}$ on both sides,
+we obtain that $\lambda$ is also an eigenvalue of $\Delta_{q,\textrm{up}}^{\KK, \LL}$ with the corresponding eigenvector being 
+$B_{q+1}^{\LL, \KK}v$.
+Similarly,
+if $\lambda'$ is an eigenvalue of $\Delta_{q,\textrm{up}}^{\KK, \LL}$,
+there is some eigenvector $v'$ such that
+$B_{q+1}^{\LL, \KK}\left(\id_h\oplus S^{-1}\right)(B_{q+1}^{\LL, \KK})^T v'=\lambda' v'$.
+Multiplying by $(\id_h\oplus S^{-1})$
+$\left(B_{q+1}^{\LL, \KK}\right)^T$ on both sides,
+we prove the lemma.
+\end{proof}
+
+
+\subsection{A Cheeger-type inequality}\label{sec:cheeger}
+We denote by $P_j$ the $(q+1)$-dimensional (connected) polyhedron in $\LL$ corresponding to the column vector $B_{q+1}^{\LL, \KK}(:, j)$ for $1\leq j\leq h+r$.
+Let $\mathbf{V}(P_j)$ be the number of $(q+1)$-simplices in the polyhedron $P_j$.
+Moreover,
+we let $\mathbf{A}(P_j)$ be the number of $q$-simplices forming the boundary of $P_j$, i.e., the number of non-zero entries of the column vector $B_{q+1}^{\LL, \KK}(:, j)$,
+and let $\mathbf{A}(P_i\bigcap P_j)$ be the number of $q$-simplices shared by the boundaries of polyhedra $P_{i}$ and $P_{j}$,
+i.e.,
+$\mathbf{A}(P_i\bigcap P_j)$ is equal to the absolute value of the (standard) dot product of the column vectors $B_{q+1}^{\LL, \KK}(:, i)$ and $B_{q+1}^{\LL, \KK}(:, j)$.
+Finally,
+we let $\widehat{\mathbf{A}}(P_j)$ be the number of $q$-simplices in the boundary of $P_j$ which are not part of the boundary of any other polyhedron,
+i.e.,
+$\widehat{\mathbf{A}}(P_j)
+=
+\mathbf{A}(P_j)
+-
+\sum\limits_{i\neq j}\mathbf{A}(P_i\bigcap P_j).
+$
+We first recall the Ger\u{s}gorin circle theorem below,
+the readers can consult \cite{MR2978290, MR2093409} for more details.
+\begin{theorem}[Geršgorin]\label{thm:gersgorin}
+Let $A=(a_{ij})\in M_n(\mathbb{C})$. Let $R_i=\sum\limits_{j\neq i}|a_{ij}|$. Let $D(a_{ii}, R_i)\subset \mathbb{C}$ be the closed disc centered at $a_{ii}$ with radius $R_i$, which is referred to as a Geršgorin disc. Then every eigenvalue of $A$ lies within the union of all the Geršgorin discs.
+\end{theorem}
+Denote by $\lambda_{\mathrm{min}}^{\KK, \LL}$ the minimal non-zero eigenvalue of $\Delta_{q, \mathrm{up}}^{\KK, \LL}$.
+
+\begin{proposition}\label{prop:realcheeger1}
+Let $\KK\hookrightarrow \LL$ where $\KK$ and $\LL$ are unweighted and $\LL$ is $q$-non-branching. Then,
+%Suppose the boundary matrix $B_{q+1}^\LL$ has full column rank and $B_{q+1}^{\LL, \KK}$ is not $0$.
+\[
+\min\limits_{j\leq h+r}\frac{\widehat{\mathbf{A}}(P_j)}{\mathbf{V}(P_j)}\leq \lambda_{\mathrm{min}}^{\KK, \LL}.\]
+\end{proposition}
+
+\begin{proof}
+%We notice that for two different column indices $i$ and $j$ the inner product of  column vectors $B_{q+1}^{\LL, \KK}(:, i)$ and $B_{q+1}^{\LL, \KK}(:, j)$ counts the number of $q$-simplices shared by the boundaries of polyhedra $P_{i}$ and $P_{j}$ up to a sign difference,
+%which is equal to the $(i, j)$-entry in $(B_{q+1}^{\LL, \KK})^TB_{q+1}^{\LL, \KK}$.
+%Moreover,
+%the $(j, j)$-entry in $(B_{q+1}^{\LL, \KK})^TB_{q+1}^{\LL, \KK}$ counts the number of $q$-simplices in the boundary of the $j$-th polyhedron.
+We notice that the $(i, j)$-entry of $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ is equal to $\frac{\mathbf{A}(P_i\bigcap P_j)}{\mathbf{V}(P_i)}$ with $i\neq j$,
+and the absolute value of diagonal entries of $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ are given by $\frac{\mathbf{A}(P_i)}{\mathbf{V}(P_i)}$ for each $i\leq h+r$.
+Thus the result follows from \cref{thm:gersgorin}.
+\end{proof}
+
+
+\begin{lemma}\label{lemma:full_col_rnk}
+Suppose $B_{q+1}^{\LL, \KK}$ is not equal to $0$.
+If $B_{q+1}^\LL$ has full column rank,
+then $B_{q+1}^{\LL, \KK}$ has full column rank.
+\end{lemma}
+\begin{proof}
+    From \cref{prop:pers_lap}, we have that $B_{q+1}^{\LL, \KK}$ is obtained from $B_{q+1}^\LL$ by performing left-to-right column operations, and removing the rows corresponding to simplices in $\LL-\KK$. Specifically, we have the following description: 
+    \[B_{q+1}^{\LL, \KK}
+    \coloneqq 
+    B_{q+1}^\LL(I_q^{\KK}, C_0) \#
+    \begin{bmatrix}
+    b_1 & b_2 & \cdots & b_r
+    \end{bmatrix}
+    \]
+    where the column indices $c_0^i$ from \cref{prop:pers_lap} (i.e., not the column indices of the $b_i$'s) correspond to columns in $B_{q+1}^\LL$ that are identically 0 on the rows that get removed. Furthermore,  each vector $b_i$ is obtained by adding to a column $B_q^\LL(:,c_i^{l_i})$ a number of columns in $B_q^\LL$ with column indices $k$ for $1\leq k< c_i^{l_i}$. Let the resulting column vector be $d_{i}$. Since $B_{q+1}^\LL$ is assumed to be of full column rank, we have that the matrix $A$ obtained by performing these column operations on $B_{q+1}^\LL$ is of full column rank. Moreover, by construction, each vector $d_{i}$ is 0 at the rows that ultimately get removed. Hence, we obtain the matrix $B_{q+1}^\LL$ by omitting rows of zeros from $A$. The result follows.
+\end{proof}
+
+
+\begin{proposition}\label{prop:realcheeger2}
+Let $\KK\hookrightarrow \LL$ where $\LL$ is unweighted and $q$-non-branching. 
+Suppose the boundary matrix $B_{q+1}^\LL$ has full column rank and $B_{q+1}^{\LL, \KK}$ is not $0$.
+%Denote by $\lambda_{\mathrm{min}}^{\KK, \LL}$ the minimal non-zero eigenvalue of $\Delta_{q, \mathrm{up}}^{\KK, \LL}$.
+Then,
+$
+%\min\limits_{i\leq h+r}\frac{\widehat{A}(P_i)}{V(P_i)}\leq 
+\lambda_{\mathrm{min}}^{\KK, \LL}\leq \min\limits_{j\leq h+r} \frac{\mathbf{A}(P_j)}{\mathbf{V}(P_j)}.
+$
+\end{proposition}
+
+\begin{proof} 
+Since $B_{q+1}^{\LL}$ has full column rank, the matrix $B_{q+1}^{\LL, \KK}$ has full column rank as well; see \cref{lemma:full_col_rnk}.
+Hence, the matrix $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ is invertible 
+and therefore $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ is positive-definite. By the Courant-Fischer-Weyl Min-Max theorem for eigenvalues of positive-definite matrices, we conclude that the minimal eigenvalue of $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ is at most 
+the smallest diagonal entry of $\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ which equals $\min\limits_{j\leq h+r} \frac{\mathbf{A}(P_j)}{\mathbf{V}(P_j)}$. The proposition now follows from the fact that 
+$\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}$ and $\Delta_{q, \mathrm{up}}^{\KK, \LL}$ have the same minimal non-zero eigenvalue; see \cref{lemma:same_eig_val}.
+\end{proof}
+
+\begin{remark}
+If $\LL$ is $(q+1)$-dimensional, then the condition that $B_{q+1}^\LL$ has full column rank (i.e., linearly independent columns) is equivalent to $H_{q+1}(\LL) = 0$. In particular, if $\LL$ is any $(q+1)$-dimensional simplicial complex embedded in $\mathbb{R}^{q+1}$, then $\LL$ is both $q$-non-branching and satisfies $H_{q+1}(\LL) = 0$. Hence, \cref{prop:realcheeger2} applies. 
+\end{remark}
+
+Combining \cref{prop:realcheeger1} and \cref{prop:realcheeger2} above together,
+we form a Cheeger-type inequality with respect to the up persistent Laplacian $\Delta_{q, \textrm{up}}^{\KK, \LL}$. 
+We summarize the result below:
+
+\begin{theorem}\label{prop:realcheeger}
+Let $\KK\hookrightarrow \LL$ where $\LL$ is unweighted and $q$-non-branching. 
+Suppose the boundary matrix $B_{q+1}^\LL$ has full column rank and $B_{q+1}^{\LL, \KK}$ is not $0$.
+%Denote by $\lambda_{\mathrm{min}}^{\KK, \LL}$ the minimal non-zero eigenvalue of $\Delta_{q, \mathrm{up}}^{\KK, \LL}$.
+Then,
+\[
+\min\limits_{j\leq h+r}\frac{\widehat{\mathbf{A}}(P_j)}{\mathbf{V}(P_j)} \leq \lambda_{\mathrm{min}}^{\KK, \LL}\leq \min\limits_{j\leq h+r} \frac{\mathbf{A}(P_j)}{\mathbf{V}(P_j)}.
+\]
+\end{theorem}
+From this theorem, we obtain the following corollary.
+\begin{corollary}
+Let $\KK\hookrightarrow \LL$ where $\LL$ is unweighted and $q$-non-branching. 
+Suppose the boundary matrix $B_{q+1}^\LL$ has full column rank and $B_{q+1}^{\LL, \KK}$ is not $0$. Then,
+\[
+\lambda_{\mathrm{min}}^{\KK, \LL}\leq q+2.
+\]
+\end{corollary}
+\begin{proof}
+    A $(q+1)$-simplex has precisely $q+2$ faces. In particular, if $f_{q}$ denotes the number of $q$-simplices in any simplicial complex, then $f_{q} \leq (q+2)f_{q+1}$ with equality precisely when you have a disjoint union of $(q+1)$-simplices. The bound follows readily. 
+\end{proof}
+To see that this bound is tight, let $\KK=\LL$ be equal to the standard $(q+1)$-simplex. Then, the matrix form of $\partial_{q+1}^{\KK, \LL}$ equals 
+\[ \begin{bmatrix} 1 & -1 & 1 & \cdots & (-1)^{q+1} \end{bmatrix}^T.\]
+Since $\mathbf{\widehat{A}}(P_1) = \mathbf{A}(P_1)$ in this case, $\lambda_{\mathrm{min}}^{\KK, \LL} = \mathbf{A}(P_1)/1 = q+2$ by \cref{prop:realcheeger}.
+
+\begin{remark}
+    For cubical complexes, one has $\lambda_{\mathrm{min}}^{\KK, \LL}\leq 2(q+1).$
+\end{remark}
+
+
+\subsection{An example}
+\label{ex_1}
+Consider the simplicial complexes $\KK\hookrightarrow \LL$ in \cref{fig_simplicial_cmplexes}. 
+\input{fig_simplicial_cmplexes_file.tex}
+\paragraph{The Cheeger inequality}
+We first assume that both $\KK$ and $\LL$ are unweighted.
+The boundary operator $\partial_2^{\LL}: C_2^{\LL}\to C_1^{\LL}$ can be expressed as:
+\begin{equation*}
+B_2^{\LL}=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [124] & [143] & [234] \\
+[12] & 1 & 0 & 0  \\
+[24] & 1 & 0 & -1  \\
+[14] & -1 & 1 & 0  \\
+[13] & 0 & -1 & 0 \\
+[34] & 0 & -1 & 1 \\
+[23] & 0 & 0 & 1  \\
+\end{bNiceMatrix},
+\end{equation*}
+and therefore
+$
+D_2^{\LL}
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [124] & [143] & [234] \\
+[14] & -1 & 1 & 0  \\
+\end{bNiceMatrix}.
+$
+%The transpose matrix $(D_2^{\LL})^T$ is equivalent to the incidence matrix of a hypergraph with two components as shown in Figure \ref{fig_hg_incd_mtx_1}.
+%The column-index sets corresponding to the two components are $C_1=\{1, 2\}$ and $C_2=\{3\}$.
+%The indices of $\bar{S}_1^{\KK_2}$ with respect to the matrix representation $B_2^{\LL}$ are $I_{1}^{\KK_2}=\{1, 2, 4, 5, 6, 7\}$.
+%Let $b_1=B_2^{\LL}(I_1^{\KK_2}, C_1)\boldsymbol{1}_2$,
+%$b_2=B_2^{\LL}(I_1^{\KK_2}, C_2)\boldsymbol{1}_1$.
+%Then
+%$b_1
+%=
+%\begin{bmatrix}
+%1 & 1 & -1 & -1 & 0
+%\end{bmatrix}^T
+%$,
+%$b_2
+%=
+%\begin{bmatrix}
+%0 & -1 & 0 & 1 & 1
+%\end{bmatrix}^T
+%$.
+Hence, from \cref{prop:pers_lap}, 
+we obtain that
+\[
+B_2^{\LL, \KK}
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+ &  &  \\
+[12]   & 1 & 0 \\
+[24]   & 1 & -1 \\
+[13]   & -1 & 0 \\
+[34]   & -1 & 1 \\
+[23]   & 0 & 1 \\
+\end{bNiceMatrix}.
+\]
+
+%\input{fig_hg_incd_mtx_1_file.tex}
+
+%Finally we need to compute the diagonal matrix $S$.
+Following the notation from \cref{prop:cheeger}, we get
+$
+S
+=
+\begin{bmatrix}
+    2 & 0\\
+    0 & 1
+\end{bmatrix},$ and from \cref{thm:fastcomputation},
+\[
+\Delta_{1, \mathrm{up}}^{\KK, \LL}
+=
+B_2^{\LL, \KK} S^{-1} (B_2^{\LL, \KK})^T
+=
+\begin{bmatrix}
+ 1 & 0 \\
+ 1 & -1 \\
+ -1 & 0 \\
+ -1 & 1 \\
+ 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+    1/2 & 0\\
+    0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+    1 & 1 & -1 & -1 & 0\\
+    0 & -1 & 0 & 1 & 1
+\end{bmatrix}.
+\]
+Moreover,
+the up persistent Laplacian $\Delta_{1, \mathrm{up}}^{\KK, \LL}$ is equal to the Laplacian over the oriented hypergraph $\widetilde{\KK}$ as shown in \cref{fig_hg_ex_1}.
+\input{fig_hg_ex_1_file.tex}
+Furthermore, the Laplacian of the dual hypergraph is 
+\[
+\Delta_{\widetilde{\KK}_{\textrm{\textrm{dual}}}}
+=
+S^{-1} (B_2^{\LL, \KK})^T B_2^{\LL, \KK} 
+=
+\begin{bmatrix}
+    4/2 & -2/2\\
+    -2 & 3
+\end{bmatrix}.
+\]
+Notice that the diagonal entries of $\Delta_{\mathrm{dual}}$ are $4/2$ and $3$, measuring the ratio of the ``perimeter'' (number of edges) to the ``area'' (number of 2-simplices) of the polyhedra $[1243]$ and $[243]$,
+\[
+\frac{\mathbf{A}([1243])}{\mathbf{V}([1243])} = 4/2, \qquad \frac{\mathbf{A}([243])}{\mathbf{V}([243])}=\frac{3}{1}.
+\]
+%ratio of the perimeter to the area with respect to the polyhedra $[1243]$ and $[243]$ in Figure \ref{fig_simplicial_cmplexes}.
+Moreover,
+\[
+\frac{\widehat{\mathbf{A}}([1243])}{\mathbf{V}([1243])}=\frac{2}{2},
+\quad
+\frac{\widehat{\mathbf{A}}([243])}{\mathbf{V}([243])}=\frac{1}{1},
+\]
+hence the Cheeger-type inequality gives rise to
+\[
+1\leq \lambda_{\min}^{\KK, \LL}\leq 2.
+\]
+In fact,
+by a direct computation we can obtain that $\lambda_{\min}^{\KK, \LL}=1$.
+
+
+
+\section{Computing eigenvalues}
+\label{sec:eigenvalues}
+As mentioned in \cref{subsec:kron_red}, the eigenvalues of graph and Hodge Laplacians carry important topological and geometrical information. 
+However, 
+there are two drawbacks of computing the eigenvalues of the up persistent Laplacian $\Delta_{q, \text{up}}^{\KK, \LL}$ directly.
+First,
+it is computationally intensive. 
+The construction of this matrix requires a quadratic number of operations in the number of simplices (\cref{prop:alg_lap}), and computing its full eigenvalue spectrum generally requires $O\left((n_q^{\KK})^3\right)$ operations. Furthermore, for moderately sized complexes, $\Delta_{q, \text{up}}^{\KK, \LL}$ can become unmanageably large and dense, rendering a spectral theory approach impractical for many applications. 
+Second,
+the up persistent Laplacian $\Delta_{q, \text{up}}^{\KK, \LL}$ relies on the weight matrices $W_{q+1}^{\LL, \KK}$ and $W_q^\KK$,
+in practical application,
+when the entries in $W_{q+1}^{\LL, \KK}$ and $(W_{q}^\KK)^{-1}$ are close to the machine epsilon
+\footnote{The machine epsilon $\epsmach$ is identified to be the smallest positive number such that $1.0 + \epsmach\neq 1.0$ for a specific computer being used.}
+for the device being used,
+it may lead to erroneous results to compute eigenvalues directly from the up persistent Laplacian $\Delta_{q, \text{up}}^{\KK, \LL}$.
+The readers can consult \cref{ex:numeric} for a concrete example. 
+
+
+%directly computing the eigenvalues of the up persistent Laplacian, $\Delta_{q, \text{up}}^{\KK, \LL}$, is computationally intensive. The construction of this matrix requires a quadratic number of operations in the number of simplices (\cref{prop:alg_lap}), and computing its full eigenvalue spectrum generally requires $O\left((n_q^{\KK})^3\right)$ operations. Furthermore, for moderately sized complexes, $\Delta_{q, \text{up}}^{\KK, \LL}$ can become unmanageably large and dense, rendering a spectral theory approach impractical for many applications.
+To overcome these computational and memory barriers, a more efficient method is available that leverages the singular values of a related sparse matrix.
+The method relies on the fact that the eigenvalues of
+\[
+    \Delta_{q, \text{up}}^{\KK, \LL} = B_{q+1}^{\LL, \KK} W_{q+1}^{\LL, \KK}\left(B_{q+1}^{\LL, \KK}\right)^{T}(W_{q}^\KK)^{-1}
+\]
+are identical to the eigenvalues of a symmetrized matrix $\tilde{\Delta}$. This is achieved via a similarity transformation:
+$$ 
+    \tilde{\Delta} = (W_q^{\KK})^{-1/2}\Delta_{q, \mathrm{up}}^{\KK, \LL}(W_q^{\KK})^{1/2} = (W_q^{\KK})^{-1/2} \left(B_{q+1}^{\LL, \KK} W_{q+1}^{\LL, \KK}\left(B_{q+1}^{\LL, \KK}\right)^{T}\right) (W_q^{\KK})^{-1/2}.
+$$
+This matrix can be factored as $\tilde{\Delta} = M M^T$, where the matrix $M$ is given by:
+$$ 
+    M = (W_q^{\KK})^{-1/2}B_{q+1}^{\LL, \KK} (W_{q+1}^{\LL, \KK})^{1/2}.
+$$
+Here the non-zero eigenvalues of $M M^T$ are the squares of the non-zero singular values of $M$.  This connection is computationally advantageous because the diagonal weight matrices do not alter the sparsity pattern of the boundary matrix, meaning $M$ is sparse.
+
+The largest singular values of a sparse matrix $M$ can be computed efficiently using iterative methods such as the Golub-Kahan-Lanczos (GKL) algorithm; a generalization of the \emph{power method} to find the largest eigenvalue. After $k$ iterations, this procedure generates a $k \times k$ bidiagonal matrix whose singular values approximate $k$ singular values of $M$. Which $k$ singular values the algorithm approximates depends on the choice of starting vector and the distribution of singular values, but generically the largest singular value will be well-approximated. Importantly, the convergence rate of the GKL algorithm is not uniform across the spectrum; convergence to the largest singular values is much quicker, and they can thus be approximated with high accuracy using relatively few iterations. For a detailed treatment of the GKL algorithm, we refer the reader to~\cite{MR3024913, MR1792141} and \cref{appdx_GKL}. We summarize the relevant results below.
+
+\begin{proposition}\label{prop:gkl}
+Let $\KK\hookrightarrow \LL$ be a pair of simplicial complexes as described in \cref{thm:fastcomputation}. 
+By iterating $k$ steps,
+the GKL algorithm computes approximations to $k$ eigenvalues of $\Delta_{q, \text{up}}^{\KK, \LL}$ in 
+%The $k$ largest eigenvalues of $\Delta_{q, \text{up}}^{\KK, \LL}$ can be computed in approximately 
+\[
+O\left((n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL)+k\times (n_{q+1}^\LL+n_q^\KK)+k^2\right).
+\]
+%\[O\left(k^2(n^{\KK}_q+n_{q+1}^{\LL}) + (n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL)\right)\] arithmetic operations.
+\end{proposition}
+\begin{proof}
+The total complexity arises from three main steps. First, the cost of constructing the necessary components of the matrix $M$ is given by $(n_q^\LL-n_q^\KK)\times \alpha(n_{q+1}^\LL)$, as established in \cref{prop:alg_lap}. Second, the cost of computing a $k\times k$ bidiagonal matrix using GKL algorithm is bounded by $O(k\times (n_{q+1}^\LL+n_q^\KK))$ (see \cref{prop:GKL_speed}).
+Finally,
+according to \cite[Section 6.2]{MR1792141},
+it costs $O(k^2)$ to compute the eigenvalues of a $k\times k$ bidiagonal matrix.
+Hence the result follows.
+%computing the top $k$ singular values of $M$ using the GKL algorithm is $O(k \cdot \mathrm{nnz}(M) + k^2(n^{\KK}_q+n_{q+1}^{\LL}))$, where $\mathrm{nnz}(M) = \mathrm{nnz}(B_{q+1}^{\LL, \KK}) \leq 2n^{\KK}_{q}$ since $\LL$ is $q$-non-branching. The result follows.
+\end{proof}
+
+From \cref{cor:filt}, this result directly carries over to a simplex-wise filtration.
+
+\begin{corollary}\label{cor:filt_complexity} % Changed label from "cor:filt" to avoid duplication
+Let $\KK_0\hookrightarrow\KK_1 \hookrightarrow\cdots\hookrightarrow \KK_m \hookrightarrow \LL$ be a $q$-non-branching simplicial filtration where each $\KK_i$ contains exactly one more $q$-simplex than $\KK_{i-1}$ for each $1\leq i\leq m$. 
+The GKL algorithm computes approximations to $k$ eigenvalues of the matrices in $\{\Delta_{q, \text{up}}^{\KK_i, \LL}\}_{i=0}^{m}$ in
+\[
+O\Big(n_q^\LL\times \left((k+1)\times (n_{q+1}^\LL+n_q^\LL)+k^2\right)\Big)
+\]
+%Then, the $k$ largest eigenvalues of the matrices in $\{\Delta_{q, \text{up}}^{\KK_i, \LL}\}_{i=0}^{m}$ can be computed in approximately
+%\[
+%O(k^2\times n_q^\LL\times (n_q^\LL + n_{q+1}^\LL)).
+%\] arithmetic operations.
+arithmetic operations.
+In particular, the corresponding computation for all the matrices $\{\Delta_{q, \text{up}}^{\KK_i, \KK_j}\}_{i\leq j}$ can be done in
+\[
+O\Big((n_q^\LL)^2\times \left((k+1)\times (n_{q+1}^\LL+n_q^\LL)+k^2\right)\Big)
+\]
+%\[
+%O(k^2\times (n_q^\LL)^2\times (n_q^\LL + n_{q+1}^\LL))
+%\] 
+arithmetic operations.
+\end{corollary}
+\begin{proof}
+The result is obtained by computing all the matrices following  \cref{prop:gkl} and then applying \cref{cor:filt} to each matrix individually using the worst case where $n_q^\LL-n_q^{\KK_m}+m = n_q^\LL$ in the first expression and $(m+1)(n_{q+1}^\LL + n_q^{\KK_m}) = n_{q}^\LL(n_{q+1}^\LL + n_q^\LL)$ in the second expression, and $m+1=n_{q}^\LL$. This thus gives a computational time of
+\[
+O\Big(n_q^\LL\times \left(\alpha(n_{q+1}^\LL) + n_{q+1}^\LL + n_q^\LL\right)\Big).
+\]
+There are $O(n_q^\LL)$ matrices, and so the cost of computing the $k$ eigenvalues from \cref{prop:gkl} becomes 
+\[
+O\Big(n_q^\LL\times\left( \alpha(n_{q+1}^\LL)+n_{q+1}^\LL+n_q^\LL+k\times (n_q^\LL+n_{q+1}^\LL)+k^2\right)\Big).
+\]
+%\[O\left(k^2n_q^\LL \times (n_q^\LL + n_{q+1}^\LL) + (n_q^\LL)^2\times \alpha(n_{q+1}^\LL)\right).\]
+Adding these worst-case complexities together gives the desired result. The final bound is obtained by multiplication with the length of the filtration, which is at most $n_q^\LL$.
+\end{proof}
+
+It is well known~\cite[Section 2]{horak2013spectra} that the non-zero eigenvalues of the persistent Laplacian \[\Delta_{q}^{\mathcal{K}, \mathcal{L}} = \Delta_{q, \mathrm{up}}^{\mathcal{K}, \mathcal{L}} + \Delta_{q, \mathrm{down}}^{\mathcal{K}}\]
+are given by the union (counted with multiplicity) of the eigenvalues of the up Laplacian and the down Laplacians. This is immediate from 
+\[\Delta_{q, \mathrm{up}}^{\mathcal{K}, \mathcal{L}}\circ \Delta_{q, \mathrm{down}}^{\mathcal{K}} = \Delta_{q, \mathrm{down}}^{\mathcal{K}}\circ \Delta_{q, \mathrm{up}}^{\mathcal{K}, \mathcal{L}}=0.\]
+Since the multiplicity of the $0$ eigenvalue in $\Delta_{q}^{\mathcal{K}, \mathcal{L}}$ equals the $q$-th persistent Betti number of the inclusion $\KK\hookrightarrow \LL$, information already captured by persistent homology, the non-zero spectrum is likely of more interest to the practitioner.
+
+The matrix representation of the down Laplacian can be written as $(W_q^\KK)^{-1}\left(B^{\KK}_{q}\right)^T W_{q-1}^{\KK} B^{\KK}_{q}$. Following the same symmetrization procedure as above, its eigenvalues can be computed from the singular values of a  matrix derived from $B^{ \KK}_{q}$.
+
+The boundary matrix $B^{\KK}_{q}$ is sparse, with exactly $(q+1)$ non-zero entries per column corresponding to the faces of each $q$-simplex.
+%Therefore, 
+%$\mathrm{nnz}(B^{\LL, \KK}_{q}) = (q+1)n_q^\mathcal{K}$.
+Using the GKL algorithm we can approximate $k$ eigenvalues of the down Laplacian in 
+\[
+O\left(k\times (n_q^\KK\times (q+1)+n_{q-1}^\KK)+k^2\right)
+\]
+arithmetic operations for a fixed complex $\mathcal{K}$. The total time for all simplicial complexes in a full filtration from $\emptyset$ to $\mathcal{L}$ is bounded by
+\[
+O\Big(n_q^\LL\times\left(k\times (n_q^\KK\times (q+1)+n_{q-1}^\KK)+k^2\right)\Big).
+\]
+This can potentially offer a significant improvement over methods requiring explicit matrix formation and dense eigensolvers, making the computation of a few eigenvalues a practical addition to persistent homology. We have included some computations in \cref{fig:image_eig_sing} for the $k$ smallest eigenvalues and for the $k$ largest eigenvalues. It is clear that this SVD-based approach is substantially more efficient than methods that first form the dense Laplacian matrix product.
+
+\begin{remark}
+\label{rem:hodge-efficient}
+An insightful method for visualizing topological evolution throughout a filtration involves plotting the barcode alongside a curve that tracks the smallest non-zero eigenvalue of the standard (non-persistent) Hodge Laplacian at each stage (see, e.g., \cite[Figure 5]{wei2023}). Since the Hodge Laplacian is the sum of up and down Laplacians---whose top eigenvalues can be efficiently computed using the sparse matrix techniques as done for the complex $\KK$ above---this visualization approach becomes practically generalizable to arbitrary (not necessarily non-branching) filtrations for large eigenvalues. This extension is a promising direction for future work.
+\end{remark}
+
+
+
+\section{Cubical complexes and X-Ray images}\label{subsec:cubical}
+
+Cubical complexes provide an efficient framework for representing image data in TDA. 
+The persistent Laplacian with respect to cubical complexes has been successfully applied in image analysis \cite{davies23c}, 
+as pixels (2D images) and voxels (3D images) are naturally represented using $2$-cubes (squares) and $3$-cubes (cubes), respectively. 
+Cubical complexes are automatically non-branching and have a natural oriented matrix representation of the boundary operator, 
+making it unnecessary to check matrix orientability.
+In this section, we first present a simple example to demonstrate the computation of the persistent Laplacian in the context of cubical complexes (\cref{ex_cub_1}),
+then we experiment with this framework on an X-Ray image.
+We refer to \cite{MR3025945} and \cref{appdx_cub_cplx} for more details on cubical complexes.
+\subsection{A worked-out example}
+
+\input{fig_cubical_cmplexes_file.tex}
+
+\begin{example}\label{ex_cub_1}
+Let $\KK\hookrightarrow\LL$ be the pair of cubical complexes in \cref{fig_cubical_cmplexes}. The boundary operator $\partial_2^{\LL}$ and the submatrix $D_2^{\LL}$ can be expressed as
+\begin{equation*}
+B_2^{\LL}=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [4512] & [5623] & [7845] & [8956] \\
+[12] & -1 & 0 & 0 & 0 \\
+[23] & 0 & -1 & 0 & 0 \\
+[41] & -1 & 0 & 0 & 0 \\
+[52] & 1 & -1 & 0 & 0 \\
+[63] & 0 & 1 & 0 & 0 \\
+[45] & 1 & 0 & -1 & 0 \\
+[56] & 0 & 1 & 0 & -1 \\
+[74] & 0 & 0 & -1 & 0 \\
+[85] & 0 & 0 & 1 & -1 \\
+[96] & 0 & 0 & 0 & 1 \\
+[78] & 0 & 0 & 1 & 0 \\
+[89] & 0 & 0 & 0 & 1 \\
+\end{bNiceMatrix},
+\quad \quad
+D_2^{\LL}
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+& [4512] & [5623] & [7845] & [8956] \\
+[52] & 1 & -1 & 0 & 0 \\
+\end{bNiceMatrix}
+\end{equation*}
+respectively.
+Thus according to \cref{prop:pers_lap},
+\[
+B_2^{\LL, \KK}
+=
+\begin{bNiceMatrix}[
+  first-row,code-for-first-row=\scriptstyle,
+  first-col,code-for-first-col=\scriptstyle,
+]
+ &  & &  \\
+[12]  & -1 & 0 & 0 \\
+[23]  & -1 & 0 & 0 \\
+[41]  & -1 & 0 & 0 \\
+[63]  & 1 & 0 & 0 \\
+[45]  & 1 & -1 & 0 \\
+[56]  & 1 & 0 & -1 \\
+[74]  & 0 & -1 & 0 \\
+[85]  & 0 & 1 & -1 \\
+[96]  & 0 & 0 & 1 \\
+[78]  & 0 & 1 & 0 \\
+[89]  & 0 & 0 & 1 \\
+\end{bNiceMatrix}.
+\]
+Since the cardinality of $C_1, C_2, C_3$ are $2$, $1$ and $1$ respectively,
+we get from \cref{thm:fastcomputation} that the diagonal matrix $S$ (as in \cref{prop:cheeger}) is
+\[
+S
+=
+\begin{bmatrix}
+2 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1\\
+\end{bmatrix},
+\]
+and the up persistent Laplacian equals
+\[
+\Delta_{1, \mathrm{up}}^{\KK, \LL}
+=
+B_2^{\LL, \KK} S^{-1} \left(B_2^{\LL, \KK}\right)^T.
+\]
+\end{example}
+
+\input{fig_hyp_grph_1_file.tex}
+We also obtain that $\Delta_{1, \mathrm{up}}^{\KK, \LL}$ is equivalent to the Laplacian $\Delta_{0}^{\widetilde{\KK}}$ of the weighted hypergraph $\widetilde{\KK}_3$ given in \cref{fig_hyp_grph_1}. The weight of the yellow hyperedge on top is $1/2$, and the weights of the red hyperedge (bottom left) and the blue hyperedge (bottom right) are both equal to $1$.
+
+\begin{comment}
+\subsection{Experiments on an X-Ray image}
+In this section we experiment on one chest X-Ray image randomly selected from the dataset ChestMNIST of MedMNIST \cite{medmnistv1, medmnistv2}.
+The ChestMNIST is a dataset of 112{\small,}120 frontal-view X-Ray images,
+and the available sizes in ChestMNIST contain $28\times 28$, $64\times 64$, $128\times 128$ and $224\times 224$,
+we select the size $224\times 224$ to test the speed of our algorithm.
+In addition to the original image,
+we produce three more images by iteratively applying a $2\times 2$ Max-Pool operation (the first row in \cref{fig:image_x_ray}). 
+We first filter out the pixels with values larger than $50$ for each image (the second row in \cref{fig:image_x_ray}),
+and construct the corresponding cubical complexes $\KK^1$, $\KK^2$, $\KK^3$, $\KK^4$,
+and then filter out the pixels with values larger than $150$ for each image (the third row in \cref{fig:image_x_ray}),
+and construct another four cubical complexes $\LL^1$, $\LL^2$, $\LL^3$, $\LL^4$.
+We then form four pairs of cubical complexes $\KK^1\hookrightarrow \LL^1$, $\KK^2\hookrightarrow \LL^2$, $\KK^3\hookrightarrow \LL^3$ and $\KK^4\hookrightarrow \LL^4$.
+We then construct a cube-wise filtration $\KK^j=\KK_0^j\hookrightarrow \KK_1^j\hookrightarrow \cdots \hookrightarrow \KK^j_m=\LL$ for each pair $\KK^j\hookrightarrow \LL^j$, $j=1, 2, 3, 4$,
+that is,
+each cubical complex $\KK^j_{i+1}$ contains exactly one more $1$-cube than $\KK^j_{i}$. 
+For example,
+the cubical complex $\KK^1$ contains 16{\small,}155 $1$-cubes and $\LL^1$ contains 63{\small,}366 $1$-cubes,
+thus $\LL^1$ contains 47{\small,}211 more $1$-cubes than $\KK^1$,
+we then construct a cube-wise filtration $\KK^1=\KK_0^1\hookrightarrow \KK_1^1\hookrightarrow \cdots \hookrightarrow \KK^1_{\text{47\small{,}}211}=\LL^1$.
+In the same manner,
+we construct the other three filtrations 
+$\KK^2=\KK_0^2\hookrightarrow \KK_1^2\hookrightarrow \cdots \hookrightarrow \KK^2_{\text{11\small{,}843}}=\LL^2$,
+$\KK^3=\KK_0^3\hookrightarrow \KK_1^3\hookrightarrow \cdots \hookrightarrow \KK^3_{\text{2\small{,}954}}=\LL^3$,
+and 
+$\KK^4=\KK_0^4\hookrightarrow \KK_1^4\hookrightarrow \cdots \hookrightarrow \KK^4_{702}=\LL^4$.
+ 
+\begin{figure}[ht]
+    \centering
+    \setlength{\tabcolsep}{5.5pt} % Adjust horizontal spacing between columns
+    \begin{tabular}{ccccc}
+        \includegraphics[width=0.18\textwidth]{images/full_img_1.png} &
+        \includegraphics[width=0.18\textwidth]{images/full_img_2.png} &
+        \includegraphics[width=0.18\textwidth]{images/full_img_3.png} &
+        \includegraphics[width=0.18\textwidth]{images/full_img_4.png} \\
+        %\includegraphics[width=0.18\textwidth]{images/full_img_5.png} \\
+        \multicolumn{5}{c}{\footnotesize{The original image and three additional images produced by iteratively applying Max-Pool operation}} \\[6pt]
+
+        \includegraphics[width=0.18\textwidth]{images/img_big_1.png} &
+        \includegraphics[width=0.18\textwidth]{images/img_big_2.png} &
+        \includegraphics[width=0.18\textwidth]{images/img_big_3.png} &
+        \includegraphics[width=0.18\textwidth]{images/img_big_4.png} \\
+        %\includegraphics[width=0.18\textwidth]{images/img_big_5.png} \\
+        \multicolumn{5}{c}{\footnotesize{The corresponding images of pixels with values less than $50$}} \\[6pt]
+        
+        \includegraphics[width=0.18\textwidth]{images/img_small_1.png} &
+        \includegraphics[width=0.18\textwidth]{images/img_small_2.png} &
+        \includegraphics[width=0.18\textwidth]{images/img_small_3.png} &
+        \includegraphics[width=0.18\textwidth]{images/img_small_4.png} \\
+        %\includegraphics[width=0.18\textwidth]{images/img_small_5.png}\\
+        \multicolumn{5}{c}{\footnotesize{The corresponding images of pixels with values less than $150$}} \\[6pt]
+    \end{tabular}
+    \caption{15 images arranged in 3 rows and 5 columns.}
+    \label{fig:image_x_ray}
+\end{figure}
+
+We compute the up persistent Laplacian $\Delta_{1, \text{up}}^{\KK^i_n, \LL^i}$
+for each filtration $\KK^i\hookrightarrow \KK^i_1\hookrightarrow\cdots \hookrightarrow\LL^i$ in both the method discussed in \cref{sec:filtration} and that based on Schur complement \cite[Section 5]{pers_lap},
+besides that,
+we also display the computation time of the pair of matrices $\left(B_1^{\LL^i, \KK_n^i}, W_1^{\LL^i, \KK^i_n}\right)$ and the product $B_1^{\LL^i, \KK_n^i}\big(W_1^{\LL^i, \KK^i_n}\big)^{1/2}$ (see \cref{fig:image_plots}).
+We observe that it is faster to compute the up persistent Laplacian $\Delta_{1, \text{up}}^{\KK^i_n, \LL^i}$ using 
+the DSU method if the size of the cubical complex is larger,
+while when the size of the cubical complex is smaller,
+the Schur complement method is faster.
+However,
+the computations of the pairs of matrices $\left(B_1^{\LL^i, \KK_n^i}, W_1^{\LL^i, \KK^i_n}\right)$ and the matrix product $B_1^{\LL^i, \KK_n^i}\big(W_1^{\LL^i, \KK^i_n}\big)^{1/2}$ are significantly faster than that of the up persistent Laplacian $\Delta_{1, \text{up}}^{\KK^i_n, \LL^i}$.
+
+In addition to that,
+we take the two cube-wise filtrations $\KK^3\hookrightarrow \cdots \hookrightarrow \LL^3$ and $\KK^4\hookrightarrow \cdots \hookrightarrow \LL^4$ as examples to test the computation time of eigenvalues and singular values.
+The cubical complex $\LL^3$ has 2\small{,}954 more $1$-cubes than $\KK^3$,
+we compute the matrices $B_1^{\LL^3, \KK_n^3}\big(W_1^{\LL^3, \KK^3_n}\big)^{1/2}$ and $\Delta_{1, \text{up}}^{\KK^3_n, \LL^3}$ at each step $1\leq n\leq \text{2\small{,}954}$,
+and we compute the smallest $150$ eigenvalues of $\Delta_{1, \text{up}}^{\KK^3_n, \LL^3}$ and smallest $150$ singular values of $B_1^{\LL^3, \KK_n^3}\big(W_1^{\LL^3, \KK^3_n}\big)^{1/2}$ separately at every $100$ steps.
+Similarly,
+the cubical complex $\LL^4$ contains $702$ more $1$-cubes than $\KK^4$,
+we compute the smallest $50$ eigenvalues and singular values of $\Delta_{1, \text{up}}^{\KK^4_n, \LL^4}$ and $B_1^{\LL^4, \KK_n^4}\big(W_1^{\LL^4, \KK^4_n}\big)^{1/2}$ respectively at every $100$ steps,
+the computation time is displayed in \cref{fig:image_eig_sing}.
+We observe that the computation of singular values is significantly faster than that of eigenvalues\footnote{We implement the computation with the functions \texttt{sparse.linalg.eigsh} and \texttt{sparse.linalg.svds} in SciPy.}. 
+
+\begin{figure}[ht]
+    \centering
+    \setlength{\tabcolsep}{0.1pt} % Adjust horizontal spacing between columns
+    \begin{tabular}{ccccc}
+         \subcaptionbox{\footnotesize{Filtration $\KK^1_0\hookrightarrow \cdots\hookrightarrow \KK_n^1\hookrightarrow \cdots \hookrightarrow\LL^1$}\label{fig:img1}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_1.png}} &
+         \subcaptionbox{\footnotesize{Filtration $\KK^2_0\hookrightarrow \cdots \hookrightarrow \KK^2_n\hookrightarrow \cdots \hookrightarrow\LL^2$}\label{fig:img2}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_2.png}} \\
+         \subcaptionbox{\footnotesize{Filtration $\KK^3_0\hookrightarrow \cdots \hookrightarrow \KK^3_n\hookrightarrow \cdots \hookrightarrow\LL^3$}\label{fig:img3}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_3.png}} &
+         \subcaptionbox{\footnotesize{Filtration $\KK^4_0\hookrightarrow \cdots \hookrightarrow \KK^4_n\hookrightarrow \cdots \hookrightarrow\LL^4$}\label{fig:img4}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_4.png}} %&
+        %\includegraphics[width=0.3\textwidth]{plots/computing_time_5.png}\\
+\end{tabular}
+    \caption{Computation time w.r.t. filtrations}
+    \label{fig:image_plots}
+\end{figure}
+\todo{expand on the caption}
+\begin{figure}[ht]
+    \centering
+    \setlength{\tabcolsep}{0.1pt} % Adjust horizontal spacing between columns
+    \begin{tabular}{ccccc}
+         \subcaptionbox{\footnotesize{Filtration 
+         $\KK^3_0\hookrightarrow \cdots \hookrightarrow \KK_n^3\hookrightarrow \cdots \hookrightarrow\LL^3$}\label{fig:eig1}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_eigenvalues.png}} &
+         \subcaptionbox{\footnotesize{Filtration 
+         $\KK^4_0\hookrightarrow \cdots \hookrightarrow \KK^4_n\hookrightarrow \cdots \hookrightarrow\LL^4$}\label{fig:eig2}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_eigenvalues_2.png}} 
+\end{tabular}
+    \caption{Time of computing the eigenvalues and singular values at every 100 steps}
+    \label{fig:image_eig_sing}
+\end{figure}
+\end{comment}
+\subsection{Experiments on a chest X-Ray image}
+We conduct experiments on a $224\times 224$ chest X-ray image randomly selected from the ChestMNIST dataset \cite{medmnistv1, medmnistv2}. To analyze the performance of our algorithm across different scales, we generate a multi-resolution set of images by iteratively applying a $2\times 2$ max-pooling operation to the original image (see \cref{fig:image_x_ray}, top row).
+
+From each of these four images, we derive two cubical complexes by thresholding pixel intensities. First, we construct the complexes $\KK^1, \KK^2, \KK^3, \KK^4$ from pixels with values less than $50$ (\cref{fig:image_x_ray}, middle row). Second, we construct a set of larger complexes, $\LL^1, \LL^2, \LL^3, \LL^4$, using a higher threshold of $150$ (\cref{fig:image_x_ray}, bottom row). This process yields four pairs of nested complexes $\KK^j\hookrightarrow \LL^j$ for $j=1,2,3,4$. For each pair, we define a cube-wise filtration $\KK^j=\KK_0^j\hookrightarrow \KK_1^j\hookrightarrow \cdots \hookrightarrow \KK^j_m=\LL^j$, where each step $\KK^j_{i} \hookrightarrow \KK^j_{i+1}$ corresponds to the addition of a single $1$-cube. The total number of added $1$-cubes, $m$, for the four filtrations are $47211$, $11843$, $2954$, and $702$, respectively.
+
+\begin{figure}[ht]
+    \centering
+    \setlength{\tabcolsep}{5.5pt} % Adjust horizontal spacing
+    \begin{tabular}{cccc}
+        \includegraphics[width=0.22\textwidth]{images/full_img_1.png} &
+        \includegraphics[width=0.22\textwidth]{images/full_img_2.png} &
+        \includegraphics[width=0.22\textwidth]{images/full_img_3.png} &
+        \includegraphics[width=0.22\textwidth]{images/full_img_4.png} \\
+        \multicolumn{4}{c}{\footnotesize{(a) Original image and three downscaled versions via max-pooling}.} \\[6pt]
+
+        \includegraphics[width=0.22\textwidth]{images/img_big_1.png} &
+        \includegraphics[width=0.22\textwidth]{images/img_big_2.png} &
+        \includegraphics[width=0.22\textwidth]{images/img_big_3.png} &
+        \includegraphics[width=0.22\textwidth]{images/img_big_4.png} \\
+        \multicolumn{4}{c}{\footnotesize{(b) Images from pixels with values $< 50$ (defining complexes $\KK^j$)}.} \\[6pt]
+        
+        \includegraphics[width=0.22\textwidth]{images/img_small_1.png} &
+        \includegraphics[width=0.22\textwidth]{images/img_small_2.png} &
+        \includegraphics[width=0.22\textwidth]{images/img_small_3.png} &
+        \includegraphics[width=0.22\textwidth]{images/img_small_4.png} \\
+        \multicolumn{4}{c}{\footnotesize{(c) Images from pixels with values $< 150$ (defining complexes $\LL^j$)}.} \\[6pt]
+    \end{tabular}
+    \caption{The image data processing pipeline. (a) The original $224 \times 224$ X-ray image and three downscaled versions. (b) Binary images used to define the initial cubical complexes $\KK^j$. (c) Binary images used to define the larger terminal complexes $\LL^j$.}
+    \label{fig:image_x_ray}
+\end{figure}
+
+\subsubsection{The speed of computing $B_1^{\LL^j, \KK_n^j}$ and $\Delta_{1, \text{up}}^{\KK^j_n, \LL^j}$}\label{subsec:compute_speed}
+We first evaluate\footnote{{\color{blue}The code is available on \hyperlink{https://github.com/ruidongsmile/UpPersLapCubicalComplex}{https://github.com/ruidongsmile/UpPersLapCubicalComplex}.}}
+the performance of our DSU based method from \cref{sec:filtration} against the Schur complement approach of \cite[Section 5]{pers_lap} for computing the up persistent Laplacian, $\Delta_{1, \text{up}}^{\KK^j_n, \LL^j}$, along each filtration. We also time the computation of the constituent matrices $\left(B_1^{\LL^j, \KK_n^j}, W_1^{\LL^j, \KK^j_n}\right)$ and their product $B_1^{\LL^j, \KK_n^j}\big(W_1^{\LL^j, \KK^j_n}\big)^{1/2}$. The results are summarized in \cref{fig:image_plots}. For larger complexes (e.g., $\KK^1 \hookrightarrow \LL^1$), our DSU-based method is notably faster. Conversely, for smaller complexes, the Schur complement method exhibits better performance. In all cases, the direct computation of constituent matrices and their product is significantly faster than computing the full persistent Laplacian.
+
+\begin{figure}[ht]
+    \centering
+    \setlength{\tabcolsep}{0.1pt}
+    \begin{tabular}{cc}
+         \subcaptionbox{The filtration $\KK^1_0\hookrightarrow \cdots \hookrightarrow\LL^1$.\label{fig:img1}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_1_ubuntu.png}} &
+         \subcaptionbox{The filtration $\KK^2_0\hookrightarrow \cdots \hookrightarrow\LL^2$.\label{fig:img2}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_2_ubuntu.png}} \\
+         \subcaptionbox{The filtration $\KK^3_0\hookrightarrow \cdots \hookrightarrow\LL^3$.\label{fig:img3}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_3_ubuntu.png}} &
+         \subcaptionbox{The filtration $\KK^4_0\hookrightarrow \cdots \hookrightarrow\LL^4$.\label{fig:img4}}{\includegraphics[width=0.5\textwidth]{plots/computing_time_4_ubuntu.png}}
+    \end{tabular}
+    \caption{Computation time analysis for the four filtrations. Each plot compares the time taken by our DSU-based method, the Schur complement method to compute the up persistent Laplacians, and the computation of intermediate matrices. Time is plotted against the number of $1$-cubes added to the filtration. }
+    \label{fig:image_plots}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \setlength{\tabcolsep}{0.1pt}
+    \begin{tabular}{cc}
+         \subcaptionbox{The filtration $\KK^1_0\hookrightarrow \cdots \hookrightarrow\LL^1$.\label{fig:img5}}{\includegraphics[width=0.5\textwidth]{plots/eigenvalues_1_ubuntu.png}} &
+         \subcaptionbox{The filtration $\KK^2_0\hookrightarrow \cdots \hookrightarrow\LL^2$.\label{fig:img6}}{\includegraphics[width=0.5\textwidth]{plots/eigenvalues_2_ubuntu.png}} \\
+         \subcaptionbox{The filtration $\KK^3_0\hookrightarrow \cdots \hookrightarrow\LL^3$.\label{fig:img7}}{\includegraphics[width=0.5\textwidth]{plots/eigenvalues_3_ubuntu.png}} &
+         \subcaptionbox{The filtration $\KK^4_0\hookrightarrow \cdots \hookrightarrow\LL^4$.\label{fig:img8}}{\includegraphics[width=0.5\textwidth]{plots/eigenvalues_4_ubuntu.png}}
+    \end{tabular}
+    \caption{Comparison of computation times for largest/smallest eigenvalues and singular values as described in \cref{subsec:compute_speed}.}
+    \label{fig:image_eig_sing}
+    \end{figure}
+
+Next, we compare the computational cost of spectral decomposition; see \cref{sec:eigenvalues}.
+
+
+For each filtration 
+\[\KK_0^j\hookrightarrow \cdots \hookrightarrow \LL^j, \qquad j=1, 2, 3, 4,\]
+we first compute the up persistent Laplacian $\Delta_{1, \text{up}}^{\KK^j_n, \LL^j}$ using the Schur complement method, 
+together with the largest and smallest non-zero eigenvalue. Then, we compute the matrix $B_1^{\LL^j, \KK_n^j}\big(W_1^{\LL^j, \KK^j_n}\big)^{1/2}$ and its largest and smallest singular value. We compute these values at every $5000$-th $(j=1)$, $500$-th $(j=2)$, $500$-th $(j=3)$ and $50$-th $(j=4)$ step of the filtration. As shown in \cref{fig:image_eig_sing},
+calculating the singular values is substantially faster than calculating the eigenvalues of the corresponding Laplacian\footnote{Computations were performed using the \texttt{sparse.linalg.eigsh} and \texttt{sparse.linalg.svds} functions in SciPy.}.
+
+\section{Discussion and further work}
+\label{sec:discussion}
+The persistent Laplacian has already demonstrated superior performance compared to persistent homology on image data \cite{davies23c}. We believe that the contributions of this paper makes the persistent Laplacian a practical tool for image data, e.g., by including the top $k$ eigenvalues.  Exploring the discriminatory power of such enhanced descriptors is a key direction for our future work (see also \cref{rem:hodge-efficient}). Another related and hitherto open problem is how to efficiently work with such a large number of eigenvalues in machine learning applications.
+
+On the theoretical side, this paper introduces a Cheeger-type inequality for the persistent Laplacian. While the minimal non-zero eigenvalue, $\lambda_{\mathrm{min}}^{\KK, \LL}$, of the up persistent Laplacian is known to capture geometric information, its stability under small perturbations of the filtration remains an important open question that warrants further investigation.
+
+
+\FloatBarrier
+\bibliography{sample}
+
+\appendix
+
+\section{Graphs and incidence matrices}
+In this section,
+we describe the weighted graphs used in \cref{subsec:singular_mtx}.
+
+\begin{definition}
+A directed (resp. undirected) graph $G=(V, E)$ is a discrete structure where the vertex set $V$ is a finite set and the edge set $E$ is a set whose each element is an (resp. ordered) unordered pair of distinct vertices in V.
+\end{definition}
+
+\begin{definition}
+We say $G=(V, E)$ is an undirected graph with loops if each element $e\in E$ is either an unordered pair of distinct vertices or a single vertex in $V$.
+\end{definition}
+
+\begin{definition}\label{def:incd_mtx_undir}
+The incidence matrix $I(G)$ of an undirected graph (with loops) $G=(V, E)$ is a $\{0, 1\}$-matrix whose rows and columns are indexed by the vertices and edges of $G$ respectively,
+such that the $(v, e)$-entry of $G$ is equal to $1$ if $v\in e$, 
+otherwise it is equal to $0$.
+\end{definition}
+
+\begin{remark}
+Usually the incidence matrix with respect to an undirected graph $G$ with loops is a $\{0, 1, 2\}$-matrix,
+i.e., 
+each loop is indexed by $2$ in $I(G)$,
+this is different from \cref{def:incd_mtx_undir}.
+\end{remark}
+
+%Let $G=(V, E)$ be a directed graph.
+%The incidence matrix with respect to $G$ is a $\{0, \pm 1\}$-matrix,
+%where the head and tail of an edge $e$ is indexed by $1$ and $-1$ respectively.
+We will then give the formal definition of the incidence matrix with respect to a directed graph $G=(V, E)$.
+We refer to an ordered pair of adjacent vertices as an \emph{arc} of $G$.
+An orientation of $G$ is defined as a function $\sigma$ from the arcs of $G$ to $\{-1, 1\}$ such that if $(u, v)$ is an arc,
+then $\sigma(u, v)=-\sigma(v, u)$.
+We regard the edge $[uv]$ as directed from tail $u$ to head $v$ if $\sigma(u, v)=1$.
+A directed graph $G$ is associated with a selected orientation $\sigma$.
+
+\begin{definition}
+The incidence matrix $I(G)$ of a directed graph $G=(V, E)$ is the $\{0, \pm 1\}$-matrix with rows and columns indexed by vertices and edges of $G$ respectively such that the $(u, e)$-entry is equal to $1$ if $u$ is the head of $e$,
+ $-1$ if $u$ is the tail of $e$,
+ and $0$ otherwise.
+\end{definition}
+
+\section{Pseudocodes associated with Union-Find (DSU) algorithm}\label{appdx_codes}
+
+\input{alg_dsu}
+\input{alg_union}
+\input{alg_find}
+
+
+\section{Oriented hypergraphs}\label{appdx_hg}
+In this section, we recall the basics of hypergraphs, mostly following the exposition in \cite{MR4236395}.
+
+\begin{definition}[\cite{MR4236395}]
+An \emph{oriented hypergraph} is a pair $H=(V, E)$ such that $V$ is a finite set of vertices and $E$ is a set such that each edge $e\in E$ is a pair of disjoint elements $(e_{\mathrm{in}}, e_{\mathrm{out}})$ (input and output) in the power set $\mathcal{P}(V)$.
+\end{definition}
+
+\begin{remark}
+For an edge $e=(e_{\mathrm{in}}, e_{\mathrm{out}})$,
+the set $e_{\mathrm{in}}$ or $e_{\mathrm{out}}$ can be empty.
+\end{remark}
+
+\begin{definition}[\cite{MR4236395}]
+An oriented hypergraph $H$ is \emph{connected} if for each pair of vertices $u, v\in V$,
+there exist $v_1, \cdots, v_k\in V$ and $e_1, \cdots e_{k-1}\in E$ such that $v_1=u, v_k=v$,
+and $\{v_i, v_{i+1}\subset e_i\}$ for each $1\leq i\leq k-1$.
+In other words,
+there exists a path which connects $u$ and $v$.
+\end{definition}
+
+\begin{definition}[\cite{MR4236395}]
+We say an oriented hypergraph $H=(V, E)$ has $r$ connected components if there exists $H_j=(V_j, E_j)$ for $1\leq j\leq r$ such that:
+\begin{enumerate}
+    \item $H_j$ is a connected hypergraph for each $1\leq j\leq r$.
+    \item For $1\leq i, j\leq r$ if $i\neq j$, 
+    then $V_i\cap V_j=\emptyset$ and $E_i\cap E_j=\emptyset$.
+    \item $\bigcup V_j = V$,
+    and $\bigcup E_j=E$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[\cite{MR4236395}]
+ If the cardinality of $V$ is $n$,
+ the cardinality of $E$ is $m$,
+then the \emph{incidence matrix} of $H=(V, E)$ is $\mathcal{I}\coloneqq (\mathcal{I}_{ve})_{i\in V, e\in E}$ with 
+ \[
+ \mathcal{I}_{ve}
+ \coloneqq
+ \begin{cases}
+1 & \textrm{if } v\in e_{\mathrm{in}},\\
+-1 & \textrm{if } v\in e_{\mathrm{out}},\\
+0 & \textrm{else}.
+ \end{cases}
+ \]
+\end{definition}
+
+The following definition is novel to this paper, and introduces the concept of an \emph{weighted} oriented hypergraph. 
+
+\begin{definition}
+Let $W_0^v$ be a positive weight over the vertex $v\in V$,
+and $W_1^e$ be a positive weight over the hyperedge $e\in E$.
+We define a weighted oriented hypergraph as a 
+quadruple $(V, E, W_0, W_1)$,
+where $W_0=\{W_0^v: v\in V\}$,
+$W_1=\{W_1^e: e\in E\}$.
+\end{definition}
+
+Inspired by the Laplacian for oriented hypergraphs given in \cite{MR4236395}, we arrive at the following definition of a Laplacian over a weighted oriented hypergraph $(V, E, W_0, W_1)$.
+
+\begin{definition}
+\label{def:laphyper}
+Let $(V, E, W_0, W_1)$ be a weighted oriented hypergraph.
+The Laplacian $L_0$ over $V$ is 
+
+\[
+\begin{aligned}
+L_0([v])
+\coloneqq
+&\sum_{e_{\textrm{in}:} v \textrm{ input}} W^e_1 \left(W_0^{v'} \sum_{v' \textrm{:input of} e_{\mathrm{in}}} [v']  
+-
+W_{0}^{w'}\sum_{w'\textrm{:output of } e_{\textrm{in}}}[w']
+\right)\\
+&-
+\sum_{e_{\mathrm{out}:} v\, \mathrm{output}} W_{1}^e \left( W_{0}^{\hat{v}}\sum_{\hat{v}\mathrm{: input \, of \,} e_{\mathrm{out}}}[\hat{v}] 
+-
+W_0^{\hat{v}}\sum_{\hat{v}\mathrm{: output \, of \,} e_{\mathrm{out}}}[\hat{w}]
+\right).
+\end{aligned}
+\]
+
+Equivalently,
+we can write the Laplacian $L_0$ in the matrix form as
+\[
+L_0
+=
+W_0\, \mathcal{I}\, W_1\, \mathcal{I}^T,
+\]
+where $\mathcal{I}$ is the incidence matrix of the underlying oriented hypergraph.
+\end{definition}
+
+
+\begin{remark}
+\cref{def:laphyper} is a generalization of the Laplacian for directed graphs.
+In fact,
+for a directed graph $(V, E)$,  
+if we assign 
+$W_0=\id_n$ and $W_1=\id_m$,
+%where $n$, $m$ are the cardinalities of $V$ and $E$ respectively.
+then $L_0=\mathcal{I}\mathcal{I}^T$ gives the algebraic Laplacian used in spectral graph theory \cite{MR1421568}.
+Furthermore,
+if $(V, E)$ is an oriented hypergraph,
+and
+\[W_0=\diag\left(1/\deg v_1,\cdots, 1/\deg v_n \right)\] where $\deg v_i$ denotes the degree of vertex $v_i$ for $i\leq n$,
+and assign $W_1=\id_{m}$,
+then $L_0$ is equal to the normalized Laplacian over the oriented hypergraph $(V, E)$; we refer to {\cite[Section 1.4]{MR4433789}} for more details.
+   
+\end{remark}
+
+\begin{definition}[\cite{MR4236395}]\label{def_dual_hg}
+Let $H=(V, E)$ be an oriented hypergraph with $V=\{v_1,\cdots, v_n\}$ and $E=\{e_1,\cdots, e_m\}$.
+We define the \emph{dual hypergraph} $H^T$ with respect to $H$ as $H^T=(V', H')$,
+where $V'=\{v'_1, \cdots, v'_m\}$ and $E'=\{e'_1, \cdots, e'_n\}$,
+\[
+v'_j\in e'_i \textrm{ as input (resp. output)} 
+\Longleftrightarrow
+v_i\in e_j \textrm{ as input (resp. output)}.
+\]
+\end{definition}
+According to \cref{def_dual_hg},
+for a weighted oriented hypergraph $H=(V, E, W_0^H, W_1^H)$,
+$\mathcal{I}(H^T)=\mathcal{I}(H)^T$,
+and the dual weighted oriented hypergraph is 
+$H'=(V', E', W_0^{H'}, W_1^{H'})$,
+with
+$W_{0}^{H'}=W_{1}^{H}$,
+$W_{1}^{H'}=W_{0}^H$.
+
+
+\section{Cubical complexes}\label{appdx_cub_cplx}
+In this section, we recall the basics of cubical complexes. There are many good sources for this, see e.g., \cite{MR3025945} for one written for a TDA audience.
+
+\begin{definition}
+An \emph{elementary interval} is defined as a unit interval $[k, k+1]\in \mathbb{R}$,
+or a degenerate interval $[k, k]$.
+\end{definition}
+
+\begin{definition}
+A $q$-\emph{cube} is defined as the product of $q$ unit intervals: $I\coloneqq \prod_{i=1}^q I_q$.
+And we say the dimension of $I$ is $q$.
+\end{definition}
+By this definition,
+$0$-cubes,
+$1$-cubes,
+$2$-cubes and $3$-cubes are vertices, edges, squares, and $3D$ cubes (voxels) respectively.
+
+\begin{definition}
+Let $I$, $J$ be two cubes.
+We say $I$ is a \emph{face} of $J$ if and only if $I\subset J$.
+\end{definition}
+
+\begin{definition}
+A subset $\KK\subset \mathbb{R}^q$ is called a \emph{cubical complex} of dimension $q$ if it is a collection of cubes of dimension at most $q$.
+And $\KK$ is closed under taking faces and intersections.
+\end{definition}
+
+\begin{definition}
+Let $\KK$ be a cubical complex.
+The chain group $C_q^\KK$ is defined as the linear space generated by all $q$-cubes in $\KK$ over $\mathbb{R}$. 
+\end{definition}
+
+\input{fig_2_cube_file.tex}
+
+\begin{definition}
+We define the boundary map $\partial_q: C_{q}^\KK\to C_{q-1}^\KK$ as follows:
+\begin{enumerate}
+    \item For a $0$-cube $[k, k]$,
+\[
+\partial_{0}([k, k])\coloneqq 0,
+\]
+ \item for a $1$-cube $[k, k+1]$,
+\[
+\partial_1([k, k+1])\coloneqq [k+1, k+1] - [k, k],
+\]
+\item for a general $q$-cube $I=I_1\times \cdots I_q$
+with $q>1$,
+\[
+\partial_q (I)\coloneqq
+\partial_1(I_1)\times I_2\times \cdots, \times I_q
+-
+I_1 \times \partial_{q-1} (I_2\times \cdots \times I_q).
+\]
+\end{enumerate}
+\end{definition}
+
+As an illustration,
+consider a simple $2$-cube $I=[m, m+1]\times [n, n+1]\subset \mathbb{R}^2$ as displayed in \cref{fig_2_cube},
+the boundary of $I$ is: 
+\[
+\partial_2(I)
+=
+[m+1, m+1]\times [n, n+1] - [m, m]\times [n, n+1] 
+-
+[m, m+1]\times [n+1, n+1]
++
+[m, m+1]\times [n, n].
+\]
+
+
+\begin{comment}
+\begin{proof}
+According to \cref{prop:pers_lap},
+the transformation from $B_{q+1}^{\LL}$ to $B_{q+1}^{\LL, \KK}$ is linear,
+moreover, we only act over columns of $B_{q+1}^{\LL}$,
+therefore, 
+there is a matrix $T$ such that
+\[
+\begin{bmatrix}
+B_{q+1}^{\LL, \KK}\\
+0
+\end{bmatrix}
+=
+B_{q+1}^\LL T,
+\]
+especially from the proof of \cref{prop:pers_lap} we see that $T$ has full column rank.
+Suppose $B_{q+1}^{\LL, \KK}$ has no full column rank,
+then there is some non-zero vector $v$ such that $B_{q+1}^{\LL, \KK}v=0$,
+we then have $B_{q+1}^\LL T v=0$,
+this contradicts with our assumption that the matrix $B_{q+1}^{\LL, \KK}$ has full column rank.
+
+\end{proof}
+\end{comment}
+
+\section{Golub-Kahan-Lanczos method}
+\label{appdx_GKL}
+In this section we briefly review the Golub-Kahan-Lanczos method (GKL) to compute singular values of an $m\times n$ matrix $A$,
+mainly following the exposition in \cite[Section 6.3.3]{MR1792141}.
+Let $A\in M_{m\times n}(\mathbb{R})$,
+and without loss of generality
+we suppose that $m\geq n$; if $m<n$, we consider $A^T$ instead.
+We refer to the eigenvectors of the symmetric matrix $A^TA$ (resp. $AA^T$) as \emph{right singular vectors} (resp. \emph{left singular vectors}).
+Our goal is to bidiagonalize the matrix $A$,
+i.e,
+to find a matrix factorization
+\[
+U^TAV
+=
+B
+=
+\begin{bmatrix}
+    \alpha_1 & \beta_1 & & & & \\
+    & \alpha_2 & \beta_2 & \\
+    & & \alpha_3 & \beta_3 \\
+    & & & \ddots & \ddots \\
+    & & & & \alpha_{n-1} & \beta_{n-1}\\
+    & & & & & \alpha_n
+\end{bmatrix}.
+\]
+Here $V$ is an $n\times n$ orthogonal matrix and $U$ is an $n\times m$ matrix orthogonal matrix whose column vectors are the left singular vectors associated with $A$,
+and all $\alpha$'s and $\beta$'s are real.
+We denote by 
+$U=
+\begin{bmatrix}
+u_1 & u_2 & \cdots & u_n
+\end{bmatrix}
+$,
+$V=
+\begin{bmatrix}
+v_1 & v_2 & \cdots & v_n
+\end{bmatrix}
+$,
+and observe that
+\[
+\begin{aligned}
+&A
+\begin{bmatrix}
+v_1 & v_2 & \cdots & v_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+u_1 & u_2 & \cdots & u_n
+\end{bmatrix}
+B,\\
+&A^T\begin{bmatrix}
+u_1 & u_2 & \cdots & u_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_1 & v_2 & \cdots & v_n
+\end{bmatrix}
+B^T.
+\end{aligned}
+\]
+Computing the $j$th column on both sides,
+we obtain that
+\[
+\begin{aligned}
+&Av_j=\beta_{j-1}u_{j-1}+\alpha_ju_j,\\
+&A^Tu_j = \alpha_jv_j+\beta_jv_{j+1},
+\end{aligned}
+\]
+or equivalently,
+\[
+\begin{aligned}
+&\alpha_ju_j=Av_j-\beta_{j-1}u_{j-1},
+\quad \beta_0=0,\\
+&\beta_{j}v_{j+1}=A^Tu_j-\alpha_jv_j.
+\end{aligned}
+\]
+Since the columns of $U$ and $V$ are normalized,
+we also have
+\[
+\begin{aligned}
+&\alpha_j=||Av_j-\beta_{j-1}u_{j-1}||_2,\\
+&\beta_j=||A^*u_j-\alpha_jv_j||_2.
+\end{aligned}
+\]
+We can then compute the singular values of the bidiagonal matrix $B$ by QR algorithm,
+according to \cite[Section 6.2]{MR1792141}; 
+it costs $O(n^2)$.
+
+In practical applications,
+when the size of $A$ is very large,
+it is usually not necessary to compute the entire bidiagonal matrix $B$,
+instead,
+we can iterate $k$ steps to obtain a $k\times k$ bidiagonal matrix $B_k$,
+whose singular values can be treated as an approximation to those of $A$. Typically, the algorithm will converge faster to larger singular values.
+We summarize the GKL algorithm in \cref{alg:GKL}. 
+
+\input{alg_GKL.tex}
+
+\begin{proposition}
+\label{prop:GKL_speed}
+Let $A\in M_{m\times n}(\mathbb{R})$ be a non-branching matrix.
+The GKL bidiagonalization of $A$ costs $O(k(m+n))$ if iterating $k$ times.
+\end{proposition}
+\begin{proof}
+Consider the \cref{alg:GKL},
+since $A$ is non-branching,
+the non-zero entries of $A$ is bounded by $O(m)$,
+hence both of the computations of $Av_j$ and $A^Tu_j$ cost $O(m)$.
+On the other hand,
+the computation of $u_j$ and $\alpha_j$ cost $O(m)$ since $u_j$ is $m$-dimensional,
+similarly the computation of $v_j$ and $\beta_j$ cost $O(n)$ since $v_j$ is $n$-dimensional.
+Hence in each iteration step it costs $O(m+n)$,
+and in total it costs $O(k(m+n))$.
+\end{proof}
+
+\begin{proposition}
+\label{prop:GKL_speed_2}
+Let $A\in M_{m\times n}(\mathbb{R})$ be a matrix whose each column contains exactly $q$ non-zero entries.
+The GKL bidiagonalization of $A$ with $k$ iterations costs $O\left(k\times (q\times n+m)\right)$.
+\end{proposition}
+
+\begin{proof}
+Since the matrix $A$ contains exactly $q$ non-zero entries per column,
+it contains exact $qn$ non-zero entries.
+Hence both of the computations of $Av_j$ and $A^Tu_j$ cost $O(qn)$.
+On the other hand,
+it costs $O(m+n)$ to compute $u_j$, $\alpha_j$, $v_{j}$ and $\beta_{j+1}$.
+Iterating $k$ times,
+the result follows.
+\end{proof}
+
+
+\section{Numerical linear algebra example}
+\label{ex:numeric}
+We then assume that $\KK$ and $\LL$ have the non-trivial weights as follows
+\[
+W_{2}^{\LL}
+=
+\begin{bmatrix}
+3\epsmach & 0\\
+0 & \epsmach
+\end{bmatrix},
+\quad
+W_1^\KK
+=
+\begin{bmatrix}
+2 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0\\
+0 & 0 & 2 & 0 & 0\\
+0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0 & 2
+\end{bmatrix}.
+\]
+According to \cref{thm:fastcomputation},
+$W_{2}^{\LL, \KK}
+=
+\begin{bmatrix}
+1.5\epsmach & 0\\
+0 & \epsmach
+\end{bmatrix}$ and 
+\[
+\begin{aligned}
+\Delta_{1, \mathrm{up}}^{\KK, \LL}
+&=
+B_2^{\LL, \KK} W_{2}^{\LL, \KK} (B_2^{\LL, \KK})^T(W_{1}^{\KK})^{-1}\\
+\begin{comment}
+&=
+\begin{bmatrix}
+ 1 & 0 \\
+ 1 & -1 \\
+ -1 & 0 \\
+ -1 & 1 \\
+ 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+    1.5\epsmach & 0\\
+    0 & \epsmach
+\end{bmatrix}
+\begin{bmatrix}
+    1 & 1 & -1 & -1 & 0\\
+    0 & -1 & 0 & 1 & 1
+\end{bmatrix}
+\begin{bmatrix}
+0.5 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0\\
+0 & 0 & 0.5 & 0 & 0\\
+0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0 & 0.5
+\end{bmatrix}\\
+\end{comment}
+&=
+\begin{bmatrix}
+0.75\epsmach & 1.5\epsmach & -0.75\epsmach & -1.5\epsmach & 0\\
+0.75\epsmach & 2.5\epsmach & -0.75\epsmach & -2.5\epsmach & -0.5\epsmach\\
+-0.75\epsmach & -1.5\epsmach & 0.75\epsmach & 1.5\epsmach & 0\\
+-0.75\epsmach & -2.5\epsmach & 0.75\epsmach & 2.5\epsmach & 0.5\epsmach\\
+0 & -\epsmach & 0 & \epsmach & 0.5\epsmach\\
+\end{bmatrix}.
+\end{aligned}
+\]
+In a computer with machine epsilon being $\epsmach$,
+the up persistent Laplacian $\Delta_{1, \mathrm{up}}^{\KK, \LL}$ will be identified 
+as 
+\[
+\Delta_{1, \mathrm{up}}^{\KK, \LL}
+=
+\begin{bmatrix}
+0 & 1.5\epsmach & 0 & -1.5\epsmach & 0\\
+0 & 2.5\epsmach & 0 & -2.5\epsmach & 0\\
+0 & -1.5\epsmach & 0 & 1.5\epsmach & 0\\
+0 & -2.5\epsmach & 0 & 2.5\epsmach & 0\\
+0 & -\epsmach & 0 & \epsmach & 0\\
+\end{bmatrix},
+\]
+as a result,
+we will obtain only one non-zero eigenvalue since
+the rank of $\Delta_{1, \mathrm{up}}^{\KK, \LL}$ will become $1$,
+however,
+the real rank of $\Delta_{1, \mathrm{up}}^{\KK, \LL}$ is $2$.
+In contrast to that,
+the matrix $M = (W_1^{\KK})^{-1/2}B_{2}^{\LL, \KK} (W_{2}^{\LL, \KK})^{1/2}$ is computed as
+\[
+M=
+\begin{bmatrix}
+0.87\sqrt{\epsmach} & 0\\
+1.22\sqrt{\epsmach} & -\sqrt{\epsmach}\\
+-0.87\sqrt{\epsmach} & 0\\
+-1.22\sqrt{\epsmach} & \sqrt{\epsmach}\\
+0 & 0.71\sqrt{\epsmach}
+\end{bmatrix},
+\]
+we notice that the absolute value of all the entries in $M$ are larger than $\epsmach$,
+thus we can obtain two non-zero singular values of $M$.
+\end{document}
+
+
+\subsection{The up persistent Laplacians for non-branching simplicial filtrations}\label{subsec:simp_filt}
+
+Consider an inclusion
+$
+\KK_0\hookrightarrow \KK_1 \hookrightarrow \LL
+$
+of simplicial or cubical complexes, where $\KK_1$ contains precisely one more $q$-simplex or $q$-cube than $\KK_0$, and $\LL$ is $q$-non-branching. In this case the matrix $D_{q+1}^{\KK_0}$ has exactly one more row than $D_{q+1}^{\KK_1}$.
+We denote by $H_0$ the hypergraph whose  incidence matrix is $(D_{q+1}^{\KK_0})^T$;
+%and similar to $H_1$,
+%then $H_0$ contains exact one more hyperedge than $H_1$,
+here we regard each zero row in $(D_{q+1}^{\KK_0})^T$ as a component containing only a single vertex in $H_0$,
+and likewise for $H_1$ and $(D_{q+1}^{\KK_1})^T$. As a result,
+this extra hyperedge either connects two components of $H_1$ together or add one additional hyperedge to some component in $H_1$.
+Therefore it implies that we can derive $B_{q+1}^{\LL, \KK_0}$ from $B_{q+1}^{\LL, \KK_1}$.
+For simplicity of notation,
+we sort the elements of $\bar{S}_q^{\LL}=\{[\sigma_i]\}_{i=1}^{n_q^{\LL}}$ in such a way that 
+$\bar{S}_q^{\KK_0}=\{[\sigma_i]\}_{i=1}^{n_q^{\KK_0}}$ and 
+$\bar{S}_q^{\KK_1}=\{[\sigma_i]\}_{i=1}^{n_q^{\KK_1}}$.
+
+\begin{lemma}\label{lemma:edge}
+We denote by $C_1,\cdots, C_r$ the regulable components in $H_1$,
+and by 
+$B_{q+1}^{\LL, \KK_1}
+=
+\begin{bmatrix}
+    b_1 & b_2 & \cdots & b_r
+\end{bmatrix}.
+$
+Suppose the extra hyperedge contains two vertices, 
+then the last row in $B_{q+1}^{\LL, \KK_1}$ contains two non-zero entries,
+and the followings hold:
+\begin{enumerate}
+    \item If this extra edge connect two regulable components together,
+    without loss of generality,
+we assume these two components are $C_1$ and $C_2$.
+Then 
+$
+\begin{bmatrix}
+    B_{q+1}^{\LL, \KK_0} \\
+    0
+\end{bmatrix}
+$ 
+is equal to either 
+$
+\begin{bmatrix}
+b_1 + b_2 & b_3 & \cdots & b_r
+\end{bmatrix}
+$
+or 
+$
+\begin{bmatrix}
+b_1 - b_2 & b_3 & \cdots & b_r
+\end{bmatrix}.
+$
+\item If this edge connects a regulable component,
+say, 
+$C_1$ together with a non-regulable component,
+or this extra edge connects two vertices in $C_1$ and changes $C_1$ into a non-regulable component in $H_0$,
+then 
+$
+\begin{bmatrix}
+    B_{q+1}^{\LL, \KK_0} \\
+    0
+\end{bmatrix}
+=
+\begin{bmatrix}
+    b_2 & \cdots & b_r
+\end{bmatrix}.
+$
+
+\item In all other cases we have that
+$
+\begin{bmatrix}
+    B_{q+1}^{\LL, \KK_0} \\
+    0
+\end{bmatrix}
+=
+B_{q+1}^{\LL, \KK_1}.
+$
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove the first statement,
+since the two regulable components $C_1$, $C_2$ in $H_1$ are connected as one component by an extra edge in the hypergraph $H_0$,
+which is regulable as well.
+Therefore,
+the first column in $B_{q+1}^{\LL, \KK_1}$ is equal to either $b_1+b_2$ or $b_1-b_2$, 
+the sign is up to the orientation of the components $C_1$, $C_2$ and the extra edge which connect them,
+and the remaining columns in $
+\begin{bmatrix}
+    B_{q+1}^{\LL, \KK_0} \\
+    0
+\end{bmatrix}
+$ keep unchanged.
+The second and third statement can be proved similarly.
+\end{proof}
+
+\begin{lemma}\label{lemma:hyperedge}
+Suppose the extra hyperedge contains only one vertex.
+If this vertex belongs to a regulable component,
+say,
+$C_1$ in $H_1$,
+then 
+$
+\begin{bmatrix}
+    B_{q+1}^{\LL, \KK_0} \\
+    0
+\end{bmatrix}
+=
+\begin{bmatrix}
+    b_2 & \cdots & b_r
+\end{bmatrix},
+$
+otherwise we have
+$
+\begin{bmatrix}
+    B_{q+1}^{\LL, \KK_0} \\
+    0
+\end{bmatrix}
+=
+B_{q+1}^{\LL, \KK_1}.
+$
+\end{lemma}
+
+According to Lemma \ref{lemma:hyperedge} and Lemma \ref{lemma:edge},
+we observe that to derive $B_{q+1}^{\LL, \KK_{0}}$ from $B_{q+1}^{\LL, \KK_1}$
+we only need to check which components the vertices of the extra hyperedge belong to,
+thus it costs $O(n_{q+1}^\LL)$ arithmetic operations.
+Therefore,
+we can compute both $\Delta_{q, \textrm{up}}^{\KK_0, \LL}$ and $\Delta_{q, \textrm{up}}^{\KK_1, \LL}$ in 
+$O\left((n_q^{\LL}-n_q^{\KK_1})\times n_{q+1}^\LL + n_q^{\KK_1}\times n_{q+1}^\LL + n_{q+1}^{\LL} + (n_q^{\KK_1})^2 + (n_q^{\KK_0})^2
+\right)$.
+By iteration,
+we can compute the persistent up Laplacians of a general $q$-non-branching filtration.
+
+\begin{proposition}
+Let $\KK_0\hookrightarrow \KK_1\hookrightarrow \cdots \hookrightarrow \KK_m\hookrightarrow \LL$ be a
+filtration of simplicial or cubical complexes, such that each $\KK_i$ contains exactly one more $q$-simplex ($q$-cube) than $\KK_{i-1}$ for each $1\leq i\leq m$, and where $\LL$ is $q$-non-branching.
+Then, the set of up persistent Laplacians $\{\Delta_{q, \textrm{up}}^{\KK_i, \LL}\}_{i=0}^m$ can be computed in 
+\[
+O\left((n_q^{\LL}-n_q^{\KK_1})\times n_{q+1}^\LL + 
+n_q^{\KK_1}\times n_{q+1}^\LL + 
+m\times n_{q+1}^{\LL} + 
+m\times (n_q^{\KK_m})^2\right).
+\]
+\end{proposition}
+
+An (abstract) simplicial complex can be regarded as a higher-dimensional generalization of a graph, 
+which can describe higher-dimensional structures of a dataset.
+More precisely,
+let $V$ be an ordered finite set,
+a collection $\LL\in 2^V$ with $\emptyset\in \LL$ is called a simplicial complex if  $\sigma_1\in \LL$ and $\sigma_2\subset \sigma_1$, 
+then also $\sigma_2\in \LL$.
+Each element $\sigma\in \LL$ is referred to as a simplex,
+if $|\sigma|=q+1$,
+we say $\sigma$ is a $q$-simplex,
+and we say $\sigma_2$ is a \emph{face} of $\sigma_1$ if $\sigma_2\subset \sigma_1$.
+Let $\sigma=\{v_0, v_1, \cdots, v_{q}\}\in \LL$ be a $q$-simplex,
+then the ordered set $[v_0, v_1, \cdots, v_{q}]$ is called an oriented $q$-simplex,
+we can get the opposite orientation if we change the order of all vertices in $\sigma$ by an odd permutation.
+%We follow the notation in $\cite{pers_lap}$.
+
+Let $S_q^\LL$ denote the set of all $q$-simplices in $\LL$,
+and an oriented simplex is denoted as $[\sigma]$.
+We pick an order $[\sigma]$ for each $\sigma$,
+%We assume the order of $[\sigma]$ is inherited from the order of $V$,
+and let $\bar{S}_q^\LL:=\{[\sigma]: \sigma\in S_q^\LL\}$. 
+We define the $q$-th chain group of $\LL$ as the vector space over $\mathbb{R}$ generated by $\bar{S}_q^\LL$,
+and denote it as $C_q^{\LL}$.
+Let $n_q^\LL$ be the cardinality of $\bar{S}_q^\LL$.
+The boundary operator $\partial_q^\KK: C_q^\LL\to C_{q-1}^\LL$ is defined as 
+\[
+\partial_q^\LL: [v_0,\cdots, v_q]\mapsto \sum_{i=0}^q(-1)^i[v_0,\cdots, \hat{v}_i, \cdots, v_q]
+\]
+for each $[\sigma]=[v_0,\cdots, v_q]\in \bar{S}_q^\LL$,
+here $\hat{v}_i$ denotes the omission of $v_i$.
+
+There is a discrete version of the Hodge theorem,
+we state it in the following theorem:
+\begin{theorem}[\cite{MR0013318}]
+For a simplicial complex $\LL$,
+$\ker(\triangle_q^\LL)\cong H_q^{\LL}$.
+\end{theorem}
+
+Recall that the inclusion $\KK\hookrightarrow \LL$ induces a linear map $f_q^{\KK, \LL}: H_{q}(\KK)\to H_{q}(\LL)$ in the level of homology.
+The $q$-th persistent Betti number $\beta_{q}^{\KK, \LL}$ is defined as the rank of $f_q^{\KK, \LL}$.
+The persistent Laplacians can recover persistent Betti numbers,
+we restate the result in the following theorem.
+\begin{theorem}[{\cite[Theorem 2.7]{pers_lap}}]
+For each integer $q\geq 0$,
+the $q$-th persistent Betti number is equal to the dimension of the kernel of $\Delta_{q, \mathrm{up}}^{\KK, \LL}$,
+i.e.,
+$\beta_q^{\KK, \LL}=\mathrm{nullity}(\triangle_{q, \mathrm{up}}^{\KK, \LL})$.
+\end{theorem}
+
+this is accomplished by finding a non-singular matrix $Y$ such that $R_{q+1}^{\LL}\coloneqq D_{q+1}^{\LL}Y$ is in the column reduced form in \cite[Lemma 3.4]{pers_lap}.
+%computing the column reduced form of the matrix $B_{q+1}^\LL(I_q^{\LL, \KK}, :)$ 
+However,
+the requirement of $R_{q+1}^\LL$ being column reduced form is unnecessary,
+only that all the non-zero columns in $R_{q+1}^{\LL}$ are linearly independent is enough.
+For the purpose of completeness,
+we restate the construction of $B_{q+1}^{\LL, \KK}$ and $Z$ in the following lemma,
+the proof is exactly the same as that of 
+
+\iffalse
+\[
+M=
+\begin{bmatrix}
+\frac{\sqrt{3}}{2}\sqrt{\epsmach} & 0\\
+\frac{\sqrt{6}}{2}\sqrt{\epsmach} & -\sqrt{\epsmach}\\
+-\frac{\sqrt{3}}{2}\sqrt{\epsmach} & 0\\
+-\frac{\sqrt{6}}{2}\sqrt{\epsmach} & \sqrt{\epsmach}\\
+0 & \frac{\sqrt{2}}{2}\sqrt{}\epsmach
+\end{bmatrix},
+\]
+\fi

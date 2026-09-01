@@ -1,0 +1,17 @@
+\begin{algorithm}[H]
+\caption{\textsc{Find}}
+\label{alg:find}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $x$ 
+\State \textbf{Output:} root of $x$
+
+    \While{$\text{parent}[x] \neq x$}
+        \State $\text{parent}[x] \gets \text{parent}[\text{parent}[x]]$ \Comment{Path compression}
+        \State $x \gets \text{parent}[x]$
+    \EndWhile
+    \State \Return $x$
+
+
+\end{algorithmic}
+\end{algorithm}
+

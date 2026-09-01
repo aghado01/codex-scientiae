@@ -1,0 +1,63 @@
+\begin{figure}[H]
+  %\centering
+    \begin{tikzpicture}[
+       decoration = {markings,
+                     mark=at position .5 with {\arrow{Stealth[length=2mm]}}},
+       dot/.style = {circle, fill, inner sep=1.6pt, node contents={},
+                     label=#1},
+every edge/.style = {draw, postaction=decorate}
+                        ]
+    % Define the length of the side of the triangle
+    \def\side{2.251666}
+
+    % Draw the equilateral triangle centered at (0,0)
+    %\filldraw[fill=yellow!40] (90: \side) -- (210: \side) -- (330: \side) -- cycle;
+
+    %\draw (0, 0) -- (\side, 0) -- (1/2 * \side, \side * 0.8660254) -- cycle;
+    %\filldraw[fill=yellow!40] (\side, 0) -- (1/2 * \side, \side * 0.8660254) -- (\side * 3/2, \side * 1.732051 / 2) -- cycle;
+    %\filldraw[fill=yellow!40] (\side, 0) -- (2 * \side, 0) -- (\side * 3/2, \side * 1.732051 / 2) -- cycle;
+    %\filldraw[fill=yellow!40] (\side * 2, 0) -- (5/2 * \side, \side * 0.8660254) -- (\side * 3/2, \side * 1.732051 / 2) -- cycle;
+    %\filldraw[fill=yellow!40] (5/2 * \side,  \side * 0.8660254) -- (2 * \side, -0) -- (3 * \side, -0) -- cycle;
+    
+
+    % Connect the center with all three vertices
+    %\draw (0,0) -- (90: \side);
+    %\draw (0,0) -- (210: \side);
+    %\draw (0,0) -- (330: \side);
+
+    %\draw (0, -1/2) -- (3, 4);
+
+    % Label the vertices and the center
+    \node (1) at (1/2 * \side,  \side * 0.8) [dot=$1$];
+    \node (2) at (3/2 * \side,  \side * 0.8) [dot=$2$];
+    \node (6) at (5/2 * \side,  \side * 0.8) [dot=$6$];
+    \node (3) at (0, -0.3) [dot=$3$];
+    \node (5) at (\side, -0.3) [dot=$5$];
+    \node (7) at (2 * \side, -0.3) [dot=$7$];
+    \node (4) at (2 * \side, 0.45 * \side) [dot=$4$];
+    %\node at (3 * \side, -0.3) {1};
+    %\node at (-0.2,0) [below right] {4}; % You can adjust the position of this label
+
+
+    % Optionally, mark the center
+    %\fill (0, 0) circle (2pt);  % Vertex 4
+    %\fill (1/2 * \side, \side * 0.8660254) circle (2pt); % Vertex 1
+    %\fill (3/2 * \side, \side * 0.8660254) circle (2pt);
+    %\fill (5/2 * \side, \side * 0.8660254) circle (2pt);
+    %\fill (\side, 0) circle (2pt);
+    %\fill (2 * \side, 0) circle (2pt);
+    %\fill (2 * \side, 0.57735 * \side) circle (2pt);
+    %\fill (3 * \side, -0) circle (2pt);
+
+    \path (1) edge (3);
+    \path (3) edge (5);
+    \path (5) edge (1);
+    
+    \path (4) edge (2);
+    \path (4) edge (6);
+    \path (4) edge (7);
+    
+\end{tikzpicture}
+\caption{The directed graph $G$  associated to the incidence matrix $D^T$ in \cref{ex:LemmaU}.}
+\label{fig_example}
+\end{figure}

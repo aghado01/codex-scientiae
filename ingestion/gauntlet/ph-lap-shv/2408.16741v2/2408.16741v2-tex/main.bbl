@@ -1,0 +1,158 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{GMWW23}
+
+\bibitem[BDD{\etalchar{+}}00]{MR1792141}
+Zhaojun Bai, James Demmel, Jack Dongarra, Axel Ruhe, and Henk van~der Vorst,
+  editors.
+\newblock {\em Templates for the solution of algebraic eigenvalue problems},
+  volume~11 of {\em Software, Environments, and Tools}.
+\newblock Society for Industrial and Applied Mathematics (SIAM), Philadelphia,
+  PA, 2000.
+\newblock A practical guide.
+
+\bibitem[Chu97]{MR1421568}
+Fan R.~K. Chung.
+\newblock {\em Spectral graph theory}, volume~92 of {\em CBMS Regional
+  Conference Series in Mathematics}.
+\newblock Conference Board of the Mathematical Sciences, Washington, DC; by the
+  American Mathematical Society, Providence, RI, 1997.
+
+\bibitem[CLRS22]{cormen2022introduction}
+T.H. Cormen, C.E. Leiserson, R.L. Rivest, and C.~Stein.
+\newblock {\em Introduction to Algorithms, fourth edition}.
+\newblock MIT Press, 2022.
+
+\bibitem[DB13]{MR3017573}
+Florian D\"orfler and Francesco Bullo.
+\newblock Kron reduction of graphs with applications to electrical networks.
+\newblock {\em IEEE Trans. Circuits Syst. I. Regul. Pap.}, 60(1):150--163,
+  2013.
+
+\bibitem[DWSG23]{davies23c}
+Thomas Davies, Zhengchao Wan, and Ruben~J Sanchez-Garcia.
+\newblock The persistent {L}aplacian for data science: Evaluating higher-order
+  persistent spectral representations of data.
+\newblock In Andreas Krause, Emma Brunskill, Kyunghyun Cho, Barbara Engelhardt,
+  Sivan Sabato, and Jonathan Scarlett, editors, {\em Proceedings of the 40th
+  International Conference on Machine Learning}, volume 202 of {\em Proceedings
+  of Machine Learning Research}, pages 7249--7263. PMLR, 23--29 Jul 2023.
+
+\bibitem[EH10]{edelsbrunner2010computational}
+Herbert Edelsbrunner and John Harer.
+\newblock {\em Computational topology: an introduction}.
+\newblock American Mathematical Soc., 2010.
+
+\bibitem[GMWW23]{gen_pers_lap}
+Aziz~Burak G\"ulen, Facundo M\'emoli, Zhengchao Wan, and Yusu Wang.
+\newblock A generalization of the persistent {L}aplacian to simplicial maps.
+\newblock In {\em 39th {I}nternational {S}ymposium on {C}omputational
+  {G}eometry}, volume 258 of {\em LIPIcs. Leibniz Int. Proc. Inform.}, pages
+  Art. No. 37, 17. Schloss Dagstuhl. Leibniz-Zent. Inform., Wadern, 2023.
+
+\bibitem[GR01]{MR1829620}
+Chris Godsil and Gordon Royle.
+\newblock {\em Algebraic graph theory}, volume 207 of {\em Graduate Texts in
+  Mathematics}.
+\newblock Springer-Verlag, New York, 2001.
+
+\bibitem[GVL13]{MR3024913}
+Gene~H. Golub and Charles~F. Van~Loan.
+\newblock {\em Matrix computations}.
+\newblock Johns Hopkins Studies in the Mathematical Sciences. Johns Hopkins
+  University Press, Baltimore, MD, fourth edition, 2013.
+
+\bibitem[HJ13a]{horak2013spectra}
+Danijela Horak and J{\"u}rgen Jost.
+\newblock Spectra of combinatorial laplace operators on simplicial complexes.
+\newblock {\em Advances in Mathematics}, 244:303--336, 2013.
+
+\bibitem[HJ13b]{MR2978290}
+Roger~A. Horn and Charles~R. Johnson.
+\newblock {\em Matrix analysis}.
+\newblock Cambridge University Press, Cambridge, second edition, 2013.
+
+\bibitem[JZ23]{jost2023cheeger}
+J{\"u}rgen Jost and Dong Zhang.
+\newblock Cheeger inequalities on simplicial complexes.
+\newblock {\em arXiv preprint arXiv:2302.01069}, 2023.
+
+\bibitem[Lim20]{lim2020hodge}
+Lek-Heng Lim.
+\newblock Hodge laplacians on graphs.
+\newblock {\em Siam Review}, 62(3):685--715, 2020.
+
+\bibitem[MHJ22]{MR4433789}
+Raffaella Mulas, Danijela Horak, and J\"urgen Jost.
+\newblock Graphs, simplicial complexes and hypergraphs: spectral theory and
+  topology.
+\newblock In {\em Higher-order systems}, Underst. Complex Syst., pages 1--58.
+  Springer, Cham, 2022.
+
+\bibitem[MWW22]{pers_lap}
+Facundo M\'emoli, Zhengchao Wan, and Yusu Wang.
+\newblock Persistent {L}aplacians: properties, algorithms and implications.
+\newblock {\em SIAM J. Math. Data Sci.}, 4(2):858--884, 2022.
+
+\bibitem[MZ21]{MR4236395}
+Raffaella Mulas and Dong Zhang.
+\newblock Spectral theory of {L}aplace operators on oriented hypergraphs.
+\newblock {\em Discrete Math.}, 344(6):Paper No. 112372, 22, 2021.
+
+\bibitem[Sau15]{twononzero}
+B.~David Saunders.
+\newblock Matrices with two nonzero entries per row.
+\newblock In {\em Proceedings of the 2015 ACM International Symposium on
+  Symbolic and Algebraic Computation}, ISSAC '15, page 323–330, New York, NY,
+  USA, 2015. Association for Computing Machinery.
+
+\bibitem[ST80]{MR575168}
+Herbert Seifert and William Threlfall.
+\newblock {\em Seifert and {T}hrelfall: a textbook of topology}, volume~89 of
+  {\em Pure and Applied Mathematics}.
+\newblock Academic Press, Inc. [Harcourt Brace Jovanovich, Publishers], New
+  York-London, german edition, 1980.
+\newblock With a preface by Joan S. Birman, With ``Topology of $3$-dimensional
+  fibered spaces'' by Seifert, Translated from the German by Wolfgang Heil.
+
+\bibitem[Var04]{MR2093409}
+Richard~S. Varga.
+\newblock {\em Ger\v sgorin and his circles}, volume~36 of {\em Springer Series
+  in Computational Mathematics}.
+\newblock Springer-Verlag, Berlin, 2004.
+
+\bibitem[VL07]{von2007tutorial}
+Ulrike Von~Luxburg.
+\newblock A tutorial on spectral clustering.
+\newblock {\em Statistics and computing}, 17:395--416, 2007.
+
+\bibitem[WCVc12]{MR3025945}
+Hubert Wagner, Chao Chen, and Erald Vu\c~cini.
+\newblock Efficient computation of persistent homology for cubical data.
+\newblock In {\em Topological methods in data analysis and visualization {II}},
+  Math. Vis., pages 91--106. Springer, Heidelberg, 2012.
+
+\bibitem[WNW20]{MR4164275}
+Rui Wang, Duc~Duy Nguyen, and Guo-Wei Wei.
+\newblock Persistent spectral graph.
+\newblock {\em Int. J. Nummer. Methods Biomed. Eng.}, 36(9):e3376, 27, 2020.
+
+\bibitem[WW23]{wei2023}
+Xiaoqi Wei and Guo-Wei Wei.
+\newblock Persistent topological laplacians -- a survey.
+\newblock {\em arXiv preprint arXiv:2312.07563}, 2023.
+
+\bibitem[YSN21]{medmnistv1}
+Jiancheng Yang, Rui Shi, and Bingbing Ni.
+\newblock Medmnist classification decathlon: A lightweight automl benchmark for
+  medical image analysis.
+\newblock In {\em IEEE 18th International Symposium on Biomedical Imaging
+  (ISBI)}, pages 191--195, 2021.
+
+\bibitem[YSW{\etalchar{+}}23]{medmnistv2}
+Jiancheng Yang, Rui Shi, Donglai Wei, Zequan Liu, Lin Zhao, Bilian Ke,
+  Hanspeter Pfister, and Bingbing Ni.
+\newblock Medmnist v2-a larged-scale lightweight benchmark for 2d and 3d
+  biomedical image classification.
+\newblock {\em Scientific Data}, 10(1):41, 2023.
+
+\end{thebibliography}

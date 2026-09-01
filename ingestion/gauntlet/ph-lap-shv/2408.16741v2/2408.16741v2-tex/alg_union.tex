@@ -1,0 +1,24 @@
+\begin{algorithm}[H]
+\caption{\textsc{Union}}
+\label{alg:union}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $x$, $y$
+\Comment{$x$, $y$ are two column indices of $|D|$}
+
+
+
+\State $\text{root}_x \gets \textsc{Find}(x)$
+    \State $\text{root}_y \gets \textsc{Find}(y)$
+    \If{$\text{root}_x \neq \text{root}_y$}
+        \If{$\text{rank}[\text{root}_x] > \text{rank}[\text{root}_y]$}
+            \State $\text{parent}[\text{root}_y] \gets \text{root}_x$
+        \Else
+            \State $\text{parent}[\text{root}_x] \gets \text{root}_y$
+            \If{$\text{rank}[\text{root}_x] = \text{rank}[\text{root}_y]$}
+                \State $\text{rank}[\text{root}_y] \gets \text{rank}[\text{root}_y] + 1$
+            \EndIf
+        \EndIf
+    \EndIf
+
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2408.16741v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2408.16741v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "The persistent Laplacian of non-branching complexes",
+      "authors": [
+        "Magnus Bakke Botnan",
+        "Rui Dong"
+      ],
+      "abstract": "Non-branching matrices are real matrices with entries in $\\{-1,0,1\\}$, where each row contains at most two non-zero entries. Such matrices naturally arise in the study of Laplacians of pseudomanifolds and cubical complexes. We show that a basis for the kernel of a non-branching matrix can be computed in near-linear time. Especially, the basis has the special property that the supports of all the column vectors in it are disjoint with each other. Building on this result, we show that the up persistent Laplacian can be computed in near-linear time for a pair of such spaces and its eigenvalues can be more efficiently computed via computing singular values. In addition to that, we analyze the arithmetic operations of up persistent Laplacian with respect to a non-branching filtration. Furthermore, we show that the up persistent Laplacian of $q$-non-branching simplicial complexes can be represented as the Laplacian of an associated hypergraph, thus providing a higher-dimensional generalization of the Kron reduction, as well as a Cheeger-type inequality. Finally, we highlight the efficiency of our method on image data.",
+      "doi": null,
+      "arxiv_id": "2408.16741v2",
+      "published": "2024-08-29T17:36:05Z",
+      "updated": "2025-06-10T20:24:39Z",
+      "year": 2024,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2408.16741v2",
+      "pdf_url": "https://arxiv.org/pdf/2408.16741v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.AT"
+      ],
+      "external_ids": {
+        "arxiv": "2408.16741v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2408.16741v2",
+          "url": "https://arxiv.org/abs/2408.16741v2",
+          "doi": null,
+          "arxiv_id": "2408.16741v2",
+          "published": "2024-08-29T17:36:05Z",
+          "updated": "2025-06-10T20:24:39Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2408.16741v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T05:59:26.578713Z",
+      "sha256": "f2796116c5f02bd983ff9b79279fe7f5a06d19f2fd0886cf6364b29780bf9787",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvUlZ5WFBOSmJSL3F1elAraHAwYkw1dENrYTRVPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjQwOC4xNjc0MXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA1OjU4OjE5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNDA4LjE2NzQxdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjQwOC4xNjc0MXYyPC9pZD4KICAgIDx0aXRsZT5UaGUgcGVyc2lzdGVudCBMYXBsYWNpYW4gb2Ygbm9uLWJyYW5jaGluZyBjb21wbGV4ZXM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNS0wNi0xMFQyMDoyNDozOVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjQwOC4xNjc0MXYyIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjQwOC4xNjc0MXYyIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+Tm9uLWJyYW5jaGluZyBtYXRyaWNlcyBhcmUgcmVhbCBtYXRyaWNlcyB3aXRoIGVudHJpZXMgaW4gJFx7LTEsMCwxXH0kLCB3aGVyZSBlYWNoIHJvdyBjb250YWlucyBhdCBtb3N0IHR3byBub24temVybyBlbnRyaWVzLiBTdWNoIG1hdHJpY2VzIG5hdHVyYWxseSBhcmlzZSBpbiB0aGUgc3R1ZHkgb2YgTGFwbGFjaWFucyBvZiBwc2V1ZG9tYW5pZm9sZHMgYW5kIGN1YmljYWwgY29tcGxleGVzLiBXZSBzaG93IHRoYXQgYSBiYXNpcyBmb3IgdGhlIGtlcm5lbCBvZiBhIG5vbi1icmFuY2hpbmcgbWF0cml4IGNhbiBiZSBjb21wdXRlZCBpbiBuZWFyLWxpbmVhciB0aW1lLiBFc3BlY2lhbGx5LCB0aGUgYmFzaXMgaGFzIHRoZSBzcGVjaWFsIHByb3BlcnR5IHRoYXQgdGhlIHN1cHBvcnRzIG9mIGFsbCB0aGUgY29sdW1uIHZlY3RvcnMgaW4gaXQgYXJlIGRpc2pvaW50IHdpdGggZWFjaCBvdGhlci4gQnVpbGRpbmcgb24gdGhpcyByZXN1bHQsIHdlIHNob3cgdGhhdCB0aGUgdXAgcGVyc2lzdGVudCBMYXBsYWNpYW4gY2FuIGJlIGNvbXB1dGVkIGluIG5lYXItbGluZWFyIHRpbWUgZm9yIGEgcGFpciBvZiBzdWNoIHNwYWNlcyBhbmQgaXRzIGVpZ2VudmFsdWVzIGNhbiBiZSBtb3JlIGVmZmljaWVudGx5IGNvbXB1dGVkIHZpYSBjb21wdXRpbmcgc2luZ3VsYXIgdmFsdWVzLiBJbiBhZGRpdGlvbiB0byB0aGF0LCB3ZSBhbmFseXplIHRoZSBhcml0aG1ldGljIG9wZXJhdGlvbnMgb2YgdXAgcGVyc2lzdGVudCBMYXBsYWNpYW4gd2l0aCByZXNwZWN0IHRvIGEgbm9uLWJyYW5jaGluZyBmaWx0cmF0aW9uLiBGdXJ0aGVybW9yZSwgd2Ugc2hvdyB0aGF0IHRoZSB1cCBwZXJzaXN0ZW50IExhcGxhY2lhbiBvZiAkcSQtbm9uLWJyYW5jaGluZyBzaW1wbGljaWFsIGNvbXBsZXhlcyBjYW4gYmUgcmVwcmVzZW50ZWQgYXMgdGhlIExhcGxhY2lhbiBvZiBhbiBhc3NvY2lhdGVkIGh5cGVyZ3JhcGgsIHRodXMgcHJvdmlkaW5nIGEgaGlnaGVyLWRpbWVuc2lvbmFsIGdlbmVyYWxpemF0aW9uIG9mIHRoZSBLcm9uIHJlZHVjdGlvbiwgYXMgd2VsbCBhcyBhIENoZWVnZXItdHlwZSBpbmVxdWFsaXR5LiBGaW5hbGx5LCB3ZSBoaWdobGlnaHQgdGhlIGVmZmljaWVuY3kgb2Ygb3VyIG1ldGhvZCBvbiBpbWFnZSBkYXRhLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJtYXRoLkFUIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjQtMDgtMjlUMTc6MzY6MDVaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD4zMyBwYWdlcywgMTIgcGFnZXM8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJtYXRoLkFUIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NYWdudXMgQmFra2UgQm90bmFuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5SdWkgRG9uZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "The persistent Laplacian of non-branching complexes",
+    "authors": [
+      "Magnus Bakke Botnan",
+      "Rui Dong"
+    ],
+    "abstract": "Non-branching matrices are real matrices with entries in $\\{-1,0,1\\}$, where each row contains at most two non-zero entries. Such matrices naturally arise in the study of Laplacians of pseudomanifolds and cubical complexes. We show that a basis for the kernel of a non-branching matrix can be computed in near-linear time. Especially, the basis has the special property that the supports of all the column vectors in it are disjoint with each other. Building on this result, we show that the up persistent Laplacian can be computed in near-linear time for a pair of such spaces and its eigenvalues can be more efficiently computed via computing singular values. In addition to that, we analyze the arithmetic operations of up persistent Laplacian with respect to a non-branching filtration. Furthermore, we show that the up persistent Laplacian of $q$-non-branching simplicial complexes can be represented as the Laplacian of an associated hypergraph, thus providing a higher-dimensional generalization of the Kron reduction, as well as a Cheeger-type inequality. Finally, we highlight the efficiency of our method on image data.",
+    "identifiers": {
+      "arxiv": "2408.16741",
+      "arxiv_versioned": "2408.16741v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2408.16741v2"
+      }
+    },
+    "categories": [
+      "math.AT"
+    ],
+    "concepts": [],
+    "primary_category": "math.AT",
+    "published": "2024-08-29T17:36:05Z",
+    "updated": "2025-06-10T20:24:39Z"
+  }
+}

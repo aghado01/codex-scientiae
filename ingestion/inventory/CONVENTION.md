@@ -80,9 +80,11 @@ must supply equivalent source stability for the duration of the call.
 
 The transaction accepts tar+gzip and arXiv's single-TeX gzip shape. It refuses a reparse-point document root,
 escaping or reparse-point descendants, reparse traversal through explicit inputs, and symlinked implicit
-archive/provider/PDF candidates. It also refuses duplicate or case-colliding paths, invalid UTF-8 LaTeX,
-unresolved literal inputs, and missing or ambiguous entrypoints; `-MainTex` records an explicit resolution
-of a genuine ambiguity.
+archive/provider/PDF candidates. It also refuses duplicate or case-colliding paths, invalid UTF-8 LaTeX, and missing or
+ambiguous entrypoints; `-MainTex` records an explicit resolution of a genuine ambiguity. A
+literal `\input`/`\include`/`\subfile` whose target is absent from the tree does not abort
+deposit: the command stays in the resolved text and `literal-inputs-resolved` is `waived`
+with the holes named. Escape, cycle, and depth still abort.
 
 `article.json` is created last. Its `state: "source-ready"` says that source validation and article
 publication completed, not that bibliographic normalization or conversion completed. If a crash leaves a

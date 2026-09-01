@@ -1,0 +1,51 @@
+\begin{algorithm}[H]
+ \caption{\textsc{UpPersistentLaplacian}}
+ \label{alg:pers_lap}
+ \begin{algorithmic}[1]
+ \State \textbf{Input:} $I_q^\KK$, $B_{q+1}^\LL$, $W_{q+1}^\LL$, $W_{q}^\KK$
+ %\Comment{$B_{q+1}^\LL$ is an oriented matrix representation}
+ \State \textbf{Output:} $\Delta_{q, \mathrm{up}}^{\KK, \LL}$
+\State $\Delta_{q, \mathrm{up}}^{\KK, \LL}\gets 0_{n_q^\KK\times n_q^\KK}$ 
+\Comment{Initialize $\Delta_{q, \mathrm{up}}^{\KK, \LL}$}
+ \If{$n_q^\KK=n_q^\LL$}
+ \State $\Delta_{q, \mathrm{up}}^{\KK, \LL}\gets B_q^\LL \left(B_q^\LL\right)^T$
+ \Else
+ \State $D_{q+1}^{\LL, \KK}\gets B_{q+1}^\LL(I_q^{\LL, \KK}, :)$
+
+ \State $C_0\gets \text{ indices of zero columns in }D_{q+1}^{\LL, \KK}$
+ \State $C_{\text{nonzero}}\gets \text{indcies of non-zero columns in }D_{q+1}^\LL$
+ 
+%\Statex
+
+\State{$R, E, V\gets \textsc{WeakColumnReduction}(D_{q+1}^\LL(:, C_{\text{nonzero}}))$}
+
+\Statex
+
+\For{$j$ in the zero column indices of $R$}
+
+\State $C_j\gets \text{support indices of the column vector }V(:, j)$
+\State $s_j\gets \sum_{i\in C_j}\frac{1}{W_{q+1}^{\LL}(i, i)}$
+\State $b_j\gets \text{the sum of column vectors in } B_{q+1}^\LL(I_q^\KK, I_j)E(C_j, C_j)$
+\EndFor
+
+%\State $B_{q+1}^{\LL, \KK}\gets \text{stack the set of column vectors}\{B_j\} \text{ as a matrix}$
+\State $B_{q+1}^{\LL, \KK}\gets
+    B_{q+1}^\LL(I_q^{\KK}, C_0) \#
+    \begin{bmatrix}
+    b_1 & b_2 & \cdots & b_r
+    \end{bmatrix}$
+
+%\State $W_{q+1}^{\LL, \KK}\gets \text{ diagonal matrix with diagonal entries being } \{w_j\}$
+
+\State $W_{q+1}^{\LL, \KK}\gets W_{q+1}^\LL(C_0, C_0)\oplus S^{-1}$
+
+\State $\Delta_{q, \text{up}}^{\KK, \LL}\gets B_{q+1}^{\LL, \KK}W_{q+1}^{\LL, \KK}\left(B_{q+1}^{\LL, \KK}\right)^T (W_q^\KK)^{-1}$
+
+% \Else 
+% \State $\Delta_{q, \text{up}}^{\KK, \LL}\gets 0_{n_q^\KK\times n_q^\KK}$
+% \EndIf
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+

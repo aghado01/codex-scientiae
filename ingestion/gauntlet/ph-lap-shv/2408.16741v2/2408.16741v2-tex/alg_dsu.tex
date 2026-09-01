@@ -1,0 +1,34 @@
+\begin{algorithm}[H]
+\caption{\textsc{DSU}}
+\label{alg:dsu}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $|D|$ 
+\Comment{A $k\times l$ non-branching matrix}
+\State \textbf{Output:} parent
+
+%\Statex
+\State $\text{parent} \gets [0, 1, \cdots, l]$ 
+\State $\text{rank} \gets [1, 1, \cdots, 1]$ \Comment{$l$ copies of $1$s.}
+\State $\text{edge}\gets 1$
+\While{$\text{edge} \leq k$}
+\State $\text{nodes} \gets \text{column indices of nonzero entries in } D(\text{edge, :})$
+\If{$\text{len(nodes)} = 2$}
+\State $x, y \gets \text{nodes}$
+\State $\textsc{Union}(x, y)$
+\EndIf  
+\State $\text{edge} \gets \text{edge}+1$
+\EndWhile
+
+%\Statex
+
+\State $\text{node}\gets 1$
+\While{$\text{node} \leq l$}
+\State $\text{root}\gets \textsc{Find(node)}$
+\If{$\text{parent}[\text{node}] \neq \text{root}$}
+\State $\text{parent}[\text{node}]\gets \text{root}$
+\EndIf
+\State $\text{node}\gets \text{node} + 1$
+\EndWhile
+
+\end{algorithmic}
+\end{algorithm}

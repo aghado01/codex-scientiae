@@ -1,0 +1,65 @@
+\begin{algorithm}[H]
+\caption{\textsc{Reorientation}}
+\label{alg:reort}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $D$
+\Comment{$D$ is a $k\times l$ sparse non-branching matrix}
+% \Comment{}
+\State \textbf{Output:} isorientable, $\textrm{flag}$ %, $D'$
+\Comment{$E$ records the signs, $D'$ is the reorientation of $D$}
+%Reorientation of $D$
+
+% \State 
+
+\State $\textrm{isorientable}\gets \textrm{true}$
+\State $\text{flag}\gets [1, 1, \cdots, 1]$ 
+\Comment{Initialize $\text{flag}$ to be a length $l$ list of all $1$s}
+\State $\text{vertices} \gets [1, 2, \cdots, l]$ 
+% \State $D'\gets D$
+% \Comment{Initialize $D'$}
+
+%\Statex
+\For{$i=1$ to $k$}
+\State $\text{edge}_i\gets \text{column index (or indices) of non-zero entry (or entries) in } D(i, :)$ 
+
+\If{$\text{edge}_i$ has two different vertices}
+\State $u, v\gets \text{edge}_i$
+\If{$\text{flag}[u]*D(i, u)+\text{flag}[v]*D(i, v)=-2 \text{ or }2$}
+
+\If{$u\in \text{vertices}$ and $v\in \text{vertices}$}
+\State $D(:, v)\gets -D(:, v)$
+\State $\textrm{flag}[v]\gets -1$
+
+\ElsIf{$u\notin \text{vertices}$ and $v\in \text{vertices}$}
+\State $D(:, v)\gets -D(:, v)$
+\State $\textrm{flag}[v]\gets -1$
+
+\ElsIf{$u\in \text{vertices}$ and $v\notin \text{vertices}$}
+\State $D(:, u)\gets -D(:, u)$
+\State $\textrm{flag}[u]\gets -1$
+
+\ElsIf{$u\notin \text{vertices}$ and $v\notin \text{vertices}$}
+\State $\text{isorientable}\gets \text{false}$
+\State \textbf{break}
+\Comment{The matrix $D$ is non-orientable, break for loop}
+\EndIf
+
+%\If{$\text{flag}[u]=\text{flag}[v]=1$}
+% \State $D(:, v)\gets -D(:, v)$
+%\State $\textrm{flag}[v]\gets -1$
+%\ElsIf{either $\text{flag}[u]=-1$ or $\text{flag}[v]=-1$}
+%\State $\text{isorientable}\gets \text{false}$
+%\State \textbf{break}
+%\Comment{The matrix $D$ is non-orientable, break for loop}
+%\EndIf
+\EndIf
+\EndIf
+\State $\text{vertices}\gets \text{vertices}\backslash \text{edge}_i$
+
+\EndFor
+
+\end{algorithmic}
+\end{algorithm}
+
+
+%\State $\text{vertices}\gets \text{vertices}\backslash \text{edge}_i$

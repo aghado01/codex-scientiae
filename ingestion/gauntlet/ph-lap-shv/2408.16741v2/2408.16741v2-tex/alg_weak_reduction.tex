@@ -1,0 +1,47 @@
+\begin{algorithm}[H]
+\caption{\textsc{WeakColumnReduction}}
+\label{alg:weak_red}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $D$
+\Comment{$D$ is a $k\times l$ matrix}
+\State \textbf{Output:} $R$, $E$, $V$
+\Comment{$R=DEV$}
+\State $R\gets D$
+\State $V\gets\id_l$
+\State $E\gets \id_l$
+\State $\text{parent}\gets \textsc{DSU}(|D|)$
+\Comment{parent} is the list of roots of each vertex
+\State $\text{roots}\gets$ the set of unique values of parent
+\State $S_{\text{loops}}\gets$ the set of vertices having loops
+\Comment{$S_{\text{loops}}$ is computed from index pointer of $D$}
+\State $\text{roots}_{\text{loops}}\gets \text{parent}[S_\text{loops}]$
+\Comment{Find the roots of components having loops}
+\State $\text{roots}_{\text{noloops}}\gets \text{roots}\backslash \text{roots}_{\text{loops}}$
+
+\For{$r\in \text{roots}_{\text{noloops}}$}
+\Comment{update $R$, $E$ and $V$}
+\State $I_r\gets$ the indices of $r$ in parent, sorted in increasing order
+\State $J_r\gets$ the indices of non-zero rows in $D(:, I_r)$ 
+\State $D_r\gets D(J_r, I_{r})$
+\State isorientable, flag $\gets$ \textsc{Reorientation}($D_r$)
+\If{isorientable is true}
+\State $i_r\gets$ the last element in $I_r$
+\State $R(:, i_r)\gets 0$
+\Comment{Set the column $R(:, i_r)$ to be zeros}
+\State $V(I_r, i_r)\gets 1$
+\Comment{Set the $I_r$ rows in column $V(:, i_r)$ to be ones}
+\State $E(I_r, I_r)\gets \text{flag}$
+\EndIf
+\EndFor
+
+
+\Statex
+
+
+
+
+
+
+
+\end{algorithmic}
+\end{algorithm}
