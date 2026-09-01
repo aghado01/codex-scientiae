@@ -1,14 +1,16 @@
-"""Build a catalog-root inventory from explicit or discovered article sentinels.
+"""Build a catalog-root inventory from article sentinels or child inventories.
 
-Discovery admits only physical ``{catalog}/{slug}/article.json`` files. Catalog, child, and
-article paths may not traverse links or reparse points. Manifest reads are bounded and verify that
-the opened file generation remains at the named path for the complete read.
+First-order discovery admits only physical ``{catalog}/{slug}/article.json`` files. A fold
+reads direct-child ``inventory.jsonl`` stores and publishes one parent inventory from those
+rows, relocating leaf-relative paths by one directory hop. Catalog, child, and inventory
+paths may not traverse links or reparse points.
 
 An existing ``inventory.jsonl`` is refused unless ``force`` is true.
 """
 
 from __future__ import annotations
 
+import copy
 import os
 import stat
 from dataclasses import dataclass
@@ -17,10 +19,12 @@ from typing import Any, Dict, List, Sequence
 
 from .kinds.article import MAX_ARTICLE_MANIFEST_BYTES
 from .kinds.inventory import InventoryRegistry
+from .kinds.registry import DuplicateEntry
 from .publication import PinnedPublicationRoot
-from .reader import loads
+from .reader import JsonlStore, loads
 
 MAX_ARTICLE_PATHS_BYTES = 4 * 1024 * 1024
+MAX_CHILD_INVENTORY_BYTES = 64 * 1024 * 1024
 MAX_CATALOG_CHILDREN = 100_000
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
 
@@ -492,6 +496,174 @@ def build_inventory(
             raise InventoryCatalogError(
                 f"inventory already exists; pass force=True to overwrite: '{inventory_path}'"
             ) from exc
+
+        if not active_root.path_is_current():
+            raise InventoryCatalogError(
+                f"catalog directory changed during inventory publication: '{root}'"
+            )
+        slugs = sorted((str(article["slug"]) for article in articles), key=str.casefold)
+        return InventoryCatalogResult(
+            catalog_dir=root,
+            inventory_path=published,
+            article_count=len(articles),
+            slugs=slugs,
+        )
+    finally:
+        if owned:
+            active_root.__exit__(None, None, None)
+
+
+def _posix_relative(path: str) -> str:
+    normalized = path.replace("\\", "/")
+    if (
+        not normalized
+        or normalized.startswith("/")
+        or normalized.startswith("../")
+        or "/../" in f"/{normalized}/"
+        or normalized in (".", "..")
+    ):
+        raise InventoryCatalogError(f"inventory path is not a confined relative path: '{path}'")
+    return normalized
+
+
+def _relocate_inventory_path(path: str, *, child: str, slug: str) -> str:
+    relative = _posix_relative(path)
+    if "/" in relative:
+        return f"{child}/{relative}"
+    return f"{child}/{slug}/{relative}"
+
+
+def _relocate_inventory_record(record: Dict[str, Any], *, child: str) -> Dict[str, Any]:
+    relocated = copy.deepcopy(record)
+    slug = relocated.get("slug")
+    if not isinstance(slug, str) or not slug:
+        raise InventoryCatalogError(
+            f"child inventory '{child}' contains a row without a string slug"
+        )
+    for form in relocated.get("source_forms") or []:
+        if not isinstance(form, dict):
+            continue
+        if isinstance(form.get("path"), str):
+            form["path"] = _relocate_inventory_path(form["path"], child=child, slug=slug)
+        if isinstance(form.get("derived_from"), str):
+            form["derived_from"] = _relocate_inventory_path(
+                form["derived_from"], child=child, slug=slug
+            )
+    evidence = relocated.get("evidence")
+    if isinstance(evidence, dict):
+        for item in evidence.get("provider_metadata") or []:
+            if isinstance(item, dict) and isinstance(item.get("path"), str):
+                item["path"] = _relocate_inventory_path(item["path"], child=child, slug=slug)
+    return relocated
+
+
+def _discover_child_inventories(
+    root: str,
+    publication_root: PinnedPublicationRoot,
+) -> List[tuple[str, str]]:
+    root_before = publication_root.stat_root()
+    discovered: List[tuple[str, str]] = []
+    try:
+        names = publication_root.list_names()
+    except OSError as exc:
+        raise InventoryCatalogError(f"catalog directory could not be enumerated: '{root}'") from exc
+    if len(names) > MAX_CATALOG_CHILDREN:
+        raise InventoryCatalogError(
+            f"catalog directory exceeds the {MAX_CATALOG_CHILDREN}-child limit: '{root}'"
+        )
+    names.sort(key=str.casefold)
+    for name in names:
+        child_path = os.path.join(root, name)
+        try:
+            info = publication_root.stat_child(name)
+        except OSError as exc:
+            raise InventoryCatalogError(
+                f"catalog child could not be inspected: '{child_path}'"
+            ) from exc
+        if _is_link_or_reparse(info):
+            raise InventoryCatalogError(
+                "catalog child must not be a symbolic link or reparse point: "
+                f"'{child_path}'"
+            )
+        if not stat.S_ISDIR(info.st_mode):
+            continue
+        inventory_path = os.path.join(child_path, "inventory.jsonl")
+        try:
+            inventory_info = publication_root.stat_child_file(name, "inventory.jsonl")
+        except FileNotFoundError:
+            continue
+        except OSError as exc:
+            raise InventoryCatalogError(
+                f"child inventory could not be inspected: '{inventory_path}'"
+            ) from exc
+        if _is_link_or_reparse(inventory_info) or not stat.S_ISREG(inventory_info.st_mode):
+            raise InventoryCatalogError(
+                f"child inventory is not a physical non-reparse file: '{inventory_path}'"
+            )
+        if inventory_info.st_size > MAX_CHILD_INVENTORY_BYTES:
+            raise InventoryCatalogError(
+                f"child inventory exceeds the {MAX_CHILD_INVENTORY_BYTES}-byte limit: "
+                f"'{inventory_path}'"
+            )
+        discovered.append((os.path.abspath(inventory_path), name))
+
+    root_after = publication_root.stat_root()
+    if not _same_snapshot(root_before, root_after):
+        raise InventoryCatalogError(f"catalog directory changed while it was enumerated: '{root}'")
+    _reject_portable_collisions(discovered)
+    return discovered
+
+
+def _load_child_inventory_rows(path: str, *, child: str) -> List[Dict[str, Any]]:
+    store = JsonlStore(path)
+    if store.has_signature:
+        store = store.at_signature()
+    rows: List[Dict[str, Any]] = []
+    for record in store:
+        if not isinstance(record, dict):
+            raise InventoryCatalogError(f"child inventory row is not an object: '{path}'")
+        if record.get("__type__") == "header":
+            kind = record.get("kind")
+            if kind != "inventory":
+                raise InventoryCatalogError(
+                    f"child inventory header kind must be 'inventory', got {kind!r}: '{path}'"
+                )
+            continue
+        rows.append(_relocate_inventory_record(record, child=child))
+    return rows
+
+
+def fold_inventory(
+    *,
+    catalog_dir: str,
+    force: bool = False,
+    publication_root: PinnedPublicationRoot | None = None,
+) -> InventoryCatalogResult:
+    """Publish ``inventory.jsonl`` from direct-child ``inventory.jsonl`` stores.
+
+    Children without an inventory are skipped. Inner inventories remain the source of truth.
+    """
+    root, active_root, owned = _catalog_pin(catalog_dir, publication_root)
+    try:
+        registry = InventoryRegistry(target_dir=root, publication_root=active_root)
+        inventory_path = registry.get_output_path()
+        _inventory_occupancy(
+            inventory_path,
+            force=force,
+            publication_root=active_root,
+        )
+        sources = _discover_child_inventories(root, active_root)
+        articles: List[Dict[str, Any]] = []
+        for path, child in sources:
+            articles.extend(_load_child_inventory_rows(path, child=child))
+        try:
+            published = registry.rebuild(articles, overwrite=force)
+        except FileExistsError as exc:
+            raise InventoryCatalogError(
+                f"inventory already exists; pass force=True to overwrite: '{inventory_path}'"
+            ) from exc
+        except DuplicateEntry as exc:
+            raise InventoryCatalogError(str(exc)) from exc
 
         if not active_root.path_is_current():
             raise InventoryCatalogError(

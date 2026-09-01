@@ -54,6 +54,7 @@ class TestArticleCatalogService(unittest.TestCase):
                 snapshot = service.inspect("research")
                 self.assertEqual("Research", snapshot.name)
                 self.assertEqual(("a.0001v1", "b.0001v1"), snapshot.slugs)
+                self.assertFalse(snapshot.has_inventory)
 
                 expected = InventoryCatalogResult(
                     catalog, "inventory.jsonl", 2, list(snapshot.slugs)
@@ -63,6 +64,16 @@ class TestArticleCatalogService(unittest.TestCase):
                 ) as build:
                     self.assertIs(expected, service.rebuild("RESEARCH", force=True))
                 build.assert_called_once_with(
+                    catalog_dir=os.path.abspath(catalog),
+                    force=True,
+                    publication_root=service.resolve("Research").publication_root,
+                )
+
+                with mock.patch(
+                    "procurement.operations.catalogs.fold_inventory", return_value=expected
+                ) as fold:
+                    self.assertIs(expected, service.fold("RESEARCH", force=True))
+                fold.assert_called_once_with(
                     catalog_dir=os.path.abspath(catalog),
                     force=True,
                     publication_root=service.resolve("Research").publication_root,
@@ -79,6 +90,7 @@ class TestArticleCatalogService(unittest.TestCase):
             service = ArticleCatalogService(ArticleCatalogRoots(roots))
             try:
                 service.rebuild("inventory")
+                self.assertTrue(service.inspect("inventory").has_inventory)
                 with self.assertRaisesRegex(ValueError, "force=True"):
                     service.rebuild("inventory")
                 self.assertEqual(0, service.rebuild("inventory", force=True).article_count)

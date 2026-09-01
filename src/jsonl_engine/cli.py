@@ -26,7 +26,7 @@ from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional
 
 from .deposit import deposit_article
 from .inspect import inspect_prefix, inspect_store, repair_prefix, snapshot
-from .inventory_catalog import build_inventory, load_article_paths_json
+from .inventory_catalog import build_inventory, fold_inventory, load_article_paths_json
 from .kinds.article import ArticleManifest, ArticleMetadataExtension
 from .policy import Eol
 from .pointer import MISSING, resolve
@@ -45,6 +45,7 @@ STABLE_VERBS = (
     "count",
     "deposit",
     "build-inventory",
+    "fold-inventory",
     "head",
     "tail",
     "range",
@@ -481,6 +482,15 @@ def _cmd_build_inventory(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_fold_inventory(args: argparse.Namespace) -> int:
+    result = fold_inventory(
+        catalog_dir=args.catalog_dir,
+        force=bool(args.force),
+    )
+    _emit_for(args, [result.as_dict()])
+    return 0
+
+
 def _take(values: Iterable[Any], count: int) -> Iterator[Any]:
     for index, value in enumerate(values):
         if index >= count:
@@ -665,6 +675,23 @@ def _build_parser() -> argparse.ArgumentParser:
         help="overwrite an existing inventory.jsonl",
     )
     build_inventory_cmd.set_defaults(handler=_cmd_build_inventory)
+
+    fold_inventory_cmd = sub.add_parser(
+        "fold-inventory",
+        help="build one catalog-root inventory.jsonl from child inventory.jsonl stores",
+        description=(
+            "Publish inventory.jsonl under a catalog directory from each direct-child "
+            "inventory.jsonl. Leaf-relative paths are relocated one hop up. Refuses an "
+            "existing inventory.jsonl unless --force is set."
+        ),
+    )
+    fold_inventory_cmd.add_argument("--catalog-dir", required=True)
+    fold_inventory_cmd.add_argument(
+        "--force",
+        action="store_true",
+        help="overwrite an existing inventory.jsonl",
+    )
+    fold_inventory_cmd.set_defaults(handler=_cmd_fold_inventory)
 
     return parser
 

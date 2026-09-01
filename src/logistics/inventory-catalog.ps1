@@ -3,8 +3,8 @@
   Catalog-root inventory helpers.
 
   Sweep direct-child article.json sentinels and publish inventory.jsonl through the jsonl_engine
-  `build-inventory` verb. An existing inventory.jsonl is refused unless -Force is set. Enumeration
-  stays in PowerShell; the engine validates rows and publishes the registry.
+  `build-inventory` verb. Fold direct-child inventory.jsonl stores through `fold-inventory`.
+  An existing inventory.jsonl is refused unless -Force is set.
 #>
 
 . "$PSScriptRoot/portable-path.ps1"
@@ -95,4 +95,36 @@ function Invoke-InventoryBuild {
             [System.IO.File]::Delete($staged.Path)
         }
     }
+}
+
+function Invoke-InventoryFold {
+    <#
+    .SYNOPSIS
+        Build `{CatalogDir}/inventory.jsonl` from direct-child inventory.jsonl stores.
+    .DESCRIPTION
+        Publishes a new inventory when absent. Pass -Force to overwrite an existing inventory.jsonl.
+        Inner inventories remain the source of truth; children without one are skipped.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$CatalogDir,
+        [switch]$Force,
+        [string]$PythonPath = '',
+        [ValidateRange(1, 3600)][int]$EngineTimeoutSeconds = 300
+    )
+
+    $root = Resolve-InventoryCatalogRoot -CatalogDir $CatalogDir
+    $argument = [System.Collections.Generic.List[string]]::new()
+    $argument.Add('--catalog-dir')
+    $argument.Add($root)
+    if ($Force) { $argument.Add('--force') }
+
+    $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'fold-inventory' `
+            -Argument $argument.ToArray() `
+            -PythonPath $PythonPath `
+            -TimeoutSeconds $EngineTimeoutSeconds)
+    if ($frames.Count -ne 1) {
+        throw "jsonl engine verb 'fold-inventory' returned $($frames.Count) values; expected exactly one"
+    }
+    return [pscustomobject]$frames[0].value
 }

@@ -153,7 +153,8 @@ class TestCliBoundary(unittest.TestCase):
         self.assertIs(True, capabilities["framing"])
         self.assertEqual(
             [
-                "capabilities", "info", "count", "deposit", "build-inventory", "head", "tail",
+                "capabilities", "info", "count", "deposit", "build-inventory", "fold-inventory",
+                "head", "tail",
                 "range", "get", "select", "find", "validate-json", "verify", "sig", "snapshot",
                 "inspect-prefix", "repair-prefix", "schemas", "json",
             ],

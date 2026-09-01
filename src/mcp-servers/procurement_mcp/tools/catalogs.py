@@ -39,7 +39,7 @@ def register_catalog_tools(server: MCPServer) -> None:
         catalog: NonEmptyIdentifier,
         ctx: Context[AppContext],
     ) -> ArticleCatalogSnapshotResponse:
-        """Inspect current direct-child article.json membership at a catalog name or destination path."""
+        """Inspect direct-child article.json membership and whether inventory.jsonl is present."""
 
         service = ctx.request_context.lifespan_context.application.catalogs
         if service is None:
@@ -49,6 +49,7 @@ def register_catalog_tools(server: MCPServer) -> None:
             name=snapshot.name,
             article_count=snapshot.article_count,
             slugs=snapshot.slugs,
+            has_inventory=snapshot.has_inventory,
         )
 
     @server.tool()
@@ -63,6 +64,25 @@ def register_catalog_tools(server: MCPServer) -> None:
         if service is None:
             raise RuntimeError("article catalogs are not configured for this application")
         result = await finish_sync(service.rebuild, catalog, force=force)
+        descriptor = service.resolve(catalog)
+        return ArticleInventoryResultResponse(
+            catalog=descriptor.name,
+            article_count=result.article_count,
+            slugs=tuple(result.slugs),
+        )
+
+    @server.tool()
+    async def fold_article_inventory(
+        catalog: NonEmptyIdentifier,
+        ctx: Context[AppContext],
+        force: bool = False,
+    ) -> ArticleInventoryResultResponse:
+        """Fold direct-child inventory.jsonl stores into this catalog's inventory.jsonl."""
+
+        service = ctx.request_context.lifespan_context.application.catalogs
+        if service is None:
+            raise RuntimeError("article catalogs are not configured for this application")
+        result = await finish_sync(service.fold, catalog, force=force)
         descriptor = service.resolve(catalog)
         return ArticleInventoryResultResponse(
             catalog=descriptor.name,

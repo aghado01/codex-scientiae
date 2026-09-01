@@ -61,9 +61,11 @@ rebuild an inventory.
 destination and a source artifact (default forms are source and PDF). Independent acquire, import, and
 materialize tools remain for bytes-only work and retries.
 
-`inspect_article_catalog` reports the current direct-child source-ready population without writing.
-`rebuild_article_inventory` independently rebuilds `inventory.jsonl` from that population and requires
-`force=true` to replace an existing inventory. `prepare_source_deposit_metadata` remains useful as the
+`inspect_article_catalog` reports the current direct-child source-ready population and whether
+`inventory.jsonl` is present, without writing. `rebuild_article_inventory` rebuilds `inventory.jsonl`
+from direct-child `article.json` and requires `force=true` to replace an existing inventory.
+`fold_article_inventory` publishes a parent `inventory.jsonl` from direct-child `inventory.jsonl`
+stores; it does not walk `article.json`. `prepare_source_deposit_metadata` remains useful as the
 independent metadata-only route. API metadata supplies bibliographic evidence; source materialization
 separately supplies the seven source-integrity findings.
 
@@ -72,10 +74,13 @@ The intended compositions are:
 - Procure one source-ready leaf: `procure_source` into a catalog name or workspace-relative destination.
 - Get bytes only: plan and acquire, or import a configured local file, then stop at `acquisition.json`.
 - Materialize an existing receipt: `materialize_source_deposit` on that same destination leaf.
-- Rebuild a stale sentinel after later forms land: `materialize_source_deposit` with `rebuild=true`, then
-  `rebuild_article_inventory` with `force=true`.
-- Refresh a catalog: rebuild `inventory.jsonl` across any pre-existing direct-child articles, without
-  reacquiring or unpacking them.
+- After any successful deposit into destination `C`: `rebuild_article_inventory` on `C` with
+  `force=true`. First-order inventories are compulsory. Fold a second-order inventory with
+  `fold_article_inventory` only when asked.
+- Rebuild a stale sentinel after later forms land: `materialize_source_deposit` with `rebuild=true`,
+  then rebuild the first-order inventory.
+- Refresh a first-order catalog: rebuild `inventory.jsonl` from current direct-child articles,
+  without reacquiring or unpacking them.
 
 The first source-ready publication freezes metadata mode and PDF inclusion. Later acquisition can add
 staged forms. Default materialization refuses a form-set change; `materialize_source_deposit` with

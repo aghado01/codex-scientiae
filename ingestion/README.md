@@ -152,7 +152,14 @@ pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
 
 # Overwrite an existing inventory.jsonl
 pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
+
+# Fold child inventories into a parent inventory.jsonl
+pwsh -File ./scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
 ```
+
+After procuring into a destination, rebuild that destination's first-order `inventory.jsonl`
+(`rebuild_article_inventory`, `force=true`). Fold a parent inventory only when asked
+(`fold_article_inventory`).
 
 `src/latex-ingest/inventory-catalog.ps1` and its nested metadata row shape remain a legacy specification of
 useful admission behavior. They are not active canonical `article.json` producers or materializers.
@@ -204,5 +211,6 @@ exceptions, and migration state. Do not encode one segment's nesting assumptions
       generated output, and has a conversion audit matching its raw-byte identity.
 - [ ] Generated evidence is found under the run directory, not `{slug}-tex/`.
 - [ ] Legacy `metadata.json`, `{slug}-latex/`, and compatibility-only exceptions are recorded for removal.
-- [ ] Any localized inventory is deliberately materialized from explicit direct-child articles; recursive
-      asset inference does not substitute for a missing sentinel.
+- [ ] Any localized inventory is deliberately materialized from explicit direct-child articles, or
+      folded from child `inventory.jsonl` stores; recursive asset inference does not substitute
+      for a missing sentinel.

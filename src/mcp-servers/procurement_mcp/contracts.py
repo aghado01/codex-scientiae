@@ -66,6 +66,7 @@ class ArticleCatalogSnapshotResponse(DomainModel):
     name: str
     article_count: int = Field(ge=0)
     slugs: tuple[str, ...]
+    has_inventory: bool
 
 
 class ArticleInventoryResultResponse(DomainModel):

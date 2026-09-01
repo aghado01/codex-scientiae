@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import os
+import stat
 from dataclasses import dataclass
 
 from jsonl_engine.inventory_catalog import (
     InventoryCatalogResult,
     build_inventory,
     discover_article_paths,
+    fold_inventory,
 )
 from procurement.storage.catalogs import ArticleCatalogDescriptor, ArticleCatalogRoots
+from procurement.storage.safety import is_link_or_reparse
 
 
 @dataclass(frozen=True)
@@ -21,6 +24,7 @@ class ArticleCatalogSnapshot:
     catalog_dir: str
     article_count: int
     slugs: tuple[str, ...]
+    has_inventory: bool
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -28,6 +32,7 @@ class ArticleCatalogSnapshot:
             "catalog_dir": self.catalog_dir,
             "article_count": self.article_count,
             "slugs": list(self.slugs),
+            "has_inventory": self.has_inventory,
         }
 
 
@@ -60,6 +65,7 @@ class ArticleCatalogService:
             catalog_dir=descriptor.catalog_dir,
             article_count=len(slugs),
             slugs=slugs,
+            has_inventory=_catalog_has_inventory(descriptor),
         )
 
     def rebuild(self, name: str, *, force: bool = False) -> InventoryCatalogResult:
@@ -70,6 +76,25 @@ class ArticleCatalogService:
             force=force,
             publication_root=descriptor.publication_root,
         )
+
+    def fold(self, name: str, *, force: bool = False) -> InventoryCatalogResult:
+        """Publish the named catalog inventory from direct-child inventory.jsonl stores."""
+        descriptor = self.resolve(name)
+        return fold_inventory(
+            catalog_dir=descriptor.catalog_dir,
+            force=force,
+            publication_root=descriptor.publication_root,
+        )
+
+
+def _catalog_has_inventory(descriptor: ArticleCatalogDescriptor) -> bool:
+    try:
+        info = descriptor.publication_root.stat_leaf("inventory.jsonl")
+    except FileNotFoundError:
+        return False
+    except OSError:
+        return False
+    return stat.S_ISREG(info.st_mode) and not is_link_or_reparse(info)
 
 
 __all__ = ["ArticleCatalogService", "ArticleCatalogSnapshot"]

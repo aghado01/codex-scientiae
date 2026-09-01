@@ -19,6 +19,7 @@ from jsonl_engine.inventory_catalog import (
     InventoryCatalogError,
     build_inventory,
     discover_article_paths,
+    fold_inventory,
 )
 from jsonl_engine.kinds.inventory import InventoryRegistry
 from jsonl_engine.kinds.registry import DuplicateEntry
@@ -542,6 +543,90 @@ class TestInventoryCatalog(unittest.TestCase):
                 "--force",
             )
             self.assertEqual(0, forced.returncode, forced.stderr.decode("utf-8"))
+
+    def test_fold_relocates_leaf_paths_from_child_inventories(self):
+        with tempfile.TemporaryDirectory() as parent:
+            first = os.path.join(parent, "kisungyou")
+            second = os.path.join(parent, "mapper")
+            os.makedirs(os.path.join(parent, "empty-collection"))
+            _write_json(
+                os.path.join(first, "a.0001v1", "article.json"),
+                article_record("a.0001v1"),
+            )
+            _write_json(
+                os.path.join(second, "b.0001v1", "article.json"),
+                article_record("b.0001v1"),
+            )
+            build_inventory(catalog_dir=first)
+            build_inventory(catalog_dir=second)
+
+            result = fold_inventory(catalog_dir=parent)
+            self.assertEqual(["a.0001v1", "b.0001v1"], result.slugs)
+            rows = list(JsonlStore(result.inventory_path))[1:]
+            by_slug = {row["slug"]: row for row in rows}
+            self.assertEqual(
+                "kisungyou/a.0001v1/a.0001v1.tar.gz",
+                by_slug["a.0001v1"]["source_forms"][0]["path"],
+            )
+            self.assertEqual(
+                "kisungyou/a.0001v1/a.0001v1.tar.gz",
+                by_slug["a.0001v1"]["source_forms"][1]["derived_from"],
+            )
+            self.assertEqual(
+                "mapper/b.0001v1/b.0001v1-tex",
+                by_slug["b.0001v1"]["source_forms"][1]["path"],
+            )
+            self.assertEqual("main.tex", by_slug["a.0001v1"]["evidence"]["latex_source"]["entrypoint"])
+
+    def test_fold_skips_collections_without_inventory(self):
+        with tempfile.TemporaryDirectory() as parent:
+            child = os.path.join(parent, "mapper")
+            _write_json(
+                os.path.join(child, "a.0001v1", "article.json"),
+                article_record("a.0001v1"),
+            )
+            result = fold_inventory(catalog_dir=parent)
+            self.assertEqual(0, result.article_count)
+            self.assertEqual([], result.slugs)
+
+    def test_fold_refuses_duplicate_slugs_across_children(self):
+        with tempfile.TemporaryDirectory() as parent:
+            left = os.path.join(parent, "left")
+            right = os.path.join(parent, "right")
+            _write_json(os.path.join(left, "a.0001v1", "article.json"), article_record("a.0001v1"))
+            _write_json(os.path.join(right, "a.0001v1", "article.json"), article_record("a.0001v1"))
+            build_inventory(catalog_dir=left)
+            build_inventory(catalog_dir=right)
+            with self.assertRaisesRegex(InventoryCatalogError, "Duplicate entry"):
+                fold_inventory(catalog_dir=parent)
+
+    def test_fold_existing_inventory_is_refused_without_force(self):
+        with tempfile.TemporaryDirectory() as parent:
+            child = os.path.join(parent, "mapper")
+            _write_json(
+                os.path.join(child, "a.0001v1", "article.json"),
+                article_record("a.0001v1"),
+            )
+            build_inventory(catalog_dir=child)
+            fold_inventory(catalog_dir=parent)
+            with self.assertRaisesRegex(InventoryCatalogError, "already exists"):
+                fold_inventory(catalog_dir=parent)
+            result = fold_inventory(catalog_dir=parent, force=True)
+            self.assertEqual(["a.0001v1"], result.slugs)
+
+    def test_cli_fold_inventory_framed(self):
+        with tempfile.TemporaryDirectory() as parent:
+            child = os.path.join(parent, "mapper")
+            _write_json(
+                os.path.join(child, "1105.4224v1", "article.json"),
+                article_record("1105.4224v1"),
+            )
+            build_inventory(catalog_dir=child)
+            proc = _run_cli("--framed", "fold-inventory", "--catalog-dir", parent)
+            self.assertEqual(0, proc.returncode, proc.stderr.decode("utf-8"))
+            frame = json.loads(proc.stdout)
+            self.assertEqual("value", frame["type"])
+            self.assertEqual(["1105.4224v1"], frame["value"]["slugs"])
 
 
 if __name__ == "__main__":

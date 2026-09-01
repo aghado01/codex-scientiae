@@ -99,9 +99,19 @@ class StaticCatalogService:
             catalog_dir="D:/catalog",
             article_count=2,
             slugs=("a", "b"),
+            has_inventory=False,
         )
 
     def rebuild(self, name: str, *, force: bool = False):
+        self.resolve(name)
+        return SimpleNamespace(
+            catalog_dir="D:/catalog",
+            inventory_path="D:/catalog/inventory.jsonl",
+            article_count=2,
+            slugs=["a", "b"],
+        )
+
+    def fold(self, name: str, *, force: bool = False):
         self.resolve(name)
         return SimpleNamespace(
             catalog_dir="D:/catalog",
@@ -465,6 +475,7 @@ class TestProcurementMcp(unittest.TestCase):
                             "list_article_catalogs",
                             "inspect_article_catalog",
                             "rebuild_article_inventory",
+                            "fold_article_inventory",
                             "list_procurement_providers",
                         },
                     )
@@ -716,6 +727,7 @@ class TestProcurementMcp(unittest.TestCase):
                             "name": "inventory",
                             "article_count": 2,
                             "slugs": ["a", "b"],
+                            "has_inventory": False,
                         },
                     )
                     inventory_result = await client.call_tool(

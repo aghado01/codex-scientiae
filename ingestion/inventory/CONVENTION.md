@@ -145,6 +145,13 @@ whole build. Ordering and collision rules are owned by the engine inventory regi
 strict UTF-8 without a BOM, LF-terminated rows, and the complete `inventory.jsonl` (+ sidecar) as one
 transaction. The materializer does not initialize, repair, or recursively infer deposits.
 
+A parent may also own one inventory folded from direct-child `inventory.jsonl` stores. That
+fold does not walk `article.json`. Children without an inventory are omitted. Rows stay
+`codex-scientiae/article/0.1`; leaf-relative `source_forms` and provider-metadata paths are
+rewritten one hop up (`{child}/{slug}/…`). Inner inventories remain the source of truth.
+Publish with `fold-inventory` / `Invoke-InventoryFold`; replacing an existing parent
+inventory requires `force`.
+
 Canonical on-demand build:
 
 ```pwsh
@@ -153,6 +160,9 @@ pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
 
 # Overwrite an existing inventory.jsonl
 pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
+
+# Fold child inventories into a parent inventory.jsonl
+pwsh -File ./scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
 ```
 
 PowerShell helper: `Invoke-InventoryBuild` in `src/logistics/inventory-catalog.ps1`. Engine verb:
