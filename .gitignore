@@ -4,6 +4,8 @@
 *.vscode
 *.ipynb_checkpoints
 
+**/*scratch**
+
 # directories
 **scratch/**
 artifacts/**
