@@ -456,7 +456,8 @@ function Resolve-LatexSourceInputs {
         [Parameter(Mandatory)] [string]$MainPath,
         [string]$RootPath = '',
         [int]$MaxDepth = 32,
-        [ValidateSet('Stop', 'Keep', 'Drop')] [string]$UnresolvedInputAction = 'Stop'
+        [ValidateSet('Stop', 'Keep', 'Drop')] [string]$UnresolvedInputAction = 'Stop',
+        [System.Collections.IList]$Unresolved = $null
     )
     $main = (Resolve-Path -LiteralPath $MainPath -ErrorAction Stop).Path
     $root = if ($RootPath) { (Resolve-Path -LiteralPath $RootPath -ErrorAction Stop).Path } else { Split-Path -Parent $main }
@@ -495,7 +496,16 @@ function Resolve-LatexSourceInputs {
                     if (-not $inputPath) {
                         $message = "unresolved or out-of-root LaTeX $command target '$name' referenced by '$full'"
                         if ($UnresolvedInputAction -eq 'Stop') { throw $message }
-                        Write-Warning $message
+                        if ($null -ne $Unresolved) {
+                            $referencedBy = [System.IO.Path]::GetRelativePath($root, $full).Replace('\', '/')
+                            [void]$Unresolved.Add([pscustomobject]@{
+                                command       = $command
+                                literal       = $name
+                                referenced_by = $referencedBy
+                            })
+                        } else {
+                            Write-Warning $message
+                        }
                         if ($UnresolvedInputAction -eq 'Keep') { return $match.Value }
                         return ''
                     }
@@ -624,7 +634,9 @@ function Test-LatexSourceTree {
     $texFiles = @(Invoke-Crawl -Root $root -Patterns '**/*.tex' -FailOnReparse)
     foreach ($texFile in $texFiles) { $null = Read-LatexSourceText $texFile }
     $entrypoint = Get-LatexSourceEntrypoint -RootPath $root -Slug $Slug -MainTex $MainTex
-    $resolved = Resolve-LatexSourceInputs -MainPath $entrypoint.path -RootPath $root
+    $unresolved = [System.Collections.Generic.List[object]]::new()
+    $resolved = Resolve-LatexSourceInputs -MainPath $entrypoint.path -RootPath $root `
+        -UnresolvedInputAction Keep -Unresolved $unresolved
     if ($resolved -notmatch '\\begin\s*\{document\}') {
         throw "resolved LaTeX entrypoint has no document environment: '$($entrypoint.path)'"
     }
@@ -641,6 +653,7 @@ function Test-LatexSourceTree {
         tree_sha256           = $fingerprint.sha256
         package_control_files = $packageControl
         embedded_metadata     = $embeddedMetadata
+        unresolved_inputs     = $unresolved.ToArray()
     }
 }
 
@@ -966,10 +979,17 @@ function New-DepositProbeLedger {
         })
     }
 
-    # Test-LatexSourceTree calls Resolve-LatexSourceInputs without -UnresolvedInputAction, so the
-    # Stop default applies and an unresolved \input aborts. Recorded with the mode that was in force
-    # so a future tolerant caller cannot inherit this claim.
-    $ledger.Record('literal-inputs-resolved', 'passed', @{ unresolved_input_action = 'Stop' })
+    # Test-LatexSourceTree keeps missing literal inputs in the resolved text and names the holes.
+    # Escape, cycle, and depth still throw. A total graph is passed; a hole is waived, not passed.
+    $holes = if ($null -eq $Validation.unresolved_inputs) { @() } else { @($Validation.unresolved_inputs) }
+    if ($holes.Count -gt 0) {
+        $ledger.Record('literal-inputs-resolved', 'waived', @{
+            reason      = 'literal input targets are missing from the source tree'
+            unresolved  = $holes
+        })
+    } else {
+        $ledger.Record('literal-inputs-resolved', 'passed', @{ unresolved = @() })
+    }
 
     # \begin{document} in the fully resolved text, not in the entrypoint file alone.
     $ledger.Record('document-environment-present', 'passed', @{ basis = 'resolved-input-text' })

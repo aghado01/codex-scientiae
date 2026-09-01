@@ -51,6 +51,15 @@ class EmbeddedLatexMetadata:
 
 
 @dataclass(frozen=True, slots=True)
+class UnresolvedLatexInput:
+    """One literal input command whose target is absent from the source tree."""
+
+    command: str
+    literal: str
+    referenced_by: str
+
+
+@dataclass(frozen=True, slots=True)
 class LatexSourceInspection:
     """Validated entrypoint, source closure, metadata, and tree identity."""
 
@@ -63,6 +72,7 @@ class LatexSourceInspection:
     files: tuple[TreeFile, ...]
     package_control_files: tuple[TreeFile, ...]
     embedded_metadata: EmbeddedLatexMetadata
+    unresolved_inputs: tuple[UnresolvedLatexInput, ...] = ()
 
 
 def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
@@ -186,10 +196,11 @@ def _resolve_inputs(
     expected_digests: dict[str, str],
     *,
     limits: ArchiveLimits,
-) -> tuple[str, dict[str, str]]:
+) -> tuple[str, dict[str, str], tuple[UnresolvedLatexInput, ...]]:
     by_path = {entry.relative: entry for entry in entries}
     digests: dict[str, str] = {}
     active: set[str] = set()
+    unresolved: list[UnresolvedLatexInput] = []
 
     def get_text(relative: str) -> str:
         text, digest = _stable_read_text(by_path[relative], maximum=limits.max_tex_bytes)
@@ -243,10 +254,16 @@ def _resolve_inputs(
                 if selected is None:
                     selected = _unique_casefold_path(candidates, by_path)
                 if selected is None:
-                    raise LatexSourceError(
-                        f"unresolved LaTeX {command} target {literal!r} "
-                        f"referenced by {relative!r}"
+                    unresolved.append(
+                        UnresolvedLatexInput(
+                            command=command,
+                            literal=literal,
+                            referenced_by=relative,
+                        )
                     )
+                    yield match.group(0)
+                    cursor = match.end()
+                    continue
                 yield from pieces(selected, depth + 1)
                 cursor = match.end()
             yield text[cursor:]
@@ -263,7 +280,7 @@ def _resolve_inputs(
             )
         total += len(encoded)
         output.append(piece)
-    return "".join(output), digests
+    return "".join(output), digests, tuple(unresolved)
 
 
 def _unique_casefold_path(
@@ -487,7 +504,7 @@ class LatexSourceInspector:
         main_tex: str | None = None,
         publication_root: PinnedPublicationRoot | None = None,
     ) -> LatexSourceInspection:
-        """Validate UTF-8 source closure, entrypoint, document marker, and tree identity."""
+        """Validate entrypoint, document marker, tree identity, and input closure."""
 
         if slug is not None and not isinstance(slug, str):
             raise LatexSourceError("slug must be a string or None")
@@ -548,7 +565,7 @@ class LatexSourceInspector:
             main_tex=selected_main_tex,
             limits=self.limits,
         )
-        resolved, input_digests = _resolve_inputs(
+        resolved, input_digests, unresolved_inputs = _resolve_inputs(
             entrypoint,
             entries,
             decoded_digests,
@@ -582,6 +599,7 @@ class LatexSourceInspector:
             files=fingerprint.files,
             package_control_files=controls,
             embedded_metadata=_embedded_metadata(resolved),
+            unresolved_inputs=unresolved_inputs,
         )
 
 
@@ -601,5 +619,6 @@ __all__ = [
     "EmbeddedLatexMetadata",
     "LatexSourceInspection",
     "LatexSourceInspector",
+    "UnresolvedLatexInput",
     "inspect_latex_source_tree",
 ]

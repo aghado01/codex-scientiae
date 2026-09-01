@@ -89,12 +89,6 @@ class LatexSourceTests(unittest.TestCase):
                 _limits(),
                 "backslash",
             ),
-            "missing": (
-                b"\\documentclass{article}\n\\input{missing}\n\\begin{document}x",
-                {},
-                _limits(),
-                "unresolved",
-            ),
             "cycle": (
                 b"\\documentclass{article}\n\\input{a}\n\\begin{document}x",
                 {"a.tex": b"\\input{main}"},
@@ -117,6 +111,20 @@ class LatexSourceTests(unittest.TestCase):
                     (tree / relative).write_bytes(body)
                 with self.assertRaisesRegex(LatexSourceError, expected):
                     inspect_latex_source_tree(tree, limits=limits)
+
+    def test_missing_literal_input_is_recorded_and_does_not_abort(self) -> None:
+        tree = self.root / "input-missing"
+        tree.mkdir()
+        (tree / "main.tex").write_bytes(
+            b"\\documentclass{article}\n\\input{missing}\n\\begin{document}x\\end{document}\n"
+        )
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual("main.tex", inspection.entrypoint)
+        self.assertEqual(1, len(inspection.unresolved_inputs))
+        hole = inspection.unresolved_inputs[0]
+        self.assertEqual("input", hole.command)
+        self.assertEqual("missing", hole.literal)
+        self.assertEqual("main.tex", hole.referenced_by)
 
     def test_resolved_source_size_and_document_marker_are_required(self) -> None:
         large = self.root / "large-resolved"
@@ -227,8 +235,10 @@ class LatexSourceTests(unittest.TestCase):
             "\\begin{document}x\\end{document}\n",
             encoding="utf-8",
         )
-        with self.assertRaisesRegex(LatexSourceError, r"LaTeX subfile target 'missing'"):
-            inspect_latex_source_tree(tree)
+        missing = inspect_latex_source_tree(tree)
+        self.assertEqual(1, len(missing.unresolved_inputs))
+        self.assertEqual("subfile", missing.unresolved_inputs[0].command)
+        self.assertEqual("missing", missing.unresolved_inputs[0].literal)
 
     def test_bare_literal_forms_follow_texdig_token_boundaries(self) -> None:
         tree = self.root / "bare-inputs"
@@ -262,8 +272,10 @@ class LatexSourceTests(unittest.TestCase):
             "\\begin{document}x\\end{document}\n",
             encoding="utf-8",
         )
-        with self.assertRaisesRegex(LatexSourceError, r"LaTeX subfile target 'missing'"):
-            inspect_latex_source_tree(tree)
+        missing = inspect_latex_source_tree(tree)
+        self.assertEqual(1, len(missing.unresolved_inputs))
+        self.assertEqual("subfile", missing.unresolved_inputs[0].command)
+        self.assertEqual("missing", missing.unresolved_inputs[0].literal)
 
     def test_class_specific_title_author_and_doi_declarations_are_collected(self) -> None:
         cases = (

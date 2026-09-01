@@ -29,7 +29,11 @@ from procurement.domain.materialization import (
     SourceMaterializationResult,
 )
 from procurement.source.extraction import ArchiveExtraction, SourceArchiveExtractor
-from procurement.source.latex import EmbeddedLatexMetadata, LatexSourceInspection
+from procurement.source.latex import (
+    EmbeddedLatexMetadata,
+    LatexSourceInspection,
+    UnresolvedLatexInput,
+)
 from procurement.source.findings import build_source_findings
 from procurement.source.tree import TreeFile
 from procurement.errors import AcquisitionConflictError, SourceMaterializationError
@@ -995,10 +999,63 @@ def test_findings_are_a_closed_seven_probe_ledger(
     assert len(by_name) == 7
     assert by_name["archive-members-confined"]["outcome"] == expected_archive_outcome
     assert by_name["entrypoint-unambiguous"]["outcome"] == expected_entry_outcome
+    assert by_name["literal-inputs-resolved"] == {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": [],
+    }
     for check in checks:
         if check["outcome"] != "passed":
             assert check["reason"]
     assert findings["declarations"]["title_tex"] == "A title"
+
+
+def test_findings_waive_missing_literal_inputs() -> None:
+    digest = hashlib.sha256(b"x").hexdigest()
+    extraction = ArchiveExtraction(
+        archive_path="source.tar.gz",
+        destination_path="expanded",
+        archive_kind="tar+gzip",
+        archive_entries=1,
+        archive_sha256=digest,
+        gzip_payload_bytes=1,
+        extracted_bytes=1,
+    )
+    inspection = LatexSourceInspection(
+        root_path="expanded",
+        entrypoint="main.tex",
+        entrypoint_selection="single-candidate",
+        file_count=1,
+        tex_file_count=1,
+        tree_sha256=digest,
+        files=(TreeFile(path="main.tex", bytes=1, sha256=digest),),
+        package_control_files=(),
+        embedded_metadata=EmbeddedLatexMetadata(
+            title_tex="A title",
+            authors_tex=("An author",),
+            doi=None,
+        ),
+        unresolved_inputs=(
+            UnresolvedLatexInput(
+                command="input",
+                literal="alg_adjlist.tex",
+                referenced_by="main.tex",
+            ),
+        ),
+    )
+
+    check = {
+        item["name"]: item for item in build_source_findings(extraction, inspection)["checks"]
+    }["literal-inputs-resolved"]
+    assert check["outcome"] == "waived"
+    assert check["reason"]
+    assert check["unresolved"] == [
+        {
+            "command": "input",
+            "literal": "alg_adjlist.tex",
+            "referenced_by": "main.tex",
+        }
+    ]
 
 
 @pytest.mark.parametrize(

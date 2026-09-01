@@ -146,6 +146,22 @@ Describe 'latex-source archive expansion and tree validation' {
             Should -Throw "*LaTeX subfile target 'missing'*"
     }
 
+    It 'validates a tree whose literal input target is missing' {
+        $tree = Join-Path $TestDrive ("missing-input-" + [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $tree -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $tree 'main.tex') -Encoding utf8NoBOM -Value @'
+\documentclass{article}
+\input{alg_adjlist.tex}
+\begin{document}x\end{document}
+'@
+        $validation = Test-LatexSourceTree -RootPath $tree -Slug 'doc'
+        $validation.entrypoint | Should -Be 'main.tex'
+        @($validation.unresolved_inputs).Count | Should -Be 1
+        $validation.unresolved_inputs[0].command | Should -Be 'input'
+        $validation.unresolved_inputs[0].literal | Should -Be 'alg_adjlist.tex'
+        $validation.unresolved_inputs[0].referenced_by | Should -Be 'main.tex'
+    }
+
     It 'resolves bare literal forms at TeX token boundaries and keeps exact syntax' {
         $tree = Join-Path $TestDrive ("bare-inputs-" + [guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Path $tree -Force | Out-Null

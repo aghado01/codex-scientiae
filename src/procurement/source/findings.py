@@ -71,19 +71,36 @@ def build_source_findings(
                 "entrypoint": inspection.entrypoint,
             }
         )
-    checks.extend(
-        (
+    if inspection.unresolved_inputs:
+        checks.append(
+            {
+                "name": "literal-inputs-resolved",
+                "outcome": "waived",
+                "reason": "literal input targets are missing from the source tree",
+                "unresolved": [
+                    {
+                        "command": item.command,
+                        "literal": item.literal,
+                        "referenced_by": item.referenced_by,
+                    }
+                    for item in inspection.unresolved_inputs
+                ],
+            }
+        )
+    else:
+        checks.append(
             {
                 "name": "literal-inputs-resolved",
                 "outcome": "passed",
-                "unresolved_input_action": "Stop",
-            },
-            {
-                "name": "document-environment-present",
-                "outcome": "passed",
-                "basis": "resolved-input-text",
-            },
+                "unresolved": [],
+            }
         )
+    checks.append(
+        {
+            "name": "document-environment-present",
+            "outcome": "passed",
+            "basis": "resolved-input-text",
+        }
     )
     embedded = inspection.embedded_metadata
     return {
