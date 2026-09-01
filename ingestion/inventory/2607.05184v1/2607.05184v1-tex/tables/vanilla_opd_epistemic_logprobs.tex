@@ -1,0 +1,55 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{Gold-demonstration context also lowers probability mass on epistemic tokens.}
+This token-level companion to Table~\ref{tab:qwen17_openthoughts_epistemic_tokens} reports the model probability assigned to epistemic markers. The Marginal column gives aggregate probability mass on the epistemic-token set; the named columns give log-probabilities for representative markers; and Avg. logp averages over the set. Vanilla OPD leaves these probabilities nearly unchanged, while the gold-demonstration variant lowers both the aggregate marginal and several revision-token log-probabilities.}
+\label{tab:qwen17_openthoughts_epistemic_logprobs}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.12}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccccccc@{}}
+\toprule
+\textbf{Method}
+& \textbf{Marginal}
+& \textbf{wait}
+& \textbf{recall}
+& \textbf{okay}
+& \textbf{altern}
+& \textbf{check}
+& \textbf{verify}
+& \textbf{hmm}
+& \textbf{Avg. logp} \\
+\midrule
+\textbf{Base}
+& 0.00928
+& -0.57
+& -0.39
+& -0.15
+& -0.64
+& -0.38
+& -0.66
+& -0.72
+& -0.502 \\
+\textbf{+OPD}
+& 0.00929
+& -0.57
+& -0.38
+& -0.15
+& -0.64
+& -0.38
+& -0.67
+& -0.70
+& -0.499 \\
+\textbf{+OPD gold demo}
+& 0.00853
+& -0.72
+& -0.50
+& -0.17
+& -0.82
+& -0.40
+& -0.67
+& -0.96
+& -0.605 \\
+\bottomrule
+\end{tabular*}
+\end{table*}

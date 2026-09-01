@@ -1,0 +1,180 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.05184v1",
+  "initialized_utc": "2026-09-01T07:29:16.911880Z",
+  "title": "Rethinking On-Policy Self-Distillation for Thinking Models",
+  "authors": [
+    "Simran Kaur",
+    "Narutatsu Ri",
+    "Yinghui He",
+    "Liam Fowl",
+    "Sanjeev Arora"
+  ],
+  "abstract": "Self-distillation is a promising recipe for self-improvement in language models. In this setting, a model can serve as its own teacher when given privileged information, such as a solution to a math problem. This seems especially appealing for thinking models, which can use test-time reasoning to absorb the privileged information. Surprisingly, we show that privileged self-distillation degrades thinking models on long reasoning traces: across five Qwen3 and OLMo thinking models evaluated on AIME24, AIME25, and HMMT25, privileged-context distillation causes a relative drop of up to 17% in avg@16 accuracy. The degradation scales with the amount of privileged context withheld from the student and is most pronounced at long rollout budgets, where thinking models otherwise obtain their largest gains. This failure mode is not specific to self-distillation: on-policy distillation (OPD) improves thinking models, but privileged OPD reverses these gains. Our diagnostics link this failure mode to how privileged teacher context reshapes learning at high-entropy forking positions, where multiple continuations remain plausible and may lead to different reasoning paths. Privileged context lowers fork rates in thinking-model rollouts but not in instruction-model rollouts. This leads to an interesting dichotomy, where privileged context can help instruction-tuned models but hurts stronger thinking models. The effect is visible when the student begins a self-correction branch, where privileged OPD penalizes sampled reconsideration tokens that vanilla OPD supports. Thinking models trained with a privileged teacher produce fewer verification, backtracking, and hedging markers, even after length normalization. These findings indicate that self-distillation for strong thinking models requires attention to token-level signal, especially around correction and reasoning steps.",
+  "identifiers": {
+    "arxiv": "2607.05184",
+    "arxiv_versioned": "2607.05184v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.05184v1"
+    }
+  },
+  "categories": [
+    "cs.AI",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-07-06T15:01:35Z",
+  "updated": "2026-07-06T15:01:35Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.05184v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 11063,
+        "sha256": "2c9bb33d63c64f4742a4e79270be66febd749541fa4584300a6bf21e0c783ef1",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-01T07:29:13.875405Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.05184v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "d9e0a9eeea1f68d0956d6d641f1d8bba1742f0b1d65b2932a74a28f55070ab61"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Rethinking On-Policy Self-Distillation for Thinking Models",
+        "authors_tex": [
+          "Simran Kaur \\quad\n    Narutatsu Ri \\quad\n    Yinghui He \\quad\n    Liam Fowl \\quad\n    Sanjeev Arora \\\\\n    Princeton Language and Intelligence, Princeton University\\\\\n    \\texttt{\\{skaur,nr3764,yh0068,lf2728,arora\\}@cs.princeton.edu} \\\\"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 213,
+        "sha256": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.05184v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.05184v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 405463,
+      "sha256": "8833ecf85a2788f79e1c0efc8eae8560774dde0f4c970b90c312503cc4c56236",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.05184v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.05184v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 54,
+      "tex_files": 42,
+      "sha256": "b216bbf3331b2293277046850e00b60bf4602e5e4000efe312461e915f313e30"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.05184v1.pdf",
+      "format": "application/pdf",
+      "bytes": 998744,
+      "sha256": "1d033d088bb63e4266b98df5ddbfb37993ba6bd5bed77952d47b3a062a32a2d1"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-01T07:29:16.911880Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 57
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 54
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 42
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "waived",
+        "reason": "literal input targets are missing from the source tree",
+        "unresolved": [
+          {
+            "command": "input",
+            "literal": "@path",
+            "referenced_by": "main.tex"
+          }
+        ]
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

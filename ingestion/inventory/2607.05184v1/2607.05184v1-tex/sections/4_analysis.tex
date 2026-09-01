@@ -1,0 +1,125 @@
+\section{Analysis: Privileged Context Reduces Forking}
+\label{sec:analysis}
+
+Section~\ref{sec:results} isolates when privileged-context distillation damages
+thinking models: the degradation appears most clearly at long rollout budgets
+and grows with the density of the teacher's privileged context. We next analyze
+a possible mechanism: privileged context changes the per-token distillation
+signal on forking tokens, which mark uncertainty or redirection, and trained
+students produce fewer such tokens at evaluation. The evidence has three
+parts. First, privileged context shifts the fork--lock structure of
+thinking-model rollouts
+(\S\ref{sec:fork-lock-analysis}). Second, at these positions, the token-level
+distillation signal reverses on self-correction and uncertainty markers
+(\S\ref{sec:token-signal-analysis}). Third, trained \opsd{} students produce
+fewer deliberation markers at evaluation
+(\S\ref{sec:trained-student-deliberation}).
+
+\subsection{Privileged context shifts the fork--lock distribution}
+\label{sec:fork-lock-analysis}
+
+Following the SSD diagnostic of \citet{zhang2026embarrassingly}, we distinguish
+\emph{fork} positions from \emph{lock} positions. A fork is a high-entropy
+position where several plausible continuations remain available and may lead to
+different reasoning paths; a lock is a locally constrained position where the
+continuation is comparatively determined. We classify positions from the
+teacher distribution along sampled rollouts with a top-candidate dominance
+heuristic: a position is a fork when the top candidate has probability below
+$0.25$, and a lock when the top candidate has probability above $0.65$. We then
+report per-rollout fork and lock rates.
+
+\input{figures/fork_lock_context}
+
+Figure~\ref{fig:fork_lock_context} compares \qwenfourbinstruct{} and
+\qwenfourb{} with thinking enabled under three teacher conditions: no
+privileged context, sparse context containing the gold final answer, and dense
+context containing the full gold demonstration. The two modes respond
+differently. For the instruction-tuned model, fork rates remain near $0.06$ and
+lock rates near $0.78$, essentially flat across conditions. For the thinking
+model, denser privileged context monotonically lowers fork rates and raises
+lock rates: the median fork rate drops from roughly $0.083$ to
+$0.035$ between the base and dense conditions, while the median lock rate rises
+from roughly $0.69$ to $0.77$.
+
+Privileged context reshapes the rollout structure of thinking models but leaves
+instruction-style rollouts essentially unchanged.
+
+\subsection{Privileged context reverses the signal on fork markers}
+\label{sec:token-signal-analysis}
+
+The fork-rate changes in \S\ref{sec:fork-lock-analysis} align with a sign
+reversal in the per-token distillation signal. Forks are often marked by short
+epistemic and revision tokens such as \textit{wait}, \textit{hmm},
+\textit{but}, and \textit{maybe}. These markers are lexical proxies for forking
+positions, not direct measurements. We inspect the per-token teacher--student
+log-ratio along sampled rollouts: positive values mean the teacher assigns more
+probability than the student to the sampled token, and negative values mean the
+teacher assigns less.
+
+\input{figures/privilege_flips_self_correction}
+
+Figure~\ref{fig:privilege-flips} visualizes the reversal. The trajectory is held
+fixed and scored by two teachers: an unprivileged teacher that sees the same
+prompt as the student, and a privileged teacher that also sees answer
+information. In a rollout that ends at the wrong answer, the privileged teacher
+strongly suppresses the self-correction cue \texttt{But wait} ($-1.96$,
+$-4.97$) and shifts positive credit toward the locally fluent continuation
+\texttt{how can}. The same pattern appears in windows from a rollout that
+reaches the correct answer: the privileged teacher suppresses self-correction
+cues such as \texttt{but} ($-12.70$) and \texttt{Maybe} ($-1.64$), even though
+the resulting trajectory reaches the right answer.
+
+\input{tables/vanilla_opd_epistemic_tokens}
+
+Table~\ref{tab:qwen17_openthoughts_epistemic_tokens} reports the realized
+density of the same marker set in \qwenonesevenb{} evaluation rollouts. Vanilla
+OPD leaves the aggregate epistemic-token density nearly unchanged
+($1.080\% \to 1.074\%$), while the gold-demonstration variant lowers it to $0.850\%$.
+The reduction appears on several individual markers, including \textit{wait}
+($3.85 \to 2.54$ occurrences per 1,000 generated tokens) and \textit{hmm}
+($1.45 \to 1.11$).
+
+The same pattern appears before sampling, in the probability mass assigned to
+epistemic markers: vanilla OPD leaves marginal marker mass essentially
+unchanged, while the gold-demonstration teacher lowers it, with the largest
+drops on \textit{wait}, \textit{recall}, \textit{altern}, and \textit{hmm}.
+Full numbers and token-mask controls are in Appendix~\ref{app:opd-ablations}.
+
+\subsection{The trained student produces fewer deliberation markers}
+\label{sec:trained-student-deliberation}
+
+The token-level analysis suggests that students trained with privileged context
+should produce fewer deliberation markers at evaluation. We test this by
+comparing paired base and \opsd{} rollouts with the same model, benchmark,
+problem, and sample index (see Appendix~\ref{app:deliberation-markers}). The
+analysis uses the five thinking models in the OpenThoughts 15k comparison on
+AIME24, AIME25, and HMMT25, giving 7,200 paired rollouts.
+
+\input{tables/deliberation_markers}
+
+Table~\ref{tab:deliberation_markers} counts three families of deliberation
+markers: verification markers such as \textit{check} and \textit{verify},
+backtracking markers such as \textit{wait}, \textit{actually}, and
+\textit{wrong}, and hedging markers such as \textit{maybe} and
+\textit{seems}. \opsd{} reduces the raw count of all three marker families, and
+the reduction survives length normalization. Verification markers drop from
+$1.63$ to $1.35$ per 1,000 generated tokens (95\% CI $[-0.32,-0.25]$), with
+smaller but still negative shifts in backtracking and hedging. The length
+collapse of Section~\ref{sec:results} is therefore accompanied by a
+within-rollout reduction in deliberation markers, not just shorter rollouts
+containing them at the same density.
+
+Appendix~\ref{app:sd-zero-srt} gives complementary evidence from SD-Zero: the
+self-revision stage alone helps the thinking model, but the subsequent \opsd{}
+stage reverses that gain.
+
+These diagnostics do not establish a causal explanation for the accuracy drop.
+Rather, they identify a consistent behavioral pattern associated with the drop.
+Privileged-context distillation degrades long-budget thinking behavior; the
+degradation grows with the density of privileged teacher context; privileged
+context lowers fork rates and raises lock rates in thinking-model rollouts;
+fixed-trajectory scoring shows sign reversals on self-correction cues; and
+trained students emit fewer deliberation markers. Together, these observations
+support our interpretation of fork suppression as a failure mode of privileged
+token-level supervision in thinking models, while leaving open whether it is the
+primary cause of the observed accuracy degradation.

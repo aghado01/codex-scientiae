@@ -1,0 +1,393 @@
+\section{Research frontiers and open problems}\label{sec:frontiers}
+
+
+\regime{Control}{the open problems on the return arc, and concrete programs to close them.}
+The preceding parts establish a diagnosis, not a celebration. Across the
+$N{=}435$ coded corpus, the works we examined have learned how to accumulate state
+and how to retrieve it: substrates, write pipelines, retrieval rankers,
+consolidation schedules, and skill libraries are well studied and heavily benchmarked. They
+are less developed on how to \emph{govern} state once it persists. The two thinnest
+cells in the coding scheme are the governance axes most tied to consequential
+state: only $27/435$ works expose any rollback mechanism, and authority is
+the rarest of the six state axes at $72/435$. Every part of this survey reported
+the same pattern under a different name. P1 finds almost no foundational work on formal
+authority structure and zero on state recovery after corruption; P3 has zero works
+that directly address rollback and only two that address audit lineage; P5 states
+its deletion and rollback semantics abstractly because the mechanistic literature to
+ground them does not yet exist; P6 lacks formal consistency theory for shared
+mutable state; P7 lists almost all of its weak cells as ``no benchmark exists'' for
+the very governance properties the thesis prioritizes. The agenda is broader than
+ retrieval accuracy alone: it is the work of converting an
+accumulate-and-retrieve framing into a govern-over-a-lifecycle framing.
+
+One observation should temper how this frontier is read. The governance mechanisms
+the survey was able to cite, origin-bound write authority, semantic transactions,
+saga-style compensation, audited skill graphs, runtime authority gating, are
+overwhelmingly 2025 and 2026 preprints, and few have appeared in widely deployed,
+long-running systems or been measured under realistic fault load. That clustering
+admits two readings, and the honest position holds both. The optimistic reading is
+that the field is correctly identifying the gap and mobilizing quickly, so the
+preprint surge is genuine frontier work on a normal multi-year maturation timeline.
+ The cautious reading is that governance may be harder to build and benchmark than
+memory: it demands formal reasoning, cross-system testing, and infrastructure that a
+paper can propose but not easily scale, so some of these mechanisms may not survive
+contact with production. We report the frontier as we find it, and treat its youth as
+itself a signal: the direction is right, but durability is unproven, and the agenda
+is therefore stated as work to be done rather than results to be consolidated.
+
+Five coupled research programs follow from that diagnosis. The first four are the
+directions the coverage map already implies, each anchored to a quantified corpus
+gap and stated as a coupled pair of a measurement instrument and a mechanism the
+instrument would discipline. The fifth is the meta-observation that makes the
+other four tractable: late rounds of in-vocabulary ``agent memory'' queries showed
+diminishing returns in our search frame, so the governance backbone must borrow
+native vocabulary, and in many cases entire correctness calculi, from databases
+and distributed systems, formal methods, capability security, machine unlearning,
+and regulatory compliance. Each direction below gives the gap, why it matters for
+persistent state, a concrete program of work, and the open problem it leaves
+standing. Table~\ref{tab:frontier-map} ties the five programs to the corpus cells
+they target and to the closest current anchors.
+
+\begin{table}[t]
+\centering
+\small
+\caption{The five frontier programs, the quantified corpus gap each targets, the
+closest current anchors in the corpus, and the open instrument each program needs.
+The recurring pattern is that mechanisms exist as point solutions while the
+measurement and the cross-axis composition are absent.}
+\label{tab:frontier-map}
+\begin{tabular}{p{2.3cm}p{2.4cm}p{2.6cm}p{2.4cm}}
+\toprule
+\textbf{Program} & \textbf{Corpus gap} & \textbf{Closest anchors} & \textbf{Missing instrument} \\
+\midrule
+Lifecycle-complete evaluation &
+Rollback $27/435$; recovery never measured &
+\citet{chang2025sagallm}, \citet{zheng2026acrfence} &
+Recovery-success and recovery-cost metrics on hosted systems \\
+\addlinespace
+Controlled compounding &
+Consolidation drops retrieval handles; contagion has no safe threshold &
+\citet{kang2026oslmr}, \citet{liu2026memorycontagion} &
+Write-acceptance gate keyed to later addressability \\
+\addlinespace
+Authority, privacy, deletion, cross-surface &
+Authority $72/435$; no single-policy cross-surface benchmark &
+\citet{lahjouji2026privacysurvey}, \citet{shah2026unlearningmirage} &
+One agent, all surfaces, one declared policy \\
+\addlinespace
+Shared-memory governance &
+No distributed rollback; revocation cascades unmodeled &
+\citet{ren2026gatemem}, \citet{zhu2026openport} &
+Authority-scoped rollback of tool-originated state \\
+\addlinespace
+Adjacent-discipline bridging &
+Governance axes thin in every part &
+\citet{park2026kumiho}, \citet{parakhin2026bureaucracy} &
+Native correctness calculi imported, not re-derived \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Lifecycle-complete evaluation and running AOEP on real systems}
+
+The highest-risk gap in the corpus is not that rollback mechanisms are
+rare but that rollback is studied as a \emph{mechanism} and almost never as a
+\emph{measured capability}. The $27/435$ figure undercounts the problem: even among
+those twenty-seven works, none reports the quantities an operator of an always-on
+agent would actually need, namely how often recovery succeeds after a corruption
+event, how much state is lost when it does, and what the recovery costs in latency
+and compute. The vocabulary for these quantities already exists in databases and
+distributed systems as recovery-point and recovery-time objectives, mean-time-to-recovery,
+and recovery-success rate, but the agent-memory literature has not adopted it. The
+result is a field that can describe checkpoint-and-restore designs while being unable
+to say whether any of them works under realistic fault load.
+
+The mechanism literature that does exist is suggestive but partial. \citet{chang2025sagallm}
+imports the database Saga model into multi-agent LLM planning, giving compensable
+execution, automated compensation, and independent validation agents so that a
+multi-step workflow can be rolled back through compensating actions rather than naive
+undo. This is the right import, but it assumes compensation handlers exist and that
+the prior state can be reconstructed, the assumption that fails for irreversible
+side effects. \citet{zheng2026acrfence} confronts that failure directly:
+it characterizes semantic rollback attacks in agent checkpoint-restore, where naive
+restore either duplicates an already-consumed effect or resurrects an authority that
+was meant to lapse, and mitigates by recording irreversible effects and choosing
+replay-or-fork accordingly. \citet{nakajima2026regimes} offers a third stance: an
+event-sourced runtime where state is a deterministic projection of an append-only
+log, so exact replay is free, at the cost of an ever-growing log with no garbage
+collection. \citet{shawn2026pace} attacks the commit decision rather than the
+restore, replacing greedy score-based acceptance of self-updates, which p-hacks
+itself into harmful commits, with an anytime-valid betting gate that bounds the
+probability of a false commit. These four works disagree about where recovery should
+live: in compensation logic, in effect ledgers, in the log substrate, or in the
+commit gate. None of them is evaluated against the others on a common recovery
+benchmark in the corpus, because we found no shared benchmark for this case.
+
+The concrete program is to make recovery a first-class measured property and to run
+the measurement on real systems rather than on synthetic stores. An always-on
+evaluation harness should inject corruption, poisoned writes, stale facts, partial
+write failures, and lapsed-authority retries, then score recovery-success rate,
+state lost at the recovery point, and recovery cost, against a stated objective. The
+critical design constraint, drawn from \citet{zheng2026acrfence}, is that the harness
+must distinguish reversible from irreversible state, because a restore that looks
+correct on retrievable memory can still have duplicated an external side effect. The
+open problem this leaves is sharp: within our query frame, there is no agreed definition of a
+``recovered'' always-on agent. \citet{orogat2026gem} formalizes governed evolving
+memory with six correctness conditions, including rollback traceability, and proves
+that record-level stores cannot satisfy them, but it is a theoretical framework
+without an empirical harness, and it does not cover the authority and provenance
+policies that determine whether a given restore is even permitted. Until recovery is
+measured on hosted, multi-task agent benchmarks rather than asserted in design
+sections, the thesis's recoverability axis remains a property the current
+literature often claims but rarely demonstrates.
+
+\subsection{Controlled compounding and retrieval-addressable consolidation}
+
+Always-on agents are supposed to get better with use. Replay, reflection, skill
+libraries, and consolidation are the mechanisms by which experience is meant to
+compound into competence. The plasticity-stability tension is well studied as a
+learning problem, but as a \emph{governance} problem it exposes a different failure:
+the same accumulation that should compound verified competence also lets bad
+trajectories, stale facts, and poisoned traces compound into durable policy. The
+question is not how to remember more but how to admit only what should become
+permanent, and to keep what is admitted addressable by the queries that will later
+need it.
+
+Two distinct hazards live at the consolidation boundary. The first is loss of
+addressability. Consolidation compresses, and compression can score well on aggregate
+recall while silently dropping the retrieval handles, the names, identifiers, dates,
+and keys, that a later query must match; a memory then looks compact and coherent
+while becoming unusable. The principle the agenda names for this is
+retrieval-addressable consolidation: accept a write or update only when it preserves
+the handles a later query will use, rather than only preserving topical gist. The
+second hazard is contamination that compounds across time. \citet{liu2026memorycontagion}
+shows that evaluator bias embedded in stored trajectories propagates
+cross-temporally to future agents that share the memory, and that there is no safe
+contamination threshold even under oracle consolidation. This is a strong warning
+against naive compounding: without an admission gate, shared experience can be
+systematically harmful rather than only occasionally noisy. The retention literature gives the lever such a gate would pull.
+\citet{kang2026oslmr} casts retention as an NP-hard constrained stochastic
+optimization over budget, usefulness, and delayed miss-or-stale cost, learning a
+query-conditioned, observability-safe policy that beats recency and heuristic
+baselines under tight budgets, the regime where addressability is
+sacrificed first. \citet{kumar2026memarchitect} adds a rule-based layer that governs
+decay, resolves contradictions among facts, and filters stale ``zombie'' memories
+before they re-enter retrieval.
+
+What none of these works supplies is a write-acceptance gate that jointly enforces
+both addressability and provenance-bounded admission as a precondition for a write
+becoming durable. \citet{shawn2026pace} provides the statistical shape of such a
+gate for self-updates, an anytime-valid betting bound on false commits, but does not
+key it to whether the committed item remains retrievable, and \citet{joshi2026eywa}
+provides the provenance shape, storing immutable source evidence first and deriving
+canonical facts only after validation against typed signals, but does not measure
+addressability after derivation. The open problem is to unify them: a consolidation
+operator that compounds competence only when the candidate write is both
+authorized-by-provenance and addressable-by-future-query, and that is evaluated on
+whether long-horizon competence actually rises rather than on single-step recall.
+The contagion result of \citet{liu2026memorycontagion} makes the stakes explicit.
+A field that consolidates for recall without an admission gate is building durable
+policy out of unvetted experience, which is the plasticity-stability invariant
+failing in its most damaging direction.
+
+\subsection{Authority, privacy, deletion, and a cross-surface benchmark}
+
+The authority axis is the rarest in the corpus at $72/435$, and its scarcity is not
+an accident of coding: authority, the question of who may read, write, delete, or
+act on a piece of state, is the axis that the accumulate-and-retrieve paradigm has no
+reason to represent. An always-on agent that never forgets and never checks who
+licensed a fact will treat a preference that was true last month, changed yesterday,
+as still authoritative today, and will let any stored fact influence any action. The
+governance program here has three tightly linked obligations, privacy, deletion, and
+authority, and a missing instrument that would test them together.
+
+On privacy, the corpus has moved from training-time leakage to deployment-time and
+memory-resident leakage. \citet{carlini2021extractingtrainingdata} established that
+models memorize and leak verbatim training data; \citet{chen2026deploymenttimememorization}
+shows the analogous failure for deployed agents memorizing sensitive deployment-time
+data, and \citet{chen2026mrmmia} gives the first membership-inference framework aimed
+explicitly at chat-agent persistent memory units. \citet{naseh2025riddle} shows the
+attack needs only about thirty natural-language queries to infer datastore
+membership while evading query-rewriting defenses, and \citet{xu2026memorysilent}
+isolates the deeper failure with its RBI-Eval probe: agents integrate sensitive
+memory content even when it is not warranted, and retrieval cannot prevent
+integration once the memory reaches the generator. On deletion, the picture is
+worse, because deletion is widely assumed to be solved and is not.
+\citet{staufer2025whatshouldllmsforget} addresses the prerequisite everyone else
+assumes away, identifying \emph{what} must be forgotten under right-to-be-forgotten
+obligations; \citet{xue2025unlearningverificationsurvey} surveys how one would
+\emph{verify} that deletion succeeded, mapping directly onto the recoverability axis;
+and \citet{shah2026unlearningmirage} gives a negative result, showing
+that supposedly forgotten information resurfaces under multi-hop and aliased queries.
+\citet{wang2024unlearningmeetsrag} and \citet{koga2024dprag} give the two
+mechanism families, unlearning over retrieval stores and differential privacy spent
+only on sensitive tokens, but neither closes the cascade: deleting a source fact does
+not delete the summaries, embeddings, and derived facts it spawned.
+\citet{zhao2026memorepair} is the closest corpus work to a cascade solution, a
+barrier-first repair contract that withdraws stale derived descendants when a source
+is deleted and republishes only validated, predecessor-closed successors, cutting
+invalidated-memory exposure toward zero; it should be read as the deletion-propagation
+invariant made operational, and as evidence of how rare such operationalization
+currently is.
+
+On authority, several recent works treat it as a property that must only
+narrow. \citet{zhu2026intentgovernedauth} makes the user's expressed intent a
+monotone, session-scoped policy that can only reduce the authority static credentials
+grant; \citet{ibrahim2026overlaygovernance} proves how delegated authority attenuates
+along recursive delegation chains; and \citet{parakhin2026bureaucracy} establishes a
+structural equivalence between hardware memory-consistency models and authorization
+revocation, bounding unauthorized operations by execution count rather than by a
+time-to-live that an idle agent can outlast. \citet{dash2026selfportrait} supplies
+the empirical motivation from the user's side: an audit of 2{,}050 real ChatGPT
+persistent-memory entries found 96\% were silently system-created, so the authority
+over what an agent remembers about a user is, in practice, held by the agent and not
+the user. \citet{zhang2025ragmemoryperceptions} and \citet{feng2025regulatoryui}
+confirm from interviews and system analysis that users hold incomplete mental models
+of persistent memory and want granular rights to review, edit, and delete, with the
+interface itself acting as a governance surface.
+
+The missing instrument unifies all three obligations. The corpus contains no
+benchmark that drives a single agent across all the data surfaces it touches, the
+retrieval store, the tool APIs, the long-term memory, and the inter-agent channel,
+under one declared privacy policy, and scores whether the policy holds end to end.
+\citet{lahjouji2026privacysurvey} identifies this absence, finding that
+information-flow control is the only governance that covers cross-session inference
+leakage and that no existing benchmark exercises an agent across surfaces under one
+policy. This is the cross-surface benchmark the agenda calls for: a privacy and
+authority policy declared once, an agent that must honor inspection, correction,
+erasure, and rollback over masked, access-controlled, and origin-bound memory, and a
+score that fails the moment a deleted fact resurfaces in any surface or an action
+descends from an authority that has lapsed. The open problem is that until such an
+instrument exists, the deletion and authority literatures remain a collection of
+surface-local point defenses, and the thesis's scope-non-expansion and
+deletion-propagation invariants cannot be tested in the multi-surface setting where
+they actually fail.
+
+\subsection{Shared-memory governance and authority-scoped rollback}
+
+Shared and multi-agent state multiplies every governance hazard, because a single
+write can now influence principals who never authored it, and because the authority
+that licensed a write may belong to one agent while the consequences land on another.
+Two corpus cells stay persistently thin here. The first is the intersection of
+authority and forgetting: who may compel deletion from shared memory, and who
+verifies that it propagated to every principal's view. The second, and sharper, is
+distributed rollback of tool-originated state once the authority that licensed the
+original action has lapsed.
+
+On the access-control side the corpus is maturing. \citet{ren2026gatemem}
+benchmarks whether an LLM agent governing a shared memory pool can serve legitimate
+requests while enforcing per-role and per-scope access controls and reliably
+forgetting data on request across four real-world domains, which is the closest
+existing instrument to a shared-memory governance benchmark. \citet{masoor2025samep}
+and \citet{ravindran2026portablemem} build the cross-session and cross-vendor
+sharing substrates, with AES-256-GCM access control and capability-scoped,
+injection-resistant rehydration respectively, but each new shared channel widens
+the authority and provenance surface that attacks exploit.
+\citet{dalugoda2026hdp} contributes an append-only signed delegation-provenance chain
+that binds each agent action to an originating human authorization and scope with
+offline audit verification, which is the lineage half of authority-scoped rollback.
+\citet{wright2025immutablemem} pushes immutability to its logical end, an append-only
+Merkle ledger with privilege-lattice access control, but in doing so it collides head
+on with deletion: a strictly immutable ledger cannot honor a forget request, so
+immutability and deletion-propagation are in direct tension, and the works we
+examined do not yet resolve which yields.
+
+The authority-scoped rollback problem is where the corpus is thinnest. Consider the
+canonical case: an agent makes a tool call under
+a delegated authority, the side effect is irreversible or externally visible, the
+authority later lapses or is revoked, and the call is retried after a transient
+failure. A correct system must not let the retry resurrect already-consumed authority
+or duplicate the irreversible effect. \citet{zhu2026openport} addresses the temporal
+half of this with a State Witness profile that revalidates execution-time
+preconditions and fails closed on state mismatch, killing stale approvals when
+world-state drifts between an action's approval and its delayed execution, the
+time-of-check-to-time-of-use drift that always-on agents create by design.
+\citet{deochake2026heartbeatcred} addresses the liveness half: descendant agent
+authority self-expires within a provably bounded window once parent liveness ceases,
+killing zombie agents that keep acting after operator shutdown.
+\citet{bhatt2025etdi} and \citet{south2025authenticateddelegation} bind grants to
+signed tool definitions and to scoped, accountable delegation chains, so a silently
+redefined tool or an over-broad delegation can be detected. But none of these works,
+and no benchmark in the corpus, scores the full authority-scoped rollback case: a
+retried call whose licensing authority has lapsed, against a shared substrate, with
+an irreversible effect, where the correct outcome is neither blind replay nor blind
+restore. This is the multi-agent instantiation of the recoverability axis, and with
+only $27/435$ works exposing any rollback at all, it is unmeasured. Trigger
+calibration, deciding when an always-on agent should interrupt or act on shared
+state proactively rather than wait, is the related open axis: surfacing state too
+eagerly is itself an authority overreach, and the utility-calibrated timing of
+proactive action remains largely unstudied as a governance question rather than a
+helpfulness one.
+
+\subsection{Bridging from adjacent disciplines}
+
+The four programs above share a constraint that the gap analysis makes visible:
+late in-vocabulary agent-memory searches returned diminishing new governance
+coverage under our query frame. The governance backbone is therefore unlikely to be
+filled by re-running the same vocabulary. It needs deliberate import of native
+correctness calculi from five established disciplines, treating their decades of
+accumulated theory as part of the foundation the governance axes need. This bridging
+is already visible in several strong recent works, which is evidence that the move
+is productive.
+
+From databases and distributed systems comes transactional correctness and recovery.
+\citet{chang2025sagallm} imports the Saga model wholesale; the further frontier is
+snapshot isolation, write-ahead logging, point-in-time recovery, and consistency
+models, sequential, causal, and eventual, applied to concurrent writes on shared
+agent memory, where P6 explicitly lacks formal consistency theory. From classical
+knowledge representation comes belief revision: \citet{park2026kumiho} builds a
+graph-native versioned memory whose update and contraction operations are proven to
+satisfy the AGM and Hansson belief-base postulates, importing rationality guarantees
+that the heuristic consolidation literature lacks entirely, and
+\citet{wang2026toki} recasts contradiction resolution as write-time concurrency
+control with a bitemporal operator algebra and four soundness theorems, giving the
+both-truths representation an always-on agent needs to mark a fact superseded rather
+than delete it. From formal methods and runtime verification comes provable
+enforcement: \citet{bollig2026causalpast} defines a past-time temporal logic with a
+provably correct vector-clock monitor for guards over causally-visible stored state;
+\citet{winston2026solveraided} compiles natural-language tool-use policies into
+SMT-LIB and uses Z3 as a per-call precondition gate; and
+\citet{metere2026skillcontainment} promotes a skill manifest to a mechanically
+checkable capability-containment proof. These works move enforcement from the design
+section into the forward pass, which P5 flagged as its sparsest cell.
+
+From capability security comes the discipline of authority that only narrows.
+\citet{ibrahim2026overlaygovernance} overlays recursive delegation, dynamic scoping,
+and resource-scope attenuation onto existing relational authorization with formal
+proofs of attenuation along delegation chains; \citet{jin2026capseal} keeps raw
+credentials non-exportable behind schema-checked invocations to defeat prompt-injection
+exfiltration; and \citet{metere2026attestedtoolserver} admits tool servers only via
+offline-signed clearance against a pinned trust root. These are capability-system
+primitives, object capabilities, attenuation, confinement, transplanted into the
+agent setting, and they are why authority, though rarest in the corpus, has
+a plausible path toward stronger coverage. From machine unlearning and compliance comes the deletion
+and audit backbone: \citet{nguyen2024machineunlearningsurvey} and
+\citet{xue2025unlearningverificationsurvey} supply the methods and the verification
+theory, \citet{shah2026unlearningmirage} supplies the adversarial test that any
+import must pass, and the regulatory framings of \citet{staufer2025whatshouldllmsforget}
+connect the recoverability axis to right-to-erasure obligations that regulated
+domains, healthcare, finance, and legal, will impose whether or not the field is
+ready. \citet{dmitrenko2026memorycomponents} adds a dimension the agent-memory
+literature ignores entirely: the license and sustainability posture of the
+open-source data-infrastructure projects that back agent memory is itself an
+architectural variable for always-on durability, since a memory substrate whose
+upstream project is abandoned is a durability failure waiting to happen.
+
+The open problem for this fifth program is integrative rather than local. Each import
+above lands a single governance axis: belief revision for mutability, capability
+security for authority, provenance DAGs and Merkle logs for provenance,
+transactional recovery for recoverability, runtime verification for validation. The
+thesis demands that the six axes and five invariants hold \emph{jointly} over the
+full lifecycle, yet no work in the corpus composes more than two or three axes at
+once, and the imports come from disciplines with incompatible assumptions: immutable
+ledgers from blockchain versus cascading deletion from referential integrity,
+eventual consistency from distributed systems versus the strict precondition gates of
+runtime verification. The target is a unified persistent-state governance layer in
+which authority monotonicity, scope non-expansion, deletion propagation, provenance
+preservation, and rollback traceability are enforced together and measured together,
+with the cross-surface benchmark of the third program and the recovery harness of the
+first program as its evaluation. Until that layer exists, the survey's diagnosis is
+also an agenda: the works we coded accumulate and retrieve state with much more
+sophistication than they govern it, and closing that gap requires importing,
+composing, and measuring the governance backbone that always-on agents, as
+persistent-state systems, require.

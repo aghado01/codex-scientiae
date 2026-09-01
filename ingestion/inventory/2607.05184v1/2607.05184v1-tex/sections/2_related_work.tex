@@ -1,0 +1,22 @@
+\section{Related Work}
+\label{sec:relatedwork}
+
+Self-distillation broadly refers to distillation settings where the teacher is
+derived from the student model, often with the same architecture or checkpoint.
+Our work focuses on recent privileged-context on-policy self-distillation
+methods, where the self-teacher is additionally given information unavailable
+to the student, such as answers, demonstrations, or feedback. Prior work has
+reported gains from \opsd{}
+\citep{zhao2026selfdistilledreasoneronpolicyselfdistillation}, SDFT
+\citep{shenfeld2026self}, SDPO \citep{hubotter2026reinforcement}, SD-Zero
+\citep{he2026selfdistillationzero}, and related recipes, especially for
+instruction-tuned models, continual learning, or reasoning compression. Our
+result is complementary: we show that in long-budget thinking models,
+privileged token-level feedback can degrade the search behavior that enables
+test-time reasoning. Concurrent work has linked self-distillation failures to
+suppression of epistemic verbalization
+\citep{kim2026doesselfdistillationsometimesdegrade}; our analysis studies the
+broader fork-suppression mechanism using budget curves, fork/lock diagnostics,
+fixed-trajectory token scoring, and trained-student marker shifts. We provide
+an expanded discussion of related work in
+Appendix~\ref{app:related-work-continued}.

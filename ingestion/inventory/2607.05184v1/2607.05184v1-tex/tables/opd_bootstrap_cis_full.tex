@@ -1,0 +1,50 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Privileged teacher context, not on-policy distillation itself, degrades thinking-model performance.}
+Companion to Table~\ref{tab:qwen17_openthoughts_opsd_opd}; $\Delta$ rows report
+paired bootstrap 95\% confidence intervals for avg@16 deltas.}
+\label{tab:opd_bootstrap_cis_full}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\providecommand{\cicell}[2]{\shortstack{#1\\[-1pt]{\scriptsize #2}}}
+\providecommand{\deltalabel}[1]{\shortstack[l]{\textbf{$\Delta$ (#1)}\\[-1pt]{\scriptsize $\Delta$ [95\% CI]}}}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \textbf{AIME24}
+& \textbf{AIME25}
+& \textbf{HMMT25}
+& \textbf{Average} \\
+\midrule
+
+\multirow{7}{*}{\textbf{\qwenonesevenb{}}}
+& \textbf{Base}
+& 0.502 & 0.398 & 0.215 & 0.372 \\
+& \textbf{+\opsd{}}
+& 0.435 & 0.302 & 0.185 & 0.308 \\
+& \textbf{+OPD}
+& 0.540 & 0.385 & 0.252 & 0.392 \\
+& \textbf{+OPD gold demo}
+& 0.467 & 0.344 & 0.240 & 0.350 \\
+& \deltalabel{OPD - Base}
+& \cicell{$+0.037$}{$[-0.006,0.081]$}
+& \cicell{$-0.013$}{$[-0.056,0.027]$}
+& \cicell{$+0.037$}{$[0.013,0.065]$}
+& \cicell{$+0.021$}{$[-0.001,0.042]$} \\
+& \deltalabel{OPD gold demo - OPD}
+& \cicell{$-0.073$}{$[-0.123,-0.023]$}
+& \cicell{$-0.042$}{$[-0.079,-0.008]$}
+& \cicell{$-0.013$}{$[-0.044,0.019]$}
+& \cicell{$-0.042$}{$[-0.065,-0.019]$} \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$-0.067$}{$[-0.125,-0.017]$}
+& \cicell{$-0.096$}{$[-0.160,-0.042]$}
+& \cicell{$-0.029$}{$[-0.062,0.002]$}
+& \cicell{$-0.064$}{$[-0.095,-0.037]$} \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2606.30306v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2606.30306v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Always-OnAgents:A Survey of Persistent Memory, State, and Governance in LLMAgents",
+      "authors": [
+        "Tianyu Ding",
+        "Aditya Nannapaneni",
+        "Bingfan Liu",
+        "Ling Zhang"
+      ],
+      "abstract": "Always-on agents are systems whose future behavior depends on durable state accumulated across earlier interactions. We treat them as persistent-state systems: the operative system includes retrievable memories, but also task ledgers, permissions, credentials, commitments, provenance and audit records, shared state, trigger conditions, and externally committed effects linked to those records. The survey reads the literature through six diagnostic axes for each state item, authority, scope, mutability, provenance, recoverability, and actionability, and through a lifecycle in which state is written, validated, organized, retrieved, acted upon, updated, forgotten, audited, and sometimes rolled back. Across a 435-work coded corpus, treated as a scoped map rather than an exhaustive census, the literature concentrates more heavily on accumulating and retrieving state than on governing, recovering, or relinquishing it. We therefore introduce the Always-On Evaluation Protocol (AOEP-v0), a pilot evaluation contract that makes these governance requirements concrete by scoring state mutation and recovery obligations rather than answer quality alone. The resulting agenda connects always-on agents to databases, distributed systems, formal methods, capability security, and machine unlearning.",
+      "doi": null,
+      "arxiv_id": "2606.30306v1",
+      "published": "2026-06-29T13:47:42Z",
+      "updated": "2026-06-29T13:47:42Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2606.30306v1",
+      "pdf_url": "https://arxiv.org/pdf/2606.30306v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.MA",
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2606.30306v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2606.30306v1",
+          "url": "https://arxiv.org/abs/2606.30306v1",
+          "doi": null,
+          "arxiv_id": "2606.30306v1",
+          "published": "2026-06-29T13:47:42Z",
+          "updated": "2026-06-29T13:47:42Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2606.30306v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T07:29:48.025199Z",
+      "sha256": "0bdce98d3ef6ff7cddb91ef800095035c6f00eabab2348e32760ea2240411594",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvTWU4UUtUYzFHRlZrODJNeFIxSDZ4OE1FV0ZjPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNi4zMDMwNnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA3OjI5OjQ4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA2LjMwMzA2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNi4zMDMwNnYxPC9pZD4KICAgIDx0aXRsZT5BbHdheXMtT25BZ2VudHM6QSBTdXJ2ZXkgb2YgUGVyc2lzdGVudCBNZW1vcnksIFN0YXRlLCBhbmQgR292ZXJuYW5jZSBpbiBMTE1BZ2VudHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wNi0yOVQxMzo0Nzo0Mlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwNi4zMDMwNnYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwNi4zMDMwNnYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+QWx3YXlzLW9uIGFnZW50cyBhcmUgc3lzdGVtcyB3aG9zZSBmdXR1cmUgYmVoYXZpb3IgZGVwZW5kcyBvbiBkdXJhYmxlIHN0YXRlIGFjY3VtdWxhdGVkIGFjcm9zcyBlYXJsaWVyIGludGVyYWN0aW9ucy4gV2UgdHJlYXQgdGhlbSBhcyBwZXJzaXN0ZW50LXN0YXRlIHN5c3RlbXM6IHRoZSBvcGVyYXRpdmUgc3lzdGVtIGluY2x1ZGVzIHJldHJpZXZhYmxlIG1lbW9yaWVzLCBidXQgYWxzbyB0YXNrIGxlZGdlcnMsIHBlcm1pc3Npb25zLCBjcmVkZW50aWFscywgY29tbWl0bWVudHMsIHByb3ZlbmFuY2UgYW5kIGF1ZGl0IHJlY29yZHMsIHNoYXJlZCBzdGF0ZSwgdHJpZ2dlciBjb25kaXRpb25zLCBhbmQgZXh0ZXJuYWxseSBjb21taXR0ZWQgZWZmZWN0cyBsaW5rZWQgdG8gdGhvc2UgcmVjb3Jkcy4gVGhlIHN1cnZleSByZWFkcyB0aGUgbGl0ZXJhdHVyZSB0aHJvdWdoIHNpeCBkaWFnbm9zdGljIGF4ZXMgZm9yIGVhY2ggc3RhdGUgaXRlbSwgYXV0aG9yaXR5LCBzY29wZSwgbXV0YWJpbGl0eSwgcHJvdmVuYW5jZSwgcmVjb3ZlcmFiaWxpdHksIGFuZCBhY3Rpb25hYmlsaXR5LCBhbmQgdGhyb3VnaCBhIGxpZmVjeWNsZSBpbiB3aGljaCBzdGF0ZSBpcyB3cml0dGVuLCB2YWxpZGF0ZWQsIG9yZ2FuaXplZCwgcmV0cmlldmVkLCBhY3RlZCB1cG9uLCB1cGRhdGVkLCBmb3Jnb3R0ZW4sIGF1ZGl0ZWQsIGFuZCBzb21ldGltZXMgcm9sbGVkIGJhY2suIEFjcm9zcyBhIDQzNS13b3JrIGNvZGVkIGNvcnB1cywgdHJlYXRlZCBhcyBhIHNjb3BlZCBtYXAgcmF0aGVyIHRoYW4gYW4gZXhoYXVzdGl2ZSBjZW5zdXMsIHRoZSBsaXRlcmF0dXJlIGNvbmNlbnRyYXRlcyBtb3JlIGhlYXZpbHkgb24gYWNjdW11bGF0aW5nIGFuZCByZXRyaWV2aW5nIHN0YXRlIHRoYW4gb24gZ292ZXJuaW5nLCByZWNvdmVyaW5nLCBvciByZWxpbnF1aXNoaW5nIGl0LiBXZSB0aGVyZWZvcmUgaW50cm9kdWNlIHRoZSBBbHdheXMtT24gRXZhbHVhdGlvbiBQcm90b2NvbCAoQU9FUC12MCksIGEgcGlsb3QgZXZhbHVhdGlvbiBjb250cmFjdCB0aGF0IG1ha2VzIHRoZXNlIGdvdmVybmFuY2UgcmVxdWlyZW1lbnRzIGNvbmNyZXRlIGJ5IHNjb3Jpbmcgc3RhdGUgbXV0YXRpb24gYW5kIHJlY292ZXJ5IG9ibGlnYXRpb25zIHJhdGhlciB0aGFuIGFuc3dlciBxdWFsaXR5IGFsb25lLiBUaGUgcmVzdWx0aW5nIGFnZW5kYSBjb25uZWN0cyBhbHdheXMtb24gYWdlbnRzIHRvIGRhdGFiYXNlcywgZGlzdHJpYnV0ZWQgc3lzdGVtcywgZm9ybWFsIG1ldGhvZHMsIGNhcGFiaWxpdHkgc2VjdXJpdHksIGFuZCBtYWNoaW5lIHVubGVhcm5pbmcuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLk1BIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNi0yOVQxMzo0Nzo0Mlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLk1BIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UaWFueXUgRGluZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QWRpdHlhIE5hbm5hcGFuZW5pPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5CaW5nZmFuIExpdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TGluZyBaaGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Always-OnAgents:A Survey of Persistent Memory, State, and Governance in LLMAgents",
+    "authors": [
+      "Tianyu Ding",
+      "Aditya Nannapaneni",
+      "Bingfan Liu",
+      "Ling Zhang"
+    ],
+    "abstract": "Always-on agents are systems whose future behavior depends on durable state accumulated across earlier interactions. We treat them as persistent-state systems: the operative system includes retrievable memories, but also task ledgers, permissions, credentials, commitments, provenance and audit records, shared state, trigger conditions, and externally committed effects linked to those records. The survey reads the literature through six diagnostic axes for each state item, authority, scope, mutability, provenance, recoverability, and actionability, and through a lifecycle in which state is written, validated, organized, retrieved, acted upon, updated, forgotten, audited, and sometimes rolled back. Across a 435-work coded corpus, treated as a scoped map rather than an exhaustive census, the literature concentrates more heavily on accumulating and retrieving state than on governing, recovering, or relinquishing it. We therefore introduce the Always-On Evaluation Protocol (AOEP-v0), a pilot evaluation contract that makes these governance requirements concrete by scoring state mutation and recovery obligations rather than answer quality alone. The resulting agenda connects always-on agents to databases, distributed systems, formal methods, capability security, and machine unlearning.",
+    "identifiers": {
+      "arxiv": "2606.30306",
+      "arxiv_versioned": "2606.30306v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2606.30306v1"
+      }
+    },
+    "categories": [
+      "cs.MA",
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.MA",
+    "published": "2026-06-29T13:47:42Z",
+    "updated": "2026-06-29T13:47:42Z"
+  }
+}

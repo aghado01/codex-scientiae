@@ -1,0 +1,170 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.02134v2",
+  "initialized_utc": "2026-09-01T07:29:26.725864Z",
+  "title": "Coding-agents can replicate scientific machine learning papers",
+  "authors": [
+    "Atharva Hans",
+    "Ilias Bilionis"
+  ],
+  "abstract": "Scientific machine learning papers typically make computational claims, e.g., that the relative mean square error is less than 5% or that the 95% predictive credible interval covers the test data. A coding agent can be prompted to replicate those claims from paper materials alone, but the prompt does not by itself reliably preserve progress or check whether generated evidence supports the paper's claims. We introduce Paper-replication, a workflow that makes each selected paper claim a target with recorded evidence, and implement it as a coding-agent skill. The workflow makes the agent record those targets, reconstruct the paper's method, run computational experiments, link generated outputs to provenance and comparisons with the paper's claims, record where matched evidence appears in the replication report, and pass validation checks before completion. We evaluate Paper-replication on twelve independent runs across four scientific machine learning papers. All twelve workspaces pass the completion gate, and all 158 recorded targets are matched with report coverage. Even in this completed workspace state, repeated runs differ in how papers are divided into targets, in numerical fidelity to the source papers, in elapsed replication time, in the number of intermediate executions replaced before final evidence is accepted, and in the rules used to accept evidence. Paper-replication makes completion depend on workspace evidence and validation checks rather than on the agent's final message.",
+  "identifiers": {
+    "arxiv": "2607.02134",
+    "arxiv_versioned": "2607.02134v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.02134v2"
+    }
+  },
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-07-02T13:11:30Z",
+  "updated": "2026-07-10T01:02:12Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.02134v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9355,
+        "sha256": "e525c096652480a7591438c5ccf9ce4a2e63ee3e32511a001b064a2846dd0825",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-01T07:29:26.453054Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.02134v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "49ecdc7fa98519beb1c302a2c52d071e299dc94e3e3582ca004abdf06436eba6"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Coding-agents can replicate scientific machine learning papers",
+        "authors_tex": [
+          "Atharva Hans\\corref{cor1}\\fnref{present}",
+          "Ilias Bilionis"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 213,
+        "sha256": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.02134v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.02134v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 81435,
+      "sha256": "7093841c18e4276ba3c16ed85baf2a34ab7c5ce9f12338831d9a7a67ecbc6b37",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.02134v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.02134v2.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 9,
+      "tex_files": 1,
+      "sha256": "5a07b7d7b15055097ea5b869351042607f9bad675e4609d3ccb14045897c2575"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.02134v2.pdf",
+      "format": "application/pdf",
+      "bytes": 317147,
+      "sha256": "db7b06c89677763cc003a6dfc5152dedf2a32f8f80eb6353dc670ee483a5ca92"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-01T07:29:26.725864Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 9
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 9
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

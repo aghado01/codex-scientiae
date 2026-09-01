@@ -1,0 +1,34 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{The degradation depends on whether thinking is enabled during \opsd{} training.}
+We train on OpenThoughts 30k and evaluate with thinking mode in all rows. When thinking is enabled during \opsd{} training, \qwenfourb{} loses avg@16 accuracy on all three math evaluations; disabling thinking during training preserves the base-model average while still evaluating with thinking enabled.}
+\label{tab:openthoughts_thinking_enabled_disabled}
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
+\toprule
+\textbf{Method}
+& \textbf{AIME24}
+& \textbf{AIME25}
+& \textbf{HMMT25}
+& \textbf{Avg.} \\
+\midrule
+\qwenfourb{}
+& 0.727
+& 0.635
+& 0.410
+& 0.591 \\
++\opsd{} (Thinking)
+& 0.667
+& 0.571
+& 0.358
+& 0.532 \\
++\opsd{} (No Thinking)
+& 0.731
+& 0.615
+& 0.423
+& 0.590 \\
+\bottomrule
+\end{tabular*}
+\end{table}

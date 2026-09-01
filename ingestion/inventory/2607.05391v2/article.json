@@ -1,0 +1,180 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.05391v2",
+  "initialized_utc": "2026-09-01T07:29:39.238219Z",
+  "title": "LLM-as-a-Verifier: A General-Purpose Verification Framework",
+  "authors": [
+    "Jacky Kwok",
+    "Shulu Li",
+    "Pranav Atreya",
+    "Yuejiang Liu",
+    "Yixing Jiang",
+    "Chelsea Finn",
+    "Marco Pavone",
+    "Ion Stoica",
+    "Azalia Mirhoseini"
+  ],
+  "abstract": "Scaling pre-training, post-training, and test-time compute have become the central paradigms for improving the capabilities of LLMs. In this work, we identify verification, the ability to determine the correctness of a solution, as a new scaling axis. To unlock this and demonstrate its effectiveness, we introduce LLM-as-a-Verifier, a general-purpose verification framework that provides fine-grained feedback for agentic tasks without requiring additional training. Unlike standard LM judges that prompt LLMs to produce discrete scores for candidate solutions, LLM-as-a-Verifier computes the expectation over the distribution of scoring token logits to generate continuous scores. This probabilistic formulation enables verification to scale along multiple dimensions: (1) score granularity, (2) repeated evaluation, and (3) criteria decomposition. In particular, we show that scaling the scoring granularity leads to better separation between positive and negative solutions, resulting in more calibrated comparisons. Moreover, scaling repeated evaluation and criteria decomposition consistently lead to additional gains in verification accuracy through variance and complexity reduction. We further introduce a cost-efficient ranking algorithm for selecting the best solution among candidates using the verifier's continuous scores. LLM-as-a-Verifier achieves state-of-the-art performance on Terminal-Bench V2 (86.5%), SWE-Bench Verified (78.2%), RoboRewardBench (87.4%), and MedAgentBench (73.3%). Beyond verification, the fine-grained signals from LLM-as-a-Verifier can also serve as a proxy for estimating task progress. We build an extension for Claude Code, enabling developers to monitor and improve their own agentic systems. Finally, we show that LLM-as-a-Verifier can provide dense feedback for RL, improving the sample efficiency of SAC and GRPO on robotics and mathematical reasoning benchmarks.",
+  "identifiers": {
+    "arxiv": "2607.05391",
+    "arxiv_versioned": "2607.05391v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.05391v2"
+    }
+  },
+  "categories": [
+    "cs.AI",
+    "cs.CL",
+    "cs.LG",
+    "cs.MA",
+    "cs.RO"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-07-06T17:59:35Z",
+  "updated": "2026-07-07T17:26:37Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.05391v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 12211,
+        "sha256": "46fc77c47e1df839d9e93aae4c9ec204cc2b92a229c3d022e7e31311ffeda7e8",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-01T07:29:37.455763Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.05391v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "37ac17a32c1196363917ea67fd156f099acb79dc160175644eb9c9249e017ee1"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "LLM-as-a-Verifier: A General-Purpose Verification Framework",
+        "authors_tex": [
+          "\\textbf{Jacky Kwok}$^{1}$, \\,\n\\textbf{Shulu Li}$^{2}$, \\,\n\\textbf{Pranav Atreya}$^{2}$, \\,\n\\textbf{Yuejiang Liu}$^{1}$, \\,\n\\textbf{Yixing Jiang}$^{1}$ \\\\[4pt]\n\\textbf{Chelsea Finn}$^{1}$, \\,\n\\textbf{Marco Pavone}$^{1,3}$, \\,\n\\textbf{Ion Stoica}$^{2}$, \\,\n\\textbf{Azalia Mirhoseini}$^{1}$ \\\\\n\\vspace{0.4em}\n{\\Affilfont\n$^{1}$Stanford University \\,\\,\n$^{2}$UC Berkeley \\,\\,\n$^{3}$NVIDIA Research}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 291,
+        "sha256": "224574e150f739f82458c7532b0ff47581c4debc42db871a79c3af075a7a74e6"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.05391v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.05391v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 4311728,
+      "sha256": "c50f3148412db4c25c71a0905628cfd9c228bd5fb809a11e4dcb12da3d104a34",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.05391v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.05391v2.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 30,
+      "tex_files": 12,
+      "sha256": "9f03f043c9a7cf5cc661dbc1d17e0cd01aa19e8ee2e58fd715351d529dd84dad"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.05391v2.pdf",
+      "format": "application/pdf",
+      "bytes": 4485476,
+      "sha256": "3e15c670bf3a190a7417ba7ea2e8e1f2b5c573e548bbab0fb1d15ed9c00d4960"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-01T07:29:39.238219Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 33
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 30
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 12
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

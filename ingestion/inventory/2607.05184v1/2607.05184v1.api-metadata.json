@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.05184v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.05184v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Rethinking On-Policy Self-Distillation for Thinking Models",
+      "authors": [
+        "Simran Kaur",
+        "Narutatsu Ri",
+        "Yinghui He",
+        "Liam Fowl",
+        "Sanjeev Arora"
+      ],
+      "abstract": "Self-distillation is a promising recipe for self-improvement in language models. In this setting, a model can serve as its own teacher when given privileged information, such as a solution to a math problem. This seems especially appealing for thinking models, which can use test-time reasoning to absorb the privileged information. Surprisingly, we show that privileged self-distillation degrades thinking models on long reasoning traces: across five Qwen3 and OLMo thinking models evaluated on AIME24, AIME25, and HMMT25, privileged-context distillation causes a relative drop of up to 17% in avg@16 accuracy. The degradation scales with the amount of privileged context withheld from the student and is most pronounced at long rollout budgets, where thinking models otherwise obtain their largest gains. This failure mode is not specific to self-distillation: on-policy distillation (OPD) improves thinking models, but privileged OPD reverses these gains. Our diagnostics link this failure mode to how privileged teacher context reshapes learning at high-entropy forking positions, where multiple continuations remain plausible and may lead to different reasoning paths. Privileged context lowers fork rates in thinking-model rollouts but not in instruction-model rollouts. This leads to an interesting dichotomy, where privileged context can help instruction-tuned models but hurts stronger thinking models. The effect is visible when the student begins a self-correction branch, where privileged OPD penalizes sampled reconsideration tokens that vanilla OPD supports. Thinking models trained with a privileged teacher produce fewer verification, backtracking, and hedging markers, even after length normalization. These findings indicate that self-distillation for strong thinking models requires attention to token-level signal, especially around correction and reasoning steps.",
+      "doi": null,
+      "arxiv_id": "2607.05184v1",
+      "published": "2026-07-06T15:01:35Z",
+      "updated": "2026-07-06T15:01:35Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.05184v1",
+      "pdf_url": "https://arxiv.org/pdf/2607.05184v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2607.05184v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.05184v1",
+          "url": "https://arxiv.org/abs/2607.05184v1",
+          "doi": null,
+          "arxiv_id": "2607.05184v1",
+          "published": "2026-07-06T15:01:35Z",
+          "updated": "2026-07-06T15:01:35Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.05184v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T07:29:13.875405Z",
+      "sha256": "d9e0a9eeea1f68d0956d6d641f1d8bba1742f0b1d65b2932a74a28f55070ab61",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQmxiSW1IQTVRZm9ObFFmQU5LNDBBR1ZZQ0o0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4wNTE4NHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA3OjI5OjEzWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjA1MTg0djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wNTE4NHYxPC9pZD4KICAgIDx0aXRsZT5SZXRoaW5raW5nIE9uLVBvbGljeSBTZWxmLURpc3RpbGxhdGlvbiBmb3IgVGhpbmtpbmcgTW9kZWxzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDctMDZUMTU6MDE6MzVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDcuMDUxODR2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDcuMDUxODR2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlNlbGYtZGlzdGlsbGF0aW9uIGlzIGEgcHJvbWlzaW5nIHJlY2lwZSBmb3Igc2VsZi1pbXByb3ZlbWVudCBpbiBsYW5ndWFnZSBtb2RlbHMuIEluIHRoaXMgc2V0dGluZywgYSBtb2RlbCBjYW4gc2VydmUgYXMgaXRzIG93biB0ZWFjaGVyIHdoZW4gZ2l2ZW4gcHJpdmlsZWdlZCBpbmZvcm1hdGlvbiwgc3VjaCBhcyBhIHNvbHV0aW9uIHRvIGEgbWF0aCBwcm9ibGVtLiBUaGlzIHNlZW1zIGVzcGVjaWFsbHkgYXBwZWFsaW5nIGZvciB0aGlua2luZyBtb2RlbHMsIHdoaWNoIGNhbiB1c2UgdGVzdC10aW1lIHJlYXNvbmluZyB0byBhYnNvcmIgdGhlIHByaXZpbGVnZWQgaW5mb3JtYXRpb24uIFN1cnByaXNpbmdseSwgd2Ugc2hvdyB0aGF0IHByaXZpbGVnZWQgc2VsZi1kaXN0aWxsYXRpb24gZGVncmFkZXMgdGhpbmtpbmcgbW9kZWxzIG9uIGxvbmcgcmVhc29uaW5nIHRyYWNlczogYWNyb3NzIGZpdmUgUXdlbjMgYW5kIE9MTW8gdGhpbmtpbmcgbW9kZWxzIGV2YWx1YXRlZCBvbiBBSU1FMjQsIEFJTUUyNSwgYW5kIEhNTVQyNSwgcHJpdmlsZWdlZC1jb250ZXh0IGRpc3RpbGxhdGlvbiBjYXVzZXMgYSByZWxhdGl2ZSBkcm9wIG9mIHVwIHRvIDE3JSBpbiBhdmdAMTYgYWNjdXJhY3kuIFRoZSBkZWdyYWRhdGlvbiBzY2FsZXMgd2l0aCB0aGUgYW1vdW50IG9mIHByaXZpbGVnZWQgY29udGV4dCB3aXRoaGVsZCBmcm9tIHRoZSBzdHVkZW50IGFuZCBpcyBtb3N0IHByb25vdW5jZWQgYXQgbG9uZyByb2xsb3V0IGJ1ZGdldHMsIHdoZXJlIHRoaW5raW5nIG1vZGVscyBvdGhlcndpc2Ugb2J0YWluIHRoZWlyIGxhcmdlc3QgZ2FpbnMuIFRoaXMgZmFpbHVyZSBtb2RlIGlzIG5vdCBzcGVjaWZpYyB0byBzZWxmLWRpc3RpbGxhdGlvbjogb24tcG9saWN5IGRpc3RpbGxhdGlvbiAoT1BEKSBpbXByb3ZlcyB0aGlua2luZyBtb2RlbHMsIGJ1dCBwcml2aWxlZ2VkIE9QRCByZXZlcnNlcyB0aGVzZSBnYWlucy4gT3VyIGRpYWdub3N0aWNzIGxpbmsgdGhpcyBmYWlsdXJlIG1vZGUgdG8gaG93IHByaXZpbGVnZWQgdGVhY2hlciBjb250ZXh0IHJlc2hhcGVzIGxlYXJuaW5nIGF0IGhpZ2gtZW50cm9weSBmb3JraW5nIHBvc2l0aW9ucywgd2hlcmUgbXVsdGlwbGUgY29udGludWF0aW9ucyByZW1haW4gcGxhdXNpYmxlIGFuZCBtYXkgbGVhZCB0byBkaWZmZXJlbnQgcmVhc29uaW5nIHBhdGhzLiBQcml2aWxlZ2VkIGNvbnRleHQgbG93ZXJzIGZvcmsgcmF0ZXMgaW4gdGhpbmtpbmctbW9kZWwgcm9sbG91dHMgYnV0IG5vdCBpbiBpbnN0cnVjdGlvbi1tb2RlbCByb2xsb3V0cy4gVGhpcyBsZWFkcyB0byBhbiBpbnRlcmVzdGluZyBkaWNob3RvbXksIHdoZXJlIHByaXZpbGVnZWQgY29udGV4dCBjYW4gaGVscCBpbnN0cnVjdGlvbi10dW5lZCBtb2RlbHMgYnV0IGh1cnRzIHN0cm9uZ2VyIHRoaW5raW5nIG1vZGVscy4gVGhlIGVmZmVjdCBpcyB2aXNpYmxlIHdoZW4gdGhlIHN0dWRlbnQgYmVnaW5zIGEgc2VsZi1jb3JyZWN0aW9uIGJyYW5jaCwgd2hlcmUgcHJpdmlsZWdlZCBPUEQgcGVuYWxpemVzIHNhbXBsZWQgcmVjb25zaWRlcmF0aW9uIHRva2VucyB0aGF0IHZhbmlsbGEgT1BEIHN1cHBvcnRzLiBUaGlua2luZyBtb2RlbHMgdHJhaW5lZCB3aXRoIGEgcHJpdmlsZWdlZCB0ZWFjaGVyIHByb2R1Y2UgZmV3ZXIgdmVyaWZpY2F0aW9uLCBiYWNrdHJhY2tpbmcsIGFuZCBoZWRnaW5nIG1hcmtlcnMsIGV2ZW4gYWZ0ZXIgbGVuZ3RoIG5vcm1hbGl6YXRpb24uIFRoZXNlIGZpbmRpbmdzIGluZGljYXRlIHRoYXQgc2VsZi1kaXN0aWxsYXRpb24gZm9yIHN0cm9uZyB0aGlua2luZyBtb2RlbHMgcmVxdWlyZXMgYXR0ZW50aW9uIHRvIHRva2VuLWxldmVsIHNpZ25hbCwgZXNwZWNpYWxseSBhcm91bmQgY29ycmVjdGlvbiBhbmQgcmVhc29uaW5nIHN0ZXBzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDctMDZUMTU6MDE6MzVaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2ltcmFuIEthdXI8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk5hcnV0YXRzdSBSaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WWluZ2h1aSBIZTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TGlhbSBGb3dsPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TYW5qZWV2IEFyb3JhPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Rethinking On-Policy Self-Distillation for Thinking Models",
+    "authors": [
+      "Simran Kaur",
+      "Narutatsu Ri",
+      "Yinghui He",
+      "Liam Fowl",
+      "Sanjeev Arora"
+    ],
+    "abstract": "Self-distillation is a promising recipe for self-improvement in language models. In this setting, a model can serve as its own teacher when given privileged information, such as a solution to a math problem. This seems especially appealing for thinking models, which can use test-time reasoning to absorb the privileged information. Surprisingly, we show that privileged self-distillation degrades thinking models on long reasoning traces: across five Qwen3 and OLMo thinking models evaluated on AIME24, AIME25, and HMMT25, privileged-context distillation causes a relative drop of up to 17% in avg@16 accuracy. The degradation scales with the amount of privileged context withheld from the student and is most pronounced at long rollout budgets, where thinking models otherwise obtain their largest gains. This failure mode is not specific to self-distillation: on-policy distillation (OPD) improves thinking models, but privileged OPD reverses these gains. Our diagnostics link this failure mode to how privileged teacher context reshapes learning at high-entropy forking positions, where multiple continuations remain plausible and may lead to different reasoning paths. Privileged context lowers fork rates in thinking-model rollouts but not in instruction-model rollouts. This leads to an interesting dichotomy, where privileged context can help instruction-tuned models but hurts stronger thinking models. The effect is visible when the student begins a self-correction branch, where privileged OPD penalizes sampled reconsideration tokens that vanilla OPD supports. Thinking models trained with a privileged teacher produce fewer verification, backtracking, and hedging markers, even after length normalization. These findings indicate that self-distillation for strong thinking models requires attention to token-level signal, especially around correction and reasoning steps.",
+    "identifiers": {
+      "arxiv": "2607.05184",
+      "arxiv_versioned": "2607.05184v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.05184v1"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-07-06T15:01:35Z",
+    "updated": "2026-07-06T15:01:35Z"
+  }
+}

@@ -1,0 +1,89 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Full pass@1/pass@16 results for the Countdown-trained think-vs-instruct comparison.}
+This is the full-format companion to Table~\ref{tab:countdown_think_vs_instruct}. Entries report pass@1 / pass@16 on held-out Countdown data, AIME24, AIME25, and HMMT25. The Average column averages the four benchmarks.}
+\label{tab:countdown_think_vs_instruct_full}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+
+\newcommand{\metrichead}[1]{%
+  \textbf{#1}%
+}
+
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+\textbf{Model} &
+& \metrichead{Countdown}
+& \metrichead{AIME24}
+& \metrichead{AIME25}
+& \metrichead{HMMT25}
+& \metrichead{Average} \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenfourbinstruct{}}}
+& \textbf{Base}
+& 0.736 / 0.964
+& \textbf{0.604} / 0.833
+& 0.463 / 0.733
+& \textbf{0.304} / \textbf{0.500}
+& 0.527 / 0.758 \\
+&
+\textbf{+\opsd{}}
+& \textbf{0.865} / \textbf{0.968}
+& 0.594 / \textbf{0.867}
+& \textbf{0.483} / \textbf{0.767}
+& 0.294 / \textbf{0.500}
+& \textbf{0.559} / \textbf{0.775} \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenfourbthink{}}}
+& \textbf{Base}
+& 0.945 / \textbf{0.996}
+& \textbf{0.804} / \textbf{0.933}
+& \textbf{0.804} / \textbf{0.900}
+& \textbf{0.552} / \textbf{0.767}
+& \textbf{0.776} / \textbf{0.899} \\
+&
+\textbf{+\opsd{}}
+& \textbf{0.947} / \textbf{0.996}
+& 0.800 / \textbf{0.933}
+& 0.775 / \textbf{0.900}
+& 0.537 / \textbf{0.767}
+& 0.765 / \textbf{0.899} \\
+\midrule
+
+\multirow{2}{*}{\textbf{\olmosevenbinstruct{}}}
+& \textbf{Base}
+& 0.719 / 0.952
+& \textbf{0.525} / \textbf{0.867}
+& \textbf{0.415} / 0.700
+& 0.237 / 0.467
+& 0.474 / 0.746 \\
+&
+\textbf{+\opsd{}}
+& \textbf{0.814} / \textbf{0.978}
+& 0.510 / \textbf{0.867}
+& 0.394 / \textbf{0.733}
+& \textbf{0.256} / \textbf{0.500}
+& \textbf{0.494} / \textbf{0.769} \\
+\midrule
+
+\multirow{2}{*}{\textbf{\olmosevenbthink{}}}
+& \textbf{Base}
+& 0.877 / 0.996
+& 0.719 / 0.900
+& 0.667 / 0.833
+& \textbf{0.452} / \textbf{0.800}
+& 0.679 / 0.882 \\
+&
+\textbf{+\opsd{}}
+& \textbf{0.890} / \textbf{0.998}
+& \textbf{0.742} / \textbf{0.933}
+& \textbf{0.698} / \textbf{0.867}
+& \textbf{0.452} / 0.733
+& \textbf{0.695} / \textbf{0.883} \\
+
+\bottomrule
+\end{tabular}
+\end{table*}

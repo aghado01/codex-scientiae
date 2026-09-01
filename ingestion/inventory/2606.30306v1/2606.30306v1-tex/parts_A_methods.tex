@@ -1,0 +1,126 @@
+\appendix
+\section{Survey methods and corpus construction}\label{app:methods}
+
+The headline claims of this survey, in particular the lifecycle-stage and
+state-axis counts and the rollback and authority figures the argument
+rests on, are only as credible as the procedure that produced the corpus. This
+appendix documents that procedure so the numbers are auditable rather than
+asserted.
+
+\subsection{Sources and time window}
+
+The corpus draws on four sources: arXiv (cs.AI, cs.CL, cs.LG, cs.CR) as the
+primary source for 2023 to 2026 preprints; Semantic Scholar for backward and
+forward citation chasing and for venue and citation metadata; OpenReview (ICLR,
+NeurIPS, COLM) for venue status and camera-ready versions; and the ACL Anthology
+for published versions at ACL, EMNLP, and NAACL. The time window is 2023-01
+through 2026-06, with foundational anchors admitted regardless of date when they
+ground a taxonomy or a term the survey uses (for example, the episodic-semantic
+distinction, catastrophic interference, and the Soar architecture).
+
+\subsection{Search procedure}
+
+Collection ran in three passes. We \emph{seeded} from recent agent-memory surveys
+and the closest-work set and extracted their unit of analysis and shared
+vocabulary. Next we \emph{chased citations} backward (references) and forward
+(citing papers via Semantic Scholar) two hops from each seed, keeping any work
+that touches a persistent-state operation, state type, benchmark, or failure
+mode. Finally we ran \emph{targeted term-set sweeps} for 2024 to 2026 work the
+citation graph missed, with query sets grouped by mechanism (for example
+``agent memory'', ``memory OS'', ``procedural memory agent'', ``knowledge graph
+memory''), benchmark (``long-term conversational memory'', ``multi-session
+benchmark'', ``lifelong agent benchmark''), failure mode (``memory poisoning LLM
+agent'', ``indirect prompt injection'', ``machine unlearning LLM'', ``deletion
+residue''), continual adaptation and personalization (``continual learning
+agent'', ``test-time training'', ``knowledge editing forgetting''), and
+foundations (``cognitive architecture memory'', ``LLM agent survey''). The
+targeted sweeps were run as iterative non-duplicate rounds: each round queried
+the sources, removed works already in the corpus, and added only genuinely new
+hits, until additional rounds returned predominantly duplicates. Rounds aimed
+deliberately at the governance frontier (rollback, authority, deletion
+propagation, durable execution, formal verification, and the adjacent database,
+distributed-systems, and HCI literatures) so that the governance counts cannot be
+attributed to having searched only the memory mainstream.
+
+\subsection{Inclusion and exclusion criteria}
+
+A work is \emph{included} if it satisfies at least one of: (I1) it builds or
+studies a persistent-state mechanism; (I2) it contributes a benchmark or
+evaluation method relevant to memory, long-horizon, or stateful behavior; (I3) it
+documents a persistence-induced failure mode; (I4) it is a foundational anchor a
+reader needs to place the state taxonomy, the lifecycle, or the
+plasticity-stability framing; or (I5) it defines a boundary case (long-context,
+RAG, personalization) used to delimit always-on agents. A work is \emph{excluded}
+if it is (E1) pure model-architecture or pretraining work with no memory, state,
+or agent angle; (E2) an application that uses an agent but contributes nothing to
+a persistent-state operation, state type, benchmark, or failure mode (we add no
+padding for breadth alone); (E3) a duplicate or superseded version when a later
+one is cited; or (E4) available only in a venue without an accessible English
+record. The resulting corpus is $N{=}435$ works.
+
+\subsection{Coding scheme}
+
+Every included work is coded along four dimensions: a \emph{category} (mechanism,
+benchmark, failure mode, foundation, boundary, or survey); the \emph{lifecycle
+stages} it exercises, as a multi-label set over observe, write, validate,
+organize, retrieve, act, update, forget, audit, and rollback; the \emph{state
+axes} it addresses, as a multi-label set over authority, scope, mutability,
+provenance, recoverability, and actionability; and an \emph{application sub-area}.
+Multi-label coding is why per-stage and per-axis incidences sum to more than the
+corpus size. All counts in the survey are recomputed from the coded corpus by a
+script rather than hand-entered.
+
+\subsection{Coding reliability}
+
+Because the lifecycle and axis labels are interpretive, we measured inter-coder
+reliability with a blind second coding of a $236$-work sample (over half the
+corpus). On this sample, pooled per-cell agreement is $0.82$ on lifecycle stages
+(Cohen's $\kappa = 0.58$) and $0.74$ on state axes ($\kappa = 0.44$), which is
+moderate agreement, as expected for fine-grained multi-label coding of short
+descriptions. Two points matter for how the headline claims should be read.
+First, the reliability evidence supports the survey's \emph{directional} claims
+(forward arc dominant, return arc sparse) far better than it supports any exact
+cell count, and that is the only weight we place on it. Even the rollback label,
+the rarest, carries real labeling noise: the two coders agreed on it for only
+$11$ of the $19$ works either marked, so the precise value $27$ should be read as
+an estimate with a margin of several works, not a measurement. Second, the
+directional comparison does not depend on that precision, because it is a large
+qualitative asymmetry rather than a narrow margin: retrieve appears in
+$269$ works and rollback in roughly $27$, an order-of-magnitude gap that no
+plausible reclassification of borderline cells could close. A reader who
+distrusts the exact $27$ can inflate it severalfold and still obtain the same
+directional conclusion: the return arc is much sparser than the forward arc. We
+therefore treat the counts as well-supported for the comparative claims the
+survey makes (forward arc dominant, return arc sparse) while cautioning that any
+single cell
+should be read as an estimate, not a precise measurement.
+
+\subsection{What the rollback count does and does not aggregate}
+
+The figure that twenty-seven of $435$ works expose any rollback mechanism
+aggregates three mechanically distinct operations: internal-state rollback
+(reverting a stored fact or a consolidation decision), workflow rollback
+(compensating a partially executed multi-step task), and external-effect rollback
+(undoing an already-committed side effect such as a payment or a deletion). The
+aggregate is therefore generous for the easiest subclass and an overcount for the
+hardest. External-effect rollback, the subclass that matters most because
+irreversible effects cannot be repaired by any internal mechanism, is rarer than
+the aggregate suggests. A finer corpus pass should separate the three; we report
+the conservative aggregate and flag the subclass structure so the headline number
+is not over-read.
+
+\subsection{Threats to validity}
+
+Three threats deserve naming. First, the corpus is a \emph{representative coding,
+not an exhaustive census}; we sampled toward the governance frontier and the gap
+persisted, but we cannot exclude that some governance work uses vocabulary none of
+our query sets reached, which is why the universal claims in the body are scoped
+to the corpus or to works we examined rather than to the literature as a whole.
+Second, the corpus is weighted toward recent preprints, and the governance turn we
+document is itself recent (Figure~\ref{fig:timeline}); restricting to work
+through 2024 makes the governance fraction smaller rather than larger, so the gap
+is not an artifact of including immature 2026 work, but the durability of the
+2025 to 2026 governance preprints remains unproven. Third, single-coder labeling
+with a second-coder check is weaker than full double-coding; the $\kappa$ values
+above bound how much this matters, but they do not make the exact cell counts
+immune to recoding.

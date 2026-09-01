@@ -1,0 +1,32 @@
+\section{Discussion}
+\label{sec:Discussion}
+
+These findings suggest that the interaction between privileged supervision and
+test-time search is more delicate for thinking models than for instruction-tuned
+models. In our experiments, privileged-context OPD reduces the long-budget gains
+of thinking models even when closely related unprivileged OPD improves the same
+student. The token-level analyses provide a plausible explanation: conditioning
+the teacher on information unavailable to the student changes the learning
+signal at forking positions, high-entropy decision points where different
+continuations can send the rollout down different reasoning paths. Lexical
+markers such as ``wait'' or ``maybe'' make some of these positions visible, but
+the concern is broader than uncertainty language: privileged feedback may
+reshape which branches of the student's search are reinforced. Thus, the
+failure mode is not simply that privileged distillation shortens responses or
+suppresses epistemic markers, but that it can change the token-level structure
+of the reasoning process. Future self-distillation methods for strong
+thinking models may need to account for forking positions explicitly, so that
+privileged teacher feedback improves solution-directed behavior without
+collapsing branch-relevant test-time search.
+
+More broadly, our results speak to \opsd{}-style training for long-horizon
+agents. In our experiments, long-rollout degradation depended on the form of
+privileged teacher-side context: short final-answer-only context preserved
+long-budget behavior better than a full gold demonstration. This distinction is
+relevant to emerging long-horizon agent training recipes. For example, the
+Composer 2.5 training stack uses targeted textual feedback, where a \emph{short}
+hint is inserted into the teacher-side context and the original-context policy is
+distilled toward the hinted distribution \citep{cursor2026composer25}.
+Long-horizon \opsd{}-style training may therefore be viable, but likely requires
+controlling both how much privileged information the teacher receives and where
+the resulting token-level signal is applied.

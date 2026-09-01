@@ -1,0 +1,82 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{The \opsd{} stage helps an instruction-tuned model but hurts
+a thinking model.}
+We compare the base model, \opsd{} alone, self-revision training alone (SRT),
+and the full SRT+\opsd{} pipeline on Qwen3-4B-Instruct and Qwen3-4B.
+Entries report avg@8 accuracy on AIME24, AIME25, HMMT25, and their average.}
+\label{tab:sd_zero_result}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \textbf{AIME24}
+& \textbf{AIME25}
+& \textbf{HMMT25}
+& \textbf{Average} \\
+\midrule
+
+\multirow{4}{*}{\textbf{Qwen3-4B-Instruct}}
+& \textbf{Base}
+& 59.6
+& 45.8
+& 26.7
+& 44.0 \\
+
+&
+\textbf{+\opsd{}}
+& 63.3
+& 47.9
+& 32.9
+& 48.0 \\
+
+&
+\textbf{SRT}
+& 66.7
+& 59.2
+& 40.0
+& 55.3 \\
+
+&
+\textbf{SRT + \opsd{}}
+& \textbf{68.3}
+& \textbf{60.0}
+& \textbf{45.4}
+& \textbf{57.9} \\
+
+\midrule
+
+\multirow{4}{*}{\textbf{Qwen3-4B (Thinking)}}
+& \textbf{Base}
+& 72.5
+& \textbf{65.4}
+& 45.4
+& 61.1 \\
+
+&
+\textbf{+\opsd{}}
+& 63.3
+& 60.0
+& 44.6
+& 56.0 \\
+
+&
+\textbf{SRT}
+& \textbf{73.3}
+& 63.3
+& \textbf{50.0}
+& \textbf{62.2} \\
+
+&
+\textbf{SRT + \opsd{}}
+& 70.0
+& 63.3
+& 43.3
+& 58.9 \\
+
+\bottomrule
+\end{tabular*}
+\end{table}

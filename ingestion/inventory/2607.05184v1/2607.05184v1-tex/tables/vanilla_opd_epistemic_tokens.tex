@@ -1,0 +1,51 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{Gold-demonstration context suppresses epistemic-token usage more than vanilla OPD.}
+This token-level companion to Table~\ref{tab:qwen17_openthoughts_opsd_opd} reports marker usage by \qwenonesevenb{} on OpenThoughts. The aggregate epistemic-token density is the fraction of generated tokens in the epistemic-marker set. The remaining columns report occurrences per 1,000 generated tokens for representative revision and search markers such as \textit{wait}, \textit{recall}, \textit{check}, and \textit{hmm}. Vanilla OPD leaves the aggregate density essentially unchanged, while the gold-demonstration variant lowers both aggregate density and several named markers.}
+\label{tab:qwen17_openthoughts_epistemic_tokens}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccc@{}}
+\toprule
+\textbf{Method}
+& \shortstack{\textbf{Epistemic token}\\[-1pt]\textbf{density}}
+& \textbf{wait}
+& \textbf{recall}
+& \textbf{okay}
+& \textbf{altern}
+& \textbf{check}
+& \textbf{verify}
+& \textbf{hmm} \\
+\midrule
+\textbf{Base}
+& 1.080\%
+& 3.85
+& 1.11
+& 2.17
+& 0.64
+& 1.33
+& 0.25
+& 1.45 \\
+\textbf{+OPD}
+& 1.074\%
+& 3.79
+& 1.04
+& 2.17
+& 0.72
+& 1.19
+& 0.16
+& 1.68 \\
+\textbf{+OPD gold demo}
+& 0.850\%
+& 2.54
+& 0.96
+& 2.07
+& 0.66
+& 1.05
+& 0.10
+& 1.11 \\
+\bottomrule
+\end{tabular*}
+\end{table*}

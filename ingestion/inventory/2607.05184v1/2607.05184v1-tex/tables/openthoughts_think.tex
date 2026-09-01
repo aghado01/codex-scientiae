@@ -1,0 +1,95 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{\opsd{} degrades thinking models across model families.}
+We train each thinking model with privileged OpenThoughts solution context and evaluate on AIME24, AIME25, and HMMT25. Entries report avg@16 accuracy, and the Average column averages the three benchmarks. \opsd{} lowers the average score for all five thinking models, suggesting that the degradation is not specific to one model size or family.}
+\label{tab:openthoughts_thinking_models}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+
+\newcommand{\metrichead}[1]{%
+  \textbf{#1}%
+}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \metrichead{AIME24}
+& \metrichead{AIME25}
+& \metrichead{HMMT25}
+& \metrichead{Average} \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenonesevenb{} (Thinking)}}
+& \textbf{Base}
+& \textbf{0.502}
+& \textbf{0.398}
+& \textbf{0.215}
+& \textbf{0.372} \\
+&
+\textbf{+\opsd{}}
+& 0.435
+& 0.302
+& 0.185
+& 0.308 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenfourb{} (Thinking)}}
+& \textbf{Base}
+& \textbf{0.727}
+& \textbf{0.635}
+& \textbf{0.410}
+& \textbf{0.591} \\
+&
+\textbf{+\opsd{}}
+& 0.683
+& 0.556
+& 0.362
+& 0.534 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qweneightb{} (Thinking)}}
+& \textbf{Base}
+& \textbf{0.758}
+& \textbf{0.700}
+& \textbf{0.448}
+& \textbf{0.635} \\
+&
+\textbf{+\opsd{}}
+& 0.721
+& 0.613
+& 0.400
+& 0.578 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenfourbthink{}}}
+& \textbf{Base}
+& \textbf{0.804}
+& \textbf{0.804}
+& \textbf{0.552}
+& \textbf{0.720} \\
+&
+\textbf{+\opsd{}}
+& 0.787
+& 0.731
+& 0.529
+& 0.683 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\olmosevenbthink{}}}
+& \textbf{Base}
+& \textbf{0.719}
+& \textbf{0.667}
+& \textbf{0.452}
+& \textbf{0.612} \\
+&
+\textbf{+\opsd{}}
+& 0.715
+& 0.652
+& 0.446
+& 0.604 \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

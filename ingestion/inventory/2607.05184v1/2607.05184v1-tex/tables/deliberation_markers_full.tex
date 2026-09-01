@@ -1,0 +1,42 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{Full deliberation-marker counts for paired base and \opsd{} rollouts.}
+Raw columns report average marker counts per response. Normalized columns report occurrences per 1,000 generated tokens, using response-token counts computed with the cached model tokenizer. Deltas are \opsd{} minus base, with confidence intervals computed by clustered bootstrap over model--benchmark--problem clusters.}
+\label{tab:deliberation_markers_full}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccc@{}}
+\toprule
+\textbf{Marker family}
+& \textbf{Base raw}
+& \textbf{\opsd{} raw}
+& \textbf{Raw $\Delta$}
+& \textbf{Base /1k}
+& \textbf{\opsd{} /1k}
+& \textbf{$\Delta$ /1k} \\
+\midrule
+Verification
+& 26.1
+& 17.3
+& $-8.8$ [$-9.5$, $-8.1$]
+& 1.63
+& 1.35
+& $-0.28$ [$-0.32$, $-0.25$] \\
+Backtracking
+& 124.2
+& 100.6
+& $-23.5$ [$-29.0$, $-19.1$]
+& 6.45
+& 6.29
+& $-0.16$ [$-0.32$, $-0.02$] \\
+Hedging
+& 72.2
+& 55.2
+& $-17.0$ [$-18.5$, $-15.5$]
+& 3.79
+& 3.62
+& $-0.17$ [$-0.25$, $-0.10$] \\
+\bottomrule
+\end{tabular*}
+\end{table*}

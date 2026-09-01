@@ -1,0 +1,21 @@
+\section{SD-Zero Self-Revision Pipeline}
+\label{app:sd-zero-srt}
+
+The interpretation in Section~\ref{sec:trained-student-deliberation} is also
+consistent with an existing self-distillation pipeline in which the \opsd{} stage
+is problematic for thinking models even when surrounding stages help. SD-Zero
+\citep{he2026selfdistillationzero} first trains a model to revise its own
+responses using reward feedback, then distills the reviser back into the
+generator with an on-policy self-distillation step. We compare the base, the
+self-revision training stage alone (SRT), and the full SRT+\opsd{} pipeline on
+Qwen3-4B-Instruct and Qwen3-4B.
+
+\input{tables/sd_zero_result}
+
+Table~\ref{tab:sd_zero_result} shows that the pipeline behaves as intended on
+the instruction-tuned model: SRT improves the base by $11.3$ points
+($44.0 \to 55.3$), and the \opsd{} stage adds another $2.6$ points
+($55.3 \to 57.9$). On the thinking model, SRT also helps slightly
+($61.1 \to 62.2$), but the subsequent \opsd{} stage reverses the gain and leaves
+the model $3.3$ points below SRT alone ($62.2 \to 58.9$). The self-revision
+stage is not the problem; the \opsd{} stage that follows it is.

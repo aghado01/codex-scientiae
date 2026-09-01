@@ -1,0 +1,85 @@
+\section{Expanded Related Work}
+\label{app:related-work-continued}
+
+\paragraph{Continual Learning.}
+Model weights are updated during pre-training and post-training, but are then often deployed as static artifacts for months to serve traffic. This can quickly lead to a gap between in-weight knowledge and relevant real-world skills and information. \textit{Continual learning} aims to address this very gap \cite{de2021continual, kudithipudi2022biological, hadsell2020embracing, wang2024comprehensive}. Recently, self-distillation methods have claimed to allow for near seamless continual learning on new tasks while avoiding catastrophic forgetting common in other continual learning approaches \cite{shenfeld2026self}. This line of work claims that the policy being updated is minimally changed when trained using on-policy distillation from a teacher shown privileged information.
+
+\paragraph{On-Policy Distillation.}
+Distillation methods aim to impart richer knowledge into a student model
+(usually from an already trained teacher) compared to standard supervised
+learning methods \cite{hinton2015distilling, gou2021knowledge,
+agarwal2024policy}. For language modeling tasks, several variants of
+distillation exist. \textit{Sequence distillation} uses natural language outputs
+of one model to directly fine-tune a student model. \textit{Knowledge
+distillation} goes one step further and trains a student using the
+probabilities that a teacher assigns to its generated sequence. \textit{On-policy
+distillation} has emerged as an alternative to standard knowledge distillation
+wherein the sequence being scored, and subsequently used for training, is
+generated \textit{on-policy} by the student model. This approach alleviates
+observed issues between train-test distribution shift that can arise in standard
+knowledge distillation.
+
+\paragraph{Self-Improving Distillation.}
+Generally speaking, knowledge distillation methods, including sequence
+distillation and on/off-policy distillation, require a stronger teacher in order
+to improve the student's performance. This can induce a heavy computational
+overhead for researchers and also raises an important question: can a model be
+used to improve itself without the need for a stronger teacher? Several recent
+approaches have attempted to answer this question in the affirmative.
+On-Policy Self-Distillation (OPSD)
+\cite{zhao2026selfdistilledreasoneronpolicyselfdistillation} utilizes a single
+model architecture to act as both teacher and student: the teacher policy is
+conditioned on privileged information, such as a ground-truth answer to a math
+problem, and is used to score on-policy generations of a student without the
+privileged information. It is worth noting that recent updates to the OPSD
+method specifically disable per-token divergence feedback on deliberation
+tokens, which is necessary to stabilize training. Self-Distillation Fine-Tuning
+(SDFT) \cite{shenfeld2026self} proposes a similar method but focuses on
+integrating new knowledge corpora for continual learning rather than verifiable
+math questions.
+
+We focus on self-distillation methods in the previous vein: methods that use
+ground truth privileged information to directly condition a teacher's
+token-level feedback to train a student. However, other flavors of
+self-distillation methods may target different objectives and mechanisms. For
+example, CRISP \cite{sang2026policy} focuses on reducing thinking trace lengths
+by distilling a teacher's concise reasoning into a student model.
+Self-distillation has also been attempted where the teacher, instead of being
+given privileged information or different steering prompts, is instead sampled
+at different temperatures \cite{zhang2026embarrassingly}. Approaches like
+Self-Distillation Policy Optimization (SDPO)
+\cite{hubotter2026reinforcement} also use privileged information but augment
+the teacher policy with environmental feedback like error messages instead of
+gold, ground-truth information like OPSD or SDFT.
+
+\paragraph{Self-Distillation Failure Modes.}
+Concurrent work \citep{kim2026doesselfdistillationsometimesdegrade} studies why
+self-distillation can sometimes degrade mathematical reasoning, and attributes
+the degradation to suppression of epistemic verbalization under richer teacher
+conditioning. Their analysis emphasizes context richness and task coverage:
+richer conditioning produces shorter, more confident traces with fewer
+uncertainty expressions, which can help narrow in-domain settings but hurt OOD
+math generalization. Viewed through our framework, epistemic-verbalization
+suppression is a visible lexical subset of fork suppression: overt uncertainty
+markers expose some high-entropy fork positions, but many branch-relevant
+decisions occur at ordinary mathematical, connective, or formatting
+continuations. Our work is therefore complementary. We focus on long-rollout
+thinking models and ask how privileged token-level feedback changes the
+high-entropy decision points that support test-time search. Rather than treating
+epistemic markers as the primary object of study, we analyze fork-like positions
+in the teacher distribution, token-level signal reversal along fixed student
+trajectories, and the resulting loss of long-budget test-time compute gains.
+
+\paragraph{Forking and Exploration in Reasoning Traces.}
+Reasoning ability from a token-level perspective has been analyzed in several
+works that have found that some tokens, called forking tokens, can have an
+outsized influence on the downstream success of a reasoning trace
+\cite{bigelow2024forking, lin2024critical, vassoyan2025ignore,
+zhang2026embarrassingly}. These critical tokens often occur at high-entropy
+positions in a model's generation and control where and how the reasoning
+branches into different paths and alternative strategies. Our work
+contextualizes failures of self-improvement distillation methods in the setting
+of forking suppression.
+
+\paragraph{Privileged Feedback in RL.}
+Standard RL setups may face exploration bottlenecks on complex reasoning tasks where correct rollouts can be rare. To overcome this, several methods in RL also aim to incorporate privileged information into the exploration stage. For example, Privileged On-Policy Exploration (POPE) \cite{qu2026pope} and PrefixRL \cite{setlur2026reuse} utilize some privileged information to guide on-policy exploration. Hybrid approaches like HDPO \cite{ding2026hdpo} augment standard RL training with targeted privileged self-distillation in certain cases. Similar frameworks like Self-Distilled RLVR (RLSD) \cite{yang2026self} incorporate self-distillation to guide update magnitudes of standard RLVR training. Our work sets aside RL training mechanisms to focus on the token-level dynamics of privileged distillation---a harm that hybrid approaches may be able to mitigate.

@@ -1,0 +1,2737 @@
+\begin{thebibliography}{414}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agashe et~al.(2024)Agashe, Han, Gan, Yang, Li, and
+  Wang]{agashe2024agents}
+Saaket Agashe, Jiuzhou Han, Shuyu Gan, Jiachen Yang, Ang Li, and Xin~Eric Wang.
+\newblock Agent s: An open agentic framework that uses computers like a human,
+  2024.
+
+\bibitem[Ahmad et~al.(2018)Ahmad, Saad, Bassiouni, and
+  Mohaisen]{ahmad2018blockaudit}
+Ashar Ahmad, Muhammad Saad, Mostafa Bassiouni, and Aziz Mohaisen.
+\newblock Towards blockchain-driven, secure and transparent audit logs, 2018.
+
+\bibitem[Akkil et~al.(2026)Akkil, Kokku, Vikram, Abuelsaad, Vempaty, and
+  Nitta]{akkil2026emergenceworld}
+Deepak Akkil, Ravi Kokku, Karthik Vikram, Tamer Abuelsaad, Aditya Vempaty, and
+  Satya Nitta.
+\newblock Emergence world: A platform for evaluating long-horizon multi-agent
+  autonomy, 2026.
+
+\bibitem[Akyürek et~al.(2024)Akyürek, Damani, Zweiger, Qiu, Guo, Pari, Kim,
+  and Andreas]{akyurek2024ttt}
+Ekin Akyürek, Mehul Damani, Adam Zweiger, Linlu Qiu, Han Guo, Jyothish Pari,
+  Yoon Kim, and Jacob Andreas.
+\newblock The surprising effectiveness of test-time training for few-shot
+  learning, 2024.
+
+\bibitem[Alam et~al.(2026)Alam, Siam, Proulx, Fort, Newcombe, Kim, and
+  Zhang]{alam2026supermemoryvqa}
+Samiul Alam, Shakhrul~Iman Siam, Michael~J. Proulx, James Fort, Richard
+  Newcombe, Hyo~Jin Kim, and Mi~Zhang.
+\newblock Supermemory-vqa: An egocentric visual question-answering benchmark
+  for long-horizon memory, 2026.
+
+\bibitem[Alqithami(2025)]{alqithami2025mars}
+Saad Alqithami.
+\newblock Forgetful but faithful: A cognitive memory architecture and benchmark
+  for privacy-aware generative agents, 2025.
+
+\bibitem[Alyahya et~al.(2026)Alyahya, Siyabi, Ernst, Yang, Kuhlmann, and
+  Kowadlo]{alyahya2026arrow}
+Abdulaziz Alyahya, Abdallah~Al Siyabi, Markus~R. Ernst, Luke Yang, Levin
+  Kuhlmann, and Gideon Kowadlo.
+\newblock Arrow: Augmented replay for robust world models, 2026.
+
+\bibitem[Anderson et~al.(2004)Anderson, Bothell, Byrne, Douglass, Lebiere, and
+  Qin]{anderson2004actr}
+John~R. Anderson, Daniel Bothell, Michael~D. Byrne, Scott Douglass, Christian
+  Lebiere, and Yulin Qin.
+\newblock An integrated theory of the mind.
+\newblock \emph{Psychological Review}, 111\penalty0 (4):\penalty0 1036--1060,
+  2004.
+\newblock \doi{10.1037/0033-295X.111.4.1036}.
+
+\bibitem[Anderson et~al.(2024)Anderson, Amit, and
+  Goldsteen]{anderson2024ismydata}
+Maya Anderson, Guy Amit, and Abigail Goldsteen.
+\newblock Is my data in your retrieval database? membership inference attacks
+  against retrieval augmented generation, 2024.
+
+\bibitem[ang Gao et~al.(2025)ang Gao, Geng, Hua, Hu, Juan, Liu, Liu, Qiu, Qi,
+  Wu, Wang, Xiao, Zhou, Zhang, Zhang, Xiang, Fang, Zhao, Liu, Ren, Qian, Wang,
+  Hu, Wang, Wu, Ji, and Wang]{gao2025selfevolvingagentssurvey}
+Huan ang Gao, Jiayi Geng, Wenyue Hua, Mengkang Hu, Xinzhe Juan, Hongzhang Liu,
+  Shilong Liu, Jiahao Qiu, Xuan Qi, Yiran Wu, Hongru Wang, Han Xiao, Yuhang
+  Zhou, Shaokun Zhang, Jiayi Zhang, Jinyu Xiang, Yixiong Fang, Qiwen Zhao,
+  Dongrui Liu, Qihan Ren, Cheng Qian, Zhenhailong Wang, Minda Hu, Huazheng
+  Wang, Qingyun Wu, Heng Ji, and Mengdi Wang.
+\newblock A survey of self-evolving agents: What, when, how, and where to
+  evolve on the path to artificial super intelligence, 2025.
+
+\bibitem[Annapureddy(2026)]{annapureddy2026prima}
+Sasank Annapureddy.
+\newblock Prima: Operational patterns for resilient multi-agent research with
+  verifiable identity and convergent feedback, 2026.
+
+\bibitem[{Anthropic}(2026)]{anthropic2026claudecodememory}
+{Anthropic}.
+\newblock How claude remembers your project - claude code docs, 2026.
+\newblock URL \url{https://code.claude.com/docs/en/memory}.
+\newblock Accessed 2026-06-28.
+
+\bibitem[Arslan(2026)]{arslan2026aeon}
+Mustafa Arslan.
+\newblock Aeon: High-performance neuro-symbolic memory management for
+  long-horizon llm agents, 2026.
+
+\bibitem[Asawa et~al.(2026)Asawa, Glaze, Orlanski, Ramakrishnan, Xu, Biswal,
+  Chen, Sala, Zaharia, and Gonzalez]{asawa2026clbench}
+Parth Asawa, Christopher~M. Glaze, Gabriel Orlanski, Ramya Ramakrishnan, Benji
+  Xu, Asim Biswal, Vincent~Sunn Chen, Frederic Sala, Matei Zaharia, and
+  Joseph~E. Gonzalez.
+\newblock Continual learning bench: Evaluating frontier ai systems in
+  real-world stateful environments, 2026.
+
+\bibitem[Bach(2025)]{bach2025coforgetting}
+Duong Bach.
+\newblock Pbft-backed semantic voting for multi-agent memory pruning, 2025.
+
+\bibitem[Baddeley(2000)]{baddeley2000episodic}
+Alan Baddeley.
+\newblock The episodic buffer: a new component of working memory?
+\newblock \emph{Trends in Cognitive Sciences}, 4\penalty0 (11):\penalty0
+  417--423, 2000.
+\newblock \doi{10.1016/S1364-6613(00)01538-2}.
+
+\bibitem[Bai et~al.(2024)Bai, Lv, Zhang, Lyu, Tang, Huang, Du, Liu, Zeng, Hou,
+  Dong, Tang, and Li]{bai2024longbenchbilingualmultitaskbenchmark}
+Yushi Bai, Xin Lv, Jiajie Zhang, Hongchang Lyu, Jiankai Tang, Zhidian Huang,
+  Zhengxiao Du, Xiao Liu, Aohan Zeng, Lei Hou, Yuxiao Dong, Jie Tang, and
+  Juanzi Li.
+\newblock Longbench: A bilingual, multitask benchmark for long context
+  understanding, 2024.
+\newblock URL \url{https://arxiv.org/abs/2308.14508}.
+
+\bibitem[Bamidele(2026)]{bamidele2026amvl}
+Emmanuel Bamidele.
+\newblock Amv-l: Lifecycle-managed agent memory for tail-latency control in
+  long-running llm systems, 2026.
+
+\bibitem[Banerjee et~al.(2026)Banerjee, Moshtaghi, Subramanian, Misra, and
+  Chadha]{banerjee2026apexmem}
+Pratyay Banerjee, Masud Moshtaghi, Shivashankar Subramanian, Amita Misra, and
+  Ankit Chadha.
+\newblock Apex-mem: Agentic semi-structured memory with temporal reasoning for
+  long-term conversational ai, 2026.
+
+\bibitem[Beechey et~al.(2026)Beechey, Yuen, Liu, Luo, He, Luo, Wang, and
+  Shao]{beechey2026darwin}
+Daniel Beechey, Derek Yuen, Jianheng Liu, Dezhao Luo, Tiantian He, Weilin Luo,
+  Jun Wang, and Kun Shao.
+\newblock Darwin mobile agent: A roadmap for self-evolution, 2026.
+
+\bibitem[Bei et~al.(2026)Bei, Wei, Ning, Zhao, Liu, Lin, Zhu, Hamann, He, and
+  Tong]{bei2026memgallery}
+Yuanchen Bei, Tianxin Wei, Xuying Ning, Yanjun Zhao, Zhining Liu, Xiao Lin,
+  Yada Zhu, Hendrik Hamann, Jingrui He, and Hanghang Tong.
+\newblock Mem-gallery: Benchmarking multimodal long-term conversational memory
+  for mllm agents, 2026.
+
+\bibitem[Belikova et~al.(2026)Belikova, Parchiev, Egorov, Davydenko, Gusev,
+  Savchenko, and Makarenko]{belikova2026managingproceduralmemory}
+Julia Belikova, Rauf Parchiev, Evgeny Egorov, Grigorii Davydenko, Gleb Gusev,
+  Andrey Savchenko, and Maksim Makarenko.
+\newblock Managing procedural memory in llm agents: Control, adaptation, and
+  evaluation, 2026.
+
+\bibitem[Bharadwaj et~al.(2026)Bharadwaj, Liu, Yang, Kim, Verma, Kim, Ferreira,
+  and Kim]{bharadwaj2026personalhomebench}
+Manasa Bharadwaj, Yolanda Liu, InJung Yang, Sungil Kim, Nikhil Verma, KoKeun
+  Kim, Kevin Ferreira, and YoungJoon Kim.
+\newblock Personalhomebench: Evaluating agents in personalized smart homes,
+  2026.
+
+\bibitem[Bhardwaj(2026)]{bhardwaj2026contracts}
+Varun~Pratap Bhardwaj.
+\newblock Agent behavioral contracts: Formal specification and runtime
+  enforcement for reliable autonomous ai agents, 2026.
+
+\bibitem[Bhargava and Barrento(2026)]{bhargava2026memaudit}
+Nishant Bhargava and Rodrigo~Sobral Barrento.
+\newblock Memaudit: An exact package-oracle evaluation protocol for budgeted
+  long-term llm memory writing, 2026.
+
+\bibitem[Bhatt et~al.(2025)Bhatt, Narajala, and Habler]{bhatt2025etdi}
+Manish Bhatt, Vineeth~Sai Narajala, and Idan Habler.
+\newblock Etdi: Mitigating tool squatting and rug pull attacks in model context
+  protocol (mcp) by using oauth-enhanced tool definitions and policy-based
+  access control, 2025.
+
+\bibitem[Boisvert et~al.(2024)Boisvert, Thakkar, Gasse, Caccia, Chezelles,
+  Cappart, Chapados, Lacoste, and Drouin]{boisvert2024workarena}
+Léo Boisvert, Megh Thakkar, Maxime Gasse, Massimo Caccia, Thibault Le
+  Sellier~De Chezelles, Quentin Cappart, Nicolas Chapados, Alexandre Lacoste,
+  and Alexandre Drouin.
+\newblock Workarena++: Towards compositional planning and reasoning-based
+  common knowledge work tasks.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=PCjK8dqrWW}.
+
+\bibitem[Bollig(2026)]{bollig2026causalpast}
+Benedikt Bollig.
+\newblock Causal past logic for runtime verification of distributed llm agent
+  workflows, 2026.
+
+\bibitem[Cai et~al.(2025)Cai, Li, Wang, Zhu, Shen, Li, and
+  Chua]{cai2025personalizedwebagents}
+Hongru Cai, Yongqi Li, Wenjie Wang, Fengbin Zhu, Xiaoyu Shen, Wenjie Li, and
+  Tat-Seng Chua.
+\newblock Large language models empowered personalized web agents, 2025.
+
+\bibitem[Carlini et~al.(2021)Carlini, Tram\`er, Wallace, Jagielski,
+  Herbert-Voss, Lee, Roberts, Brown, Song, Erlingsson, Oprea, and
+  Raffel]{carlini2021extractingtrainingdata}
+Nicholas Carlini, Florian Tram\`er, Eric Wallace, Matthew Jagielski, Ariel
+  Herbert-Voss, Katherine Lee, Adam Roberts, Tom Brown, Dawn Song, \'Ulfar
+  Erlingsson, Alina Oprea, and Colin Raffel.
+\newblock Extracting training data from large language models, 2021.
+\newblock USENIX Security 2021.
+
+\bibitem[Chai et~al.(2026)Chai, Wang, Yang, Peng, Song, Fu, Liu, Lin, Wang, and
+  Zhang]{chai2026smmbench}
+Huacan Chai, Yukai Wang, Yingxuan Yang, Dan Peng, Yuanyi Song, Zhihui Fu,
+  Weiwen Liu, Jianghao Lin, Jun Wang, and Weinan Zhang.
+\newblock Smmbench: A benchmark for source-distributed multimodal agent memory,
+  2026.
+
+\bibitem[Chakraborty et~al.(2026)Chakraborty, Kaminsky, Dhariya, Mehrotra,
+  Naumann, and Pandey]{chakraborty2026deletion}
+Vishal Chakraborty, Youri Kaminsky, Arnav~Abhijit Dhariya, Sharad Mehrotra,
+  Felix Naumann, and Sarvesh Pandey.
+\newblock Inference-aware \& privacy-preserving deletion in databases, 2026.
+
+\bibitem[Chan et~al.(2026)Chan, Zhang, Liu, Cui, Zeng, Ding, Ren, Zhang, Chen,
+  Liu, Dai, and Ju]{chan2026robocortex}
+Nga~Teng Chan, Yi~Zhang, Yechi Liu, Renwen Cui, Fanhu Zeng, Zeyuan Ding,
+  Xiancong Ren, Zhang Zhang, Qifeng Chen, Jian Liu, Yong Dai, and Xiaozhu Ju.
+\newblock Robo-cortex: A self-evolving embodied agent via dual-grain cognitive
+  memory and autonomous knowledge induction, 2026.
+
+\bibitem[Chang and Geng(2025)]{chang2025sagallm}
+Edward~Y. Chang and Longling Geng.
+\newblock Sagallm: Context management, validation, and transaction guarantees
+  for multi-agent llm planning, 2025.
+
+\bibitem[Chao et~al.(2026)Chao, Bai, Sheng, Li, and
+  Sun]{chao2026stalellmagentsknow}
+Hanxiang Chao, Yihan Bai, Rui Sheng, Tianle Li, and Yushi Sun.
+\newblock Stale: Can llm agents know when their memories are no longer valid?,
+  2026.
+\newblock URL \url{https://arxiv.org/abs/2605.06527}.
+
+\bibitem[Chen et~al.(2026{\natexlab{a}})Chen, Guan, Lin, Li, Lin, Wang, Chen,
+  Luo, Sun, Zhang, and Li]{chen2026telemem}
+Chunliang Chen, Ming Guan, Xiao Lin, Jiaxu Li, Luxi Lin, Qiyi Wang, Xiangyu
+  Chen, Jixiang Luo, Changzhi Sun, Dell Zhang, and Xuelong Li.
+\newblock Telemem: Building long-term and multimodal memory for agentic ai,
+  2026{\natexlab{a}}.
+
+\bibitem[Chen et~al.(2023)Chen, Lin, Han, and
+  Sun]{chen2023benchmarkinglargelanguagemodels}
+Jiawei Chen, Hongyu Lin, Xianpei Han, and Le~Sun.
+\newblock Benchmarking large language models in retrieval-augmented generation,
+  2023.
+\newblock URL \url{https://arxiv.org/abs/2309.01431}.
+
+\bibitem[Chen et~al.(2026{\natexlab{b}})Chen, Pang, and Wang]{chen2026mrmmia}
+Kai Chen, Yan Pang, and Tianhao Wang.
+\newblock Mrmmia: Membership inference attacks on memory in chat agents,
+  2026{\natexlab{b}}.
+
+\bibitem[Chen et~al.(2026{\natexlab{c}})Chen, Zhang, Zhao, Cirne, Olsen, Chu,
+  Miller, Blanken, Anoun, and Ting]{chen2026deploymenttimememorization}
+{Lei (Rachel)} Chen, Guilin Zhang, Kai Zhao, Dalmo Cirne, Andy Olsen, Xu~Chu,
+  Zeke Miller, Alet Blanken, Amine Anoun, and Jerry Ting.
+\newblock Deployment-time memorization in foundation-model agents,
+  2026{\natexlab{c}}.
+\newblock URL \url{https://arxiv.org/abs/2606.10062}.
+
+\bibitem[Chen et~al.(2026{\natexlab{d}})Chen, Lu, Shen, and
+  Zhang]{chen2026esmemeval}
+Tiantian Chen, Jiaqi Lu, Ying Shen, and Lin Zhang.
+\newblock Es-memeval: Benchmarking conversational agents on personalized
+  long-term emotional support, 2026{\natexlab{d}}.
+
+\bibitem[Chen et~al.(2021)Chen, Wang, and Wang]{chen2021timeqa}
+Wenhu Chen, Xinyi Wang, and William~Yang Wang.
+\newblock A dataset for answering time-sensitive questions, 2021.
+
+\bibitem[Chen et~al.(2026{\natexlab{e}})Chen, Wang, Tu, and Bo]{chen2026adamem}
+Xingyu Chen, Rui Wang, Zhaopeng Tu, and Liefeng Bo.
+\newblock Adamem: Learning what to remember for personalized long-horizon llm
+  agents, 2026{\natexlab{e}}.
+
+\bibitem[Chen et~al.(2026{\natexlab{f}})Chen, Lai, Feng, Han, Zhang, Lu, Li,
+  Wang, Wang, Xu, Li, Jin, Wu, Li, and Chen]{chen2026mage}
+Yaoqi Chen, Haibin Lai, Yuru Feng, Chuyu Han, Qianxi Zhang, Baotong Lu, Menghao
+  Li, Xinjiang Wang, Zhirui Wang, Shusen Xu, Zengzhong Li, Zewen Jin, Hao Wu,
+  Cheng Li, and Qi~Chen.
+\newblock Beyond semantic organization: Memory as execution state management
+  for long-horizon agents, 2026{\natexlab{f}}.
+
+\bibitem[Chen et~al.(2026{\natexlab{g}})Chen, Li, Zhang, Wu, Ai, and
+  Liu]{chen2026civilcourt}
+Yifan Chen, Haitao Li, Kaiyuan Zhang, Yueyue Wu, Qingyao Ai, and Yiqun Liu.
+\newblock Civil court simulation with large language models,
+  2026{\natexlab{g}}.
+
+\bibitem[Chen et~al.(2024)Chen, Xiang, Xiao, Song, and
+  Li]{chen2024agentpoisonredteamingllmagents}
+Zhaorun Chen, Zhen Xiang, Chaowei Xiao, Dawn Song, and Bo~Li.
+\newblock Agentpoison: Red-teaming llm agents via poisoning memory or knowledge
+  bases, 2024.
+\newblock URL \url{https://arxiv.org/abs/2407.12784}.
+
+\bibitem[Chen et~al.(2026{\natexlab{h}})Chen, Liu, Xu, Dong, Li, Pu, and
+  Zhai]{chen2026cordon}
+Zheng Chen, Hanqing Liu, Duling Xu, Dong Dong, Jialin Li, Bangzheng Pu, and
+  Jidong Zhai.
+\newblock Cordon: Semantic transactions for tool-using llm agents,
+  2026{\natexlab{h}}.
+
+\bibitem[Chen and Cheng(2026)]{chen2026learningwhattoremember}
+Zhibao Chen and Qian Cheng.
+\newblock Learning what to remember: A cognitively grounded multi-factor value
+  model for agentic memory, 2026.
+
+\bibitem[Chen et~al.(2026{\natexlab{i}})Chen, Gu, Yin, Long, Zeng, Liu, Guo,
+  Zhou, and Tang]{chen2026crossscenario}
+Zhikai Chen, Jialiang Gu, Junyu Yin, Xianxuan Long, Shenglai Zeng, Xiaoze Liu,
+  Kai Guo, Keren Zhou, and Jiliang Tang.
+\newblock Exploring cross-scenario generality of agentic memory systems:
+  Diagnostics and a strong baseline, 2026{\natexlab{i}}.
+
+\bibitem[Cheng et~al.(2025)Cheng, Kumar, Lal, Rajasekaran, Ramezani, Khan,
+  Rokhlenko, Chiu-Webster, Hua, and Amiri]{cheng2025webatlas}
+Jiali Cheng, Anjishnu Kumar, Roshan Lal, Rishi Rajasekaran, Hani Ramezani,
+  Omar~Zia Khan, Oleg Rokhlenko, Sunny Chiu-Webster, Gang Hua, and Hadi Amiri.
+\newblock Webatlas: An llm agent with experience-driven memory and action
+  simulation, 2025.
+
+\bibitem[Cheng et~al.(2026)Cheng, Gong, Sun, Yao, Yang, and
+  Li]{cheng2026ego2world}
+Qinchuan Cheng, Zhantao Gong, Pengzhan Sun, Angela Yao, Xulei Yang, and Shijie
+  Li.
+\newblock Ego2world: Compiling egocentric cooking videos into executable worlds
+  for belief-state planning, 2026.
+
+\bibitem[Chhikara et~al.(2025)Chhikara, Khant, Aryan, Singh, and
+  Yadav]{chhikara2025mem0buildingproductionreadyai}
+Prateek Chhikara, Dev Khant, Saket Aryan, Taranjeet Singh, and Deshraj Yadav.
+\newblock Mem0: Building production-ready ai agents with scalable long-term
+  memory, 2025.
+\newblock URL \url{https://arxiv.org/abs/2504.19413}.
+
+\bibitem[Chiang et~al.(2024)Chiang, Zheng, Sheng, Angelopoulos, Li, Li, Zhang,
+  Zhu, Jordan, Gonzalez, and Stoica]{chiang2024chatbotarena}
+Wei-Lin Chiang, Lianmin Zheng, Ying Sheng, Anastasios~Nikolas Angelopoulos,
+  Tianle Li, Dacheng Li, Hao Zhang, Banghua Zhu, Michael Jordan, Joseph~E.
+  Gonzalez, and Ion Stoica.
+\newblock Chatbot arena: An open platform for evaluating llms by human
+  preference, 2024.
+
+\bibitem[Choi et~al.(2026)Choi, Ko, Lee, Kim, Song, Jeon, and
+  Shin]{choi2026naivevisualmemory}
+Seoyoung Choi, Minseok Ko, Hyunseok Lee, Kunwoong Kim, Woomin Song, Chanseok
+  Jeon, and Jinwoo Shin.
+\newblock Naive visual memory is not enough: A failure-mode study of gui
+  agents, 2026.
+
+\bibitem[Chu(2026)]{chu2026systematicsurveyagentsecurity}
+Kexin Chu.
+\newblock A systematic survey of security threats and defenses in llm-based ai
+  agents: A layered attack surface framework, 2026.
+\newblock URL \url{https://arxiv.org/abs/2604.23338}.
+
+\bibitem[Chu et~al.(2023)Chu, Chen, Chen, Yu, Wang, Liu, and
+  Qin]{chu2023timebench}
+Zheng Chu, Jingchang Chen, Qianglong Chen, Weijiang Yu, Haotian Wang, Ming Liu,
+  and Bing Qin.
+\newblock Timebench: A comprehensive evaluation of temporal reasoning abilities
+  in large language models, 2023.
+
+\bibitem[Cuadros et~al.(2026)Cuadros, Maiga, Meskhidze, and
+  Curtis-Trudel]{cuadros2026governedselection}
+Diego~F. Cuadros, Abdoul-Aziz Maiga, Helen Meskhidze, and Andre Curtis-Trudel.
+\newblock Governed collaborative memory as artificial selection in llm-based
+  multi-agent systems, 2026.
+
+\bibitem[Dabas et~al.(2026)Dabas, Jeong, Jin, and Jia]{dabas2026tooldrift}
+Mahavir Dabas, Jihyun Jeong, Ming Jin, and Ruoxi Jia.
+\newblock Memory-induced tool-drift in llm agents, 2026.
+
+\bibitem[Dai et~al.(2026)Dai, Deng, Guan, Tian, Yao, Yan, and
+  Cheng]{dai2026recmem}
+Zijie Dai, Shiyuan Deng, Sheng Guan, Yizhou Tian, Xin Yao, Xiao Yan, and James
+  Cheng.
+\newblock Recmem: Recurrence-based memory consolidation for efficient and
+  effective long-running llm agents, 2026.
+
+\bibitem[Dalugoda(2026)]{dalugoda2026hdp}
+Asiri Dalugoda.
+\newblock Hdp: A lightweight cryptographic protocol for human delegation
+  provenance in agentic ai systems, 2026.
+
+\bibitem[Dash et~al.(2026{\natexlab{a}})Dash, Das, Kirsten, Wu, Karnam,
+  Gummadi, Holz, Zafar, and Zannettou]{dash2026selfportrait}
+Abhisek Dash, Soumi Das, Elisabeth Kirsten, Qinyuan Wu, Sai~Keerthana Karnam,
+  Krishna~P. Gummadi, Thorsten Holz, Muhammad~Bilal Zafar, and Savvas
+  Zannettou.
+\newblock The algorithmic self-portrait: Deconstructing memory in chatgpt,
+  2026{\natexlab{a}}.
+
+\bibitem[Dash et~al.(2026{\natexlab{b}})Dash, Ge, Jain, Shah, and
+  Shang]{dash2026memorypoisoning}
+Pritam Dash, Tongyu Ge, Aditi Jain, Tanmay Shah, and Zhiwei Shang.
+\newblock From untrusted input to trusted memory: A systematic study of memory
+  poisoning attacks in llm agents, 2026{\natexlab{b}}.
+
+\bibitem[de~Chezelles et~al.(2025)de~Chezelles, Gasse, Lacoste, Caccia, Drouin,
+  Boisvert, Thakkar, Marty, Assouel, Shayegan, Jang, Lù, Yoran, Kong, Xu,
+  Reddy, Neubig, Cappart, Salakhutdinov, and
+  Chapados]{lesellierdechezelles2025browsergym}
+Thibault Le~Sellier de~Chezelles, Maxime Gasse, Alexandre Lacoste, Massimo
+  Caccia, Alexandre Drouin, Léo Boisvert, Megh Thakkar, Tom Marty, Rim
+  Assouel, Sahar~Omidi Shayegan, Lawrence~Keunho Jang, Xing~Han Lù, Ori Yoran,
+  Dehan Kong, Frank~F. Xu, Siva Reddy, Graham Neubig, Quentin Cappart, Russ
+  Salakhutdinov, and Nicolas Chapados.
+\newblock The browsergym ecosystem for web agent research.
+\newblock \emph{Transactions on Machine Learning Research}, 2025.
+\newblock URL \url{https://openreview.net/forum?id=5298fKGmv3}.
+
+\bibitem[Debenedetti et~al.(2024)Debenedetti, Zhang, Balunovic, Beurer-Kellner,
+  Fischer, and Tramer]{debenedetti2024agentdojodynamicenvironmentevaluate}
+Edoardo Debenedetti, Jie Zhang, Mislav Balunovic, Luca Beurer-Kellner, Marc
+  Fischer, and Florian Tramer.
+\newblock Agentdojo: A dynamic environment to evaluate prompt injection attacks
+  and defenses for llm agents, 2024.
+\newblock URL \url{https://arxiv.org/abs/2406.13352}.
+
+\bibitem[Debenedetti et~al.(2025)Debenedetti, Shumailov, Fan, Hayes, Carlini,
+  Fabian, Kern, Shi, Terzis, and Tram\`er]{debenedetti2025camel}
+Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie Hayes, Nicholas Carlini,
+  Daniel Fabian, Christoph Kern, Chongyang Shi, Andreas Terzis, and Florian
+  Tram\`er.
+\newblock Defeating prompt injections by design, 2025.
+
+\bibitem[Deng et~al.(2026)]{deng2026entitycollision}
+Youwang Deng et~al.
+\newblock Entity-collision: A stratified protocol for attributing retrieval
+  lift in agent memory, 2026.
+
+\bibitem[Deochake et~al.(2026)]{deochake2026heartbeatcred}
+Saurabh Deochake et~al.
+\newblock Heartbeat-bound hierarchical credentials: Cryptographic revocation
+  for ai agent swarms, 2026.
+
+\bibitem[Ding et~al.(2026)Ding, Yu, Wang, Xiao, Bao, Wang, and
+  He]{ding2026imlogic}
+Hongxun Ding, Xiang Yu, Chengbing Wang, Jianfei Xiao, Keqin Bao, Wenjie Wang,
+  and Xiangnan He.
+\newblock Towards root memories: Benchmarking and enhancing implicit logical
+  memory retrieval for personalized llms, 2026.
+
+\bibitem[Dmitrenko et~al.(2026)]{dmitrenko2026memorycomponents}
+Dmitrii Dmitrenko et~al.
+\newblock Why memory components fail: Eight years of license and sustainability
+  events in open-source data infrastructure, 2026.
+
+\bibitem[Dong et~al.(2026)Dong, He, Liu, Hou, Du, Xu, Yu, Yang, Xia, and
+  Chen]{dong2026deltabox}
+Yunpeng Dong, Jingkai He, Shiqi Liu, Yuze Hou, Dong Du, Zhonghu Xu, Si~Yu,
+  Baochuan Yang, Yubin Xia, and Haibo Chen.
+\newblock Deltabox: Scaling stateful ai agents with millisecond-level sandbox
+  checkpoint/rollback, 2026.
+
+\bibitem[Doss et~al.(2026)Doss, Xu, Rao, Wilson, and
+  Kumaravel]{doss2026minenpc}
+Tamil Sudaravan~Mohan Doss, Michael Xu, Sudha Rao, Andrew~D. Wilson, and
+  Balasaravanan~Thoravi Kumaravel.
+\newblock Minenpc-task: Task suite for memory-aware minecraft agents, 2026.
+
+\bibitem[Drouin et~al.(2024)Drouin, Gasse, Caccia, Laradji, Verme, Marty,
+  Boisvert, Thakkar, Cappart, Vazquez, Chapados, and
+  Lacoste]{drouin2024workarena}
+Alexandre Drouin, Maxime Gasse, Massimo Caccia, Issam~H. Laradji, Manuel~Del
+  Verme, Tom Marty, Léo Boisvert, Megh Thakkar, Quentin Cappart, David
+  Vazquez, Nicolas Chapados, and Alexandre Lacoste.
+\newblock Workarena: How capable are web agents at solving common knowledge
+  work tasks?, 2024.
+\newblock URL \url{https://arxiv.org/abs/2403.07718}.
+
+\bibitem[Du(2026)]{du2026memoryautonomous}
+Pengfei Du.
+\newblock Memory for autonomous llm agents: Mechanisms, evaluation, and
+  emerging frontiers, 2026.
+
+\bibitem[Du et~al.(2025)Du, Wang, Xiang, Wang, Huang, Xue, Liang, Zeng, Mi,
+  Bai, Shang, Pan, Jiang, and Wong]{du2025memoryt1}
+Yiming Du, Baojun Wang, Yifan Xiang, Zhaowei Wang, Wenyu Huang, Boyang Xue, Bin
+  Liang, Xingshan Zeng, Fei Mi, Haoli Bai, Lifeng Shang, Jeff~Z. Pan, Yuxin
+  Jiang, and Kam-Fai Wong.
+\newblock Memory-t1: Reinforcement learning for temporal reasoning in
+  multi-session agents, 2025.
+
+\bibitem[Fan et~al.(2026)Fan, Tian, Li, and Lu]{fan2026skilldriftcontract}
+Linfeng Fan, Yuan Tian, Ziwei Li, and Zhiwu Lu.
+\newblock Skill drift is contract violation: Proactive maintenance for llm
+  agent skill libraries, 2026.
+
+\bibitem[Fan et~al.(2025)Fan, Huang, Yao, Fang, Liu, Han, Shang, Sun, and
+  Wang]{fan2025lifestatebench}
+Siqi Fan, Xiusheng Huang, Yiqun Yao, Xuezhi Fang, Kang Liu, Peng Han, Shuo
+  Shang, Aixin Sun, and Yequan Wang.
+\newblock If an llm were a character, would it know its own story? evaluating
+  lifelong learning in llms, 2025.
+
+\bibitem[Fang et~al.(2026)Fang, Xu, Wang, Cao, Deng, Dong, Zhu, Huang, Yu, Wei,
+  Zheng, Xiong, Wang, Chen, and Zhang]{fang2026fluxmem}
+Jizhan Fang, Buqiang Xu, Zhixian Wang, Haoliang Cao, Xinle Deng, Baohua Dong,
+  Hangcheng Zhu, Ruohui Huang, Gang Yu, Ying Wei, Guozhou Zheng, Feiyu Xiong,
+  Haofen Wang, Huajun Chen, and Ningyu Zhang.
+\newblock Rethinking memory as continuously evolving connectivity, 2026.
+
+\bibitem[Fang et~al.(2025)Fang, Liang, Wang, Wu, Qiao, Xie, Huang, Chen, and
+  Zhang]{fang2026mempexploringagentprocedural}
+Runnan Fang, Yuan Liang, Xiaobin Wang, Jialong Wu, Shuofei Qiao, Pengjun Xie,
+  Fei Huang, Huajun Chen, and Ningyu Zhang.
+\newblock Memp: Exploring agent procedural memory, 2025.
+\newblock URL \url{https://arxiv.org/abs/2508.06433}.
+
+\bibitem[Fatemi et~al.(2024)Fatemi, Kazemi, Tsitsulin, Malkan, Yim, Palowitch,
+  Seo, Halcrow, and Perozzi]{fatemi2024testoftime}
+Bahare Fatemi, Mehran Kazemi, Anton Tsitsulin, Karishma Malkan, Jinyeong Yim,
+  John Palowitch, Sungyong Seo, Jonathan Halcrow, and Bryan Perozzi.
+\newblock Test of time: A benchmark for evaluating llms on temporal reasoning,
+  2024.
+
+\bibitem[Feng et~al.(2025)Feng, Kim, Pang, Huq, August, and
+  Zhang]{feng2025regulatoryui}
+Feng, Kim, Pang, Huq, August, and Zhang.
+\newblock On the regulatory potential of user interfaces for ai agent
+  governance, 2025.
+
+\bibitem[Feng et~al.(2026{\natexlab{a}})Feng, Xu, Chen, Dai, Wu, Li, Zeng, Xie,
+  Liang, Lu, and Zhang]{feng2026m2a}
+Junyu Feng, Binxiao Xu, Jiayi Chen, Mengyu Dai, Cenyang Wu, Haodong Li, Bohan
+  Zeng, Yunliu Xie, Hao Liang, Ming Lu, and Wentao Zhang.
+\newblock M2a: Multimodal memory agent with dual-layer hybrid memory for
+  long-term personalized interactions, 2026{\natexlab{a}}.
+
+\bibitem[Feng et~al.(2026{\natexlab{b}})Feng, Ye, Luo, Xu, Xu, Zhang, Liu, and
+  You]{feng2026elasticmem}
+Tao Feng, Chongrui Ye, Tianyang Luo, Jingjun Xu, Xueqiang Xu, Haozhen Zhang,
+  Ge~Liu, and Jiaxuan You.
+\newblock Elasticmem: Latent memory as a learnable resource for llm agents,
+  2026{\natexlab{b}}.
+
+\bibitem[Flynt(2026)]{flynt2026precisionmembench}
+Jeffrey Flynt.
+\newblock Structured belief state and the first precision-aware benchmark for
+  llm memory retrieval, 2026.
+
+\bibitem[Forte et~al.(2026)Forte, Lando, and Furnari]{forte2026egostream}
+Rosario Forte, Giuseppe Lando, and Antonino Furnari.
+\newblock Egostream: A diagnostic benchmark for streaming episodic memory in
+  egocentric vision, 2026.
+
+\bibitem[Foster et~al.(2024)Foster, Fogarty, Schoepf, Dugue, Öztireli, and
+  Brintrup]{foster2024information}
+Jack Foster, Kyle Fogarty, Stefan Schoepf, Zack Dugue, Cengiz Öztireli, and
+  Alexandra Brintrup.
+\newblock An information theoretic approach to machine unlearning, 2024.
+
+\bibitem[Friel et~al.(2025)Friel, Belyi, and
+  Sanyal]{friel2025ragbenchexplainablebenchmarkretrievalaugmented}
+Robert Friel, Masha Belyi, and Atindriyo Sanyal.
+\newblock Ragbench: Explainable benchmark for retrieval-augmented generation
+  systems, 2025.
+\newblock URL \url{https://arxiv.org/abs/2407.11005}.
+
+\bibitem[Gan et~al.(2026)Gan, Yang, Li, Gao, Wang, Jiang, Ding, Quinn, and
+  Qian]{gan2026concordia}
+Yuhang Gan, Yiwei Yang, Yuyi Li, Xiangyu Gao, Yichen Wang, Rain Jiang, Xiaoning
+  Ding, Andi Quinn, and Chen Qian.
+\newblock Concordia: Jit-compiled persistent-kernel checkpointing for
+  fault-tolerant llm inference, 2026.
+
+\bibitem[Garralda-Barrio(2026)]{garralda2026governed}
+Mariano Garralda-Barrio.
+\newblock Governed evolution of agent runtimes through executable operational
+  cognition, 2026.
+
+\bibitem[Giridharan et~al.(2026)Giridharan, Mishra, Alvisi, Crooks, Marsh,
+  Meling, Nayak, and Prusak]{giridharan2026ambulance}
+Neil Giridharan, Shubham Mishra, Lorenzo Alvisi, Natacha Crooks, Benjamin
+  Marsh, Hein Meling, Kartik Nayak, and Grzegorz Prusak.
+\newblock Ambulance: saving bft through racing, 2026.
+
+\bibitem[{Google Cloud}(2026)]{googlecloud2026geminienterprisememory}
+{Google Cloud}.
+\newblock Configure personalization and memory | gemini enterprise | google
+  cloud documentation, 2026.
+\newblock URL
+  \url{https://cloud.google.com/gemini/enterprise/docs/configure-personalization}.
+\newblock Accessed 2026-06-28.
+
+\bibitem[Gu et~al.(2024)Gu, Jiang, Shi, Tan, Zhai, Xu, Li, Shen, Ma, Liu, Wang,
+  Zhang, Wang, Gao, Ni, and Guo]{gu2024surveyllmasajudge}
+Jiawei Gu, Xuhui Jiang, Zhichao Shi, Hexiang Tan, Xuehao Zhai, Chengjin Xu, Wei
+  Li, Yinghan Shen, Shengjie Ma, Honghao Liu, Saizhuo Wang, Kun Zhang, Yuanzhuo
+  Wang, Wen Gao, Lionel Ni, and Jian Guo.
+\newblock A survey on llm-as-a-judge, 2024.
+
+\bibitem[Gu et~al.(2026)Gu, Xiong, Wang, Ren, Li, Zhang, Guo, Sun, Ma, and
+  Shi]{gu2026fsfm}
+Yingjie Gu, Wenjian Xiong, Liqiang Wang, Pengcheng Ren, Chao Li, Xiaojing
+  Zhang, Yijuan Guo, Qi~Sun, Jingyao Ma, and Shidang Shi.
+\newblock Fsfm: A biologically-inspired framework for selective forgetting of
+  agent memory, 2026.
+
+\bibitem[Guitton et~al.(2024)Guitton, Oehmichen, Étienne Bossé, and
+  Guo]{guitton2024honest}
+Florian Guitton, Axel Oehmichen, Étienne Bossé, and Yike Guo.
+\newblock Honest computing: Achieving demonstrable data lineage and provenance
+  for driving data and process-sensitive policies, 2024.
+
+\bibitem[Guo et~al.(2026{\natexlab{a}})Guo, Jiao, Shi, Quan, Zhang, Li, Che,
+  Xu, Liu, Liu, Kapadia, Pavlovic, Liu, Wang, Shi, Metaxas, and
+  Tang]{guo2026memeye}
+Minghao Guo, Qingyue Jiao, Zeru Shi, Yihao Quan, Boxuan Zhang, Danrui Li, Liwei
+  Che, Wujiang Xu, Shilong Liu, Zirui Liu, Mubbasir Kapadia, Vladimir Pavlovic,
+  Jiang Liu, Mengdi Wang, Yiyu Shi, Dimitris~N. Metaxas, and Ruixiang Tang.
+\newblock Memeye: A visual-centric evaluation framework for multimodal agent
+  memory, 2026{\natexlab{a}}.
+
+\bibitem[Guo et~al.(2026{\natexlab{b}})Guo, Wang, Wang, Liu, and
+  Xu]{guo2026tmem}
+Weidong Guo, Dakai Wang, Zixuan Wang, Hui Liu, and Yu~Xu.
+\newblock T-mem: Memory that anticipates, not archives, 2026{\natexlab{b}}.
+
+\bibitem[Guo et~al.(2026{\natexlab{c}})Guo, Gong, Wang, Cai, ming Cheung, and
+  Su]{guo2026peam}
+Yuchen Guo, Junli Gong, Weicheng Wang, Hongmin Cai, Yiu ming Cheung, and
+  Weifeng Su.
+\newblock Peam: Parametric embodied agent memory through contrastive
+  internalization of experience in minecraft, 2026{\natexlab{c}}.
+
+\bibitem[Gupta et~al.(2024)Gupta, Rao, and
+  Anumanchipalli]{gupta2024editingforgetting}
+Akshat Gupta, Anurag Rao, and Gopala Anumanchipalli.
+\newblock Model editing at scale leads to gradual and catastrophic forgetting,
+  2024.
+
+\bibitem[Guti\'errez et~al.(2024)Guti\'errez, Shu, Gu, Yasunaga, and
+  Su]{gutierrez2024hipporag}
+Bernal~Jim\'enez Guti\'errez, Yiheng Shu, Yu~Gu, Michihiro Yasunaga, and Yu~Su.
+\newblock {HippoRAG}: Neurobiologically inspired long-term memory for large
+  language models, 2024.
+\newblock NeurIPS 2024.
+
+\bibitem[Hajimiri et~al.(2026)Hajimiri, Aminbeidokhti, Dolz, Ayed, Laradji,
+  Gella, and Gontier]{hajimiri2026budgetconstrained}
+Sina Hajimiri, Masih Aminbeidokhti, Jose Dolz, Ismail~Ben Ayed, Issam~H.
+  Laradji, Spandana Gella, and Nicolas Gontier.
+\newblock Are online skill and memory modules always worth their tokens? a
+  budget-constrained study of web agents, 2026.
+
+\bibitem[Han(2026)]{han2026memorydepth}
+Haoliang Han.
+\newblock Memory depth, not memory access: Selective parametric consolidation
+  for long-running language agents, 2026.
+
+\bibitem[Hardt and Sun(2023)]{hardt2023tttnn}
+Moritz Hardt and Yu~Sun.
+\newblock Test-time training on nearest neighbors for large language models,
+  2023.
+
+\bibitem[Hattami et~al.(2026)Hattami, Chapados, and Pal]{elhattami2026skillnb}
+Amine~El Hattami, Nicolas Chapados, and Christopher Pal.
+\newblock Skill.nb: Selective formalization and gated execution for durable
+  agent workflows, 2026.
+
+\bibitem[He and Yu(2026)]{he2026postdeterministic}
+Jun He and Deying Yu.
+\newblock Post-deterministic distributed systems: A new foundation for
+  trustworthy autonomous infrastructure, 2026.
+
+\bibitem[He et~al.(2024)He, Zhu, Wang, Wang, Haffari, and
+  Zhang]{he2024madialbench}
+Junqing He, Liang Zhu, Rui Wang, Xi~Wang, Reza Haffari, and Jiaxing Zhang.
+\newblock {MADial-Bench}: Towards real-world evaluation of memory-augmented
+  dialogue generation, 2024.
+\newblock NAACL 2025.
+
+\bibitem[He et~al.(2025)He, Cui, Ma, Li, Ding, and
+  Chowdhury]{he2025branchandbrowse}
+Shiqi He, Yue Cui, Xinyu Ma, Yaliang Li, Bolin Ding, and Mosharaf Chowdhury.
+\newblock Branch-and-browse: Efficient and controllable web exploration with
+  tree-structured reasoning and action memory, 2025.
+
+\bibitem[He et~al.(2026)He, Wang, Zhi, Hu, Chen, Yin, Chen, Wu, Ouyang, Wang,
+  Pei, McAuley, Choi, and Pentland]{he2026memoryarena}
+Zexue He, Yu~Wang, Churan Zhi, Yuanzhe Hu, Tzu-Ping Chen, Lang Yin, Ze~Chen,
+  Tong~Arthur Wu, Siru Ouyang, Zihan Wang, Jiaxin Pei, Julian McAuley, Yejin
+  Choi, and Alex Pentland.
+\newblock Memoryarena: Benchmarking agent memory in interdependent
+  multi-session agentic tasks, 2026.
+
+\bibitem[Hong et~al.(2023)Hong, Zhuge, Chen, Zheng, Cheng, Zhang, Wang, Wang,
+  Yau, Lin, Zhou, Ran, Xiao, Wu, and Schmidhuber]{hong2023metagpt}
+Sirui Hong, Mingchen Zhuge, Jiaqi Chen, Xiawu Zheng, Yuheng Cheng, Ceyao Zhang,
+  Jinlin Wang, Zili Wang, Steven Ka~Shing Yau, Zijuan Lin, Liyang Zhou, Chenyu
+  Ran, Lingfeng Xiao, Chenglin Wu, and Jurgen Schmidhuber.
+\newblock Metagpt: Meta programming for a multi-agent collaborative framework,
+  2023.
+
+\bibitem[Hoshino et~al.(2026)Hoshino, Mitsunari, Kambayashi, Kurosawa, and
+  Nakazono]{hoshino2026cv-rules}
+Takashi Hoshino, Shigeo Mitsunari, Takashi Kambayashi, Ryoji Kurosawa, and Sho
+  Nakazono.
+\newblock Cv-rules: Serializability verification of concurrency control
+  protocols via explicit transaction ordering, 2026.
+
+\bibitem[Hsieh et~al.(2024)Hsieh, Sun, Kriman, Acharya, Rekesh, Jia, Zhang, and
+  Ginsburg]{hsieh2024rulerwhatsrealcontext}
+Cheng-Ping Hsieh, Simeng Sun, Samuel Kriman, Shantanu Acharya, Dima Rekesh, Fei
+  Jia, Yang Zhang, and Boris Ginsburg.
+\newblock Ruler: What's the real context size of your long-context language
+  models?, 2024.
+\newblock URL \url{https://arxiv.org/abs/2404.06654}.
+
+\bibitem[Hu et~al.(2025{\natexlab{a}})Hu, Ma, Wang, Liu, Zhou, Cui, Ma, and
+  Tian]{hu2025theramind}
+He~Hu, Chiyuan Ma, Qianning Wang, Lin Liu, Yucheng Zhou, Laizhong Cui, Fei Ma,
+  and Qi~Tian.
+\newblock Theramind: A strategic and adaptive agent for longitudinal
+  psychological counseling, 2025{\natexlab{a}}.
+
+\bibitem[Hu et~al.(2026)Hu, Dai, Tan, and Kang]{hu2026medilongchat}
+Hebin Hu, Renke Dai, Ah-Hwee Tan, and Yilin Kang.
+\newblock Synthesis and evaluation of long-term history-aware medical dialogue,
+  2026.
+
+\bibitem[Hu et~al.(2025{\natexlab{b}})Hu, Wang, and
+  McAuley]{hu2026evaluatingmemoryllmagents}
+Yuanzhe Hu, Yu~Wang, and Julian McAuley.
+\newblock Evaluating memory in llm agents via incremental multi-turn
+  interactions, 2025{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2507.05257}.
+
+\bibitem[Hu et~al.(2025{\natexlab{c}})Hu, Liu, Yue, Zhang, Liu, Zhu, Lin, Guo,
+  Dou, Xi, Jin, Tan, Yin, Liu, Zhang, Sun, Zhu, Sun, Peng, Cheng, Fan, Guo, Yu,
+  Zhou, Hu, Huo, Wang, Niu, Wang, Yin, Hu, Liao, Li, Wang, Zhou, Liu, Cheng,
+  Zhang, Gui, Pan, Zhang, Torr, Dou, Wen, Huang, Jiang, and
+  Yan]{hu2025memoryageaiagents}
+Yuyang Hu, Shichun Liu, Yanwei Yue, Guibin Zhang, Boyang Liu, Fangyi Zhu,
+  Jiahang Lin, Honglin Guo, Shihan Dou, Zhiheng Xi, Senjie Jin, Jiejun Tan,
+  Yanbin Yin, Jiongnan Liu, Zeyu Zhang, Zhongxiang Sun, Yutao Zhu, Hao Sun,
+  Boci Peng, Zhenrong Cheng, Xuanbo Fan, Jiaxin Guo, Xinlei Yu, Zhenhong Zhou,
+  Zewen Hu, Jiahao Huo, Junhao Wang, Yuwei Niu, Yu~Wang, Zhenfei Yin, Xiaobin
+  Hu, Yue Liao, Qiankun Li, Kun Wang, Wangchunshu Zhou, Yixin Liu, Dawei Cheng,
+  Qi~Zhang, Tao Gui, Shirui Pan, Yan Zhang, Philip Torr, Zhicheng Dou, Ji-Rong
+  Wen, Xuanjing Huang, Yu-Gang Jiang, and Shuicheng Yan.
+\newblock Memory in the age of ai agents, 2025{\natexlab{c}}.
+\newblock URL \url{https://arxiv.org/abs/2512.13564}.
+
+\bibitem[Huang et~al.(2025{\natexlab{a}})Huang, Cheng, and
+  Tan]{huang2025evogit}
+Beichen Huang, Ran Cheng, and Kay~Chen Tan.
+\newblock Evogit: Decentralized code evolution via git-based multi-agent
+  collaboration, 2025{\natexlab{a}}.
+
+\bibitem[Huang and Huang(2025)]{huang2025audited}
+Ken Huang and Jerry Huang.
+\newblock Audited skill-graph self-improvement for agentic llms via verifiable
+  rewards, experience synthesis, and continual memory, 2025.
+
+\bibitem[Huang et~al.(2026)Huang, Zhang, Liang, Bei, Chen, Feng, Pan, Tan,
+  Wang, Wei, Wu, Xu, Yang, Yang, Yang, Yeh, Zhang, Zhang, Zhu, Zou, Zhao, Wang,
+  Xu, Ke, Hui, Li, Wu, He, Wang, Xu, Huang, Tan, Heinecke, Wang, Xiong,
+  Metwally, Yan, Lee, Zeng, Xia, Wei, Payani, Wang, Ma, Wang, Wang, Zhang,
+  Wang, Zhang, You, Tong, Luo, Liu, Sun, Wang, McAuley, Zou, Han, Yu, and
+  Shu]{huang2026rethinkingmemorymechanisms}
+Wei-Chieh Huang, Weizhi Zhang, Yueqing Liang, Yuanchen Bei, Yankai Chen, Tao
+  Feng, Xinyu Pan, Zhen Tan, Yu~Wang, Tianxin Wei, Shanglin Wu, Ruiyao Xu,
+  Liangwei Yang, Rui Yang, Wooseong Yang, Chin-Yuan Yeh, Hanrong Zhang, Haozhen
+  Zhang, Siqi Zhu, Henry~Peng Zou, Wanjia Zhao, Song Wang, Wujiang Xu, Zixuan
+  Ke, Zheng Hui, Dawei Li, Yaozu Wu, Langzhou He, Chen Wang, Xiongxiao Xu,
+  Baixiang Huang, Juntao Tan, Shelby Heinecke, Huan Wang, Caiming Xiong,
+  Ahmed~A. Metwally, Jun Yan, Chen-Yu Lee, Hanqing Zeng, Yinglong Xia, Xiaokai
+  Wei, Ali Payani, Yu~Wang, Haitong Ma, Wenya Wang, Chenguang Wang, Yu~Zhang,
+  Xin Wang, Yongfeng Zhang, Jiaxuan You, Hanghang Tong, Xiao Luo, Xue Liu,
+  Yizhou Sun, Wei Wang, Julian McAuley, James Zou, Jiawei Han, Philip~S. Yu,
+  and Kai Shu.
+\newblock Rethinking memory mechanisms of foundation agents in the second half:
+  A survey, 2026.
+\newblock URL \url{https://arxiv.org/abs/2602.06052}.
+
+\bibitem[Huang et~al.(2025{\natexlab{b}})Huang, Dai, Wu, Wu, Chen, Yu, Li, Ge,
+  Wang, and Jin]{huang2025mempal}
+Zhaopei Huang, Qifeng Dai, Guozheng Wu, Xiaopeng Wu, Kehan Chen, Chuan Yu,
+  Xubin Li, Tiezheng Ge, Wenxuan Wang, and Qin Jin.
+\newblock Mem-pal: Towards memory-based personalized dialogue assistants for
+  long-term user-agent interaction, 2025{\natexlab{b}}.
+
+\bibitem[Huang et~al.(2023)Huang, Gutierrez, Kamana, and
+  MacNeil]{huang2023memorysandbox}
+Ziheng Huang, Sebastian Gutierrez, Hemanth Kamana, and Stephen MacNeil.
+\newblock Memory sandbox: Transparent and interactive memory management for
+  conversational agents, 2023.
+
+\bibitem[Iacob et~al.(2026)Iacob, Jovanović, Shen, Burkhardt, Kurmanji,
+  Tastan, Sani, Venanzi, Odonnat, Cao, Marino, Qiu, and
+  Lane]{iacob2026redqueen}
+Alex Iacob, Andrej Jovanović, William~F. Shen, Daniel Burkhardt, Meghdad
+  Kurmanji, Nurbek Tastan, Lorenzo Sani, Niccolò Alberto~Elia Venanzi,
+  Ambroise Odonnat, Zeyu Cao, Bill Marino, Xinchi Qiu, and Nicholas~D. Lane.
+\newblock The red queen g{\"o}del machine: Co-evolving agents and their
+  evaluators, 2026.
+
+\bibitem[Ibrahim and Li(2026)]{ibrahim2026overlaygovernance}
+Amjad Ibrahim and Yong Li.
+\newblock Overlaying governance: A compositional authorization framework for
+  delegation and scope in agentic ai, 2026.
+
+\bibitem[Jang et~al.(2026)Jang, Woodside, Carom, Jang, Koh, and
+  Salakhutdinov]{jang2026iosworld}
+Lawrence~Keunho Jang, Mareks Woodside, Geronimo Carom, Andrew~Keunwoo Jang,
+  Jing~Yu Koh, and Ruslan Salakhutdinov.
+\newblock iosworld: A benchmark for personally intelligent phone agents, 2026.
+
+\bibitem[Jia et~al.(2025)Jia, He, Yin, Wu, Fan, and Sang]{jia2025reinagent}
+Haitao Jia, Ming He, Zimo Yin, Likang Wu, Jianping Fan, and Jitao Sang.
+\newblock Reinagent: A context-aware gui agent enabling human-in-the-loop
+  mobile task navigation, 2025.
+
+\bibitem[Jiang et~al.(2025{\natexlab{a}})Jiang, Hao, Cho, Li, Yuan, Chen,
+  Ungar, Taylor, and Roth]{jiang2025personamem}
+Bowen Jiang, Zhuoqun Hao, Young-Min Cho, Bryan Li, Yuan Yuan, Sihao Chen, Lyle
+  Ungar, Camillo~J. Taylor, and Dan Roth.
+\newblock Know me, respond to me: Benchmarking llms for dynamic user profiling
+  and personalized responses at scale, 2025{\natexlab{a}}.
+\newblock COLM 2025.
+
+\bibitem[Jiang et~al.(2026)Jiang, Wang, Zhao, Luo, Wang, and
+  Zhang]{jiang2026nsmem}
+Rongjie Jiang, Jianwei Wang, Gengda Zhao, Chengyang Luo, Kai Wang, and Wenjie
+  Zhang.
+\newblock Advancing multimodal agent reasoning with long-term neuro-symbolic
+  memory, 2026.
+
+\bibitem[Jiang et~al.(2025{\natexlab{b}})Jiang, Black, Geng, Park, Zou, Ng, and
+  Chen]{jiang2025medagentbench}
+Yixing Jiang, Kameron~C. Black, Gloria Geng, Danny Park, James Zou, Andrew~Y.
+  Ng, and Jonathan~H. Chen.
+\newblock Medagentbench: A realistic virtual ehr environment to benchmark
+  medical llm agents, 2025{\natexlab{b}}.
+
+\bibitem[Jin et~al.(2026{\natexlab{a}})Jin, Guo, and Cheung]{jin2026capseal}
+Shutong Jin, Ruiyi Guo, and Ray C.~C. Cheung.
+\newblock Capseal: Capability-sealed secret mediation for secure agent
+  execution, 2026{\natexlab{a}}.
+
+\bibitem[Jin et~al.(2026{\natexlab{b}})Jin, Wang, Li, Xu, and
+  Zhang]{jin2026provenancerolecollapse}
+Zhengda Jin, Bingbing Wang, Jing Li, Ruifeng Xu, and Min Zhang.
+\newblock Mitigating provenance-role collapse in long-term agents via typed
+  memory representation, 2026{\natexlab{b}}.
+
+\bibitem[Joshi et~al.(2026)]{joshi2026eywa}
+Resham Joshi et~al.
+\newblock Eywa: Provenance-grounded long-term memory for ai agents, 2026.
+
+\bibitem[Joshi et~al.(2025)Joshi, Chowdhury, and Uysal]{joshi2025swebenchcl}
+Thomas Joshi, Shayan Chowdhury, and Fatih Uysal.
+\newblock Swe-bench-cl: Continual learning for coding agents, 2025.
+
+\bibitem[Jung et~al.(2026)Jung, Rubinstein, Uselis, Yun, and Oh]{jung2026meme}
+Seokwon Jung, Alexander Rubinstein, Arnas Uselis, Sangdoo Yun, and Seong~Joon
+  Oh.
+\newblock Meme: Multi-entity \& evolving memory evaluation, 2026.
+
+\bibitem[Kang et~al.(2025)Kang, Ji, Zhao, and Bai]{kang2025memoryosaiagent}
+Jiazheng Kang, Mingming Ji, Zhe Zhao, and Ting Bai.
+\newblock Memory os of ai agent, 2025.
+\newblock URL \url{https://arxiv.org/abs/2506.06326}.
+
+\bibitem[Kang et~al.(2026)Kang, Mingyang, Kai, Liang, Zhong, and
+  Yuan]{kang2026oslmr}
+Qingcan Kang, Liu Mingyang, Shixiong Kai, Kaichao Liang, Tao Zhong, and
+  Mingxuan Yuan.
+\newblock Learning what to remember: Observability-safe memory retention via
+  constrained optimization for long-horizon language agents, 2026.
+
+\bibitem[Kapoor et~al.(2024)Kapoor, Stroebl, Siegel, Nadgir, and
+  Narayanan]{kapoor2024aiagentsthatmatter}
+Sayash Kapoor, Benedikt Stroebl, Zachary~S. Siegel, Nitya Nadgir, and Arvind
+  Narayanan.
+\newblock Ai agents that matter, 2024.
+
+\bibitem[Ke(2026)]{ke2026quine}
+Hao Ke.
+\newblock Quine: Realizing llm agents as native posix processes, 2026.
+
+\bibitem[Kerestecioglu et~al.(2026)Kerestecioglu, Robsky, Vasters, Sharma, and
+  Kesselman]{kerestecioglu2026humaninspiredmemory}
+Doga Kerestecioglu, Alexei Robsky, Clemens Vasters, Anshul Sharma, and Yitzhak
+  Kesselman.
+\newblock Human-inspired memory architecture for llm agents, 2026.
+
+\bibitem[Khan(2026)]{khan2026concurrency}
+Sajjad Khan.
+\newblock Verified detection and prevention of concurrency anomalies in
+  multi-agent large language model systems, 2026.
+
+\bibitem[Khanna et~al.(2024)Khanna, Ramrakhya, Chhablani, Yenamandra, Gervet,
+  Chang, Kira, Chaplot, Batra, and Mottaghi]{khanna2024goatbench}
+Mukul Khanna, Ram Ramrakhya, Gunjan Chhablani, Sriram Yenamandra, Theophile
+  Gervet, Matthew Chang, Zsolt Kira, Devendra~Singh Chaplot, Dhruv Batra, and
+  Roozbeh Mottaghi.
+\newblock Goat-bench: A benchmark for multi-modal lifelong navigation, 2024.
+
+\bibitem[Khushiyant(2025)]{khushiyant2025collectivememory}
+Khushiyant.
+\newblock Emergent collective memory in decentralized multi-agent ai systems,
+  2025.
+
+\bibitem[Kim et~al.(2026{\natexlab{a}})Kim, Baek, Jeong, and
+  Hwang]{kim2026memrefine}
+Minjae Kim, Jinheon Baek, Soyeong Jeong, and Sung~Ju Hwang.
+\newblock Memrefine: Llm-guided compression for long-term agent memory,
+  2026{\natexlab{a}}.
+
+\bibitem[Kim et~al.(2026{\natexlab{b}})Kim, François-Lavet, and
+  Cochez]{kim2026stltransfer}
+Taewoon Kim, Vincent François-Lavet, and Michael Cochez.
+\newblock Short-term-to-long-term memory transfer for knowledge graphs under
+  partial observability, 2026{\natexlab{b}}.
+
+\bibitem[Kim et~al.(2026{\natexlab{c}})Kim, Yang, and Kaufman]{kim2026memento}
+Yoonsang Kim, Yalong Yang, and Arie~E. Kaufman.
+\newblock Memento: Towards proactive visualization of everyday memories with
+  personal wearable ar assistant, 2026{\natexlab{c}}.
+
+\bibitem[Kirmayr et~al.(2025)Kirmayr, Stappen, Schneider, Matthes, and
+  Andre]{kirmayr2025carmem}
+Johannes Kirmayr, Lukas Stappen, Phillip Schneider, Florian Matthes, and
+  Elisabeth Andre.
+\newblock Carmem: Enhancing long-term memory in llm voice assistants through
+  category-bounding, 2025.
+
+\bibitem[Koch(2026)]{koch2026governance}
+Christopher Koch.
+\newblock From governance norms to enforceable controls: A layered translation
+  method for runtime guardrails in agentic ai, 2026.
+
+\bibitem[Koga et~al.(2024)Koga, Wu, Zhang, and Chaudhuri]{koga2024dprag}
+Tatsuki Koga, Ruihan Wu, Zhiyuan Zhang, and Kamalika Chaudhuri.
+\newblock Privacy-preserving retrieval-augmented generation with differential
+  privacy, 2024.
+
+\bibitem[Kohar and Krishnan(2025)]{kohar2025proceduralmemoryretrieval}
+Ishant Kohar and Aswanth Krishnan.
+\newblock A benchmark for procedural memory retrieval in language agents, 2025.
+
+\bibitem[Kumar et~al.(2026)Kumar, Ba, and Pan]{kumar2026memarchitect}
+Lingavasan~Suresh Kumar, Yang Ba, and Rong Pan.
+\newblock Memarchitect: A policy driven memory governance layer, 2026.
+
+\bibitem[Kumaran et~al.(2016)Kumaran, Hassabis, and
+  McClelland]{kumaran2016complementary}
+Dharshan Kumaran, Demis Hassabis, and James~L. McClelland.
+\newblock What learning systems do intelligent agents need? complementary
+  learning systems theory updated.
+\newblock \emph{Trends in Cognitive Sciences}, 20\penalty0 (7):\penalty0
+  512--534, 2016.
+\newblock \doi{10.1016/j.tics.2016.05.004}.
+
+\bibitem[Kuschewski et~al.(2026)Kuschewski, Nguyen, Jasny, Ziegler, Leis, and
+  El-Hindi]{kuschewski2026btrlog}
+Maximilian Kuschewski, Lam-Duy Nguyen, Matthias Jasny, Tobias Ziegler, Viktor
+  Leis, and Muhammad El-Hindi.
+\newblock Btrlog: Low-latency logging for cloud database systems, 2026.
+
+\bibitem[Kwon(2026)]{kwon2026reclaim}
+Alex Kwon.
+\newblock Reclaim evaluation: A lossy memory is worse than an empty one, 2026.
+
+\bibitem[Lahjouji and Colaco(2026)]{lahjouji2026privacysurvey}
+Nada Lahjouji and Ashwin~Gerard Colaco.
+\newblock Agents that know too much: A data-centric survey of privacy in llm
+  agents, 2026.
+
+\bibitem[Laird(2012)]{laird2012soar}
+John~E. Laird.
+\newblock \emph{The Soar Cognitive Architecture}.
+\newblock MIT Press, 2012.
+\newblock \doi{10.7551/mitpress/7688.001.0001}.
+
+\bibitem[Lan and Xiao(2026)]{lan2026runtimeskillaudit}
+Tu~Lan and Chaowei Xiao.
+\newblock Runtime skill audit: Targeted runtime probing for agent skill
+  security, 2026.
+
+\bibitem[Lee et~al.(2026)Lee, Park, and Lee]{lee2026polar}
+Jeongeun Lee, Chanyoung Park, and Dongha Lee.
+\newblock Personalizing embodied multimodal large language model agents over
+  long-term user interactions, 2026.
+
+\bibitem[Lee et~al.(2024)Lee, Kim, Kim, Cho, Kang, Kang, and
+  Kim]{lee2024checkeval}
+Yukyung Lee, Joonghoon Kim, Jaehee Kim, Hyowon Cho, Jaewook Kang, Pilsung Kang,
+  and Najoung Kim.
+\newblock Checkeval: A reliable llm-as-a-judge framework for evaluating text
+  generation using checklists, 2024.
+
+\bibitem[Leng et~al.(2024)Leng, Portes, Havens, Zaharia, and
+  Carbin]{leng2024longcontextragperformance}
+Quinn Leng, Jacob Portes, Sam Havens, Matei Zaharia, and Michael Carbin.
+\newblock Long context rag performance of large language models, 2024.
+
+\bibitem[Li et~al.(2026)Li, Li, Que, and Fan]{li2026himes}
+Hailong Li, Feifei Li, Wenhui Que, and Xingyu Fan.
+\newblock Himes: Hippocampus-inspired memory system for personalized ai
+  assistants, 2026.
+
+\bibitem[Li et~al.(2024{\natexlab{a}})Li, Dong, Chen, Su, Zhou, Ai, Ye, and
+  Liu]{li2024llmsasjudgessurvey}
+Haitao Li, Qian Dong, Junjie Chen, Huixue Su, Yujia Zhou, Qingyao Ai, Ziyi Ye,
+  and Yiqun Liu.
+\newblock Llms-as-judges: A comprehensive survey on llm-based evaluation
+  methods, 2024{\natexlab{a}}.
+
+\bibitem[Li et~al.(2024{\natexlab{b}})Li, Cao, Yu, Javaji, Deng, He, Jiang,
+  Zhu, Subbalakshmi, Xiong, Huang, Qian, Peng, Xie, and
+  Suchow]{li2024investorbench}
+Haohang Li, Yupeng Cao, Yangyang Yu, Shashidhar~Reddy Javaji, Zhiyang Deng,
+  Yueru He, Yuechen Jiang, Zining Zhu, Koduvayur Subbalakshmi, Guojun Xiong,
+  Jimin Huang, Lingfei Qian, Xueqing Peng, Qianqian Xie, and Jordan~W. Suchow.
+\newblock Investorbench: A benchmark for financial decision-making tasks with
+  llm-based agent, 2024{\natexlab{b}}.
+
+\bibitem[Li et~al.(2025{\natexlab{a}})Li, Cao, Ma, and
+  Sun]{li2025longcontextvsrag}
+Xinze Li, Yixin Cao, Yubo Ma, and Aixin Sun.
+\newblock Long context vs. rag for llms: An evaluation and revisits,
+  2025{\natexlab{a}}.
+
+\bibitem[Li et~al.(2025{\natexlab{b}})Li, Yazdanpanah, Wang, Gu, Shi, Cristea,
+  Kiden, and Stein]{li2025tutorllm}
+Zhaoxing Li, Vahid Yazdanpanah, Jindi Wang, Wen Gu, Lei Shi, Alexandra~I.
+  Cristea, Sarah Kiden, and Sebastian Stein.
+\newblock Tutorllm: Customizing learning recommendations with knowledge tracing
+  and retrieval-augmented generation, 2025{\natexlab{b}}.
+
+\bibitem[Li et~al.(2024{\natexlab{c}})Li, Li, Zhang, Mei, and
+  Bendersky]{li2024ragorlongcontext}
+Zhuowan Li, Cheng Li, Mingyang Zhang, Qiaozhu Mei, and Michael Bendersky.
+\newblock Retrieval augmented generation or long-context llms? a comprehensive
+  study and hybrid approach, 2024{\natexlab{c}}.
+
+\bibitem[Liang et~al.(2026)Liang, Toroghi, Liu, Kalarde, Gallagher, and
+  Sanner]{liang2026goalmemragmemory}
+Jiazhou Liang, Armin Toroghi, Yifan~Simon Liu, Faeze~Moradi Kalarde, Liam
+  Gallagher, and Scott Sanner.
+\newblock Goal-oriented reasoning for rag-based memory in conversational
+  agentic llm systems, 2026.
+
+\bibitem[Lica et~al.(2024)Lica, Shirekar, Colle, and Raman]{lica2024mindforge}
+Mircea Lica, Ojas Shirekar, Baptiste Colle, and Chirag Raman.
+\newblock Mindforge: Empowering embodied agents with theory of mind for
+  lifelong cultural learning, 2024.
+
+\bibitem[Lin et~al.(2025)Lin, Snell, Wang, Packer, Wooders, Stoica, and
+  Gonzalez]{lin2025sleeptimecompute}
+Kevin Lin, Charlie Snell, Yu~Wang, Charles Packer, Sarah Wooders, Ion Stoica,
+  and Joseph~E. Gonzalez.
+\newblock Sleep-time compute: Beyond inference scaling at test-time, 2025.
+
+\bibitem[Lin et~al.(2026)Lin, Hao, Fu, Cui, Chen, Li, Li, and
+  Xiong]{lin2026surveylongtermmemorysecurity}
+Zehao Lin, Xixuan Hao, Renyu Fu, Shaobo Cui, Kai Chen, Chunyu Li, Zhiyu Li, and
+  Feiyu Xiong.
+\newblock A survey on long-term memory security in llm agents: Attacks,
+  defenses, and governance across the memory lifecycle, 2026.
+\newblock URL \url{https://arxiv.org/abs/2604.16548}.
+
+\bibitem[Liska et~al.(2022)Liska, Kocisky, Gribovskaya, Terzi, Sezener,
+  Agrawal, de~Masson~d'Autume, Scholtes, Zaheer, Young, Gilsenan-McMahon,
+  Austin, Blunsom, and Lazaridou]{liska2022streamingqa}
+Adam Liska, Tomas Kocisky, Elena Gribovskaya, Tayfun Terzi, Eren Sezener,
+  Devang Agrawal, Cyprien de~Masson~d'Autume, Tim Scholtes, Manzil Zaheer,
+  Susannah Young, Ellen Gilsenan-McMahon, Sophia Austin, Phil Blunsom, and
+  Angeliki Lazaridou.
+\newblock Streamingqa: A benchmark for adaptation to new knowledge over time in
+  question answering models, 2022.
+
+\bibitem[Liu et~al.(2026{\natexlab{a}})Liu, Yang, Pu, Liu, Long, Guo, Chen,
+  Weng, Kochkina, Kaur, Smiley, Liu, Zou, Liu, Bu, Peng, and
+  Wang]{liu2026worldmemarena}
+Chengzhi Liu, Yuzhe Yang, Sophia~Xiao Pu, Yepeng Liu, Lin Long, Yichen Guo, Nuo
+  Chen, Zhaotian Weng, Elena Kochkina, Simerjot Kaur, Charese Smiley, Xiaomo
+  Liu, James Zou, Sheng Liu, Yuheng Bu, Songyou Peng, and Xin~Eric Wang.
+\newblock Worldmemarena: Evaluating multimodal agent memory through
+  action-world interaction, 2026{\natexlab{a}}.
+
+\bibitem[Liu et~al.(2026{\natexlab{b}})Liu, Ren, Gu, Zhang, Wang, Liu, Gu, and
+  Lu]{liu2026streammembench}
+Guanming Liu, Yuqi Ren, Hansu Gu, Peng Zhang, Weihang Wang, Jiahao Liu, Ning
+  Gu, and Tun Lu.
+\newblock Streammembench: Streaming evaluation of agent memory for
+  future-oriented assistance, 2026{\natexlab{b}}.
+
+\bibitem[Liu et~al.(2025{\natexlab{a}})Liu, Kong, Yang, Yang, Li, Dong,
+  Nanjekye, Tang, Yuan, Niu, Zhang, Zhao, Lin, Huang, and
+  Wang]{liu2025rcrrouter}
+Jun Liu, Zhenglun Kong, Changdi Yang, Fan Yang, Tianqi Li, Peiyan Dong, Joannah
+  Nanjekye, Hao Tang, Geng Yuan, Wei Niu, Wenbin Zhang, Pu~Zhao, Xue Lin, Dong
+  Huang, and Yanzhi Wang.
+\newblock Rcr-router: Efficient role-aware context routing for multi-agent llm
+  systems with structured memory, 2025{\natexlab{a}}.
+
+\bibitem[Liu et~al.(2026{\natexlab{c}})Liu, Sun, Cheng, Lei, Chen, Wen, Yang,
+  Fu, Cai, Deng, Yu, Hu, Shi, and Wang]{liu2026memverse}
+Junming Liu, Yifei Sun, Weihua Cheng, Haodong Lei, Yirong Chen, Licheng Wen,
+  Xuemeng Yang, Daocheng Fu, Pinlong Cai, Nianchen Deng, Yi~Yu, Shuyue Hu,
+  Botian Shi, and Ding Wang.
+\newblock Memverse: Multimodal memory for lifelong learning agents,
+  2026{\natexlab{c}}.
+
+\bibitem[Liu et~al.(2023)Liu, Lin, Hewitt, Paranjape, Bevilacqua, Petroni, and
+  Liang]{liu2023lostmiddlelanguagemodels}
+Nelson~F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua,
+  Fabio Petroni, and Percy Liang.
+\newblock Lost in the middle: How language models use long contexts, 2023.
+\newblock URL \url{https://arxiv.org/abs/2307.03172}.
+
+\bibitem[Liu et~al.(2026{\natexlab{d}})Liu, Zheng, Chen, Wen, Quan, Wu, Zhang,
+  Yang, Peng, and Stiefelhagen]{liu2026egoexomem}
+Ruiping Liu, Junwei Zheng, Yufan Chen, Di~Wen, Shaofang Quan, Chengzhi Wu,
+  Jiaming Zhang, Kailun Yang, Kunyu Peng, and Rainer Stiefelhagen.
+\newblock Egoexomem: Cross-view memory reasoning over synchronized egocentric
+  and exocentric videos, 2026{\natexlab{d}}.
+
+\bibitem[Liu et~al.(2026{\natexlab{e}})Liu, Zhang, Liu, Lian, Liu, and
+  Zhu]{liu2026memrepair}
+Simiao Liu, Li~Zhang, Fang Liu, Xiaoli Lian, Yang Liu, and Yinghao Zhu.
+\newblock Memrepair: Hierarchical memory for agentic repository-level
+  vulnerability repair, 2026{\natexlab{e}}.
+
+\bibitem[Liu et~al.(2025{\natexlab{b}})Liu, Si, Narasimhan, and
+  Yao]{liu2025contextualexperiencereplay}
+Yitao Liu, Chenglei Si, Karthik Narasimhan, and Shunyu Yao.
+\newblock Contextual experience replay for self-improvement of language agents,
+  2025{\natexlab{b}}.
+\newblock ACL 2025.
+
+\bibitem[Liu et~al.(2026{\natexlab{f}})Liu, Song, Lou, Wu, and
+  Li]{liu2026agenttutor}
+Yuxin Liu, Zeqing Song, Jiong Lou, Chentao Wu, and Jie Li.
+\newblock Agenttutor: Empowering personalized learning with multi-turn
+  interactive teaching in intelligent education systems, 2026{\natexlab{f}}.
+
+\bibitem[Liu et~al.(2026{\natexlab{g}})]{liu2026memorycontagion}
+Zewen Liu et~al.
+\newblock Memory contagion: Cross-temporal propagation of evaluator bias via
+  agent memory, 2026{\natexlab{g}}.
+
+\bibitem[Long et~al.(2026)Long, Chen, Zeng, Wang, Guo, and
+  Tang]{long2026memtrace}
+Xianxuan Long, Zhikai Chen, Shenglai Zeng, Shouren Wang, Kai Guo, and Jiliang
+  Tang.
+\newblock Memtrace: Probing what final accuracy misses in long-term memory,
+  2026.
+
+\bibitem[Loo et~al.(2025)Loo, Liu, Yin, Chen, Chen, Zhang, and
+  Tian]{loo2025mobilerag}
+Gowen Loo, Chang Liu, Qinghong Yin, Xiang Chen, Jiawei Chen, Jingyuan Zhang,
+  and Yu~Tian.
+\newblock Mobilerag: Enhancing mobile agent with retrieval-augmented
+  generation, 2025.
+
+\bibitem[Louck(2026)]{louck2026originbound}
+Yedidel Louck.
+\newblock Securing llm-agent long-term memory against poisoning: Non-malleable,
+  origin-bound authority with machine-checked guarantees, 2026.
+
+\bibitem[Lu et~al.(2024)Lu, Yang, Qian, Chen, Luo, Wu, Wang, Cong, Zhang, Lin,
+  Liu, Wang, Liu, Liu, and Sun]{lu2024proactiveagent}
+Yaxi Lu, Shenzhi Yang, Cheng Qian, Guirong Chen, Qinyu Luo, Yesai Wu, Huadong
+  Wang, Xin Cong, Zhong Zhang, Yankai Lin, Weiwen Liu, Yasheng Wang, Zhiyuan
+  Liu, Fangming Liu, and Maosong Sun.
+\newblock Proactive agent: Shifting llm agents from reactive responses to
+  active assistance, 2024.
+
+\bibitem[Lu et~al.(2026{\natexlab{a}})Lu, Du, Liu, Zhou, Wang, and
+  Yin]{lu2026gsmem}
+Yiren Lu, Yi~Du, Disheng Liu, Yunlai Zhou, Chen Wang, and Yu~Yin.
+\newblock Gsmem: 3d gaussian splatting as persistent spatial memory for
+  zero-shot embodied exploration and reasoning, 2026{\natexlab{a}}.
+
+\bibitem[Lu et~al.(2026{\natexlab{b}})Lu, Lin, Shi, Tamo, Zhao, Wang, and
+  Wang]{lu2026clinenv}
+Yuxing Lu, Yushuhong Lin, Wenqi Shi, J.~Ben Tamo, Xukai Zhao, Jinzhuo Wang, and
+  May~Dongmei Wang.
+\newblock Clinenv: An interactive multi-stage long horizon ehr environment for
+  agents, 2026{\natexlab{b}}.
+
+\bibitem[Luo et~al.(2026)Luo, Guo, Qin, Guo, Zhao, Ma, and
+  Yang]{luo2026robolineage}
+Qian Luo, Wentao Guo, Zhennan Qin, Nanchun Guo, Yunhan Zhao, Yi~Ma, and Yanchao
+  Yang.
+\newblock Robolineage: Agent-native data lifecycle governance across robot
+  policy iterations, 2026.
+
+\bibitem[Lyu et~al.(2026)Lyu, Zhang, Yi, Zhao, Guo, Hu, Piotrowski, Kaliski,
+  Urbani, Meng, Zhou, and Yan]{lyu2026evoscientist}
+Yougang Lyu, Xi~Zhang, Xinhao Yi, Yuyue Zhao, Shuyu Guo, Wenxiang Hu, Jan
+  Piotrowski, Jakub Kaliski, Jacopo Urbani, Zaiqiao Meng, Lun Zhou, and Xiaohui
+  Yan.
+\newblock Evoscientist: Towards multi-agent evolving ai scientists for
+  end-to-end scientific discovery, 2026.
+
+\bibitem[Ma et~al.(2026)Ma, Zhou, Huang, Yang, Ma, Wang, Li, Miao, Yu, and
+  Wang]{ma2026memprobe}
+Enze Ma, Yufan Zhou, Wei-Chieh Huang, Jie Yang, Huanhuan Ma, Zixuan Wang,
+  Chengze Li, Chunyu Miao, Philip~S. Yu, and Zhen Wang.
+\newblock Memprobe: Probing long-term agent memory via hidden user-state
+  recovery, 2026.
+
+\bibitem[Ma et~al.(2025)Ma, Nan, Wu, and Chen]{ma2026nemori}
+Wenquan Ma, Jiayan Nan, Wenlong Wu, and Yize Chen.
+\newblock What deserves memory: Adaptive memory distillation for llm agents,
+  2025.
+
+\bibitem[Madaan et~al.(2024)Madaan, Singh, Schaeffer, Poulton, Koyejo,
+  Stenetorp, Narang, and Hupkes]{madaan2024quantifyingvariance}
+Lovish Madaan, Aaditya~K. Singh, Rylan Schaeffer, Andrew Poulton, Sanmi Koyejo,
+  Pontus Stenetorp, Sharan Narang, and Dieuwke Hupkes.
+\newblock Quantifying variance in evaluation benchmarks, 2024.
+
+\bibitem[Maharana et~al.(2024)Maharana, Lee, Tulyakov, Bansal, Barbieri, and
+  Fang]{maharana2024evaluatinglongtermconversationalmemory}
+Adyasha Maharana, Dong-Ho Lee, Sergey Tulyakov, Mohit Bansal, Francesco
+  Barbieri, and Yuwei Fang.
+\newblock Evaluating very long-term conversational memory of llm agents, 2024.
+\newblock URL \url{https://arxiv.org/abs/2402.17753}.
+
+\bibitem[Majumder et~al.(2023)Majumder, Mishra, Jansen, Tafjord, Tandon, Zhang,
+  Callison-Burch, and Clark]{majumder2023clincontinuallylearninglanguage}
+Bodhisattwa~Prasad Majumder, Bhavana~Dalvi Mishra, Peter Jansen, Oyvind
+  Tafjord, Niket Tandon, Li~Zhang, Chris Callison-Burch, and Peter Clark.
+\newblock Clin: A continually learning language agent for rapid task adaptation
+  and generalization, 2023.
+\newblock URL \url{https://arxiv.org/abs/2310.10134}.
+
+\bibitem[Malo and Qiu(2026)]{malo2026projectmem}
+Ripon~Chandra Malo and Tong Qiu.
+\newblock Projectmem: A local-first, event-sourced memory and judgment layer
+  for ai coding agents, 2026.
+
+\bibitem[Margalit et~al.(2026)Margalit, Cohen-Inger, Avram, Taig, and
+  Margalit]{margalit2026governedsharedmemorymultiagent}
+Yanki Margalit, Nurit Cohen-Inger, Erni Avram, Ran Taig, and Oded Margalit.
+\newblock Governed shared memory for multi-agent llm systems, 2026.
+\newblock URL \url{https://arxiv.org/abs/2606.24535}.
+
+\bibitem[Marro et~al.(2025)Marro, Chan, Ren, Hammond, Wright, Wanga, Piccardi,
+  Campos, South, Yu, Sengupta, Sommerlade, Pentland, Torr, and
+  Pei]{marro2025permissions}
+Samuele Marro, Alan Chan, Xinxing Ren, Lewis Hammond, Jesse Wright, Gurjyot
+  Wanga, Tiziano Piccardi, Nuno Campos, Tobin South, Jialin Yu, Sunando
+  Sengupta, Eric Sommerlade, Alex Pentland, Philip Torr, and Jiaxin Pei.
+\newblock Permission manifests for web agents, 2025.
+
+\bibitem[Masoor(2025)]{masoor2025samep}
+Hari Masoor.
+\newblock Samep: A secure protocol for persistent context sharing across ai
+  agents, 2025.
+
+\bibitem[McClelland et~al.(1995)McClelland, McNaughton, and
+  O'Reilly]{mcclelland1995complementary}
+James~L. McClelland, Bruce~L. McNaughton, and Randall~C. O'Reilly.
+\newblock Why there are complementary learning systems in the hippocampus and
+  neocortex: insights from the successes and failures of connectionist models
+  of learning and memory.
+\newblock \emph{Psychological Review}, 102\penalty0 (3):\penalty0 419--457,
+  1995.
+\newblock \doi{10.1037/0033-295X.102.3.419}.
+
+\bibitem[McCloskey and Cohen(1989)]{mccloskey1989catastrophic}
+Michael McCloskey and Neal~J. Cohen.
+\newblock Catastrophic interference in connectionist networks: The sequential
+  learning problem.
+\newblock In \emph{Psychology of Learning and Motivation}, volume~24, pages
+  109--165. Academic Press, 1989.
+\newblock \doi{10.1016/S0079-7421(08)60536-8}.
+
+\bibitem[Mei et~al.(2024)Mei, Zhu, Xu, Hua, Jin, Li, Xu, Ye, Ge, and
+  Zhang]{mei2024aios}
+Kai Mei, Xi~Zhu, Wujiang Xu, Wenyue Hua, Mingyu Jin, Zelong Li, Shuyuan Xu,
+  Ruosong Ye, Yingqiang Ge, and Yongfeng Zhang.
+\newblock Aios: Llm agent operating system, 2024.
+
+\bibitem[Mei et~al.(2025)Mei, Yao, Ge, Wang, Bi, Cai, Liu, Li, Li, Zhang, Zhou,
+  Mao, Xia, Guo, and Liu]{mei2025surveycontextengineering}
+Lingrui Mei, Jiayu Yao, Yuyao Ge, Yiwei Wang, Baolong Bi, Yujun Cai, Jiazhi
+  Liu, Mingyu Li, Zhong-Zhi Li, Duzhen Zhang, Chenlin Zhou, Jiayi Mao, Tianze
+  Xia, Jiafeng Guo, and Shenghua Liu.
+\newblock A survey of context engineering for large language models, 2025.
+\newblock URL \url{https://arxiv.org/abs/2507.13334}.
+
+\bibitem[Men et~al.(2026)Men, Hu, Gao, Mou, Xu, and Xiao]{men2026airagent}
+Huichao Men, Yizhen Hu, Yu~Gao, Xiaofeng Mou, Yi~Xu, and Xinhua Xiao.
+\newblock An autonomous agent framework for feature-label extraction from
+  device dialogues and automatic multi-dimensional device hosting planning
+  based on large language models, 2026.
+
+\bibitem[Men et~al.(2024)Men, Cao, Jin, Chen, Liu, and
+  Zhao]{men2024troublemaker}
+Tianyi Men, Pengfei Cao, Zhuoran Jin, Yubo Chen, Kang Liu, and Jun Zhao.
+\newblock A troublemaker with contagious jailbreak makes chaos in honest towns,
+  2024.
+
+\bibitem[Merin et~al.(2026)Merin, Anugraha, Purwarianti, and
+  Winata]{merin2026momento}
+Adril~Putra Merin, David Anugraha, Ayu Purwarianti, and Genta~Indra Winata.
+\newblock Momento: Evaluating persistent memory and reasoning with
+  multi-session agentic conversations, 2026.
+
+\bibitem[Metere(2026)]{metere2026attestedtoolserver}
+Alfredo Metere.
+\newblock Attested tool-server admission: A security extension to the model
+  context protocol, 2026.
+
+\bibitem[Metere et~al.(2026)]{metere2026skillcontainment}
+Alfredo Metere et~al.
+\newblock Methods for formal verification of agent skills: Three layers toward
+  a mechanically checkable capability-containment proof, 2026.
+
+\bibitem[Mi et~al.(2026)Mi, Ma, Yang, Li, Wang, Zhang, and
+  Wang]{mi2026skillpro}
+Qirui Mi, Zhijian Ma, Mengyue Yang, Haoxuan Li, Yisen Wang, Haifeng Zhang, and
+  Jun Wang.
+\newblock Skill-pro: Learning reusable skills from experience via
+  non-parametric ppo for llm agents, 2026.
+
+\bibitem[Mialon et~al.(2023)Mialon, Fourrier, Swift, Wolf, LeCun, and
+  Scialom]{mialon2023gaia}
+Gr\'egoire Mialon, Cl\'ementine Fourrier, Craig Swift, Thomas Wolf, Yann LeCun,
+  and Thomas Scialom.
+\newblock Gaia: a benchmark for general ai assistants, 2023.
+
+\bibitem[{Microsoft}(2026)]{microsoft2026copilotmemorysupport}
+{Microsoft}.
+\newblock Manage copilot memory in microsoft 365 copilot | microsoft support,
+  2026.
+\newblock URL
+  \url{https://support.microsoft.com/en-us/microsoft-365-copilot/manage-copilot-memory-in-microsoft-365-copilot}.
+\newblock Accessed 2026-06-28.
+
+\bibitem[Miller(2024)]{miller2024errorbarsevals}
+Evan Miller.
+\newblock Adding error bars to evals: A statistical approach to language model
+  evaluations, 2024.
+
+\bibitem[Milosevic(2026)]{milosevic2026episodicsemantic}
+Nikola Milosevic.
+\newblock Episodic-semantic memory architecture for long-horizon scientific
+  agents, 2026.
+
+\bibitem[Mireshghallah et~al.(2025)Mireshghallah, Mangaokar, Kokhlikyan,
+  Zharmagambetov, Zaheer, Mahloujifar, and
+  Chaudhuri]{mireshghallah2025cimemories}
+Niloofar Mireshghallah, Neal Mangaokar, Narine Kokhlikyan, Arman
+  Zharmagambetov, Manzil Zaheer, Saeed Mahloujifar, and Kamalika Chaudhuri.
+\newblock {CIMemories}: A compositional benchmark for contextual integrity of
+  persistent memory in {LLMs}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2511.14937}.
+
+\bibitem[Moghadasi and Ghaderi(2026)]{moghadasi2026audit}
+Mahdi~Naser Moghadasi and Faezeh Ghaderi.
+\newblock What twelve llm agent benchmark papers disclose about themselves: A
+  pilot audit and an open scoring schema, 2026.
+
+\bibitem[Mohammadi et~al.(2026)Mohammadi, Potamitis, Klein, Arora, and
+  Bindschaedler]{mohammadi2026atomix}
+Bardia Mohammadi, Nearchos Potamitis, Lars Klein, Akhil Arora, and Laurent
+  Bindschaedler.
+\newblock Atomix: Timely, transactional tool use for reliable agentic
+  workflows, 2026.
+
+\bibitem[Mohammadi et~al.(2025)Mohammadi, Li, Lo, and
+  Yip]{mohammadi2025evalbenchmarkingllmagents}
+Mahmoud Mohammadi, Yipeng Li, Jane Lo, and Wendy Yip.
+\newblock Evaluation and benchmarking of llm agents: A survey, 2025.
+
+\bibitem[Munirathinam(2026)]{munirathinam2026memorywire}
+Thamilvendhan Munirathinam.
+\newblock memorywire: A vendor-neutral wire format for agent memory operations,
+  2026.
+
+\bibitem[Murimi(2026)]{murimi2026bard}
+Almond~Kiruthu Murimi.
+\newblock Bard-marl: Byzantine-agent detection for learned communication in
+  multi-agent reinforcement learning, 2026.
+
+\bibitem[Murre and Dros(2015)]{murre2015replication}
+Jaap M.~J. Murre and Joeri Dros.
+\newblock Replication and analysis of ebbinghaus' forgetting curve.
+\newblock \emph{PLOS ONE}, 10\penalty0 (7):\penalty0 e0120644, 2015.
+\newblock \doi{10.1371/journal.pone.0120644}.
+
+\bibitem[Myakala et~al.(2026)Myakala, Agrawal, and
+  Manche]{myakala2026beliefshiftbenchmarkingtemporalbelief}
+Praveen~Kumar Myakala, Manan Agrawal, and Rahul Manche.
+\newblock Beliefshift: Benchmarking temporal belief consistency and opinion
+  drift in llm agents, 2026.
+\newblock URL \url{https://arxiv.org/abs/2603.23848}.
+
+\bibitem[Nakajima(2026)]{nakajima2026regimes}
+Yohei Nakajima.
+\newblock Regimes: An auditable, held-out-gated improvement loop demonstrated
+  on longmemeval with activegraph, 2026.
+
+\bibitem[Naseh et~al.(2025)Naseh, Peng, Suri, Chaudhari, Oprea, and
+  Houmansadr]{naseh2025riddle}
+Ali Naseh, Yuefeng Peng, Anshuman Suri, Harsh Chaudhari, Alina Oprea, and Amir
+  Houmansadr.
+\newblock Riddle me this! stealthy membership inference for retrieval-augmented
+  generation, 2025.
+
+\bibitem[Nguyen et~al.(2022)Nguyen, Huynh, Ren, Nguyen, Liew, Yin, and
+  Nguyen]{nguyen2024machineunlearningsurvey}
+Thanh~Tam Nguyen, Thanh~Trung Huynh, Zhao Ren, Phi~Le Nguyen, Alan Wee-Chung
+  Liew, Hongzhi Yin, and Quoc Viet~Hung Nguyen.
+\newblock A survey of machine unlearning, 2022.
+
+\bibitem[Nie et~al.(2026{\natexlab{a}})Nie, Fu, Feng, and
+  Shan]{nie2026evoembedding}
+Chang Nie, Chaoyou Fu, Junlan Feng, and Caifeng Shan.
+\newblock Evoembedding: Evolvable representations for long-context retrieval
+  and agentic memory, 2026{\natexlab{a}}.
+
+\bibitem[Nie et~al.(2026{\natexlab{b}})Nie, Fu, Zhang, Yang, and
+  Shan]{nie2026personavlm}
+Chang Nie, Chaoyou Fu, Yifan Zhang, Haihua Yang, and Caifeng Shan.
+\newblock Personavlm: Long-term personalized multimodal llms,
+  2026{\natexlab{b}}.
+
+\bibitem[Nie et~al.(2026{\natexlab{c}})Nie, Guo, Chen, Zhou, and
+  Zhang]{nie2026awcp}
+Xiaohang Nie, Zihan Guo, Youliang Chen, Yuanjian Zhou, and Weinan Zhang.
+\newblock Awcp: A workspace delegation protocol for deep-engagement
+  collaboration across remote agents, 2026{\natexlab{c}}.
+
+\bibitem[Niu et~al.(2024)Niu, Wu, Zhu, Xu, Shum, Zhong, Song, and
+  Zhang]{niu2024ragtruthhallucinationcorpusdeveloping}
+Cheng Niu, Yuanhao Wu, Juno Zhu, Siliang Xu, Kashun Shum, Randy Zhong, Juntong
+  Song, and Tong Zhang.
+\newblock Ragtruth: A hallucination corpus for developing trustworthy
+  retrieval-augmented language models, 2024.
+\newblock URL \url{https://arxiv.org/abs/2401.00396}.
+
+\bibitem[Omri et~al.(2026)Omri, Gan, Broveak, Geens, He, Pentland, Verhelst,
+  Weissman, and Tambe]{omri2026agentmemorycharacterization}
+Yasmine Omri, Ziyu Gan, Zachary Broveak, Robin Geens, Zexue He, Alex Pentland,
+  Marian Verhelst, Tsachy Weissman, and Thierry Tambe.
+\newblock Agent memory: Characterization and system implications of stateful
+  long-horizon workloads, 2026.
+
+\bibitem[{OpenAI}(2026)]{openai2026chatgptmemoryfaq}
+{OpenAI}.
+\newblock Memory faq | openai help center, 2026.
+\newblock URL \url{https://help.openai.com/en/articles/8590148-memory-faq}.
+\newblock Accessed 2026-06-28.
+
+\bibitem[Or(2025)]{or2025mttralm}
+Barak Or.
+\newblock Mttr-a: Measuring cognitive recovery latency in multi-agent systems,
+  2025.
+
+\bibitem[Orogat and Mansour(2026)]{orogat2026gem}
+Abdelghny Orogat and Essam Mansour.
+\newblock Is agent memory a database? rethinking data foundations for long-term
+  ai agent memory, 2026.
+
+\bibitem[Ouyang and Hou(2026)]{ouyang2026memlineage}
+Ciyan Ouyang and Rui Hou.
+\newblock Memlineage: Lineage-guided enforcement for llm agent memory, 2026.
+
+\bibitem[Ouyang et~al.(2025)Ouyang, Yan, Hsu, Chen, Jiang, Wang, Han, Le,
+  Daruki, Tang, Tirumalashetty, Lee, Rofouei, Lin, Han, Lee, and
+  Pfister]{ouyang2025reasoningbank}
+Siru Ouyang, Jun Yan, I-Hung Hsu, Yanfei Chen, Ke~Jiang, Zifeng Wang, Rujun
+  Han, Long~T. Le, Samira Daruki, Xiangru Tang, Vishy Tirumalashetty, George
+  Lee, Mahsan Rofouei, Hangfei Lin, Jiawei Han, Chen-Yu Lee, and Tomas Pfister.
+\newblock Reasoningbank: Scaling agent self-evolving with reasoning memory,
+  2025.
+
+\bibitem[Packer et~al.(2024)Packer, Wooders, Lin, Fang, Patil, Stoica, and
+  Gonzalez]{packer2024memgptllmsoperatingsystems}
+Charles Packer, Sarah Wooders, Kevin Lin, Vivian Fang, Shishir~G. Patil, Ion
+  Stoica, and Joseph~E. Gonzalez.
+\newblock Memgpt: Towards llms as operating systems, 2024.
+\newblock URL \url{https://arxiv.org/abs/2310.08560}.
+
+\bibitem[Pan et~al.(2026)Pan, Wang, Zhou, Yang, Li, Xu, Zhou, Li, Zhao, Chen,
+  Zhou, Chen, and He]{pan2026psycheval}
+Qianjun Pan, Junyi Wang, Jie Zhou, Yutao Yang, Junsong Li, Kaiyin Xu, Yougen
+  Zhou, Yihan Li, Jingyuan Zhao, Qin Chen, Ningning Zhou, Kai Chen, and Liang
+  He.
+\newblock Psycheval: A multi-session and multi-therapy benchmark for
+  high-realism ai psychological counselor, 2026.
+
+\bibitem[Pan et~al.(2025)Pan, Chen, Lu, Chu, Li, Li, Feng, Goues, Sarro,
+  Monperrus, and Ye]{pan2025prometheus}
+Yue Pan, Zimin Chen, Siyu Lu, Zhaoyang Chu, Xiang Li, Han Li, Yang Feng,
+  Claire~Le Goues, Federica Sarro, Martin Monperrus, and He~Ye.
+\newblock Prometheus: Towards long-horizon codebase navigation for
+  repository-level problem solving, 2025.
+
+\bibitem[Parakhin(2026{\natexlab{a}})]{parakhin2026bureaucracy}
+Vladyslav Parakhin.
+\newblock The bureaucracy of speed: Structural equivalence between memory
+  consistency models and multi-agent authorization revocation,
+  2026{\natexlab{a}}.
+
+\bibitem[Parakhin(2026{\natexlab{b}})]{parakhin2026tokencoherence}
+Vladyslav Parakhin.
+\newblock Token coherence: Adapting mesi cache protocols to minimize
+  synchronization overhead in multi-agent llm systems, 2026{\natexlab{b}}.
+
+\bibitem[Park et~al.(2023)Park, O'Brien, Cai, Morris, Liang, and
+  Bernstein]{park2023generativeagentsinteractivesimulacra}
+Joon~Sung Park, Joseph~C. O'Brien, Carrie~J. Cai, Meredith~Ringel Morris, Percy
+  Liang, and Michael~S. Bernstein.
+\newblock Generative agents: Interactive simulacra of human behavior, 2023.
+\newblock URL \url{https://arxiv.org/abs/2304.03442}.
+
+\bibitem[Park et~al.(2024)Park, Yoon, Park, Lee, Jeong, and
+  Kang]{park2024chroknowledge}
+Yein Park, Chanwoong Yoon, Jungwoo Park, Donghyeon Lee, Minbyul Jeong, and
+  Jaewoo Kang.
+\newblock Chroknowledge: Unveiling chronological knowledge of language models
+  in multiple domains, 2024.
+
+\bibitem[Park(2026)]{park2026kumiho}
+Young~Bin Park.
+\newblock Graph-native cognitive memory for ai agents: Formal belief revision
+  semantics for versioned memory architectures, 2026.
+
+\bibitem[Patel and Joshi(2026)]{patel2026polykv}
+Ishan Patel and Ishan Joshi.
+\newblock Polykv: A shared asymmetrically-compressed kv cache pool for
+  multi-agent llm inference, 2026.
+
+\bibitem[Pu et~al.(2026)Pu, Song, and Zhao]{pu2026skillops}
+Hongji Pu, Xinyuan Song, and Liang Zhao.
+\newblock Skillops: Managing llm agent skill libraries as self-maintaining
+  software ecosystems, 2026.
+
+\bibitem[Pugh et~al.(2026)Pugh, Yang, Sutherland, and
+  Breschi]{pugh2026dualstream}
+Samuel~L. Pugh, Eric Yang, Alexander~Muir Sutherland, and Alessandra Breschi.
+\newblock Detecting clinical discrepancies in health coaching agents: A
+  dual-stream memory and reconciliation architecture, 2026.
+
+\bibitem[Qian(2026)]{qian2026visualinception}
+Jiachen Qian.
+\newblock Visual inception: Compromising long-term planning in agentic
+  recommenders via multimodal memory poisoning, 2026.
+
+\bibitem[Qian et~al.(2024)Qian, Zhang, Zhao, Zhou, Sui, Zhang, and
+  Song]{qian2024timer4}
+Xinying Qian, Ying Zhang, Yu~Zhao, Baohang Zhou, Xuhui Sui, Li~Zhang, and Kehui
+  Song.
+\newblock Timer4 : Time-aware retrieval-augmented large language models for
+  temporal knowledge graph question answering, 2024.
+\newblock URL \url{https://aclanthology.org/2024.emnlp-main.394/}.
+\newblock EMNLP 2024 (ACL Anthology 2024.emnlp-main).
+
+\bibitem[Qin et~al.(2026)Qin, Zhuang, Zhou, Han, and Zhang]{qin2026airguard}
+Suliu Qin, Haomin Zhuang, Yujun Zhou, Yufei Han, and Xiangliang Zhang.
+\newblock Airguard: Guarding agent actions with runtime authority control,
+  2026.
+
+\bibitem[Qu and Färber(2026)]{qu2026vitaltrace}
+Zhan Qu and Michael Färber.
+\newblock Vital trace: Protocol-constrained patient-state reasoning for
+  longitudinal clinical trajectories, 2026.
+
+\bibitem[Rakotonirina et~al.(2025)Rakotonirina, Hamdy, Campos, Weber, Testoni,
+  Fadaee, Pezzelle, and Tredici]{rakotonirina2025memorycode}
+Nathanaël~Carraz Rakotonirina, Mohammed Hamdy, Jon~Ander Campos, Lucas Weber,
+  Alberto Testoni, Marzieh Fadaee, Sandro Pezzelle, and Marco~Del Tredici.
+\newblock From tools to teammates: Evaluating llms in multi-session coding
+  interactions, 2025.
+
+\bibitem[Rana et~al.(2026)Rana, Hung, Sun, Kunkel, and
+  Lawrence]{rana2026oblivion}
+Ashish Rana, Chia-Chien Hung, Qumeng Sun, Julian~Martin Kunkel, and Carolin
+  Lawrence.
+\newblock Oblivion: Self-adaptive agentic memory control through decay-driven
+  activation, 2026.
+
+\bibitem[Rasheed and Kabtoul(2026)]{rasheed2026emem}
+A.~Haroon Rasheed and Maria Kabtoul.
+\newblock emem: A hybrid spatio-temporal memory system for embodied agents,
+  2026.
+
+\bibitem[Rasmussen et~al.(2025)Rasmussen, Paliychuk, Beauvais, Ryan, and
+  Chalef]{rasmussen2025zep}
+Preston Rasmussen, Pavlo Paliychuk, Travis Beauvais, Jack Ryan, and Daniel
+  Chalef.
+\newblock Zep: A temporal knowledge graph architecture for agent memory, 2025.
+
+\bibitem[Rathi(2026)]{rathi2026robomme}
+Soumil Rathi.
+\newblock Benchmarking robot memory under interference, 2026.
+
+\bibitem[Ravindran(2026)]{ravindran2026portablemem}
+Santhosh~Kumar Ravindran.
+\newblock Portable agent memory: A protocol for cryptographically-verified
+  memory transfer across heterogeneous ai agents, 2026.
+
+\bibitem[Rawles et~al.(2024)Rawles, Clinckemaillie, Chang, Waltz, Lau, Fair,
+  Li, Bishop, Li, Campbell-Ajala, Toyama, Berry, Tyamagundlu, Lillicrap, and
+  Riva]{rawles2024androidworld}
+Christopher Rawles, Sarah Clinckemaillie, Yifan Chang, Jonathan Waltz,
+  Gabrielle Lau, Marybeth Fair, Alice Li, William Bishop, Wei Li, Folawiyo
+  Campbell-Ajala, Daniel Toyama, Robert Berry, Divya Tyamagundlu, Timothy
+  Lillicrap, and Oriana Riva.
+\newblock Androidworld: A dynamic benchmarking environment for autonomous
+  agents, 2024.
+
+\bibitem[Ren et~al.(2026{\natexlab{a}})Ren, Luo, Yang, Zhu, Huang, Wu, Chou,
+  Ye, Liang, Li, and Peng]{ren2026tmem}
+Tao Ren, Weiyao Luo, Hui Yang, Rongzhi Zhu, Xiang Huang, Yuchuan Wu, Bingxue
+  Chou, Jieping Ye, Jiafeng Liang, Yongbin Li, and Yijie Peng.
+\newblock Scaling self-evolving agents via parametric memory,
+  2026{\natexlab{a}}.
+
+\bibitem[Ren et~al.(2026{\natexlab{b}})Ren, Yang, Chen, Zhao, Fu, Shu, Zhang,
+  Xu, Guo, and Yan]{ren2026gatemem}
+Zhe Ren, Yibo Yang, Yimeng Chen, Zijun Zhao, Benshuo Fu, Zhihao Shu, Bingjie
+  Zhang, Yangyang Xu, Dandan Guo, and Shuicheng Yan.
+\newblock Gatemem: Benchmarking memory governance in multi-principal
+  shared-memory agents, 2026{\natexlab{b}}.
+
+\bibitem[Rezazadeh et~al.(2025)Rezazadeh, Li, Lou, Zhao, Wei, and
+  Bao]{rezazadeh2025collaborativememorymultiusermemory}
+Alireza Rezazadeh, Zichao Li, Ange Lou, Yuying Zhao, Wei Wei, and Yujia Bao.
+\newblock Collaborative memory: Multi-user memory sharing in llm agents with
+  dynamic access control, 2025.
+\newblock URL \url{https://arxiv.org/abs/2505.18279}.
+
+\bibitem[Rodriguez et~al.(2026)Rodriguez, Pozanco, and
+  Borrajo]{rodriguez2026thanatosis}
+Andoni Rodriguez, Alberto Pozanco, and Daniel Borrajo.
+\newblock Is your agent playing dead? deployed llm agents exhibit
+  constraint-evasive fabrication and thanatosis, 2026.
+
+\bibitem[Salemi et~al.(2024)Salemi, Mysore, Bendersky, and
+  Zamani]{salemi-etal-2024-lamp}
+Alireza Salemi, Sheshera Mysore, Michael Bendersky, and Hamed Zamani.
+\newblock {L}a{MP}: When large language models meet personalization.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 7370--7392.
+  Association for Computational Linguistics, 2024.
+\newblock \doi{10.18653/v1/2024.acl-long.399}.
+\newblock URL \url{https://aclanthology.org/2024.acl-long.399/}.
+
+\bibitem[Schewe et~al.(2019)Schewe, Prinz, and Börger]{schewe2019replicated}
+Klaus-Dieter Schewe, Andreas Prinz, and Egon Börger.
+\newblock Concurrent computing with shared replicated memory, 2019.
+
+\bibitem[Schmidgall et~al.(2024)Schmidgall, Ziaei, Harris, Reis, Jopling, and
+  Moor]{schmidgall2024agentclinic}
+Samuel Schmidgall, Rojin Ziaei, Carl Harris, Eduardo Reis, Jeffrey Jopling, and
+  Michael Moor.
+\newblock Agentclinic: a multimodal agent benchmark to evaluate ai in simulated
+  clinical environments, 2024.
+
+\bibitem[Selvam and Ghosh(2026)]{selvam2026profilefoundry}
+Sriram Selvam and Anneswa Ghosh.
+\newblock Profilefoundry: A synthetic person-object substrate for privacy,
+  memory, and tool-use evaluation in llm agent, 2026.
+
+\bibitem[Sen et~al.(2026)Sen, Lumer, Gulati, and Subbiah]{sen2026chronos}
+Sahil Sen, Elias Lumer, Anmol Gulati, and Vamse~Kumar Subbiah.
+\newblock Chronos: Temporal-aware conversational agents with structured event
+  retrieval for long-term memory, 2026.
+
+\bibitem[Shah et~al.(2026)Shah, Huang, Murugesan, Baracaldo, and
+  Yang]{shah2026unlearningmirage}
+Raj~Sanjay Shah, Jing Huang, Keerthiram Murugesan, Nathalie Baracaldo, and Diyi
+  Yang.
+\newblock The unlearning mirage: A dynamic framework for evaluating llm
+  unlearning, 2026.
+
+\bibitem[Shao et~al.(2026)Shao, Lu, Zhang, and Luo]{shao2026scaleconditioned}
+Jiaqi Shao, Yiyi Lu, Yunzhen Zhang, and Bing Luo.
+\newblock When stored evidence stops being usable: Scale-conditioned evaluation
+  of agent memory, 2026.
+
+\bibitem[Shao et~al.(2025)Shao, Ren, Qian, Wei, Guo, Yang, Song, Zhang, Zhang,
+  Liu, and Shao]{shao2025misevolution}
+Shuai Shao, Qihan Ren, Chen Qian, Boyi Wei, Dadi Guo, Jingyi Yang, Xinhao Song,
+  Linfeng Zhang, Weinan Zhang, Dongrui Liu, and Jing Shao.
+\newblock Your agent may misevolve: Emergent risks in self-evolving llm agents,
+  2025.
+
+\bibitem[Sharma(2026)]{sharma2026smsrcertified}
+Tarun Sharma.
+\newblock Smsr: Certified defence against runtime memory poisoning in
+  persistent llm agent systems, 2026.
+
+\bibitem[Shawn et~al.(2026)]{shawn2026pace}
+Zayx Shawn et~al.
+\newblock Pace: Anytime-valid acceptance tests for self-evolving agents, 2026.
+
+\bibitem[She(2026)]{she2026agentrm}
+Jianshu She.
+\newblock Agentrm: An os-inspired resource manager for llm agent systems, 2026.
+
+\bibitem[Shekar et~al.(2026)Shekar, S, and Krishnan]{shekar2026gitofthoughts}
+Pavan~C Shekar, Abhishek~H S, and Aswanth Krishnan.
+\newblock Gitofthoughts: Version-controlled reasoning and agent memory you can
+  replay, diff, and merge, 2026.
+
+\bibitem[Shi et~al.(2024)Shi, Ma, Liang, Diao, Ma, and
+  Vosoughi]{shi2024judgingthejudges}
+Lin Shi, Chiyu Ma, Wenhua Liang, Xingjian Diao, Weicheng Ma, and Soroush
+  Vosoughi.
+\newblock Judging the judges: A systematic study of position bias in
+  llm-as-a-judge, 2024.
+
+\bibitem[Shi et~al.(2026)Shi, Zytek, Razavi, Narasimhan, and
+  Barres]{shi2026tauknowledge}
+Quan Shi, Alexandra Zytek, Pedram Razavi, Karthik Narasimhan, and Victor
+  Barres.
+\newblock $\tau$-knowledge: Evaluating conversational agents over unstructured
+  knowledge, 2026.
+
+\bibitem[Shinn et~al.(2023)Shinn, Cassano, Berman, Gopinath, Narasimhan, and
+  Yao]{shinn2023reflexionlanguageagentsverbal}
+Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik
+  Narasimhan, and Shunyu Yao.
+\newblock Reflexion: Language agents with verbal reinforcement learning, 2023.
+\newblock URL \url{https://arxiv.org/abs/2303.11366}.
+
+\bibitem[Shu et~al.(2026)Shu, Gutierrez, Jonnalagedda, Yao, Sun, and
+  Su]{shu2026agentcl}
+Yiheng Shu, Bernal~Jimenez Gutierrez, Saisri~Padmaja Jonnalagedda, Yuguang Yao,
+  Huan Sun, and Yu~Su.
+\newblock Agentcl: Toward rigorous evaluation of continual learning in language
+  agents, 2026.
+
+\bibitem[Singh et~al.(2026)Singh, Kroiz, Rajamanoharan, and
+  Nanda]{singh2026modelforensics}
+Aditya Singh, Gerson Kroiz, Senthooran Rajamanoharan, and Neel Nanda.
+\newblock Model forensics: Investigating whether concerning behavior reflects
+  misalignment, 2026.
+
+\bibitem[Solozobov(2026)]{solozobov2026demm}
+Oleg Solozobov.
+\newblock Demm-bench: A cross-regime benchmark for agent-runtime
+  governance-evidence sufficiency, 2026.
+
+\bibitem[Sommer et~al.(2020)Sommer, Song, Wagh, and
+  Mittal]{sommer2020probabilistic}
+David~Marco Sommer, Liwei Song, Sameer Wagh, and Prateek Mittal.
+\newblock Towards probabilistic verification of machine unlearning, 2020.
+
+\bibitem[South et~al.(2025)South, Marro, Hardjono, Mahari, Whitney, Greenwood,
+  Chan, and Pentland]{south2025authenticateddelegation}
+Tobin South, Samuele Marro, Thomas Hardjono, Robert Mahari, Cedric~Deslandes
+  Whitney, Dazza Greenwood, Alan Chan, and Alex Pentland.
+\newblock Authenticated delegation and authorized ai agents, 2025.
+
+\bibitem[Spohn et~al.(2025)Spohn, Girrbach, Bader, and Akata]{spohn2025align}
+Philipp Spohn, Leander Girrbach, Jessica Bader, and Zeynep Akata.
+\newblock Align-then-unlearn: Embedding alignment for llm unlearning, 2025.
+
+\bibitem[Srivastava et~al.(2026)]{srivastava2026causalmemory}
+Saksham~Sahai Srivastava et~al.
+\newblock Causal intervention-based memory selection for long-horizon llm
+  agents, 2026.
+
+\bibitem[Staufer(2025)]{staufer2025whatshouldllmsforget}
+Dimitri Staufer.
+\newblock What should llms forget? quantifying personal data in llms for
+  right-to-be-forgotten requests, 2025.
+
+\bibitem[Sumers et~al.(2024)Sumers, Yao, Narasimhan, and
+  Griffiths]{sumers2024cognitivearchitectureslanguageagents}
+Theodore~R. Sumers, Shunyu Yao, Karthik Narasimhan, and Thomas~L. Griffiths.
+\newblock Cognitive architectures for language agents, 2024.
+\newblock URL \url{https://arxiv.org/abs/2309.02427}.
+
+\bibitem[Tan et~al.(2026)Tan, Zhang, Cao, Li, and Chen]{tan2026deltamem}
+Haoran Tan, Zeyu Zhang, Zhicheng Cao, Rui Li, and Xu~Chen.
+\newblock Deltamem: Incremental experience memory for llm agents via residual
+  trees, 2026.
+
+\bibitem[Tan et~al.(2025)Tan, Chi, Chen, Ji, Zhao, Hao, Lyu, Cao, Zhao, Lyu,
+  Zhou, Chen, Fu, Peng, Guo, Liang, Chen, Lyu, He, Ao, Lin, Wang, Wang, and
+  Zhang]{tan2025roboosnext}
+Huajie Tan, Cheng Chi, Xiansheng Chen, Yuheng Ji, Zhongxia Zhao, Xiaoshuai Hao,
+  Yaoxu Lyu, Mingyu Cao, Junkai Zhao, Huaihai Lyu, Enshen Zhou, Ning Chen,
+  Yankai Fu, Cheng Peng, Wei Guo, Dong Liang, Zhuo Chen, Mengsi Lyu, Chenrui
+  He, Yulong Ao, Yonghua Lin, Pengwei Wang, Zhongyuan Wang, and Shanghang
+  Zhang.
+\newblock Roboos-next: A unified memory-based framework for lifelong, scalable,
+  and robust multi-robot collaboration, 2025.
+
+\bibitem[Tan et~al.(2023)Tan, Ng, and Bing]{tan2023tempreason}
+Qingyu Tan, Hwee~Tou Ng, and Lidong Bing.
+\newblock Towards benchmarking and improving the temporal reasoning capability
+  of large language models, 2023.
+
+\bibitem[Tan et~al.(2024)Tan, Zhang, Xu, Xia, Ding, Li, Zhou, Yue, Jiang, Li,
+  An, Qin, Zong, Zheng, Wu, Chai, Bi, Xie, Gu, Li, Zhang, Tian, Wang, Wang,
+  Karlsson, An, Yan, and Lu]{tan2024cradle}
+Weihao Tan, Wentao Zhang, Xinrun Xu, Haochong Xia, Ziluo Ding, Boyu Li, Bohan
+  Zhou, Junpeng Yue, Jiechuan Jiang, Yewen Li, Ruyi An, Molei Qin, Chuqiao
+  Zong, Longtao Zheng, Yujie Wu, Xiaoqiang Chai, Yifei Bi, Tianbao Xie, Pengjie
+  Gu, Xiyun Li, Ceyao Zhang, Long Tian, Chaojie Wang, Xinrun Wang, Börje~F.
+  Karlsson, Bo~An, Shuicheng Yan, and Zongqing Lu.
+\newblock Cradle: Empowering foundation agents towards general computer
+  control, 2024.
+
+\bibitem[Tavakoli et~al.(2025)Tavakoli, Salemi, Ye, Abdalla, Zamani, and
+  Mitchell]{tavakoli2025beyondamilliontokens}
+Mohammad Tavakoli, Alireza Salemi, Carrie Ye, Mohamed Abdalla, Hamed Zamani,
+  and J~Ross Mitchell.
+\newblock Beyond a million tokens: Benchmarking and enhancing long-term memory
+  in llms, 2025.
+
+\bibitem[TraslaIA(2026)]{fernandez2026authority}
+Marcelo~Fernandez TraslaIA.
+\newblock Operationalizing reconstructive authority: Runtime construction,
+  dependency resolution, and execution gating in autonomous agent systems,
+  2026.
+
+\bibitem[Tripathi et~al.(2025)Tripathi, Wadhwa, Durrett, and
+  Niekum]{tripathi2025pairwiseorpointwise}
+Tuhina Tripathi, Manya Wadhwa, Greg Durrett, and Scott Niekum.
+\newblock Pairwise or pointwise? evaluating feedback protocols for bias in
+  llm-based evaluation, 2025.
+
+\bibitem[Trivedi et~al.(2024)Trivedi, Khot, Hartmann, Manku, Dong, Li, Gupta,
+  Sabharwal, and Balasubramanian]{trivedi-etal-2024-appworld}
+Harsh Trivedi, Tushar Khot, Mareike Hartmann, Ruskin Manku, Vinty Dong, Edward
+  Li, Shashank Gupta, Ashish Sabharwal, and Niranjan Balasubramanian.
+\newblock {A}pp{W}orld: A controllable world of apps and people for
+  benchmarking interactive coding agents.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 16022--16076.
+  Association for Computational Linguistics, 2024.
+\newblock \doi{10.18653/v1/2024.acl-long.850}.
+\newblock URL \url{https://aclanthology.org/2024.acl-long.850/}.
+
+\bibitem[Tulving(1972)]{tulving1972episodic}
+Endel Tulving.
+\newblock Episodic and semantic memory.
+\newblock In Endel Tulving and Wayne Donaldson, editors, \emph{Organization of
+  Memory}, pages 381--403. Academic Press, 1972.
+\newblock URL \url{https://alicekim.ca/12.EpSem72.pdf}.
+
+\bibitem[Uddin et~al.(2026)Uddin, Shubham, Blanco, Baral, and
+  Wang]{uddin2026recallforgettingbenchmarkinglongterm}
+Md~Nayem Uddin, Kumar Shubham, Eduardo Blanco, Chitta Baral, and Gengyu Wang.
+\newblock From recall to forgetting: Benchmarking long-term memory for
+  personalized agents, 2026.
+\newblock URL \url{https://arxiv.org/abs/2604.20006}.
+\newblock Findings of ACL 2026.
+
+\bibitem[Vasilopoulos(2026)]{vasilopoulos2026codifiedcontext}
+Aristidis Vasilopoulos.
+\newblock Codified context: Infrastructure for ai agents in a complex codebase,
+  2026.
+
+\bibitem[Vu et~al.(2023)Vu, Iyyer, Wang, Constant, Wei, Wei, Tar, Sung, Zhou,
+  Le, and Luong]{vu2023freshllms}
+Tu~Vu, Mohit Iyyer, Xuezhi Wang, Noah Constant, Jerry Wei, Jason Wei, Chris
+  Tar, Yun-Hsuan Sung, Denny Zhou, Quoc Le, and Thang Luong.
+\newblock Freshllms: Refreshing large language models with search engine
+  augmentation, 2023.
+
+\bibitem[Wang et~al.(2023{\natexlab{a}})Wang, Xie, Jiang, Mandlekar, Xiao, Zhu,
+  Fan, and Anandkumar]{wang2023voyageropenendedembodiedagent}
+Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu,
+  Linxi Fan, and Anima Anandkumar.
+\newblock Voyager: An open-ended embodied agent with large language models,
+  2023{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2305.16291}.
+
+\bibitem[Wang et~al.(2025{\natexlab{a}})Wang, Poskitt, Wei, and
+  Sun]{wang2025probguard}
+Haoyu Wang, Christopher~M. Poskitt, Jiali Wei, and Jun Sun.
+\newblock Probguard: Probabilistic runtime monitoring for llm agent safety,
+  2025{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{a}})Wang, Zhang, Yu, Shi, Basu, Jain, Tao,
+  and Sun]{wang2026docarena}
+Jiamian Wang, Ruiyi Zhang, Tong Yu, Jing Shi, Samyadeep Basu, Rajiv Jain,
+  Zhiqiang Tao, and Tong Sun.
+\newblock Docarena: Turning raw documents into controllable training
+  environments for document search agents, 2026{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{b}})Wang, Xu, Zhang, Zhu, Yan, Ye, and
+  Sang]{wang2026stamp}
+Junyang Wang, Haiyang Xu, Xi~Zhang, Zhaoqing Zhu, Ming Yan, Jieping Ye, and
+  Jitao Sang.
+\newblock Stamp: Training explicit memory for mobile gui agents in controllable
+  and scalable virtual environments, 2026{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2023{\natexlab{b}})Wang, Ma, Feng, Zhang, Yang, Zhang,
+  Chen, Tang, Chen, Lin, Zhao, Wei, and
+  Wen]{wang2023surveylargelanguagemodelagents}
+Lei Wang, Chen Ma, Xueyang Feng, Zeyu Zhang, Hao Yang, Jingsen Zhang, Zhiyuan
+  Chen, Jiakai Tang, Xu~Chen, Yankai Lin, Wayne~Xin Zhao, Zhewei Wei, and
+  Ji-Rong Wen.
+\newblock A survey on large language model based autonomous agents,
+  2023{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2308.11432}.
+
+\bibitem[Wang et~al.(2026{\natexlab{c}})]{wang2026engram}
+Liuyin Wang et~al.
+\newblock Less context, more accuracy: A bi-temporal memory engine for llm
+  agents where a lean retrieved context beats the full history,
+  2026{\natexlab{c}}.
+
+\bibitem[Wang et~al.(2023{\natexlab{c}})Wang, Zhang, Su, and
+  Zhu]{wang2023continuallearningsurvey}
+Liyuan Wang, Xingxing Zhang, Hang Su, and Jun Zhu.
+\newblock A comprehensive survey of continual learning: Theory, method and
+  application, 2023{\natexlab{c}}.
+
+\bibitem[Wang et~al.(2023{\natexlab{d}})Wang, Fu, Cao, Wang, Tian, and
+  Ding]{wang2023recursivesummary}
+Qingyue Wang, Yanhe Fu, Yanan Cao, Shuai Wang, Zhiliang Tian, and Liang Ding.
+\newblock Recursively summarizing enables long-term dialogue memory in large
+  language models, 2023{\natexlab{d}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{d}})Wang, Liu, Gao, Ma, Wang, Xie, and
+  Tan]{wang2026lmee}
+Sen Wang, Bangwei Liu, Zhenkun Gao, Lizhuang Ma, Xuhong Wang, Yuan Xie, and Xin
+  Tan.
+\newblock Explore with long-term memory: A benchmark and multimodal llm-based
+  reinforcement learning framework for embodied exploration,
+  2026{\natexlab{d}}.
+
+\bibitem[Wang et~al.(2024{\natexlab{a}})Wang, Zhu, Ye, and
+  Zhou]{wang2024unlearningmeetsrag}
+Shang Wang, Tianqing Zhu, Dayong Ye, and Wanlei Zhou.
+\newblock When machine unlearning meets retrieval-augmented generation (rag):
+  Keep secret or forget knowledge?, 2024{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{e}})Wang, Sun, Hou, Song, Zhang, Cheng, and
+  Yang]{wang2026subtlememory}
+Wenxuan Wang, Haoyu Sun, Fukuan Hou, Mingyang Song, Weinan Zhang, Yu~Cheng, and
+  Yang Yang.
+\newblock Subtlememory: A benchmark for fine-grained relational memory
+  discrimination in long-horizon ai agents, 2026{\natexlab{e}}.
+
+\bibitem[Wang et~al.(2025{\natexlab{b}})Wang, Cui, Li, Zeng, Wang, Song, Chen,
+  Shao, Zhang, Liu, Ren, Hu, and Wang]{wang2025perpilot}
+Xin Wang, Zhiyao Cui, Hao Li, Ya~Zeng, Chenxu Wang, Ruiqi Song, Yihang Chen,
+  Kun Shao, Qiaosheng Zhang, Jinzhuo Liu, Siyue Ren, Shuyue Hu, and Zhen Wang.
+\newblock Perpilot: Personalizing vlm-based mobile agents via memory and
+  exploration, 2025{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{f}})Wang, Xu, Li, Hong, Wang, Chen, and
+  Zhu]{wang2026egoself}
+Yanshuo Wang, Yuan Xu, Xuesong Li, Jie Hong, Yizhou Wang, Chang~Wen Chen, and
+  Wentao Zhu.
+\newblock Egoself: From memory to personalized egocentric assistant,
+  2026{\natexlab{f}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{g}})Wang, Xu, Gu, Ye, Chen, Mu, Gao, Guo,
+  Wei, Gu, Li, Chen, and Shou]{wang2026medmemorybench}
+Yihao Wang, Haoran Xu, Renjie Gu, Yixuan Ye, Xinyi Chen, Xinyu Mu, Yuan Gao,
+  Chunxiao Guo, Peng Wei, Jinjie Gu, Huan Li, Ke~Chen, and Lidan Shou.
+\newblock Medmemorybench: Benchmarking agent memory in personalized healthcare,
+  2026{\natexlab{g}}.
+
+\bibitem[Wang et~al.(2025{\natexlab{c}})Wang, Zhang, Liu, Yan, Zhang, Zheng,
+  Ma, Ling, Yang, Wu, Chen, and Li]{wang2025videoem}
+Yun Wang, Long Zhang, Jingren Liu, Jiaqi Yan, Zhanjie Zhang, Jiahao Zheng,
+  Ao~Ma, Run Ling, Xun Yang, Dapeng Wu, Xiangyu Chen, and Xuelong Li.
+\newblock Video-em: Event-centric episodic memory for long-form video
+  understanding, 2025{\natexlab{c}}.
+
+\bibitem[Wang(2026{\natexlab{a}})]{wang2026auditor}
+Zhaohui Wang.
+\newblock Who audits the auditor? tamper-proof fraud detection with
+  blockchain-anchored explainable ml, 2026{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2025{\natexlab{d}})Wang, Xu, Wang, Zhang, Yan, Zhang,
+  Huang, and Ji]{wang2025mobileagente}
+Zhenhailong Wang, Haiyang Xu, Junyang Wang, Xi~Zhang, Ming Yan, Ji~Zhang, Fei
+  Huang, and Heng Ji.
+\newblock Mobile-agent-e: Self-evolving mobile assistant for complex tasks,
+  2025{\natexlab{d}}.
+
+\bibitem[Wang(2026{\natexlab{b}})]{wang2026toki}
+Ziming Wang.
+\newblock Toki: A bitemporal operator algebra for contradiction resolution in
+  llm-agent persistent memory, 2026{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2026{\natexlab{h}})Wang, Zhang, Yu, Zhang, Zhao, Yoon,
+  Lee, Bertasius, and Bansal]{wang2026egomemreason}
+Ziyang Wang, Yue Zhang, Shoubin Yu, Ce~Zhang, Zengqi Zhao, Jaehong Yoon, Hyunji
+  Lee, Gedas Bertasius, and Mohit Bansal.
+\newblock Egomemreason: A memory-driven reasoning benchmark for long-horizon
+  egocentric video understanding, 2026{\natexlab{h}}.
+
+\bibitem[Wang et~al.(2024{\natexlab{b}})Wang, Mao, Fried, and
+  Neubig]{wang2024agentworkflowmemory}
+Zora~Zhiruo Wang, Jiayuan Mao, Daniel Fried, and Graham Neubig.
+\newblock Agent workflow memory, 2024{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2409.07429}.
+
+\bibitem[Wei et~al.(2026)Wei, Peng, Dong, Xie, and Wang]{wei2026fademem}
+Lei Wei, Xiao Peng, Xu~Dong, Niantao Xie, and Bin Wang.
+\newblock Fademem: Biologically-inspired forgetting for efficient agent memory,
+  2026.
+
+\bibitem[Wei et~al.(2023)Wei, Su, Ma, Yu, Lei, Zhang, Zhao, and
+  Liu]{wei2023menatqa}
+Yifan Wei, Yisong Su, Huanhuan Ma, Xiaoyan Yu, Fangyu Lei, Yuanzhe Zhang, Jun
+  Zhao, and Kang Liu.
+\newblock Menatqa: A new dataset for testing the temporal comprehension and
+  reasoning abilities of large language models, 2023.
+
+\bibitem[Weinzaepfel et~al.(2026)Weinzaepfel, Wolf, Sariyildiz, Bono, and
+  Monaci]{weinzaepfel2026recurrentmem}
+Philippe Weinzaepfel, Christian Wolf, Bülent~Mert Sariyildiz, Guillaume Bono,
+  and Gianluca Monaci.
+\newblock Compressing observation history into agent memory: Distilling
+  transformers into recurrent transformers, 2026.
+
+\bibitem[Wen et~al.(2026{\natexlab{a}})Wen, Wang, and Xu]{wen2026openrath}
+Fukang Wen, Zhijie Wang, and Ruilin Xu.
+\newblock Openrath: Session-centered runtime state for agent systems,
+  2026{\natexlab{a}}.
+
+\bibitem[Wen et~al.(2026{\natexlab{b}})Wen, Zhang, Lian, Yi, Xie, and
+  Yang]{wen2026contextualizedprivacy}
+Yule Wen, Yanzhe Zhang, Jianxun Lian, Xiaoyuan Yi, Xing Xie, and Diyi Yang.
+\newblock Contextualized privacy defense for {LLM} agents, 2026{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2603.02983}.
+
+\bibitem[Weng et~al.(2025)Weng, Zhu, Xie, Sun, Lin, Liu, and
+  Zhang]{weng2025deepscientist}
+Yixuan Weng, Minjun Zhu, Qiujie Xie, Qiyao Sun, Zhen Lin, Sifan Liu, and Yue
+  Zhang.
+\newblock Deepscientist: Advancing frontier-pushing scientific findings
+  progressively, 2025.
+
+\bibitem[White et~al.(2024)White, Dooley, Roberts, Pal, Feuer, Jain,
+  Shwartz-Ziv, Jain, Saifullah, Dey, Shubh-Agrawal, Sandha, Naidu, Hegde,
+  LeCun, Goldstein, Neiswanger, and Goldblum]{white2024livebench}
+Colin White, Samuel Dooley, Manley Roberts, Arka Pal, Ben Feuer, Siddhartha
+  Jain, Ravid Shwartz-Ziv, Neel Jain, Khalid Saifullah, Sreemanti Dey,
+  Shubh-Agrawal, Sandeep~Singh Sandha, Siddartha Naidu, Chinmay Hegde, Yann
+  LeCun, Tom Goldstein, Willie Neiswanger, and Micah Goldblum.
+\newblock Livebench: A challenging, contamination-limited llm benchmark, 2024.
+
+\bibitem[Wilson and McNaughton(1994)]{wilson1994reactivation}
+Matthew~A. Wilson and Bruce~L. McNaughton.
+\newblock Reactivation of hippocampal ensemble memories during sleep.
+\newblock \emph{Science}, 265\penalty0 (5172):\penalty0 676--679, 1994.
+\newblock \doi{10.1126/science.8036517}.
+
+\bibitem[Winston et~al.(2026)Winston, Winston, and
+  Just]{winston2026solveraided}
+Cailin Winston, Claris Winston, and René Just.
+\newblock Solver-aided verification of policy compliance in tool-augmented llm
+  agents, 2026.
+
+\bibitem[Wolff and Bennati(2026)]{wolff2026costaccuracy}
+Benedict Wolff and Jacopo Bennati.
+\newblock Cost and accuracy of long-term memory in distributed multi-agent
+  systems based on large language models, 2026.
+
+\bibitem[Wright(2025)]{wright2025immutablemem}
+Craig~Steven Wright.
+\newblock On immutable memory systems for artificial agents: A
+  blockchain-indexed automata-theoretic framework using ecdh-keyed merkle
+  chains, 2025.
+
+\bibitem[Wu et~al.(2025{\natexlab{a}})Wu, Wang, Yu, Zhang, Chang, and
+  Yu]{wu2025longmemevalbenchmarkingchatassistants}
+Di~Wu, Hongwei Wang, Wenhao Yu, Yuwei Zhang, Kai-Wei Chang, and Dong Yu.
+\newblock Longmemeval: Benchmarking chat assistants on long-term interactive
+  memory, 2025{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2410.10813}.
+
+\bibitem[Wu et~al.(2025{\natexlab{b}})Wu, Hu, Zhu, Pan, Liu, Xu, and
+  Jin]{wu2025gitcontextcontroller}
+Junde Wu, Minhao Hu, Jiayuan Zhu, Jiazhen Pan, Yuyuan Liu, Min Xu, and Yueming
+  Jin.
+\newblock Git context controller: Manage the context of llm-based agents like
+  git, 2025{\natexlab{b}}.
+
+\bibitem[Wu et~al.(2026)Wu, Chang, Cao, Gao, and Wang]{wu2026crab}
+Tianyuan Wu, Chaokun Chang, Lunxi Cao, Wei Gao, and Wei Wang.
+\newblock Crab: A semantics-aware checkpoint/restore runtime for agent
+  sandboxes, 2026.
+
+\bibitem[Wu(2026)]{wu2026silentfailures}
+Wei Wu.
+\newblock When errors become narratives: A longitudinal taxonomy of silent
+  failures in a production llm agent runtime, 2026.
+
+\bibitem[Wu et~al.(2025{\natexlab{c}})Wu, Yao, Zhang, Shi, Jiang, Li, and
+  Liu]{wu2025tasa}
+Yang Wu, Rujing Yao, Tong Zhang, Yufei Shi, Zhuoren Jiang, Zhushan Li, and
+  Xiaozhong Liu.
+\newblock Teaching according to students' aptitude: Personalized mathematics
+  tutoring via persona-, memory-, and forgetting-aware llms,
+  2025{\natexlab{c}}.
+
+\bibitem[Wu et~al.(2024)Wu, Han, Ding, Weng, Liu, Yao, Yu, and
+  Kong]{wu2024oscopilot}
+Zhiyong Wu, Chengcheng Han, Zichen Ding, Zhenmin Weng, Zhoumianze Liu, Shunyu
+  Yao, Tao Yu, and Lingpeng Kong.
+\newblock Os-copilot: Towards generalist computer agents with self-improvement,
+  2024.
+
+\bibitem[Xi et~al.(2023)Xi, Chen, Guo, He, Ding, Hong, Zhang, Wang, Jin, Zhou,
+  Zheng, Fan, Wang, Xiong, Zhou, Wang, Jiang, Zou, Liu, Yin, Dou, Weng, Cheng,
+  Zhang, Qin, Zheng, Qiu, Huang, and Gui]{xi2023riseandpotential}
+Zhiheng Xi, Wenxiang Chen, Xin Guo, Wei He, Yiwen Ding, Boyang Hong, Ming
+  Zhang, Junzhe Wang, Senjie Jin, Enyu Zhou, Rui Zheng, Xiaoran Fan, Xiao Wang,
+  Limao Xiong, Yuhao Zhou, Weiran Wang, Changhao Jiang, Yicheng Zou, Xiangyang
+  Liu, Zhangyue Yin, Shihan Dou, Rongxiang Weng, Wensen Cheng, Qi~Zhang,
+  Wenjuan Qin, Yongyan Zheng, Xipeng Qiu, Xuanjing Huang, and Tao Gui.
+\newblock The rise and potential of large language model based agents: A
+  survey, 2023.
+
+\bibitem[Xiao et~al.(2023)Xiao, Tian, Chen, Han, and
+  Lewis]{xiao2023streamingllm}
+Guangxuan Xiao, Yuandong Tian, Beidi Chen, Song Han, and Mike Lewis.
+\newblock Efficient streaming language models with attention sinks, 2023.
+
+\bibitem[Xie et~al.(2026{\natexlab{a}})]{xie2026forage}
+Huaqing Xie et~al.
+\newblock Forage v2: Knowledge evolution and transfer in autonomous agent
+  organizations, 2026{\natexlab{a}}.
+
+\bibitem[Xie et~al.(2024)Xie, Zhang, Chen, Li, Zhao, Cao, Hua, Cheng, Shin,
+  Lei, Liu, Xu, Zhou, Savarese, Xiong, Zhong, and
+  Yu]{xie2024osworldbenchmarkingmultimodalagents}
+Tianbao Xie, Danyang Zhang, Jixuan Chen, Xiaochuan Li, Siheng Zhao, Ruisheng
+  Cao, Toh~Jing Hua, Zhoujun Cheng, Dongchan Shin, Fangyu Lei, Yitao Liu,
+  Yiheng Xu, Shuyan Zhou, Silvio Savarese, Caiming Xiong, Victor Zhong, and Tao
+  Yu.
+\newblock Osworld: Benchmarking multimodal agents for open-ended tasks in real
+  computer environments, 2024.
+\newblock URL \url{https://arxiv.org/abs/2404.07972}.
+
+\bibitem[Xie et~al.(2026{\natexlab{b}})Xie, Zhou, Li, Parsa, Zhou, Ding,
+  Arvind, Wang, Braverman, Payani, Zheng, and Liu]{xie2026dynamicmem}
+Wenya Xie, Shengming Zhou, Zelin Li, Pouya Parsa, Shuang Zhou, Xinheng Ding,
+  Chinmay Arvind, Guanchu Wang, Vladimir Braverman, Ali Payani, Yantao Zheng,
+  and Zirui Liu.
+\newblock Dynamicmem: A long-horizon memory benchmark in real-world settings,
+  2026{\natexlab{b}}.
+
+\bibitem[Xie et~al.(2026{\natexlab{c}})Xie, Liu, Zhang, Liu, Li, Su, and
+  Liu]{xie2026crosssessioninjection}
+Yuanbo Xie, Tianyun Liu, Yingjie Zhang, Suchen Liu, Yulin Li, Liya Su, and
+  Tingwen Liu.
+\newblock What if prompt injection never left? exploring cross-session stored
+  prompt injection in agentic systems, 2026{\natexlab{c}}.
+
+\bibitem[Xu et~al.(2025{\natexlab{a}})Xu, Song, Li, Tang, Jain, Bao, Wang,
+  Zhou, Guo, Cao, Yang, Lu, Martin, Su, Maben, Mehta, Chi, Jang, Xie, Zhou, and
+  Neubig]{xu2025theagentcompany}
+Frank~F. Xu, Yufan Song, Boxuan Li, Yuxuan Tang, Kritanjali Jain, Mengxue Bao,
+  Zora~Z. Wang, Xuhui Zhou, Zhitong Guo, Murong Cao, Mingyang Yang, Hao~Yang
+  Lu, Amaad Martin, Zhe Su, Leander Maben, Raj Mehta, Wayne Chi, Lawrence Jang,
+  Yiqing Xie, Shuyan Zhou, and Graham Neubig.
+\newblock Theagentcompany: Benchmarking llm agents on consequential real world
+  tasks.
+\newblock In \emph{Advances in Neural Information Processing Systems, Datasets
+  and Benchmarks Track}, 2025{\natexlab{a}}.
+\newblock URL \url{https://openreview.net/forum?id=LZnKNApvhG}.
+
+\bibitem[Xu et~al.(2026{\natexlab{a}})Xu, Li, Wu, Lan, Li, Zhou, Jiang, Wang,
+  Wang, Luu, Xiong, Park, Hooi, and Hu]{xu2026evoarena}
+Jundong Xu, Qingchuan Li, Jiaying Wu, Yihuai Lan, Shuyue~Stella Li, Huichi
+  Zhou, Bowen Jiang, Lei Wang, Jun Wang, Anh~Tuan Luu, Caiming Xiong, Hae~Won
+  Park, Bryan Hooi, and Zhiyuan Hu.
+\newblock Evoarena: Tracking memory evolution for robust llm agents in dynamic
+  environments, 2026{\natexlab{a}}.
+
+\bibitem[Xu et~al.(2026{\natexlab{b}})Xu, Yang, Hu, Chen, and
+  An]{xu2026memorysilent}
+Lingxiang Xu, Jiaoyun Yang, Min Hu, Hongtu Chen, and Ning An.
+\newblock When should memory stay silent: Measuring memory-use boundaries in
+  memory-augmented conversational agents, 2026{\natexlab{b}}.
+
+\bibitem[Xu et~al.(2023)Xu, Ping, Wu, McAfee, Zhu, Liu, Subramanian,
+  Bakhturina, Shoeybi, and Catanzaro]{xu2023retrievalmeetslongcontext}
+Peng Xu, Wei Ping, Xianchao Wu, Lawrence McAfee, Chen Zhu, Zihan Liu, Sandeep
+  Subramanian, Evelina Bakhturina, Mohammad Shoeybi, and Bryan Catanzaro.
+\newblock Retrieval meets long context large language models, 2023.
+
+\bibitem[Xu et~al.(2025{\natexlab{b}})Xu, Xiao, Chen, He, Lu, and
+  Han]{xu2025streamingvlm}
+Ruyi Xu, Guangxuan Xiao, Yukang Chen, Liuning He, Yao Lu, and Song Han.
+\newblock Streamingvlm: Real-time understanding for infinite video streams,
+  2025{\natexlab{b}}.
+
+\bibitem[Xu et~al.(2025{\natexlab{c}})Xu, Liang, Mei, Gao, Tan, and
+  Zhang]{xu2025amemagenticmemoryllm}
+Wujiang Xu, Zujie Liang, Kai Mei, Hang Gao, Juntao Tan, and Yongfeng Zhang.
+\newblock A-mem: Agentic memory for llm agents, 2025{\natexlab{c}}.
+\newblock URL \url{https://arxiv.org/abs/2502.12110}.
+
+\bibitem[Xu et~al.(2026{\natexlab{c}})Xu, Du, Xie, Ke, Ye, and
+  Hu]{xu2026toxicchats}
+Xiaoyu Xu, Minxin Du, Qipeng Xie, Haobin Ke, Qingqing Ye, and Haibo Hu.
+\newblock When routine chats turn toxic: Unintended long-term state poisoning
+  in personalized agents, 2026{\natexlab{c}}.
+
+\bibitem[Xu et~al.(2026{\natexlab{d}})Xu, Chen, Ma, Liu, Wang, Wang, Xiong, and
+  Wang]{xu2026personalizedllmpoweredagentsfoundations}
+Yue Xu, Qian Chen, Zizhan Ma, Dongrui Liu, Wenxuan Wang, Xiting Wang, Li~Xiong,
+  and Wenjie Wang.
+\newblock Toward personalized llm-powered agents: Foundations, evaluation, and
+  future directions, 2026{\natexlab{d}}.
+\newblock URL \url{https://arxiv.org/abs/2602.22680}.
+
+\bibitem[Xu et~al.(2026{\natexlab{e}})Xu, Zhang, Poyraz, Li, Jin, Lu, Gu,
+  Ramgopal, Bodigutla, and Wang]{xu2026linkedinmemory}
+Zhentao Xu, Shangjin Zhang, Emir Poyraz, Yvonne Li, Ye~Jin, Xie Lu, Xiaoyang
+  Gu, Karthik Ramgopal, Praveen~Kumar Bodigutla, and Xiaofeng Wang.
+\newblock Hierarchical long-term semantic memory for linkedin's hiring agent,
+  2026{\natexlab{e}}.
+
+\bibitem[Xue et~al.(2025)Xue, Hu, Lu, Shen, Li, Guo, Zhou, Li, Zhang, and
+  Zhang]{xue2025unlearningverificationsurvey}
+Lulu Xue, Shengshan Hu, Wei Lu, Yan Shen, Dongxu Li, Peijin Guo, Ziqi Zhou,
+  Minghui Li, Yanjun Zhang, and Leo~Yu Zhang.
+\newblock Towards reliable forgetting: A survey on machine unlearning
+  verification, 2025.
+
+\bibitem[Yadav(2026)]{yadav2026temporalvalidityretrieval}
+Neeraj Yadav.
+\newblock Temporal validity in retrieval memory: Eliminating stale-fact errors
+  for ai agents over evolving knowledge, 2026.
+
+\bibitem[Yagoubi et~al.(2026)Yagoubi, Badu-Marfo, and
+  Mallah]{elyagoubi2026agentleak}
+Faouzi~El Yagoubi, Godwin Badu-Marfo, and Ranwa~Al Mallah.
+\newblock Agentleak: A benchmark for internal-channel privacy leakage in
+  multi-agent llm systems, 2026.
+
+\bibitem[Yan et~al.(2025{\natexlab{a}})Yan, Li, Qian, Lu, and
+  Liu]{yan2025generalagenticmemory}
+Bo-Yu Yan, Chaofan Li, Hongjin Qian, Shuqi Lu, and Zheng Liu.
+\newblock General agentic memory via deep research, 2025{\natexlab{a}}.
+
+\bibitem[Yan et~al.(2026)Yan, Zhang, Huzhang, Li, Wang, Chen, Xu, Luo, Li,
+  Dong, and Shen]{yan2026m2dualmemory}
+Dawei Yan, Haokui Zhang, Guangda Huzhang, Yang Li, Yibo Wang, Qing-Guo Chen,
+  Zhao Xu, Weihua Luo, Ying Li, Wei Dong, and Chunhua Shen.
+\newblock M$^2$: Dual-memory augmentation for long-horizon web agents via
+  trajectory summarization and insight retrieval, 2026.
+
+\bibitem[Yan et~al.(2025{\natexlab{b}})Yan, Ren, Liu, Xu, Wang, Wang, Zhong,
+  Wang, Zhang, Chen, Sun, Luo, Zhang, Sun, Zhang, and Li]{yan2025teleego}
+Jiaqi Yan, Ruilong Ren, Jingren Liu, Shuning Xu, Ling Wang, Yiheng Wang, Xinlin
+  Zhong, Yun Wang, Long Zhang, Xiangyu Chen, Changzhi Sun, Jixiang Luo, Dell
+  Zhang, Hao Sun, Chi Zhang, and Xuelong Li.
+\newblock Teleego: Benchmarking egocentric ai assistants in the wild,
+  2025{\natexlab{b}}.
+
+\bibitem[Yang et~al.(2025{\natexlab{a}})Yang, Xu, Zeng, Liu, Jiang, Lu, Chen,
+  Jiang, Xing, and Yan]{yang2025contextagent}
+Bufang Yang, Lilin Xu, Liekang Zeng, Kaiwei Liu, Siyang Jiang, Wenrui Lu,
+  Hongkai Chen, Xiaofan Jiang, Guoliang Xing, and Zhenyu Yan.
+\newblock Contextagent: Context-aware proactive llm agents with open-world
+  sensory perceptions, 2025{\natexlab{a}}.
+
+\bibitem[Yang et~al.(2026{\natexlab{a}})Yang, Zhou, Xiao, Dong, Zhuang, Zhang,
+  Wang, Hong, Yuan, Xiang, Chen, Zhou, Zhang, Liu, Su, Wang, Chang, and
+  Huang]{yang2026graphagentmemorysurvey}
+Chang Yang, Chuang Zhou, Yilin Xiao, Su~Dong, Luyao Zhuang, Yujing Zhang, Zhu
+  Wang, Zijin Hong, Zheng Yuan, Zhishang Xiang, Shengyuan Chen, Huachi Zhou,
+  Qinggang Zhang, Ninghao Liu, Jinsong Su, Xinrun Wang, Yi~Chang, and Xiao
+  Huang.
+\newblock Graph-based agent memory: Taxonomy, techniques, and applications,
+  2026{\natexlab{a}}.
+
+\bibitem[Yang(2026)]{yang2026controlplaneforgetting}
+Dongxu Yang.
+\newblock Control-plane placement shapes forgetting: An architectural study of
+  agent memory across thirteen system configurations, 2026.
+
+\bibitem[Yang et~al.(2026{\natexlab{b}})Yang, Lai, Wang, Chang, Harari, and
+  Gabrilovich]{yang2026groupmembenchbenchmarkingllmagent}
+Jingbo Yang, Kwei-Herng Lai, Xiaowen Wang, Shiyu Chang, Yaar Harari, and
+  Evgeniy Gabrilovich.
+\newblock Groupmembench: Benchmarking llm agent memory in multi-party
+  conversations, 2026{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2605.14498}.
+
+\bibitem[Yang et~al.(2025{\natexlab{b}})Yang, Liu, Guo, Dong, Zhang, Zhang,
+  Wang, Zhou, Xie, Wang, Ouyang, Lin, Cominelli, Cai, Zhang, Zhang, Hong,
+  Widmer, Gringoli, Yang, Li, and Liu]{yang2025egolife}
+Jingkang Yang, Shuai Liu, Hongming Guo, Yuhao Dong, Xiamengwei Zhang, Sicheng
+  Zhang, Pengyun Wang, Zitang Zhou, Binzhu Xie, Ziyue Wang, Bei Ouyang, Zhengyu
+  Lin, Marco Cominelli, Zhongang Cai, Yuanhan Zhang, Peiyuan Zhang, Fangzhou
+  Hong, Joerg Widmer, Francesco Gringoli, Lei Yang, Bo~Li, and Ziwei Liu.
+\newblock Egolife: Towards egocentric life assistant, 2025{\natexlab{b}}.
+
+\bibitem[Yang et~al.(2024)Yang, Sun, Xin, Sun, Bhalla, Chen, Choudhary, Gui,
+  Jiang, Jiang, Kong, Moran, Wang, Xu, Yan, Yang, Yuan, Zha, Tang, Chen,
+  Scheffer, Liu, Shah, Wanga, Kumar, tau Yih, and
+  Dong]{yang2024cragcomprehensiverag}
+Xiao Yang, Kai Sun, Hao Xin, Yushi Sun, Nikita Bhalla, Xiangsen Chen, Sajal
+  Choudhary, Rongze~Daniel Gui, Ziran~Will Jiang, Ziyu Jiang, Lingkun Kong,
+  Brian Moran, Jiaqi Wang, Yifan~Ethan Xu, An~Yan, Chenyu Yang, Eting Yuan,
+  Hanwen Zha, Nan Tang, Lei Chen, Nicolas Scheffer, Yue Liu, Nirav Shah, Rakesh
+  Wanga, Anuj Kumar, Wen tau Yih, and Xin~Luna Dong.
+\newblock Crag -- comprehensive rag benchmark, 2024.
+\newblock URL \url{https://arxiv.org/abs/2406.04744}.
+
+\bibitem[Yang et~al.(2026{\natexlab{c}})Yang, Li, Pan, Zhou, Chen, Chen, Zhao,
+  Zhou, Li, and He]{yang2026psychagent}
+Yutao Yang, Junsong Li, Qianjun Pan, Jie Zhou, Kai Chen, Qin Chen, Jingyuan
+  Zhao, Ningning Zhou, Xin Li, and Liang He.
+\newblock Psychagent: An experience-driven lifelong learning agent for
+  self-evolving psychological counselor, 2026{\natexlab{c}}.
+
+\bibitem[Yang et~al.(2018)Yang, Qi, Zhang, Bengio, Cohen, Salakhutdinov, and
+  Manning]{yang2018hotpotqa}
+Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William~W. Cohen, Ruslan
+  Salakhutdinov, and Christopher~D. Manning.
+\newblock {HotpotQA}: A dataset for diverse, explainable multi-hop question
+  answering.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, 2018.
+\newblock \doi{10.18653/v1/D18-1259}.
+\newblock URL \url{https://aclanthology.org/D18-1259/}.
+
+\bibitem[Yao et~al.(2023)Yao, Zhao, Yu, Du, Shafran, Narasimhan, and
+  Cao]{yao2023reactsynergizingreasoningacting}
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan,
+  and Yuan Cao.
+\newblock React: Synergizing reasoning and acting in language models, 2023.
+\newblock URL \url{https://arxiv.org/abs/2210.03629}.
+
+\bibitem[Yao et~al.(2024)Yao, Shinn, Razavi, and
+  Narasimhan]{yao2024taubenchbenchmarktoolagentuserinteraction}
+Shunyu Yao, Noah Shinn, Pedram Razavi, and Karthik Narasimhan.
+\newblock $\tau$-bench: A benchmark for tool-agent-user interaction in
+  real-world domains, 2024.
+\newblock URL \url{https://arxiv.org/abs/2406.12045}.
+
+\bibitem[Yao et~al.(2026)Yao, Li, Zheng, Zheng, Liu, Xu, and
+  Chen]{yao2026atommem}
+Yanyu Yao, Shangze Li, Zhi Zheng, Hui Zheng, Qi~Liu, Tong Xu, and Enhong Chen.
+\newblock Atommem: Building simple and effective memory system for llm agents
+  via atomic facts, 2026.
+
+\bibitem[Ye et~al.(2026)Ye, Liu, Wang, Yu, Zhao, Liu, McAuley, and
+  You]{ye2026autodreamer}
+Chongrui Ye, Yuxiang Liu, Yu~Wang, Haofei Yu, Yining Zhao, Ge~Liu, Julian
+  McAuley, and Jiaxuan You.
+\newblock Auto-dreamer: Learning offline memory consolidation for language
+  agents, 2026.
+
+\bibitem[Ye and Yu(2026)]{ye2026jerp}
+Shicheng Ye and Chao Yu.
+\newblock Joint learning of experiential rules and policies for large language
+  model agents, 2026.
+
+\bibitem[Yehudai et~al.(2025)Yehudai, Eden, Li, Uziel, Zhao, Bar-Haim, Cohan,
+  and Shmueli-Scheuer]{yehudai2025surveyevaluationllmagents}
+Asaf Yehudai, Lilach Eden, Alan Li, Guy Uziel, Yilun Zhao, Roy Bar-Haim, Arman
+  Cohan, and Michal Shmueli-Scheuer.
+\newblock Survey on evaluation of llm-based agents, 2025.
+\newblock URL \url{https://arxiv.org/abs/2503.16416}.
+
+\bibitem[Yoon et~al.(2026)Yoon, Kim, and Kim]{yoon2026mpt}
+Yejin Yoon, Minseo Kim, and Taeuk Kim.
+\newblock Latent preference modeling for cross-session personalized tool
+  calling, 2026.
+
+\bibitem[You et~al.(2026)You, Cai, Zhang, Xu, Liu, Yu, Li, and
+  Li]{you2026agentasjudge}
+Runyang You, Hongru Cai, Caiqi Zhang, Qiancheng Xu, Meng Liu, Tiezheng Yu,
+  Yongqi Li, and Wenjie Li.
+\newblock Agent-as-a-judge, 2026.
+\newblock URL \url{https://arxiv.org/abs/2601.05111}.
+
+\bibitem[Yu et~al.(2026{\natexlab{a}})Yu, Choi, Lee, Kim, Ko, Ko, and
+  Oh]{yu2026iotgpt}
+Chaerin Yu, Chihun Choi, Sunjae Lee, Hyosu Kim, Steven~Y. Ko, Young-Bae Ko, and
+  Sangeun Oh.
+\newblock Leveraging llms for efficient and personalized smart home automation,
+  2026{\natexlab{a}}.
+
+\bibitem[Yu et~al.(2025)Yu, He, Goyal, and Arora]{yu2025impossibility}
+Jiatong Yu, Yinghui He, Anirudh Goyal, and Sanjeev Arora.
+\newblock On the impossibility of retrain equivalence in machine unlearning,
+  2025.
+
+\bibitem[Yu et~al.(2026{\natexlab{b}})Yu, Fang, Liu, and Ma]{yu2026hmem}
+Jiawei Yu, Yixiang Fang, Xilin Liu, and Yuchi Ma.
+\newblock H-mem: A novel memory mechanism for evolving and retrieving agent
+  memory via a hybrid structure, 2026{\natexlab{b}}.
+
+\bibitem[Yu et~al.(2023)Yu, Li, Chen, Jiang, Li, Zhang, Liu, Suchow, and
+  Khashanah]{yu2023finmem}
+Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang, Rong
+  Liu, Jordan~W. Suchow, and Khaldoun Khashanah.
+\newblock Finmem: A performance-enhanced llm trading agent with layered memory
+  and character design, 2023.
+
+\bibitem[Yu et~al.(2024)Yu, Yao, Li, Deng, Cao, Chen, Suchow, Liu, Cui, Xu,
+  Zhang, Subbalakshmi, Xiong, He, Huang, Li, and Xie]{yu2024fincon}
+Yangyang Yu, Zhiyuan Yao, Haohang Li, Zhiyang Deng, Yupeng Cao, Zhi Chen,
+  Jordan~W. Suchow, Rong Liu, Zhenyu Cui, Zhaozhuo Xu, Denghui Zhang, Koduvayur
+  Subbalakshmi, Guojun Xiong, Yueru He, Jimin Huang, Dong Li, and Qianqian Xie.
+\newblock Fincon: A synthesized llm multi-agent system with conceptual verbal
+  reinforcement for enhanced financial decision making, 2024.
+
+\bibitem[Yu et~al.(2026{\natexlab{c}})Yu, Xiao, Zhao, Luo, and
+  Zeng]{yu2026shoppingcompanion}
+Zijian Yu, Kejun Xiao, Huaipeng Zhao, Tao Luo, and Xiaoyi Zeng.
+\newblock Shopping companion: Benchmarking and training llm agents for
+  long-horizon preference-grounded e-commerce tasks, 2026{\natexlab{c}}.
+
+\bibitem[Yuan et~al.(2026)Yuan, Zhang, Mohammadi, Li, Shan, and
+  Waslander]{yuan2026star}
+Mingfeng Yuan, Hao Zhang, Mahan Mohammadi, Runhao Li, Jinjun Shan, and
+  Steven~L. Waslander.
+\newblock Star: Scalable task-conditioned retrieval for long-horizon multimodal
+  robot memory, 2026.
+
+\bibitem[Zeng et~al.(2026)Zeng, Kim, Lau, Alipour, Etzioni, Yetisgen, and
+  Oka]{zeng2026trajonco}
+Sihang Zeng, Young~Won Kim, Wilson Lau, Ehsan Alipour, Ruth Etzioni, Meliha
+  Yetisgen, and Anand Oka.
+\newblock Trajonco: A multi-agent framework for temporal reasoning over
+  longitudinal ehr for multi-cancer early detection, 2026.
+
+\bibitem[Zhang et~al.(2025{\natexlab{a}})Zhang, Ma, Ma, Li, Xu, Yi, and
+  Li]{zhang2025ragmemoryperceptions}
+Zhang, Ma, Ma, Li, Xu, Yi, and Li.
+\newblock Understanding users' privacy perceptions towards llm's rag-based
+  memory, 2025{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2024{\natexlab{a}})Zhang, Chen, Shen, and
+  Li]{zhang2024fragile}
+Binchi Zhang, Zihan Chen, Cong Shen, and Jundong Li.
+\newblock Verification of machine unlearning is fragile, 2024{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2024{\natexlab{b}})Zhang, He, Qian, Li, Li, Qin, Kang,
+  Ma, Liu, Lin, Rajmohan, Zhang, and Zhang]{zhang2024llmguisurvey}
+Chaoyun Zhang, Shilin He, Jiaxu Qian, Bowen Li, Liqun Li, Si~Qin, Yu~Kang,
+  Minghua Ma, Guyue Liu, Qingwei Lin, Saravan Rajmohan, Dongmei Zhang, and
+  Qi~Zhang.
+\newblock Large language model-brained gui agents: A survey,
+  2024{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{a}})Zhang, Lin, Wu, Sun, Li, Li, and
+  Peng]{zhang2026usefulmemoriesfaulty}
+Dylan Zhang, Yanshan Lin, Zhengkun Wu, Yihang Sun, Bingxuan Li, Dianqi Li, and
+  Hao Peng.
+\newblock Useful memories become faulty when continuously updated by llms,
+  2026{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{b}})Zhang, Tang, Yu, Liu, Gong, Huang, Lu,
+  Deng, Sun, Zhang, and Yang]{zhang2026rhelm}
+Han Zhang, Zihao Tang, Xin Yu, Xiao Liu, Yeyun Gong, Haizhen Huang, Yan Lu,
+  Weiwei Deng, Feng Sun, Qi~Zhang, and Hanfang Yang.
+\newblock Beyond static dialogues: Benchmarking realistic, heterogeneous, and
+  evolving long-term memory, 2026{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{c}})Zhang, Mao, Dong, Li, Su, Chen, Yang,
+  and Lin]{zhang2026memmark}
+Haobo Zhang, Xutao Mao, Guangyuan Dong, Ziwei Li, Xuanbo Su, Kaijie Chen, Jing
+  Yang, and Zheng Lin.
+\newblock Memmark: State-evolution attribution watermarking for agent long-term
+  memory systems, 2026{\natexlab{c}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{d}})Zhang, Gorlo, and
+  Carlone]{zhang2026rememberconfidence}
+Harry Zhang, Nicolas Gorlo, and Luca Carlone.
+\newblock Remember with confidence: Uncertainty quantification for
+  spatio-temporal memory with probabilistic guarantees, 2026{\natexlab{d}}.
+
+\bibitem[Zhang et~al.(2025{\natexlab{b}})Zhang, Zhang, Wang, Zhang, Fang, Zhou,
+  and Gan]{zhang2025ella}
+Hongxin Zhang, Zheyuan Zhang, Zeyuan Wang, Zunzhe Zhang, Lixing Fang, Qinhong
+  Zhou, and Chuang Gan.
+\newblock Ella: Embodied social agents with lifelong memory,
+  2025{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2025{\natexlab{c}})Zhang, Li, Wu, Li, Luo, Zou, Zhou, Su,
+  Ai, and Liu]{zhang2025simcourt}
+Kaiyuan Zhang, Jiaqi Li, Yueyue Wu, Haitao Li, Cheng Luo, Shaokun Zou, Yujia
+  Zhou, Weihang Su, Qingyao Ai, and Yiqun Liu.
+\newblock Chinese court simulation with llm-based agent system,
+  2025{\natexlab{c}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{e}})Zhang, Wang, Wu, and
+  Zhang]{zhang2026retailbench}
+Linghua Zhang, Jun Wang, Jingtong Wu, and Zhisong Zhang.
+\newblock Retailbench: Evaluating long-horizon autonomous decision-making and
+  strategy stability of llm agents in realistic retail environments,
+  2026{\natexlab{e}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{f}})Zhang, Shi, and
+  Wang]{zhang2026patchboardschemagroundedstatemutation}
+Shuyu Zhang, Yaqi Shi, and Lu~Wang.
+\newblock Patchboard: Schema-grounded state mutation for reliable and auditable
+  llm multi-agent collaboration, 2026{\natexlab{f}}.
+\newblock URL \url{https://arxiv.org/abs/2605.29313}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{g}})Zhang, Wang, Zhang, Chen, Li, Chen,
+  Wang, Meng, and Lu]{zhang2026triggerbench}
+Tianhua Zhang, Xinjiang Wang, Qianxi Zhang, Qi~Chen, Kun Li, Yaoqi Chen,
+  Dingdong Wang, Helen Meng, and Yan Lu.
+\newblock Triggerbench: Investigating prospective memory for large language
+  models, 2026{\natexlab{g}}.
+
+\bibitem[Zhang et~al.(2024{\natexlab{c}})Zhang, Zhao, Xia, Sun, Sun, Qin, Li,
+  Zhao, Zhao, Cai, Zheng, Wang, and An]{zhang2024finagent}
+Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei Qin,
+  Xinyi Li, Yuqing Zhao, Yilei Zhao, Xinyu Cai, Longtao Zheng, Xinrun Wang, and
+  Bo~An.
+\newblock A multimodal foundation agent for financial trading: Tool-augmented,
+  diversified, and generalist, 2024{\natexlab{c}}.
+
+\bibitem[Zhang and Sun(2026)]{zhang2026kpr}
+Xinyu Zhang and Weiwei Sun.
+\newblock Knowledge-based pull requests: A trusted workflow for agent-mediated
+  knowledge collaboration, 2026.
+
+\bibitem[Zhang et~al.(2026{\natexlab{h}})Zhang, Su, Huang, Chang, Zhou, Xu, Xu,
+  Li, Li, and Chen]{zhang2026worldlines}
+Yehang Zhang, Jianchong Su, Haojian Huang, Yifan Chang, Tianhao Zhou, Xinli Xu,
+  Yingjie Xu, Yinchuan Li, Zexi Li, and Ying-Cong Chen.
+\newblock Worldlines: Benchmarking and modeling long-horizon stateful embodied
+  agents, 2026{\natexlab{h}}.
+
+\bibitem[Zhang(2026)]{zhang2026agentlibos}
+Yingqi Zhang.
+\newblock Agent libos: A library-os-inspired runtime for long-running,
+  capability-controlled llm agents, 2026.
+
+\bibitem[Zhang et~al.(2024{\natexlab{d}})Zhang, Bo, Ma, Li, Chen, Dai, Zhu,
+  Dong, and Wen]{zhang2024memorymechanism}
+Zeyu Zhang, Xiaohe Bo, Chen Ma, Rui Li, Xu~Chen, Quanyu Dai, Jieming Zhu,
+  Zhenhua Dong, and Ji-Rong Wen.
+\newblock A survey on the memory mechanism of large language model based
+  agents, 2024{\natexlab{d}}.
+
+\bibitem[Zhao et~al.(2024)Zhao, Huang, Xu, Lin, Liu, and
+  Huang]{zhao2024expelllmagentsexperiential}
+Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, and Gao
+  Huang.
+\newblock Expel: Llm agents are experiential learners, 2024.
+\newblock URL \url{https://arxiv.org/abs/2308.10144}.
+
+\bibitem[Zhao et~al.(2026{\natexlab{a}})Zhao, Zhang, Ren, Guo, Chu, Ma, and
+  Huang]{zhao2026deeptutor}
+Bingxi Zhao, Jiahao Zhang, Xubin Ren, Zirui Guo, Tianzhe Chu, Yi~Ma, and Chao
+  Huang.
+\newblock Deeptutor: Towards agentic personalized tutoring, 2026{\natexlab{a}}.
+
+\bibitem[Zhao et~al.(2025)Zhao, Hong, Liu, Hazarika, and Lin]{zhao2025prefeval}
+Siyan Zhao, Mingyi Hong, Yang Liu, Devamanyu Hazarika, and Kaixiang Lin.
+\newblock Do llms recognize your preferences? evaluating personalized
+  preference following in llms, 2025.
+\newblock ICLR 2025.
+
+\bibitem[Zhao et~al.(2026{\natexlab{b}})Zhao, Dai, Kou, and
+  Xiu]{zhao2026memorepair}
+Yang Zhao, Chengxiao Dai, Mengying Kou, and Yue Xiu.
+\newblock Memorepair: Barrier-first cascade repair in agentic memory,
+  2026{\natexlab{b}}.
+
+\bibitem[Zhao et~al.(2026{\natexlab{c}})Zhao, Yuan, Huang, Yuan, Yu, Xu, Hu,
+  Shankarampeta, Huang, Ni, Tian, and Zhao]{zhao2026amabench}
+Yujie Zhao, Boqin Yuan, Junbo Huang, Haocheng Yuan, Zhongming Yu, Haozhou Xu,
+  Lanxiang Hu, Abhilash Shankarampeta, Zimeng Huang, Wentao Ni, Yuandong Tian,
+  and Jishen Zhao.
+\newblock Ama-bench: Evaluating long-horizon memory for agentic applications,
+  2026{\natexlab{c}}.
+
+\bibitem[Zheng et~al.(2026{\natexlab{a}})Zheng, Xue, Liang, Yang, and
+  Zhang]{zheng2026seagym}
+Congjie Zheng, Chuanyi Xue, Bin Liang, Jun Yang, and Changshui Zhang.
+\newblock Seagym: An evaluation environment for self-evolving llm agents,
+  2026{\natexlab{a}}.
+
+\bibitem[Zheng et~al.(2026{\natexlab{b}})Zheng, Liu, Shen, Qu, Chen, Wang, Xu,
+  Liu, and Cheng]{zheng2026lifedial}
+Jianjie Zheng, Zhichen Liu, Zhanyu Shen, Jingxiang Qu, Guanhua Chen, Yile Wang,
+  Yang Xu, Yang Liu, and Sijie Cheng.
+\newblock Evaluating memory capability in continuous lifelog scenario,
+  2026{\natexlab{b}}.
+
+\bibitem[Zheng et~al.(2024)Zheng, Qiu, Shi, and Ma]{zheng2024lifelongllmsurvey}
+Junhao Zheng, Shengjie Qiu, Chengming Shi, and Qianli Ma.
+\newblock Towards lifelong learning of large language models: A survey, 2024.
+
+\bibitem[Zheng et~al.(2025)Zheng, Cai, Li, Zhang, Li, Zhang, Song, and
+  Ma]{zheng2025lifelongagentbenchevaluatingllmagents}
+Junhao Zheng, Xidi Cai, Qiuke Li, Duzhen Zhang, ZhongZhi Li, Yingying Zhang,
+  Le~Song, and Qianli Ma.
+\newblock Lifelongagentbench: Evaluating llm agents as lifelong learners, 2025.
+\newblock URL \url{https://arxiv.org/abs/2505.11942}.
+
+\bibitem[Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
+  Li, Xing, Zhang, Gonzalez, and Stoica]{zheng2023judgingllmasajudge}
+Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao
+  Zhuang, Zi~Lin, Zhuohan Li, Dacheng Li, Eric~P. Xing, Hao Zhang, Joseph~E.
+  Gonzalez, and Ion Stoica.
+\newblock Judging {LLM}-as-a-judge with {MT-Bench} and chatbot arena, 2023.
+\newblock NeurIPS 2023 Datasets and Benchmarks.
+
+\bibitem[Zheng et~al.(2026{\natexlab{c}})Zheng, Wu, Fu, Yu, Mao, Wang,
+  Williams, and Quinn]{zheng2026actplane}
+Yusheng Zheng, Tianyuan Wu, Quanzhi Fu, Tong Yu, Wenan Mao, Wei Wang, Dan
+  Williams, and Andi Quinn.
+\newblock Actplane: Programmable os-level policy enforcement for agent
+  harnesses, 2026{\natexlab{c}}.
+
+\bibitem[Zheng et~al.(2026{\natexlab{d}})Zheng, Yang, Zhang, and
+  Quinn]{zheng2026acrfence}
+Yusheng Zheng, Yiwei Yang, Wei Zhang, and Andi Quinn.
+\newblock Acrfence: Preventing semantic rollback attacks in agent
+  checkpoint-restore, 2026{\natexlab{d}}.
+
+\bibitem[Zhong et~al.(2023)Zhong, Guo, Gao, Ye, and
+  Wang]{zhong2023memorybankenhancinglargelanguage}
+Wanjun Zhong, Lianghong Guo, Qiqi Gao, He~Ye, and Yanlin Wang.
+\newblock Memorybank: Enhancing large language models with long-term memory,
+  2023.
+\newblock URL \url{https://arxiv.org/abs/2305.10250}.
+
+\bibitem[Zhou et~al.(2026{\natexlab{a}})Zhou, Chai, Chen, Guo, Shan, Song, Xu,
+  Yang, Yu, Zhang, Zheng, Zhu, Zheng, Zhang, Lou, Zhang, Fu, Wang, Liu, Lin,
+  and Zhang]{zhou2026externalizationllmagentsunified}
+Chenyu Zhou, Huacan Chai, Wenteng Chen, Zihan Guo, Rong Shan, Yuanyi Song,
+  Tianyi Xu, Yingxuan Yang, Aofan Yu, Weiming Zhang, Congming Zheng, Jiachen
+  Zhu, Zeyu Zheng, Zhuosheng Zhang, Xingyu Lou, Changwang Zhang, Zhihui Fu, Jun
+  Wang, Weiwen Liu, Jianghao Lin, and Weinan Zhang.
+\newblock Externalization in llm agents: A unified review of memory, skills,
+  protocols and harness engineering, 2026{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2604.08224}.
+
+\bibitem[Zhou et~al.(2024{\natexlab{a}})Zhou, Xu, Zhu, Zhou, Lo, Sridhar,
+  Cheng, Ou, Bisk, Fried, Alon, and
+  Neubig]{zhou2024webarenarealisticwebenvironment}
+Shuyan Zhou, Frank~F. Xu, Hao Zhu, Xuhui Zhou, Robert Lo, Abishek Sridhar,
+  Xianyi Cheng, Tianyue Ou, Yonatan Bisk, Daniel Fried, Uri Alon, and Graham
+  Neubig.
+\newblock Webarena: A realistic web environment for building autonomous agents,
+  2024{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2307.13854}.
+
+\bibitem[Zhou et~al.(2026{\natexlab{b}})Zhou, Zhou, Han, Xu, Li, Li, Xiong, and
+  Wu]{zhou2026agentnative}
+Wei Zhou, Xuanhe Zhou, Shaokun Han, Hongming Xu, Guoliang Li, Zhiyu Li, Feiyu
+  Xiong, and Fan Wu.
+\newblock Are we ready for an agent-native memory system?, 2026{\natexlab{b}}.
+
+\bibitem[Zhou et~al.(2026{\natexlab{c}})Zhou, Wang, Peng, Chen, Zhang, and
+  Yu]{zhou2026atcc}
+Weixing Zhou, Zhiyou Wang, Zeshun Peng, Hetian Chen, Yanfeng Zhang, and Ge~Yu.
+\newblock Atcc: Adaptive concurrency control for unforeseen agentic
+  transactions, 2026{\natexlab{c}}.
+
+\bibitem[Zhou et~al.(2024{\natexlab{b}})Zhou, Zhu, Mathur, Zhang, Yu, Qi,
+  Morency, Bisk, Fried, Neubig, and
+  Sap]{zhou2024sotopiainteractiveevaluationsocial}
+Xuhui Zhou, Hao Zhu, Leena Mathur, Ruohong Zhang, Haofei Yu, Zhengyang Qi,
+  Louis-Philippe Morency, Yonatan Bisk, Daniel Fried, Graham Neubig, and
+  Maarten Sap.
+\newblock Sotopia: Interactive evaluation for social intelligence in language
+  agents, 2024{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2310.11667}.
+
+\bibitem[Zhou et~al.(2026{\natexlab{d}})Zhou, Guo, Zhuang, Wang, Huang, Liang,
+  Chen, Gao, Moniz, Chawla, and Zhang]{zhou2026usercorrections}
+Yujun Zhou, Kehan Guo, Haomin Zhuang, Xiangqi Wang, Yue Huang, Zhenwen Liang,
+  Pin-Yu Chen, Tian Gao, Nuno Moniz, Nitesh~V. Chawla, and Xiangliang Zhang.
+\newblock Getting better at working with you: Compiling user corrections into
+  runtime enforcement for coding agents, 2026{\natexlab{d}}.
+
+\bibitem[Zhu and Wang(2026)]{zhu2026intentgovernedauth}
+Genliang Zhu and Chu Wang.
+\newblock Intent-governed tool authorization for ai agents, 2026.
+
+\bibitem[Zhu et~al.(2026{\natexlab{a}})Zhu, Wang, Wang, Li, and
+  Li]{zhu2026openport}
+Genliang Zhu, Chu Wang, Ziyuan Wang, Zhida Li, and Qiang Li.
+\newblock Openport protocol: A security governance specification for ai agent
+  tool access, 2026{\natexlab{a}}.
+
+\bibitem[Zhu et~al.(2026{\natexlab{b}})Zhu, Ro, Robertson, Wang, Li, Vikalo,
+  Akella, and Wang]{zhu2026aging}
+Jianing Zhu, Yeonju Ro, John Robertson, Kevin Wang, Junbo Li, Haris Vikalo,
+  Aditya Akella, and Zhangyang Wang.
+\newblock Your agents are aging too: Agent lifespan engineering for deployed
+  systems, 2026{\natexlab{b}}.
+
+\bibitem[Zhu et~al.(2026{\natexlab{c}})Zhu, Qi, Wang, Li, Song, Shi, Miao, Gao,
+  and Zhang]{zhu2026selfconfirmation}
+Shiding Zhu, Yudi Qi, Yajie Wang, Jiaze Li, Chao Song, Yaorui Shi, Yibo Miao,
+  Hanqi Gao, and Kai Zhang.
+\newblock Escaping the self-confirmation trap: An execute-distill-verify
+  paradigm for agentic experience learning, 2026{\natexlab{c}}.
+
+\bibitem[Zhu et~al.(2026{\natexlab{d}})Zhu, Yang, Wang, Shen, Guo, and
+  Yang]{zhu2026h2hmem}
+Shiping Zhu, Yibo Yang, Zhengyang Wang, Tiancheng Shen, Dandan Guo, and
+  Ming-Hsuan Yang.
+\newblock H2hmem: A multimodal memory benchmark for agents in human-human
+  interactions, 2026{\natexlab{d}}.
+
+\bibitem[Zhu et~al.(2026{\natexlab{e}})Zhu, Zhao, Sun, Luan, Lu, Wang, Li,
+  Jiang, He, and Bai]{zhu2026ktdfin}
+Taojie Zhu, Wentao Zhao, Rui Sun, Beidi Luan, Jiacheng Lu, Sinuo Wang, Jing Li,
+  Daxin Jiang, Yonghong He, and Zuo Bai.
+\newblock From knowing to doing: A memory-controlled benchmark for llm trading
+  agents on stock markets, 2026{\natexlab{e}}.
+
+\bibitem[Zuo et~al.(2026)Zuo, Yue, Chiang, Li, Song, Huang, and
+  Wei]{zuo2026legalworld}
+Songhan Zuo, Shengbin Yue, Tao Chiang, Guanying Li, Yun Song, Xuanjing Huang,
+  and Zhongyu Wei.
+\newblock Legalworld: A life-cycle interactive environment for legal agents,
+  2026.
+
+\end{thebibliography}

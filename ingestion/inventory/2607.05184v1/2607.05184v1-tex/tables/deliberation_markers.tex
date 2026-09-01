@@ -1,0 +1,34 @@
+\begin{table}[t]
+\centering
+\caption{\textbf{\opsd{} reduces explicit deliberation markers in paired thinking-model rollouts.}
+We compare base and \opsd{} rollouts matched by model, benchmark, problem, and sample index across the five thinking models in the OpenThoughts 15k comparison. Counts are normalized per 1,000 generated tokens. Deltas are \opsd{} minus base, with confidence intervals from a clustered bootstrap over model--benchmark--problem clusters. All three marker families decrease after length normalization.}
+\label{tab:deliberation_markers}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
+\toprule
+\textbf{Marker family}
+& \textbf{Base /1k}
+& \textbf{\opsd{} /1k}
+& \textbf{$\Delta$ /1k}
+& \textbf{Raw $\Delta$} \\
+\midrule
+Verification
+& 1.63
+& 1.35
+& $-0.28$ [$-0.32$, $-0.25$]
+& $-8.8$ [$-9.5$, $-8.1$] \\
+Backtracking
+& 6.45
+& 6.29
+& $-0.16$ [$-0.32$, $-0.02$]
+& $-23.5$ [$-29.0$, $-19.1$] \\
+Hedging
+& 3.79
+& 3.62
+& $-0.17$ [$-0.25$, $-0.10$]
+& $-17.0$ [$-18.5$, $-15.5$] \\
+\bottomrule
+\end{tabular*}
+\end{table}

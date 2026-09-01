@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.02134v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.02134v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Coding-agents can replicate scientific machine learning papers",
+      "authors": [
+        "Atharva Hans",
+        "Ilias Bilionis"
+      ],
+      "abstract": "Scientific machine learning papers typically make computational claims, e.g., that the relative mean square error is less than 5% or that the 95% predictive credible interval covers the test data. A coding agent can be prompted to replicate those claims from paper materials alone, but the prompt does not by itself reliably preserve progress or check whether generated evidence supports the paper's claims. We introduce Paper-replication, a workflow that makes each selected paper claim a target with recorded evidence, and implement it as a coding-agent skill. The workflow makes the agent record those targets, reconstruct the paper's method, run computational experiments, link generated outputs to provenance and comparisons with the paper's claims, record where matched evidence appears in the replication report, and pass validation checks before completion. We evaluate Paper-replication on twelve independent runs across four scientific machine learning papers. All twelve workspaces pass the completion gate, and all 158 recorded targets are matched with report coverage. Even in this completed workspace state, repeated runs differ in how papers are divided into targets, in numerical fidelity to the source papers, in elapsed replication time, in the number of intermediate executions replaced before final evidence is accepted, and in the rules used to accept evidence. Paper-replication makes completion depend on workspace evidence and validation checks rather than on the agent's final message.",
+      "doi": null,
+      "arxiv_id": "2607.02134v2",
+      "published": "2026-07-02T13:11:30Z",
+      "updated": "2026-07-10T01:02:12Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.02134v2",
+      "pdf_url": "https://arxiv.org/pdf/2607.02134v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2607.02134v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.02134v2",
+          "url": "https://arxiv.org/abs/2607.02134v2",
+          "doi": null,
+          "arxiv_id": "2607.02134v2",
+          "published": "2026-07-02T13:11:30Z",
+          "updated": "2026-07-10T01:02:12Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.02134v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T07:29:26.453054Z",
+      "sha256": "49ecdc7fa98519beb1c302a2c52d071e299dc94e3e3582ca004abdf06436eba6",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvdDByQ01YY1dRQVJOZ1huYjRnRzYyYkFMMGhVPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4wMjEzNHYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA3OjI5OjI2WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjAyMTM0djIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wMjEzNHYyPC9pZD4KICAgIDx0aXRsZT5Db2RpbmctYWdlbnRzIGNhbiByZXBsaWNhdGUgc2NpZW50aWZpYyBtYWNoaW5lIGxlYXJuaW5nIHBhcGVyczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA3LTEwVDAxOjAyOjEyWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA3LjAyMTM0djIiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA3LjAyMTM0djIiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5TY2llbnRpZmljIG1hY2hpbmUgbGVhcm5pbmcgcGFwZXJzIHR5cGljYWxseSBtYWtlIGNvbXB1dGF0aW9uYWwgY2xhaW1zLCBlLmcuLCB0aGF0IHRoZSByZWxhdGl2ZSBtZWFuIHNxdWFyZSBlcnJvciBpcyBsZXNzIHRoYW4gNSUgb3IgdGhhdCB0aGUgOTUlIHByZWRpY3RpdmUgY3JlZGlibGUgaW50ZXJ2YWwgY292ZXJzIHRoZSB0ZXN0IGRhdGEuIEEgY29kaW5nIGFnZW50IGNhbiBiZSBwcm9tcHRlZCB0byByZXBsaWNhdGUgdGhvc2UgY2xhaW1zIGZyb20gcGFwZXIgbWF0ZXJpYWxzIGFsb25lLCBidXQgdGhlIHByb21wdCBkb2VzIG5vdCBieSBpdHNlbGYgcmVsaWFibHkgcHJlc2VydmUgcHJvZ3Jlc3Mgb3IgY2hlY2sgd2hldGhlciBnZW5lcmF0ZWQgZXZpZGVuY2Ugc3VwcG9ydHMgdGhlIHBhcGVyJ3MgY2xhaW1zLiBXZSBpbnRyb2R1Y2UgUGFwZXItcmVwbGljYXRpb24sIGEgd29ya2Zsb3cgdGhhdCBtYWtlcyBlYWNoIHNlbGVjdGVkIHBhcGVyIGNsYWltIGEgdGFyZ2V0IHdpdGggcmVjb3JkZWQgZXZpZGVuY2UsIGFuZCBpbXBsZW1lbnQgaXQgYXMgYSBjb2RpbmctYWdlbnQgc2tpbGwuIFRoZSB3b3JrZmxvdyBtYWtlcyB0aGUgYWdlbnQgcmVjb3JkIHRob3NlIHRhcmdldHMsIHJlY29uc3RydWN0IHRoZSBwYXBlcidzIG1ldGhvZCwgcnVuIGNvbXB1dGF0aW9uYWwgZXhwZXJpbWVudHMsIGxpbmsgZ2VuZXJhdGVkIG91dHB1dHMgdG8gcHJvdmVuYW5jZSBhbmQgY29tcGFyaXNvbnMgd2l0aCB0aGUgcGFwZXIncyBjbGFpbXMsIHJlY29yZCB3aGVyZSBtYXRjaGVkIGV2aWRlbmNlIGFwcGVhcnMgaW4gdGhlIHJlcGxpY2F0aW9uIHJlcG9ydCwgYW5kIHBhc3MgdmFsaWRhdGlvbiBjaGVja3MgYmVmb3JlIGNvbXBsZXRpb24uIFdlIGV2YWx1YXRlIFBhcGVyLXJlcGxpY2F0aW9uIG9uIHR3ZWx2ZSBpbmRlcGVuZGVudCBydW5zIGFjcm9zcyBmb3VyIHNjaWVudGlmaWMgbWFjaGluZSBsZWFybmluZyBwYXBlcnMuIEFsbCB0d2VsdmUgd29ya3NwYWNlcyBwYXNzIHRoZSBjb21wbGV0aW9uIGdhdGUsIGFuZCBhbGwgMTU4IHJlY29yZGVkIHRhcmdldHMgYXJlIG1hdGNoZWQgd2l0aCByZXBvcnQgY292ZXJhZ2UuIEV2ZW4gaW4gdGhpcyBjb21wbGV0ZWQgd29ya3NwYWNlIHN0YXRlLCByZXBlYXRlZCBydW5zIGRpZmZlciBpbiBob3cgcGFwZXJzIGFyZSBkaXZpZGVkIGludG8gdGFyZ2V0cywgaW4gbnVtZXJpY2FsIGZpZGVsaXR5IHRvIHRoZSBzb3VyY2UgcGFwZXJzLCBpbiBlbGFwc2VkIHJlcGxpY2F0aW9uIHRpbWUsIGluIHRoZSBudW1iZXIgb2YgaW50ZXJtZWRpYXRlIGV4ZWN1dGlvbnMgcmVwbGFjZWQgYmVmb3JlIGZpbmFsIGV2aWRlbmNlIGlzIGFjY2VwdGVkLCBhbmQgaW4gdGhlIHJ1bGVzIHVzZWQgdG8gYWNjZXB0IGV2aWRlbmNlLiBQYXBlci1yZXBsaWNhdGlvbiBtYWtlcyBjb21wbGV0aW9uIGRlcGVuZCBvbiB3b3Jrc3BhY2UgZXZpZGVuY2UgYW5kIHZhbGlkYXRpb24gY2hlY2tzIHJhdGhlciB0aGFuIG9uIHRoZSBhZ2VudCdzIGZpbmFsIG1lc3NhZ2UuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDctMDJUMTM6MTE6MzBaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QXRoYXJ2YSBIYW5zPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5JbGlhcyBCaWxpb25pczwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Coding-agents can replicate scientific machine learning papers",
+    "authors": [
+      "Atharva Hans",
+      "Ilias Bilionis"
+    ],
+    "abstract": "Scientific machine learning papers typically make computational claims, e.g., that the relative mean square error is less than 5% or that the 95% predictive credible interval covers the test data. A coding agent can be prompted to replicate those claims from paper materials alone, but the prompt does not by itself reliably preserve progress or check whether generated evidence supports the paper's claims. We introduce Paper-replication, a workflow that makes each selected paper claim a target with recorded evidence, and implement it as a coding-agent skill. The workflow makes the agent record those targets, reconstruct the paper's method, run computational experiments, link generated outputs to provenance and comparisons with the paper's claims, record where matched evidence appears in the replication report, and pass validation checks before completion. We evaluate Paper-replication on twelve independent runs across four scientific machine learning papers. All twelve workspaces pass the completion gate, and all 158 recorded targets are matched with report coverage. Even in this completed workspace state, repeated runs differ in how papers are divided into targets, in numerical fidelity to the source papers, in elapsed replication time, in the number of intermediate executions replaced before final evidence is accepted, and in the rules used to accept evidence. Paper-replication makes completion depend on workspace evidence and validation checks rather than on the agent's final message.",
+    "identifiers": {
+      "arxiv": "2607.02134",
+      "arxiv_versioned": "2607.02134v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.02134v2"
+      }
+    },
+    "categories": [
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-07-02T13:11:30Z",
+    "updated": "2026-07-10T01:02:12Z"
+  }
+}

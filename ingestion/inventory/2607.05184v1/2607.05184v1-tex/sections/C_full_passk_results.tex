@@ -1,0 +1,46 @@
+\section{Accuracy Confidence Intervals and Full Pass@k Results}
+\label{app:full-passk-results}
+
+\subsection{Paired Bootstrap Confidence Intervals}
+\label{app:bootstrap-cis}
+
+Tables~\ref{tab:countdown_bootstrap_cis_full},
+\ref{tab:openthoughts_bootstrap_cis_full}, and
+\ref{tab:opd_bootstrap_cis_full} report paired 95\% bootstrap confidence
+intervals for the avg@16 deltas in
+Tables~\ref{tab:countdown_think_vs_instruct},
+\ref{tab:openthoughts_thinking_models}, and
+\ref{tab:qwen17_openthoughts_opsd_opd}, respectively. For this metric, we first
+compute each problem's contribution as the mean correctness over its 16 sampled
+rollouts. For each bootstrap replicate, we
+resample evaluation problems with replacement within each benchmark, preserving
+the paired measurements for the two methods being compared. We then compute the
+method delta within each benchmark and average benchmark deltas using the same
+aggregation as the corresponding table. Intervals are percentile intervals from
+10,000 bootstrap replicates. These intervals reflect evaluation-problem
+uncertainty for the observed 16-sample estimates, but not training-seed
+variability. Thus, for a 30-problem benchmark, the bootstrap operates over 30
+paired problem-level observations, not 480 rollout-level observations.
+
+\input{tables/countdown_bootstrap_cis_full}
+
+\input{tables/openthoughts_bootstrap_cis_full}
+
+\input{tables/opd_bootstrap_cis_full}
+
+\subsection{Full Pass@k Results}
+
+The main text reports avg@16 values for readability. Tables in this appendix
+give the corresponding full-format versions of the main result tables, with
+each benchmark cell written as pass@1 / pass@16.
+The pass@1 values are identical to the corresponding main-table avg@16 values,
+because both are computed as mean correctness over the same 16 sampled rollouts
+per problem. The pass@16 values instead estimate the probability that at least
+one of 16 sampled rollouts solves the problem, using the unbiased estimator
+described in Appendix~\ref{app:evaluation}.
+
+\input{tables/countdown_think_vs_instruct_full}
+
+\input{tables/openthoughts_think_full}
+
+\input{tables/vanilla_opd_comparisons_full}

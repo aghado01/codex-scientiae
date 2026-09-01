@@ -1,0 +1,94 @@
+% Long-form arXiv reference survey. CANONICAL manuscript.
+% Taxonomy: layered persistent-state stack (docs/taxonomy_candidates.md).
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,fit,backgrounds,calc}
+\usepackage[section]{placeins} % keep floats within their section; no drift past References
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=blue!50!black,urlcolor=blue!50!black}
+\urlstyle{rm}
+\frenchspacing
+\emergencystretch=2em
+
+% Default float placement: allow here/top/bottom/page so floats resolve in place
+% rather than piling up at the end of the document.
+\makeatletter
+\renewcommand{\fps@table}{htbp}
+\renewcommand{\fps@figure}{htbp}
+\makeatother
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.7}
+
+\newcommand{\statetype}[1]{\textit{#1}}
+% Taxonomy framing: the three regimes the survey is organized around.
+\newcommand{\substance}{\textsc{Substance}}
+\newcommand{\motion}{\textsc{Motion}}
+\newcommand{\control}{\textsc{Control}}
+% Per-section regime signpost: deploys the Substance/Motion/Control spine
+% consistently across the manuscript. Usage: \regime{Substance}{gloss}.
+\newcommand{\regime}[2]{\noindent{\small\textit{Regime:} \textsc{#1}. #2}\par\vspace{0.4em}}
+\newcommand{\cmark}{$\bullet$}   % scored / native
+\newcommand{\pmark}{$\circ$}     % partial
+\newcommand{\xmark}{$\cdot$}     % absent (light dot, not a dash)
+
+\title{\textbf{Always-On Agents: A Survey of Persistent Memory, State, and Governance in LLM Agents}}
+\author{
+Tianyu Ding\quad
+Aditya Nannapaneni\quad
+Bingfan Liu\quad
+Ling Zhang
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{parts_abstract}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{parts_figures} % defines \figevolution \figoverview \figheatmap \figlifecycle \figaoep
+
+\input{parts_01_introduction}
+\figtimeline
+\input{parts_02_definition}
+\input{parts_03_state_taxonomy}
+\figheatmap
+\input{parts_04_lifecycle}
+\figlifecycle
+\figinvariants
+\input{parts_05_substrates}
+\input{parts_06_mechanisms}
+\input{parts_07_evaluation}
+\input{parts_08_failure_governance}
+\input{parts_09_aoep}
+\figaoep
+\input{parts_10_resources}
+\input{parts_11_frontiers}
+\input{parts_12_conclusion}
+
+\FloatBarrier % flush all remaining floats before References; none may drift past
+\input{parts_A_methods}
+\FloatBarrier
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

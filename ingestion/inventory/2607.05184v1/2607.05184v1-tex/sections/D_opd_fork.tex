@@ -1,0 +1,54 @@
+\section{Fork/Lock Token Measurement}
+\label{app:fork-lock-measurement}
+
+For each model family, we measured fork- and lock-like token positions by
+evaluating teacher next-token distributions on fixed student traces. We used the
+same 60 OpenMathReasoning prompts for every model and generated one student
+reasoning trace per prompt using the base student prompt. For each trace, we
+evaluated the teacher distribution at every generated token position under three
+conditioning settings: \emph{base}, \emph{sparse}, and \emph{dense}. The base
+condition included only the problem statement; the sparse condition additionally
+provided the correct final answer; and the dense condition provided privileged
+context in the form of a truncated reference solution from a stronger model.
+
+For each token position $t$, we formed the teacher context $(x, y_{<t})$ and
+stored the teacher's retained top-$K$ next-token log-probabilities. In the final
+SRT runs, we used $K=3$ and set \texttt{max\_student\_tokens} to 3072 for the
+base and sparse conditions. For dense runs, we capped the reference trace at
+2048 tokens and the student trace at 1536 tokens to avoid prompt-logprob memory
+failures. All six cells per model were completed: OPSD and OPD crossed with
+base, sparse, and dense, with 60 traces per cell.
+
+\paragraph{Entropy-threshold analysis.}
+We first normalized the entropy of the retained top-$K$ distribution:
+\[
+H_K^{\mathrm{norm}}
+=
+\frac{-\sum_{i=1}^{K} q_i \log q_i}{\log K},
+\]
+where $q_i$ denotes the top-$K$ probabilities renormalized over the retained
+support. Positions with $H_K^{\mathrm{norm}} \le 0.20$ were labeled \emph{lock}
+tokens, positions with $H_K^{\mathrm{norm}} \ge 0.60$ were labeled \emph{fork}
+tokens, and all remaining positions were labeled neutral.
+
+\paragraph{Support-aware SSD approximation.}
+We also classified positions using the geometry of the retained support.
+Starting from the saved top-$K$ distribution, we applied top-$p$ truncation with
+$p=0.8$ and computed the retained support size, top-token probability,
+top-1/top-2 log-probability gap, entropy-derived effective support size
+\[
+N_{\mathrm{eff}} = \exp(H_S),
+\]
+and the number of competitive tokens within a factor of 3 of the top token. A
+position was labeled lock-like when the retained support was sharply
+concentrated, and fork-like when multiple retained tokens remained competitive.
+Tokens outside the retained support were treated as tail mass rather than forks.
+Positions satisfying neither criterion were labeled neutral.
+
+\paragraph{Aggregation.}
+For each trace and conditioning setting, we computed fork, lock, and neutral
+rates as the fraction of classified token positions in the trace. We visualize
+per-trace rates using boxplots, separately for OPSD and OPD, with the base,
+sparse, and dense conditions shown in each panel. Boxes summarize the
+distribution across 60 traces; jittered points show individual traces; and
+diamond markers indicate means.

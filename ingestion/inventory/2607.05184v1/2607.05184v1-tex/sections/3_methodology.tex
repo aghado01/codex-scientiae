@@ -1,0 +1,194 @@
+\section{Experimental Setup}
+\label{sec:method}
+
+We evaluate whether privileged-context on-policy self-distillation preserves the
+test-time search behavior of thinking models. We write the on-policy
+distillation objective in a context-explicit form, since our experiments vary
+precisely what additional information the teacher receives. Given an input
+problem $x$, the student policy $\pi_S$ samples an on-policy rollout
+$y \sim \pi_S(\cdot \mid x)$. We then train the student by minimizing a
+token-level divergence between the teacher and student next-token distributions
+along this sampled rollout:
+\[
+\mathcal{L}_{\mathrm{OPD}}
+=
+\sum_t
+D\left(
+\pi_T(\cdot \mid x, c, y_{<t}),
+\pi_S(\cdot \mid x, y_{<t})
+\right).
+\]
+Here $y_{<t}$ is the prefix before token $t$, $\pi_T$ is the teacher policy,
+$\pi_S$ is the student policy being updated, and $c$ denotes teacher-only
+privileged context. The divergence $D$ can be instantiated as forward KL,
+reverse KL, JSD, or another token-level distillation divergence. Vanilla OPD
+corresponds to $c=\emptyset$, while privileged-context OPD sets $c$ to
+additional information such as a final answer or gold demonstration. In
+\opsd{}, the teacher and student share the same architecture and typically start
+from the same checkpoint; in our experiments, the teacher is initialized as a
+copy of the initial student checkpoint and receives privileged context while the
+student does not. Unless otherwise noted, training rollouts are capped at
+4,096 completion tokens. We use JSD distillation for one epoch with effective
+batch size 64; this training cap is shared by the vanilla OPD, privileged OPD,
+and \opsd{} comparisons. Full hyperparameter details are in
+Appendix~\ref{app:experimental-details}.
+
+\paragraph{Training data.}
+We use two training domains. For math reasoning, we train on an OpenThoughts
+15k subset, using the problem as the student prompt and the full reference
+solution as the privileged teacher context. For Countdown, we train on 15k
+examples from \texttt{jasonrqh/Countdown-CoT-20k}; the privileged context is the
+post-thinking solution suffix. The Countdown split also reserves 500 held-out
+examples for in-domain evaluation.
+
+\paragraph{Models and comparisons.}
+Our main comparisons separate instruct models from thinking models. On
+Countdown, we train paired instruct and thinking models from the Qwen3-4B
+\citep{yang2025qwen3} and OLMo-3-7B \citep{olmo2025olmo3} families to test
+whether \opsd{} behaves differently when the base model already performs
+explicit deliberation. On OpenThoughts, we focus on thinking models across
+sizes and families, including \qwenonesevenb{},
+\qwenfourb{}, \qweneightb{}, \qwenfourbthink{}, and \olmosevenbthink{}. We also
+include controls that compare \opsd{} to vanilla OPD and that disable thinking
+during \opsd{} training while keeping thinking enabled at evaluation.
+
+\paragraph{Evaluation.}
+We evaluate transfer to AIME 2024, AIME 2025, and HMMT 2025, and evaluate
+Countdown-trained models on the held-out Countdown split. For AIME/HMMT, each
+benchmark has 30 problems. To reflect standard evaluation practice for thinking
+models, which often uses long rollout budgets to benefit from test-time compute
+scaling, our main evaluation adopts a long generation cap: we generate 16
+samples per problem, each with a maximum length of 38,912 tokens. This
+evaluation cap is much larger than the default 4,096-token training completion
+cap. Main tables report avg@16 accuracy, the mean sample correctness over the
+16 rollouts for each problem.
+Note that avg@16 is distinct from unbiased
+pass@16, which measures whether at least one of the 16 samples solves the
+problem. To compare the main long-budget setting with shorter evaluation settings, we repeat evaluation at generation caps of 4,096, 8,192, 16,384, 32,768, and 38,912 tokens, and also report pass@1\footnote{Empirical pass@1 is the same per-sample correctness quantity as avg@16, estimated from sampled rollouts under the evaluation decoding distribution.} and unbiased pass@16.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{\opsd{} helps instruct models but can degrade thinking models}
+
+\input{tables/openthoughts_think}
+
+\input{tables/countdown_think_vs_instruct}
+
+\input{tables/openthoughts_think_enable_disable_qwen3_4b}
+
+\opsd{} training helps instruct models more reliably than
+thinking models. In the Countdown-trained setting
+(Table~\ref{tab:countdown_think_vs_instruct}), \qwenfourbinstruct{} and
+\olmosevenbinstruct{} improve under \opsd{} ($0.527 \to 0.559$ and
+$0.474 \to 0.494$ avg@16 performance). The matched thinking models show mixed
+results: \qwenfourbthink{} drops slightly ($0.776 \to 0.765$), while
+\olmosevenbthink{} gains modestly ($0.679 \to 0.695$).
+Appendix~\ref{app:sd-zero-srt} shows a similar pattern in an SD-Zero-style
+self-revision pipeline \citep{he2026selfdistillationzero}: the self-revision
+stage helps both the instruction-tuned and thinking models, but the subsequent
+\opsd{} stage further helps only the instruction-tuned model and hurts the
+thinking model.
+
+Thinking model degradation is clearest in the OpenThoughts-trained setting
+(Table~\ref{tab:openthoughts_thinking_models}). Across model scale and family,
+all five thinking models we evaluate lose avg@16 performance under the same
+training recipe, with drops ranging from $6.4$ points (\qwenonesevenb{}) to
+$0.8$ points (\olmosevenbthink{}).
+Paired problem-level bootstrap intervals for the main average deltas are
+reported in Appendix~\ref{app:bootstrap-cis}; in this setting, the intervals
+exclude zero for four of the five comparisons, including all Qwen variants.
+
+For thinking models, \opsd{} degrades performance when the rollouts being supervised are thinking rollouts.
+Table~\ref{tab:openthoughts_thinking_enabled_disabled} holds
+the model fixed (\qwenfourb{}) and evaluates with thinking enabled in all rows.
+When training rollouts are non-thinking, performance is preserved ($0.591 \to 0.590$); when they are thinking, performance drops to $0.532$.
+
+\subsection{Thinking-model degradation is specific to teacher-side privileged context}
+
+\input{tables/vanilla_opd_comparisons}
+
+The same student improves under vanilla on-policy distillation, where the teacher is
+not given privileged context. In
+Table~\ref{tab:qwen17_openthoughts_opsd_opd}, vanilla OPD trains
+\qwenonesevenb{} against a larger teacher that sees the same prompt, improving
+avg@16 performance from $0.372$ to $0.392$. Adding privileged context reverses
+the sign: context-enhanced OPD with a privileged gold demonstration reduces
+performance to $0.350$, and \opsd{} with a full gold demonstration reduces it
+to $0.308$. Performance falls when
+the teacher scores the student's trajectory while conditioned on information the
+student will not have at test time.
+
+\subsection{The degradation appears when models are allowed to think longer}
+
+\input{figures/openthoughts_accuracy_and_length_collapse}
+
+The degradation in thinking-model performance is concentrated at long rollout
+budgets.
+Figure~\ref{fig:openthoughts_accuracy_length_collapse} evaluates
+OpenThoughts-trained \qwenfourb{}, \qweneightb{}, and \olmosevenbthink{} across
+rollout budgets from 4k to 38k tokens. At 4k--8k tokens, \opsd{} models perform
+comparably to or above their bases\footnote{Throughout this section, ``base''
+denotes the corresponding instruct or thinking checkpoint before additional
+\opsd{}/OPD training, not a pretrained base model.}. By 32k--38k tokens, they match or fall
+below. Response length follows the same pattern: at small budgets, base and
+\opsd{} rollouts are similar in length; at large budgets, \opsd{} rollouts are
+substantially shorter. Overall, \opsd{} removes the gains that thinking models obtain from longer rollouts.
+
+One might suspect a simpler explanation based on the mismatch between training
+and evaluation lengths. Training rollouts are capped at 4,096 tokens, whereas
+evaluation allows much longer rollouts, so short-budget training may cause the
+model to forget longer reasoning behaviors. The OPD experiments rule out this
+explanation as the sole cause. In
+Table~\ref{tab:qwen17_openthoughts_opsd_opd}, vanilla OPD with a larger
+unprivileged teacher improves the student under the same short-budget on-policy
+setup, whereas adding teacher-only gold-demonstration context reverses the gain.
+The corresponding budget curves in
+Figure~\ref{fig:qwen17_opd_gold_demo_budget_curves} show that the two OPD
+variants differ not only in accuracy but also in realized response length:
+vanilla OPD largely preserves the base response-length behavior, while
+gold-demonstration OPD shortens responses and reduces the pass@1 gains. Thus,
+the drop cannot be attributed only to the train/eval budget mismatch; it also
+depends on whether the teacher scores the short-budget rollout with privileged
+context.
+
+\subsection{Students inherit shorter rollouts but not the teacher's pass@k gains}
+
+\input{figures/openthoughts_teacher_student_asymmetry}
+
+We next evaluate whether the gold-demo-conditioned base model---the \opsd{}
+teacher setup---exhibits the long-budget degradation observed in the \opsd{}
+student. Figure~\ref{fig:openthoughts_teacher_student_asymmetry} compares three
+settings for each Qwen3 thinking-model size: the base model without privileged
+context, the \opsd{} teacher (the base model when provided the in-context gold
+demonstration), and the \opsd{}-trained student evaluated without the in-context
+gold demonstration. The teacher's own rollouts become much shorter, but its
+pass@k remains high and often improves. The student also produces shorter
+responses, but compared with the teacher's gains over
+the unprivileged base, the student's pass@k gains are smaller at short budgets
+and disappear or reverse at longer budgets. Thus, the student inherits the
+teacher's shorter response behavior more reliably than the teacher's
+privileged-context performance benefits.
+
+\subsection{Sparse privileged context preserves long-budget behavior better than dense privileged context}
+
+\input{figures/openthoughts_sparse_temp}
+
+We next ask whether the student-side degradation depends on how much privileged
+context the teacher receives, and observe that full gold demonstrations degrade
+long-budget behavior more than final-answer-only context.
+Figure~\ref{fig:openthoughts_sparse_context} compares these two forms
+of privileged context, averaged over the models in
+Table~\ref{tab:openthoughts_thinking_models}. Full demonstrations give the
+largest short-budget gains in pass@1 and pass@16, but also the largest
+long-budget reversals, with mean rollout length compressed to roughly
+$0.8\times$ the base at 38k tokens. The final-answer-only condition gives
+smaller short-budget gains, remains closer to the base at long budgets, and
+produces less length compression. Because the answer-only and full-demonstration
+runs use the same training recipe and 4,096-token completion cap, this difference
+cannot be explained by the short training budget alone; it depends on how much
+privileged context the teacher receives.
+
+In Section~\ref{sec:analysis}, we show that \opsd{} reduces fork rates at
+high-entropy decision points and reduces explicit deliberation markers in
+evaluation rollouts.

@@ -1,0 +1,69 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Gold-demonstration context produces the largest drop in realized epistemic-token density.}
+The aggregate density column reports the fraction of generated tokens in the epistemic-marker set. The remaining columns report occurrences per 1,000 generated tokens for representative markers. Epistemic-token OPD and random-fraction OPD slightly reduce aggregate marker density relative to the base and vanilla OPD, but the gold-demonstration variant produces the largest decrease, including clear reductions in \textit{wait} and \textit{hmm}.}
+\label{tab:opd_ablation_epistemic_tokens}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.12}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccc@{}}
+\toprule
+\textbf{Method}
+& \shortstack{\textbf{Epistemic token}\\[-1pt]\textbf{density}}
+& \textbf{wait}
+& \textbf{recall}
+& \textbf{okay}
+& \textbf{altern}
+& \textbf{check}
+& \textbf{verify}
+& \textbf{hmm} \\
+\midrule
+\textbf{Base}
+& 1.080\%
+& 3.85
+& 1.11
+& 2.17
+& 0.64
+& 1.33
+& 0.25
+& 1.45 \\
+\textbf{Vanilla OPD}
+& 1.074\%
+& 3.79
+& 1.04
+& 2.17
+& 0.72
+& 1.19
+& 0.16
+& 1.68 \\
+\textbf{Epistemic-only OPD}
+& 1.047\%
+& 3.22
+& 1.05
+& 2.23
+& 0.82
+& 1.43
+& 0.18
+& 1.54 \\
+\textbf{Random-frac OPD}
+& 1.039\%
+& 3.24
+& 1.11
+& 2.17
+& 0.90
+& 1.27
+& 0.18
+& 1.52 \\
+\textbf{OPD + gold demo}
+& 0.850\%
+& 2.54
+& 0.96
+& 2.07
+& 0.66
+& 1.05
+& 0.10
+& 1.11 \\
+\bottomrule
+\end{tabular*}
+\end{table*}

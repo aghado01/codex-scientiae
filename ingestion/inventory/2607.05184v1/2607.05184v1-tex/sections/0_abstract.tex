@@ -1,0 +1,16 @@
+\begin{abstract}
+
+\emph{Self-distillation} has emerged as a promising recipe for self-improvement in language models \citep{zhao2026selfdistilledreasoneronpolicyselfdistillation,shenfeld2026self,hubotter2026reinforcement}.
+In this setting, a model can be used as its \textit{own} teacher when augmented with privileged information (e.g. a solution to a math problem). The approach seems especially appealing  for thinking models, which can leverage test-time reasoning to fully absorb the privileged information. Surprisingly,
+we show that privileged self-distillation degrades thinking models with respect to long reasoning traces: across five Qwen3 and OLMo thinking models evaluated on AIME24, AIME25, and HMMT25, privileged-context distillation causes a relative drop of up to 17\% in avg@16 accuracy.
+The degradation scales with the amount of privileged context withheld from the student and is most pronounced at long rollout budgets, where thinking models otherwise obtain their largest gains.
+This failure mode is not specific to self-distillation: on-policy distillation (OPD) improves thinking models, but privileged on-policy distillation reverses these gains.
+Our diagnostics suggest that this failure mode is linked to
+how privileged teacher context reshapes learning at high-entropy forking positions \citep{bigelow2024forking, zhang2026embarrassingly}, i.e., rollout positions where multiple continuations remain plausible and may lead to different reasoning paths.
+Privileged context lowers fork rates in thinking-model rollouts but not in instruction model rollouts.
+This leads to an interesting dichotomy wherein privileged context can help instruction-tuned models but hurts more performant thinking models that depend heavily on exploration and rollout quality.
+This effect is especially visible when the student begins a self-correction branch, where privileged OPD penalizes sampled reconsideration tokens that vanilla OPD supports.
+Thinking models trained with a privileged teacher produce fewer verification, backtracking, and hedging markers, even after length normalization.
+These findings indicate that applying self-distillation methods to strong thinking models requires further consideration of token-level signal---especially around tokens related to correction and crucial reasoning steps.
+
+\end{abstract}

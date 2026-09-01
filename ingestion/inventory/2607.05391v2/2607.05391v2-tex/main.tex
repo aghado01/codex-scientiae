@@ -1,0 +1,246 @@
+\documentclass[11pt, letterpaper]{paper}
+
+\usepackage[all]{hypcap}
+\usepackage[comma,numbers,sort,compress]{natbib}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks = true,
+    citecolor = {digitalred},
+    linkcolor = {deepblue},
+}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{nicefrac}
+% NOTE: `subfigure' (loaded below by the original CMU template) conflicts with
+% `subcaption'. The paper uses neither, so we keep only `subcaption'.
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{float}
+
+\setlength\parindent{0pt}
+
+
+\usepackage{xspace}
+\usepackage[capitalize,noabbrev]{cleveref}
+\bibliographystyle{unsrtnat}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{listings}
+% (subfigure removed: conflicts with subcaption and is unused by the paper)
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage{tabularx} % (removed `fleqn' so display equations center natively)
+\usepackage{multirow}
+\usepackage[export]{adjustbox}
+\usepackage{colortbl}
+
+\usepackage{algpseudocode}
+\usepackage{setspace}
+
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\definecolor{MyBlue}{RGB}{32,102,214}
+\definecolor{MyRed}{RGB}{200,60,50}
+
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\definecolor{lightblue}{rgb}{0.22,0.45,0.70}
+\newcommand{\highlight}[1]{\textbf{\textit{\textcolor{lightblue}{#1}}}}
+
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{tipbox}{
+  enhanced,
+  boxrule=0.6pt,
+  left=6pt,right=6pt,top=6pt,bottom=6pt,
+  colback=blue!3,
+  colframe=blue!40!black,
+  arc=3pt,
+}
+
+\newcommand\pythonstyle{\lstset{
+basicstyle=\ttfamily\footnotesize,
+language=Python,
+morekeywords={self, clip, exp, mse_loss, uniform_sample, concatenate, logsumexp},
+keywordstyle=\color{deepblue},
+emph={MyClass,__init__},
+emphstyle=\color{deepblue},
+stringstyle=\color{deepgreen},
+frame=single,
+showstringspaces=false
+}}
+
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+
+\input{macro}
+
+\makeatletter
+\def\mathcolor#1#{\@mathcolor{#1}}
+\def\@mathcolor#1#2#3{%
+  \protect\leavevmode
+  \begingroup
+    \color#1{#2}#3%
+  \endgroup
+}
+\makeatother
+
+\usepackage{algorithm}
+\usepackage{amssymb}
+
+\Crefformat{equation}{#2Eq.\;(#1)#3}
+\Crefformat{figure}{#2Figure #1#3}
+
+\usepackage{crossreftools}
+\pdfstringdefDisableCommands{
+    \let\Cref\crtCref
+    \let\cref\crtcref
+}
+\newcommand{\creftitle}[1]{\crtcref{#1}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\usepackage{pifont}
+\usepackage{soul}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+% Comment macro carried over from the original manuscript
+\newif\ifcomments
+\commentsfalse
+\ifcomments
+    \providecommand{\ion}[1]{{\color{blue}{/* ion: #1 */}}}
+\else
+    \providecommand{\ion}[1]{}
+\fi
+
+
+% Main theme color: drives the title, section headings, and page headers.
+% Overrides the template's default crimson (\definecolor in paper.cls).
+\definecolor{BerkeleyBlue}{HTML}{9a1f36}
+
+% Dedicated title color (overrides the template's \titlefont, which otherwise
+% inherits the theme color used for section headings and page headers).
+\definecolor{digitalred}{rgb}{0.694,0.016,0.055}
+\renewcommand{\titlefont}{\color{digitalred}\normalfont\bfseries\fontsize{16.6}{19.1}\selectfont}
+
+% Gray color for the project links shown under the affiliations.
+\definecolor{linkgray}{HTML}{6E6F5E}
+
+% Dark navy blue for the footer project links.
+\definecolor{darknavy}{HTML}{00134D}
+
+% Slightly larger abstract font (template default is 10/12).
+\renewcommand{\absfont}{\linespread{1.1}\fontsize{10.8}{13.3}\color{black}\selectfont}
+
+\title{LLM-as-a-Verifier: A General-Purpose Verification Framework}
+
+% Allow multiple \author{} commands to accumulate, each rendered as its own
+% centered row, instead of the later call overwriting the earlier one.
+\makeatletter
+\let\@author\@empty
+\renewcommand{\author}[1]{%
+  \ifx\@author\@empty
+    \gdef\@author{\Authfont #1}%
+  \else
+    \expandafter\gdef\expandafter\@author\expandafter{\@author\\[0.4em]\Authfont #1}%
+  \fi
+}
+\makeatother
+
+\author{
+\textbf{Jacky Kwok}$^{1}$, \,
+\textbf{Shulu Li}$^{2}$, \,
+\textbf{Pranav Atreya}$^{2}$, \,
+\textbf{Yuejiang Liu}$^{1}$, \,
+\textbf{Yixing Jiang}$^{1}$ \\[4pt]
+\textbf{Chelsea Finn}$^{1}$, \,
+\textbf{Marco Pavone}$^{1,3}$, \,
+\textbf{Ion Stoica}$^{2}$, \,
+\textbf{Azalia Mirhoseini}$^{1}$ \\
+\vspace{0.4em}
+{\Affilfont
+$^{1}$Stanford University \,\,
+$^{2}$UC Berkeley \,\,
+$^{3}$NVIDIA Research}
+}
+\date{}
+
+\correspondingauthor{Jacky Kwok \texttt{<jackykwok@stanford.edu>}}
+
+% Redefine the first-page footer so the project links appear on the first line,
+% with the "Corresponding author(s):" line directly beneath them.
+\makeatletter
+\fancypagestyle{firststyle}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{1pt}%
+  \renewcommand{\footrulewidth}{1pt}%
+  \fancyfoot[L]{\raisebox{8pt}[0pt][0pt]{\parbox[t]{\textwidth}{%
+    {\footerfont\fontsize{10.8}{12.8}\selectfont\upshape\bfseries
+     \begingroup\hypersetup{urlcolor=darknavy}%
+     \href{https://llm-as-a-verifier.com}{\raisebox{-0.25em}{\includegraphics[height=1em]{logos/website.png}}~\textcolor{darknavy}{\texttt{\bfseries llm-as-a-verifier.com}}}\quad
+     \href{https://github.com/llm-as-a-verifier/llm-as-a-verifier}{\raisebox{-0.25em}{\includegraphics[height=1em]{logos/github.png}}~\textcolor{darknavy}{\texttt{\bfseries llm-as-a-verifier}}}\quad
+     \href{https://github.com/llm-as-a-verifier/TurboAgent}{\raisebox{-0.25em}{\includegraphics[height=1em]{logos/claude.png}}~\textcolor{darknavy}{\texttt{\bfseries claude-code-extension}}}%
+     \endgroup}\\[3pt]
+    \ifdefined\correspondingauthor
+      \if\relax\the\correspondingauthor\relax\else
+        {\footerfont\itshape Corresponding author: \the\correspondingauthor}%
+      \fi
+    \fi
+  }}}%
+}
+\makeatother
+
+\hyphenation{pre-print}
+
+\begin{abstract}
+\end{abstract}
+
+\begin{document}
+
+\maketitle
+
+\input{sec/0_abstract}
+\input{sec/1_intro}
+\input{sec/2_preliminaries}
+\input{sec/4_method}
+\input{sec/5_scaling_experiments}
+\input{sec/6_results}
+\input{sec/7_conclusion}
+\input{sec/acknowledgments}
+
+% \newpage
+\bibliography{ref}
+
+\newpage
+\input{sec/8_appendix}
+
+\end{document}

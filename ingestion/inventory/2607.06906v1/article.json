@@ -1,0 +1,199 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.06906v1",
+  "initialized_utc": "2026-09-01T07:30:04.147734Z",
+  "title": "The Harness Effect: How Orchestration Design Sets the Token Economics of Enterprise Agentic AI",
+  "authors": [
+    "Muayad Sayed Ali",
+    "Aliaksandra Novik",
+    "Anji Boddupally",
+    "Artem Yavorskyi",
+    "Chris Nickerson",
+    "Daniel Rica",
+    "Emily DuGranrut",
+    "Felix Leung",
+    "Garrett Prince",
+    "Grace Barnett",
+    "Heath Robinson",
+    "Hosain Al Ahmad",
+    "Jesse Resnick",
+    "Juan Carlos Farah",
+    "Jyothi Swaroop Meruga",
+    "Leonid Kuznetsov",
+    "Luke Gorham",
+    "Marie Schmoll",
+    "Michael Paciullo",
+    "Saumya Das",
+    "Sharath Sheripally",
+    "Tommy Griscom",
+    "Mykyta Osadchyi",
+    "Neha Mantri",
+    "Nick Westrum",
+    "Olivia Benowitz",
+    "Parikshith Kulkarni",
+    "Radik Chernyshov",
+    "Rakshith Vasudev",
+    "Rohith Nadimpally",
+    "Vikas Gangadevi",
+    "Waseem AlShikh"
+  ],
+  "abstract": "Agentic AI development today runs on token maxing: buying capability with tokens -- longer reasoning traces, more turns, wider tool payloads, bigger replayed contexts -- so tokens per task grow faster than task value. Falling per-token prices mask the pattern; total spend rises anyway. We argue the decisive lever against token maxing is the harness: the orchestration layer that assembles context, exposes tools, sequences turns, delegates work, and carries enterprise observability and governance. We isolate it with a controlled swap: 22 locked evaluation tasks, six foundation models (Claude Sonnet 4.6, Gemini 3.1, Gemini Flash 3.5, Qwen 3.6, GLM 5.1, Palmyra X6), changing only the orchestration layer -- a frozen conventional production loop versus the Writer Agent Harness. Holding models constant, the harness cuts blended cost per task 41% ($0.21->$0.12), median wall-clock 44% (48s->27s), and tokens per task 38% (14.2k->8.8k), with task-completion quality at parity (0.78->0.81, directional at this sample size). Efficiency is model-invariant -- every model gets cheaper (33-61%) -- while quality gains are capability-dependent: a model's gain correlates almost perfectly with its baseline strength (r=0.99, n=6), a phenomenon we term harness leverage. Quality per dollar rises 82%; task-completions per million tokens rise from 54.9 to 92.0. On this workload the orchestration layer moved cost per task more than the full spread of the model menu did. We formalize token economics at the orchestration layer (including effective input price under prompt caching), detail the six mechanism families behind the effect -- cache-shape discipline to failure-spend governance -- compare six widely used agent systems on the same axes, and argue the harness is the one component whose efficiency multiplies across every model an organization runs -- present and future.",
+  "identifiers": {
+    "arxiv": "2607.06906",
+    "arxiv_versioned": "2607.06906v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.06906v1"
+    }
+  },
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-07-08T01:58:12Z",
+  "updated": "2026-07-08T01:58:12Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.06906v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 14717,
+        "sha256": "26d899cec50e878fff1829a215cfc0374a4e840399529167cf9d31d5d3c95520",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-01T07:30:03.811952Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.06906v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "13f19eb204181f1703ebc6e787ca2ee05557d8c4b810744b6a5895fc24e2687c"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "\\LARGE\\bf The Harness Effect: How Orchestration Design Sets\\\\[2pt] the Token Economics of Enterprise Agentic AI",
+        "authors_tex": [
+          "\\parbox{0.94\\textwidth}{\\centering\nMuayad~Sayed~Ali, Aliaksandra~Novik, Anji~Boddupally, Artem~Yavorskyi, Chris~Nickerson, Daniel~Rica, Emily~DuGranrut, Felix~Leung, Garrett~Prince, Grace~Barnett, Heath~Robinson, Hosain~Al~Ahmad, Jesse~Resnick, Juan~Carlos~Farah, Jyothi~Swaroop~Meruga, Leonid~Kuznetsov, Brock~Perry, Luke~Gorham, Marie~Schmoll, Michael~Paciullo, Saumya~Das, Sharath~Sheripally, Tommy~Griscom, Mykyta~Osadchyi, Neha~Mantri, Nick~Westrum, Olivia~Benowitz, Parikshith~Kulkarni, Radik~Chernyshov, Rakshith~Vasudev, Rohith~Nadimpally, Vikas~Gangadevi, and Waseem~AlShikh\\\\[9pt]\nWriter, Inc.\\\\[3pt]\n{\\small\\texttt{\\{muayad, aliaksandra, anji, artem, chris, daniel, emily, felix, garrett, grace, heath, hosain, jesse, juan, jyothi, leonid, brock, luke, marie, michael, saumya, sharath, tommy, mykyta, neha, nick, olivia, parikshith, radik, rakshith, rohith, vikas, waseem\\}@writer.com}}\n}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 299,
+        "sha256": "cba74f46c815ae2ebe2a94394d8c27dc83add87d9fbfd29defad4571dce92917"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.06906v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.06906v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 81932,
+      "sha256": "c087133fbc7927f08aae68394c171bfe78012634cef212ad3e06c9935fe5e83c",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.06906v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.06906v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 10,
+      "tex_files": 1,
+      "sha256": "efd56dcd5081b9fb891dc9ed3dc6e6229c27aa3f76847b93dbea8c954123bd30"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.06906v1.pdf",
+      "format": "application/pdf",
+      "bytes": 320793,
+      "sha256": "8db4edf97ca7eeed4b2139d2d8b4fa286495dacce21664047f815aaa3b534fea"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-01T07:30:04.147734Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 11
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 10
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

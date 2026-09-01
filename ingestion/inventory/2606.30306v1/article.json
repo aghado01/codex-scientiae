@@ -1,0 +1,173 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2606.30306v1",
+  "initialized_utc": "2026-09-01T07:29:49.690195Z",
+  "title": "Always-OnAgents:A Survey of Persistent Memory, State, and Governance in LLMAgents",
+  "authors": [
+    "Tianyu Ding",
+    "Aditya Nannapaneni",
+    "Bingfan Liu",
+    "Ling Zhang"
+  ],
+  "abstract": "Always-on agents are systems whose future behavior depends on durable state accumulated across earlier interactions. We treat them as persistent-state systems: the operative system includes retrievable memories, but also task ledgers, permissions, credentials, commitments, provenance and audit records, shared state, trigger conditions, and externally committed effects linked to those records. The survey reads the literature through six diagnostic axes for each state item, authority, scope, mutability, provenance, recoverability, and actionability, and through a lifecycle in which state is written, validated, organized, retrieved, acted upon, updated, forgotten, audited, and sometimes rolled back. Across a 435-work coded corpus, treated as a scoped map rather than an exhaustive census, the literature concentrates more heavily on accumulating and retrieving state than on governing, recovering, or relinquishing it. We therefore introduce the Always-On Evaluation Protocol (AOEP-v0), a pilot evaluation contract that makes these governance requirements concrete by scoring state mutation and recovery obligations rather than answer quality alone. The resulting agenda connects always-on agents to databases, distributed systems, formal methods, capability security, and machine unlearning.",
+  "identifiers": {
+    "arxiv": "2606.30306",
+    "arxiv_versioned": "2606.30306v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2606.30306v1"
+    }
+  },
+  "categories": [
+    "cs.MA",
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.MA",
+  "published": "2026-06-29T13:47:42Z",
+  "updated": "2026-06-29T13:47:42Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2606.30306v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9087,
+        "sha256": "2d0721f1d97d18af202563bc7ca274570ee1966bf351f71d4877dee0baf65817",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-01T07:29:48.025199Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2606.30306v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "0bdce98d3ef6ff7cddb91ef800095035c6f00eabab2348e32760ea2240411594"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "\\textbf{Always-On Agents: A Survey of Persistent Memory, State, and Governance in LLM Agents}",
+        "authors_tex": [
+          "in {P1/8/{P1 Found.},P2/7/{P2 Substr.},P3/6/{P3 Lifecyc.},P4/5/{P4 Adapt.},P5/4/{P5 Govern.},P6/3/{P6 Multi-ag.},P7/2/{P7 Eval.},P8/1/{P8 Failure},P9/0/{P9 Domains}}{ \\node[anchor=east,font=\\scriptsize] at (-0.1,\\i+0.5) {",
+          "};} \\foreach \\i/\\row in { 8/{7,7,0,6,16,10,9,4,1,0}, 7/{11,43,23,45,77,34,32,12,15,12}, 6/{7,20,5,13,25,5,11,3,2,0}, 5/{10,32,13,25,25,14,29,18,5,3}, 4/{4,23,17,8,22,20,14,16,33,9}, 3/{5,18,3,6,11,7,6,5,8,0}, 2/{1,7,10,4,16,2,6,2,10,1}, 1/{3,14,8,1,14,14,3,2,12,0}, 0/{20,36,8,20,63,35,17,4,2,2}}{ \\foreach \\v [count=\\j from 0] in \\row { \\pgfmathsetmacro\\shade{min(100,\\v/77*100)} \\fill[blue!\\shade!white,draw=gray!40] (\\j,\\i) rectangle (\\j+1,\\i+1); \\pgfmathsetmacro\\txtcol{\\v>40?1:0} \\node[font=\\tiny,text=\\ifdim\\shade pt>45pt white\\else black\\fi] at (\\j+0.5,\\i+0.5) {\\v};}} \\end{tikzpicture}} \\caption{Coverage heatmap: for each taxonomy part (rows), the number of coded works whose lifecycle coding touches each stage (columns). Cells are shaded by count. The forward arc (left of the divider) is dark across nearly every part; the return arc, especially \\texttt{forget}, \\texttt{audit}, and \\texttt{rollback}, stays pale even in the governance part (P5). This is the survey's main asymmetry made visual. Counts are per-part stage incidences and exceed part sizes because coding is multi-label.} \\label{fig:heatmap} \\end{figure}} \\newcommand{\\figlifecycle}{ \\begin{figure}[t] \\centering \\resizebox{\\linewidth}{!}{ \\begin{tikzpicture}[font=\\footnotesize, st/.style={draw,rounded corners=2pt,minimum height=0.7cm,minimum width=1.35cm,align=center,inner sep=2pt}, fwd/.style={st,fill=orange!12}, ret/.style={st,fill=red!10}, ar/.style={-{Stealth[length=2mm]},thick}] \\node[fwd] (obs) at (0,2) {observe}; \\node[fwd] (wr) at (1.75,2) {write}; \\node[fwd] (val) at (3.5,2) {validate}; \\node[fwd] (org) at (5.25,2) {organize}; \\node[fwd] (ret) at (7.0,2) {retrieve}; \\node[fwd] (act) at (8.75,2) {act}; \\draw[ar] (obs)--(wr); \\draw[ar] (wr)--(val); \\draw[ar] (val)--(org); \\draw[ar] (org)--(ret); \\draw[ar] (ret)--(act); \\node[ret] (upd) at (8.75,0) {update}; \\node[ret] (frg) at (7.0,0) {forget}; \\node[ret] (aud) at (5.25,0) {audit}; \\node[ret] (rb) at (3.5,0) {rollback}; \\draw[ar] (act)--(upd); \\draw[ar] (upd)--(frg); \\draw[ar] (frg)--(aud); \\draw[ar] (aud)--(rb); \\draw[ar,dashed] (rb) to[out=180,in=180] (obs); \\node[font=\\scriptsize\\itshape,orange!60!black] at (4.4,2.7) {forward arc: accumulate \\& use (well-served)}; \\node[font=\\scriptsize\\itshape,red!60!black] at (6.1,-0.7) {return arc: govern \\& recover (sparse: rollback 27/435)}; \\node[draw,dashed,rounded corners,fill=gray!6,minimum width=10.5cm,align=center,font=\\scriptsize] at (4.4,-1.7) {\\textbf{Five invariants} the loop should preserve: authority monotonicity~$\\cdot$~scope non-expansion~$\\cdot$~deletion propagation~$\\cdot$~provenance preservation~$\\cdot$~rollback traceability}; \\end{tikzpicture}} \\caption{The persistent-state lifecycle. State flows along a forward arc that accumulates and uses it, then a return arc that updates, forgets, audits, and rolls it back once outcomes are known. The forward arc is heavily studied; the return arc is sparse (only $27$ of $435$ corpus works expose any rollback mechanism). Five invariants should hold across the whole loop; each failure mode in Section~\\ref{sec:failures} violates one of them.} \\label{fig:lifecycle} \\end{figure}} \\newcommand{\\figaoep}{ \\begin{figure}[t] \\centering \\resizebox{\\linewidth}{!}{ \\begin{tikzpicture}[font=\\footnotesize, bx/.style={draw,rounded corners=2pt,align=center,minimum height=0.85cm,inner sep=3pt}, ar/.style={-{Stealth[length=2mm]},thick}] \\node[bx,fill=blue!8] (ep) at (0,0) {Episode:"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 377,
+        "sha256": "b1c70b0fd64ac92aa91724c07b55be1a86b423c058e50b35157af79a5ababfb2"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2606.30306v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2606.30306v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1625966,
+      "sha256": "cc1f73643deb94ef70b0724abca2dcf7ed4ed05103a9f549e753097efc2ebf3b",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2606.30306v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2606.30306v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 21,
+      "tex_files": 17,
+      "sha256": "92a864ca7afb3c6ad8d0144f7051d42cc04331853b187149d71789f2dcf6a564"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2606.30306v1.pdf",
+      "format": "application/pdf",
+      "bytes": 2701419,
+      "sha256": "d4f1c08fd999f508ef610fe9779588ae9f3ce2c95c65eab359924b25b567f116"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-01T07:29:49.690195Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 21
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 21
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 17
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

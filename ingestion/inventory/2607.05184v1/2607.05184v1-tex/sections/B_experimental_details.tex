@@ -1,0 +1,396 @@
+\section{Experimental Details}
+\label{app:experimental-details}
+
+This appendix records the data, training, and evaluation settings used for the
+experiments in the main text. Unless a table or paragraph states otherwise, all
+reported \opsd{} runs use the defaults in Table~\ref{tab:opsd-training-hparams}
+and all evaluations use the generation and grading protocol in
+Table~\ref{tab:eval-hparams}.
+
+\subsection{Data}
+\label{app:data}
+
+\paragraph{OpenThoughts math.}
+We use a cleaned version of \texttt{Ashkchamp/Openthoughts\_math\_filtered\_30K}.
+The cleaning script removes system turns, remaps thought delimiters to
+\texttt{<think>} and \texttt{</think>}, removes explicit solution delimiters,
+and appends the instruction to return the final answer in \texttt{\textbackslash
+boxed\{\}}. We use a 15K subset of the data for training. The privileged teacher context is taken from the \texttt{solution} column.
+
+\paragraph{Countdown.}
+For Countdown, we use \texttt{jasonrqh/Countdown-CoT-20k}. We select a 15K subset for training and reserve an additional
+500 examples as a held-out evaluation set.
+
+\begin{table}[!htbp]
+    \centering
+    \small
+    \caption{Training and evaluation data used in the experiments.}
+    \label{tab:data-summary}
+    \begin{tabular}{ll>{\raggedright\arraybackslash}p{0.58\linewidth}}
+        \toprule
+        Data & Rows & Use and fields \\
+        \midrule
+        OpenThoughts cleaned & 29,439 &
+        Source pool after cleaning; columns include \texttt{problem},
+        \texttt{solution}, and \texttt{Answer}. \\
+        OpenThoughts 15k & 15,000 &
+        Main OpenThoughts \opsd{} training subset; prompt =
+        \texttt{problem}, privileged context = \texttt{solution}. \\
+        Countdown train & 15,000 &
+        Countdown \opsd{} training; prompt =
+        \texttt{datapoint\_input\_text}, privileged context =
+        \texttt{response\_suffix}. \\
+        Countdown eval & 500 &
+        Held-out Countdown evaluation. \\
+        AIME24/AIME25/HMMT25 & 30 each &
+        Math competition evaluations. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Existing Asset Licenses}
+\label{app:asset-licenses}
+
+Table~\ref{tab:asset-licenses} summarizes the existing datasets, model
+checkpoints, and software assets used in our experiments. We use these assets
+for training, evaluation, or implementation, and do not redistribute
+third-party datasets or model checkpoints.
+
+\begin{table}[!htbp]
+    \centering
+    \scriptsize
+    \caption{Existing assets used in this work.}
+    \label{tab:asset-licenses}
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{0.23\linewidth}
+                    >{\raggedright\arraybackslash}p{0.28\linewidth}
+                    >{\raggedright\arraybackslash}p{0.18\linewidth}
+                    >{\raggedright\arraybackslash}p{0.23\linewidth}}
+        \toprule
+        Asset & Source & License / terms & Use \\
+        \midrule
+        \texttt{Ashkchamp/Openthoughts\_math\_filtered\_30K} &
+        \url{https://huggingface.co/datasets/Ashkchamp/Openthoughts_math_filtered_30K} &
+        No explicit license metadata listed on the dataset page at time of access &
+        Source pool for the OpenThoughts math training subset; not redistributed. \\
+        \texttt{open-thoughts/OpenThoughts-114k} &
+        \url{https://huggingface.co/datasets/open-thoughts/OpenThoughts-114k} &
+        Apache-2.0 &
+        Upstream OpenThoughts dataset related to the math training data; not redistributed. \\
+        \texttt{jasonrqh/Countdown-CoT-20k} &
+        \url{https://huggingface.co/datasets/jasonrqh/Countdown-CoT-20k} &
+        MIT &
+        Countdown training and held-out in-domain evaluation data. \\
+        Qwen3 checkpoints &
+        \url{https://huggingface.co/Qwen} &
+        Apache-2.0 &
+        Base instruction and thinking models used for training and evaluation. \\
+        OLMo-3 checkpoints &
+        \url{https://huggingface.co/allenai/Olmo-3-7B-Think} &
+        Apache-2.0; Ai2 Responsible Use Guidelines &
+        Base instruction and thinking models used for training and evaluation. \\
+        \texttt{idanshen/Self-Distillation} &
+        \url{https://github.com/idanshen/Self-Distillation} &
+        No explicit software license file found at time of access &
+        Reference/adapted implementation code for self-distillation; not redistributed. \\
+        \texttt{vLLM} &
+        \url{https://github.com/vllm-project/vllm} &
+        Apache-2.0 &
+        Inference engine used for generation and evaluation. \\
+        AIME and HMMT problems &
+        Public competition materials &
+        Public competition materials; not redistributed &
+        Out-of-domain math evaluation benchmarks. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Prompt Templates and Privileged Context Examples}
+\label{app:prompt-templates}
+
+\newcommand{\promptvar}[1]{\texttt{\textcolor{RoyalBlue!70!black}{\{#1\}}}}
+\newcommand{\promptcard}[3]{%
+    \begin{center}
+    \setlength{\fboxsep}{7pt}%
+    \fcolorbox{#1!55!black}{#1!5}{%
+        \begin{minipage}{0.92\linewidth}
+        \raggedright
+        \textbf{\textcolor{#1!55!black}{#2}}\par\vspace{4pt}
+        \small #3
+        \end{minipage}%
+    }%
+    \end{center}
+}
+
+We fill the following templates before applying each model's chat template.
+For standard \opsd{} training, the student receives only the problem.
+\promptcard{RoyalBlue}{Student prompt template}{%
+{\ttfamily
+\promptvar{problem}
+}
+}
+
+The privileged teacher receives the same problem plus an example response.
+\promptcard{OliveGreen}{Privileged-teacher prompt template}{%
+{\ttfamily
+\promptvar{problem}\par\medskip
+This is an example for a response to the question:\par\medskip
+\promptvar{Answer}\par\medskip
+Now answer with a response of your own, including the thinking process.
+}
+}
+Here \promptvar{Answer} denotes the privileged response used as teacher
+context. In dense gold-demonstration runs, this field contains a full reference
+solution; in sparse final-answer-only runs, it contains only the boxed final
+answer.
+
+For the conciseness-control experiment in
+Figure~\ref{fig:openthoughts_qwen8b_concise_budget}, the teacher is prompted
+without gold context.
+\promptcard{BurntOrange}{Conciseness-control teacher prompt}{%
+{\ttfamily
+Solve the following math problem concisely and correctly. Be direct -- avoid
+unnecessary elaboration, redundant steps, or restating the problem. Focus only
+on the key reasoning steps needed to reach the answer.\par\medskip
+\promptvar{problem}
+}
+}
+
+\clearpage
+\paragraph{Sparse and dense context example.}
+The dense and sparse conditions use the same privileged-teacher wrapper above;
+they differ only in what is inserted into the \promptvar{Answer} slot. The
+following filled examples use the same problem.
+
+\promptcard{OliveGreen}{Dense teacher prompt, filled}{%
+{\ttfamily
+Given real numbers \(a, b, c\) and a positive number \(\lambda\) such that the
+polynomial \(f(x) = x^3 + a x^2 + b x + c\) has three real roots \(x_1, x_2,
+x_3\), and the conditions \(x_2 - x_1 = \lambda\) and
+\(x_3 > \frac{1}{2}(x_1 + x_2)\) are satisfied, find the maximum value of
+\[
+\frac{2 a^3 + 27 c - 9 a b}{\lambda^3}.
+\]
+\par\medskip
+This is an example for a response to the question:\par\medskip
+We begin by analyzing the function \(f(x) = x^3 + a x^2 + b x + c\), which has
+three real roots \(x_1, x_2, x_3\). We are given the following conditions:
+\(x_2 - x_1 = \lambda\) and
+\(x_3 > \frac{1}{2}(x_1 + x_2)\). We aim to find the maximum value of
+\[
+\frac{2a^3 + 27c - 9ab}{\lambda^3}.
+\]
+\par\medskip
+Transform the polynomial to remove the quadratic term.
+Substitute \(x = y - \frac{a}{3}\) into \(f(x)\):
+\[
+\begin{array}{rcl}
+F(y) & = & f\left(y - \frac{a}{3}\right) \\
+     & = & \left(y - \frac{a}{3}\right)^3
+           + a \left(y - \frac{a}{3}\right)^2
+           + b \left(y - \frac{a}{3}\right) + c \\
+     & = & y^3 - \left(\frac{a^2}{3} - b\right)y
+           + \frac{1}{27}(2a^3 + 27c - 9ab).
+\end{array}
+\]
+\par\medskip
+Identify the new roots of \(F(y)\).
+Let the roots of \(F(y)\) be \(y_1, y_2, y_3\). We know
+\(y_i = x_i + \frac{a}{3}\). Using Vieta's formulas,
+\[
+y_1 + y_2 + y_3 = 0,\qquad
+y_1 y_2 y_3 = -\frac{1}{27}(2a^3 + 27c - 9ab).
+\]
+\par\medskip
+\textit{[Middle of the gold demonstration omitted for clarity of the example.]}
+\par\medskip
+Conclusion:
+\[
+\boxed{\frac{3\sqrt{3}}{2}}
+\]
+\par\medskip
+Now answer with a response of your own, including the thinking process.
+}
+}
+
+\promptcard{OliveGreen}{Sparse final-answer-only teacher prompt, filled}{%
+{\ttfamily
+Given real numbers \(a, b, c\) and a positive number \(\lambda\) such that the
+polynomial \(f(x) = x^3 + a x^2 + b x + c\) has three real roots \(x_1, x_2,
+x_3\), and the conditions \(x_2 - x_1 = \lambda\) and
+\(x_3 > \frac{1}{2}(x_1 + x_2)\) are satisfied, find the maximum value of
+\[
+\frac{2 a^3 + 27 c - 9 a b}{\lambda^3}.
+\]
+\par\medskip
+This is an example for a response to the question:\par
+\[
+\boxed{\frac{3\sqrt{3}}{2}}
+\]
+\par\medskip
+Now answer with a response of your own, including the thinking process.
+}
+}
+
+\subsection{OPSD Training}
+\label{app:opsd-training}
+
+For each training example, the student is prompted with the task input alone.
+The teacher is initialized from the same base checkpoint, but receives the same
+task input plus privileged supervision. The trainer samples completions
+on-policy and minimizes token-level divergence between teacher and student
+distributions on those sampled completion tokens.
+
+\begin{table}[!htbp]
+    \centering
+    \small
+    \caption{Default \opsd{} training hyperparameters.}
+    \label{tab:opsd-training-hparams}
+    \begin{tabular}{ll}
+        \toprule
+        Hyperparameter & Value \\
+        \midrule
+        Objective & Generalized KL/JSD distillation on sampled completion tokens \\
+        Distillation mixture $\alpha$ & 0.5 (JSD) \\
+        Teacher synchronization & Disabled for reported regular runs \\
+        Completions per prompt & 1 \\
+        Training sampling temperature / top-$p$  & 1.0 / 1.0  \\
+        Epochs & 1 \\
+        Effective batch size & 64 \\
+        Per-device batch size & 1 \\
+        Gradient accumulation & 8 \\
+        Optimizer learning-rate schedule & Cosine decay \\
+        Warmup ratio & 0.1 \\
+        Max gradient norm & 1.0 \\
+        Weight decay & 0.0 \\
+        Precision & bf16 \\
+        Distributed training & FSDP full-shard auto-wrap \\
+        Gradient checkpointing & Enabled \\
+        Seed & 42 \\
+        Max prompt length & 25,000 tokens \\
+        Max completion length & 4,096 tokens unless noted otherwise \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \small
+    \caption{Model-specific \opsd{} training settings and deviations from
+    Table~\ref{tab:opsd-training-hparams}.}
+    \label{tab:model-training-hparams}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llllll}
+        \toprule
+        Model(s) & Training data & LR & Max completion & vLLM train gen. & Hardware \\
+        \midrule
+        Qwen3-1.7B, Qwen3-4B, Qwen3-4B-Thinking-2507,
+        Qwen3-4B-Instruct-2507 &
+        OpenThoughts 15k & $5{\times}10^{-6}$ & 4,096 & Yes &
+        8 H100, 80GB/GPU \\
+        Qwen3-8B &
+        OpenThoughts 15k & $2{\times}10^{-6}$ & 4,096 & Yes &
+        8 H100, 80GB/GPU \\
+        OLMo-3-7B-Instruct, OLMo-3-7B-Think &
+        OpenThoughts 15k & $5{\times}10^{-6}$ & 4,096 & Yes &
+        8 H100, 80GB/GPU \\
+        Qwen3-4B-Thinking-2507, Qwen3-4B-Instruct-2507,
+        OLMo-3-7B-Instruct, OLMo-3-7B-Think &
+        Countdown 15k & $5{\times}10^{-6}$ & 4,096 & Yes &
+        8 H100, 80GB/GPU \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
+
+\subsection{Evaluation}
+\label{app:evaluation}
+
+For AIME24, AIME25, and HMMT25, we generate 16 samples per problem on 30
+problems per benchmark. Generation is sharded over 8 jobs and uses a maximum
+generation length of 38,912 tokens. The merged generation file therefore
+contains 480 rows for each AIME/HMMT benchmark. Countdown uses the same
+16-sample evaluation protocol on the 500-example held-out split when reported.
+
+\begin{table}[!htbp]
+    \centering
+    \small
+    \caption{Evaluation generation hyperparameters.}
+    \label{tab:eval-hparams}
+    \begin{tabular}{lll}
+        \toprule
+        Model/eval group & Temperature & Top-$p$ \\
+        \midrule
+        Qwen3 thinking-style models & 0.6 & 0.95 \\
+        Qwen3-4B-Instruct-2507 & 0.7 & 0.8 \\
+        OLMo-3-7B-Instruct/Think & 0.6 & 0.95 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \small
+    \caption{Shared evaluation settings.}
+    \label{tab:eval-shared-hparams}
+    \begin{tabular}{ll}
+        \toprule
+        Setting & Value \\
+        \midrule
+        Samples per problem & 16 \\
+        Shards & 8 \\
+        Maximum generation length & 38,912 tokens \\
+        Eval engine & vLLM \\
+        Eval precision & bf16 \\
+        vLLM GPU memory utilization & 0.9 \\
+        Eval top-$k$ & -1 \\
+        Prompt format & Model chat template with generation prompt \\
+        Metric file & \texttt{metrics.json} written next to merged JSONL \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Metrics.}
+The reported avg@16 \texttt{accuracy} is the mean correctness over generated
+samples: for each problem, we average correctness across its 16 sampled rollouts,
+then average across problems. This is equivalent to empirical single-sample
+correctness under the evaluation sampling distribution, but is distinct from
+unbiased pass@16.
+For $k > 1$, pass@$k$ is computed
+with the unbiased estimator. For each problem with $n$ samples and $c$ correct
+samples, the contribution is 1 if $n-c < k$ and otherwise
+\[
+1 - \prod_{i=0}^{k-1} \frac{n-c-i}{n-i}.
+\]
+We report pass@$k$ only for $k \leq n$.
+
+\subsection{Deliberation Marker Analysis}
+\label{app:deliberation-markers}
+
+To test whether \opsd{} changes explicit deliberation language in model
+reasoning, we compare paired base and \opsd{} rollouts for the same model,
+benchmark, problem, and sample (see Table~\ref{tab:deliberation_markers_full}). The analysis uses the five thinking models
+in the OpenThoughts 15k comparison on AIME24, AIME25, and HMMT25. With 16
+samples for each of 30 problems on each benchmark, this gives 7,200 paired
+rollouts.
+
+For each response, we count occurrences of a fixed, case-insensitive lexicon of
+deliberation markers. The marker families are verification markers, with
+examples such as \textit{check}, \textit{verify}, \textit{double check}, and
+\textit{make sure}; backtracking markers, with examples such as \textit{wait},
+\textit{actually}, \textit{mistake}, \textit{wrong}, and \textit{another way};
+and hedging markers, with examples such as \textit{maybe}, \textit{probably},
+\textit{might}, and \textit{seems}. We report raw marker counts and marker
+counts per 1,000 response tokens. Response-token counts are computed with the
+cached model tokenizer.
+
+\input{tables/deliberation_markers_full}
+
+Deltas are \opsd{} minus base. Confidence intervals are computed by clustered
+bootstrap over model--benchmark--problem clusters, so the 16 samples from the
+same problem are not treated as fully independent. The mean response length in
+this analysis is 19,395 tokens for base rollouts and 15,391 tokens after
+\opsd{}. Since the counts are lexical proxies, we interpret them as evidence
+about explicit deliberation markers in the generated traces, not as direct
+measurements of latent uncertainty or confidence.

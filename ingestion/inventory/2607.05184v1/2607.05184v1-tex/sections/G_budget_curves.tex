@@ -1,0 +1,37 @@
+\section{Additional Budget-Curve Figures}
+\label{app:budget-curves}
+
+Figures~\ref{fig:openthoughts_budget_pass_rates_thinking5_fs_ao}
+and~\ref{fig:openthoughts_budget_response_lengths_thinking5_fs_ao} split the
+budget-dependent results in Figure~\ref{fig:openthoughts_accuracy_length_collapse}
+into pass-rate and response-length views across the five thinking models in
+Table~\ref{tab:openthoughts_thinking_models}.
+Figure~\ref{fig:openthoughts_qwen8b_concise_budget} adds a conciseness-prompt
+comparison for \qweneightb{}.
+Figure~\ref{fig:qwen17_opd_gold_demo_budget_curves} gives the corresponding
+budget-curve view for the context-enhanced OPD comparison in
+Table~\ref{tab:qwen17_openthoughts_opsd_opd}.
+
+\paragraph{Relation to CRISP-style reasoning compression.}
+CRISP \citep{sang2026policy} studies a complementary setting in which the
+teacher is conditioned on a conciseness instruction rather than on a gold answer
+or reference solution. Thus, unlike gold-context \opsd{}, CRISP does not give
+the teacher task-answer information, but its token-level supervision can still
+act globally across the rollout: the teacher is encouraged to prefer shorter,
+more direct continuations at many positions. Our Qwen3-8B conciseness-prompt
+control confirms the first-order CRISP effect, namely that such conditioning
+shortens responses. However, the comparison with final-answer-only and
+full-demonstration \opsd{} shows that response shortening is not unique to
+conciseness distillation. Dense gold-demonstration context produces the
+strongest long-budget compression, while final-answer-only context remains
+closer to the base model. Thus, our claim is not that compression itself is
+always harmful, but that token-level teachers which broadly suppress
+deliberative continuations can remove the long-budget gains of thinking models.
+
+\input{figures/openthoughts_budget_pass_rates_thinking5_fs_ao}
+
+\input{figures/openthoughts_budget_response_lengths_thinking5_fs_ao}
+
+\input{figures/qwen17_opd_gold_demo_budget_curves}
+
+\input{figures/openthoughts_qwen8b_concise_budget}

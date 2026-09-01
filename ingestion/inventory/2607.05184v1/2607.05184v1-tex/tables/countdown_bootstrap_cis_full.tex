@@ -1,0 +1,76 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{\opsd{} helps instruct models more reliably than thinking models on Countdown.}
+Companion to Table~\ref{tab:countdown_think_vs_instruct}; $\Delta$ rows report
+paired bootstrap 95\% confidence intervals for avg@16 deltas.}
+\label{tab:countdown_bootstrap_cis_full}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\providecommand{\cicell}[2]{\shortstack{#1\\[-1pt]{\scriptsize #2}}}
+\providecommand{\deltalabel}[1]{\shortstack[l]{\textbf{$\Delta$ (#1)}\\[-1pt]{\scriptsize $\Delta$ [95\% CI]}}}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llccccc@{}}
+\toprule
+\textbf{Model} &
+& \textbf{Countdown}
+& \textbf{AIME24}
+& \textbf{AIME25}
+& \textbf{HMMT25}
+& \textbf{Average} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\qwenfourbinstruct{}}}
+& \textbf{Base}
+& 0.736 & 0.604 & 0.463 & 0.304 & 0.527 \\
+& \textbf{+\opsd{}}
+& 0.865 & 0.594 & 0.483 & 0.294 & 0.559 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$+0.129$}{$[0.117,0.141]$}
+& \cicell{$-0.010$}{$[-0.052,0.033]$}
+& \cicell{$+0.021$}{$[-0.010,0.054]$}
+& \cicell{$-0.010$}{$[-0.044,0.019]$}
+& \cicell{$+0.032$}{$[0.017,0.048]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\qwenfourbthink{}}}
+& \textbf{Base}
+& 0.945 & 0.804 & 0.804 & 0.552 & 0.776 \\
+& \textbf{+\opsd{}}
+& 0.947 & 0.800 & 0.775 & 0.537 & 0.765 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$+0.002$}{$[-0.010,0.014]$}
+& \cicell{$-0.004$}{$[-0.027,0.019]$}
+& \cicell{$-0.029$}{$[-0.058,-0.002]$}
+& \cicell{$-0.015$}{$[-0.062,0.021]$}
+& \cicell{$-0.011$}{$[-0.026,0.002]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\olmosevenbinstruct{}}}
+& \textbf{Base}
+& 0.719 & 0.525 & 0.415 & 0.237 & 0.474 \\
+& \textbf{+\opsd{}}
+& 0.814 & 0.510 & 0.394 & 0.256 & 0.494 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$+0.095$}{$[0.083,0.107]$}
+& \cicell{$-0.015$}{$[-0.056,0.025]$}
+& \cicell{$-0.021$}{$[-0.058,0.013]$}
+& \cicell{$+0.019$}{$[-0.002,0.040]$}
+& \cicell{$+0.020$}{$[0.005,0.034]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\olmosevenbthink{}}}
+& \textbf{Base}
+& 0.877 & 0.719 & 0.667 & 0.452 & 0.679 \\
+& \textbf{+\opsd{}}
+& 0.890 & 0.742 & 0.698 & 0.452 & 0.695 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$+0.013$}{$[0.006,0.021]$}
+& \cicell{$+0.023$}{$[-0.006,0.052]$}
+& \cicell{$+0.031$}{$[0.002,0.067]$}
+& \cicell{$0.000$}{$[-0.025,0.031]$}
+& \cicell{$+0.017$}{$[0.004,0.031]$} \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

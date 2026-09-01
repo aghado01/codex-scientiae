@@ -1,0 +1,32 @@
+\section{OPD Ablations}
+\label{app:opd-ablations}
+
+We ablate where the OPD loss is applied in the \qwenonesevenb{} OpenThoughts
+comparison from Table~\ref{tab:qwen17_openthoughts_opsd_opd}. Vanilla OPD
+applies the unprivileged teacher's loss to all sampled response tokens.
+Epistemic-token OPD applies the same loss only to tokens in the
+epistemic-marker set. Random-fraction OPD is a token-count-matched control: if
+$x$ is the average fraction of epistemic tokens in student responses, then each
+rollout receives OPD loss on a uniformly sampled $x\%$ subset of response
+tokens. OPD + privileged gold-demonstration context uses the same loss over
+response tokens but conditions the teacher on a gold demonstration.
+
+\input{tables/opd_ablation_passk}
+
+Table~\ref{tab:opd_ablation_passk} suggests that token-masked OPD can still
+offer some improvement over the base thinking model even when the loss is
+applied to only a small fraction of response tokens. The epistemic-token and
+random matched-fraction masks are close enough that these results do not clearly
+rank one mask above the other. This is consistent with the idea that lexical
+epistemic markers such as \textit{wait} and \textit{hmm} are useful proxies for
+forking behavior, but do not exhaust it: branch-relevant decisions can also
+occur on ordinary mathematical, connective, or formatting tokens. A random
+matched-fraction mask may therefore sample some consequential non-lexical
+decision points, while the epistemic-token mask targets explicit deliberation
+markers more directly.
+
+\input{tables/vanilla_opd_epistemic_logprobs}
+
+\input{tables/opd_ablation_epistemic_logprobs}
+
+\input{tables/opd_ablation_epistemic_tokens}

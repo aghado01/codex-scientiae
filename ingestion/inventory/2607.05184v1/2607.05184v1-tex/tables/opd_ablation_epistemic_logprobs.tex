@@ -1,0 +1,75 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Sparse-loss OPD controls leave epistemic-marker probabilities close to vanilla OPD.}
+We report aggregate probability mass on the epistemic-marker set and log-probabilities for representative markers. Epistemic-token OPD and random-fraction OPD remain nearly identical to vanilla OPD on the aggregate marginal and average log-probability. Conditioning the teacher on a privileged gold demonstration lowers the marginal mass and assigns substantially lower probability to several revision markers, especially \textit{wait}, \textit{recall}, \textit{altern}, and \textit{hmm}.}
+\label{tab:opd_ablation_epistemic_logprobs}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.12}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccccccccc@{}}
+\toprule
+\textbf{Method}
+& \textbf{Marginal}
+& \textbf{wait}
+& \textbf{recall}
+& \textbf{okay}
+& \textbf{altern}
+& \textbf{check}
+& \textbf{verify}
+& \textbf{hmm}
+& \textbf{Avg. logp} \\
+\midrule
+\textbf{Base}
+& 0.00928
+& -0.57
+& -0.39
+& -0.15
+& -0.64
+& -0.38
+& -0.66
+& -0.72
+& -0.502 \\
+\textbf{Vanilla OPD}
+& 0.00929
+& -0.57
+& -0.38
+& -0.15
+& -0.64
+& -0.38
+& -0.67
+& -0.70
+& -0.499 \\
+\textbf{Epistemic-only OPD}
+& 0.00928
+& -0.57
+& -0.38
+& -0.15
+& -0.64
+& -0.38
+& -0.66
+& -0.71
+& -0.498 \\
+\textbf{Random-frac OPD}
+& 0.00928
+& -0.57
+& -0.37
+& -0.15
+& -0.64
+& -0.37
+& -0.67
+& -0.72
+& -0.499 \\
+\textbf{OPD + gold demo}
+& 0.00853
+& -0.72
+& -0.50
+& -0.17
+& -0.82
+& -0.40
+& -0.67
+& -0.96
+& -0.605 \\
+\bottomrule
+\end{tabular*}
+\end{table*}

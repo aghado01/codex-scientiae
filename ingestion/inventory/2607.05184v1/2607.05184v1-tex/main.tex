@@ -1,0 +1,87 @@
+\documentclass{article}
+
+\makeatletter
+\def\input@path{{./}}
+\makeatother
+\usepackage[preprint]{neurips_2026}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{multirow}
+
+\newcommand{\opsd}{OPSD}
+\newcommand{\qwenonesevenb}{Qwen3-1.7B}
+\newcommand{\qwenfourb}{Qwen3-4B}
+\newcommand{\qweneightb}{Qwen3-8B}
+\newcommand{\qwenfourbinstruct}{Qwen3-4B-Instruct-2507}
+\newcommand{\qwenfourbthink}{Qwen3-4B-Think-2507}
+\newcommand{\olmosevenbinstruct}{OLMo-7B-Instruct}
+\newcommand{\olmosevenbthink}{OLMo-7B-Think}
+\title{Rethinking On-Policy Self-Distillation for Thinking Models}
+
+\author{%
+    Simran Kaur \quad
+    Narutatsu Ri \quad
+    Yinghui He \quad
+    Liam Fowl \quad
+    Sanjeev Arora \\
+    Princeton Language and Intelligence, Princeton University\\
+    \texttt{\{skaur,nr3764,yh0068,lf2728,arora\}@cs.princeton.edu} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\input{sections/0_abstract}
+\input{sections/1_introduction}
+
+\input{sections/3_methodology}
+\input{sections/4_analysis}
+
+\input{sections/2_related_work}
+
+\input{sections/5_discussion}
+\input{sections/H_limitations}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\clearpage
+\appendix
+\input{sections/A_related_work_continued}
+
+\clearpage
+\input{sections/B_experimental_details}
+
+\clearpage
+\input{sections/C_full_passk_results}
+
+\clearpage
+\input{sections/D_opd_fork}
+
+\clearpage
+\input{sections/E_opd_ablations}
+
+\clearpage
+\input{sections/F_sd_zero_srt}
+
+\clearpage
+\input{sections/G_budget_curves}
+
+\clearpage
+
+\end{document}

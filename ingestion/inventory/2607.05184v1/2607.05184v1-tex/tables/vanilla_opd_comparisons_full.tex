@@ -1,0 +1,54 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Full pass@1/pass@16 results for the \qwenonesevenb{} OPD comparison.}
+This is the full-format companion to Table~\ref{tab:qwen17_openthoughts_opsd_opd}. Entries report pass@1 / pass@16 on AIME24, AIME25, and HMMT25. The Average column averages the three benchmarks.}
+\label{tab:qwen17_openthoughts_opsd_opd_full}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+
+\newcommand{\metrichead}[1]{%
+  \textbf{#1}%
+}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \metrichead{AIME24}
+& \metrichead{AIME25}
+& \metrichead{HMMT25}
+& \metrichead{Average} \\
+\midrule
+
+\multirow{4}{*}{\textbf{\qwenonesevenb{}}}
+& \textbf{Base}
+& 0.502 / \textbf{0.800}
+& \textbf{0.398} / \textbf{0.667}
+& 0.215 / 0.467
+& 0.372 / 0.644 \\
+
+&
+\textbf{+\opsd{}}
+& 0.435 / \textbf{0.800}
+& 0.302 / 0.600
+& 0.185 / 0.433
+& 0.308 / 0.611 \\
+
+&
+\textbf{+OPD}
+& \textbf{0.540} / \textbf{0.800}
+& 0.385 / \textbf{0.667}
+& \textbf{0.252} / 0.567
+& \textbf{0.392} / 0.678 \\
+
+&
+\textbf{+OPD gold demo}
+& 0.467 / \textbf{0.800}
+& 0.344 / \textbf{0.667}
+& 0.240 / \textbf{0.600}
+& 0.350 / \textbf{0.689} \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

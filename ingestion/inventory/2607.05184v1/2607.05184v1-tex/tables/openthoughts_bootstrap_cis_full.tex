@@ -1,0 +1,84 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{\opsd{} degrades thinking models across model families.}
+Companion to Table~\ref{tab:openthoughts_thinking_models}; $\Delta$ rows report
+paired bootstrap 95\% confidence intervals for avg@16 deltas.}
+\label{tab:openthoughts_bootstrap_cis_full}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\providecommand{\cicell}[2]{\shortstack{#1\\[-1pt]{\scriptsize #2}}}
+\providecommand{\deltalabel}[1]{\shortstack[l]{\textbf{$\Delta$ (#1)}\\[-1pt]{\scriptsize $\Delta$ [95\% CI]}}}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \textbf{AIME24}
+& \textbf{AIME25}
+& \textbf{HMMT25}
+& \textbf{Average} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\qwenonesevenb{} (Thinking)}}
+& \textbf{Base}
+& 0.502 & 0.398 & 0.215 & 0.372 \\
+& \textbf{+\opsd{}}
+& 0.435 & 0.302 & 0.185 & 0.308 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$-0.067$}{$[-0.125,-0.017]$}
+& \cicell{$-0.096$}{$[-0.160,-0.042]$}
+& \cicell{$-0.029$}{$[-0.062,0.002]$}
+& \cicell{$-0.064$}{$[-0.095,-0.037]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\qwenfourb{} (Thinking)}}
+& \textbf{Base}
+& 0.727 & 0.635 & 0.410 & 0.591 \\
+& \textbf{+\opsd{}}
+& 0.683 & 0.556 & 0.362 & 0.534 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$-0.044$}{$[-0.100,0.004]$}
+& \cicell{$-0.079$}{$[-0.138,-0.019]$}
+& \cicell{$-0.048$}{$[-0.098,-0.002]$}
+& \cicell{$-0.057$}{$[-0.088,-0.027]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\qweneightb{} (Thinking)}}
+& \textbf{Base}
+& 0.758 & 0.700 & 0.448 & 0.635 \\
+& \textbf{+\opsd{}}
+& 0.721 & 0.613 & 0.400 & 0.578 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$-0.037$}{$[-0.085,0.006]$}
+& \cicell{$-0.087$}{$[-0.160,-0.027]$}
+& \cicell{$-0.048$}{$[-0.098,0.000]$}
+& \cicell{$-0.058$}{$[-0.090,-0.028]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\qwenfourbthink{}}}
+& \textbf{Base}
+& 0.804 & 0.804 & 0.552 & 0.720 \\
+& \textbf{+\opsd{}}
+& 0.787 & 0.731 & 0.529 & 0.683 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$-0.017$}{$[-0.052,0.017]$}
+& \cicell{$-0.073$}{$[-0.121,-0.029]$}
+& \cicell{$-0.023$}{$[-0.081,0.037]$}
+& \cicell{$-0.037$}{$[-0.065,-0.010]$} \\
+\midrule
+
+\multirow{3}{*}{\textbf{\olmosevenbthink{}}}
+& \textbf{Base}
+& 0.719 & 0.667 & 0.452 & 0.612 \\
+& \textbf{+\opsd{}}
+& 0.715 & 0.652 & 0.446 & 0.604 \\
+& \deltalabel{\opsd{} - Base}
+& \cicell{$-0.004$}{$[-0.033,0.023]$}
+& \cicell{$-0.015$}{$[-0.058,0.025]$}
+& \cicell{$-0.006$}{$[-0.037,0.027]$}
+& \cicell{$-0.008$}{$[-0.028,0.011]$} \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

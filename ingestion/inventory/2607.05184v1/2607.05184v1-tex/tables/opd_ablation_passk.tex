@@ -1,0 +1,55 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Token-masked OPD ablations do not reproduce the gold-demonstration degradation pattern.}
+We evaluate \qwenonesevenb{} OPD variants on AIME24, AIME25, and HMMT25. Entries report pass@1 / pass@16 to match the full-format tables in Appendix~\ref{app:full-passk-results}. Epistemic-token OPD applies the loss only on epistemic-marker tokens. Random-fraction OPD applies the loss to a random fraction of response tokens matched to the average epistemic-token rate. Both token-masked OPD variants improve over the base model on average, while the gold-demonstration variant drops below the base on average at pass@1.}
+\label{tab:opd_ablation_passk}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+
+\newcommand{\metrichead}[1]{%
+  \textbf{#1}%
+}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \metrichead{AIME24}
+& \metrichead{AIME25}
+& \metrichead{HMMT25}
+& \metrichead{Average} \\
+\midrule
+\multirow{5}{*}{\textbf{\qwenonesevenb{}}}
+& \textbf{Base}
+& 0.502 / \textbf{0.800}
+& 0.398 / 0.667
+& 0.215 / 0.467
+& 0.372 / 0.644 \\
+&
+\textbf{Vanilla OPD}
+& \textbf{0.540} / \textbf{0.800}
+& 0.385 / 0.667
+& 0.252 / 0.567
+& \textbf{0.392} / 0.678 \\
+&
+\textbf{Epistemic-only OPD}
+& 0.523 / \textbf{0.800}
+& 0.396 / 0.733
+& 0.235 / 0.533
+& 0.385 / 0.689 \\
+&
+\textbf{Random-frac OPD}
+& 0.494 / \textbf{0.800}
+& \textbf{0.408} / \textbf{0.767}
+& \textbf{0.256} / 0.533
+& 0.386 / \textbf{0.700} \\
+&
+\textbf{OPD + gold demo}
+& 0.467 / \textbf{0.800}
+& 0.344 / 0.667
+& 0.240 / \textbf{0.600}
+& 0.350 / 0.689 \\
+\bottomrule
+\end{tabular*}
+\end{table*}

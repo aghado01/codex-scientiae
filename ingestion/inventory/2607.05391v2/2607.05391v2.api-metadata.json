@@ -1,0 +1,119 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.05391v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.05391v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "LLM-as-a-Verifier: A General-Purpose Verification Framework",
+      "authors": [
+        "Jacky Kwok",
+        "Shulu Li",
+        "Pranav Atreya",
+        "Yuejiang Liu",
+        "Yixing Jiang",
+        "Chelsea Finn",
+        "Marco Pavone",
+        "Ion Stoica",
+        "Azalia Mirhoseini"
+      ],
+      "abstract": "Scaling pre-training, post-training, and test-time compute have become the central paradigms for improving the capabilities of LLMs. In this work, we identify verification, the ability to determine the correctness of a solution, as a new scaling axis. To unlock this and demonstrate its effectiveness, we introduce LLM-as-a-Verifier, a general-purpose verification framework that provides fine-grained feedback for agentic tasks without requiring additional training. Unlike standard LM judges that prompt LLMs to produce discrete scores for candidate solutions, LLM-as-a-Verifier computes the expectation over the distribution of scoring token logits to generate continuous scores. This probabilistic formulation enables verification to scale along multiple dimensions: (1) score granularity, (2) repeated evaluation, and (3) criteria decomposition. In particular, we show that scaling the scoring granularity leads to better separation between positive and negative solutions, resulting in more calibrated comparisons. Moreover, scaling repeated evaluation and criteria decomposition consistently lead to additional gains in verification accuracy through variance and complexity reduction. We further introduce a cost-efficient ranking algorithm for selecting the best solution among candidates using the verifier's continuous scores. LLM-as-a-Verifier achieves state-of-the-art performance on Terminal-Bench V2 (86.5%), SWE-Bench Verified (78.2%), RoboRewardBench (87.4%), and MedAgentBench (73.3%). Beyond verification, the fine-grained signals from LLM-as-a-Verifier can also serve as a proxy for estimating task progress. We build an extension for Claude Code, enabling developers to monitor and improve their own agentic systems. Finally, we show that LLM-as-a-Verifier can provide dense feedback for RL, improving the sample efficiency of SAC and GRPO on robotics and mathematical reasoning benchmarks.",
+      "doi": null,
+      "arxiv_id": "2607.05391v2",
+      "published": "2026-07-06T17:59:35Z",
+      "updated": "2026-07-07T17:26:37Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.05391v2",
+      "pdf_url": "https://arxiv.org/pdf/2607.05391v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.LG",
+        "cs.MA",
+        "cs.RO"
+      ],
+      "external_ids": {
+        "arxiv": "2607.05391v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.05391v2",
+          "url": "https://arxiv.org/abs/2607.05391v2",
+          "doi": null,
+          "arxiv_id": "2607.05391v2",
+          "published": "2026-07-06T17:59:35Z",
+          "updated": "2026-07-07T17:26:37Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.05391v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T07:29:37.455763Z",
+      "sha256": "37ac17a32c1196363917ea67fd156f099acb79dc160175644eb9c9249e017ee1",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcktXZlRYL2Vmc2s2VGMrbE93a3BDQ29PeFdvPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4wNTM5MXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA3OjI5OjM3WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjA1MzkxdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4wNTM5MXYyPC9pZD4KICAgIDx0aXRsZT5MTE0tYXMtYS1WZXJpZmllcjogQSBHZW5lcmFsLVB1cnBvc2UgVmVyaWZpY2F0aW9uIEZyYW1ld29yazwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA3LTA3VDE3OjI2OjM3WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA3LjA1MzkxdjIiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA3LjA1MzkxdjIiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5TY2FsaW5nIHByZS10cmFpbmluZywgcG9zdC10cmFpbmluZywgYW5kIHRlc3QtdGltZSBjb21wdXRlIGhhdmUgYmVjb21lIHRoZSBjZW50cmFsIHBhcmFkaWdtcyBmb3IgaW1wcm92aW5nIHRoZSBjYXBhYmlsaXRpZXMgb2YgTExNcy4gSW4gdGhpcyB3b3JrLCB3ZSBpZGVudGlmeSB2ZXJpZmljYXRpb24sIHRoZSBhYmlsaXR5IHRvIGRldGVybWluZSB0aGUgY29ycmVjdG5lc3Mgb2YgYSBzb2x1dGlvbiwgYXMgYSBuZXcgc2NhbGluZyBheGlzLiBUbyB1bmxvY2sgdGhpcyBhbmQgZGVtb25zdHJhdGUgaXRzIGVmZmVjdGl2ZW5lc3MsIHdlIGludHJvZHVjZSBMTE0tYXMtYS1WZXJpZmllciwgYSBnZW5lcmFsLXB1cnBvc2UgdmVyaWZpY2F0aW9uIGZyYW1ld29yayB0aGF0IHByb3ZpZGVzIGZpbmUtZ3JhaW5lZCBmZWVkYmFjayBmb3IgYWdlbnRpYyB0YXNrcyB3aXRob3V0IHJlcXVpcmluZyBhZGRpdGlvbmFsIHRyYWluaW5nLiBVbmxpa2Ugc3RhbmRhcmQgTE0ganVkZ2VzIHRoYXQgcHJvbXB0IExMTXMgdG8gcHJvZHVjZSBkaXNjcmV0ZSBzY29yZXMgZm9yIGNhbmRpZGF0ZSBzb2x1dGlvbnMsIExMTS1hcy1hLVZlcmlmaWVyIGNvbXB1dGVzIHRoZSBleHBlY3RhdGlvbiBvdmVyIHRoZSBkaXN0cmlidXRpb24gb2Ygc2NvcmluZyB0b2tlbiBsb2dpdHMgdG8gZ2VuZXJhdGUgY29udGludW91cyBzY29yZXMuIFRoaXMgcHJvYmFiaWxpc3RpYyBmb3JtdWxhdGlvbiBlbmFibGVzIHZlcmlmaWNhdGlvbiB0byBzY2FsZSBhbG9uZyBtdWx0aXBsZSBkaW1lbnNpb25zOiAoMSkgc2NvcmUgZ3JhbnVsYXJpdHksICgyKSByZXBlYXRlZCBldmFsdWF0aW9uLCBhbmQgKDMpIGNyaXRlcmlhIGRlY29tcG9zaXRpb24uIEluIHBhcnRpY3VsYXIsIHdlIHNob3cgdGhhdCBzY2FsaW5nIHRoZSBzY29yaW5nIGdyYW51bGFyaXR5IGxlYWRzIHRvIGJldHRlciBzZXBhcmF0aW9uIGJldHdlZW4gcG9zaXRpdmUgYW5kIG5lZ2F0aXZlIHNvbHV0aW9ucywgcmVzdWx0aW5nIGluIG1vcmUgY2FsaWJyYXRlZCBjb21wYXJpc29ucy4gTW9yZW92ZXIsIHNjYWxpbmcgcmVwZWF0ZWQgZXZhbHVhdGlvbiBhbmQgY3JpdGVyaWEgZGVjb21wb3NpdGlvbiBjb25zaXN0ZW50bHkgbGVhZCB0byBhZGRpdGlvbmFsIGdhaW5zIGluIHZlcmlmaWNhdGlvbiBhY2N1cmFjeSB0aHJvdWdoIHZhcmlhbmNlIGFuZCBjb21wbGV4aXR5IHJlZHVjdGlvbi4gV2UgZnVydGhlciBpbnRyb2R1Y2UgYSBjb3N0LWVmZmljaWVudCByYW5raW5nIGFsZ29yaXRobSBmb3Igc2VsZWN0aW5nIHRoZSBiZXN0IHNvbHV0aW9uIGFtb25nIGNhbmRpZGF0ZXMgdXNpbmcgdGhlIHZlcmlmaWVyJ3MgY29udGludW91cyBzY29yZXMuIExMTS1hcy1hLVZlcmlmaWVyIGFjaGlldmVzIHN0YXRlLW9mLXRoZS1hcnQgcGVyZm9ybWFuY2Ugb24gVGVybWluYWwtQmVuY2ggVjIgKDg2LjUlKSwgU1dFLUJlbmNoIFZlcmlmaWVkICg3OC4yJSksIFJvYm9SZXdhcmRCZW5jaCAoODcuNCUpLCBhbmQgTWVkQWdlbnRCZW5jaCAoNzMuMyUpLiBCZXlvbmQgdmVyaWZpY2F0aW9uLCB0aGUgZmluZS1ncmFpbmVkIHNpZ25hbHMgZnJvbSBMTE0tYXMtYS1WZXJpZmllciBjYW4gYWxzbyBzZXJ2ZSBhcyBhIHByb3h5IGZvciBlc3RpbWF0aW5nIHRhc2sgcHJvZ3Jlc3MuIFdlIGJ1aWxkIGFuIGV4dGVuc2lvbiBmb3IgQ2xhdWRlIENvZGUsIGVuYWJsaW5nIGRldmVsb3BlcnMgdG8gbW9uaXRvciBhbmQgaW1wcm92ZSB0aGVpciBvd24gYWdlbnRpYyBzeXN0ZW1zLiBGaW5hbGx5LCB3ZSBzaG93IHRoYXQgTExNLWFzLWEtVmVyaWZpZXIgY2FuIHByb3ZpZGUgZGVuc2UgZmVlZGJhY2sgZm9yIFJMLCBpbXByb3ZpbmcgdGhlIHNhbXBsZSBlZmZpY2llbmN5IG9mIFNBQyBhbmQgR1JQTyBvbiByb2JvdGljcyBhbmQgbWF0aGVtYXRpY2FsIHJlYXNvbmluZyBiZW5jaG1hcmtzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5NQSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLlJPIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDctMDZUMTc6NTk6MzVaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD5Db2RlOiBodHRwczovL2dpdGh1Yi5jb20vbGxtLWFzLWEtdmVyaWZpZXIvbGxtLWFzLWEtdmVyaWZpZXIgV2Vic2l0ZTogaHR0cHM6Ly9sbG0tYXMtYS12ZXJpZmllci5jb208L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmFja3kgS3dvazwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2h1bHUgTGk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlByYW5hdiBBdHJleWE8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPll1ZWppYW5nIExpdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WWl4aW5nIEppYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5DaGVsc2VhIEZpbm48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1hcmNvIFBhdm9uZTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SW9uIFN0b2ljYTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QXphbGlhIE1pcmhvc2Vpbmk8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "LLM-as-a-Verifier: A General-Purpose Verification Framework",
+    "authors": [
+      "Jacky Kwok",
+      "Shulu Li",
+      "Pranav Atreya",
+      "Yuejiang Liu",
+      "Yixing Jiang",
+      "Chelsea Finn",
+      "Marco Pavone",
+      "Ion Stoica",
+      "Azalia Mirhoseini"
+    ],
+    "abstract": "Scaling pre-training, post-training, and test-time compute have become the central paradigms for improving the capabilities of LLMs. In this work, we identify verification, the ability to determine the correctness of a solution, as a new scaling axis. To unlock this and demonstrate its effectiveness, we introduce LLM-as-a-Verifier, a general-purpose verification framework that provides fine-grained feedback for agentic tasks without requiring additional training. Unlike standard LM judges that prompt LLMs to produce discrete scores for candidate solutions, LLM-as-a-Verifier computes the expectation over the distribution of scoring token logits to generate continuous scores. This probabilistic formulation enables verification to scale along multiple dimensions: (1) score granularity, (2) repeated evaluation, and (3) criteria decomposition. In particular, we show that scaling the scoring granularity leads to better separation between positive and negative solutions, resulting in more calibrated comparisons. Moreover, scaling repeated evaluation and criteria decomposition consistently lead to additional gains in verification accuracy through variance and complexity reduction. We further introduce a cost-efficient ranking algorithm for selecting the best solution among candidates using the verifier's continuous scores. LLM-as-a-Verifier achieves state-of-the-art performance on Terminal-Bench V2 (86.5%), SWE-Bench Verified (78.2%), RoboRewardBench (87.4%), and MedAgentBench (73.3%). Beyond verification, the fine-grained signals from LLM-as-a-Verifier can also serve as a proxy for estimating task progress. We build an extension for Claude Code, enabling developers to monitor and improve their own agentic systems. Finally, we show that LLM-as-a-Verifier can provide dense feedback for RL, improving the sample efficiency of SAC and GRPO on robotics and mathematical reasoning benchmarks.",
+    "identifiers": {
+      "arxiv": "2607.05391",
+      "arxiv_versioned": "2607.05391v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.05391v2"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.CL",
+      "cs.LG",
+      "cs.MA",
+      "cs.RO"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-07-06T17:59:35Z",
+    "updated": "2026-07-07T17:26:37Z"
+  }
+}

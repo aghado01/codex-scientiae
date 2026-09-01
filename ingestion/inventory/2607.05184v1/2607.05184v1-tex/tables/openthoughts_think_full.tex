@@ -1,0 +1,95 @@
+\begin{table*}[!htbp]
+\centering
+\caption{\textbf{Full pass@1/pass@16 results for OpenThoughts-trained thinking models.}
+This is the full-format companion to Table~\ref{tab:openthoughts_thinking_models}. Entries report pass@1 / pass@16 on AIME24, AIME25, and HMMT25. The Average column averages the three benchmarks.}
+\label{tab:openthoughts_thinking_models_full}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+
+\newcommand{\metrichead}[1]{%
+  \textbf{#1}%
+}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \metrichead{AIME24}
+& \metrichead{AIME25}
+& \metrichead{HMMT25}
+& \metrichead{Average} \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenonesevenb{} (Thinking)}}
+& \textbf{Base}
+& \textbf{0.502} / \textbf{0.800}
+& \textbf{0.398} / \textbf{0.667}
+& \textbf{0.215} / \textbf{0.467}
+& \textbf{0.372} / \textbf{0.644} \\
+&
+\textbf{+\opsd{}}
+& 0.435 / \textbf{0.800}
+& 0.302 / 0.600
+& 0.185 / 0.433
+& 0.308 / 0.611 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenfourb{} (Thinking)}}
+& \textbf{Base}
+& \textbf{0.727} / \textbf{0.867}
+& \textbf{0.635} / \textbf{0.867}
+& \textbf{0.410} / \textbf{0.667}
+& \textbf{0.591} / \textbf{0.800} \\
+&
+\textbf{+\opsd{}}
+& 0.683 / 0.833
+& 0.556 / 0.833
+& 0.362 / 0.600
+& 0.534 / 0.756 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qweneightb{} (Thinking)}}
+& \textbf{Base}
+& \textbf{0.758} / 0.833
+& \textbf{0.700} / \textbf{0.833}
+& \textbf{0.448} / \textbf{0.733}
+& \textbf{0.635} / \textbf{0.800} \\
+&
+\textbf{+\opsd{}}
+& 0.721 / \textbf{0.900}
+& 0.613 / 0.833
+& 0.400 / 0.633
+& 0.578 / 0.789 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\qwenfourbthink{}}}
+& \textbf{Base}
+& \textbf{0.804} / \textbf{0.933}
+& \textbf{0.804} / 0.900
+& \textbf{0.552} / 0.767
+& \textbf{0.720} / \textbf{0.867} \\
+&
+\textbf{+\opsd{}}
+& 0.787 / 0.867
+& 0.731 / \textbf{0.900}
+& 0.529 / \textbf{0.800}
+& 0.683 / 0.856 \\
+\midrule
+
+\multirow{2}{*}{\textbf{\olmosevenbthink{}}}
+& \textbf{Base}
+& \textbf{0.719} / 0.900
+& \textbf{0.667} / 0.833
+& \textbf{0.452} / \textbf{0.800}
+& \textbf{0.612} / \textbf{0.844} \\
+&
+\textbf{+\opsd{}}
+& 0.715 / \textbf{0.933}
+& 0.652 / \textbf{0.867}
+& 0.446 / 0.667
+& 0.604 / 0.822 \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{p{0.22\linewidth}cccccc}
+\toprule
+Substrate & Auth. & Scope & Mut. & Prov. & Recov. & Action. \\
+\midrule
+Parametric / test-time   & \xmark & \pmark & \cmark & \xmark & \xmark & \cmark \\
+Context window           & \xmark & \pmark & \cmark & \xmark & \xmark & \cmark \\
+Vector store (RAG)       & \xmark & \xmark & \xmark & \pmark & \xmark & \cmark \\
+Knowledge graph / temporal & \pmark & \pmark & \cmark & \cmark & \pmark & \cmark \\
+Multimodal               & \xmark & \pmark & \pmark & \pmark & \xmark & \cmark \\
+Agentic-OS / runtime     & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
+Systems / resource layer & \pmark & \pmark & \cmark & \xmark & \pmark & \cmark \\
+\bottomrule
+\end{tabularx}
+\caption{Which state axes each substrate can natively represent: \cmark{} native, \pmark{} partial or single-writer only, \xmark{} not native. A non-native axis is not impossible to govern, but it requires an external envelope, sidecar log, access-control layer, or transaction wrapper. Vector stores and parametric memory, the two dominant substrates, do not natively represent authority and recoverability, the two governance axes the corpus most neglects. Agentic-OS and bi-temporal-graph substrates import database and operating-system primitives that make all six axes native, but these substrates are rarely the default memory layer.}
+\label{tab:substrate-axis}
+\end{table}

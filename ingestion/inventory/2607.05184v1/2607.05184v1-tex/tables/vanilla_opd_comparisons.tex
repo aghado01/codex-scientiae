@@ -1,0 +1,54 @@
+\begin{table*}[t]
+\centering
+\caption{\textbf{Privileged teacher context, not on-policy distillation itself, degrades thinking-model performance.}
+On a \qwenonesevenb{} thinking student, vanilla OPD with a larger \qweneightb{} teacher improves avg@16 accuracy over the base model. However, conditioning the teacher on information unavailable to the student at test time makes the resulting on-policy update harmful on average. This occurs both for a larger teacher (OPD gold demo) and for the self-teacher (OPSD) setting. All OPD/OPSD variants are trained with a 4,096-token completion cap; all methods, including the base model, are evaluated with a 38,912-token generation cap.}
+\label{tab:qwen17_openthoughts_opsd_opd}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+
+\newcommand{\metrichead}[1]{%
+  \textbf{#1}%
+}
+
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccc@{}}
+\toprule
+\textbf{Model}
+&
+& \metrichead{AIME24}
+& \metrichead{AIME25}
+& \metrichead{HMMT25}
+& \metrichead{Average} \\
+\midrule
+
+\multirow{4}{*}{\textbf{\qwenonesevenb{}}}
+& \textbf{Base}
+& 0.502
+& \textbf{0.398}
+& 0.215
+& 0.372 \\
+
+&
+\textbf{+\opsd{}}
+& 0.435
+& 0.302
+& 0.185
+& 0.308 \\
+
+&
+\textbf{+OPD}
+& \textbf{0.540}
+& 0.385
+& \textbf{0.252}
+& \textbf{0.392} \\
+
+&
+\textbf{+OPD gold demo}
+& 0.467
+& 0.344
+& 0.240
+& 0.350 \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}
