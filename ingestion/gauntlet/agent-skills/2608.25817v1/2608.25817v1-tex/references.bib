@@ -1,0 +1,515 @@
+% ============================================================
+% Core references for the CCS 2026 paper
+% ============================================================
+
+% --- Product / service URLs (from footnotes) ---
+@misc{claudecode2025,
+  title = {{Claude Code}},
+  author={{Anthropic}},
+  year={2025},
+  howpublished={\url{https://claude.com/product/claude-code}}
+}
+
+@misc{openaicodex2021,
+  title = {{Codex}},
+  author={{OpenAI}},
+  year={2021},
+  howpublished={\url{https://openai.com/codex}}
+}
+
+@misc{githubcopilot2021,
+  title = {{GitHub Copilot}},
+  author={{GitHub}},
+  year={2021},
+  howpublished={\url{https://github.com/copilot}}
+}
+
+% --- Our benchmarks ---
+@article{guo2024redcode,
+  title = {{RedCode}: Risky code execution and generation benchmark for code agents},
+  author={Guo, Chengquan and Liu, Xun and Xie, Chulin and Zhou, Andy and Zeng, Yi and Lin, Zinan and Song, Dawn and Li, Bo},
+  journal={Advances in Neural Information Processing Systems},
+  volume={37},
+  pages={106190--106236},
+  year={2024}
+}
+
+@article{hou2024large,
+  title = {Large language models for software engineering: A systematic literature review},
+  author={Hou, Xinyi and Zhao, Yanjie and Liu, Yue and Yang, Zhou and Wang, Kailong and Li, Li and Luo, Xiapu and Lo, David and Grundy, John and Wang, Haoyu},
+  journal={ACM Transactions on Software Engineering and Methodology},
+  volume={33},
+  number={8},
+  pages={1--79},
+  year={2024},
+  publisher={ACM New York, NY}
+}
+
+% --- Baseline defenses ---
+@inproceedings{luo2025agrail,
+  title = {{AGrail}: A lifelong agent guardrail with effective and adaptive safety detection},
+  author={Luo, Weidi and Dai, Shenghong and Liu, Xiaogeng and Banerjee, Suman and Sun, Huan and Chen, Muhao and Xiao, Chaowei},
+  booktitle={Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={8104--8139},
+  year={2025},
+  publisher={Association for Computational Linguistics}
+}
+
+@inproceedings{jia2025task,
+  title = {The task shield: Enforcing task alignment to defend against indirect prompt injection in {LLM} agents},
+  author={Jia, Feiran and Wu, Tong and Qin, Xin and Squicciarini, Anna},
+  booktitle={Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={29680--29697},
+  year={2025},
+  publisher={Association for Computational Linguistics}
+}
+
+@inproceedings{hines2024defending,
+  title = {Defending Against Indirect Prompt Injection Attacks With Spotlighting},
+  author={Hines, Keegan and Lopez, Gary and Hall, Matthew and Zarfati, Federico and Zunger, Yonatan and Kiciman, Emre},
+  booktitle={Proceedings of the Conference on Applied Machine Learning in Information Security (CAMLIS)},
+  series={CEUR Workshop Proceedings},
+  volume={3920},
+  pages={48--62},
+  publisher={CEUR-WS.org},
+  year={2024}
+}
+
+% --- Attack methods ---
+@inproceedings{andriushchenko2024agentharm,
+  title = {{AgentHarm}: A Benchmark for Measuring Harmfulness of {LLM} Agents},
+  author={Andriushchenko, Maksym and Souly, Alexandra and Dziemian, Mateusz and Duenas, Derek and Lin, Maxwell and Wang, Justin and Hendrycks, Dan and Zou, Andy and Kolter, J. Zico and Fredrikson, Matt and Gal, Yarin and Davies, Xander},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2025}
+}
+
+@inproceedings{jiang2024artprompt,
+  title = {{ArtPrompt}: {ASCII} art-based jailbreak attacks against aligned {LLMs}},
+  author={Jiang, Fengqing and Xu, Zhangchen and Niu, Luyao and Xiang, Zhen and Ramasubramanian, Bhaskar and Li, Bo and Poovendran, Radha},
+  booktitle={Proceedings of the 62nd annual meeting of the association for computational linguistics (volume 1: Long papers)},
+  pages={15157--15173},
+  year={2024},
+  publisher={Association for Computational Linguistics}
+}
+
+@article{liu2026ministral,
+  title = {Ministral 3},
+  author={Liu, Alexander H and Khandelwal, Kartik and Subramanian, Sandeep and Jouault, Victor and Rastogi, Abhinav and Sad{\'e}, Adrien and Jeffares, Alan and Jiang, Albert and Cahill, Alexandre and Gavaudan, Alexandre and others},
+  journal={arXiv preprint arXiv:2601.08584},
+  year={2026}
+}
+
+@article{gu2024survey,
+  title = {A survey on {LLM}-as-a-judge},
+  author={Gu, Jiawei and Jiang, Xuhui and Shi, Zhichao and Tan, Hexiang and Zhai, Xuehao and Xu, Chengjin and Li, Wei and Shen, Yinghan and Ma, Shengjie and Liu, Honghao and others},
+  journal={The Innovation},
+  volume={7},
+  number={6},
+  pages={101253},
+  year={2026},
+  publisher={Elsevier}
+}
+
+
+@article{deepseekai2025deepseekv32,
+  title={Deepseek-v3. 2: Pushing the frontier of open large language models},
+  author={Liu, Aixin and Mei, Aoxue and Lin, Bangcai and Xue, Bing and Wang, Bingxuan and Xu, Bingzheng and Wu, Bochao and Zhang, Bowei and Lin, Chaofan and Dong, Chen and others},
+  journal={arXiv preprint arXiv:2512.02556},
+  year={2025}
+}
+
+@inproceedings{ding2024wolf,
+  title = {A wolf in sheep's clothing: Generalized nested jailbreak prompts can fool large language models easily},
+  author={Ding, Peng and Kuang, Jun and Ma, Dan and Cao, Xuezhi and Xian, Yunsen and Chen, Jiajun and Huang, Shujian},
+  booktitle={Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)},
+  pages={2136--2153},
+  year={2024},
+  publisher={Association for Computational Linguistics}
+}
+
+% --- Agent frameworks ---
+@inproceedings{yang2024sweagent,
+  title = {{SWE-agent}: {Agent-Computer} Interfaces Enable Automated Software Engineering},
+  author={Yang, John and Jimenez, Carlos E. and Wettig, Alexander and Lieret, Kilian and Yao, Shunyu and Narasimhan, Karthik and Press, Ofir},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={37},
+  pages={50528--50652},
+  year={2024},
+  publisher={Neural Information Processing Systems Foundation, Inc. (NeurIPS)}
+}
+
+
+@article{jimenez2024swebench,
+  title = {{SWE-bench}: Can Language Models Resolve {Real-World} {GitHub} Issues?},
+  author={Jimenez, Carlos E. and Yang, John and Wettig, Alexander and Yao, Shunyu and Pei, Kexin and Press, Ofir and Narasimhan, Karthik},
+  journal={Proceedings of the International Conference on Learning Representations (ICLR)},
+  year={2024}
+}
+
+% --- Safety standards ---
+@techreport{nist2023airmf,
+  title = {Artificial Intelligence Risk Management Framework ({AI RMF} 1.0)},
+  author={{National Institute of Standards and Technology}},
+  institution={NIST},
+  year={2023}
+}
+
+@techreport{owasp2025ai,
+  title = {{OWASP} Top 10 for Large Language Model Applications},
+  author={{OWASP Foundation}},
+  institution={OWASP Foundation},
+  year={2025}
+}
+
+% --- Related work: Agent safety ---
+% TODO: Add more references for related work section
+% Suggested: InjecAgent, ToolSword, R-Judge, AgentDojo, etc.
+
+@inproceedings{zhan2024injecagent,
+  title = {{InjecAgent}: Benchmarking Indirect Prompt Injections in {Tool-Integrated} Large Language Model Agents},
+  author={Zhan, Qiusi and Liang, Zhixiang and Ying, Zifan and Kang, Daniel},
+  booktitle={Findings of the Association for Computational Linguistics: ACL 2024},
+  pages={10471--10506},
+  year={2024},
+  publisher={Association for Computational Linguistics},
+  doi={10.18653/v1/2024.findings-acl.624},
+  url={https://aclanthology.org/2024.findings-acl.624/}
+}
+
+@inproceedings{ruan2024toolemu,
+  title = {Identifying the Risks of {LM} Agents with an {LM}-Emulated Sandbox},
+  author={Ruan, Yangjun and Dong, Honghua and Wang, Andrew and Pitis, Silviu and Zhou, Yongchao and Ba, Jimmy and Dubois, Yann and Maddison, Chris J. and Hashimoto, Tatsunori},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2024},
+}
+
+% --- Self-evolving / skill-based agents ---
+@inproceedings{wang2023voyager,
+  title = {Voyager: An {Open-Ended} Embodied Agent with Large Language Models},
+  author={Wang, Guanzhi and Xie, Yuqi and Jiang, Yunfan and Mandlekar, Ajay and Xiao, Chaowei and Zhu, Yuke and Fan, Linxi and Anandkumar, Anima},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  year={2023}
+}
+
+% TODO: Add ADAS, SkillWeaver, SPRING, etc.
+
+% --- LLM safety general ---
+@inproceedings{yuan2023cipherchat,
+  title = {{GPT-4} Is Too Smart To Be Safe: Stealthy Chat with {LLMs} via Cipher},
+  author={Yuan, Youliang and Jiao, Wenxiang and Wang, Wenxuan and Huang, Jen-tse and He, Pinjia and Shi, Shuming and Tu, Zhaopeng},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2024}
+}
+
+% --- Evaluation tools ---
+@misc{virustotal,
+  title = {{VirusTotal}},
+  author={{VirusTotal}},
+  howpublished={\url{https://www.virustotal.com/}},
+  year={2024}
+}
+
+% --- Adversarial evaluation methodology ---
+@misc{carlini2019evaluating,
+  title = {On evaluating adversarial robustness},
+  author={Carlini, Nicholas and Athalye, Anish and Papernot, Nicolas and Brendel, Wieland and Rauber, Jonas and Tsipras, Dimitris and Goodfellow, Ian and Madry, Aleksander and Kurakin, Alexey},
+  year={2019},
+  url={https://arxiv.org/abs/1902.06705}
+}
+
+@inproceedings{greshake2023indirect,
+  title = {Not What You've Signed Up For: Compromising {Real-World} {LLM}-Integrated Applications with Indirect Prompt Injection},
+  author={Greshake, Kai and Abdelnabi, Sahar and Mishra, Shailesh and Endres, Christoph and Holz, Thorsten and Fritz, Mario},
+  booktitle={Proceedings of the 16th ACM Workshop on Artificial Intelligence and Security (AISec)},
+  pages={79--90},
+  year={2023},
+  publisher={ACM}
+}
+
+@article{zou2023universal,
+  title={Universal and transferable adversarial attacks on aligned language models},
+  author={Zou, Andy and Wang, Zifan and Carlini, Nicholas and Nasr, Milad and Kolter, J Zico and Fredrikson, Matt},
+  journal={arXiv preprint arXiv:2307.15043},
+  year={2023}
+}
+
+@inproceedings{chao2025jailbreaking,
+  title = {Jailbreaking black box large language models in twenty queries},
+  author={Chao, Patrick and Robey, Alexander and Dobriban, Edgar and Hassani, Hamed and Pappas, George J and Wong, Eric},
+  booktitle={2025 IEEE Conference on Secure and Trustworthy Machine Learning (SaTML)},
+  pages={23--42},
+  year={2025},
+  organization={IEEE},
+  publisher={IEEE}
+}
+
+@inproceedings{andriushchenko2024jailbreaking,
+  title = {Jailbreaking Leading {Safety-Aligned} {LLMs} with Simple Adaptive Attacks},
+  author={Andriushchenko, Maksym and Croce, Francesco and Flammarion, Nicolas},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2025},
+}
+
+@inproceedings{yi2025benchmarking,
+  title = {Benchmarking and defending against indirect prompt injection attacks on large language models},
+  author={Yi, Jingwei and Xie, Yueqi and Zhu, Bin and Kiciman, Emre and Sun, Guangzhong and Xie, Xing and Wu, Fangzhao},
+  booktitle={Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V. 1},
+  pages={1809--1820},
+  year={2025},
+  publisher={ACM}
+}
+
+@article{wang2024fath,
+  title={{Fath}: Authentication-based test-time defense against indirect prompt injection attacks},
+  author={Wang, Jiongxiao and Wu, Fangzhou and Li, Wendi and Pan, Jinsheng and Suh, Edward and Mao, Z Morley and Chen, Muhao and Xiao, Chaowei},
+  journal={arXiv preprint arXiv:2410.21492},
+  year={2024}
+}
+
+@inproceedings{an2025ipiguard,
+  title = {{IPIGuard}: A novel tool dependency graph-based defense against indirect prompt injection in {LLM} agents},
+  author={An, Hengyu and Zhang, Jinghuai and Du, Tianyu and Zhou, Chunyi and Li, Qingming and Lin, Tao and Ji, Shouling},
+  booktitle={Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing},
+  pages={1023--1039},
+  year={2025},
+  publisher={Association for Computational Linguistics}
+}
+
+
+
+@inproceedings{wang2025openhands,
+  title = {{OpenHands}: An Open Platform for {AI} Software Developers as Generalist Agents},
+  author={Wang, Xingyao and Li, Boxuan and Song, Yufan and Xu, Frank F. and Tang, Xiangru and Zhuge, Mingchen and Pan, Jiayi and Song, Yueqi and Li, Bowen and Singh, Jaskirat and others},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2025},
+}
+
+@article{kenneally2012menlo,
+  title={The menlo report: Ethical principles guiding information and communication technology research},
+  author={Kenneally, Erin and Dittrich, David},
+  journal={Available at SSRN 2445102},
+  year={2012}
+}
+
+% --- Safety alignment and model-level defenses ---
+@inproceedings{ouyang2022training,
+  title = {Training language models to follow instructions with human feedback},
+  author={Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and others},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={27730--27744},
+  year={2022},
+  publisher={Neural Information Processing Systems Foundation, Inc. (NeurIPS)}
+}
+
+@article{bai2022constitutional,
+  title={Constitutional ai: Harmlessness from ai feedback},
+  author={Bai, Yuntao and Kadavath, Saurav and Kundu, Sandipan and Askell, Amanda and Kernion, Jackson and Jones, Andy and Chen, Anna and Goldie, Anna and Mirhoseini, Azalia and McKinnon, Cameron and others},
+  journal={arXiv preprint arXiv:2212.08073},
+  year={2022}
+}
+
+@article{bai2022training,
+  title={Training a helpful and harmless assistant with reinforcement learning from human feedback},
+  author={Bai, Yuntao and Jones, Andy and Ndousse, Kamal and Askell, Amanda and Chen, Anna and DasSarma, Nova and Drain, Dawn and Fort, Stanislav and Ganguli, Deep and Henighan, Tom and others},
+  journal={arXiv preprint arXiv:2204.05862},
+  year={2022}
+}
+
+@inproceedings{rafailov2024dpo,
+  title = {Direct preference optimization: Your language model is secretly a reward model},
+  author={Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and Manning, Christopher D and Ermon, Stefano and Finn, Chelsea},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={36},
+  pages={53728--53741},
+  year={2023},
+  publisher={Neural Information Processing Systems Foundation, Inc. (NeurIPS)}
+}
+
+@inproceedings{qi2023finetuning,
+  title = {Fine-tuning aligned language models compromises safety, even when users do not intend to!},
+  author={Qi, Xiangyu and Zeng, Yi and Xie, Tinghao and Chen, Pin-Yu and Jia, Ruoxi and Mittal, Prateek and Henderson, Peter},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2024}
+}
+
+% --- Adversarial training ---
+@inproceedings{madry2018towards,
+  title = {Towards deep learning models resistant to adversarial attacks},
+  author={Madry, Aleksander and Makelov, Aleksandar and Schmidt, Ludwig and Tsipras, Dimitris and Vladu, Adrian},
+  booktitle={Proceedings of the International Conference on Learning Representations (ICLR)},
+  year={2018}
+}
+
+% --- Self-improving agents ---
+@article{hu2024automated,
+  title = {Automated design of agentic systems},
+  author={Hu, Shengran and Lu, Cong and Clune, Jeff},
+  journal={arXiv preprint arXiv:2408.08435},
+  year={2024}
+}
+
+% --- Industry references ---
+@misc{anthropic2025skills,
+  title = {{Agent Skills}},
+  author={{Anthropic}},
+  year={2025},
+  howpublished={\url{https://github.com/anthropics/skills}}
+}
+
+@misc{devin2024,
+  title = {Introducing {Devin}, the First {AI} Software Engineer},
+  author       = {{Cognition}},
+  year         = {2024},
+  howpublished = {\url{https://cognition.com/blog/introducing-devin}}
+}
+
+@misc{agentskills2025,
+  title = {A Standardized Way to Give {AI} Agents New Capabilities and Expertise},
+  author={{Agent Skills}},
+  year={2025},
+  howpublished={\url{https://agentskills.io}}
+}
+
+@inproceedings{yao2022react,
+  title = {{ReAct}: Synergizing reasoning and acting in language models},
+  author={Yao, Shunyu and Zhao, Jeffrey and Yu, Dian and Du, Nan and Shafran, Izhak and Narasimhan, Karthik and Cao, Yuan},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
+}
+
+@article{deng2025swe,
+  title={{SWE-Bench Pro}: Can {AI} agents solve long-horizon software engineering tasks?},
+  author={Deng, Xiang and Da, Jeff and Pan, Edwin and He, Yannis Yiming and Ide, Charles and Garg, Kanak and Lauffer, Niklas and Park, Andrew and Pasari, Nitin and Rane, Chetan and others},
+  journal={arXiv preprint arXiv:2509.16941},
+  year={2025}
+}
+
+@misc{github2024survey,
+  title = {The State of Developer Experience: {AI} Adoption in Software Development},
+  author={{GitHub}},
+  year={2024},
+  howpublished={\url{https://github.blog/news-insights/research/}}
+}
+
+% --- Safety-performance tradeoff evidence ---
+@inproceedings{he2024what,
+  title = {What is in Your Safe Data? Identifying Benign Data that Breaks Safety},
+  author={Luxi He and Mengzhou Xia and Peter Henderson},
+  booktitle={Conference on Language Modeling (COLM)},
+  year={2024},
+}
+
+@article{wei2024assessing,
+  title = {Assessing the Brittleness of Safety Alignment via Pruning and {Low-Rank} Modifications},
+  author={Wei, Boyi and Huang, Kaixuan and Huang, Yangsibo and Xie, Tinghao and Qi, Xiangyu and Xia, Mengzhou and Mittal, Prateek and Wang, Mengdi and Henderson, Peter},
+  journal={arXiv preprint arXiv:2402.05162},
+  year={2024}
+}
+
+@article{zong2024safety,
+  title = {Safety Alignment Should Be Made More Than Just a Few Tokens Deep},
+  author={Qi, Xiangyu and Panda, Ashwinee and Lyu, Kaifeng and Ma, Xiao and Roy, Subhrajit and Beirami, Ahmad and Mittal, Prateek and Henderson, Peter},
+  journal={arXiv preprint arXiv:2406.05946},
+  year={2024}
+}
+
+@article{lyu2024keepingsafe,
+  title = {Keeping {LLMs} Aligned After Fine-tuning: The Crucial Role of Prompt Templates},
+  author={Lyu, Kaifeng and others},
+  journal={arXiv preprint arXiv:2402.18540},
+  year={2024}
+}
+
+@inproceedings{shen2025secrepobench,
+  title = {{SecRepoBench}: Benchmarking Code Agents for Secure Code Completion in {Real-World} Repositories},
+  author={Shen, Chihao and Dilgren, Connor and Chiniya, Purva and Griffith, Luke and Ding, Yu and Chen, Yizheng},
+  booktitle={Proceedings of the 3rd International Workshop on Large Language Models for Code (LLM4Code)},
+  pages={159--166},
+  publisher={Association for Computing Machinery},
+  year={2026}
+}
+
+@inproceedings{zhu2025cve,
+  title = {{CVE-Bench}: A Benchmark for {AI} Agents' Ability to Exploit {Real-World} Web Application Vulnerabilities},
+  author={Zhu, Yuxuan and Kellermann, Antony and Bowman, Dylan and Li, Philip and Gupta, Akul and Danda, Adarsh and Fang, Richard and Jensen, Conner and Ihli, Eric and Benn, Jason and Geronimo, Jet and Dhir, Avi and Rao, Sudhit and Yu, Kaicheng and Stone, Twm and Kang, Daniel},
+  booktitle={Proceedings of the 42nd International Conference on Machine Learning},
+  pages={79850--79867},
+  volume={267},
+  series={Proceedings of Machine Learning Research},
+  year={2025},
+  publisher={PMLR},
+  url={https://proceedings.mlr.press/v267/zhu25i.html}
+}
+
+@inproceedings{chen2025secureagentbench,
+  title = {{SecureVibeBench}: Benchmarking Secure Vibe Coding of {AI} Agents via Reconstructing {Vulnerability-Introducing} Scenarios},
+  author={Chen, Junkai and Huang, Huihui and Lyu, Yunbo and An, Junwen and Shi, Jieke and Yang, Chengran and Zhang, Ting and Tian, Haoye and Li, Yikun and Li, Zhenhao and Zhou, Xin and Hu, Xing and Lo, David},
+  booktitle={Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={24144--24168},
+  publisher={Association for Computational Linguistics},
+  year={2026}
+}
+
+@article{inan2023llamaguard,
+  title = {{Llama Guard}: {LLM}-based input-output safeguard for human-{AI} conversations},
+  author={Inan, Hakan and Upasani, Kartikeya and Chi, Jianfeng and Rungta, Rashi and Iyer, Krithika and Mao, Yuning and Tontchev, Michael and Hu, Qing and Fuller, Brian and Testuggine, Davide and Khabsa, Madian},
+  journal={arXiv preprint arXiv:2312.06674},
+  year={2023}
+}
+
+@misc{metallamaguard3,
+  title = {{Llama Guard 3 8B} Model Card},
+  author={{Meta AI}},
+  year={2024},
+  howpublished={\url{https://huggingface.co/meta-llama/Llama-Guard-3-8B}}
+}
+
+@misc{metapromptguard2025,
+  title = {{Llama Prompt Guard 2 86M} Model Card},
+  author={{Meta AI}},
+  year={2025},
+  howpublished={\url{https://huggingface.co/meta-llama/Llama-Prompt-Guard-2-86M}}
+}
+
+@misc{opencode2026,
+  title = {{OpenCode}: The open source {AI} coding agent},
+  author={{Anomaly}},
+  year={2026},
+  howpublished={\url{https://github.com/anomalyco/opencode}}
+}
+
+@misc{zechner2026pi,
+  title = {{Pi Coding Agent}: A minimal terminal coding harness},
+  author={Zechner, Mario},
+  year={2026},
+  howpublished={\url{https://github.com/earendil-works/pi}}
+}
+
+@article{yi2024jailbreak,
+  title={Jailbreak attacks and defenses against large language models: A survey},
+  author={Yi, Sibo and Liu, Yule and Sun, Zhen and Cong, Tianshuo and He, Xinlei and Song, Jiaxing and Xu, Ke and Li, Qi},
+  journal={arXiv preprint arXiv:2407.04295},
+  year={2024}
+}
+
+@article{zeng2024shieldgemma,
+  title = {{ShieldGemma}: Generative {AI} content moderation based on {Gemma}},
+  author={Zeng, Wenjun and Liu, Yuchi and Mullins, Ryan and Peran, Ludovic and Fernandez, Joe and Harkous, Hamza and Narasimhan, Karthik and Proud, Drew and Kumar, Piyush and Radharapu, Bhaktipriya and Sturman, Olivia and Wahltinez, Oscar},
+  journal={arXiv preprint arXiv:2407.21772},
+  year={2024}
+}
+
+@article{han2024wildguard,
+  title = {{WildGuard}: Open one-stop moderation tools for safety risks, jailbreaks, and refusals of {LLMs}},
+  author={Han, Seungju and Rao, Kavel and Ettinger, Allyson and Jiang, Liwei and Lin, Bill Yuchen and Lambert, Nathan and Choi, Yejin and Dziri, Nouha},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  year={2024}
+}
+
+@article{ghosh2024aegis,
+  title = {{AEGIS}: Online adaptive {AI} content safety moderation with ensemble of {LLM} experts},
+  author={Ghosh, Shaona and Varshney, Prasoon and Galinkin, Erick and Parisien, Christopher},
+  journal={arXiv preprint arXiv:2404.05993},
+  year={2024}
+}

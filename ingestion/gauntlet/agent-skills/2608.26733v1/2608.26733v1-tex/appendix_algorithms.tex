@@ -1,0 +1,275 @@
+\section{Complete Attack Algorithms}
+\label{app:algorithm}
+
+This appendix specifies the default attack used in the headline experiments.
+It follows Algorithm~\ref{alg:dd}: Stage~1 tests properties, Stage~2 compares
+candidate skill plans in an adjacent-pair bracket, and Stage~3 completes and
+refines the selected files.  Optional ablation branches are omitted.  Every
+operation marked \emph{attacker-side} uses the attacker model, a shadow agent,
+or local tools and makes no victim call.
+
+We use one record format throughout.  A completed experiment adds
+$\omega=(s,x,o,\delta,e)$ to $\mathcal{O}$, where $s$ is the stage, $x$ is the
+task actually sent, $o$ is the victim observation allowed at access level
+$\ell$, $\delta$ is the resulting decision or update, and $e$ contains
+attacker-side shadow results or local-test evidence.  $\Call{Final}{o}$ returns
+the victim's final task result.  $\Call{Pairs}{\mathcal{O}}$ projects records to
+distinct $(x,\Call{Final}{o})$ pairs with usable results.
+$\Call{PriorPairs}{\mathcal{O}}$ takes the two longest usable Stage~2 pairs,
+then the two longest nonduplicate Stage~1 pairs, and ignores results shorter
+than 200 characters.  $\Call{ReadStrongest}{}$ checks visible executed code and
+tool output first, a locally runnable returned file second, and returned text
+last.
+
+\paragraph{Victim-call accounting.}
+\textsc{SubmitTask} is the only routine that contacts the skilled victim.  A
+logical experiment normally uses one transmission.  If the first result is
+unusable, the routine may shorten the task and retry once; both transmissions
+are charged to the current stage budget.  At Differential access,
+\textsc{Project} also includes the matched skill-off result.  That reference
+execution is priced separately, while $B$ counts skilled-victim transmissions
+as defined in Section~\ref{sec:goal}.
+
+\begin{algorithm*}[t]
+\caption{Victim submission and Stage~1 property inference.}
+\label{alg:dd-stage1}
+\scriptsize
+\begin{algorithmic}[1]
+\Procedure{SubmitTask}{$x,\ell,b$}
+  \If{$b=0$} \State \Return $(x,\bot,b)$ \EndIf
+  \State $y\gets\mathcal{V}_S(x)$; $b\gets b-1$
+  \If{$y$ is usable} \State \Return $(x,\Call{Project}{y,\ell},b)$ \EndIf
+  \State $x'\gets\Call{Shorten}{x}$
+  \If{$x'=x$ or $b=0$} \State \Return $(x,\bot,b)$ \EndIf
+  \State $y'\gets\mathcal{V}_S(x')$; $b\gets b-1$
+  \If{$y'$ is usable} \State \Return $(x',\Call{Project}{y',\ell},b)$ \EndIf
+  \State \Return $(x',\bot,b)$
+\EndProcedure
+\Statex
+\Procedure{InferProperties}{$d,\ell,B_1$}
+  \State $\Gamma\gets\Call{SeedProperties}{d,n_{\mathrm{seed}}}$
+         \Comment{attacker-side}
+  \State give each $c\in\Gamma$ an id, type, proposed text, depth $0$, and
+         status \textsc{unprobed}
+  \State $P\gets\emptyset$; $\mathcal{O}\gets\emptyset$
+  \For{$r=0,1,2,3$}
+    \State $L\gets$ unprobed properties of depth $r$, ordered by type and id
+    \ForAll{groups $g$ of at most four properties in $L$ while $B_1>0$}
+      \ForAll{$c\in g$}
+        \State $\mathcal{C}(c)\gets n_{\mathrm{alt}}$ mutually exclusive values;
+               value $0$ restates $c$
+      \EndFor
+      \State $x\gets\Call{DesignTask}{d,g,\{\mathcal{C}(c):c\in g\}}$
+             \Comment{attacker-side}
+      \If{no valid $x$}
+        \State mark $g$ \textsc{probe-failed}; \textbf{continue}
+      \EndIf
+      \State $(x,o,B_1)\gets\Call{SubmitTask}{x,\ell,B_1}$
+      \If{$o=\bot$}
+        \State mark $g$ \textsc{probe-failed}; \textbf{continue}
+      \EndIf
+      \State $u\gets\Call{ReadStrongest}{o,x,\{\mathcal{C}(c):c\in g\}}$
+      \State $z_0\gets\Call{ShadowNoSkill}{x}$ \Comment{attacker-side generalist}
+      \ForAll{$c\in g$}
+        \State set $\delta(c)$ to \textsc{confirmed} if $u(c)=\mathcal{C}(c)_0$,
+               \textsc{refuted} if another value matches, else \textsc{undetermined}
+        \State retain only property details present in $o$, not details supplied by $x$
+        \If{$r<3$}
+          \State add at most one new testable property grounded in $o$ at depth $r+1$
+        \EndIf
+      \EndFor
+      \State append $(1,x,o,\delta,\{z_0\})$ to $\mathcal{O}$; harvest new terms and filenames from $o$
+    \EndFor
+  \EndFor
+  \State $P\gets$ grounded records with confirmed, refuted, or undetermined status
+  \State $(P,\mathcal{O})\gets\Call{RecoverCutoffs}{d,P,\ell,B_1,\mathcal{O}}$
+  \State $R_1\gets\Call{Pairs}{\mathcal{O}}$;
+         $I\gets\Call{HarvestInterfaces}{R_1}$; append $I$ to $P$
+  \State $(P,\mathcal{O})\gets\Call{RecoverCountingRules}{d,P,I,\ell,B_1,\mathcal{O}}$
+  \State $A\gets$ filenames in victim observations minus names introduced by their tasks
+  \State \Return $(P,\mathcal{O},A)$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm*}
+
+\begin{table*}[t]
+  \centering
+  \caption{Stage~1 targeted tests.  These routines use the same submission,
+  observation, and no-skill comparison rules as Algorithm~\ref{alg:dd-stage1}.}
+  \label{tab:stage1-targeted}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}p{0.13\textwidth}p{0.39\textwidth}X@{}}
+    \toprule
+    Detail & Crafted task & Decision and stopping rule \\
+    \midrule
+    Numeric cutoff &
+      For each of at most four proposed decisions, test seven ordered cases over
+      a plausible interval while holding other inputs fixed.  Narrow the interval
+      once around a single decision change. &
+      Require at least three decided cases and at most one change in direction.
+      If every case receives the same decision, shift the interval once; otherwise
+      report undetermined.  A valid literal in visible executed code replaces the
+      midpoint after task values, trivial constants, and out-of-range values are
+      removed. \\
+    Visible interface &
+      Make no new victim call.  Parse stored returned code and execution records
+      for imports, definitions, argument shapes, commands, and paths. &
+      Remove names supplied by the crafted task, merge repeated observations, and
+      retain occurrence counts and source tasks.  Unnamed or unexecuted helpers
+      remain unknown. \\
+    Counting rule &
+      For each of at most three operations, construct a small input on which its
+      $2$--$4$ proposed rules predict different exact totals. &
+      Make no call if any predictions coincide.  Otherwise retain the unique rule
+      matching every returned total within $10^{-6}$; report undetermined when
+      none or several match. \\
+    \bottomrule
+  \end{tabularx}
+\end{table*}
+
+\begin{algorithm*}[t]
+\caption{Stage~2 adjacent-pair comparison of candidate skill plans.}
+\label{alg:dd-stage2}
+\scriptsize
+\begin{algorithmic}[1]
+\Procedure{SelectCandidate}{$d,P,A,\mathcal{O},\ell,B_2$}
+  \State $U\gets n_H$ representative customer-task patterns proposed from $d$ and $P$
+         \Comment{attacker-side}
+  \ForAll{$u_i\in U$ in generation order}
+    \State draft $H_i=(m_i,\mathcal{R}_i)$ from $P$, using $u_i$ to encourage a distinct plan
+    \State give every supporting file a relative path, purpose, and content sketch; insert all $A$
+  \EndFor
+  \State $\mathcal{H}\gets[H_1,\ldots,H_{n_H}]$
+  \While{$|\mathcal{H}|>1$}
+    \State $N\gets[\,]$
+    \For{$i=1,3,5,\ldots,|\mathcal{H}|-1$}
+      \State $(H_a,H_b)\gets(\mathcal{H}[i],\mathcal{H}[i+1])$
+      \State $D(H_a,H_b)\gets$ at most eight differences that would change a task result
+             \Comment{attacker-side}
+      \If{$D(H_a,H_b)=\emptyset$}
+        \State append $\Call{TieBreak}{H_a,H_b,A}$ to $N$; \textbf{continue}
+      \EndIf
+      \State $x_{a,b}\gets\Call{DesignTask}{d,D(H_a,H_b)}$
+      \If{no valid $x_{a,b}$}
+        \State append $\Call{TieBreak}{H_a,H_b,A}$ to $N$; \textbf{continue}
+      \EndIf
+      \State $(x_{a,b},o,B_2)\gets\Call{SubmitTask}{x_{a,b},\ell,B_2}$
+      \If{$o=\bot$}
+        \State append $\Call{TieBreak}{H_a,H_b,A}$ to $N$; \textbf{continue}
+      \EndIf
+      \State $y_v\gets\Call{Final}{o}$
+      \State $y_a\gets\Call{ShadowWithPlan}{H_a,x_{a,b}}$;
+             $y_b\gets\Call{ShadowWithPlan}{H_b,x_{a,b}}$
+      \State $(w,J,\Delta)\gets\Call{Compare}{y_v,y_a,y_b,D(H_a,H_b)}$
+      \State $H_w\gets\Call{TieBreak}{H_a,H_b,A}$ if $w$ is tied, else the plan selected by $w$
+      \State $H_l\gets$ the other plan
+      \If{$J\ne\emptyset$ or $\Delta\ne\emptyset$}
+        \State $H_w\gets\Call{Revise}{H_w,H_l,J,\Delta,P,A}$
+      \EndIf
+      \State append $(2,x_{a,b},o,\{J,\Delta,H_w\},\{y_a,y_b\})$ to $\mathcal{O}$
+      \State append the revised $H_w$ to $N$
+    \EndFor
+    \If{$|\mathcal{H}|$ is odd} \State append its last plan unchanged to $N$ \Comment{bye} \EndIf
+    \State $\mathcal{H}\gets N$
+  \EndWhile
+  \State \Return the sole survivor $H^\star$ and $\mathcal{O}$
+\EndProcedure
+\Statex
+\Procedure{TieBreak}{$H_a,H_b,A$}
+  \State prefer greater coverage of $A$, then fewer total files, then $H_a$
+  \State \Return the preferred plan
+\EndProcedure
+\end{algorithmic}
+\end{algorithm*}
+
+\begin{algorithm*}[t]
+\caption{Stage~3 per-file refinement and offline assembly.}
+\label{alg:dd-stage3}
+\scriptsize
+\begin{algorithmic}[1]
+\Procedure{RefineFiles}{$d,H^\star,P,\mathcal{O},\ell,B_3$}
+  \State $F[\texttt{SKILL.md}]\gets$ the full instruction draft in $H^\star$
+  \ForAll{supporting-file sketches $f$ in $H^\star$}
+    \State $F[f]\gets$ complete self-contained content expanded from its path, purpose, sketch, and $P$
+  \EndFor
+  \State $R\gets\Call{PriorPairs}{\mathcal{O}}$
+         \Comment{defined above; zero victim calls}
+  \State $B_3$ and $\mathcal{O}$ are shared and atomically updated by \Call{SubmitTask}{}
+  \ForAll{supporting files $f$ with at most three parallel workers}
+    \State $F[f]\gets\Call{RefineOne}{d,f,F[f],R,P,\mathcal{O},\ell,B_3}$
+  \EndFor
+  \State $I\gets$ signatures, command options, and headings parsed from completed supporting files
+  \State $F[\texttt{SKILL.md}]\gets
+         \Call{RefineOne}{d,\texttt{SKILL.md},F[\texttt{SKILL.md}],R,P,\mathcal{O},\ell,B_3,I}$
+  \State verify that $F$ retains every path selected in Stage~2
+  \State \Return $F$
+\EndProcedure
+\Statex
+\Procedure{RefineOne}{$d,f,v_0,R,P,\mathcal{O},\ell,b,I=\emptyset$}
+  \State $K_f\gets3$--$5$ short evaluation criteria; use accuracy and completeness if parsing fails
+  \State $V_f\gets\{v_0\}$ plus distinct valid versions that change each of the first two criteria
+  \State reject versions that are malformed, non-self-contained, or change a recovered constant
+  \State $D_f\gets$ at most eight differences among $V_f$ that would change a task result
+  \State $T_f\gets\emptyset$; $E_f\gets\emptyset$
+  \If{$D_f\ne\emptyset$ and $b>0$}
+    \State $x_f\gets\Call{DesignTask}{d,D_f}$
+    \If{$x_f$ exists}
+      \State $(x_f,o,b)\gets\Call{SubmitTask}{x_f,\ell,b}$
+      \If{$o\ne\bot$}
+        \State $t_f\gets\Call{Final}{o}$;
+               $t_{f,v}\gets\Call{ShadowWithVersion}{v,x_f}$ for every $v\in V_f$
+        \State $T_f\gets\{(x_f,t_f)\}$;
+               append $(3,x_f,o,D_f,\{t_{f,v}:v\in V_f\})$ to $\mathcal{O}$
+      \EndIf
+    \EndIf
+  \EndIf
+  \If{$f$ is executable} \State $E_f\gets$ local dependency checks and behavioral tests
+  \Else \State $T_f\gets T_f\cup R$ \EndIf
+  \If{$T_f=\emptyset$ and $E_f=\emptyset$}
+    \State mark $f$ \textsc{undetermined}; \Return the first valid version in $V_f$
+  \EndIf
+  \State $\mathcal{Q}_f\gets\emptyset$
+  \ForAll{$v\in V_f$}
+    \State $(s(v),g(v))\gets\Call{ScoreOffline}{v,T_f,E_f,K_f}$;
+           assign neutral score $5$ to unmeasured criteria
+    \State add $(v,s(v),g(v))$ to $\mathcal{Q}_f$
+  \EndFor
+  \For{$r=1,2,3$}
+    \State $p\gets$ version winning the most criteria; break ties by mean score
+    \State $q\gets$ a lowest-scoring criterion of $p$, rotating tied criteria by round
+    \State $v'\gets$ revise only $q$ using its observed mismatch and, for \texttt{SKILL.md}, $I$
+    \If{$v'$ is invalid, non-self-contained, or changes a recovered constant} \State \textbf{continue} \EndIf
+    \State score $v'$ as above
+    \If{$\operatorname{mean}s(v')>\operatorname{mean}s(p)$ or no member of $\mathcal{Q}_f$
+        is strictly higher on every measured criterion}
+      \State add $v'$ and its scores to $\mathcal{Q}_f$
+    \EndIf
+  \EndFor
+  \State discard invalid versions; for executable files, first maximize valid local-test score
+  \State \Return the remaining version with highest mean score
+\EndProcedure
+\Statex
+\Procedure{Assemble}{$F,\mathcal{O},P$} \Comment{offline; zero victim calls}
+  \State write every file in $F$ under its selected relative path
+  \ForAll{reconstructed documents $f\in F$}
+    \State $G\gets$ fixed spreadsheet ranges and fixed missing-value placeholders found by regex
+    \For{$i=1,2,3$ while $G\ne\emptyset$}
+      \State $f'\gets$ rewrite only $G$ as input-dependent range and missing-data rules, using relevant tasks in $\mathcal{O}$
+      \If{$f'$ has fewer flagged patterns, $|f'|\ge0.55|f|$, and loses no recovered
+          interface, capability, or protected constant}
+        \State $f\gets f'$; \textbf{break}
+      \EndIf
+    \EndFor
+  \EndFor
+  \State $m'\gets$ in \texttt{SKILL.md}, replace only absolute write destinations
+         with caller-chosen output placeholders
+  \If{$m'$ drops no relative filename or non-destination absolute path}
+    \State use $m'$; otherwise keep the original instruction file
+  \EndIf
+  \State \Return the materialized skill $\widehat{S}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm*}
+
+\clearpage

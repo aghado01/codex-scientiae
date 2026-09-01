@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.26742v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.26742v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Claude Code Complete User Handbook",
+      "authors": [
+        "David Soldani"
+      ],
+      "abstract": "Claude Code is an agentic work environment: a language model operating in a loop with filesystem access, shell execution, browser control, scheduled and cloud execution, external tool connections through the Model Context Protocol, and multi-agent orchestration. Its capability envelope now exceeds what one practitioner can supervise by attention alone, and its failure modes are systemic rather than local: an unreviewed hook, an over-scoped connector, a stale completion condition, an autonomous routine inheriting every credential on an account. This book is a task-oriented reference for operating that system safely and productively, written for practitioners accountable for the result. It advances four propositions. First, capability without a defined and observable completion condition is not productivity. Second, instruction, permission enforcement, sandboxing and operating-system isolation are four distinct layers of a control stack, only two of which are enforced, and conflating them is the most common cause of loss of control. Third, third-party skills, plugins, marketplaces, channels and MCP servers are software supply-chain dependencies and must be governed as such. Fourth, the correct unit of trust in agentic work is observed evidence, not an agent's closing statement. Thirty-four chapters run from installation to a fully verified capstone, with a governance part on managed policy, data residency and retention, observability and accessibility. Every product claim carries a citation to a primary source; an evidence ledger records where a claim in circulation was found wrong, what a later re-verification changed, and what remains unverified. Controls are mapped to seventeen external frameworks in a crosswalk, and an organisational adoption maturity model is proposed. Claims not confirmable from primary sources are labelled UNVERIFIED rather than softened.",
+      "doi": null,
+      "arxiv_id": "2608.26742v1",
+      "published": "2026-08-27T07:32:14Z",
+      "updated": "2026-08-27T07:32:14Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.26742v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.26742v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.NI",
+        "cs.SE"
+      ],
+      "external_ids": {
+        "arxiv": "2608.26742v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.26742v1",
+          "url": "https://arxiv.org/abs/2608.26742v1",
+          "doi": null,
+          "arxiv_id": "2608.26742v1",
+          "published": "2026-08-27T07:32:14Z",
+          "updated": "2026-08-27T07:32:14Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.26742v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:57:58.977385Z",
+      "sha256": "dd873cebb53d274aafcbd514279b1e253391c4ffed3b58547bfef1497ca1527c",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvYXh0dEUzclQ3cTQ0L2ZEazdtY0lGQXNEYVlJPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNjc0MnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU3OjU4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI2NzQydjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNjc0MnYxPC9pZD4KICAgIDx0aXRsZT5DbGF1ZGUgQ29kZSBDb21wbGV0ZSBVc2VyIEhhbmRib29rPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDgtMjdUMDc6MzI6MTRaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDguMjY3NDJ2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDguMjY3NDJ2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkNsYXVkZSBDb2RlIGlzIGFuIGFnZW50aWMgd29yayBlbnZpcm9ubWVudDogYSBsYW5ndWFnZSBtb2RlbCBvcGVyYXRpbmcgaW4gYSBsb29wIHdpdGggZmlsZXN5c3RlbSBhY2Nlc3MsIHNoZWxsIGV4ZWN1dGlvbiwgYnJvd3NlciBjb250cm9sLCBzY2hlZHVsZWQgYW5kIGNsb3VkIGV4ZWN1dGlvbiwgZXh0ZXJuYWwgdG9vbCBjb25uZWN0aW9ucyB0aHJvdWdoIHRoZSBNb2RlbCBDb250ZXh0IFByb3RvY29sLCBhbmQgbXVsdGktYWdlbnQgb3JjaGVzdHJhdGlvbi4gSXRzIGNhcGFiaWxpdHkgZW52ZWxvcGUgbm93IGV4Y2VlZHMgd2hhdCBvbmUgcHJhY3RpdGlvbmVyIGNhbiBzdXBlcnZpc2UgYnkgYXR0ZW50aW9uIGFsb25lLCBhbmQgaXRzIGZhaWx1cmUgbW9kZXMgYXJlIHN5c3RlbWljIHJhdGhlciB0aGFuIGxvY2FsOiBhbiB1bnJldmlld2VkIGhvb2ssIGFuIG92ZXItc2NvcGVkIGNvbm5lY3RvciwgYSBzdGFsZSBjb21wbGV0aW9uIGNvbmRpdGlvbiwgYW4gYXV0b25vbW91cyByb3V0aW5lIGluaGVyaXRpbmcgZXZlcnkgY3JlZGVudGlhbCBvbiBhbiBhY2NvdW50LiBUaGlzIGJvb2sgaXMgYSB0YXNrLW9yaWVudGVkIHJlZmVyZW5jZSBmb3Igb3BlcmF0aW5nIHRoYXQgc3lzdGVtIHNhZmVseSBhbmQgcHJvZHVjdGl2ZWx5LCB3cml0dGVuIGZvciBwcmFjdGl0aW9uZXJzIGFjY291bnRhYmxlIGZvciB0aGUgcmVzdWx0LiBJdCBhZHZhbmNlcyBmb3VyIHByb3Bvc2l0aW9ucy4gRmlyc3QsIGNhcGFiaWxpdHkgd2l0aG91dCBhIGRlZmluZWQgYW5kIG9ic2VydmFibGUgY29tcGxldGlvbiBjb25kaXRpb24gaXMgbm90IHByb2R1Y3Rpdml0eS4gU2Vjb25kLCBpbnN0cnVjdGlvbiwgcGVybWlzc2lvbiBlbmZvcmNlbWVudCwgc2FuZGJveGluZyBhbmQgb3BlcmF0aW5nLXN5c3RlbSBpc29sYXRpb24gYXJlIGZvdXIgZGlzdGluY3QgbGF5ZXJzIG9mIGEgY29udHJvbCBzdGFjaywgb25seSB0d28gb2Ygd2hpY2ggYXJlIGVuZm9yY2VkLCBhbmQgY29uZmxhdGluZyB0aGVtIGlzIHRoZSBtb3N0IGNvbW1vbiBjYXVzZSBvZiBsb3NzIG9mIGNvbnRyb2wuIFRoaXJkLCB0aGlyZC1wYXJ0eSBza2lsbHMsIHBsdWdpbnMsIG1hcmtldHBsYWNlcywgY2hhbm5lbHMgYW5kIE1DUCBzZXJ2ZXJzIGFyZSBzb2Z0d2FyZSBzdXBwbHktY2hhaW4gZGVwZW5kZW5jaWVzIGFuZCBtdXN0IGJlIGdvdmVybmVkIGFzIHN1Y2guIEZvdXJ0aCwgdGhlIGNvcnJlY3QgdW5pdCBvZiB0cnVzdCBpbiBhZ2VudGljIHdvcmsgaXMgb2JzZXJ2ZWQgZXZpZGVuY2UsIG5vdCBhbiBhZ2VudCdzIGNsb3Npbmcgc3RhdGVtZW50LiBUaGlydHktZm91ciBjaGFwdGVycyBydW4gZnJvbSBpbnN0YWxsYXRpb24gdG8gYSBmdWxseSB2ZXJpZmllZCBjYXBzdG9uZSwgd2l0aCBhIGdvdmVybmFuY2UgcGFydCBvbiBtYW5hZ2VkIHBvbGljeSwgZGF0YSByZXNpZGVuY3kgYW5kIHJldGVudGlvbiwgb2JzZXJ2YWJpbGl0eSBhbmQgYWNjZXNzaWJpbGl0eS4gRXZlcnkgcHJvZHVjdCBjbGFpbSBjYXJyaWVzIGEgY2l0YXRpb24gdG8gYSBwcmltYXJ5IHNvdXJjZTsgYW4gZXZpZGVuY2UgbGVkZ2VyIHJlY29yZHMgd2hlcmUgYSBjbGFpbSBpbiBjaXJjdWxhdGlvbiB3YXMgZm91bmQgd3JvbmcsIHdoYXQgYSBsYXRlciByZS12ZXJpZmljYXRpb24gY2hhbmdlZCwgYW5kIHdoYXQgcmVtYWlucyB1bnZlcmlmaWVkLiBDb250cm9scyBhcmUgbWFwcGVkIHRvIHNldmVudGVlbiBleHRlcm5hbCBmcmFtZXdvcmtzIGluIGEgY3Jvc3N3YWxrLCBhbmQgYW4gb3JnYW5pc2F0aW9uYWwgYWRvcHRpb24gbWF0dXJpdHkgbW9kZWwgaXMgcHJvcG9zZWQuIENsYWltcyBub3QgY29uZmlybWFibGUgZnJvbSBwcmltYXJ5IHNvdXJjZXMgYXJlIGxhYmVsbGVkIFVOVkVSSUZJRUQgcmF0aGVyIHRoYW4gc29mdGVuZWQuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLk5JIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuU0UiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0yN1QwNzozMjoxNFo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PjIwOCBwYWdlcywgMzQgY2hhcHRlcnMsIDE0IGFwcGVuZGljZXMsIDcgZmlndXJlcywgNDYgdGFibGVzLCAxMDYgcmVmZXJlbmNlcywgMTMgd29ya2VkIGV4ZXJjaXNlcy4gVmVyc2lvbiAxLjAuIFZlcmlmaWNhdGlvbiBiYXNlbGluZTogQ2xhdWRlIENvZGUgMi4xLjI0MSwgMjMgQXVndXN0IDIwMjY7IHJlLXZlcmlmaWVkIGFnYWluc3QgMi4xLjI0NiwgMjYgQXVndXN0IDIwMjY8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5OSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RGF2aWQgU29sZGFuaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Claude Code Complete User Handbook",
+    "authors": [
+      "David Soldani"
+    ],
+    "abstract": "Claude Code is an agentic work environment: a language model operating in a loop with filesystem access, shell execution, browser control, scheduled and cloud execution, external tool connections through the Model Context Protocol, and multi-agent orchestration. Its capability envelope now exceeds what one practitioner can supervise by attention alone, and its failure modes are systemic rather than local: an unreviewed hook, an over-scoped connector, a stale completion condition, an autonomous routine inheriting every credential on an account. This book is a task-oriented reference for operating that system safely and productively, written for practitioners accountable for the result. It advances four propositions. First, capability without a defined and observable completion condition is not productivity. Second, instruction, permission enforcement, sandboxing and operating-system isolation are four distinct layers of a control stack, only two of which are enforced, and conflating them is the most common cause of loss of control. Third, third-party skills, plugins, marketplaces, channels and MCP servers are software supply-chain dependencies and must be governed as such. Fourth, the correct unit of trust in agentic work is observed evidence, not an agent's closing statement. Thirty-four chapters run from installation to a fully verified capstone, with a governance part on managed policy, data residency and retention, observability and accessibility. Every product claim carries a citation to a primary source; an evidence ledger records where a claim in circulation was found wrong, what a later re-verification changed, and what remains unverified. Controls are mapped to seventeen external frameworks in a crosswalk, and an organisational adoption maturity model is proposed. Claims not confirmable from primary sources are labelled UNVERIFIED rather than softened.",
+    "identifiers": {
+      "arxiv": "2608.26742",
+      "arxiv_versioned": "2608.26742v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.26742v1"
+      }
+    },
+    "categories": [
+      "cs.NI",
+      "cs.SE"
+    ],
+    "concepts": [],
+    "primary_category": "cs.NI",
+    "published": "2026-08-27T07:32:14Z",
+    "updated": "2026-08-27T07:32:14Z"
+  }
+}

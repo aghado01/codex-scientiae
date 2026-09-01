@@ -1,0 +1,173 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.25677v2",
+  "initialized_utc": "2026-08-31T17:59:10.500915Z",
+  "title": "Learning New Facts with QLoRA: An Acquisition-Retention Frontier",
+  "authors": [
+    "Estelle Zheng",
+    "Sébastien Warichet",
+    "Emmanuel Helbert",
+    "Christophe Cerisara"
+  ],
+  "abstract": "Parameter-efficient fine-tuning is often assumed to preserve pretrained capabilities because it updates only a small number of parameters. We show that this assumption depends strongly on adapter capacity. We study factual acquisition in a controlled OpenStreetMap-derived benchmark where Qwen3-4B must acquire anonymized geographic associations while retaining unrelated capabilities. Comparing full fine-tuning (FFT) with quantized low-rank adaptation (QLoRA) at ranks 8, 16, 32, and 64, we find that rank induces a clear acquisition--retention frontier. Low-rank QLoRA preserves out-of-domain (OOD) performance but acquires fewer facts, whereas higher ranks improve same-fact paraphrase generalization at an increasing cost in performance on unrelated benchmarks. FFT behaves as a conservative baseline: it retains general capabilities well, but does not reach the highest factual-acquisition regime. Distributional, weight-space, and spectral diagnostics mirror this behavioral trade-off, with higher-rank QLoRA moving farther from the pretrained model. A separate math adaptation experiment shows a weaker frontier, suggesting that the effect is most pronounced when adaptation must install new factual associations rather than reinforce skills already supported by pretraining. Code and data are available at https://github.com/zhngstl/new_facts_forgetting.",
+  "identifiers": {
+    "arxiv": "2608.25677",
+    "arxiv_versioned": "2608.25677v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.25677v2"
+    }
+  },
+  "categories": [
+    "cs.CL",
+    "cs.AI",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2026-08-26T11:54:58Z",
+  "updated": "2026-08-27T14:10:56Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.25677v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9511,
+        "sha256": "3cdcb4469167bc5215e5b3b13d3f1242d56ebb5bd3d495fdaad21dc151994374",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-31T17:59:10.207241Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.25677v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "ab270fa30e53bf3f128b2de6bb4a1691030742ed386189f96ffba9db07bc17be"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "acl_latex.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Learning New Facts with QLoRA: An Acquisition-Retention Frontier",
+        "authors_tex": [
+          "\\textbf{Estelle Zheng\\textsuperscript{1,2}},\n \\textbf{Sébastien Warichet\\textsuperscript{2}},\n \\textbf{Emmanuel Helbert\\textsuperscript{2}},\n \\textbf{Christophe Cerisara\\textsuperscript{1}}\n\\\\\n \\textsuperscript{1}LORIA, CNRS, France \\\\\n \\textsuperscript{2}Alcatel-Lucent Enterprise, France \\\\\n\n\n\n    \n    \\texttt{ \\{estelle.zheng, cerisara\\}@loria.fr} \\\\\n    \\texttt{ \\{sebastien.warichet, emmanuel.helbert\\}@al-enterprise.com}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 218,
+        "sha256": "f667cc0b758bff99447a0d28636e991d450bd3563304c85dd71804fb3f522ed7"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.25677v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.25677v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 77353,
+      "sha256": "fe3a65ccbe1e881526c05c7825451a13ed690caa20558d0002ada07c13380a50",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.25677v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.25677v2.tar.gz",
+      "entrypoint": "acl_latex.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 7,
+      "tex_files": 1,
+      "sha256": "7d9bf51f46a753b36a9d5d4e6b4288fe0ab7d1c96ed08b0b09c0bb70082bbe79"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.25677v2.pdf",
+      "format": "application/pdf",
+      "bytes": 297164,
+      "sha256": "76afe03c68beaeb5db0be526806101f856a4a9c612ac0b3ebd9d6837a7f14512"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-31T17:59:10.500915Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 8
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 7
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "acl_latex.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

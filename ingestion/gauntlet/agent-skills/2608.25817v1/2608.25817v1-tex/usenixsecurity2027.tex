@@ -1,0 +1,113 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SkillShield --- USENIX Security 2027 submission
+% Ported from the CCS'26 modular sources onto the official USENIX article shell.
+% Body sections live in sec_*.tex and are pulled in below, matching the CCS layout.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix}   % loads: mathptmx, fontenc/inputenc, microtype, cite, url,
+                      %        breakurl, xcolor, hyperref (do NOT reload these)
+
+%% Packages that acmart bundled for free and the body still needs
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{placeins}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+%% Theorem-like environments (acmart predefined these; article does not)
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+%% RQ answer box --- slate-blue accent (verbatim from the CCS preamble)
+\definecolor{skillslate}{RGB}{62,95,125}
+\definecolor{skillslatebg}{RGB}{242,246,250}
+\newtcolorbox{rqbox}[1][]{
+  breakable,
+  enhanced,
+  colback=white,
+  colframe=white,
+  frame hidden,
+  borderline west={2pt}{0pt}{skillslate},
+  left=8pt, right=4pt, top=2pt, bottom=2pt,
+  before upper={\textbf{\textcolor{skillslate}{#1.}}\hspace{0.5em}},
+}
+
+%% Macros (verbatim from the CCS preamble)
+\newcommand{\sysname}{\textsc{SkillShield}\xspace}
+\newcommand{\ie}{\textit{i.e.,}\xspace}
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\placeholder}[1]{\textcolor{red}{\textbf{[#1]}}}
+\newcommand{\bram}[1]{\textcolor{blue}{\textbf{[Bram: #1]}}}
+\newcommand{\code}[1]{\colorbox{gray!15}{\texttt{#1}}}
+\newcommand{\todods}{\textcolor{red}{\textbf{?}}}  % pending-number placeholder (USENIX reframe)
+
+%-------------------------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------------------------
+
+%don't want date printed
+\date{}
+
+% make title bold and 14 pt font (Latex default is non-bold, 16 pt)
+\title{\Large \bf \sysname: Prompt-Space Security Skills for LLM Coding Agents}
+
+\author{
+  {\rm Xiaodong Wu\textsuperscript{*}, \quad Zhimin Zhao\textsuperscript{*}, \quad Qi Li, \quad Xiangman Li,}\\[2pt]
+  {\rm Yu Shi, \quad Bram Adams, \quad Jianbing Ni}\\[3pt]
+  {\rm Queen's University}\\[2pt]
+  {\rm \{xiaodong.wu,\,z.zhao,\,qi.li,\,xiangman.li,\,y.shi,\,bram.adams,\,jianbing.ni\}@queensu.ca}\\[4pt]
+  {\rm \textsuperscript{*}These authors contributed equally.}
+}
+
+\maketitle
+
+\input{sec_abstract}
+
+\input{sec_intro}
+\input{sec_background}
+\input{sec_related}
+\input{sec_problem}
+\input{sec_methodology}
+\input{sec_experiments}
+\input{sec_discussion}
+\input{sec_conclusion}
+
+%-------------------------------------------------------------------------------
+% Required USENIX sections: placed after the body and before the references.
+% Per USENIX policy these do not count toward the page limit.
+%-------------------------------------------------------------------------------
+\cleardoublepage
+\appendix
+\input{sec_ethics}
+\input{sec_openscience}
+
+%-------------------------------------------------------------------------------
+% Bibliography
+%-------------------------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{references}
+
+%-------------------------------------------------------------------------------
+% Supplementary appendices
+%-------------------------------------------------------------------------------
+\appendix
+\input{sec_appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

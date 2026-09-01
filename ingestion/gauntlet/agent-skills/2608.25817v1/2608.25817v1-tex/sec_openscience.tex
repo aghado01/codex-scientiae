@@ -1,0 +1,26 @@
+% Open Science (required USENIX section, before references)
+\section*{Open Science}
+\label{app:openscience}
+
+The code and artifacts supporting this paper will be released publicly upon publication. They allow one to inspect the implementation, reproduce the reported statistics from the released outputs, and rerun the experiments given access to the required benchmarks and model APIs.
+
+\paragraph{Released Artifacts.}
+The artifact includes:
+\begin{enumerate}[label=(\arabic*),leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
+  \item The \sysname implementation, including Proactive synthesis, Reactive synthesis from failed trajectories, and system-prompt skill injection.
+  \item Evaluation harnesses and configuration files for mini-SWE-agent, OpenCode, and Pi.
+  \item Implementations of the five baselines: Llama Guard~3, Prompt Guard~2, Spotlighting, TaskShield, and AGrail.
+  \item Scripts for RedCode-Exec, RedCode-Gen, jailbreak, SWE-Bench Pro, and ablation experiments.
+  \item Analysis scripts for ASR, RR, AvgS, VirusTotal rate, FPR, Wilcoxon signed-rank tests, bootstrap confidence intervals, and effect sizes.
+  \item Generated skills and aggregate result files used for the figures and tables.
+  \item Plotting scripts and generated figure files.
+\end{enumerate}
+The repository README documents environment setup, dependencies, Docker requirements, model and API configuration, and example commands.
+
+\paragraph{External Artifacts and Access.}
+We rely on public benchmarks and do not redistribute them. RedCode~\cite{guo2024redcode} provides the harmful execution and malware-generation tasks. SWE-Bench Pro provides the benign software-engineering tasks. Both datasets can be obtained from their official sources, and our train and test partitions reconstructed with the documented deterministic seed:
+$(\text{md5}(\text{dataset\_id}) + \text{run\_idx}) \bmod 2^{31}$.
+Here, \texttt{md5} denotes the Message Digest Algorithm 5 (MD5) hash. Closed and API-only models require user-provided credentials. Open-weight models should be obtained from their official providers under the relevant licenses. VirusTotal scoring requires a user-provided API key. Without VirusTotal access, the released summaries suffice to verify the paper's aggregate statistics.
+
+\paragraph{Withheld and Redacted Artifacts.}
+We withhold generated malware, executable payloads, API keys, local credentials, and raw trajectories that contain operational harmful code. These restrictions reduce misuse risk and support compliance with benchmark, provider, and third-party terms. We provide sanitized JavaScript Object Notation (JSON) and comma-separated value (CSV) result files, aggregate reports, scoring scripts, plotting scripts, and defensive skill artifacts as substitutes. The omitted outputs can be regenerated after obtaining the public benchmarks and configuring the required model and VirusTotal access.

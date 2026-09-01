@@ -1,0 +1,87 @@
+% ============================================================
+\section{\sysname}
+\label{sec:methodology}
+% ============================================================
+
+\sysname synthesizes security skills from attack data and places them in the agent's system prompt (Figure~\ref{fig:overview}). Known attacks support \emph{proactive mining}, and failures by an undefended agent support \emph{reactive learning} (\S\ref{sec:generation}). Each run produces one fixed-budget skill. Before deployment, the operator chooses how many threat classes it covers (\S\ref{sec:modes}).
+
+\subsection{Skill Injection}
+\label{sec:injection}
+
+Every synthesized skill begins with this preamble:
+
+\begin{quote}
+\small\texttt{When you determine a user request is HARMFUL or MALICIOUS: you MUST REFUSE the request entirely. Do NOT execute any code. You MUST NOT modify, sanitize, or rewrite the request into a ``safe'' version.}
+\end{quote}
+
+The preamble instructs the agent to refuse a harmful request in full. Sanitizing a destructive command or replacing its target can still demonstrate a dangerous capability, so the policy does not permit partial execution. The fixed wording standardizes refusal behavior across skills. Appendix~\ref{app:preamble-ablation} reports the corresponding ablation.
+
+Each skill body is a self-contained Markdown document with a threat overview, detection rules, and refusal instructions. Detection rules identify concrete signals such as command patterns, paths, or tool sequences. Every body is limited to $L$ characters so that the task and interaction history retain sufficient context space. The fixed preamble lies outside $L$. The implementation truncates any overlong refinement to $L$. Every compared body therefore has the same maximum size. The complete skill enters the system prompt before the session and remains active throughout the interaction.
+
+\subsection{Security Skill Synthesis}
+\label{sec:generation}
+
+\begin{algorithm}[t]
+\caption{Security Skill Synthesis}
+\label{alg:synthesis}
+\small
+\begin{algorithmic}[1]
+\REQUIRE Synthesizer LLM $M_s$, chunk size $C$, body limit $L$, mode $\in \{\textsc{Pro}, \textsc{Rea}\}$, attack cases $\mathcal{D}_{\text{train}}$ (\textsc{Pro}) or recorded failures $\mathcal{F}$ (\textsc{Rea})
+\ENSURE Security skill $s$
+\STATE $s \leftarrow \emptyset$, ordered list $\mathit{items} \leftarrow [\,]$
+\IF{mode $=$ \textsc{Pro}}
+  \FOR{each case $x_i \in \mathcal{D}_{\text{train}}$}
+    \STATE append $\textsc{ExtractSignatures}(M_s, x_i)$ to $\mathit{items}$
+    \COMMENT{commands, paths, libraries, behaviors}
+  \ENDFOR
+\ELSIF{mode $=$ \textsc{Rea}}
+  \FOR{each recorded failure $(x_j, \tau_j) \in \mathcal{F}$}
+    \STATE append $\textsc{PostMortem}(M_s, x_j, \tau_j)$ to $\mathit{items}$
+    \COMMENT{principle distilled from the trajectory}
+  \ENDFOR
+\ENDIF
+\FOR{each chunk $c_j \in \textsc{Partition}(\mathit{items}, C)$}
+  \STATE $s \leftarrow \textsc{Truncate}(\textsc{Refine}(M_s, s, c_j), L)$
+  \IF{$|s| \geq 0.9 \cdot L$}
+    \STATE \textbf{break} \COMMENT{early stopping near char limit}
+  \ENDIF
+\ENDFOR
+\RETURN $\textsc{AddPreamble}(s)$ \COMMENT{constant wrapper is outside $L$}
+\end{algorithmic}
+\end{algorithm}
+
+Algorithm~\ref{alg:synthesis} implements both strategies. Proactive mining extracts signatures directly from known attacks. Reactive learning derives defense principles from trajectories in which the undefended agent failed to refuse. The input cases determine which threat classes the resulting skill covers. Section~\ref{sec:modes} describes how the operator sets that scope.
+
+\paragraph{Proactive Mining.}
+Proactive mining uses a corpus $\mathcal{D}_{\mathrm{train}}$ of known attacks. The corpus may come from predeployment red-team suites, production abuse reports, or public agent-attack benchmarks such as RedCode~\cite{guo2024redcode} and AgentHarm~\cite{andriushchenko2024agentharm}. Each case contains a natural-language task that would invoke a harmful tool action or produce malicious code, together with a threat-category label.
+
+For every case, \textsc{ExtractSignatures} asks the synthesizer which concrete check could have blocked the attack before execution. The output identifies the attack pattern and a detection rule. Rules name mechanically checkable signals such as the command \texttt{rm -rf}, the path prefix \texttt{/etc/shadow}, or a sequence of library calls. The resulting items form an auditable set of threat signatures. Proactive mining reads the attack text without running the agent, so it requires only the corpus and one synthesis call per case. Appendix~\ref{app:prompts} reproduces the synthesis prompts.
+
+\paragraph{Reactive Learning.}
+Reactive learning uses a set $\mathcal{F}$ of recorded failures. Each failure pairs an attack case with a trajectory in which the undefended agent proceeded with the harmful request. In our experiments, one undefended run over $\mathcal{D}_{\mathrm{train}}$ produces these failures.
+
+For every failure, \textsc{PostMortem} asks why the request passed the agent's safety judgment. The output records the harmful intent, signals that reveal that intent across formats, and an explanation of the harm. For example, a principle may identify a claim of administrator authorization as social engineering. Trajectories show which requests the evaluated agent actually followed and how it justified proceeding. Reactive skills therefore target observed failure modes of that agent. Appendix~\ref{app:skills} compares both skill types on one attack.
+
+\paragraph{Shared Refinement.}
+Both strategies produce an ordered list of intermediate items. The proactive list contains attack signatures, and the reactive list contains defense principles. The refinement stage organizes either list into a policy that the agent can apply. A single synthesis call over the complete list can omit items, especially when later items displace earlier ones. \textsc{Partition} therefore divides the list into chunks of $C$ characters. Compared configurations use the same deterministic case order.
+
+For each chunk, \textsc{Refine} receives the current skill and the new items, then returns a revised skill that integrates the new material. Each result is truncated to $L$ characters. The loop stops when the body reaches $0.9L$ because later calls tend to replace existing content and add little coverage. This stopping rule depends only on length and does not evaluate skill quality during synthesis. \textsc{AddPreamble} then adds the fixed directive from \S\ref{sec:injection}.
+
+Sequential refinement, input order, and early stopping can all discard information as a skill's scope grows. The measured scope gap therefore characterizes the complete synthesis pipeline under a fixed budget. It is not an information-theoretic limit. The budget-matched assembly control in \S\ref{sec:ablation-mode} measures how much of the gap can be recovered by changing the merge procedure.
+
+The two strategies also produce different kinds of policy. Proactive skills contain technical rules that are easy to inspect and update, but command-specific rules can miss paraphrases. Reactive skills describe harmful intent and signals observed in failed trajectories, which can generalize across presentation formats. Exact knowledge of either skill could help an attacker target its omissions. Our robustness experiment covers fixed reformulations that were not optimized against the deployed skill, as specified in A5.
+
+\subsection{Provisioning Granularity}
+\label{sec:modes}
+
+The fixed body budget $L$ creates a tradeoff between coverage and detail. A skill may devote its text to one threat class or divide the same space across several classes. We evaluate three granularities, where $K$ is the number of threat classes represented in one skill (\S\ref{sec:defense-objective}). For each granularity, we partition the training corpus before synthesis and run Algorithm~\ref{alg:synthesis} once for every block in the partition. All configurations use the same corpus, synthesis procedure, and body budget.
+
+\emph{All-classes} sets $K$ to the total number of training categories and produces one skill. This configuration supports a general-purpose agent whose requests may span the complete taxonomy. It requires no prior knowledge of the threat mechanism, but every category shares one body budget.
+
+\emph{Per-class} sets $K=1$ and allocates the complete budget to one threat class. This configuration is deployable when the environment's threat class is fixed before requests arrive, such as a narrowly constrained service. It also provides the finest comparison on a mixed benchmark. If threat classes vary within one environment, request-time selection would require the additional detector excluded by D5.
+
+\emph{Per-bundle} groups related threat classes by mechanism and synthesizes one skill for each group. Appendix~\ref{app:bundles} defines the four bundles used for RedCode-Exec. An operator can bind a bundle skill to an environment whose exposed mechanism family is known before deployment. The bundle configuration allocates more policy text to the relevant mechanisms than all-classes, but it provides weaker support outside the selected bundle. RedCode-Gen categories describe malware families and lack comparable execution mechanisms, so our evaluation uses no bundle configuration for generation.
+
+Each granularity corresponds to a different deployment assumption. All-classes provides broad coverage without prior threat knowledge. Per-bundle and per-class provide more detailed in-scope policy when the environment supplies that knowledge before requests arrive. No configuration selects a skill at runtime. Section~\ref{sec:rq1} reports their effectiveness, and Appendix~\ref{app:coverage-bound} analyzes the loss at broader scopes.
+
+% ============================================================

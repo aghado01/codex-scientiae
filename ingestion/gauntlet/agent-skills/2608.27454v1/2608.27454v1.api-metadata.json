@@ -1,0 +1,107 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.27454v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.27454v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "WikiSkill: Compiling Agent Experience into Persistent Knowledge for Skill Evolution",
+      "authors": [
+        "Liyan Tang",
+        "Cyrus Rashtchian",
+        "Chun-Sung Ferng",
+        "Andrew Tomkins",
+        "Da-Cheng Juan",
+        "Tu Vu"
+      ],
+      "abstract": "Agent skills package specialized knowledge and workflows into reusable resources that extend AI agent capabilities. Recent work automatically discovers such skills from agent experience, which enables agents to progressively adapt through interaction. However, the insights that guide skill development typically remain scattered across optimization histories, limiting their systematic reuse across iterations. We introduce WikiSkill, a framework that co-evolves agent skills with a persistent knowledge base (wiki). At a high level, WikiSkill separates raw execution experience, accumulated knowledge, and executable skills, while continuously consolidating experience into the wiki, which subsequent skill updates can build on. Across diverse benchmarks and models, WikiSkill consistently outperforms state-of-the-art skill-evolution methods and improves over no-skill baselines in most model-benchmark settings. We find that skill evolution complements model scaling: larger models generally benefit more from evolved skills, while smaller models with skills can outperform substantially larger models without them. We also find that evolved skills transfer effectively across models and model families, and skills evolved by other models can outperform self-evolved skills. Finally, our ablation studies confirm that persistent knowledge accumulation in the wiki is critical for effective skill evolution. These results demonstrate the benefits of systematically accumulating and refining agent experience for developing reusable and transferable skills.",
+      "doi": null,
+      "arxiv_id": "2608.27454v1",
+      "published": "2026-08-27T17:59:11Z",
+      "updated": "2026-08-27T17:59:11Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.27454v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.27454v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2608.27454v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.27454v1",
+          "url": "https://arxiv.org/abs/2608.27454v1",
+          "doi": null,
+          "arxiv_id": "2608.27454v1",
+          "published": "2026-08-27T17:59:11Z",
+          "updated": "2026-08-27T17:59:11Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.27454v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:57:26.567000Z",
+      "sha256": "20218a3b42d05e8ce111270827f57bccb5cf3cd52f02c4f764a931026c83110c",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvU2lxU1JheCs5ODNqcG5sY3J6UnJGbHhleDRzPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNzQ1NHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjQ5OjA2WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI3NDU0djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNzQ1NHYxPC9pZD4KICAgIDx0aXRsZT5XaWtpU2tpbGw6IENvbXBpbGluZyBBZ2VudCBFeHBlcmllbmNlIGludG8gUGVyc2lzdGVudCBLbm93bGVkZ2UgZm9yIFNraWxsIEV2b2x1dGlvbjwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA4LTI3VDE3OjU5OjExWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA4LjI3NDU0djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA4LjI3NDU0djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5BZ2VudCBza2lsbHMgcGFja2FnZSBzcGVjaWFsaXplZCBrbm93bGVkZ2UgYW5kIHdvcmtmbG93cyBpbnRvIHJldXNhYmxlIHJlc291cmNlcyB0aGF0IGV4dGVuZCBBSSBhZ2VudCBjYXBhYmlsaXRpZXMuIFJlY2VudCB3b3JrIGF1dG9tYXRpY2FsbHkgZGlzY292ZXJzIHN1Y2ggc2tpbGxzIGZyb20gYWdlbnQgZXhwZXJpZW5jZSwgd2hpY2ggZW5hYmxlcyBhZ2VudHMgdG8gcHJvZ3Jlc3NpdmVseSBhZGFwdCB0aHJvdWdoIGludGVyYWN0aW9uLiBIb3dldmVyLCB0aGUgaW5zaWdodHMgdGhhdCBndWlkZSBza2lsbCBkZXZlbG9wbWVudCB0eXBpY2FsbHkgcmVtYWluIHNjYXR0ZXJlZCBhY3Jvc3Mgb3B0aW1pemF0aW9uIGhpc3RvcmllcywgbGltaXRpbmcgdGhlaXIgc3lzdGVtYXRpYyByZXVzZSBhY3Jvc3MgaXRlcmF0aW9ucy4gV2UgaW50cm9kdWNlIFdpa2lTa2lsbCwgYSBmcmFtZXdvcmsgdGhhdCBjby1ldm9sdmVzIGFnZW50IHNraWxscyB3aXRoIGEgcGVyc2lzdGVudCBrbm93bGVkZ2UgYmFzZSAod2lraSkuIEF0IGEgaGlnaCBsZXZlbCwgV2lraVNraWxsIHNlcGFyYXRlcyByYXcgZXhlY3V0aW9uIGV4cGVyaWVuY2UsIGFjY3VtdWxhdGVkIGtub3dsZWRnZSwgYW5kIGV4ZWN1dGFibGUgc2tpbGxzLCB3aGlsZSBjb250aW51b3VzbHkgY29uc29saWRhdGluZyBleHBlcmllbmNlIGludG8gdGhlIHdpa2ksIHdoaWNoIHN1YnNlcXVlbnQgc2tpbGwgdXBkYXRlcyBjYW4gYnVpbGQgb24uIEFjcm9zcyBkaXZlcnNlIGJlbmNobWFya3MgYW5kIG1vZGVscywgV2lraVNraWxsIGNvbnNpc3RlbnRseSBvdXRwZXJmb3JtcyBzdGF0ZS1vZi10aGUtYXJ0IHNraWxsLWV2b2x1dGlvbiBtZXRob2RzIGFuZCBpbXByb3ZlcyBvdmVyIG5vLXNraWxsIGJhc2VsaW5lcyBpbiBtb3N0IG1vZGVsLWJlbmNobWFyayBzZXR0aW5ncy4gV2UgZmluZCB0aGF0IHNraWxsIGV2b2x1dGlvbiBjb21wbGVtZW50cyBtb2RlbCBzY2FsaW5nOiBsYXJnZXIgbW9kZWxzIGdlbmVyYWxseSBiZW5lZml0IG1vcmUgZnJvbSBldm9sdmVkIHNraWxscywgd2hpbGUgc21hbGxlciBtb2RlbHMgd2l0aCBza2lsbHMgY2FuIG91dHBlcmZvcm0gc3Vic3RhbnRpYWxseSBsYXJnZXIgbW9kZWxzIHdpdGhvdXQgdGhlbS4gV2UgYWxzbyBmaW5kIHRoYXQgZXZvbHZlZCBza2lsbHMgdHJhbnNmZXIgZWZmZWN0aXZlbHkgYWNyb3NzIG1vZGVscyBhbmQgbW9kZWwgZmFtaWxpZXMsIGFuZCBza2lsbHMgZXZvbHZlZCBieSBvdGhlciBtb2RlbHMgY2FuIG91dHBlcmZvcm0gc2VsZi1ldm9sdmVkIHNraWxscy4gRmluYWxseSwgb3VyIGFibGF0aW9uIHN0dWRpZXMgY29uZmlybSB0aGF0IHBlcnNpc3RlbnQga25vd2xlZGdlIGFjY3VtdWxhdGlvbiBpbiB0aGUgd2lraSBpcyBjcml0aWNhbCBmb3IgZWZmZWN0aXZlIHNraWxsIGV2b2x1dGlvbi4gVGhlc2UgcmVzdWx0cyBkZW1vbnN0cmF0ZSB0aGUgYmVuZWZpdHMgb2Ygc3lzdGVtYXRpY2FsbHkgYWNjdW11bGF0aW5nIGFuZCByZWZpbmluZyBhZ2VudCBleHBlcmllbmNlIGZvciBkZXZlbG9waW5nIHJldXNhYmxlIGFuZCB0cmFuc2ZlcmFibGUgc2tpbGxzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDgtMjdUMTc6NTk6MTFaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TGl5YW4gVGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q3lydXMgUmFzaHRjaGlhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q2h1bi1TdW5nIEZlcm5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbmRyZXcgVG9ta2luczwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RGEtQ2hlbmcgSnVhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+VHUgVnU8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "WikiSkill: Compiling Agent Experience into Persistent Knowledge for Skill Evolution",
+    "authors": [
+      "Liyan Tang",
+      "Cyrus Rashtchian",
+      "Chun-Sung Ferng",
+      "Andrew Tomkins",
+      "Da-Cheng Juan",
+      "Tu Vu"
+    ],
+    "abstract": "Agent skills package specialized knowledge and workflows into reusable resources that extend AI agent capabilities. Recent work automatically discovers such skills from agent experience, which enables agents to progressively adapt through interaction. However, the insights that guide skill development typically remain scattered across optimization histories, limiting their systematic reuse across iterations. We introduce WikiSkill, a framework that co-evolves agent skills with a persistent knowledge base (wiki). At a high level, WikiSkill separates raw execution experience, accumulated knowledge, and executable skills, while continuously consolidating experience into the wiki, which subsequent skill updates can build on. Across diverse benchmarks and models, WikiSkill consistently outperforms state-of-the-art skill-evolution methods and improves over no-skill baselines in most model-benchmark settings. We find that skill evolution complements model scaling: larger models generally benefit more from evolved skills, while smaller models with skills can outperform substantially larger models without them. We also find that evolved skills transfer effectively across models and model families, and skills evolved by other models can outperform self-evolved skills. Finally, our ablation studies confirm that persistent knowledge accumulation in the wiki is critical for effective skill evolution. These results demonstrate the benefits of systematically accumulating and refining agent experience for developing reusable and transferable skills.",
+    "identifiers": {
+      "arxiv": "2608.27454",
+      "arxiv_versioned": "2608.27454v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.27454v1"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-27T17:59:11Z",
+    "updated": "2026-08-27T17:59:11Z"
+  }
+}

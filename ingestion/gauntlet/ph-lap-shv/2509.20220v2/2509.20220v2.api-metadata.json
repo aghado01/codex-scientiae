@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2509.20220v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2509.20220v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Generalized Persistent Laplacians and their Spectral Properties",
+      "authors": [
+        "Arne Wolf",
+        "Jiyu Fan",
+        "Anthea Monod"
+      ],
+      "abstract": "Laplacian operators are classical objects that are fundamental in both pure and applied mathematics and are becoming increasingly prominent in modern computational and data science fields such as applied and computational topology and application areas such as machine learning and network science. In this paper, we introduce a unifying operator-theoretic framework of generalized Laplacians as invariants that encompasses and extends all existing constructions, from discrete combinatorial settings to de Rham complexes of smooth manifolds. Within this framework, we introduce and study a generalized notion of persistent Laplacians. While the classical persistent Laplacian fails to satisfy the desirable properties of monotonicity and stability -- both crucial for robustness and interpretability -- our framework allows us to isolate and analyze these properties systematically. We demonstrate that their component maps, the up- and down-persistent Laplacians, satisfy these properties individually. Moreover, we prove that the spectra of these separate components fully determine the spectra of the full Laplacians, making them not only preferable but sufficient for analysis. We study these questions comprehensively, in both the finite and infinite dimensional settings. Our work expands and strengthens the theoretical foundation of generalized Laplacian-based methods in pure, applied, and computational mathematics.",
+      "doi": null,
+      "arxiv_id": "2509.20220v2",
+      "published": "2025-09-24T15:15:31Z",
+      "updated": "2025-11-04T17:52:20Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2509.20220v2",
+      "pdf_url": "https://arxiv.org/pdf/2509.20220v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.AT",
+        "math.SP"
+      ],
+      "external_ids": {
+        "arxiv": "2509.20220v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2509.20220v2",
+          "url": "https://arxiv.org/abs/2509.20220v2",
+          "doi": null,
+          "arxiv_id": "2509.20220v2",
+          "published": "2025-09-24T15:15:31Z",
+          "updated": "2025-11-04T17:52:20Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2509.20220v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T04:45:15.006311Z",
+      "sha256": "93ed1cc0e960bafba6c03f9854fb7a3d433283cd3ee38dbcc1c9a76ba9271154",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvaTcwUUZET2xhOWFwZ202cHZFN0VkTTYzdVpFPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwOS4yMDIyMHYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA0OjQ1OjE0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA5LjIwMjIwdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwOS4yMDIyMHYyPC9pZD4KICAgIDx0aXRsZT5HZW5lcmFsaXplZCBQZXJzaXN0ZW50IExhcGxhY2lhbnMgYW5kIHRoZWlyIFNwZWN0cmFsIFByb3BlcnRpZXM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNS0xMS0wNFQxNzo1MjoyMFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjUwOS4yMDIyMHYyIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjUwOS4yMDIyMHYyIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+TGFwbGFjaWFuIG9wZXJhdG9ycyBhcmUgY2xhc3NpY2FsIG9iamVjdHMgdGhhdCBhcmUgZnVuZGFtZW50YWwgaW4gYm90aCBwdXJlIGFuZCBhcHBsaWVkIG1hdGhlbWF0aWNzIGFuZCBhcmUgYmVjb21pbmcgaW5jcmVhc2luZ2x5IHByb21pbmVudCBpbiBtb2Rlcm4gY29tcHV0YXRpb25hbCBhbmQgZGF0YSBzY2llbmNlIGZpZWxkcyBzdWNoIGFzIGFwcGxpZWQgYW5kIGNvbXB1dGF0aW9uYWwgdG9wb2xvZ3kgYW5kIGFwcGxpY2F0aW9uIGFyZWFzIHN1Y2ggYXMgbWFjaGluZSBsZWFybmluZyBhbmQgbmV0d29yayBzY2llbmNlLiBJbiB0aGlzIHBhcGVyLCB3ZSBpbnRyb2R1Y2UgYSB1bmlmeWluZyBvcGVyYXRvci10aGVvcmV0aWMgZnJhbWV3b3JrIG9mIGdlbmVyYWxpemVkIExhcGxhY2lhbnMgYXMgaW52YXJpYW50cyB0aGF0IGVuY29tcGFzc2VzIGFuZCBleHRlbmRzIGFsbCBleGlzdGluZyBjb25zdHJ1Y3Rpb25zLCBmcm9tIGRpc2NyZXRlIGNvbWJpbmF0b3JpYWwgc2V0dGluZ3MgdG8gZGUgUmhhbSBjb21wbGV4ZXMgb2Ygc21vb3RoIG1hbmlmb2xkcy4gV2l0aGluIHRoaXMgZnJhbWV3b3JrLCB3ZSBpbnRyb2R1Y2UgYW5kIHN0dWR5IGEgZ2VuZXJhbGl6ZWQgbm90aW9uIG9mIHBlcnNpc3RlbnQgTGFwbGFjaWFucy4gV2hpbGUgdGhlIGNsYXNzaWNhbCBwZXJzaXN0ZW50IExhcGxhY2lhbiBmYWlscyB0byBzYXRpc2Z5IHRoZSBkZXNpcmFibGUgcHJvcGVydGllcyBvZiBtb25vdG9uaWNpdHkgYW5kIHN0YWJpbGl0eSAtLSBib3RoIGNydWNpYWwgZm9yIHJvYnVzdG5lc3MgYW5kIGludGVycHJldGFiaWxpdHkgLS0gb3VyIGZyYW1ld29yayBhbGxvd3MgdXMgdG8gaXNvbGF0ZSBhbmQgYW5hbHl6ZSB0aGVzZSBwcm9wZXJ0aWVzIHN5c3RlbWF0aWNhbGx5LiBXZSBkZW1vbnN0cmF0ZSB0aGF0IHRoZWlyIGNvbXBvbmVudCBtYXBzLCB0aGUgdXAtIGFuZCBkb3duLXBlcnNpc3RlbnQgTGFwbGFjaWFucywgc2F0aXNmeSB0aGVzZSBwcm9wZXJ0aWVzIGluZGl2aWR1YWxseS4gTW9yZW92ZXIsIHdlIHByb3ZlIHRoYXQgdGhlIHNwZWN0cmEgb2YgdGhlc2Ugc2VwYXJhdGUgY29tcG9uZW50cyBmdWxseSBkZXRlcm1pbmUgdGhlIHNwZWN0cmEgb2YgdGhlIGZ1bGwgTGFwbGFjaWFucywgbWFraW5nIHRoZW0gbm90IG9ubHkgcHJlZmVyYWJsZSBidXQgc3VmZmljaWVudCBmb3IgYW5hbHlzaXMuIFdlIHN0dWR5IHRoZXNlIHF1ZXN0aW9ucyBjb21wcmVoZW5zaXZlbHksIGluIGJvdGggdGhlIGZpbml0ZSBhbmQgaW5maW5pdGUgZGltZW5zaW9uYWwgc2V0dGluZ3MuIE91ciB3b3JrIGV4cGFuZHMgYW5kIHN0cmVuZ3RoZW5zIHRoZSB0aGVvcmV0aWNhbCBmb3VuZGF0aW9uIG9mIGdlbmVyYWxpemVkIExhcGxhY2lhbi1iYXNlZCBtZXRob2RzIGluIHB1cmUsIGFwcGxpZWQsIGFuZCBjb21wdXRhdGlvbmFsIG1hdGhlbWF0aWNzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJtYXRoLkFUIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0ibWF0aC5TUCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI1LTA5LTI0VDE1OjE1OjMxWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+TWlub3IgY2hhbmdlcyBpbiBTZWN0aW9uIDQuNC4yIGFuZCBBcHBlbmRpeCBBLiA2MSBwYWdlcywgMTggZmlndXJlcywgMSB0YWJsZS4gQWxsIGNvbW1lbnRzIGFyZSB3ZWxjb21lITwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09Im1hdGguQVQiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkFybmUgV29sZjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Sml5dSBGYW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkFudGhlYSBNb25vZDwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Generalized Persistent Laplacians and their Spectral Properties",
+    "authors": [
+      "Arne Wolf",
+      "Jiyu Fan",
+      "Anthea Monod"
+    ],
+    "abstract": "Laplacian operators are classical objects that are fundamental in both pure and applied mathematics and are becoming increasingly prominent in modern computational and data science fields such as applied and computational topology and application areas such as machine learning and network science. In this paper, we introduce a unifying operator-theoretic framework of generalized Laplacians as invariants that encompasses and extends all existing constructions, from discrete combinatorial settings to de Rham complexes of smooth manifolds. Within this framework, we introduce and study a generalized notion of persistent Laplacians. While the classical persistent Laplacian fails to satisfy the desirable properties of monotonicity and stability -- both crucial for robustness and interpretability -- our framework allows us to isolate and analyze these properties systematically. We demonstrate that their component maps, the up- and down-persistent Laplacians, satisfy these properties individually. Moreover, we prove that the spectra of these separate components fully determine the spectra of the full Laplacians, making them not only preferable but sufficient for analysis. We study these questions comprehensively, in both the finite and infinite dimensional settings. Our work expands and strengthens the theoretical foundation of generalized Laplacian-based methods in pure, applied, and computational mathematics.",
+    "identifiers": {
+      "arxiv": "2509.20220",
+      "arxiv_versioned": "2509.20220v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2509.20220v2"
+      }
+    },
+    "categories": [
+      "math.AT",
+      "math.SP"
+    ],
+    "concepts": [],
+    "primary_category": "math.AT",
+    "published": "2025-09-24T15:15:31Z",
+    "updated": "2025-11-04T17:52:20Z"
+  }
+}

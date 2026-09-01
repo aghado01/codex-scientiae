@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2508.11646v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2508.11646v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Memory as Structured Trajectories: Persistent Homology and Contextual Sheaves",
+      "authors": [
+        "Xin Li"
+      ],
+      "abstract": "We propose a topological framework for memory and inference grounded in the structure of spike-timing dynamics, persistent homology, and the Context-Content Uncertainty Principle (CCUP). Starting from the observation that polychronous neural groups (PNGs) encode reproducible, time-locked spike sequences shaped by axonal delays and synaptic plasticity, we construct spatiotemporal complexes whose temporally consistent transitions define chain complexes over which robust activation cycles emerge. These activation loops are abstracted into cell posets, enabling a compact and causally ordered representation of neural activity with overlapping and compositional memory traces. We introduce the delta-homology analogy, which formalizes memory as a set of sparse, topologically irreducible attractors. A Dirac delta-like memory trace is identified with a nontrivial homology generator on a latent manifold of cognitive states. Such traces are sharply localized along reproducible topological cycles and are only activated when inference trajectories complete a full cycle. They encode minimal, path-dependent memory units that cannot be synthesized from local features alone. We interpret these delta-homology generators as the low-entropy content variable, while the high-entropy context variable is represented dually as a filtration, cohomology class, or sheaf over the same latent space. Inference is recast as a dynamic alignment between content and context and coherent memory retrieval corresponds to the existence of a global section that selects and sustains a topological generator. Memory is no longer a static attractor or distributed code, but a cycle-completing, structure-aware inference process.",
+      "doi": null,
+      "arxiv_id": "2508.11646v1",
+      "published": "2025-08-01T23:03:13Z",
+      "updated": "2025-08-01T23:03:13Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2508.11646v1",
+      "pdf_url": "https://arxiv.org/pdf/2508.11646v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "q-bio.NC",
+        "cs.NE",
+        "nlin.AO"
+      ],
+      "external_ids": {
+        "arxiv": "2508.11646v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2508.11646v1",
+          "url": "https://arxiv.org/abs/2508.11646v1",
+          "doi": null,
+          "arxiv_id": "2508.11646v1",
+          "published": "2025-08-01T23:03:13Z",
+          "updated": "2025-08-01T23:03:13Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2508.11646v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T04:44:42.726554Z",
+      "sha256": "6d283cf171225128fc72537f12741fb509c2daf95d308d842f8fd7f576136e82",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcU52OWl0WGpldTJFaHVmeGdmU1NHWHhTY0JjPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwOC4xMTY0NnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA0OjQ0OjQyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA4LjExNjQ2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwOC4xMTY0NnYxPC9pZD4KICAgIDx0aXRsZT5NZW1vcnkgYXMgU3RydWN0dXJlZCBUcmFqZWN0b3JpZXM6IFBlcnNpc3RlbnQgSG9tb2xvZ3kgYW5kIENvbnRleHR1YWwgU2hlYXZlczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI1LTA4LTAxVDIzOjAzOjEzWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNTA4LjExNjQ2djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNTA4LjExNjQ2djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5XZSBwcm9wb3NlIGEgdG9wb2xvZ2ljYWwgZnJhbWV3b3JrIGZvciBtZW1vcnkgYW5kIGluZmVyZW5jZSBncm91bmRlZCBpbiB0aGUgc3RydWN0dXJlIG9mIHNwaWtlLXRpbWluZyBkeW5hbWljcywgcGVyc2lzdGVudCBob21vbG9neSwgYW5kIHRoZSBDb250ZXh0LUNvbnRlbnQgVW5jZXJ0YWludHkgUHJpbmNpcGxlIChDQ1VQKS4gU3RhcnRpbmcgZnJvbSB0aGUgb2JzZXJ2YXRpb24gdGhhdCBwb2x5Y2hyb25vdXMgbmV1cmFsIGdyb3VwcyAoUE5HcykgZW5jb2RlIHJlcHJvZHVjaWJsZSwgdGltZS1sb2NrZWQgc3Bpa2Ugc2VxdWVuY2VzIHNoYXBlZCBieSBheG9uYWwgZGVsYXlzIGFuZCBzeW5hcHRpYyBwbGFzdGljaXR5LCB3ZSBjb25zdHJ1Y3Qgc3BhdGlvdGVtcG9yYWwgY29tcGxleGVzIHdob3NlIHRlbXBvcmFsbHkgY29uc2lzdGVudCB0cmFuc2l0aW9ucyBkZWZpbmUgY2hhaW4gY29tcGxleGVzIG92ZXIgd2hpY2ggcm9idXN0IGFjdGl2YXRpb24gY3ljbGVzIGVtZXJnZS4gVGhlc2UgYWN0aXZhdGlvbiBsb29wcyBhcmUgYWJzdHJhY3RlZCBpbnRvIGNlbGwgcG9zZXRzLCBlbmFibGluZyBhIGNvbXBhY3QgYW5kIGNhdXNhbGx5IG9yZGVyZWQgcmVwcmVzZW50YXRpb24gb2YgbmV1cmFsIGFjdGl2aXR5IHdpdGggb3ZlcmxhcHBpbmcgYW5kIGNvbXBvc2l0aW9uYWwgbWVtb3J5IHRyYWNlcy4gV2UgaW50cm9kdWNlIHRoZSBkZWx0YS1ob21vbG9neSBhbmFsb2d5LCB3aGljaCBmb3JtYWxpemVzIG1lbW9yeSBhcyBhIHNldCBvZiBzcGFyc2UsIHRvcG9sb2dpY2FsbHkgaXJyZWR1Y2libGUgYXR0cmFjdG9ycy4gQSBEaXJhYyBkZWx0YS1saWtlIG1lbW9yeSB0cmFjZSBpcyBpZGVudGlmaWVkIHdpdGggYSBub250cml2aWFsIGhvbW9sb2d5IGdlbmVyYXRvciBvbiBhIGxhdGVudCBtYW5pZm9sZCBvZiBjb2duaXRpdmUgc3RhdGVzLiBTdWNoIHRyYWNlcyBhcmUgc2hhcnBseSBsb2NhbGl6ZWQgYWxvbmcgcmVwcm9kdWNpYmxlIHRvcG9sb2dpY2FsIGN5Y2xlcyBhbmQgYXJlIG9ubHkgYWN0aXZhdGVkIHdoZW4gaW5mZXJlbmNlIHRyYWplY3RvcmllcyBjb21wbGV0ZSBhIGZ1bGwgY3ljbGUuIFRoZXkgZW5jb2RlIG1pbmltYWwsIHBhdGgtZGVwZW5kZW50IG1lbW9yeSB1bml0cyB0aGF0IGNhbm5vdCBiZSBzeW50aGVzaXplZCBmcm9tIGxvY2FsIGZlYXR1cmVzIGFsb25lLiBXZSBpbnRlcnByZXQgdGhlc2UgZGVsdGEtaG9tb2xvZ3kgZ2VuZXJhdG9ycyBhcyB0aGUgbG93LWVudHJvcHkgY29udGVudCB2YXJpYWJsZSwgd2hpbGUgdGhlIGhpZ2gtZW50cm9weSBjb250ZXh0IHZhcmlhYmxlIGlzIHJlcHJlc2VudGVkIGR1YWxseSBhcyBhIGZpbHRyYXRpb24sIGNvaG9tb2xvZ3kgY2xhc3MsIG9yIHNoZWFmIG92ZXIgdGhlIHNhbWUgbGF0ZW50IHNwYWNlLiBJbmZlcmVuY2UgaXMgcmVjYXN0IGFzIGEgZHluYW1pYyBhbGlnbm1lbnQgYmV0d2VlbiBjb250ZW50IGFuZCBjb250ZXh0IGFuZCBjb2hlcmVudCBtZW1vcnkgcmV0cmlldmFsIGNvcnJlc3BvbmRzIHRvIHRoZSBleGlzdGVuY2Ugb2YgYSBnbG9iYWwgc2VjdGlvbiB0aGF0IHNlbGVjdHMgYW5kIHN1c3RhaW5zIGEgdG9wb2xvZ2ljYWwgZ2VuZXJhdG9yLiBNZW1vcnkgaXMgbm8gbG9uZ2VyIGEgc3RhdGljIGF0dHJhY3RvciBvciBkaXN0cmlidXRlZCBjb2RlLCBidXQgYSBjeWNsZS1jb21wbGV0aW5nLCBzdHJ1Y3R1cmUtYXdhcmUgaW5mZXJlbmNlIHByb2Nlc3MuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09InEtYmlvLk5DIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTkUiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJubGluLkFPIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMDgtMDFUMjM6MDM6MTNaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJxLWJpby5OQyIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WGluIExpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Memory as Structured Trajectories: Persistent Homology and Contextual Sheaves",
+    "authors": [
+      "Xin Li"
+    ],
+    "abstract": "We propose a topological framework for memory and inference grounded in the structure of spike-timing dynamics, persistent homology, and the Context-Content Uncertainty Principle (CCUP). Starting from the observation that polychronous neural groups (PNGs) encode reproducible, time-locked spike sequences shaped by axonal delays and synaptic plasticity, we construct spatiotemporal complexes whose temporally consistent transitions define chain complexes over which robust activation cycles emerge. These activation loops are abstracted into cell posets, enabling a compact and causally ordered representation of neural activity with overlapping and compositional memory traces. We introduce the delta-homology analogy, which formalizes memory as a set of sparse, topologically irreducible attractors. A Dirac delta-like memory trace is identified with a nontrivial homology generator on a latent manifold of cognitive states. Such traces are sharply localized along reproducible topological cycles and are only activated when inference trajectories complete a full cycle. They encode minimal, path-dependent memory units that cannot be synthesized from local features alone. We interpret these delta-homology generators as the low-entropy content variable, while the high-entropy context variable is represented dually as a filtration, cohomology class, or sheaf over the same latent space. Inference is recast as a dynamic alignment between content and context and coherent memory retrieval corresponds to the existence of a global section that selects and sustains a topological generator. Memory is no longer a static attractor or distributed code, but a cycle-completing, structure-aware inference process.",
+    "identifiers": {
+      "arxiv": "2508.11646",
+      "arxiv_versioned": "2508.11646v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2508.11646v1"
+      }
+    },
+    "categories": [
+      "q-bio.NC",
+      "cs.NE",
+      "nlin.AO"
+    ],
+    "concepts": [],
+    "primary_category": "q-bio.NC",
+    "published": "2025-08-01T23:03:13Z",
+    "updated": "2025-08-01T23:03:13Z"
+  }
+}

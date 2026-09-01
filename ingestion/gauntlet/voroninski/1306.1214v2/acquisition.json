@@ -1,0 +1,42 @@
+{
+  "schema": "codex-scientiae/acquisition/0.1",
+  "state": "acquired",
+  "slug": "1306.1214v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "1306.1214v2",
+    "provider_roles": [
+      "artifact-origin",
+      "artifact-access",
+      "metadata-authority"
+    ]
+  },
+  "forms": [
+    {
+      "kind": "source",
+      "path": "arXiv-1306.1214v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 30137,
+      "sha256": "5ef62e00ad36cf6ca21604b22debf097cef54db2d38a0f05ed7283fc39c948a7",
+      "custody": "adopted",
+      "origin_url": null,
+      "candidate_id": null,
+      "fetched_at": null,
+      "provider_checksum": null,
+      "local_import": null
+    },
+    {
+      "kind": "pdf",
+      "path": "1306.1214v2.pdf",
+      "format": "application/pdf",
+      "bytes": 185348,
+      "sha256": "5ada48386e29e176bba7b8cb09704993a39d636b85bbbfe3eedcda3f6d501874",
+      "custody": "adopted",
+      "origin_url": null,
+      "candidate_id": null,
+      "fetched_at": null,
+      "provider_checksum": null,
+      "local_import": null
+    }
+  ]
+}

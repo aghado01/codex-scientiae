@@ -1,0 +1,172 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.26263v2",
+  "initialized_utc": "2026-08-31T17:58:55.058159Z",
+  "title": "SKILL.state: Scalable Long-Horizon Agent Skills",
+  "authors": [
+    "Sanket Badhe",
+    "Priyanka Tiwari",
+    "Jonghyun Chung"
+  ],
+  "abstract": "Large Language Models (LLMs) increasingly act as autonomous agents executing complex, long-running procedural skills. Existing agent runtimes maintain execution by continually appending observations, actions, and intermediate reasoning traces to an ever-growing conversation history, causing latency degradation and context-poisoning failures over long horizons. We present SKILL.state, a runtime architecture that replaces append-only conversational history with an explicit, mutable execution state. At each execution step, the model receives only the immutable skill specification, the current structured execution state, and the latest observation. Intermediate reasoning is discarded immediately after producing a validated state update, preventing prompt growth with execution history. Across diverse datasets, models, and execution environments, SKILL. state improves task accuracy while substantially reducing cumulative token consumption. Our results demonstrate that explicit execution state is an effective and architecture-agnostic abstraction for scalable long-horizon agent skills.",
+  "identifiers": {
+    "arxiv": "2608.26263",
+    "arxiv_versioned": "2608.26263v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.26263v2"
+    }
+  },
+  "categories": [
+    "cs.AI",
+    "cs.MA"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-08-26T18:00:06Z",
+  "updated": "2026-08-28T03:02:32Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.26263v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8251,
+        "sha256": "1e7fe5e5a2d3fb28fa42793bbe64a87479a2bf8c4e7e06be9d5abbfd1de3ab21",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-31T17:58:54.673593Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.26263v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "6a47bb381e04abb50af9e1656c6fe474dbc359e2b46c948610ee6c861f752cfa"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "acl_latex.tex",
+      "selection": "explicit",
+      "declarations": {
+        "title_tex": "SKILL.state: Scalable Long-Horizon Agent Skills",
+        "authors_tex": [
+          "\\textbf{Sanket Badhe\\textsuperscript{1}},\n \\textbf{Priyanka Tiwari\\textsuperscript{2},\n  \\textbf{Jonghyun Chung\\textsuperscript{1}},}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\\\\n\\\\\n \\textsuperscript{1}Google LLC,\n \\textsuperscript{2}Purdue University\n \n \n \n\n\n    \\textbf{Correspondence:} \\href{mailto:sanketbadhe@google.com}{sanketbadhe@google.com}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 797,
+        "sha256": "d17cbf55e252c106734eb7a4c53995dc78a4548a7f13f114fb07f35bdd73d8c1"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.26263v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.26263v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 148009,
+      "sha256": "722df3142ea51605ddb6bb0cc0f5289fb24c9178efdb2c74886c4499f9238c0f",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.26263v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.26263v2.tar.gz",
+      "entrypoint": "acl_latex.tex",
+      "entrypoint_selection": "explicit",
+      "files": 11,
+      "tex_files": 2,
+      "sha256": "a313730190a7f21366b966c78dcbb966ee1aa05ce3167e53a7f3a04ca6f6e75b"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.26263v2.pdf",
+      "format": "application/pdf",
+      "bytes": 305231,
+      "sha256": "5cb417429cb711fb9f4ff01556ab9fc6e82e1d16bec95da604d6e8447994604e"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-31T17:58:55.058159Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 11
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 11
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "not-applicable",
+        "reason": "entrypoint named explicitly; the ambiguity scan did not run",
+        "selection": "explicit",
+        "entrypoint": "acl_latex.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

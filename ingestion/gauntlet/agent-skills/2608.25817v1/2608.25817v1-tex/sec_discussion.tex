@@ -1,0 +1,30 @@
+\section{Discussion}
+\label{sec:discussion}
+% ============================================================
+
+\subsection{Why and When Skills Work}
+\label{sec:disc-why-skills}
+\label{sec:disc-when-skills-work}
+
+\textbf{Security policy before action generation.}
+A security skill remains in the system prompt during action generation, allowing it to influence tool selection, command arguments, and responses to intermediate tool output. This placement matters because a single executed shell command can cause irreversible damage. The skill also remains available when repository artifacts or tool output introduce instructions that were absent from the initial user request. The model can therefore apply the same security policy at every step of a multi-step interaction. Prompt-space policy requires no retraining or model-weight access and can be updated when new attack data becomes available~\cite{qi2023finetuning,he2024what}. Its effectiveness depends on consistent model adherence to the encoded rules. Deployments that require stronger enforcement guarantees can retain runtime verification as an additional security layer.
+
+\textbf{Model capability and deployment scope.}
+Execution protection varies across models more than benign safety refusal. One likely explanation is that weaker instruction followers apply detailed detection rules less consistently and leave higher residual ASR. The variation does not arise from routing because \sysname performs no request-time selection (\S\ref{sec:no-router}). Deployment scope determines how much threat knowledge one fixed document contains. All-classes asks the model to interpret the broadest policy. Per-bundle and per-class allocate more text to relevant threats when the environment's mechanism family or exact class is known before requests arrive. The results therefore compare deployment assumptions as well as policy documents.
+
+\textbf{Preserving policy detail.}
+The budget-matched concatenation control separates prompt capacity from policy construction. Q2 evaluates the synthesis procedure deployed by \sysname and asks why its protection changes as more threat classes share one skill. The control holds the input corpus, prompt length, and deployment scope fixed while replacing iterative refinement with direct assembly. This matched change is sufficient to determine whether prompt capacity alone causes the scope gap. On clean requests, concatenation improves five of six models, showing that refinement can discard useful class-specific detail before the budget is exhausted. Under each jailbreak, concatenation improves three models. Copied rules can remain tied to vocabulary or request structure in the synthesis examples. Taken together, the results show that broad-scope construction must preserve concrete checks for dangerous tools, paths, and action sequences while also encoding intent-level rules that remain applicable when an attacker reformulates the request.
+
+\textbf{Layered deployment.}
+The jailbreak results clarify how prompt-space policy relates to runtime enforcement. Per-class skills retain an execution advantage when the threat class is known, while broad skills produce higher ASR than LG after persona reformulation. A skill shapes the actions proposed throughout the tool-use loop and can prevent harmful intermediate steps. Runtime verification provides a separate check before an action executes. We evaluate \sysname alone because its deployment objective is to protect API-only coding agents without adding a runtime component. Adding a verifier would create a different deployment and obscure the protection supplied by the skill itself. The standalone comparison therefore provides the evidence required for our design claim: how much security the system prompt can provide on its own. Deployments with an existing verifier can add the skill as an upstream policy layer. \sysname's defense and our claims remain independent of that optional composition.
+
+\subsection{Cost Analysis}
+\label{sec:disc-cost}
+
+\textbf{Offline synthesis.}
+Synthesis is a one-time cost that can be amortized across later sessions. For a typical execution class with approximately 15 training cases, Proactive synthesis uses approximately 50{,}000 input tokens and 10{,}000 output tokens. Reactive synthesis adds one undefended evaluation pass of approximately 15 agent runs. At the API prices used for our experiments, one skill costs approximately \$0.10--0.50, depending on the model. Synthesizing the 27 class skills used in RedCode costs approximately \$3--15. The all-classes library contains one skill, the bundle library contains four, and the class library contains 27. A deployment loads one skill from the appropriate library. Regeneration is needed only when the defender updates the library. Agents in the same threat model can reuse an audited skill.
+
+\textbf{Runtime overhead.}
+The deployed skill increases the resident prompt by approximately 2{,}400 input tokens and requires no additional model call. For a ten-step session that uses 20{,}000--100{,}000 tokens, this prompt text represents 2.4--12\% of the session context. The deployment requires no second model endpoint, scheduling dependency, or blocking verification stage. Runtime monitors provide a stronger enforcement boundary, but they incur their own verification cost for candidate actions. A prompt-space skill is therefore most appropriate as an inexpensive first layer in a broader defense.
+
+% ============================================================

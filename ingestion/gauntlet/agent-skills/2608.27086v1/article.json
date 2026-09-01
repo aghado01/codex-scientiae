@@ -1,0 +1,175 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.27086v1",
+  "initialized_utc": "2026-08-31T17:57:45.651800Z",
+  "title": "A Contract-Centered Architecture for Scalable and Manageable Agentic Runtimes",
+  "authors": [
+    "Yaxiao Liu",
+    "Pengbo Liu",
+    "Yiwen Liu",
+    "Yihua Guan",
+    "Zhenghe Hou",
+    "Jiaxing Song"
+  ],
+  "abstract": "Enterprise AI deployment is a coordination problem across business units, application and AI teams, testing, platform engineering, infrastructure, security, operations, and data governance. Use-case benchmarks show whether one agent completes one task, but not how changing capabilities, models, runtime mechanisms, capacity, and enterprise data should be owned, changed, admitted, or evidenced together. We present four responsibility objects as shared organizational contracts: Skill (reusable, versioned capability and workflow asset), Harness (runtime compiler and governor), Scaffold (execution/control boundary and NFR owner), and a stack-external data substrate under independent CIO-governed semantics and telemetry. The runtime core is A = <S, H, X>, with the data substrate outside that stack. The central contribution is one bounded, falsifiable hypothesis, P1 (cost-aware capability-capacity separability): within a declared operating region, changing activated capability preserves the capacity-response interaction within a preregistered equivalence margin, while changing compatible Scaffold capacity preserves capability semantics up to a non-inferiority margin, and the required controls stay within a declared enforcement budget. Six design conditions become measured obligations whose coverage, violations, uncertainty, cost, and exclusions determine whether P1 is decidable. We propose a cluster-period randomized crossover experiment (balanced order, reset/washout, repeated seeds and failure regimes, cluster-aware uncertainty) with a four-state verdict: supported, falsified, conditional-engineering, or inconclusive. This paper contributes a contract-bounded runtime architecture, a source-preserving data substrate, and a falsifiable measurement protocol. It reports no completed implementation, experiment, dataset, or measured result.",
+  "identifiers": {
+    "arxiv": "2608.27086",
+    "arxiv_versioned": "2608.27086v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.27086v1"
+    }
+  },
+  "categories": [
+    "cs.AI",
+    "cs.MA",
+    "cs.SE"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-08-27T13:09:49Z",
+  "updated": "2026-08-27T13:09:49Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.27086v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 11371,
+        "sha256": "1c941bc81fa5c1771ab9662b1fff7c9c1b74cfeadaeb00ed9f8e2c0a4e9d1c55",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-31T17:57:45.101812Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.27086v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "6f4ae65c74eebbf208928226d41bf7b7b2ddc9265596ffa52d16a012aca3fdd7"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "A Contract-Centered Architecture for Scalable and Manageable Agentic Runtimes",
+        "authors_tex": [
+          "Yaxiao Liu\\\\\nPwC China AI Center\\\\\n\\texttt{yaxiao.y.liu@cn.pwc.com}\\\\\n\\texttt{rootliu@gmail.com}\n\\and\nPengbo Liu\\\\\nPwC China AI Center\\\\\n\\texttt{liupengbo@mails.neu.edu.cn}\n\\and\nYiwen Liu\\\\\nPwC China AI Center\\\\\n\\texttt{202383049@uibe.edu.cn}\n\\and\nYihua Guan\\\\\nPwC China AI Center\\\\\n\\texttt{202311260036@mail.bnu.edu.cn}\n\\and\nZhenghe Hou\\\\\nPwC China AI Center\\\\\n\\texttt{zh3773@nyu.edu}\n\\and\nJiaxing Song\\\\\nTsinghua University\\\\\n\\texttt{jxsong@tsinghua.edu.cn}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 213,
+        "sha256": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.27086v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.27086v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 10533976,
+      "sha256": "3c2bc20472840de409523b5a2502b5efe62d82c76d211067e0e7291d07855a34",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.27086v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.27086v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 10,
+      "tex_files": 1,
+      "sha256": "e9cd8a18f09c8f1013d2565b6debbeb650d3df7511e8560a5ee40a83e17c1ea0"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.27086v1.pdf",
+      "format": "application/pdf",
+      "bytes": 11571319,
+      "sha256": "2ee15ffd1d35bdd825d3b05c33ff8c6ac62f6a2bbe673b8a43f4d758ea452e19"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-31T17:57:45.651800Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 10
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 10
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

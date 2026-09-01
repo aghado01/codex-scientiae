@@ -1,0 +1,107 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.25817v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.25817v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "SkillShield: Prompt-Space Security Skills for LLM Coding Agents",
+      "authors": [
+        "Xiaodong Wu",
+        "Zhimin Zhao",
+        "Qi Li",
+        "Xiangman Li",
+        "Yu Shi",
+        "Bram Adams",
+        "Jianbing Ni"
+      ],
+      "abstract": "A coding agent edits files and executes shell commands with its developer's privileges, allowing malicious requests to translate directly into harmful actions or functional malware. Existing defenses have complementary limitations: weight-level alignment is unavailable to API-only deployers, whereas input filters and execution-boundary monitors require auxiliary classification or checking components along the agent's trajectory. We therefore introduce SkillShield, a system-prompt defense that synthesizes security skills offline from known attacks or recorded agent failures. These skills are injected into the system prompt at session start and remain active throughout the tool-use loop. Unlike a reference monitor, they protect the system by defining the security policies the model should follow during execution. Due to the limited system-prompt space, we examine three fixed-budget provisioning scopes: all-classes, with one skill covering all threat classes, per-bundle, with one skill targeting a related subset, and per-class, with one skill dedicated to a single known class and used as the upper-bound reference. None requires runtime request classification or routing. Across six large language models on RedCode, the default all-classes skill reduces malware-generation severity from 3.37 to 0.58 and achieves a 43.6% execution attack success rate, comparable to Llama Guard 3's 42.7% without its separate 8B classifier. The per-bundle and class-fixed per-class settings further reduce this rate to 36.2% and 14.5%, respectively. Under two non-adaptive jailbreak families, SkillShield continues to outperform all baselines on malware generation. Across 731 benign task descriptions, SkillShield yields a mean safety-refusal rate of 0.14%. These results demonstrate the potential of prompt-space security skills to prevent harmful actions and malware generation for LLM coding agents.",
+      "doi": null,
+      "arxiv_id": "2608.25817v1",
+      "published": "2026-08-26T14:00:11Z",
+      "updated": "2026-08-26T14:00:11Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.25817v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.25817v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CR"
+      ],
+      "external_ids": {
+        "arxiv": "2608.25817v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.25817v1",
+          "url": "https://arxiv.org/abs/2608.25817v1",
+          "doi": null,
+          "arxiv_id": "2608.25817v1",
+          "published": "2026-08-26T14:00:11Z",
+          "updated": "2026-08-26T14:00:11Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.25817v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:59:23.785525Z",
+      "sha256": "0d03ce002fbc277b06ed489d678f57827028148ba7daebe9b5c0d0440e9cc3c1",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvY2pmTnA4VmRuSzhsY1M3RkRwNmJvWnJYRUY0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNTgxN3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU5OjIzWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI1ODE3djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNTgxN3YxPC9pZD4KICAgIDx0aXRsZT5Ta2lsbFNoaWVsZDogUHJvbXB0LVNwYWNlIFNlY3VyaXR5IFNraWxscyBmb3IgTExNIENvZGluZyBBZ2VudHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0yNlQxNDowMDoxMVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNTgxN3YxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4yNTgxN3YxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+QSBjb2RpbmcgYWdlbnQgZWRpdHMgZmlsZXMgYW5kIGV4ZWN1dGVzIHNoZWxsIGNvbW1hbmRzIHdpdGggaXRzIGRldmVsb3BlcidzIHByaXZpbGVnZXMsIGFsbG93aW5nIG1hbGljaW91cyByZXF1ZXN0cyB0byB0cmFuc2xhdGUgZGlyZWN0bHkgaW50byBoYXJtZnVsIGFjdGlvbnMgb3IgZnVuY3Rpb25hbCBtYWx3YXJlLiBFeGlzdGluZyBkZWZlbnNlcyBoYXZlIGNvbXBsZW1lbnRhcnkgbGltaXRhdGlvbnM6IHdlaWdodC1sZXZlbCBhbGlnbm1lbnQgaXMgdW5hdmFpbGFibGUgdG8gQVBJLW9ubHkgZGVwbG95ZXJzLCB3aGVyZWFzIGlucHV0IGZpbHRlcnMgYW5kIGV4ZWN1dGlvbi1ib3VuZGFyeSBtb25pdG9ycyByZXF1aXJlIGF1eGlsaWFyeSBjbGFzc2lmaWNhdGlvbiBvciBjaGVja2luZyBjb21wb25lbnRzIGFsb25nIHRoZSBhZ2VudCdzIHRyYWplY3RvcnkuIFdlIHRoZXJlZm9yZSBpbnRyb2R1Y2UgU2tpbGxTaGllbGQsIGEgc3lzdGVtLXByb21wdCBkZWZlbnNlIHRoYXQgc3ludGhlc2l6ZXMgc2VjdXJpdHkgc2tpbGxzIG9mZmxpbmUgZnJvbSBrbm93biBhdHRhY2tzIG9yIHJlY29yZGVkIGFnZW50IGZhaWx1cmVzLiBUaGVzZSBza2lsbHMgYXJlIGluamVjdGVkIGludG8gdGhlIHN5c3RlbSBwcm9tcHQgYXQgc2Vzc2lvbiBzdGFydCBhbmQgcmVtYWluIGFjdGl2ZSB0aHJvdWdob3V0IHRoZSB0b29sLXVzZSBsb29wLiBVbmxpa2UgYSByZWZlcmVuY2UgbW9uaXRvciwgdGhleSBwcm90ZWN0IHRoZSBzeXN0ZW0gYnkgZGVmaW5pbmcgdGhlIHNlY3VyaXR5IHBvbGljaWVzIHRoZSBtb2RlbCBzaG91bGQgZm9sbG93IGR1cmluZyBleGVjdXRpb24uIER1ZSB0byB0aGUgbGltaXRlZCBzeXN0ZW0tcHJvbXB0IHNwYWNlLCB3ZSBleGFtaW5lIHRocmVlIGZpeGVkLWJ1ZGdldCBwcm92aXNpb25pbmcgc2NvcGVzOiBhbGwtY2xhc3Nlcywgd2l0aCBvbmUgc2tpbGwgY292ZXJpbmcgYWxsIHRocmVhdCBjbGFzc2VzLCBwZXItYnVuZGxlLCB3aXRoIG9uZSBza2lsbCB0YXJnZXRpbmcgYSByZWxhdGVkIHN1YnNldCwgYW5kIHBlci1jbGFzcywgd2l0aCBvbmUgc2tpbGwgZGVkaWNhdGVkIHRvIGEgc2luZ2xlIGtub3duIGNsYXNzIGFuZCB1c2VkIGFzIHRoZSB1cHBlci1ib3VuZCByZWZlcmVuY2UuIE5vbmUgcmVxdWlyZXMgcnVudGltZSByZXF1ZXN0IGNsYXNzaWZpY2F0aW9uIG9yIHJvdXRpbmcuIEFjcm9zcyBzaXggbGFyZ2UgbGFuZ3VhZ2UgbW9kZWxzIG9uIFJlZENvZGUsIHRoZSBkZWZhdWx0IGFsbC1jbGFzc2VzIHNraWxsIHJlZHVjZXMgbWFsd2FyZS1nZW5lcmF0aW9uIHNldmVyaXR5IGZyb20gMy4zNyB0byAwLjU4IGFuZCBhY2hpZXZlcyBhIDQzLjYlIGV4ZWN1dGlvbiBhdHRhY2sgc3VjY2VzcyByYXRlLCBjb21wYXJhYmxlIHRvIExsYW1hIEd1YXJkIDMncyA0Mi43JSB3aXRob3V0IGl0cyBzZXBhcmF0ZSA4QiBjbGFzc2lmaWVyLiBUaGUgcGVyLWJ1bmRsZSBhbmQgY2xhc3MtZml4ZWQgcGVyLWNsYXNzIHNldHRpbmdzIGZ1cnRoZXIgcmVkdWNlIHRoaXMgcmF0ZSB0byAzNi4yJSBhbmQgMTQuNSUsIHJlc3BlY3RpdmVseS4gVW5kZXIgdHdvIG5vbi1hZGFwdGl2ZSBqYWlsYnJlYWsgZmFtaWxpZXMsIFNraWxsU2hpZWxkIGNvbnRpbnVlcyB0byBvdXRwZXJmb3JtIGFsbCBiYXNlbGluZXMgb24gbWFsd2FyZSBnZW5lcmF0aW9uLiBBY3Jvc3MgNzMxIGJlbmlnbiB0YXNrIGRlc2NyaXB0aW9ucywgU2tpbGxTaGllbGQgeWllbGRzIGEgbWVhbiBzYWZldHktcmVmdXNhbCByYXRlIG9mIDAuMTQlLiBUaGVzZSByZXN1bHRzIGRlbW9uc3RyYXRlIHRoZSBwb3RlbnRpYWwgb2YgcHJvbXB0LXNwYWNlIHNlY3VyaXR5IHNraWxscyB0byBwcmV2ZW50IGhhcm1mdWwgYWN0aW9ucyBhbmQgbWFsd2FyZSBnZW5lcmF0aW9uIGZvciBMTE0gY29kaW5nIGFnZW50cy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQ1IiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0yNlQxNDowMDoxMVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNSIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaWFvZG9uZyBXdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WmhpbWluIFpoYW88L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlFpIExpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaWFuZ21hbiBMaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WXUgU2hpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5CcmFtIEFkYW1zPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5KaWFuYmluZyBOaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "SkillShield: Prompt-Space Security Skills for LLM Coding Agents",
+    "authors": [
+      "Xiaodong Wu",
+      "Zhimin Zhao",
+      "Qi Li",
+      "Xiangman Li",
+      "Yu Shi",
+      "Bram Adams",
+      "Jianbing Ni"
+    ],
+    "abstract": "A coding agent edits files and executes shell commands with its developer's privileges, allowing malicious requests to translate directly into harmful actions or functional malware. Existing defenses have complementary limitations: weight-level alignment is unavailable to API-only deployers, whereas input filters and execution-boundary monitors require auxiliary classification or checking components along the agent's trajectory. We therefore introduce SkillShield, a system-prompt defense that synthesizes security skills offline from known attacks or recorded agent failures. These skills are injected into the system prompt at session start and remain active throughout the tool-use loop. Unlike a reference monitor, they protect the system by defining the security policies the model should follow during execution. Due to the limited system-prompt space, we examine three fixed-budget provisioning scopes: all-classes, with one skill covering all threat classes, per-bundle, with one skill targeting a related subset, and per-class, with one skill dedicated to a single known class and used as the upper-bound reference. None requires runtime request classification or routing. Across six large language models on RedCode, the default all-classes skill reduces malware-generation severity from 3.37 to 0.58 and achieves a 43.6% execution attack success rate, comparable to Llama Guard 3's 42.7% without its separate 8B classifier. The per-bundle and class-fixed per-class settings further reduce this rate to 36.2% and 14.5%, respectively. Under two non-adaptive jailbreak families, SkillShield continues to outperform all baselines on malware generation. Across 731 benign task descriptions, SkillShield yields a mean safety-refusal rate of 0.14%. These results demonstrate the potential of prompt-space security skills to prevent harmful actions and malware generation for LLM coding agents.",
+    "identifiers": {
+      "arxiv": "2608.25817",
+      "arxiv_versioned": "2608.25817v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.25817v1"
+      }
+    },
+    "categories": [
+      "cs.CR"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CR",
+    "published": "2026-08-26T14:00:11Z",
+    "updated": "2026-08-26T14:00:11Z"
+  }
+}

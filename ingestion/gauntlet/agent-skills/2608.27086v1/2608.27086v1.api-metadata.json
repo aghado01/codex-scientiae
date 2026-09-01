@@ -1,0 +1,109 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.27086v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.27086v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "A Contract-Centered Architecture for Scalable and Manageable Agentic Runtimes",
+      "authors": [
+        "Yaxiao Liu",
+        "Pengbo Liu",
+        "Yiwen Liu",
+        "Yihua Guan",
+        "Zhenghe Hou",
+        "Jiaxing Song"
+      ],
+      "abstract": "Enterprise AI deployment is a coordination problem across business units, application and AI teams, testing, platform engineering, infrastructure, security, operations, and data governance. Use-case benchmarks show whether one agent completes one task, but not how changing capabilities, models, runtime mechanisms, capacity, and enterprise data should be owned, changed, admitted, or evidenced together. We present four responsibility objects as shared organizational contracts: Skill (reusable, versioned capability and workflow asset), Harness (runtime compiler and governor), Scaffold (execution/control boundary and NFR owner), and a stack-external data substrate under independent CIO-governed semantics and telemetry. The runtime core is A = <S, H, X>, with the data substrate outside that stack. The central contribution is one bounded, falsifiable hypothesis, P1 (cost-aware capability-capacity separability): within a declared operating region, changing activated capability preserves the capacity-response interaction within a preregistered equivalence margin, while changing compatible Scaffold capacity preserves capability semantics up to a non-inferiority margin, and the required controls stay within a declared enforcement budget. Six design conditions become measured obligations whose coverage, violations, uncertainty, cost, and exclusions determine whether P1 is decidable. We propose a cluster-period randomized crossover experiment (balanced order, reset/washout, repeated seeds and failure regimes, cluster-aware uncertainty) with a four-state verdict: supported, falsified, conditional-engineering, or inconclusive. This paper contributes a contract-bounded runtime architecture, a source-preserving data substrate, and a falsifiable measurement protocol. It reports no completed implementation, experiment, dataset, or measured result.",
+      "doi": null,
+      "arxiv_id": "2608.27086v1",
+      "published": "2026-08-27T13:09:49Z",
+      "updated": "2026-08-27T13:09:49Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.27086v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.27086v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.MA",
+        "cs.SE"
+      ],
+      "external_ids": {
+        "arxiv": "2608.27086v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.27086v1",
+          "url": "https://arxiv.org/abs/2608.27086v1",
+          "doi": null,
+          "arxiv_id": "2608.27086v1",
+          "published": "2026-08-27T13:09:49Z",
+          "updated": "2026-08-27T13:09:49Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.27086v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:57:45.101812Z",
+      "sha256": "6f4ae65c74eebbf208928226d41bf7b7b2ddc9265596ffa52d16a012aca3fdd7",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvanBnQ2xqeUN4YjVlS0RFYnZrTk1haWc1OEdNPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNzA4NnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU3OjQ0WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI3MDg2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNzA4NnYxPC9pZD4KICAgIDx0aXRsZT5BIENvbnRyYWN0LUNlbnRlcmVkIEFyY2hpdGVjdHVyZSBmb3IgU2NhbGFibGUgYW5kIE1hbmFnZWFibGUgQWdlbnRpYyBSdW50aW1lczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA4LTI3VDEzOjA5OjQ5WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA4LjI3MDg2djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA4LjI3MDg2djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5FbnRlcnByaXNlIEFJIGRlcGxveW1lbnQgaXMgYSBjb29yZGluYXRpb24gcHJvYmxlbSBhY3Jvc3MgYnVzaW5lc3MgdW5pdHMsIGFwcGxpY2F0aW9uIGFuZCBBSSB0ZWFtcywgdGVzdGluZywgcGxhdGZvcm0gZW5naW5lZXJpbmcsIGluZnJhc3RydWN0dXJlLCBzZWN1cml0eSwgb3BlcmF0aW9ucywgYW5kIGRhdGEgZ292ZXJuYW5jZS4gVXNlLWNhc2UgYmVuY2htYXJrcyBzaG93IHdoZXRoZXIgb25lIGFnZW50IGNvbXBsZXRlcyBvbmUgdGFzaywgYnV0IG5vdCBob3cgY2hhbmdpbmcgY2FwYWJpbGl0aWVzLCBtb2RlbHMsIHJ1bnRpbWUgbWVjaGFuaXNtcywgY2FwYWNpdHksIGFuZCBlbnRlcnByaXNlIGRhdGEgc2hvdWxkIGJlIG93bmVkLCBjaGFuZ2VkLCBhZG1pdHRlZCwgb3IgZXZpZGVuY2VkIHRvZ2V0aGVyLgogIFdlIHByZXNlbnQgZm91ciByZXNwb25zaWJpbGl0eSBvYmplY3RzIGFzIHNoYXJlZCBvcmdhbml6YXRpb25hbCBjb250cmFjdHM6IFNraWxsIChyZXVzYWJsZSwgdmVyc2lvbmVkIGNhcGFiaWxpdHkgYW5kIHdvcmtmbG93IGFzc2V0KSwgSGFybmVzcyAocnVudGltZSBjb21waWxlciBhbmQgZ292ZXJub3IpLCBTY2FmZm9sZCAoZXhlY3V0aW9uL2NvbnRyb2wgYm91bmRhcnkgYW5kIE5GUiBvd25lciksIGFuZCBhIHN0YWNrLWV4dGVybmFsIGRhdGEgc3Vic3RyYXRlIHVuZGVyIGluZGVwZW5kZW50IENJTy1nb3Zlcm5lZCBzZW1hbnRpY3MgYW5kIHRlbGVtZXRyeS4gVGhlIHJ1bnRpbWUgY29yZSBpcyBBID0gJmx0O1MsIEgsIFgmZ3Q7LCB3aXRoIHRoZSBkYXRhIHN1YnN0cmF0ZSBvdXRzaWRlIHRoYXQgc3RhY2suCiAgVGhlIGNlbnRyYWwgY29udHJpYnV0aW9uIGlzIG9uZSBib3VuZGVkLCBmYWxzaWZpYWJsZSBoeXBvdGhlc2lzLCBQMSAoY29zdC1hd2FyZSBjYXBhYmlsaXR5LWNhcGFjaXR5IHNlcGFyYWJpbGl0eSk6IHdpdGhpbiBhIGRlY2xhcmVkIG9wZXJhdGluZyByZWdpb24sIGNoYW5naW5nIGFjdGl2YXRlZCBjYXBhYmlsaXR5IHByZXNlcnZlcyB0aGUgY2FwYWNpdHktcmVzcG9uc2UgaW50ZXJhY3Rpb24gd2l0aGluIGEgcHJlcmVnaXN0ZXJlZCBlcXVpdmFsZW5jZSBtYXJnaW4sIHdoaWxlIGNoYW5naW5nIGNvbXBhdGlibGUgU2NhZmZvbGQgY2FwYWNpdHkgcHJlc2VydmVzIGNhcGFiaWxpdHkgc2VtYW50aWNzIHVwIHRvIGEgbm9uLWluZmVyaW9yaXR5IG1hcmdpbiwgYW5kIHRoZSByZXF1aXJlZCBjb250cm9scyBzdGF5IHdpdGhpbiBhIGRlY2xhcmVkIGVuZm9yY2VtZW50IGJ1ZGdldC4gU2l4IGRlc2lnbiBjb25kaXRpb25zIGJlY29tZSBtZWFzdXJlZCBvYmxpZ2F0aW9ucyB3aG9zZSBjb3ZlcmFnZSwgdmlvbGF0aW9ucywgdW5jZXJ0YWludHksIGNvc3QsIGFuZCBleGNsdXNpb25zIGRldGVybWluZSB3aGV0aGVyIFAxIGlzIGRlY2lkYWJsZS4KICBXZSBwcm9wb3NlIGEgY2x1c3Rlci1wZXJpb2QgcmFuZG9taXplZCBjcm9zc292ZXIgZXhwZXJpbWVudCAoYmFsYW5jZWQgb3JkZXIsIHJlc2V0L3dhc2hvdXQsIHJlcGVhdGVkIHNlZWRzIGFuZCBmYWlsdXJlIHJlZ2ltZXMsIGNsdXN0ZXItYXdhcmUgdW5jZXJ0YWludHkpIHdpdGggYSBmb3VyLXN0YXRlIHZlcmRpY3Q6IHN1cHBvcnRlZCwgZmFsc2lmaWVkLCBjb25kaXRpb25hbC1lbmdpbmVlcmluZywgb3IgaW5jb25jbHVzaXZlLiBUaGlzIHBhcGVyIGNvbnRyaWJ1dGVzIGEgY29udHJhY3QtYm91bmRlZCBydW50aW1lIGFyY2hpdGVjdHVyZSwgYSBzb3VyY2UtcHJlc2VydmluZyBkYXRhIHN1YnN0cmF0ZSwgYW5kIGEgZmFsc2lmaWFibGUgbWVhc3VyZW1lbnQgcHJvdG9jb2wuIEl0IHJlcG9ydHMgbm8gY29tcGxldGVkIGltcGxlbWVudGF0aW9uLCBleHBlcmltZW50LCBkYXRhc2V0LCBvciBtZWFzdXJlZCByZXN1bHQuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTUEiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5TRSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA4LTI3VDEzOjA5OjQ5WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+NDggcGFnZXMsIDcgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkFJIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZYXhpYW8gTGl1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5QZW5nYm8gTGl1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZaXdlbiBMaXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPllpaHVhIEd1YW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlpoZW5naGUgSG91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5KaWF4aW5nIFNvbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "A Contract-Centered Architecture for Scalable and Manageable Agentic Runtimes",
+    "authors": [
+      "Yaxiao Liu",
+      "Pengbo Liu",
+      "Yiwen Liu",
+      "Yihua Guan",
+      "Zhenghe Hou",
+      "Jiaxing Song"
+    ],
+    "abstract": "Enterprise AI deployment is a coordination problem across business units, application and AI teams, testing, platform engineering, infrastructure, security, operations, and data governance. Use-case benchmarks show whether one agent completes one task, but not how changing capabilities, models, runtime mechanisms, capacity, and enterprise data should be owned, changed, admitted, or evidenced together. We present four responsibility objects as shared organizational contracts: Skill (reusable, versioned capability and workflow asset), Harness (runtime compiler and governor), Scaffold (execution/control boundary and NFR owner), and a stack-external data substrate under independent CIO-governed semantics and telemetry. The runtime core is A = <S, H, X>, with the data substrate outside that stack. The central contribution is one bounded, falsifiable hypothesis, P1 (cost-aware capability-capacity separability): within a declared operating region, changing activated capability preserves the capacity-response interaction within a preregistered equivalence margin, while changing compatible Scaffold capacity preserves capability semantics up to a non-inferiority margin, and the required controls stay within a declared enforcement budget. Six design conditions become measured obligations whose coverage, violations, uncertainty, cost, and exclusions determine whether P1 is decidable. We propose a cluster-period randomized crossover experiment (balanced order, reset/washout, repeated seeds and failure regimes, cluster-aware uncertainty) with a four-state verdict: supported, falsified, conditional-engineering, or inconclusive. This paper contributes a contract-bounded runtime architecture, a source-preserving data substrate, and a falsifiable measurement protocol. It reports no completed implementation, experiment, dataset, or measured result.",
+    "identifiers": {
+      "arxiv": "2608.27086",
+      "arxiv_versioned": "2608.27086v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.27086v1"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.MA",
+      "cs.SE"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-27T13:09:49Z",
+    "updated": "2026-08-27T13:09:49Z"
+  }
+}

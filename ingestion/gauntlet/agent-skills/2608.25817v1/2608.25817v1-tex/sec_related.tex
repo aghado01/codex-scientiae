@@ -1,0 +1,42 @@
+\section{Related Work}
+\label{sec:related}
+% ============================================================
+
+\subsection{Defenses for Coding Agents}
+\label{sec:rel-intervene}
+
+Coding-agent defenses operate at four stages of the pipeline. \textbf{Model-level approaches} encode safety constraints in model weights through reinforcement learning from human feedback (RLHF)~\cite{ouyang2022training}, Constitutional AI~\cite{bai2022constitutional}, or direct preference optimization~\cite{rafailov2024dpo}. Safety alignment can degrade after benign fine-tuning~\cite{qi2023finetuning,he2024what}. It is also unavailable to API-only deployers because they cannot update model weights.
+
+The other three stages do not require weight access. \textbf{Input filters}, including Llama Guard~3~\cite{metallamaguard3} and Prompt Guard~2~\cite{metapromptguard2025}, classify requests before the agent begins its work. Their protection covers each channel on which the classifier is installed. Covering repository artifacts and tool output requires applying the filter at those additional boundaries. \textbf{Runtime systems}, including TaskShield~\cite{jia2025task}, IPIGuard~\cite{an2025ipiguard}, and AGrail~\cite{luo2025agrail}, inspect candidate actions with task-alignment checks, tool-dependency graphs, or generated safety checks. Runtime systems can block an action before the executor runs it, but they add a model call or another checking component to the trajectory. \textbf{Prompt-space defenses} place security instructions in the agent context. Prior methods include boundary reminders~\cite{yi2025benchmarking}, provenance delimiters in Spotlighting~\cite{hines2024defending}, and authentication tags in FATH~\cite{wang2024fath}.
+
+Input filters, runtime systems, and prompt-space policies provide different guarantees. A runtime system can enforce a decision independently of whether the agent follows a textual policy. Input filters and runtime systems often add latency and cost at every boundary they cover~\cite{metallamaguard3,metapromptguard2025,luo2025agrail}. Prompt-space policies add no runtime component and influence action formation throughout the session. Their effectiveness depends on the model continuing to follow the policy in the system prompt. Existing prompt-space methods use general provenance or authentication rules across tasks~\cite{yi2025benchmarking,hines2024defending,wang2024fath}. They do not measure how finite prompt space and deployment scope affect threat-specific protection.
+
+\subsection{Provisioning Granularity in Defenses}
+\label{sec:rel-granularity}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Deployed defenses by intervention point.}
+\label{tab:granularity-survey}
+\begin{tabular}{@{}llp{2.85cm}c@{}}
+\toprule
+\textbf{Defense} & \textbf{Runs at} & \textbf{What its fixed text says} & \textbf{Taxonomy} \\
+\midrule
+Reminder~\cite{yi2025benchmarking}      & prompt  & Ignore instructions found in external content & Agnostic \\
+Spotlighting~\cite{hines2024defending} & prompt  & Ignore instructions between the delimiters    & Agnostic \\
+FATH~\cite{wang2024fath}               & prompt  & Tag answers so a parser can authenticate them  & Agnostic \\
+TaskShield~\cite{jia2025task}          & runtime & Check each instruction against the user's task & Agnostic \\
+AGrail~\cite{luo2025agrail}            & runtime & Three safety criteria plus checks generated for each action & 3 \\
+Llama Guard~3~\cite{metallamaguard3}   & filter  & Fourteen hazard categories                     & 14 \\
+\midrule
+\sysname{}                              & prompt  & Threat-specific detection and refusal rules    & $K$ \\
+\bottomrule
+\end{tabular}
+\vspace{-0.2in}
+\end{table}
+
+We define \emph{provisioning granularity} for policies organized by a threat taxonomy. It is the number of threat classes represented in one fixed policy document. The operator chooses the document before requests arrive, so granularity describes a deployment configuration and does not require request-time routing. A class-agnostic rule has no meaningful class count on this axis. Table~\ref{tab:granularity-survey} therefore labels such rules ``Agnostic.''
+
+Llama Guard~3~\cite{metallamaguard3} checks requests against 14 categories from a general content-safety taxonomy. The taxonomy includes code-interpreter abuse and topics such as violent crime, defamation, and elections. AGrail~\cite{luo2025agrail} begins with three criteria covering information integrity, confidentiality, and availability, then generates action-specific checks at runtime. Llama Guard~3 uses an 8-billion-parameter classifier, and AGrail adds a generation step. Existing prompt-space methods use one class-agnostic provenance or authentication rule. \sysname derives threat-specific policy offline from attack data and divides it across fixed-budget documents. Policy synthesis and controlled provisioning are the contributions. The skill format provides the deployment package.

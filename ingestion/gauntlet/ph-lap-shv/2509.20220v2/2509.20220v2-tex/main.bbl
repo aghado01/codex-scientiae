@@ -1,0 +1,391 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Akhiezer \& Glazman, }1993]{akglazman}
+{\sc Akhiezer, N.~I., \& Glazman, I.~M.} 1993.
+\newblock {\em Theory of linear operators in {H}ilbert space}.
+\newblock Dover Publications, Inc., New York.
+\newblock Translated from the Russian and with a preface by Merlynd Nestell, Reprint of the 1961 and 1963 translations, Two volumes bound as one.
+
+\bibitem[\protect\citename{Aksoy \& Young, }2025]{cheeger_sc}
+{\sc Aksoy, Sinan~G, \& Young, Stephen~J}. 2025.
+\newblock Re-imagining Spectral Graph Theory.
+\newblock {\em arXiv preprint arXiv:2504.10624}.
+
+\bibitem[\protect\citename{Arnold {\em et~al.}, }2010]{finderham}
+{\sc Arnold, Douglas~N., Falk, Richard~S., \& Winther, Ragnar}. 2010.
+\newblock Finite element exterior calculus: from {H}odge theory to numerical stability.
+\newblock {\em Bull. Amer. Math. Soc. (N.S.)}, {\bf 47}(2), 281--354.
+
+\bibitem[\protect\citename{Baker \& Dodziuk, }1997]{hodge_2}
+{\sc Baker, Garth~A., \& Dodziuk, J\'ozef}. 1997.
+\newblock Stability of spectra of {H}odge-de {R}ham {L}aplacians.
+\newblock {\em Math. Z.}, {\bf 224}(3), 327--345.
+
+\bibitem[\protect\citename{Bauer \& Lesnick, }2020]{stability1}
+{\sc Bauer, Ulrich, \& Lesnick, Michael}. 2020.
+\newblock Persistence diagrams as diagrams: a categorification of the stability theorem.
+\newblock {\em Pages  67--96 of:} {\em Topological data analysis---the {A}bel {S}ymposium 2018}.
+\newblock Abel Symp., vol. 15.
+\newblock Springer, Cham.
+
+\bibitem[\protect\citename{Beers \& Mulas, }2025]{beers_mulas}
+{\sc Beers, Lies, \& Mulas, Raffaella}. 2025.
+\newblock At the end of the spectrum: chromatic bounds for the largest eigenvalue of the normalized Laplacian.
+\newblock {\em Journal of Physics: Complexity}, {\bf 6}(2), 025006.
+
+\bibitem[\protect\citename{Bhusal {\em et~al.}, }2024]{plapp_1}
+{\sc Bhusal, Gokul, Merkurjev, Ekaterina, \& Wei, Guo-Wei}. 2024.
+\newblock Persistent {L}aplacian-enhanced algorithm for scarcely labeled data classification.
+\newblock {\em Mach. Learn.}, {\bf 113}(10), 7267--7292.
+
+\bibitem[\protect\citename{Bjerkevik, }2021]{stability4}
+{\sc Bjerkevik, H\aa vard~Bakke}. 2021.
+\newblock On the stability of interval decomposable persistence modules.
+\newblock {\em Discrete Comput. Geom.}, {\bf 66}(1), 92--121.
+
+\bibitem[\protect\citename{Brezis, }2011]{funcana}
+{\sc Brezis, Haim}. 2011.
+\newblock {\em Functional analysis, {S}obolev spaces and partial differential equations}.
+\newblock Universitext.
+\newblock Springer, New York.
+
+\bibitem[\protect\citename{Br\"uning \& Lesch, }1992]{Hilbert}
+{\sc Br\"uning, J., \& Lesch, M.} 1992.
+\newblock Hilbert complexes.
+\newblock {\em J. Funct. Anal.}, {\bf 108}(1), 88--132.
+
+\bibitem[\protect\citename{Chazal {\em et~al.}, }2009]{chazal_proximity_2009}
+{\sc Chazal, Fr\'{e}d\'{e}ric, Cohen-Steiner, David, Glisse, Marc, Guibas, Leonidas~J., \& Oudot, Steve~Y.} 2009.
+\newblock Proximity of persistence modules and their diagrams.
+\newblock {\em Pages  237--246 of:} {\em Proceedings of the twenty-fifth annual symposium on {Computational} geometry}.
+\newblock {SCG} '09.
+\newblock New York, NY, USA: Association for Computing Machinery.
+
+\bibitem[\protect\citename{Chazal {\em et~al.}, }2016]{stability3}
+{\sc Chazal, Fr\'ed\'eric, de~Silva, Vin, Glisse, Marc, \& Oudot, Steve}. 2016.
+\newblock {\em The structure and stability of persistence modules}.
+\newblock SpringerBriefs in Mathematics.
+\newblock Springer, Cham.
+
+\bibitem[\protect\citename{Chen {\em et~al.}, }2023]{hyperdigraph}
+{\sc Chen, Dong, Liu, Jian, Wu, Jie, \& Wei, Guo-Wei}. 2023.
+\newblock Persistent hyperdigraph homology and persistent hyperdigraph {L}aplacians.
+\newblock {\em Found. Data Sci.}, {\bf 5}(4), 558--588.
+
+\bibitem[\protect\citename{Chen {\em et~al.}, }2022]{pl_omicron}
+{\sc Chen, Jiahui, Qiu, Yuchi, Wang, Rui, \& Wei, Guo-Wei}. 2022.
+\newblock Persistent Laplacian projected Omicron BA.4 and BA.5 to become new dominating variants.
+\newblock {\em Computers in Biology and Medicine}, {\bf 151}, 106262.
+
+\bibitem[\protect\citename{Cohen-Steiner {\em et~al.}, }2007]{cohen-steiner_Stability_2017}
+{\sc Cohen-Steiner, David, Edelsbrunner, Herbert, \& Harer, John}. 2007.
+\newblock Stability of persistence diagrams.
+\newblock {\em Discrete Comput. Geom.}, {\bf 37}(1), 103--120.
+
+\bibitem[\protect\citename{Cottrell {\em et~al.}, }2024]{tda_2}
+{\sc Cottrell, Sean, Wang, Rui, \& Wei, Guo-Wei}. 2024.
+\newblock PLPCA: Persistent Laplacian-Enhanced PCA for Microarray Data Analysis.
+\newblock {\em Journal of Chemical Information and Modeling}, {\bf 64}(7), 2405--2420.
+\newblock PMID: 37738663.
+
+\bibitem[\protect\citename{Curry, }2014]{curry}
+{\sc Curry, Justin~Michael}. 2014.
+\newblock {\em Sheaves, cosheaves and applications}.
+\newblock ProQuest LLC, Ann Arbor, MI.
+\newblock Thesis (Ph.D.)--University of Pennsylvania.
+
+\bibitem[\protect\citename{Das, }2004]{graph_1}
+{\sc Das, K.~Ch.} 2004.
+\newblock The {L}aplacian spectrum of a graph.
+\newblock {\em Comput. Math. Appl.}, {\bf 48}(5-6), 715--724.
+
+\bibitem[\protect\citename{Davies {\em et~al.}, }2023]{dws}
+{\sc Davies, Thomas, Wan, Zhengchao, \& Sanchez-Garcia, Ruben~J}. 2023.
+\newblock The Persistent {L}aplacian for Data Science: Evaluating Higher-Order Persistent Spectral Representations of Data.
+\newblock {\em Pages  7249--7263 of:} {\sc Krause, Andreas, Brunskill, Emma, Cho, Kyunghyun, Engelhardt, Barbara, Sabato, Sivan, \& Scarlett, Jonathan} (eds), {\em Proceedings of the 40th International Conference on Machine Learning}.
+\newblock Proceedings of Machine Learning Research, vol. 202.
+\newblock PMLR.
+
+\bibitem[\protect\citename{De~Rham, }1931]{deRham}
+{\sc De~Rham, Georges}. 1931.
+\newblock {\em Sur l'analysis situs des vari\'et\'es \`a{} {$n$} dimensions}.
+\newblock NUMDAM, [place of publication not identified].
+
+\bibitem[\protect\citename{Dey \& Wang, }2022]{sctypes}
+{\sc Dey, Tamal~Krishna, \& Wang, Yusu}. 2022.
+\newblock {\em Computational topology for data analysis}.
+\newblock Cambridge University Press.
+
+\bibitem[\protect\citename{Djima \& Yim, }2025]{powerspectrum}
+{\sc Djima, Karamatou~Yacoubou, \& Yim, Ka~Man}. 2025.
+\newblock Power Spectrum Signatures of Graphs.
+\newblock {\em arXiv preprint arXiv:2503.09660}.
+
+\bibitem[\protect\citename{Dong, }2024]{fastalg}
+{\sc Dong, Rui}. 2024.
+\newblock A faster algorithm of up persistent laplacian over non-branching simplicial complexes.
+\newblock {\em arXiv preprint arXiv:2408.16741}.
+
+\bibitem[\protect\citename{Edelsbrunner {\em et~al.}, }2002]{PHfrompairs}
+{\sc Edelsbrunner, Herbert, Letscher, David, \& Zomorodian, Afra}. 2002.
+\newblock Topological persistence and simplification.
+\newblock  vol. 28.
+\newblock Discrete and computational geometry and graph drawing (Columbia, SC, 2001).
+
+\bibitem[\protect\citename{Evans, }2010]{evans}
+{\sc Evans, Lawrence~C.} 2010.
+\newblock {\em Partial differential equations}. Second edn.
+\newblock Graduate Studies in Mathematics, vol. 19.
+\newblock American Mathematical Society, Providence, RI.
+
+\bibitem[\protect\citename{Frank {\em et~al.}, }2023]{schroedingerop}
+{\sc Frank, Rupert~L., Laptev, Ari, \& Weidl, Timo}. 2023.
+\newblock {\em Schr\"odinger operators: eigenvalues and {L}ieb-{T}hirring inequalities}.
+\newblock Cambridge Studies in Advanced Mathematics, vol. 200.
+\newblock Cambridge University Press, Cambridge.
+
+\bibitem[\protect\citename{Ghrist, }2014]{ghrist}
+{\sc Ghrist, R.} 2014.
+\newblock {\em Elementary Applied Topology}. 1.0 edn.
+\newblock Createspace.
+
+\bibitem[\protect\citename{Grone {\em et~al.}, }1990]{graph_2}
+{\sc Grone, Robert, Merris, Russell, \& Sunder, V.~S.} 1990.
+\newblock The {L}aplacian spectrum of a graph.
+\newblock {\em SIAM J. Matrix Anal. Appl.}, {\bf 11}(2), 218--238.
+
+\bibitem[\protect\citename{Grothendieck, }1957]{tohoku}
+{\sc Grothendieck, Alexander}. 1957.
+\newblock Sur quelques points d'alg\`ebre homologique.
+\newblock {\em Tohoku Math. J. (2)}, {\bf 9}, 119--221.
+
+\bibitem[\protect\citename{G\"ulen {\em et~al.}, }2023]{pl_simpmaps}
+{\sc G\"ulen, Aziz~Burak, M\'emoli, Facundo, Wan, Zhengchao, \& Wang, Yusu}. 2023.
+\newblock A generalization of the persistent {L}aplacian to simplicial maps.
+\newblock {\em Pages  Art. No. 37, 17 of:} {\em 39th {I}nternational {S}ymposium on {C}omputational {G}eometry}.
+\newblock LIPIcs. Leibniz Int. Proc. Inform., vol. 258.
+\newblock Schloss Dagstuhl. Leibniz-Zent. Inform., Wadern.
+
+\bibitem[\protect\citename{Hatcher, }2002]{hatcher}
+{\sc Hatcher, Allen}. 2002.
+\newblock {\em Algebraic topology}.
+\newblock Cambridge University Press, Cambridge.
+
+\bibitem[\protect\citename{Heunen \& Kornell, }2022]{cathilb}
+{\sc Heunen, Chris, \& Kornell, Andre}. 2022.
+\newblock Axioms for the category of {H}ilbert spaces.
+\newblock {\em Proc. Natl. Acad. Sci. USA}, {\bf 119}(9), Paper No. e2117024119, 5.
+
+\bibitem[\protect\citename{Hislop \& Sigal, }1996]{spectraltheory}
+{\sc Hislop, P.~D., \& Sigal, I.~M.} 1996.
+\newblock {\em Introduction to spectral theory}.
+\newblock Applied Mathematical Sciences, vol. 113.
+\newblock Springer-Verlag, New York.
+\newblock With applications to Schr\"odinger operators.
+
+\bibitem[\protect\citename{Horak \& Jost, }2013]{josthorak}
+{\sc Horak, Danijela, \& Jost, J\"urgen}. 2013.
+\newblock Spectra of combinatorial {L}aplace operators on simplicial complexes.
+\newblock {\em Adv. Math.}, {\bf 244}, 303--336.
+
+\bibitem[\protect\citename{Hou {\em et~al.}, }2025]{hou_harmonic_chains}
+{\sc Hou, Tao, Parsa, Salman, \& Wang, Bei}. 2025.
+\newblock Tracking the persistence of harmonic chains: barcode and stability.
+\newblock {\em Pages  Art. No. 58, 16 of:} {\em 41st {I}nternational {S}ymposium on {C}omputational {G}eometry}.
+\newblock LIPIcs. Leibniz Int. Proc. Inform., vol. 332.
+\newblock Schloss Dagstuhl. Leibniz-Zent. Inform., Wadern.
+
+\bibitem[\protect\citename{Jones \& Wei, }2025]{petls}
+{\sc Jones, Benjamin, \& Wei, Guo-Wei}. 2025.
+\newblock PETLS: PErsistent Topological Laplacian Software.
+\newblock {\em arXiv preprint arXiv:2508.11560}.
+
+\bibitem[\protect\citename{Kato, }1976]{numla}
+{\sc Kato, Tosio}. 1976.
+\newblock {\em Perturbation theory for linear operators}. Second edn.
+\newblock Grundlehren der Mathematischen Wissenschaften, vol. Band 132.
+\newblock Springer-Verlag, Berlin-New York.
+
+\bibitem[\protect\citename{Kulkarni \& Nair, }2000]{closedrange}
+{\sc Kulkarni, S.~H., \& Nair, M.~T.} 2000.
+\newblock A characterization of closed range operators.
+\newblock {\em Indian J. Pure Appl. Math.}, {\bf 31}(4), 353--361.
+
+\bibitem[\protect\citename{Kurepa, }1987]{kurepa}
+{\sc Kurepa, Svetozar}. 1987.
+\newblock Quadratic and sesquilinear forms. {C}ontributions to characterizations of inner product spaces.
+\newblock {\em Pages  43--76 of:} {\em Functional analysis, {II} ({D}ubrovnik, 1985)}.
+\newblock Lecture Notes in Math., vol. 1242.
+\newblock Springer, Berlin.
+
+\bibitem[\protect\citename{Lee, }2013]{lee}
+{\sc Lee, John~M.} 2013.
+\newblock {\em Introduction to smooth manifolds}. Second edn.
+\newblock Graduate Texts in Mathematics, vol. 218.
+\newblock Springer, New York.
+
+\bibitem[\protect\citename{Lieutier, }2014]{first_peristent_lap2}
+{\sc Lieutier, Andr\'{e}}. 2014.
+\newblock {\em Talk: Persistent harmonic forms}.
+
+\bibitem[\protect\citename{Lim, }2020]{lim}
+{\sc Lim, Lek-Heng}. 2020.
+\newblock Hodge {L}aplacians on graphs.
+\newblock {\em SIAM Rev.}, {\bf 62}(3), 685--715.
+
+\bibitem[\protect\citename{Liu {\em et~al.}, }2022]{tda_3}
+{\sc Liu, Jian, Xia, Ke-Lin, Wu, Jie, Yau, Stephen Shing-Toung, \& Wei, Guo-Wei}. 2022.
+\newblock Biomolecular topology: modelling and analysis.
+\newblock {\em Acta Math. Sin. (Engl. Ser.)}, {\bf 38}(10), 1901--1938.
+
+\bibitem[\protect\citename{Liu {\em et~al.}, }2023]{algstab}
+{\sc Liu, Jian, Li, Jingyan, \& Wu, Jie}. 2023.
+\newblock The algebraic stability for persistent Laplacians.
+\newblock {\em arXiv preprint arXiv:2302.03902}.
+
+\bibitem[\protect\citename{L\"oh, }2008]{loeh}
+{\sc L\"oh, Clara}. 2008.
+\newblock Isomorphisms in {$l^1$}-homology.
+\newblock {\em M\"unster J. Math.}, {\bf 1}, 237--265.
+
+\bibitem[\protect\citename{Mac~Lane, }1998]{maclane}
+{\sc Mac~Lane, Saunders}. 1998.
+\newblock {\em Categories for the working mathematician}. Second edn.
+\newblock Graduate Texts in Mathematics, vol. 5.
+\newblock Springer-Verlag, New York.
+
+\bibitem[\protect\citename{McKean \& Singer, }1967]{curvature}
+{\sc McKean, Jr., H.~P., \& Singer, I.~M.} 1967.
+\newblock Curvature and the eigenvalues of the {L}aplacian.
+\newblock {\em J. Differential Geometry}, {\bf 1}(1), 43--69.
+
+\bibitem[\protect\citename{M\'emoli {\em et~al.}, }2022]{mww}
+{\sc M\'emoli, Facundo, Wan, Zhengchao, \& Wang, Yusu}. 2022.
+\newblock Persistent {L}aplacians: properties, algorithms and implications.
+\newblock {\em SIAM J. Math. Data Sci.}, {\bf 4}(2), 858--884.
+
+\bibitem[\protect\citename{Merris, }1994]{graph_3}
+{\sc Merris, Russell}. 1994.
+\newblock Laplacian matrices of graphs: a survey.
+\newblock  vol. 197/198.
+\newblock Second Conference of the International Linear Algebra Society (ILAS) (Lisbon, 1992).
+
+\bibitem[\protect\citename{Mitsumatsu, }1984]{homologyclosure}
+{\sc Mitsumatsu, Yoshihiko}. 1984.
+\newblock Bounded cohomology and {$l^1$}-homology of surfaces.
+\newblock {\em Topology}, {\bf 23}(4), 465--471.
+
+\bibitem[\protect\citename{Obayashi, }2018]{tightestrep}
+{\sc Obayashi, Ippei}. 2018.
+\newblock Volume-optimal cycle: tightest representative cycle of a generator in persistent homology.
+\newblock {\em SIAM J. Appl. Algebra Geom.}, {\bf 2}(4), 508--534.
+
+\bibitem[\protect\citename{Otter {\em et~al.}, }2017]{roadmap}
+{\sc Otter, Nina, Porter, Mason~A, Tillmann, Ulrike, Grindrod, Peter, \& Harrington, Heather~A}. 2017.
+\newblock A roadmap for the computation of persistent homology.
+\newblock {\em EPJ Data Science}, {\bf 6}, 1--38.
+
+\bibitem[\protect\citename{Rosenberg, }1997]{hodge_1}
+{\sc Rosenberg, Steven}. 1997.
+\newblock {\em The {L}aplacian on a {R}iemannian manifold}.
+\newblock London Mathematical Society Student Texts, vol. 31.
+\newblock Cambridge University Press, Cambridge.
+\newblock An introduction to analysis on manifolds.
+
+\bibitem[\protect\citename{Russold, }2022]{pers_sheaf}
+{\sc Russold, Florian}. 2022.
+\newblock Persistent sheaf cohomology.
+\newblock {\em arXiv preprint arXiv:2204.13446}.
+
+\bibitem[\protect\citename{Samelson, }1967]{dRSamelson}
+{\sc Samelson, Hans}. 1967.
+\newblock On de {R}ham's theorem.
+\newblock {\em Topology}, {\bf 6}, 427--432.
+
+\bibitem[\protect\citename{Schwarz, }1995]{schwarz}
+{\sc Schwarz, G\"unter}. 1995.
+\newblock {\em Hodge decomposition---a method for solving boundary value problems}.
+\newblock Lecture Notes in Mathematics, vol. 1607.
+\newblock Springer-Verlag, Berlin.
+
+\bibitem[\protect\citename{Spivak, }1999]{spivak}
+{\sc Spivak, Michael}. 1999.
+\newblock {\em A comprehensive introduction to differential geometry. {V}ol. {I}}. Third edn.
+\newblock Publish or Perish, Inc., Houston, Texas.
+
+\bibitem[\protect\citename{Su {\em et~al.}, }2024]{su2024persistentrhamhodgelaplacianseulerian}
+{\sc Su, Zhe, Tong, Yiying, \& Wei, Guo-Wei}. 2024.
+\newblock Persistent de Rham-Hodge Laplacians in Eulerian representation for manifold topological learning.
+\newblock {\em arXiv preprint arXiv:2408.00220}.
+
+\bibitem[\protect\citename{Teschl, }2014]{teschl}
+{\sc Teschl, Gerald}. 2014.
+\newblock {\em Mathematical methods in quantum mechanics}. Second edn.
+\newblock Graduate Studies in Mathematics, vol. 157.
+\newblock American Mathematical Society, Providence, RI.
+\newblock With applications to Schr\"odinger operators.
+
+\bibitem[\protect\citename{Voisin, }2002]{hodge_3}
+{\sc Voisin, Claire}. 2002.
+\newblock {\em Hodge theory and complex algebraic geometry. {I}}.
+\newblock Cambridge Studies in Advanced Mathematics, vol. 76.
+\newblock Cambridge University Press, Cambridge.
+\newblock Translated from the French original by Leila Schneps.
+
+\bibitem[\protect\citename{von Luxburg, }2007]{spec_clust}
+{\sc von Luxburg, Ulrike}. 2007.
+\newblock A tutorial on spectral clustering.
+\newblock {\em Stat. Comput.}, {\bf 17}(4), 395--416.
+
+\bibitem[\protect\citename{Wang {\em et~al.}, }2020]{first_persistent_lap}
+{\sc Wang, Rui, Nguyen, Duc~Duy, \& Wei, Guo-Wei}. 2020.
+\newblock Persistent spectral graph.
+\newblock {\em Int. J. Numer. Methods Biomed. Eng.}, {\bf 36}(9), e3376, 27.
+
+\bibitem[\protect\citename{Wee {\em et~al.}, }2023]{wbx}
+{\sc Wee, Junjie, Bianconi, Ginestra, \& Xia, Kelin}. 2023.
+\newblock Persistent Dirac for molecular representation.
+\newblock {\em Scientific Reports}, {\bf 13}(1), 11183.
+
+\bibitem[\protect\citename{Wee {\em et~al.}, }2024]{plapp_3}
+{\sc Wee, JunJie, Chen, Jiahui, Xia, Kelin, \& Wei, Guo-Wei}. 2024.
+\newblock Integration of persistent Laplacian and pre-trained transformer for protein solubility changes upon mutation.
+\newblock {\em Computers in Biology and Medicine}, {\bf 169}, 107918.
+
+\bibitem[\protect\citename{Wei \& Wei, }2021]{htp_cont}
+{\sc Wei, Xiaoqi, \& Wei, Guo-Wei}. 2021.
+\newblock Homotopy continuation for the spectra of persistent {L}aplacians.
+\newblock {\em Found. Data Sci.}, {\bf 3}(4), 677--700.
+
+\bibitem[\protect\citename{Wei \& Wei, }2023]{survey}
+{\sc Wei, Xiaoqi, \& Wei, Guo-Wei}. 2023.
+\newblock Persistent Topological Laplacians--a Survey.
+\newblock {\em arXiv preprint arXiv:2312.07563}.
+
+\bibitem[\protect\citename{Wei \& Wei, }2025]{sheaves}
+{\sc Wei, Xiaoqi, \& Wei, Guo-Wei}. 2025.
+\newblock Persistent sheaf laplacians.
+\newblock {\em Foundations of data science (Springfield, Mo.)}, {\bf 7}(2), 446.
+
+\bibitem[\protect\citename{Wei {\em et~al.}, }2023]{tda_1}
+{\sc Wei, Xiaoqi, Chen, Jiahui, \& Wei, Guo-Wei}. 2023.
+\newblock Persistent topological Laplacian analysis of SARS-CoV-2 variants.
+\newblock {\em Journal of computational biophysics and chemistry}, {\bf 22}(5), 569.
+
+\bibitem[\protect\citename{Yosida, }1980]{yosida}
+{\sc Yosida, K\^osaku}. 1980.
+\newblock {\em Functional analysis}. Sixth edn.
+\newblock Grundlehren der Mathematischen Wissenschaften, vol. 123.
+\newblock Springer-Verlag, Berlin-New York.
+
+\bibitem[\protect\citename{Zhang, }2011]{graphlaplacian}
+{\sc Zhang, Xiao-Dong}. 2011.
+\newblock The Laplacian eigenvalues of graphs: a survey.
+\newblock {\em arXiv preprint arXiv:1111.2897}.
+
+\bibitem[\protect\citename{Zomorodian \& Carlsson, }2005]{phbarcode}
+{\sc Zomorodian, Afra, \& Carlsson, Gunnar}. 2005.
+\newblock Computing persistent homology.
+\newblock {\em Discrete Comput. Geom.}, {\bf 33}(2), 249--274.
+
+\end{thebibliography}

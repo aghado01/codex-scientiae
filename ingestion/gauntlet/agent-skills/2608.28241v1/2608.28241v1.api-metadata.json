@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.28241v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.28241v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Beyond Task-Only Matching: Personalized Skill Routing with Counterfactual Evaluation",
+      "authors": [
+        "Tianle Wang",
+        "Yanghe Zou",
+        "Xiang Liu",
+        "Ziyao Huang",
+        "Chenchen Fu",
+        "Weiwei Wu"
+      ],
+      "abstract": "The rapid expansion of reusable skill repositories makes skill routing a critical capability for large language model (LLM) agents. Existing methods treat routing as task-only semantic matching. However, when users with incompatible constraints issue an identical request, this assumption conflates task relevance with skill suitability: a task-only router can select a semantically plausible skill that is unsuitable for the requesting user. To expose this failure mode, we formulate \\textit{personalized skill routing} as profile-conditioned retrieval, in which relevance depends jointly on the task and the user profile. We first introduce a profile-counterfactual benchmark, in which the task is held fixed while changes in the user profile induce changes in the reference skill. We further construct paired counterfactual supervision and propose SkillFeed, a progressive retrieve-and-rerank framework that first establishes task--skill alignment and then learns profile-conditioned discrimination. By retrieving body-level evidence and reranking semantically similar but profile-conflicting candidates, SkillFeed identifies skills that satisfy both task requirements and user constraints. On SkillFeed-Bench, SkillFeed attains 75.1\\% top-1 retrieval accuracy, a 23.1-point improvement over the corresponding pretrained routing baseline. Adding profile conditioning yields a 35.1-point gain on queries where user profile changes the reference skill. This contrast shows that user profiles are most consequential precisely when they change skill suitability. Our website is publicly available at http://www.aiskillfeed.com .",
+      "doi": null,
+      "arxiv_id": "2608.28241v1",
+      "published": "2026-08-28T11:55:56Z",
+      "updated": "2026-08-28T11:55:56Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.28241v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.28241v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2608.28241v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.28241v1",
+          "url": "https://arxiv.org/abs/2608.28241v1",
+          "doi": null,
+          "arxiv_id": "2608.28241v1",
+          "published": "2026-08-28T11:55:56Z",
+          "updated": "2026-08-28T11:55:56Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.28241v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:57:12.573693Z",
+      "sha256": "eb38ba07ba265852cea830b2468fcf73f64797b53c87340f88a1b4b09777f772",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcUF4d245ODYvVENURnUydW1ERnBSUUNMakQ0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yODI0MXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU3OjEyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI4MjQxdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yODI0MXYxPC9pZD4KICAgIDx0aXRsZT5CZXlvbmQgVGFzay1Pbmx5IE1hdGNoaW5nOiBQZXJzb25hbGl6ZWQgU2tpbGwgUm91dGluZyB3aXRoIENvdW50ZXJmYWN0dWFsIEV2YWx1YXRpb248L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0yOFQxMTo1NTo1Nlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yODI0MXYxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4yODI0MXYxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+VGhlIHJhcGlkIGV4cGFuc2lvbiBvZiByZXVzYWJsZSBza2lsbCByZXBvc2l0b3JpZXMgbWFrZXMgc2tpbGwgcm91dGluZyBhIGNyaXRpY2FsIGNhcGFiaWxpdHkgZm9yIGxhcmdlIGxhbmd1YWdlIG1vZGVsIChMTE0pIGFnZW50cy4gRXhpc3RpbmcgbWV0aG9kcyB0cmVhdCByb3V0aW5nIGFzIHRhc2stb25seSBzZW1hbnRpYyBtYXRjaGluZy4gSG93ZXZlciwgd2hlbiB1c2VycyB3aXRoIGluY29tcGF0aWJsZSBjb25zdHJhaW50cyBpc3N1ZSBhbiBpZGVudGljYWwgcmVxdWVzdCwgdGhpcyBhc3N1bXB0aW9uIGNvbmZsYXRlcyB0YXNrIHJlbGV2YW5jZSB3aXRoIHNraWxsIHN1aXRhYmlsaXR5OiBhIHRhc2stb25seSByb3V0ZXIgY2FuIHNlbGVjdCBhIHNlbWFudGljYWxseSBwbGF1c2libGUgc2tpbGwgdGhhdCBpcyB1bnN1aXRhYmxlIGZvciB0aGUgcmVxdWVzdGluZyB1c2VyLiBUbyBleHBvc2UgdGhpcyBmYWlsdXJlIG1vZGUsIHdlIGZvcm11bGF0ZSBcdGV4dGl0e3BlcnNvbmFsaXplZCBza2lsbCByb3V0aW5nfSBhcyBwcm9maWxlLWNvbmRpdGlvbmVkIHJldHJpZXZhbCwgaW4gd2hpY2ggcmVsZXZhbmNlIGRlcGVuZHMgam9pbnRseSBvbiB0aGUgdGFzayBhbmQgdGhlIHVzZXIgcHJvZmlsZS4gV2UgZmlyc3QgaW50cm9kdWNlIGEgcHJvZmlsZS1jb3VudGVyZmFjdHVhbCBiZW5jaG1hcmssIGluIHdoaWNoIHRoZSB0YXNrIGlzIGhlbGQgZml4ZWQgd2hpbGUgY2hhbmdlcyBpbiB0aGUgdXNlciBwcm9maWxlIGluZHVjZSBjaGFuZ2VzIGluIHRoZSByZWZlcmVuY2Ugc2tpbGwuIFdlIGZ1cnRoZXIgY29uc3RydWN0IHBhaXJlZCBjb3VudGVyZmFjdHVhbCBzdXBlcnZpc2lvbiBhbmQgcHJvcG9zZSBTa2lsbEZlZWQsIGEgcHJvZ3Jlc3NpdmUgcmV0cmlldmUtYW5kLXJlcmFuayBmcmFtZXdvcmsgdGhhdCBmaXJzdCBlc3RhYmxpc2hlcyB0YXNrLS1za2lsbCBhbGlnbm1lbnQgYW5kIHRoZW4gbGVhcm5zIHByb2ZpbGUtY29uZGl0aW9uZWQgZGlzY3JpbWluYXRpb24uIEJ5IHJldHJpZXZpbmcgYm9keS1sZXZlbCBldmlkZW5jZSBhbmQgcmVyYW5raW5nIHNlbWFudGljYWxseSBzaW1pbGFyIGJ1dCBwcm9maWxlLWNvbmZsaWN0aW5nIGNhbmRpZGF0ZXMsIFNraWxsRmVlZCBpZGVudGlmaWVzIHNraWxscyB0aGF0IHNhdGlzZnkgYm90aCB0YXNrIHJlcXVpcmVtZW50cyBhbmQgdXNlciBjb25zdHJhaW50cy4gT24gU2tpbGxGZWVkLUJlbmNoLCBTa2lsbEZlZWQgYXR0YWlucyA3NS4xXCUgdG9wLTEgcmV0cmlldmFsIGFjY3VyYWN5LCBhIDIzLjEtcG9pbnQgaW1wcm92ZW1lbnQgb3ZlciB0aGUgY29ycmVzcG9uZGluZyBwcmV0cmFpbmVkIHJvdXRpbmcgYmFzZWxpbmUuIEFkZGluZyBwcm9maWxlIGNvbmRpdGlvbmluZyB5aWVsZHMgYSAzNS4xLXBvaW50IGdhaW4gb24gcXVlcmllcyB3aGVyZSB1c2VyIHByb2ZpbGUgY2hhbmdlcyB0aGUgcmVmZXJlbmNlIHNraWxsLiBUaGlzIGNvbnRyYXN0IHNob3dzIHRoYXQgdXNlciBwcm9maWxlcyBhcmUgbW9zdCBjb25zZXF1ZW50aWFsIHByZWNpc2VseSB3aGVuIHRoZXkgY2hhbmdlIHNraWxsIHN1aXRhYmlsaXR5LiBPdXIgd2Vic2l0ZSBpcyBwdWJsaWNseSBhdmFpbGFibGUgYXQgaHR0cDovL3d3dy5haXNraWxsZmVlZC5jb20gLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA4LTI4VDExOjU1OjU2WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuQUkiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlRpYW5sZSBXYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZYW5naGUgWm91PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaWFuZyBMaXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlppeWFvIEh1YW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5DaGVuY2hlbiBGdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+V2Vpd2VpIFd1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Beyond Task-Only Matching: Personalized Skill Routing with Counterfactual Evaluation",
+    "authors": [
+      "Tianle Wang",
+      "Yanghe Zou",
+      "Xiang Liu",
+      "Ziyao Huang",
+      "Chenchen Fu",
+      "Weiwei Wu"
+    ],
+    "abstract": "The rapid expansion of reusable skill repositories makes skill routing a critical capability for large language model (LLM) agents. Existing methods treat routing as task-only semantic matching. However, when users with incompatible constraints issue an identical request, this assumption conflates task relevance with skill suitability: a task-only router can select a semantically plausible skill that is unsuitable for the requesting user. To expose this failure mode, we formulate \\textit{personalized skill routing} as profile-conditioned retrieval, in which relevance depends jointly on the task and the user profile. We first introduce a profile-counterfactual benchmark, in which the task is held fixed while changes in the user profile induce changes in the reference skill. We further construct paired counterfactual supervision and propose SkillFeed, a progressive retrieve-and-rerank framework that first establishes task--skill alignment and then learns profile-conditioned discrimination. By retrieving body-level evidence and reranking semantically similar but profile-conflicting candidates, SkillFeed identifies skills that satisfy both task requirements and user constraints. On SkillFeed-Bench, SkillFeed attains 75.1\\% top-1 retrieval accuracy, a 23.1-point improvement over the corresponding pretrained routing baseline. Adding profile conditioning yields a 35.1-point gain on queries where user profile changes the reference skill. This contrast shows that user profiles are most consequential precisely when they change skill suitability. Our website is publicly available at http://www.aiskillfeed.com .",
+    "identifiers": {
+      "arxiv": "2608.28241",
+      "arxiv_versioned": "2608.28241v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.28241v1"
+      }
+    },
+    "categories": [
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-28T11:55:56Z",
+    "updated": "2026-08-28T11:55:56Z"
+  }
+}

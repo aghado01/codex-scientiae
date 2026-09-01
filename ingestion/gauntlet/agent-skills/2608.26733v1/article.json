@@ -1,0 +1,175 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.26733v1",
+  "initialized_utc": "2026-08-31T17:58:16.035159Z",
+  "title": "Daydreaming: Stealing Hidden Agent Skills through Black-Box Task Interaction",
+  "authors": [
+    "Yu-Lin Tsai",
+    "Yu-An Lu",
+    "Ci-Yang Tsai",
+    "Muxi Lyu",
+    "Raluca Ada Popa",
+    "Chia-Mu Yu"
+  ],
+  "abstract": "Agent skills bundle instructions, reference data, and executable helpers that let a general agent perform specialized tasks. Hosted providers can keep these files secret while selling access to task results, making the skill itself a valuable target. Existing disclosure defenses can block requests that ask for the skill or reproduce its text, but they cannot block customers from submitting the ordinary tasks the service is built to complete. We present Daydreaming, an execution-only attack that steals a multi-file skill through black-box task interactions. The victim is never asked to reveal the skill or grade a reconstruction. Instead, Daydreaming adaptively creates crafted tasks whose results distinguish possible hidden behaviors. It tests individual behaviors, uses attacker-controlled shadow agents to choose a design, and completes each file using stored victim results and local execution checks. We formalize three nested threat levels of access as Differential, Trace, and Output, and focus on Output, where the attacker sees only the final response and returned files. Across 7 skills and 4 victim models, Daydreaming recovers 86.8% of the original skill's capability at Output, outperforming SigLeak by almost 4x. It produces installable skills using a median of 32 victim calls per skill even with disclosure defenses enabled. These results show that hiding skill files and filtering direct disclosure do not, by themselves, prevent functional reconstruction through normal use.",
+  "identifiers": {
+    "arxiv": "2608.26733",
+    "arxiv_versioned": "2608.26733v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.26733v1"
+    }
+  },
+  "categories": [
+    "cs.CR",
+    "cs.AI",
+    "cs.LG"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CR",
+  "published": "2026-08-27T07:26:13Z",
+  "updated": "2026-08-27T07:26:13Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.26733v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10077,
+        "sha256": "18003cd8701db68534199cc58c0f4f55dd6947dc02fcc656d73bd6306d0df33a",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-31T17:58:15.431155Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.26733v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "02a9c91b4bf9c273236d33433872a6cc3a7df3ef7096973d568e579b2272ae46"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "usenix.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "\\Large Daydreaming: Stealing Hidden Agent Skills through Black-Box Task Interaction",
+        "authors_tex": [
+          "{\\rm Yu-Lin Tsai\\textsuperscript{*}}\\\\\nUC Berkeley\\\\\n\\texttt{uriah\\_tsai@berkeley.edu}\n\\and\n{\\rm Yu-An Lu\\textsuperscript{*}}\\\\\nNational Yang Ming Chiao Tung University\\\\\n\\texttt{yuan.la14@nycu.edu.tw}\n\\and\n{\\rm Ci-Yang Tsai}\\\\\nNational Yang Ming Chiao Tung University\\\\\n\\texttt{atziluth.en10@nycu.edu.tw}\n\\and\n{\\rm Muxi Lyu}\\\\\nUC Berkeley\\\\\n\\texttt{muxi\\_lyu@berkeley.edu}\n\\and\n{\\rm Raluca Ada Popa}\\\\\nUC Berkeley\\\\\n\\texttt{raluca@eecs.berkeley.edu}\n\\and\n{\\rm Chia-Mu Yu}\\\\\nNational Yang Ming Chiao Tung University\\\\\n\\texttt{chiamuyu@nycu.edu.tw}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 215,
+        "sha256": "250317ddb83b9f590f3eefa6cdc01e94c3332cb63f509a83dfc086265312af58"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.26733v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.26733v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 246754,
+      "sha256": "dfbe2c63a8ab690dca20d3c4ebfa585e196c51b7e07d0c664ee4c21e3f319d9b",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.26733v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.26733v1.tar.gz",
+      "entrypoint": "usenix.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 11,
+      "tex_files": 3,
+      "sha256": "e0cee5d09dfffd51fe160f8af476a9ca4dd2882f8c14da725672d1bcfec22a24"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.26733v1.pdf",
+      "format": "application/pdf",
+      "bytes": 551772,
+      "sha256": "6cba3171ab9ce5c30a5e128383c815573ad78752eb15a214cd49ea4be6bc03e1"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-31T17:58:16.035159Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 12
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 11
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 3
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "usenix.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2112.10906v4",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2112.10906v4",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Persistent sheaf Laplacians",
+      "authors": [
+        "Xiaoqi Wei",
+        "Guo-Wei Wei"
+      ],
+      "abstract": "Recently various types of topological Laplacians have been studied from the perspective of data analysis. The spectral theory of these Laplacians has significantly extended the scope of algebraic topology and data analysis. Inspired by the theory of persistent Laplacians and cellular sheaves, this work develops the theory of persistent sheaf Laplacians for cellular sheaves, and describes how to construct sheaves for a point cloud where each point is associated with a quantity that can be devised to embed physical properties. As a result, the spectra of persistent sheaf Laplacians encode both geometrical and non-geometrical information of the given point cloud. The theory of persistent sheaf Laplacians is an elegant method for fusing different types of data and has huge potential for future development.",
+      "doi": null,
+      "arxiv_id": "2112.10906v4",
+      "published": "2021-12-20T23:26:46Z",
+      "updated": "2023-12-05T18:55:54Z",
+      "year": 2021,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2112.10906v4",
+      "pdf_url": "https://arxiv.org/pdf/2112.10906v4",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "math.AT"
+      ],
+      "external_ids": {
+        "arxiv": "2112.10906v4"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2112.10906v4",
+          "url": "https://arxiv.org/abs/2112.10906v4",
+          "doi": null,
+          "arxiv_id": "2112.10906v4",
+          "published": "2021-12-20T23:26:46Z",
+          "updated": "2023-12-05T18:55:54Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2112.10906v4&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-01T04:44:04.695740Z",
+      "sha256": "068372e9a960c65bd805ba0f90fde7bf87bf66ec261acecd0b4a850e86b580b0",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvMGNVOVRJaENZT3RaMTNWUGI3dFphd0ZrWFZBPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjExMi4xMDkwNnY0JmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTAxVDA0OjQzOjU2WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yMTEyLjEwOTA2djQiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjExMi4xMDkwNnY0PC9pZD4KICAgIDx0aXRsZT5QZXJzaXN0ZW50IHNoZWFmIExhcGxhY2lhbnM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyMy0xMi0wNVQxODo1NTo1NFo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjExMi4xMDkwNnY0IiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjExMi4xMDkwNnY0IiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+UmVjZW50bHkgdmFyaW91cyB0eXBlcyBvZiB0b3BvbG9naWNhbCBMYXBsYWNpYW5zIGhhdmUgYmVlbiBzdHVkaWVkIGZyb20gdGhlIHBlcnNwZWN0aXZlIG9mIGRhdGEgYW5hbHlzaXMuIFRoZSBzcGVjdHJhbCB0aGVvcnkgb2YgdGhlc2UgTGFwbGFjaWFucyBoYXMgc2lnbmlmaWNhbnRseSBleHRlbmRlZCB0aGUgc2NvcGUgb2YgYWxnZWJyYWljIHRvcG9sb2d5IGFuZCBkYXRhIGFuYWx5c2lzLiBJbnNwaXJlZCBieSB0aGUgdGhlb3J5IG9mIHBlcnNpc3RlbnQgTGFwbGFjaWFucyBhbmQgY2VsbHVsYXIgc2hlYXZlcywgdGhpcyB3b3JrIGRldmVsb3BzIHRoZSB0aGVvcnkgb2YgcGVyc2lzdGVudCBzaGVhZiBMYXBsYWNpYW5zIGZvciBjZWxsdWxhciBzaGVhdmVzLCBhbmQgZGVzY3JpYmVzIGhvdyB0byBjb25zdHJ1Y3Qgc2hlYXZlcyBmb3IgYSBwb2ludCBjbG91ZCB3aGVyZSBlYWNoIHBvaW50IGlzIGFzc29jaWF0ZWQgd2l0aCBhIHF1YW50aXR5IHRoYXQgY2FuIGJlIGRldmlzZWQgdG8gZW1iZWQgcGh5c2ljYWwgcHJvcGVydGllcy4gQXMgYSByZXN1bHQsIHRoZSBzcGVjdHJhIG9mIHBlcnNpc3RlbnQgc2hlYWYgTGFwbGFjaWFucyBlbmNvZGUgYm90aCBnZW9tZXRyaWNhbCBhbmQgbm9uLWdlb21ldHJpY2FsIGluZm9ybWF0aW9uIG9mIHRoZSBnaXZlbiBwb2ludCBjbG91ZC4gVGhlIHRoZW9yeSBvZiBwZXJzaXN0ZW50IHNoZWFmIExhcGxhY2lhbnMgaXMgYW4gZWxlZ2FudCBtZXRob2QgZm9yIGZ1c2luZyBkaWZmZXJlbnQgdHlwZXMgb2YgZGF0YSBhbmQgaGFzIGh1Z2UgcG90ZW50aWFsIGZvciBmdXR1cmUgZGV2ZWxvcG1lbnQuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09Im1hdGguQVQiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyMS0xMi0yMFQyMzoyNjo0Nlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PnJldmlzaW9uPC9hcnhpdjpjb21tZW50PgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0ibWF0aC5BVCIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WGlhb3FpIFdlaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+R3VvLVdlaSBXZWk8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Persistent sheaf Laplacians",
+    "authors": [
+      "Xiaoqi Wei",
+      "Guo-Wei Wei"
+    ],
+    "abstract": "Recently various types of topological Laplacians have been studied from the perspective of data analysis. The spectral theory of these Laplacians has significantly extended the scope of algebraic topology and data analysis. Inspired by the theory of persistent Laplacians and cellular sheaves, this work develops the theory of persistent sheaf Laplacians for cellular sheaves, and describes how to construct sheaves for a point cloud where each point is associated with a quantity that can be devised to embed physical properties. As a result, the spectra of persistent sheaf Laplacians encode both geometrical and non-geometrical information of the given point cloud. The theory of persistent sheaf Laplacians is an elegant method for fusing different types of data and has huge potential for future development.",
+    "identifiers": {
+      "arxiv": "2112.10906",
+      "arxiv_versioned": "2112.10906v4",
+      "doi": null,
+      "external": {
+        "arxiv": "2112.10906v4"
+      }
+    },
+    "categories": [
+      "math.AT"
+    ],
+    "concepts": [],
+    "primary_category": "math.AT",
+    "published": "2021-12-20T23:26:46Z",
+    "updated": "2023-12-05T18:55:54Z"
+  }
+}

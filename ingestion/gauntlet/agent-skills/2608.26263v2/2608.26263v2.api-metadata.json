@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.26263v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.26263v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "SKILL.state: Scalable Long-Horizon Agent Skills",
+      "authors": [
+        "Sanket Badhe",
+        "Priyanka Tiwari",
+        "Jonghyun Chung"
+      ],
+      "abstract": "Large Language Models (LLMs) increasingly act as autonomous agents executing complex, long-running procedural skills. Existing agent runtimes maintain execution by continually appending observations, actions, and intermediate reasoning traces to an ever-growing conversation history, causing latency degradation and context-poisoning failures over long horizons. We present SKILL.state, a runtime architecture that replaces append-only conversational history with an explicit, mutable execution state. At each execution step, the model receives only the immutable skill specification, the current structured execution state, and the latest observation. Intermediate reasoning is discarded immediately after producing a validated state update, preventing prompt growth with execution history. Across diverse datasets, models, and execution environments, SKILL. state improves task accuracy while substantially reducing cumulative token consumption. Our results demonstrate that explicit execution state is an effective and architecture-agnostic abstraction for scalable long-horizon agent skills.",
+      "doi": null,
+      "arxiv_id": "2608.26263v2",
+      "published": "2026-08-26T18:00:06Z",
+      "updated": "2026-08-28T03:02:32Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.26263v2",
+      "pdf_url": "https://arxiv.org/pdf/2608.26263v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.MA"
+      ],
+      "external_ids": {
+        "arxiv": "2608.26263v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.26263v2",
+          "url": "https://arxiv.org/abs/2608.26263v2",
+          "doi": null,
+          "arxiv_id": "2608.26263v2",
+          "published": "2026-08-26T18:00:06Z",
+          "updated": "2026-08-28T03:02:32Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.26263v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:58:54.673593Z",
+      "sha256": "6a47bb381e04abb50af9e1656c6fe474dbc359e2b46c948610ee6c861f752cfa",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvZlgxcU5JZ1pXRUhOYjlJWmZKRWxWV1pnR0Y0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNjI2M3YyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU4OjI5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI2MjYzdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNjI2M3YyPC9pZD4KICAgIDx0aXRsZT5TS0lMTC5zdGF0ZTogU2NhbGFibGUgTG9uZy1Ib3Jpem9uIEFnZW50IFNraWxsczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA4LTI4VDAzOjAyOjMyWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA4LjI2MjYzdjIiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA4LjI2MjYzdjIiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5MYXJnZSBMYW5ndWFnZSBNb2RlbHMgKExMTXMpIGluY3JlYXNpbmdseSBhY3QgYXMgYXV0b25vbW91cyBhZ2VudHMgZXhlY3V0aW5nIGNvbXBsZXgsIGxvbmctcnVubmluZyBwcm9jZWR1cmFsIHNraWxscy4gRXhpc3RpbmcgYWdlbnQgcnVudGltZXMgbWFpbnRhaW4gZXhlY3V0aW9uIGJ5IGNvbnRpbnVhbGx5IGFwcGVuZGluZyBvYnNlcnZhdGlvbnMsIGFjdGlvbnMsIGFuZCBpbnRlcm1lZGlhdGUgcmVhc29uaW5nIHRyYWNlcyB0byBhbiBldmVyLWdyb3dpbmcgY29udmVyc2F0aW9uIGhpc3RvcnksIGNhdXNpbmcgbGF0ZW5jeSBkZWdyYWRhdGlvbiBhbmQgY29udGV4dC1wb2lzb25pbmcgZmFpbHVyZXMgb3ZlciBsb25nIGhvcml6b25zLiBXZSBwcmVzZW50IFNLSUxMLnN0YXRlLCBhIHJ1bnRpbWUgYXJjaGl0ZWN0dXJlIHRoYXQgcmVwbGFjZXMgYXBwZW5kLW9ubHkgY29udmVyc2F0aW9uYWwgaGlzdG9yeSB3aXRoIGFuIGV4cGxpY2l0LCBtdXRhYmxlIGV4ZWN1dGlvbiBzdGF0ZS4gQXQgZWFjaCBleGVjdXRpb24gc3RlcCwgdGhlIG1vZGVsIHJlY2VpdmVzIG9ubHkgdGhlIGltbXV0YWJsZSBza2lsbCBzcGVjaWZpY2F0aW9uLCB0aGUgY3VycmVudCBzdHJ1Y3R1cmVkIGV4ZWN1dGlvbiBzdGF0ZSwgYW5kIHRoZSBsYXRlc3Qgb2JzZXJ2YXRpb24uIEludGVybWVkaWF0ZSByZWFzb25pbmcgaXMgZGlzY2FyZGVkIGltbWVkaWF0ZWx5IGFmdGVyIHByb2R1Y2luZyBhIHZhbGlkYXRlZCBzdGF0ZSB1cGRhdGUsIHByZXZlbnRpbmcgcHJvbXB0IGdyb3d0aCB3aXRoIGV4ZWN1dGlvbiBoaXN0b3J5LiBBY3Jvc3MgZGl2ZXJzZSBkYXRhc2V0cywgbW9kZWxzLCBhbmQgZXhlY3V0aW9uIGVudmlyb25tZW50cywgU0tJTEwuIHN0YXRlIGltcHJvdmVzIHRhc2sgYWNjdXJhY3kgd2hpbGUgc3Vic3RhbnRpYWxseSByZWR1Y2luZyBjdW11bGF0aXZlIHRva2VuIGNvbnN1bXB0aW9uLiBPdXIgcmVzdWx0cyBkZW1vbnN0cmF0ZSB0aGF0IGV4cGxpY2l0IGV4ZWN1dGlvbiBzdGF0ZSBpcyBhbiBlZmZlY3RpdmUgYW5kIGFyY2hpdGVjdHVyZS1hZ25vc3RpYyBhYnN0cmFjdGlvbiBmb3Igc2NhbGFibGUgbG9uZy1ob3Jpem9uIGFnZW50IHNraWxscy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5NQSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA4LTI2VDE4OjAwOjA2WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+YWNjZXB0ZWQgYXQgRU1OTFA8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2Fua2V0IEJhZGhlPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Qcml5YW5rYSBUaXdhcmk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkpvbmdoeXVuIENodW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "SKILL.state: Scalable Long-Horizon Agent Skills",
+    "authors": [
+      "Sanket Badhe",
+      "Priyanka Tiwari",
+      "Jonghyun Chung"
+    ],
+    "abstract": "Large Language Models (LLMs) increasingly act as autonomous agents executing complex, long-running procedural skills. Existing agent runtimes maintain execution by continually appending observations, actions, and intermediate reasoning traces to an ever-growing conversation history, causing latency degradation and context-poisoning failures over long horizons. We present SKILL.state, a runtime architecture that replaces append-only conversational history with an explicit, mutable execution state. At each execution step, the model receives only the immutable skill specification, the current structured execution state, and the latest observation. Intermediate reasoning is discarded immediately after producing a validated state update, preventing prompt growth with execution history. Across diverse datasets, models, and execution environments, SKILL. state improves task accuracy while substantially reducing cumulative token consumption. Our results demonstrate that explicit execution state is an effective and architecture-agnostic abstraction for scalable long-horizon agent skills.",
+    "identifiers": {
+      "arxiv": "2608.26263",
+      "arxiv_versioned": "2608.26263v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.26263v2"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.MA"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-26T18:00:06Z",
+    "updated": "2026-08-28T03:02:32Z"
+  }
+}

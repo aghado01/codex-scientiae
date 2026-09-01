@@ -1,0 +1,109 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.26733v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.26733v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Daydreaming: Stealing Hidden Agent Skills through Black-Box Task Interaction",
+      "authors": [
+        "Yu-Lin Tsai",
+        "Yu-An Lu",
+        "Ci-Yang Tsai",
+        "Muxi Lyu",
+        "Raluca Ada Popa",
+        "Chia-Mu Yu"
+      ],
+      "abstract": "Agent skills bundle instructions, reference data, and executable helpers that let a general agent perform specialized tasks. Hosted providers can keep these files secret while selling access to task results, making the skill itself a valuable target. Existing disclosure defenses can block requests that ask for the skill or reproduce its text, but they cannot block customers from submitting the ordinary tasks the service is built to complete. We present Daydreaming, an execution-only attack that steals a multi-file skill through black-box task interactions. The victim is never asked to reveal the skill or grade a reconstruction. Instead, Daydreaming adaptively creates crafted tasks whose results distinguish possible hidden behaviors. It tests individual behaviors, uses attacker-controlled shadow agents to choose a design, and completes each file using stored victim results and local execution checks. We formalize three nested threat levels of access as Differential, Trace, and Output, and focus on Output, where the attacker sees only the final response and returned files. Across 7 skills and 4 victim models, Daydreaming recovers 86.8% of the original skill's capability at Output, outperforming SigLeak by almost 4x. It produces installable skills using a median of 32 victim calls per skill even with disclosure defenses enabled. These results show that hiding skill files and filtering direct disclosure do not, by themselves, prevent functional reconstruction through normal use.",
+      "doi": null,
+      "arxiv_id": "2608.26733v1",
+      "published": "2026-08-27T07:26:13Z",
+      "updated": "2026-08-27T07:26:13Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.26733v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.26733v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2608.26733v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.26733v1",
+          "url": "https://arxiv.org/abs/2608.26733v1",
+          "doi": null,
+          "arxiv_id": "2608.26733v1",
+          "published": "2026-08-27T07:26:13Z",
+          "updated": "2026-08-27T07:26:13Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.26733v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:58:15.431155Z",
+      "sha256": "02a9c91b4bf9c273236d33433872a6cc3a7df3ef7096973d568e579b2272ae46",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvQWZYZUZRZ2RQTkJsQWcrd0Nwb2NiUjhFYWcwPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNjczM3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU4OjE1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI2NzMzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNjczM3YxPC9pZD4KICAgIDx0aXRsZT5EYXlkcmVhbWluZzogU3RlYWxpbmcgSGlkZGVuIEFnZW50IFNraWxscyB0aHJvdWdoIEJsYWNrLUJveCBUYXNrIEludGVyYWN0aW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDgtMjdUMDc6MjY6MTNaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDguMjY3MzN2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDguMjY3MzN2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PkFnZW50IHNraWxscyBidW5kbGUgaW5zdHJ1Y3Rpb25zLCByZWZlcmVuY2UgZGF0YSwgYW5kIGV4ZWN1dGFibGUgaGVscGVycyB0aGF0IGxldCBhIGdlbmVyYWwgYWdlbnQgcGVyZm9ybSBzcGVjaWFsaXplZCB0YXNrcy4gSG9zdGVkIHByb3ZpZGVycyBjYW4ga2VlcCB0aGVzZSBmaWxlcyBzZWNyZXQgd2hpbGUgc2VsbGluZyBhY2Nlc3MgdG8gdGFzayByZXN1bHRzLCBtYWtpbmcgdGhlIHNraWxsIGl0c2VsZiBhIHZhbHVhYmxlIHRhcmdldC4gRXhpc3RpbmcgZGlzY2xvc3VyZSBkZWZlbnNlcyBjYW4gYmxvY2sgcmVxdWVzdHMgdGhhdCBhc2sgZm9yIHRoZSBza2lsbCBvciByZXByb2R1Y2UgaXRzIHRleHQsIGJ1dCB0aGV5IGNhbm5vdCBibG9jayBjdXN0b21lcnMgZnJvbSBzdWJtaXR0aW5nIHRoZSBvcmRpbmFyeSB0YXNrcyB0aGUgc2VydmljZSBpcyBidWlsdCB0byBjb21wbGV0ZS4gV2UgcHJlc2VudCBEYXlkcmVhbWluZywgYW4gZXhlY3V0aW9uLW9ubHkgYXR0YWNrIHRoYXQgc3RlYWxzIGEgbXVsdGktZmlsZSBza2lsbCB0aHJvdWdoIGJsYWNrLWJveCB0YXNrIGludGVyYWN0aW9ucy4gVGhlIHZpY3RpbSBpcyBuZXZlciBhc2tlZCB0byByZXZlYWwgdGhlIHNraWxsIG9yIGdyYWRlIGEgcmVjb25zdHJ1Y3Rpb24uIEluc3RlYWQsIERheWRyZWFtaW5nIGFkYXB0aXZlbHkgY3JlYXRlcyBjcmFmdGVkIHRhc2tzIHdob3NlIHJlc3VsdHMgZGlzdGluZ3Vpc2ggcG9zc2libGUgaGlkZGVuIGJlaGF2aW9ycy4gSXQgdGVzdHMgaW5kaXZpZHVhbCBiZWhhdmlvcnMsIHVzZXMgYXR0YWNrZXItY29udHJvbGxlZCBzaGFkb3cgYWdlbnRzIHRvIGNob29zZSBhIGRlc2lnbiwgYW5kIGNvbXBsZXRlcyBlYWNoIGZpbGUgdXNpbmcgc3RvcmVkIHZpY3RpbSByZXN1bHRzIGFuZCBsb2NhbCBleGVjdXRpb24gY2hlY2tzLiBXZSBmb3JtYWxpemUgdGhyZWUgbmVzdGVkIHRocmVhdCBsZXZlbHMgb2YgYWNjZXNzIGFzIERpZmZlcmVudGlhbCwgVHJhY2UsIGFuZCBPdXRwdXQsIGFuZCBmb2N1cyBvbiBPdXRwdXQsIHdoZXJlIHRoZSBhdHRhY2tlciBzZWVzIG9ubHkgdGhlIGZpbmFsIHJlc3BvbnNlIGFuZCByZXR1cm5lZCBmaWxlcy4gQWNyb3NzIDcgc2tpbGxzIGFuZCA0IHZpY3RpbSBtb2RlbHMsIERheWRyZWFtaW5nIHJlY292ZXJzIDg2LjglIG9mIHRoZSBvcmlnaW5hbCBza2lsbCdzIGNhcGFiaWxpdHkgYXQgT3V0cHV0LCBvdXRwZXJmb3JtaW5nIFNpZ0xlYWsgYnkgYWxtb3N0IDR4LiBJdCBwcm9kdWNlcyBpbnN0YWxsYWJsZSBza2lsbHMgdXNpbmcgYSBtZWRpYW4gb2YgMzIgdmljdGltIGNhbGxzIHBlciBza2lsbCBldmVuIHdpdGggZGlzY2xvc3VyZSBkZWZlbnNlcyBlbmFibGVkLiBUaGVzZSByZXN1bHRzIHNob3cgdGhhdCBoaWRpbmcgc2tpbGwgZmlsZXMgYW5kIGZpbHRlcmluZyBkaXJlY3QgZGlzY2xvc3VyZSBkbyBub3QsIGJ5IHRoZW1zZWx2ZXMsIHByZXZlbnQgZnVuY3Rpb25hbCByZWNvbnN0cnVjdGlvbiB0aHJvdWdoIG5vcm1hbCB1c2UuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNSIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5MRyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA4LTI3VDA3OjI2OjEzWjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuQ1IiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPll1LUxpbiBUc2FpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZdS1BbiBMdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q2ktWWFuZyBUc2FpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NdXhpIEx5dTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UmFsdWNhIEFkYSBQb3BhPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5DaGlhLU11IFl1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Daydreaming: Stealing Hidden Agent Skills through Black-Box Task Interaction",
+    "authors": [
+      "Yu-Lin Tsai",
+      "Yu-An Lu",
+      "Ci-Yang Tsai",
+      "Muxi Lyu",
+      "Raluca Ada Popa",
+      "Chia-Mu Yu"
+    ],
+    "abstract": "Agent skills bundle instructions, reference data, and executable helpers that let a general agent perform specialized tasks. Hosted providers can keep these files secret while selling access to task results, making the skill itself a valuable target. Existing disclosure defenses can block requests that ask for the skill or reproduce its text, but they cannot block customers from submitting the ordinary tasks the service is built to complete. We present Daydreaming, an execution-only attack that steals a multi-file skill through black-box task interactions. The victim is never asked to reveal the skill or grade a reconstruction. Instead, Daydreaming adaptively creates crafted tasks whose results distinguish possible hidden behaviors. It tests individual behaviors, uses attacker-controlled shadow agents to choose a design, and completes each file using stored victim results and local execution checks. We formalize three nested threat levels of access as Differential, Trace, and Output, and focus on Output, where the attacker sees only the final response and returned files. Across 7 skills and 4 victim models, Daydreaming recovers 86.8% of the original skill's capability at Output, outperforming SigLeak by almost 4x. It produces installable skills using a median of 32 victim calls per skill even with disclosure defenses enabled. These results show that hiding skill files and filtering direct disclosure do not, by themselves, prevent functional reconstruction through normal use.",
+    "identifiers": {
+      "arxiv": "2608.26733",
+      "arxiv_versioned": "2608.26733v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.26733v1"
+      }
+    },
+    "categories": [
+      "cs.CR",
+      "cs.AI",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CR",
+    "published": "2026-08-27T07:26:13Z",
+    "updated": "2026-08-27T07:26:13Z"
+  }
+}

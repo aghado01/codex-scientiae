@@ -1,0 +1,14 @@
+\section{Conclusion}
+\label{sec:conclusion}
+% ============================================================
+
+%We studied how security knowledge can be encoded and provisioned as prompt-space skills for LLM coding agents. \sysname synthesizes these skills from known attacks or recorded agent failures and keeps one selected skill active throughout the tool-use loop. Across six LLMs, it reduces harmful execution and malware generation, with a 0.14\% safety-refusal rate on 731 benign task descriptions. It requires no access to model weights and no additional runtime component. Our results show that effectiveness depends on the rules a skill retains and the threat scope covered by its fixed prompt budget. Narrow skills provide stronger protection when deployment threats are known. Broad skills support general-purpose deployments and transfer to unseen classes.
+
+%The broader implication concerns policy composition. Combining more threat classes can remove the class-specific detail that makes narrow skills effective, even when the prompt budget remains fixed. Reformulation creates a second challenge because rules tied to observed request patterns may fail to recognize the same harmful intent in a new form. For defenders, effective composition must preserve concrete security checks and the intent-level rules needed for transfer. For deployers, skill scope should reflect the threat knowledge available before requests arrive. The open problem is to preserve fine-grained security knowledge across broader scopes without introducing request-time classification or routing.
+
+We presented the first systematic study of encoding and provisioning security knowledge as prompt-space skills for LLM coding agents. \sysname synthesizes these skills from known attacks or recorded agent failures and maintains a selected skill throughout the tool-use loop. Across six LLMs, \sysname reduces harmful execution and malware generation while producing only a 0.14\% safety-grounded refusal rate on 731 benign task descriptions.
+Because \sysname requires neither model-weight access nor an additional runtime component, it provides API-only deployers with a practical and readily updatable first line of defense. Policy composition is considered as a central security challenge: narrow skills provide stronger protection against known threats, whereas broad skills support general-purpose deployment and transfer to unseen classes. Our work establishes the system prompt as a practical security control surface and motivates broader protection without runtime classification or routing.
+
+% ============================================================
+% Bibliography
+% ============================================================

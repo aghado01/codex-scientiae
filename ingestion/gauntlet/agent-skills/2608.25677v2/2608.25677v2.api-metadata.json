@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.25677v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.25677v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Learning New Facts with QLoRA: An Acquisition-Retention Frontier",
+      "authors": [
+        "Estelle Zheng",
+        "Sébastien Warichet",
+        "Emmanuel Helbert",
+        "Christophe Cerisara"
+      ],
+      "abstract": "Parameter-efficient fine-tuning is often assumed to preserve pretrained capabilities because it updates only a small number of parameters. We show that this assumption depends strongly on adapter capacity. We study factual acquisition in a controlled OpenStreetMap-derived benchmark where Qwen3-4B must acquire anonymized geographic associations while retaining unrelated capabilities. Comparing full fine-tuning (FFT) with quantized low-rank adaptation (QLoRA) at ranks 8, 16, 32, and 64, we find that rank induces a clear acquisition--retention frontier. Low-rank QLoRA preserves out-of-domain (OOD) performance but acquires fewer facts, whereas higher ranks improve same-fact paraphrase generalization at an increasing cost in performance on unrelated benchmarks. FFT behaves as a conservative baseline: it retains general capabilities well, but does not reach the highest factual-acquisition regime. Distributional, weight-space, and spectral diagnostics mirror this behavioral trade-off, with higher-rank QLoRA moving farther from the pretrained model. A separate math adaptation experiment shows a weaker frontier, suggesting that the effect is most pronounced when adaptation must install new factual associations rather than reinforce skills already supported by pretraining. Code and data are available at https://github.com/zhngstl/new_facts_forgetting.",
+      "doi": null,
+      "arxiv_id": "2608.25677v2",
+      "published": "2026-08-26T11:54:58Z",
+      "updated": "2026-08-27T14:10:56Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.25677v2",
+      "pdf_url": "https://arxiv.org/pdf/2608.25677v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2608.25677v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.25677v2",
+          "url": "https://arxiv.org/abs/2608.25677v2",
+          "doi": null,
+          "arxiv_id": "2608.25677v2",
+          "published": "2026-08-26T11:54:58Z",
+          "updated": "2026-08-27T14:10:56Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.25677v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-08-31T17:59:10.207241Z",
+      "sha256": "ab270fa30e53bf3f128b2de6bb4a1691030742ed386189f96ffba9db07bc17be",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvUTNicmU2U0p3NE43dUVzZ2JXZm0vTjdUengwPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4yNTY3N3YyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA4LTMxVDE3OjU5OjEwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjI1Njc3djIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4yNTY3N3YyPC9pZD4KICAgIDx0aXRsZT5MZWFybmluZyBOZXcgRmFjdHMgd2l0aCBRTG9SQTogQW4gQWNxdWlzaXRpb24tUmV0ZW50aW9uIEZyb250aWVyPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDgtMjdUMTQ6MTA6NTZaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDguMjU2Nzd2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDguMjU2Nzd2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlBhcmFtZXRlci1lZmZpY2llbnQgZmluZS10dW5pbmcgaXMgb2Z0ZW4gYXNzdW1lZCB0byBwcmVzZXJ2ZSBwcmV0cmFpbmVkIGNhcGFiaWxpdGllcyBiZWNhdXNlIGl0IHVwZGF0ZXMgb25seSBhIHNtYWxsIG51bWJlciBvZiBwYXJhbWV0ZXJzLiBXZSBzaG93IHRoYXQgdGhpcyBhc3N1bXB0aW9uIGRlcGVuZHMgc3Ryb25nbHkgb24gYWRhcHRlciBjYXBhY2l0eS4gV2Ugc3R1ZHkgZmFjdHVhbCBhY3F1aXNpdGlvbiBpbiBhIGNvbnRyb2xsZWQgT3BlblN0cmVldE1hcC1kZXJpdmVkIGJlbmNobWFyayB3aGVyZSBRd2VuMy00QiBtdXN0IGFjcXVpcmUgYW5vbnltaXplZCBnZW9ncmFwaGljIGFzc29jaWF0aW9ucyB3aGlsZSByZXRhaW5pbmcgdW5yZWxhdGVkIGNhcGFiaWxpdGllcy4gQ29tcGFyaW5nIGZ1bGwgZmluZS10dW5pbmcgKEZGVCkgd2l0aCBxdWFudGl6ZWQgbG93LXJhbmsgYWRhcHRhdGlvbiAoUUxvUkEpIGF0IHJhbmtzIDgsIDE2LCAzMiwgYW5kIDY0LCB3ZSBmaW5kIHRoYXQgcmFuayBpbmR1Y2VzIGEgY2xlYXIgYWNxdWlzaXRpb24tLXJldGVudGlvbiBmcm9udGllci4gTG93LXJhbmsgUUxvUkEgcHJlc2VydmVzIG91dC1vZi1kb21haW4gKE9PRCkgcGVyZm9ybWFuY2UgYnV0IGFjcXVpcmVzIGZld2VyIGZhY3RzLCB3aGVyZWFzIGhpZ2hlciByYW5rcyBpbXByb3ZlIHNhbWUtZmFjdCBwYXJhcGhyYXNlIGdlbmVyYWxpemF0aW9uIGF0IGFuIGluY3JlYXNpbmcgY29zdCBpbiBwZXJmb3JtYW5jZSBvbiB1bnJlbGF0ZWQgYmVuY2htYXJrcy4gRkZUIGJlaGF2ZXMgYXMgYSBjb25zZXJ2YXRpdmUgYmFzZWxpbmU6IGl0IHJldGFpbnMgZ2VuZXJhbCBjYXBhYmlsaXRpZXMgd2VsbCwgYnV0IGRvZXMgbm90IHJlYWNoIHRoZSBoaWdoZXN0IGZhY3R1YWwtYWNxdWlzaXRpb24gcmVnaW1lLiBEaXN0cmlidXRpb25hbCwgd2VpZ2h0LXNwYWNlLCBhbmQgc3BlY3RyYWwgZGlhZ25vc3RpY3MgbWlycm9yIHRoaXMgYmVoYXZpb3JhbCB0cmFkZS1vZmYsIHdpdGggaGlnaGVyLXJhbmsgUUxvUkEgbW92aW5nIGZhcnRoZXIgZnJvbSB0aGUgcHJldHJhaW5lZCBtb2RlbC4gQSBzZXBhcmF0ZSBtYXRoIGFkYXB0YXRpb24gZXhwZXJpbWVudCBzaG93cyBhIHdlYWtlciBmcm9udGllciwgc3VnZ2VzdGluZyB0aGF0IHRoZSBlZmZlY3QgaXMgbW9zdCBwcm9ub3VuY2VkIHdoZW4gYWRhcHRhdGlvbiBtdXN0IGluc3RhbGwgbmV3IGZhY3R1YWwgYXNzb2NpYXRpb25zIHJhdGhlciB0aGFuIHJlaW5mb3JjZSBza2lsbHMgYWxyZWFkeSBzdXBwb3J0ZWQgYnkgcHJldHJhaW5pbmcuIENvZGUgYW5kIGRhdGEgYXJlIGF2YWlsYWJsZSBhdCBodHRwczovL2dpdGh1Yi5jb20vemhuZ3N0bC9uZXdfZmFjdHNfZm9yZ2V0dGluZy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQ0wiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDgtMjZUMTE6NTQ6NThaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD5hY2NlcHRlZCBFTU5MUCAyMDI2IEZpbmRpbmdzPC9hcnhpdjpjb21tZW50PgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuQ0wiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkVzdGVsbGUgWmhlbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlPDqWJhc3RpZW4gV2FyaWNoZXQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkVtbWFudWVsIEhlbGJlcnQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNocmlzdG9waGUgQ2VyaXNhcmE8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Learning New Facts with QLoRA: An Acquisition-Retention Frontier",
+    "authors": [
+      "Estelle Zheng",
+      "Sébastien Warichet",
+      "Emmanuel Helbert",
+      "Christophe Cerisara"
+    ],
+    "abstract": "Parameter-efficient fine-tuning is often assumed to preserve pretrained capabilities because it updates only a small number of parameters. We show that this assumption depends strongly on adapter capacity. We study factual acquisition in a controlled OpenStreetMap-derived benchmark where Qwen3-4B must acquire anonymized geographic associations while retaining unrelated capabilities. Comparing full fine-tuning (FFT) with quantized low-rank adaptation (QLoRA) at ranks 8, 16, 32, and 64, we find that rank induces a clear acquisition--retention frontier. Low-rank QLoRA preserves out-of-domain (OOD) performance but acquires fewer facts, whereas higher ranks improve same-fact paraphrase generalization at an increasing cost in performance on unrelated benchmarks. FFT behaves as a conservative baseline: it retains general capabilities well, but does not reach the highest factual-acquisition regime. Distributional, weight-space, and spectral diagnostics mirror this behavioral trade-off, with higher-rank QLoRA moving farther from the pretrained model. A separate math adaptation experiment shows a weaker frontier, suggesting that the effect is most pronounced when adaptation must install new factual associations rather than reinforce skills already supported by pretraining. Code and data are available at https://github.com/zhngstl/new_facts_forgetting.",
+    "identifiers": {
+      "arxiv": "2608.25677",
+      "arxiv_versioned": "2608.25677v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.25677v2"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.AI",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2026-08-26T11:54:58Z",
+    "updated": "2026-08-27T14:10:56Z"
+  }
+}

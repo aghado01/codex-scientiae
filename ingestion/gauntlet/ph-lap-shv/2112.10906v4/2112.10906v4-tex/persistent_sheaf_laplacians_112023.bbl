@@ -1,0 +1,242 @@
+\begin{thebibliography}{10}
+
+\bibitem{ameneyro2022quantum}
+B.~Ameneyro, V.~Maroulas, and G.~Siopsis.
+\newblock Quantum persistent homology.
+\newblock {\em arXiv preprint arXiv:2202.12965}, 2022.
+
+\bibitem{berkouk2021derived}
+N.~Berkouk and G.~Ginot.
+\newblock A derived isometry theorem for constructible sheaves on $\mathbb{R}$,
+  2021.
+
+\bibitem{Bubenik_2021}
+P.~Bubenik and N.~Milićević.
+\newblock Homological algebra for persistence modules.
+\newblock {\em Foundations of Computational Mathematics}, Jan 2021.
+
+\bibitem{cang2017topologynet}
+Z.~Cang and G.-W. Wei.
+\newblock Topologynet: Topology based deep convolutional and multi-task neural
+  networks for biomolecular property predictions.
+\newblock {\em PLoS computational biology}, 13(7):e1005690, 2017.
+
+\bibitem{cang2020persistent}
+Z.~Cang and G.-W. Wei.
+\newblock Persistent cohomology for data with multicomponent heterogeneous
+  information.
+\newblock {\em SIAM Journal on Mathematics of Data Science}, 2(2):396--418,
+  2020.
+
+\bibitem{cerri2013betti}
+A.~Cerri, B.~D. Fabio, M.~Ferri, P.~Frosini, and C.~Landi.
+\newblock Betti numbers in multidimensional persistent homology are stable
+  functions.
+\newblock {\em Mathematical Methods in the Applied Sciences},
+  36(12):1543--1557, 2013.
+
+\bibitem{chen2022persistent}
+J.~Chen, Y.~Qiu, R.~Wang, and G.-W. Wei.
+\newblock Persistent laplacian projected omicron ba. 4 and ba. 5 to become new
+  dominating variants.
+\newblock {\em Computers in Biology and Medicine}, 151:106262, 2022.
+
+\bibitem{chen2019evolutionary}
+J.~Chen, R.~Zhao, Y.~Tong, and G.-W. Wei.
+\newblock Evolutionary de rham-hodge method.
+\newblock {\em arXiv preprint arXiv:1912.12388}, 2019.
+
+\bibitem{chung1997spectral}
+F.~R. Chung.
+\newblock {\em Spectral graph theory}, volume~92.
+\newblock American Mathematical Soc., 1997.
+
+\bibitem{curry2014sheaves}
+J.~Curry.
+\newblock {\em Sheaves, cosheaves and applications}.
+\newblock PhD thesis, University of Pennsylvania, 2014.
+
+\bibitem{dodziuk1977rham}
+J.~Dodziuk.
+\newblock de rham-hodge theory for l2-cohomology of infinite coverings.
+\newblock {\em Topology}, 16(2):157--165, 1977.
+
+\bibitem{edelsbrunner2008persistent}
+H.~Edelsbrunner, J.~Harer, et~al.
+\newblock Persistent homology-a survey.
+\newblock {\em Contemporary mathematics}, 453:257--282, 2008.
+
+\bibitem{elementaryappliedtopology}
+R.~Ghrist.
+\newblock {\em Elementary Applied Topology}.
+\newblock Createspace, 1 edition, 2014.
+
+\bibitem{1e68}
+C.~Gonz{\'a}lez, G.~M. Langdon, M.~Bruix, A.~G{\'a}lvez, E.~Valdivia,
+  M.~Maqueda, and M.~Rico.
+\newblock Bacteriocin as-48, a microbial cyclic polypeptide structurally and
+  functionally related to mammalian nk-lysin.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  97(21):11221--11226, 2000.
+
+\bibitem{grone1990laplacian}
+R.~Grone, R.~Merris, and V.~Sunder.
+\newblock The laplacian spectrum of a graph.
+\newblock {\em SIAM Journal on matrix analysis and applications},
+  11(2):218--238, 1990.
+
+\bibitem{hang2021correspondence}
+H.~Hang and W.~Mio.
+\newblock Correspondence modules and persistence sheaves: A unifying
+  perspective on one-parameter persistent homology, 2021.
+
+\bibitem{hansen2019toward}
+J.~Hansen and R.~Ghrist.
+\newblock Toward a spectral theory of cellular sheaves.
+\newblock {\em Journal of Applied and Computational Topology}, 3(4):315--358,
+  2019.
+
+\bibitem{Jurrus2018}
+E.~Jurrus, D.~Engel, K.~Star, K.~Monson, J.~Brandi, L.~E. Felberg, D.~H.
+  Brookes, L.~Wilson, J.~Chen, K.~Liles, M.~Chun, P.~Li, D.~W. Gohara,
+  T.~Dolinsky, R.~Konecny, D.~R. Koes, J.~E. Nielsen, T.~Head-Gordon, W.~Geng,
+  R.~Krasny, G.-W. Wei, M.~J. Holst, J.~A. McCammon, and N.~A. Baker.
+\newblock Improvements to the apbs biomolecular solvation software suite.
+\newblock {\em Protein science : a publication of the Protein Society},
+  27(1):112--128, Jan 2018.
+\newblock 28836357[pmid].
+
+\bibitem{kaczynski2004computational}
+T.~Kaczynski, K.~M. Mischaikow, and M.~Mrozek.
+\newblock {\em Computational homology}, volume~3.
+\newblock Springer, 2004.
+
+\bibitem{lim2020hodge}
+L.-H. Lim.
+\newblock Hodge laplacians on graphs.
+\newblock {\em Siam Review}, 62(3):685--715, 2020.
+
+\bibitem{liu2023algebraic}
+J.~Liu, J.~Li, and J.~Wu.
+\newblock The algebraic stability for persistent laplacians.
+\newblock {\em arXiv preprint arXiv:2302.03902}, 2023.
+
+\bibitem{memoli2022persistent}
+F.~M{\'e}moli, Z.~Wan, and Y.~Wang.
+\newblock Persistent laplacians: Properties, algorithms and implications.
+\newblock {\em SIAM Journal on Mathematics of Data Science}, 4(2):858--884,
+  2022.
+
+\bibitem{meng2020weighted}
+Z.~Meng, D.~V. Anand, Y.~Lu, J.~Wu, and K.~Xia.
+\newblock Weighted persistent homology for biomolecular data analysis.
+\newblock {\em Scientific reports}, 10(1):2079, 2020.
+
+\bibitem{meng2021persistent}
+Z.~Meng and K.~Xia.
+\newblock Persistent spectral--based machine learning (perspect ml) for
+  protein-ligand binding affinity prediction.
+\newblock {\em Science Advances}, 7(19):eabc5329, 2021.
+
+\bibitem{Munkres1984}
+J.~R. Munkres.
+\newblock {\em Elements of Algebraic Topology}.
+\newblock Addison-Wesley Publishing Company, Inc., 1984.
+
+\bibitem{nguyen2020review}
+D.~D. Nguyen, Z.~Cang, and G.-W. Wei.
+\newblock A review of mathematical representations of biomolecular data.
+\newblock {\em Physical Chemistry Chemical Physics}, 22(8):4343--4367, 2020.
+
+\bibitem{nguyen2019mathematical}
+D.~D. Nguyen, Z.~Cang, K.~Wu, M.~Wang, Y.~Cao, and G.-W. Wei.
+\newblock Mathematical deep learning for pose and binding affinity prediction
+  and ranking in d3r grand challenges.
+\newblock {\em Journal of computer-aided molecular design}, 33(1):71--82, 2019.
+
+\bibitem{nguyen2020mathdl}
+D.~D. Nguyen, K.~Gao, M.~Wang, and G.-W. Wei.
+\newblock Mathdl: mathematical deep learning for d3r grand challenge 4.
+\newblock {\em Journal of computer-aided molecular design}, 34(2):131--147,
+  2020.
+
+\bibitem{qiu2023persistent}
+Y.~Qiu and G.-W. Wei.
+\newblock Persistent spectral theory-guided protein engineering.
+\newblock {\em Nature Computational Science}, 3(2):149--163, 2023.
+
+\bibitem{ravcek2020atomic}
+T.~Ra{\v{c}}ek, O.~Schindler, D.~Tou{\v{s}}ek, V.~Horsk{\`y}, K.~Berka,
+  J.~Ko{\v{c}}a, and R.~Svobodov{\'a}.
+\newblock Atomic charge calculator ii: web-based tool for the calculation of
+  partial atomic charges.
+\newblock {\em Nucleic acids research}, 48(W1):W591--W596, 2020.
+
+\bibitem{michaelrobinsontutorial}
+M.~Robinson.
+\newblock How do we deal with noisy data?
+
+\bibitem{topologicalsignalprocessing}
+M.~Robinson.
+\newblock {\em Topological Signal Processing}.
+\newblock Springer, Berlin, Heidelberg, 1 edition, 2014.
+
+\bibitem{russold2022persistent}
+F.~Russold.
+\newblock Persistent sheaf cohomology.
+\newblock {\em arXiv preprint arXiv:2204.13446}, 2022.
+
+\bibitem{samplchallenges}
+Samplchallenges.
+\newblock Sampl6/cb8.mol2 at master · samplchallenges/sampl6.
+
+\bibitem{shepard1985cellular}
+A.~D. Shepard.
+\newblock {\em A cellular description of the derived category of a stratified
+  space}.
+\newblock PhD thesis, Brown University, 1985.
+
+\bibitem{townsend2020representation}
+J.~Townsend, C.~P. Micucci, J.~H. Hymel, V.~Maroulas, and K.~D. Vogiatzis.
+\newblock Representation of molecular structures with persistent homology for
+  machine learning applications in chemistry.
+\newblock {\em Nature communications}, 11(1):1--9, 2020.
+
+\bibitem{wang2020persistent}
+R.~Wang, D.~D. Nguyen, and G.-W. Wei.
+\newblock Persistent spectral graph.
+\newblock {\em International Journal for Numerical Methods in Biomedical
+  Engineering}, 36(9):e3376, 2020.
+
+\bibitem{wang2021hermes}
+R.~Wang, R.~Zhao, E.~Ribando-Gros, J.~Chen, Y.~Tong, and G.-W. Wei.
+\newblock Hermes: Persistent spectral graph software.
+\newblock {\em Foundations of Data Science}, 3(1):67--97, 2020.
+
+\bibitem{wasserman2018topological}
+L.~Wasserman.
+\newblock Topological data analysis.
+\newblock {\em Annual Review of Statistics and Its Application}, 5:501--532,
+  2018.
+
+\bibitem{wu2018weighted}
+C.~Wu, S.~Ren, J.~Wu, and K.~Xia.
+\newblock Weighted (co)homology and weighted laplacian.
+\newblock {\em arXiv preprint arXiv:1804.06990}, 2018.
+
+\bibitem{yegnesh2016persistence}
+K.~Yegnesh.
+\newblock Persistence and sheaves.
+\newblock {\em arXiv preprint arXiv:1612.03522}, 2016.
+
+\bibitem{zhao2020rham}
+R.~Zhao, M.~Wang, J.~Chen, Y.~Tong, and G.-W. Wei.
+\newblock The de rham--hodge analysis and modeling of biomolecules.
+\newblock {\em Bulletin of mathematical biology}, 82(8):1--38, 2020.
+
+\bibitem{zomorodian2005computing}
+A.~Zomorodian and G.~Carlsson.
+\newblock Computing persistent homology.
+\newblock {\em Discrete \& Computational Geometry}, 33(2):249--274, 2005.
+
+\end{thebibliography}

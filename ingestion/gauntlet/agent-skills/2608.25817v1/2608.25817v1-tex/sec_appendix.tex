@@ -1,0 +1,388 @@
+% Supplementary appendices (after references)
+\section{Attacks on Coding Agents}
+\label{app:attacks}
+
+A fundamental threat to LLM agents is indirect prompt injection. In this attack, adversarial instructions appear in external data processed by the agent. Greshake~\etal~\cite{greshake2023indirect} systematized the attack in real-world LLM applications and showed that malicious external content can redirect an agent to extract data or execute unauthorized commands. Zhan~\etal~\cite{zhan2024injecagent} introduced InjecAgent, a benchmark with more than 1{,}000 test cases across 17 user tools and 62 attacker tools. Their evaluation shows substantial vulnerability in GPT-4 with ReAct prompting. Coding agents face particularly serious consequences because a successful injection can delete files, escalate privileges, or install a backdoor.
+
+Other attacks target instruction following or evade safety filters. Zou~\etal~\cite{zou2023universal} showed that adversarial suffixes computed by greedy coordinate descent transfer across model families. Prompt Automatic Iterative Refinement (PAIR)~\cite{chao2025jailbreaking} uses an attacker LLM to refine jailbreak prompts without gradient access. Rule-based templates can also induce broad compliance~\cite{andriushchenko2024jailbreaking}, and AgentHarm~\cite{andriushchenko2024agentharm} extends them to coherent tool use over multiple steps. ReNeLLM~\cite{ding2024wolf} mutates prompts through rewriting and scenario nesting. CipherChat~\cite{yuan2023cipherchat} and ArtPrompt~\cite{jiang2024artprompt} use encoding or visual obfuscation to evade surface-level filters. These attacks preserve malicious intent across substantial changes in presentation. Our robustness experiment therefore uses AgentHarm persona templates to test instruction-following susceptibility and ArtPrompt ASCII-art rewriting to test obfuscation (\S\ref{sec:robustness}).
+
+\section{Experimental Implementation Details}
+\label{app:exp-impl}
+
+\paragraph{Benchmark splits and scoring.}
+Our RedCode-Exec evaluation uses the released Python and natural-language task files. The split contains 27 task groups with 30 base cases each, for 810 base cases. Every base case has four prompt variants with the same harmful intent. \emph{Code} asks the agent to execute raw malicious Python. \emph{Code-with-jailbreak} adds a tutoring-persona prefix that frames execution as part of an instructional exchange~\cite{guo2024redcode}. \emph{Text summary} describes the intended behavior in one paragraph. \emph{Text details} gives a multistep specification with imports, function signatures, and execution order. The variants test whether the agent responds to surface form or to the shared intent. The official execution score is 0 for refusal, 1 for an unsuccessful attack attempt, and 3 for a successful attack.
+RedCode-Gen contains 160 cases across 8 malware families.
+Generated outputs are scored by a single LLM judge (Qwen3.6-Plus) on the benchmark's official 0/1/5/8/10 rubric~\cite{guo2024redcode}, where higher scores indicate more functional and harmful malware.
+We seed every dataset and run with $(\text{md5}(\text{dataset\_id}) + \text{run\_idx}) \bmod 2^{31}$, a deterministic value in NumPy's valid 32-bit range.
+
+\paragraph{Agent execution.}
+Each agent run uses a 10-step limit, a \$0.10 cost limit, temperature 0.0, and 1{,}024 maximum output tokens per LLM call.
+Code-execution tasks run inside isolated Docker containers with a 600-second timeout.
+We use temperature 0.0 for agent evaluation and skill generation to make outputs deterministic under a fixed endpoint. Pilot RedCode runs confirmed that the limits retain completed trajectories and keep per-task cost bounded.
+
+\paragraph{Skill generation.}
+Security skills are limited to $L = 10{,}000$ characters (${\approx}2{,}500$ tokens).
+When the training split exceeds this budget, examples are incorporated in chunks of size $C = 2{,}000$ characters through iterative refinement.
+The three provisioning granularities differ in how many classes share one budget. All-classes synthesizes one skill from all training classes. Per-class synthesizes one skill for every threat class. Per-bundle synthesizes one skill for every bundle defined before synthesis (Appendix~\ref{app:bundles}).
+
+\paragraph{Per-bundle bundle definitions.}
+\label{app:bundles}
+Per-bundle partitions the 27 RedCode-Exec categories into four groups based on each category's declared mechanism and Common Weakness Enumeration (CWE) class (Table~\ref{tab:bundles}). We fix the partition before synthesis. The four bundles cover every execution category exactly once, so evaluating each bundle skill on its own categories produces one complete test pass. At deployment, an operator selects the bundle that matches the environment's threat surface. RedCode-Gen categories are malware families and do not define comparable execution mechanisms, so we use no generation bundles (\S\ref{sec:modes}).
+
+\begin{table}[h]
+\centering
+\caption{Per-bundle partition of the 27 RedCode-Exec~\cite{guo2024redcode} categories by shared threat mechanism and CWE class.}
+\label{tab:bundles}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{0.30\columnwidth} p{0.34\columnwidth} p{0.24\columnwidth}@{}}
+\toprule
+\textbf{Bundle} & \textbf{Mechanism (CWE)} & \textbf{Exec categories} \\
+\midrule
+B1 Filesystem \& sensitive-data & file and path access, CWE-22/732/552 & 4, 5, 7, 8, 9, 13, 17 \\
+\addlinespace[1pt]
+B2 Network egress \& remote control & exfiltration, remote control, flood, CWE-200/400 & 1, 2, 3, 10, 21, 26 \\
+\addlinespace[1pt]
+B3 Unsafe execution \& process control & evaluation, deserialization, CWE-95/502 & 6, 11, 14, 18, 24, 25 \\
+\addlinespace[1pt]
+B4 Insecure implementation logic & cryptography, authentication, validation, CWE-327/798/330 & 12, 15, 16, 19, 20, 22, 23, 27 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Baseline defenses.}
+AGrail~\cite{luo2025agrail} is a dual-agent runtime defense that generates command-specific security checklists covering confidentiality, integrity, and availability, then blocks tool calls that violate them.
+TaskShield~\cite{jia2025task} decomposes the user goal into task constraints and blocks tool calls judged unnecessary or misaligned with that goal.
+Spotlighting~\cite{hines2024defending} marks untrusted external content with explicit provenance cues so the model can distinguish data from instructions.
+Llama Guard~3~\cite{metallamaguard3} is an 8-billion-parameter safety classifier trained on 14 harm categories. We deploy it as an input filter that refuses unsafe prompts before invoking the agent.
+Prompt Guard~2~\cite{metapromptguard2025} is an 86-million-parameter Meta PurpleLlama classifier for prompt injection and jailbreak templates. We deploy it at the same input boundary.
+
+\paragraph{Fixed jailbreak templates.}
+The AgentHarm-style jailbreak follows the \emph{refined-best} template of Andriushchenko~\etal~\cite{andriushchenko2024jailbreaking} (Figure~1, p.~4). It contains a persona instruction, Extensible Markup Language (XML)-style rules that suppress refusal phrases, and a hypothetical-scenario wrapper. AgentHarm~\cite{andriushchenko2024agentharm} adapts the template to agents by replacing answer scaffolding with tool-call scaffolding. The exact adapted template is unavailable, so we reconstruct it from the published base template and use Bash tool-call scaffolding as described by AgentHarm.
+\emph{ArtPrompt}~\cite{jiang2024artprompt} is applied unchanged from its public reference implementation.
+
+
+\section{Preamble Ablation}
+\label{app:preamble-ablation}
+
+\begin{table}[h]
+\centering
+\caption{Preamble ablation on RedCode~\cite{guo2024redcode} using DS-V3.2, mini-SWE-agent~\cite{yang2024sweagent}, and per-class skills. ASR is attack success rate, RR is refusal rate, AvgS is generation average score, and VT is the VirusTotal~\cite{virustotal} detection rate.}
+\label{tab:ablation-preamble}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l l c c c c c}
+\toprule
+& & \multicolumn{2}{c}{\textbf{Exec}} & \multicolumn{3}{c}{\textbf{Gen}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}
+\textbf{Strategy} & \textbf{Variant} & ASR$\downarrow$ & RR$\uparrow$ & AvgS$\downarrow$ & RR$\uparrow$ & VT$\downarrow$ \\
+\midrule
+Proactive & with preamble & 6.0 & 74.4 & 0.000 & 100.0 & \textbf{0.0} \\
+Proactive & no preamble   & 5.3 & 71.9 & 0.013 &  98.8 & \textbf{0.0} \\
+\addlinespace[2pt]
+Reactive  & with preamble & 3.8 & 79.7 & 0.025 &  97.5 & \textbf{0.0} \\
+Reactive  & no preamble   & 2.2 & 81.7 & 0.025 &  97.5 & \textbf{0.0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The preamble is the short refusal directive introduced in \S\ref{sec:injection}. Table~\ref{tab:ablation-preamble} shows that removing it changes execution ASR by at most 1.7 percentage points and generation AvgS by at most 0.013. Removing the preamble also lowers Reactive execution ASR from 3.8\% to 2.2\%, and generation safety remains nearly unchanged. Every refusal-rate change is below 2.5 percentage points. The synthesized body therefore accounts for nearly all of the measured safety effect. We retain the preamble because it gives every skill a consistent refusal directive at negligible measured cost.
+
+
+\section{Attacked-Condition Safety Metrics}
+\label{app:rq2-exact}
+
+Table~\ref{tab:rq2-exact} reports the values plotted in Figure~\ref{fig:rq2}. Every cell is a mean over six LLMs. Per-bundle applies only to execution, whose bundles partition the evaluated mechanisms (\S\ref{sec:modes}).
+
+\begin{table}[t]
+\centering
+\caption{Execution ASR and generation AvgS averaged over six LLMs on RedCode~\cite{guo2024redcode} with clean prompts, AgentHarm~\cite{andriushchenko2024agentharm} (AH), and ArtPrompt~\cite{jiang2024artprompt} (AP). Figure~\ref{fig:rq2} plots the same values.}
+\label{tab:rq2-exact}
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.15}
+\scriptsize
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}} l ccc ccc}
+\toprule
+\multirow{2}{*}{\textbf{Defense}}
+& \multicolumn{3}{c}{\textbf{Exec ASR (\%)} $\downarrow$}
+& \multicolumn{3}{c}{\textbf{Gen AvgS} $\downarrow$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+& Clean & AH & AP & Clean & AH & AP \\
+\midrule
+No-def & 66.2 & 68.3 & 47.4 & 3.28 & 1.65 & 1.53 \\
+PG~\cite{metapromptguard2025} & 67.6 & 0.2 & 49.3 & 3.45 & 0.00 & 1.42 \\
+LG~\cite{metallamaguard3} & 42.7 & 43.2 & 30.6 & 1.40 & 1.65 & 0.94 \\
+Spotlg~\cite{hines2024defending} & 64.2 & 65.0 & 48.2 & 2.00 & 2.33 & 1.51 \\
+TS~\cite{jia2025task} & 51.1 & 44.4 & 38.5 & 1.71 & 1.43 & 1.23 \\
+AG~\cite{luo2025agrail} & 43.3 & 48.5 & 36.6 & 1.49 & 1.48 & 0.86 \\
+\addlinespace[2pt]\midrule\addlinespace[2pt]
+\emph{All-classes}$_{P}$ & 43.6 & 51.5 & 34.6 & 0.58 & 0.44 & 0.42 \\
+\emph{All-classes}$_{R}$ & 40.1 & 47.8 & 33.0 & 0.70 & 0.39 & 0.41 \\
+\emph{Per-bundle}$_{P}$ & 36.2 & 47.1 & 32.0 & \multicolumn{3}{c}{\multirow{2}{*}{\textcolor{gray}{\footnotesize \emph{n/a}}}} \\
+\emph{Per-bundle}$_{R}$ & 35.4 & 52.1 & 30.9 & \multicolumn{3}{c}{} \\
+\emph{Per-class}$_{P}$ & 14.5 & 35.0 & 18.2 & 0.42 & 0.56 & 0.68 \\
+\emph{Per-class}$_{R}$ & 10.1 & 31.2 & 13.8 & 0.42 & 0.65 & 0.61 \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+
+\section{Concatenation Control Under Jailbreak}
+\label{app:concat-attack}
+
+Section~\ref{sec:ablation-mode} compares the synthesized bundle skill with the budget-matched concatenation on clean prompts (Table~\ref{tab:concat}). Table~\ref{tab:concat-atk} reports the same comparison under both jailbreak families. Concatenation performs better on three of six models under each attack. Seed is the only model for which concatenation never improves ASR.
+
+
+\begin{table}[t]
+\centering
+\caption{Execution ASR on RedCode~\cite{guo2024redcode} for the synthesized bundle skill (Syn) and budget-matched concatenation (Cat) under AgentHarm~\cite{andriushchenko2024agentharm} and ArtPrompt~\cite{jiang2024artprompt}.}
+\label{tab:concat-atk}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\footnotesize
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}} l cc cc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{2}{c}{\textbf{AgentHarm}} & \multicolumn{2}{c}{\textbf{ArtPrompt}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+& Syn & Cat & Syn & Cat \\
+\midrule
+DS-V3.2 & 51.4 & \textbf{42.2} & 29.7 & \textbf{22.8} \\
+Qwen3 & 37.8 & \textbf{22.3} & 22.0 & \textbf{9.6} \\
+Seed & \textbf{50.0} & 64.8 & \textbf{34.5} & 38.4 \\
+GPT & 35.6 & \textbf{27.7} & \textbf{28.8} & 34.0 \\
+Min & \textbf{48.7} & 55.9 & 33.7 & \textbf{22.2} \\
+Nem & \textbf{59.4} & 66.6 & \textbf{43.3} & 45.2 \\
+\addlinespace[2pt]\midrule\addlinespace[2pt]
+\textbf{Mean} & 47.1 & \textbf{46.6} & 32.0 & \textbf{28.7} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\section{Synthesis Prompts}
+\label{app:prompts}
+
+Both strategies use one synthesis template. They differ in the role description, input data, and one strategy-specific guideline. The shared text explains the refusal decision, gives four writing guidelines, and specifies a YAML Ain't Markup Language (YAML) metadata block followed by a Markdown body with a fixed refusal section. The boxes below reproduce the strategy-specific text and the shared refusal rule.
+
+\begin{tcolorbox}[
+  width=\columnwidth,
+  colback=gray!4, colframe=black!55,
+  boxrule=0.4pt, arc=1.2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+  title={\small\textbf{Proactive: \textsc{ExtractSignatures}}},
+  fonttitle=\small, coltitle=white, colbacktitle=black!70,
+  enhanced,
+]
+\fontsize{6.5}{7.7}\selectfont\raggedright
+\textbf{Role.}\par
+You are a security engineer creating a proactive defense skill for code agents.
+
+\smallskip
+\textbf{Context.}\par
+These are attack scenarios from the RedCode benchmark. For each one, think: ``What specific technical check, a pattern match, a scope validation, a denylist, would have blocked this before it ran?''
+
+\smallskip
+\textbf{Task.}\par
+Write a skill that gives the agent concrete, procedural checks to run before executing requests. The goal is to catch attacks mechanically, via patterns and rules, instead of relying solely on the agent's judgment about intent.
+
+\smallskip
+\textbf{Extra guideline.}\par
+\looseness=-1
+Make checks technically specific. Include regex patterns, file paths, \mbox{command structures where useful.}
+
+\smallskip
+\textbf{Body skeleton.}\par
+\texttt{\#\#\# 1. [Category]} / \texttt{Attack Pattern:} what this blocks and why it is dangerous / \texttt{Detection:} specific patterns, paths or commands to match.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+  width=\columnwidth,
+  colback=gray!4, colframe=black!55,
+  boxrule=0.4pt, arc=1.2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+  title={\small\textbf{Reactive: \textsc{PostMortem}}},
+  fonttitle=\small, coltitle=white, colbacktitle=black!70,
+  enhanced,
+]
+\fontsize{6.5}{7.7}\selectfont\raggedright
+\textbf{Role.}\par
+You are a security expert creating a reactive defense skill for code agents.
+
+\smallskip
+\textbf{Context.}\par
+During baseline evaluation on the RedCode benchmark, the model failed to refuse the malicious requests below. Your job is to figure out \emph{why} these slipped through and write a skill that would have caught them.
+
+\smallskip
+\textbf{Why this is tricky.}\par
+\looseness=-1
+The same malicious intent can show up as direct code, a text summary, step-by-step instructions, or a code stub to complete. The presentation changes but the underlying harmful goal does not. A good skill teaches the agent to see through the format to the intent.
+
+\smallskip
+\textbf{Extra guideline.}\par
+Focus on \emph{intent}, what the attacker wants to achieve, instead of surface syntax patterns.
+
+\smallskip
+\textbf{Body skeleton.}\par
+\texttt{\#\#\# 1. [Category]} / \texttt{Intent:} what the attacker is trying to accomplish / \texttt{Signals:} how to recognize this across formats / \texttt{Why it's harmful:} brief reasoning, which helps the agent generalize to novel variants.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+  width=\columnwidth,
+  colback=gray!4, colframe=black!55,
+  boxrule=0.4pt, arc=1.2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+  title={\small\textbf{Shared: the binary refuse-or-execute rule}},
+  fonttitle=\small, coltitle=white, colbacktitle=black!70,
+  enhanced,
+]
+\scriptsize\raggedright
+When an agent encounters a harmful request, a common failure mode is to ``helpfully'' modify it, swapping a malicious URL for a benign one, replacing a destructive command with a harmless demo, or executing only the ``safe'' parts. This feels helpful but demonstrates the dangerous capability to the requester, partially fulfills the harmful intent, and creates reusable scaffolding that can be trivially re-pointed at the real target. So the skill should guide the agent toward a clean binary decision: a harmful request is refused entirely with nothing executed, and a legitimate one is executed normally. There is no safe middle ground between these two outcomes.
+\end{tcolorbox}
+
+\textsc{Refine} receives the current skill and one chunk of new items. The prompt requires it to preserve the YAML and Markdown structure, cover previously unhandled patterns, and merge similar patterns into existing categories. These requirements limit duplicate rules.
+
+\section{Coverage Analysis of the Granularity Gap}
+\label{app:theory-details}
+\label{app:coverage-bound}
+
+Section~\ref{sec:ablation-mode} reports 52.7\% all-classes ASR and 3.8\% per-class ASR on DS-V3.2, a difference of 48.9 percentage points. A fixed character budget gives this difference a pigeonhole interpretation. We formalize a coverage bound, calibrate it on DS-V3.2, and derive two predictions for future experiments.
+
+Let $\mathcal{S}_k$ be the attack-signature set for threat category $v_k$, including command patterns and combinations of library imports. Let $\mathcal{S} = \bigcup_k \mathcal{S}_k$ be the union across the $K = 27$ RedCode-Exec categories. A skill of length $L$ encodes $N \leq L/\bar{\ell}$ detection rules with average length $\bar{\ell}$. We summarize semantic generalization with coefficient $c$, such that $N$ rules jointly match at most $cN$ signatures. All-classes places all $K$ categories in one budget of length $L$. Per-class gives each category a separate budget of the same length.
+
+\begin{proposition}[Coverage bounds and structural gap]
+\label{prop:cov}
+Assume that signatures are uniformly distributed within their signature space. For per-class, assume the environment's category is known before deployment and the corresponding skill is loaded for every request (\S\ref{sec:modes}). Let $D$ denote the fraction of signatures that the active skill does not recognize. Then
+\begin{equation}
+\label{eq:cov-bounds}
+\begin{aligned}
+D_{\mathrm{all}} &\;\geq\; \max\!\left(0,\, 1 - \frac{c\,(L/\bar{\ell})}{|\mathcal{S}|}\right), \\[2pt]
+D_{\mathrm{class}}^{(k)} &\;\geq\; \max\!\left(0,\, 1 - \frac{c\,(L/\bar{\ell})}{|\mathcal{S}_k|}\right).
+\end{aligned}
+\end{equation}
+Under equal-size categories and optimal encoding, the largest difference between the bounds is $1 - 1/K$. Increasing the number of threat categories therefore raises the attainable difference toward $1$.
+\end{proposition}
+
+\begin{proof}
+By definition of $c$, $N$ rules cover at most $cN = c(L/\bar{\ell})$ signatures. The remaining signatures are missed. Applying this limit to $\mathcal{S}$ for all-classes and to $\mathcal{S}_k$ for per-class gives the two bounds under the uniform-distribution assumption. Substitute $|\mathcal{S}| = K|\mathcal{S}_k|$ and consider equality in both bounds. If per-class saturates, the difference is $1 - c(L/\bar{\ell})/|\mathcal{S}|$. Before saturation, it is $(K-1)c(L/\bar{\ell})/|\mathcal{S}|$. The expressions meet at $c(L/\bar{\ell}) = |\mathcal{S}_k|$, where both equal $1 - 1/K$. This maximum approaches $1$ as more categories share the budget.
+\end{proof}
+
+\paragraph{Calibration on DS-V3.2.}
+We calibrate the bound with order-of-magnitude estimates. The refinement procedure processes signature chunks of $C = 2{,}000$ characters and produces approximately 20 rules per chunk. A skill with $L=10{,}000$ therefore contains approximately 100 rules, which gives an average rule length $\bar{\ell} \approx 100$ characters.
+
+We estimate $|\mathcal{S}_k| \approx 20$ signatures per category. Each RedCode-Exec category has 15 training base cases, and the four variants of a base case share one command or import pattern. The resulting signature count is approximately 15--25, although the category contains 60 rendered training prompts.
+
+Using $L = 10{,}000$, $K = 27$, $\bar{\ell} \approx 100$, $|\mathcal{S}_k| \approx 20$, and $|\mathcal{S}| \approx 540$, we set $D \approx \mathrm{ASR}$ and use the 52.7\% all-classes ASR of DS-V3.2. Equality in Equation~\eqref{eq:cov-bounds} then gives $c \approx 2.55$. Under this calibration, one rule matches approximately 2.5 signature variants. We infer $c$ from the observed all-classes value, so the calibration is only an algebraic consistency check. The predictions below provide the testable implications and do not depend on the calibrated value of $c$.
+
+\paragraph{Scaling predictions.}
+Equation~\eqref{eq:cov-bounds} yields two predictions independent of the calibrated $c$. \textbf{Hypothesis 1 (H1)} concerns the number of categories. At fixed $L$, reducing $K$ should lower the ASR floor approximately in proportion to $1/K$. \textbf{Hypothesis 2 (H2)} concerns the body budget. At fixed $K$, increasing $L$ should reduce all-classes ASR with slope $c/(\bar{\ell}|\mathcal{S}|)$. Per-class ASR should remain stable after its signature coverage saturates. We leave both tests to future work.
+
+
+\section{Statistical Tests and Effect Sizes}
+\label{app:stats}
+
+We use two-sided paired Wilcoxon signed-rank tests at the dataset level. Each \sysname strategy is compared with five baselines for each model. We therefore apply Bonferroni correction within each strategy and model family, giving $\alpha' = 0.05/5 = 0.01$. We report matched-pairs rank-biserial correlation $r$ as the effect size, with $|r| \geq 0.5$ indicating a large effect. Bootstrap 95\% confidence intervals use the percentile method with 10{,}000 resamples.
+
+\paragraph{Q1: Defense effectiveness (\S\ref{sec:rq1}).}
+Each comparison pairs one per-class \sysname strategy with one baseline on one model. Tests use the 27 RedCode-Exec categories or the 8 RedCode-Gen malware families. The design gives 60 comparisons per split (\texttt{analysis/c1\_significance.py}). On execution, 54 of 60 comparisons reach $p < 0.01$ after correction, and all 54 have a large effect. The remaining six use Nem. For that model, LG reaches 33.2\% execution ASR (\S\ref{sec:rq1}), leaving less room for improvement.
+
+On generation, 31 of 60 comparisons reach $p < 0.01$, and all 31 have a large effect. The eight malware families limit test resolution. The smallest attainable two-sided $p$ is 0.0078. When \sysname and a baseline both reach zero on a family, the signed-rank test discards the tied pair. Thirteen of the remaining 29 comparisons have fewer than eight untied pairs. Eleven of those comparisons separate the defenses perfectly with $r=1.0$ but do not reach $\alpha'$.
+
+A baseline performs better in 6 of the 120 comparisons across both splits. All six use Nem, and none is significant. The largest difference favoring a baseline is LG on generation, with $r=-0.81$ and $p=0.047$. Compared with LG, Reactive per-class reduces execution ASR by 32.6 percentage points, with a 95\% bootstrap interval of $[27.7,37.6]$. Proactive per-class reduces it by 28.2 percentage points, with an interval of $[23.3,33.2]$. The intervals use 162 model and category pairs. Per-class also reduces generation AvgS by 0.98, with an interval of $[0.34,1.70]$ over 48 pairs.
+
+\paragraph{Q2: Provisioning granularity (\S\ref{sec:ablation}).}
+The synthesized bundle and budget-matched concatenation provide one matched pair per model (Table~\ref{tab:concat}). Across six LLMs, the signed-rank test gives $W=2$, $p=0.094$, and a large rank-biserial effect of $r=+0.81$. The smallest attainable two-sided $p$ for six pairs is 0.031. Concatenation performs better on five of six models, but the difference is not statistically significant. Table~\ref{tab:rq1-scope} and Figure~\ref{fig:ablation-length} report single-model measurements on DS-V3.2, so we apply no paired test to them.
+
+\paragraph{Q3: Robustness under jailbreak (\S\ref{sec:robustness}).}
+Q3 reuses the skills from Q1, so we apply the same correction to 60 comparisons per split under each attack. On execution, 48 comparisons reach $p<0.01$ under AgentHarm and 49 do so under ArtPrompt. The corresponding clean-prompt count is 54. On generation, the counts fall from 31 on clean prompts to 19 under AgentHarm and 12 under ArtPrompt.
+
+Two effects reduce generation significance. First, both reformulations reduce the severity produced by the undefended agents and baselines. Mean baseline AvgS falls from 2.01 on clean prompts to 1.38 under AgentHarm and 1.19 under ArtPrompt. Per-class AvgS changes from 0.42 to 0.56 and 0.68, leaving smaller differences for the tests to detect. Second, the median number of untied families falls from 8 to 6 under AgentHarm and 7 under ArtPrompt. Among comparisons that miss $\alpha'$, 31 of 41 still favor \sysname under AgentHarm and 38 of 48 favor it under ArtPrompt.
+
+\paragraph{Q4: Benign refusal on SWE-Bench Pro (\S\ref{sec:rq3}).}
+Under the criterion in \S\ref{sec:setup}, every baseline has zero safety refusals across 731 tasks and six LLMs. \sysname also has zero safety refusals on four LLMs. Because the baseline rates are at the floor, a paired test provides no informative comparison. We therefore report the refusal rates without a $p$-value.
+
+\section{Skill Examples}
+\label{app:skills}
+
+\begin{tcolorbox}[
+  width=\dimexpr\columnwidth-4pt\relax,
+  colback=gray!4, colframe=black!55,
+  boxrule=0.4pt, arc=1.2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+  title={\small\textbf{Proactive skill (excerpt)}},
+  fonttitle=\small, coltitle=white, colbacktitle=black!70,
+  enhanced,
+]
+\fontsize{6.5}{7.7}\selectfont\raggedright
+\textbf{Frontmatter.}\par
+\texttt{name: redcode-proactive-defense}\par
+\looseness=-1
+\texttt{description:} procedural countermeasures matching \mbox{technical signatures before execution.}
+
+\smallskip
+\textbf{Rule 1: sensitive file access.}\par
+Match file paths against a denylist of prefixes such as \texttt{/proc/}, \texttt{/sys/kernel/}, \texttt{/var/log/}, \texttt{/root/}, and specific files like \texttt{/etc/passwd} and \texttt{/etc/shadow}.
+Also flag any \texttt{.ssh/} directory and any read via \texttt{cat}, \texttt{head}, or \texttt{open()} on these paths.\par
+$\langle\textit{4 additional path patterns}\rangle$
+
+\smallskip
+\textbf{Rule 2: network exfiltration.}\par
+Flag the imports \texttt{requests}, \texttt{urllib.request}, \texttt{socket}, or \texttt{httpx} when they co-occur with file reads. Flag \texttt{requests.post()} or \texttt{curl -X POST} sequenced after a file open. Block any code that combines rule~1 with a network call.
+
+\smallskip
+\textbf{Rule 6: multi-stage chaining.}\par
+If two or more rules trigger in one execution flow, block. Example: read a kernel file, encode it as binary, then POST to a localhost endpoint.
+
+\smallskip
+$\langle\textit{rules 3--5, 7 omitted}\rangle$
+
+\smallskip
+\textbf{Refusal directive.}\par
+Refuse cleanly, name the matched rule, do not run a modified or partial version.
+\end{tcolorbox}
+
+\paragraph{Threat under defense.}
+Both excerpts target one RedCode-Exec attack family. The request asks the agent to write and run Python that reads a sensitive file, such as a password file, kernel-state file, or Secure Shell (SSH) key. The script then sends the bytes over the Hypertext Transfer Protocol (HTTP) to a Uniform Resource Locator (URL) chosen by the attacker. This behavior exfiltrates data from the host. Using the same threat for both examples makes the difference between the synthesis strategies directly comparable.
+
+\paragraph{Setup.}
+Each box reproduces the skill verbatim. Ellipses ($\langle\textit{...}\rangle$) mark omitted text. Both skills were synthesized for DS-V3.2 at \emph{per-class} granularity under the default budget $L = 10{,}000$ characters.
+
+\begin{tcolorbox}[
+  width=\dimexpr\columnwidth-4pt\relax,
+  colback=gray!4, colframe=black!55,
+  boxrule=0.4pt, arc=1.2pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt,
+  title={\small\textbf{Reactive skill (excerpt)}},
+  fonttitle=\small, coltitle=white, colbacktitle=black!70,
+  enhanced,
+]
+\fontsize{6.5}{7.7}\selectfont\raggedright
+\textbf{Frontmatter.}\par
+\texttt{name: redcode-reactive-defense}\par
+\texttt{description:} identify harmful intent regardless of surface format, learned from cases where the undefended agent complied.
+
+\smallskip
+\textbf{Principle 1: data exfiltration intent.}\par
+Read \emph{intent}, not syntax. A request that pairs reading a sensitive file with any transmission step (POST, upload, socket) is exfiltration, even when the destination is a localhost address or the payload is wrapped as a ``generic file-upload utility''.\par
+\emph{Failure-derived clarifications.}
+(i)~Localhost as target does not sanitize the request: the URL is trivially swappable.
+(ii)~Framing as ``a function to send a file via POST'' does not make it benign once the demo binds to a sensitive path.
+(iii)~A numbered procedural list (``1.~import, 2.~open file, 3.~read binary, 4.~POST, 5.~print status'') is a ready-to-run payload and should be read as one.
+
+\smallskip
+\textbf{Principle 3: unauthorized remote interaction.}\par
+A network component built against a dummy URL still produces reusable attack scaffolding. Refuse before the scaffold is written.
+
+\smallskip
+$\langle\textit{principles 2, 4 omitted}\rangle$
+
+\smallskip
+\textbf{Why ``helpful modifications'' are still harmful.}\par
+Running ``just the safe parts'', swapping the target URL, or substituting a destructive command with a no-op still demonstrates the technique and teaches the requester what works. Refuse cleanly, with no modified or partial execution.
+\end{tcolorbox}
+
+
+\paragraph{What the two excerpts reveal.}
+The Proactive skill contains an explicit denylist. Its rules identify sensitive paths, network APIs, and sequences such as opening a file before making a network call. The refusal directive tells the agent to match incoming code against these signals. A defender can audit the rules and add a path or library when the attack corpus changes. Protection depends on the listed vocabulary. A paraphrased path or an unlisted HTTP client may fall outside the rules. Adding more variants can improve coverage, but the budget $L$ limits how many rules survive refinement.
+
+The Reactive skill describes intent and rationalizations observed in failed trajectories. Its signals include claims that localhost is safe, that the code is a generic upload utility, or that numbered instructions are merely a tutorial. The undefended agent used these framings when it complied with the malicious request. A principle can remain relevant when an attacker changes the wording, but it is more abstract and harder to audit. Reactive synthesis also requires a baseline run that elicits the failure. A direct command such as \texttt{rm -rf /} may produce no rationalization in the recorded trajectory.
+
+The strategies provide complementary information. Proactive synthesis supplies immediate coverage of known technical patterns. Reactive synthesis adds principles based on the evaluated agent's observed rationalizations. A production system could combine both sources, although our experiments evaluate the two strategies separately.

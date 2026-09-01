@@ -1,0 +1,174 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.28241v1",
+  "initialized_utc": "2026-08-31T17:57:13.089724Z",
+  "title": "Beyond Task-Only Matching: Personalized Skill Routing with Counterfactual Evaluation",
+  "authors": [
+    "Tianle Wang",
+    "Yanghe Zou",
+    "Xiang Liu",
+    "Ziyao Huang",
+    "Chenchen Fu",
+    "Weiwei Wu"
+  ],
+  "abstract": "The rapid expansion of reusable skill repositories makes skill routing a critical capability for large language model (LLM) agents. Existing methods treat routing as task-only semantic matching. However, when users with incompatible constraints issue an identical request, this assumption conflates task relevance with skill suitability: a task-only router can select a semantically plausible skill that is unsuitable for the requesting user. To expose this failure mode, we formulate \\textit{personalized skill routing} as profile-conditioned retrieval, in which relevance depends jointly on the task and the user profile. We first introduce a profile-counterfactual benchmark, in which the task is held fixed while changes in the user profile induce changes in the reference skill. We further construct paired counterfactual supervision and propose SkillFeed, a progressive retrieve-and-rerank framework that first establishes task--skill alignment and then learns profile-conditioned discrimination. By retrieving body-level evidence and reranking semantically similar but profile-conflicting candidates, SkillFeed identifies skills that satisfy both task requirements and user constraints. On SkillFeed-Bench, SkillFeed attains 75.1\\% top-1 retrieval accuracy, a 23.1-point improvement over the corresponding pretrained routing baseline. Adding profile conditioning yields a 35.1-point gain on queries where user profile changes the reference skill. This contrast shows that user profiles are most consequential precisely when they change skill suitability. Our website is publicly available at http://www.aiskillfeed.com .",
+  "identifiers": {
+    "arxiv": "2608.28241",
+    "arxiv_versioned": "2608.28241v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.28241v1"
+    }
+  },
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-08-28T11:55:56Z",
+  "updated": "2026-08-28T11:55:56Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.28241v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10279,
+        "sha256": "5a83d804209ab5ffd628488cbded4ace3d057f2bc864c7e6d0e6c376e9a329c9",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-08-31T17:57:12.573693Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.28241v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "eb38ba07ba265852cea830b2468fcf73f64797b53c87340f88a1b4b09777f772"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "AnonymousSubmission2027.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Beyond Task-Only Matching: Personalized Skill Routing with Counterfactual Evaluation",
+        "authors_tex": [
+          "Written by AAAI Press Staff\\textsuperscript{\\rm 1}\\thanks{With help from the AAAI Publications Committee.}\\\\\n    AAAI Style Contributions by Peter Patel Schneider,\n    Sunil Issar,\\\\\n    J. Scott Penberthy,\n    George Ferguson,\n    Hans Guesgen,\n    Francisco Cruz\\equalcontrib\\corresponding,\n    Marc Pujol-Gonzalez\\equalcontrib\\corresponding",
+          "Tianle Wang\\textsuperscript{\\rm 2}\\equalcontrib,\n    Yanghe Zou\\textsuperscript{\\rm 1}\\equalcontrib,\n    Xiang Liu\\textsuperscript{\\rm 1,\\rm 3},\n    Ziyao Huang \\textsuperscript{\\rm 4},\n    Chenchen Fu \\textsuperscript{\\rm 1},\n    Weiwei Wu \\textsuperscript{\\rm 1}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 232,
+        "sha256": "a15bc0dad112d143549aa149a99d4e97b94976fa556ac0e0267f61bbb15f8b58"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.28241v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.28241v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 6129817,
+      "sha256": "e2a72e80be6aed7d852275bb9b861bd7eb6fe254eeec597ddf52e48e5af8e13c",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.28241v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.28241v1.tar.gz",
+      "entrypoint": "AnonymousSubmission2027.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 9,
+      "tex_files": 1,
+      "sha256": "a5ca7364ff27b1f955f5d00ca701f810b13a48accb69956352fd3a84f35197ab"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.28241v1.pdf",
+      "format": "application/pdf",
+      "bytes": 6978313,
+      "sha256": "b7d58d5ec74eacc44c45638cf13585477218c0f82ac70fec0cb7e268054cc9be"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-08-31T17:57:13.089724Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 10
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 9
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "AnonymousSubmission2027.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved_input_action": "Stop"
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

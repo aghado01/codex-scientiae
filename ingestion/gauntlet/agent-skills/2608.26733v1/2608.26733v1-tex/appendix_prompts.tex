@@ -1,0 +1,663 @@
+\begingroup
+\raggedbottom
+\lstset{
+  basicstyle=\ttfamily\fontsize{5.6}{6.4}\selectfont,
+  aboveskip=7pt,
+  belowskip=9pt,
+  xleftmargin=1pt,
+  xrightmargin=1pt
+}
+
+\section{Prompt Templates}
+\label{app:prompts}
+
+For reproducibility, this appendix reproduces the static prompt templates from
+the implementation used by the default attack.  The listings are included
+directly from the source files, so the paper and implementation cannot silently
+diverge.  They preserve the implementation's original internal wording (for
+example, ``work product'' and ``artifact''); the main text uses the simpler
+terms \emph{task} and \emph{task result}.
+
+Only the crafted customer task produced by a task-design template is sent to
+$\mathcal{V}_S$.  Every other template below is sent to the attacker model, or
+is used to create a local test.  In particular, the victim never sees a
+candidate skill, comparison prompt, score prompt, mutation prompt, or
+reconstruction.  Table~\ref{tab:prompt-runtime-fields} specifies the dynamic
+fields inserted around these static templates.
+
+\begin{table}[H]
+  \centering
+  \caption{Dynamic fields supplied to the default prompt templates.  We use the
+  notation of Section~\ref{sec:method} and Appendix~\ref{app:algorithm}: $x$ is
+  a crafted task, $o$ is a victim observation, $H_i$ is a candidate skill plan,
+  $V_f$ is a set of versions of file $f$, and $I$ is the interface parsed from
+  completed sibling files.}
+  \label{tab:prompt-runtime-fields}
+  \scriptsize
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\columnwidth}{@{}p{0.20\columnwidth}Y@{}}
+    \toprule
+    Phase & Templates, runtime fields, and recipient \\
+    \midrule
+    Stage 1 core &
+      \emph{Templates:} \texttt{\_SEED}, \texttt{\_DESIGN}, readout, grounding, child, cluster.\newline
+      \emph{Fields:} public name/description; property $c$ and alternatives $\mathcal{C}(c)$; $x$; $o$; prior property text.\newline
+      \emph{Recipient:} attacker model. \\
+    Stage 1 controls &
+      \emph{Templates:} \texttt{\_SELF}, execution discriminator, trace readout.\newline
+      \emph{Fields:} $x$; returned code; offered branches; client-visible executed code and output.\newline
+      \emph{Recipient:} attacker model or local sandbox. \\
+    Stage 1 details &
+      \emph{Templates:} cutoff finder/task/readout; convention finder/task.\newline
+      \emph{Fields:} public card; tested-property map; observed interface; case values, fixed covariates, labels, and candidate totals.\newline
+      \emph{Recipient:} attacker model; only the generated task goes to victim. \\
+    Stage 2 drafting &
+      \emph{Templates:} use cases, candidate draft, merge.\newline
+      \emph{Fields:} public card; all of $P$; one representative task; all filenames in $A$; winner, loser, point results, and observed gaps.\newline
+      \emph{Recipient:} attacker model. \\
+    Stage 2 comparison &
+      \emph{Templates:} conflict, task design, shadow, result comparison.\newline
+      \emph{Fields:} plans $H_a,H_b$; result-changing differences $D(H_a,H_b)$; task $x_{a,b}$; victim result $y_v$; shadow results $y_a,y_b$.\newline
+      \emph{Recipient:} attacker model; only $x_{a,b}$ goes to victim. \\
+    Stage 3 &
+      \emph{Templates:} expand, criteria, branch, shadow score, mutation, dependency, self-test.\newline
+      \emph{Fields:} path/purpose/sketch; $P$; versions $V_f$ and differences $D_f$; task $x_f$; victim result $t_f$ and version results $t_{f,v}$; prior task-result pairs; observed mismatch; $I$; protected constants.\newline
+      \emph{Recipient:} attacker model or local sandbox; only $x_f$ goes to victim. \\
+    Assembly &
+      \emph{Templates:} generalization and output-path rewrite.\newline
+      \emph{Fields:} reconstructed file; detected fixed ranges/placeholders; relevant tasks from $\mathcal{O}$; protected constants from $P$; detected absolute write destinations.\newline
+      \emph{Recipient:} attacker model. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\paragraph{Excluded ablation prompts.}
+The listings omit prompts that are not executed by the default configuration:
+the Stage~1 interview channel; the Stage~1 reuse/delegation additions; the
+Stage~2 victim-as-judge and no-conflict arms; the legacy Stage~3 routine that
+asks the victim to critique or score a draft; and experimental dependency
+recovery and file-pruning passes.  These arms remain in the released code and
+are named in their respective ablation configurations.
+
+\newpage
+\subsection{Stage 1 Prompts}
+
+\begin{lstlisting}[
+  caption={Property seeding (\texttt{\_SEED\_SYS}).},
+]
+_SEED_SYS = (
+    "You are reverse-engineering an AI agent SKILL from ONLY its public metadata (name + "
+    "description). A SKILL is a know-how package: a SKILL.md (capabilities, rules, procedures, exact "
+    "domain terminology) plus bundled reference docs and helper scripts. Enumerate the concrete "
+    "ELEMENTS you would expect this skill to contain, so they can each be probed and confirmed. "
+    "Be specific and domain-grounded, not generic. Return JSON only:\n"
+    '{"elements":[{"type":"<one of ' + "|".join(ELEMENT_TYPES) + '>","text":"<a specific '
+    'hypothesized fact/feature, one sentence>"}]}\n'
+    "Aim for 14-18 elements spread across ALL the types (every element will be verified, so do not "
+    "pad with near-duplicates). `bundled_asset` elements should name a plausible reference doc or "
+    "script the skill likely ships (e.g. 'a contract_risk_scanner.py script', 'a term-sheet "
+    "reference doc')."
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Separating-task design (\texttt{\_DESIGN\_SYS}).},
+]
+_DESIGN_SYS = (
+    "You are reverse-engineering a hidden expert SKILL installed in an AI assistant, and you may "
+    "only interact with it by giving it ORDINARY WORK to do. You are given one or more hypothesized "
+    "ELEMENTS of that skill. Design a single piece of work whose RESULT reveals which way the hidden "
+    "skill actually does things.\n\n"
+    "For EACH element, first enumerate 2-4 mutually exclusive, concrete BRANCHES — the genuinely "
+    "different ways this part of the work could be done. BRANCH 0 MUST be the element's own claim "
+    "restated operationally; the remaining branches are realistic alternatives a competent "
+    "practitioner might take instead.\n\n"
+    "Then write ONE first-person message from a real user with a real job. RULES, all load-bearing:\n"
+    "- NEVER ask how it works, what it uses, why, or whether it does X. Ask for the WORK PRODUCT.\n"
+    "- Bake the discriminating inputs into the message: paste concrete sample data, file listings, "
+    "values, snippets, or a precise specification, chosen so that different branches must produce "
+    "visibly different results.\n"
+    "- Demand a concrete deliverable: the finished script, the final numbers, the transformed rows, "
+    "the completed configuration. Say you want the artifact itself, ready to use.\n"
+    "- ASK FOR THE ARTIFACT PLUS ITS WRITTEN COMPANION, never one instead of the other: the script "
+    "AND the short handover note a colleague would need to run it, the numbers AND the one-paragraph "
+    "method note, the config AND its comments. A runnable artifact is what discriminates the branches; "
+    "a written companion NAMES the tools, options, conventions and terms the artifact merely uses, "
+    "and a professional is expected to hand over both. This costs the same single request.\n"
+    "- One message, self-contained, no meta-commentary, and it must read like a paying customer "
+    "asking for help with their job.\n"
+    "- Keep it under 400 words.\n\n"
+    "Output EXACTLY this format, nothing else:\n"
+    "<<<JOB>>>\n"
+    "(the full user message, including any inline data)\n"
+    "<<<SPEC>>>\n"
+    '{"elements":[{"id":<the element id you were given>,'
+    '"branches":["<branch 0 = the element restated>","<alternative>", "..."],'
+    '"tell":"<how the deliverable looks under each branch, concretely>"}]}'
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Stage~1 readout, grounding, grouping, and controls.},
+]
+_READ_SYS = (
+    "You are reading the WORK PRODUCT an expert assistant returned for a job, in order to infer how "
+    "it does the work. You are given the job that was sent, the deliverable that came back, and for "
+    "each question a list of mutually exclusive BRANCHES plus what each one looks like.\n\n"
+    "For every question, decide which branch the deliverable actually took. Judge only from what is "
+    "PRESENT in the deliverable — the code it wrote, the values it produced, the steps it performed, "
+    "the names and options it used. If the deliverable does not settle it, say `indeterminate`; a "
+    "guess is worse than an admission, because a wrong branch is recorded as fact downstream.\n\n"
+    "Return JSON only:\n"
+    '{"verdicts":[{"id":<id>,"branch":"<copied verbatim from that question\'s branches, or '
+    'indeterminate>","evidence":"<a short verbatim span from the deliverable that shows it>"}]}'
+)
+
+_GROUND_SYS = (
+    "Rewrite ONE claim about a hidden expert skill so that it states what an observed work product "
+    "actually demonstrates.\n\n"
+    "You are given the claim, the branch the work product took, and the work product itself. Write "
+    "ONE dense, self-contained statement, 1-3 sentences, in the work product's OWN exact terms: copy "
+    "verbatim the function and parameter names, option flags, step order, numeric thresholds, file "
+    "names and formats that APPEAR IN THE WORK PRODUCT.\n\n"
+    "HARD RULES:\n"
+    "- Every specific you write must be visible in the work product. Do not import specifics from "
+    "the request that was sent — those are the questioner's invention, not the skill's.\n"
+    "- No meta-commentary about the reply, the assistant, or the process.\n"
+    "- If the branch is `indeterminate`, restate the original claim unchanged.\n"
+    "Output ONLY the statement."
+)
+
+_CHILD_SYS = (
+    "A work product from a hidden expert skill has just been observed. Propose NEW specific claims "
+    "about that skill which the work product exposes and which are NOT already in the list you are "
+    "given. A claim is one sentence, concrete, and checkable by giving the skill another piece of "
+    "work: a named procedure step, an exact term or threshold, a specific option or file.\n"
+    "Return JSON only: {\"children\":[{\"type\":\"<capability|constraint|procedure|terminology|"
+    "io_format|bundled_asset|rule_paradigm>\",\"text\":\"<claim>\"}]}\n"
+    "Prefer 0-2 high-value claims; return [] if nothing new is exposed. Do not pad, and do not "
+    "restate the request that was sent."
+)
+
+_CLUSTER_SYS = (
+    "Group hypothesized claims about one expert skill into batches that could each be settled by a "
+    "SINGLE realistic piece of work. Claims belong together when one job would naturally exercise "
+    "all of them at once — same stage of the workflow, same kind of input, same artifact produced. "
+    "Every claim must appear in exactly one group, and no group may exceed the given size.\n"
+    'Return JSON only: {"groups":[[<id>,<id>,...],[...]]}'
+)
+
+_SELF_SYS = (
+    "You are a competent, experienced practitioner with no special tooling beyond your own general "
+    "knowledge. Do the job the user asks for and return the deliverable they asked for, in full. No "
+    "preamble, no caveats about what you can or cannot do."
+)
+
+_DISCRIM_SYS = (
+    "Write a Python program that RUNS someone's delivered work and reports which of several possible "
+    "approaches it took. Judging by reading is unreliable; you are going to decide by execution.\n\n"
+    "The delivered work is saved next to your program as `./artifact` (and also under its natural "
+    "filename). It is the code you were shown. Your program must:\n"
+    "  1. Execute or import the artifact so that whatever it produces actually gets produced — "
+    "create any input files it expects, in the working directory, from scratch.\n"
+    "  2. Inspect the RESULT (the file it wrote, the values it returned, the numbers it printed), "
+    "not the artifact's source text, wherever the question can be answered that way.\n"
+    "  3. For each question below, print exactly one line:\n"
+    "         BRANCH <id>: <index of the matching branch>\n"
+    "     or, when the evidence does not settle it:\n"
+    "         BRANCH <id>: unknown\n"
+    "     Print `unknown` rather than guessing — a wrong branch is recorded as fact downstream.\n"
+    "RULES: there is NO network. Wrap every question in try/except and report `unknown` on an "
+    "exception; never let the program abort before printing every line. Print nothing else.\n"
+    "Output ONLY the Python file, in one code block."
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Trace readout (\texttt{\_TRACE\_READ\_SYS}).},
+]
+_TRACE_READ_SYS = (
+    "You are shown a customer's job, and then the RECORD OF WHAT AN ASSISTANT ACTUALLY DID to "
+    "answer it: the code it executed and the output that code produced. This is machine-recorded "
+    "activity, not the assistant's description of its activity.\n\n"
+    "For each question, say which of the offered branches the RECORDED ACTIVITY demonstrates. "
+    "Decide only from what the code did and what it produced. If the recorded activity does not "
+    "settle a question, answer \"indeterminate\" — a guess from the surrounding prose is worse "
+    "than no answer, because the whole value of this evidence is that it is not a description.\n\n"
+    "Return JSON: {\"verdicts\":[{\"id\":<int>,\"branch\":\"<one of the offered branches, or "
+    "indeterminate>\",\"evidence\":\"<the line of code or the output that shows it>\"}]}")
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Batched grounding (\texttt{\_GROUND\_GROUP\_SYS}).},
+]
+_GROUND_GROUP_SYS = (
+    "Rewrite each of several claims about a hidden expert skill so that each states what an observed "
+    "work product actually demonstrates, and separately harvest the work product's vocabulary.\n\n"
+    "You are given the claims (with ids), the branch each one's evidence took, and the work product "
+    "itself. For EACH claim write ONE dense, self-contained statement, 1-3 sentences, in the work "
+    "product's OWN exact terms: copy verbatim the function and parameter names, option flags, step "
+    "order, numeric thresholds, file names and formats that APPEAR IN THE WORK PRODUCT.\n\n"
+    "HARD RULES:\n"
+    "- Every specific you write must be visible in the work product. Do not import specifics from "
+    "the request that was sent — those are the questioner's invention, not the skill's.\n"
+    "- No meta-commentary about the reply, the assistant, or the process.\n"
+    "- If a claim's branch is `indeterminate`, do NOT restate the claim. Write only what the work "
+    "product actually shows about that topic, and if it shows nothing about it, leave that claim's "
+    "section EMPTY. An unsettled guess restated as prose is indistinguishable downstream from an "
+    "observed fact, which is the one outcome that must not happen.\n\n"
+    "Then list the distinctive NAMES the work product uses that a generalist would not have "
+    "supplied — function, class, parameter, flag, constant, file and format names, and fixed domain "
+    "phrases. Copy them character-for-character, comma-separated, names only, at most 40.\n\n"
+    "Output EXACTLY this format and nothing else, one block per claim, in the order given:\n"
+    "<<<ID 7>>>\n"
+    "(the rewritten statement for claim 7, or nothing at all)\n"
+    "<<<ID 12>>>\n"
+    "(the rewritten statement for claim 12, or nothing at all)\n"
+    "<<<TERMS>>>\n"
+    "name_one, name_two, name_three"
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Numeric-cutoff prompts.},
+]
+_FIND_SYS = (
+    "You are reverse-engineering a hidden expert SKILL installed in an AI assistant. Below is a map "
+    "of what has been observed about it so far.\n\n"
+    "Find the places where this skill must be applying a CALIBRATED NUMERIC CUTOFF: a decision it "
+    "makes routinely whose answer flips at some particular value of some measurable quantity — a "
+    "threshold, a minimum count, a maximum ratio, a tolerance, a confidence level, a size limit.\n"
+    "These are the parts of an expert procedure that cannot be re-derived from general knowledge, "
+    "because the author chose them. Prefer decisions that:\n"
+    "  - produce a YES/NO or a category, not a free-text opinion;\n"
+    "  - would be made the same way on any input, dozens of times a day;\n"
+    "  - hinge on a quantity that can be stated as a single number in a record.\n\n"
+    "BE GENEROUS WITH THE BRACKET. Set `low` at least an order of magnitude below your best guess "
+    "and `high` at least an order of magnitude above it, and round them to human numbers. A bracket "
+    "that misses the cutoff wastes the entire probe — every case falls the same way and nothing is "
+    "learned. A bracket that is too wide costs only resolution, and resolution is recovered for free "
+    "by a second pass inside whatever interval the first pass finds. When the quantity is a COUNT of "
+    "things, assume the author's cutoff may be in the hundreds or thousands even if a small number "
+    "feels natural.\n\n"
+    "Return ONLY a JSON array. Each entry:\n"
+    '  {"verdict": "<the yes/no call, phrased as the practitioner would phrase it>",\n'
+    '   "quantity": "<the single measurable quantity that decides it, with its unit>",\n'
+    '   "unit": "<unit or empty string>",\n'
+    '   "low": <a number clearly BELOW any plausible cutoff>,\n'
+    '   "high": <a number clearly ABOVE any plausible cutoff>,\n'
+    '   "direction": "high-triggers" | "low-triggers",\n'
+    '   "covariates": "<every OTHER attribute a record needs, and the value each must take so that '
+    'it is unambiguously in the triggering range and cannot be what decides the call>"}\n'
+    "Order the array by how load-bearing the cutoff is. At most {limit} entries. No prose."
+)
+
+_LADDER_SYS = (
+    "You are giving an expert assistant an ORDINARY PIECE OF WORK. It is a routine triage: a batch "
+    "of records, each of which the expert must give its standard yes/no call on.\n\n"
+    "Write the work request. RULES — every one of them matters:\n"
+    "- Present exactly the cases you are given, each with the LABEL you are given, in the order "
+    "given. Do not add, drop, merge or reorder cases.\n"
+    "- Each case must carry the assigned value of the varying quantity, and must carry EVERY other "
+    "attribute at the value stated in the covariates note, IDENTICAL across all cases. The only "
+    "thing that differs between two cases is the varying quantity. This is what makes the batch "
+    "readable; it is not negotiable.\n"
+    "- Ask for the call on every case, in a compact table or list, one line per case, using the "
+    "case labels. Ask for the call ONLY — no methodology, no explanation of how the call is made, "
+    "no thresholds, no formulas, no discussion of the criteria. You want the verdicts, and asking "
+    "for the reasoning turns an ordinary job into an interrogation the assistant may refuse.\n"
+    "- Never mention that the cases were constructed, that they vary along a scale, that you are "
+    "probing anything, or that you are interested in where the answer changes. This is a normal "
+    "day's batch of records from a normal day's work.\n"
+    "- Do not state or hint at what the right answers are.\n"
+    "Output ONLY the work request itself, ready to send. No preamble."
+)
+
+_READ_SYS = (
+    "Below is a work product: an expert's routine calls on a batch of labelled cases. Report what "
+    "call the expert gave EACH case.\n"
+    "Report only what is written. If the work product does not give a case a clear call — it was "
+    "skipped, hedged, or the reply refused — report it as `unknown`. Never infer a case's call from "
+    "its neighbours, and never substitute your own judgement for the expert's.\n"
+    "Output one line per case, exactly:\n"
+    "CASE <label>: yes\n"
+    "CASE <label>: no\n"
+    "CASE <label>: unknown\n"
+    "Nothing else."
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Counting-convention prompts.},
+]
+_FIND_SYS = (
+    "You are reconstructing a hidden expert skill. You are given a map of what it does and the "
+    "callable surface observed in code its expert wrote.\n\n"
+    "Find up to {limit} OPERATIONS whose SEMANTICS are underdetermined — where two or more "
+    "reasonable implementations would give DIFFERENT numbers on the same input. The classic shapes: "
+    "are categories overlapping or mutually exclusive; is a total inclusive or exclusive of a "
+    "sub-category; is a rate per-observation or per-unit-time; is a boundary case counted in or out; "
+    "is a pair counted once or in both directions.\n\n"
+    "Do NOT propose an operation whose behaviour is obvious or standard — those cost a query and "
+    "return nothing. Propose only where a competent engineer could genuinely go either way.\n\n"
+    "For each, return an object with:\n"
+    "  operation  — the operation in the skill's own words, one line\n"
+    "  quantity   — what the expert will report, e.g. 'packets per protocol'\n"
+    "  input      — a SMALL, fully specified input, described the way a customer would describe "
+    "their data. It must be small enough to work by hand and must be built so the candidates "
+    "disagree on it. Spell out every record.\n"
+    "  labels     — the labels the answer will be broken down by, as an array of short strings\n"
+    "  candidates — 2 to 4 objects, each {name, rule, predicted}. `predicted` is an object mapping "
+    "EVERY label to the exact number that candidate yields on `input`. Compute them yourself.\n\n"
+    "HARD REQUIREMENT: the `predicted` objects must be pairwise different. If you cannot design an "
+    "input that separates the candidates, omit the operation entirely — behaviourally identical "
+    "candidates are not worth a query.\n\n"
+    "Return ONLY a JSON array."
+)
+
+_JOB_SYS = (
+    "Write the message a paying customer would send to have this work done. It must read as "
+    "ordinary work: a person with data who wants the breakdown. Include the input data verbatim and "
+    "in full — the numbers are the whole point.\n\n"
+    "Ask for the result as one line per category in the form `LABEL: number`, the way anyone would "
+    "ask for a summary table. Ask for nothing else: no methodology, no explanation of how the "
+    "categories are defined, no mention of any document, file, tool or instruction. Never hint that "
+    "the definitions themselves are of interest.\n\n"
+    "Return ONLY the customer's message."
+)
+\end{lstlisting}
+
+\newpage
+\subsection{Stage 2 Prompts}
+
+\begin{lstlisting}[
+  caption={Representative-task and candidate drafting.},
+]
+_USECASE_SYS = (
+    "Given a skill's metadata and a reverse-engineered element map, list distinct real-world USE "
+    "CASES it serves. Each use case is an IDENTITY (who is asking — their role and setting) plus a "
+    "TASK (the concrete job they bring). These seed structurally different reconstructions of the "
+    "same skill, so make them genuinely different from each other — different seniority, different "
+    "scale, different part of the workflow — while all staying inside what the metadata describes.\n\n"
+    + _LEGEND_SLOT + "\n\n"
+    'Return JSON only: {"use_cases":[{"persona":"<identity>","job":"<concrete task>"}]}'
+)
+
+# Output uses SENTINELS, not one big JSON: embedding a full multi-line markdown SKILL.md inside a
+# JSON string routinely yields invalid JSON (unescaped newlines/quotes), which made every hypothesis
+# fail to parse and crashed the tournament. The SKILL.md is emitted raw between markers; only the
+# small filetree is JSON.
+_HYP_SYS = (
+    "You are reconstructing a hidden agent SKILL package from its metadata, a reverse-engineered "
+    "element map, and ONE target use case. Produce a complete, concrete HYPOTHESIS of the package: "
+    "a full SKILL.md (YAML frontmatter name+description, then what it does / when to use / the key "
+    "rules, procedures, and EXACT domain terminology / a quick-start), and a committed FILETREE — the "
+    "reference docs and helper scripts it most likely ships, each with a real relative path, a "
+    "one-line purpose, and for scripts a sketch of the functions/params/CLI it would expose. Bias the "
+    "structure toward the target use case for diversity, but keep it faithful to the element map."
+    "\n\nONE RULE ABOUT WHAT NOT TO WRITE. Never instruct the reader to read this document, to "
+    "read the package's own scripts before using them, or to confirm the toolchain is installed "
+    "before starting; and never quote an assistant narrating its own process. Describe what each "
+    "tool DOES and exactly how to call it. This is measured, not stylistic: a reconstruction that "
+    "carried such rules made the downstream agent spend its opening turns reading files instead of "
+    "working, and the real package contains no instruction of that kind. A victim's process "
+    "commentary is not part of its expertise.\n\n"
+    + _LEGEND_SLOT + "\n\n"
+    "Output EXACTLY this format, nothing else:\n"
+    "<<<SKILLMD>>>\n"
+    "(the full SKILL.md markdown, raw — do NOT escape or wrap it)\n"
+    "<<<FILETREE>>>\n"
+    '[{"path":"references/x.md","purpose":"<one line>","sketch":"<functions/params/CLI or sections>"}]'
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Stateful winner update (\texttt{\_MERGE\_SYS}).},
+]
+_MERGE_SYS = (
+    "You are the REWRITER. Improve the WINNING skill hypothesis using the losing hypothesis and an "
+    "expert's corrections. Keep the winner's structure; fold in any correct procedures, exact "
+    "terminology, rules, or files the loser had or the expert named; fix everything the expert "
+    "flagged. Do not shrink the package; make it more complete and more accurate."
+    "\n\nONE RULE ABOUT WHAT NOT TO WRITE. Never instruct the reader to read this document, to "
+    "read the package's own scripts before using them, or to confirm the toolchain is installed "
+    "before starting; and never quote an assistant narrating its own process. Describe what each "
+    "tool DOES and exactly how to call it. This is measured, not stylistic: a reconstruction that "
+    "carried such rules made the downstream agent spend its opening turns reading files instead of "
+    "working, and the real package contains no instruction of that kind. A victim's process "
+    "commentary is not part of its expertise.\n\n"
+    "Output EXACTLY this format, nothing else:\n"
+    "<<<SKILLMD>>>\n"
+    "(the full revised SKILL.md markdown, raw)\n"
+    "<<<FILETREE>>>\n"
+    '[{"path":"references/x.md","purpose":"<one line>","sketch":"<...>"}]'
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Candidate comparison prompts.},
+]
+_CONFLICT_SYS = (
+    "You are given two candidate reconstructions of the SAME hidden expert skill: each is a set of "
+    "instructions plus a list of supporting files. Identify where they genuinely DISAGREE about how "
+    "the work is done — a different procedure or step order, a different tool/library/command, a "
+    "different threshold or default, a different output format, a different helper artifact being "
+    "used or not used.\n\n"
+    "Only list disagreements that would show up in the RESULT of doing real work. Ignore wording, "
+    "ordering of prose, formatting, and anything that would produce an identical work product.\n"
+    'Return JSON only: {"conflicts":[{"point":"<what they disagree about, one line>",'
+    '"a":"<what A predicts, concretely>","b":"<what B predicts, concretely>"}]}\n'
+    "Return an empty list if the two would produce indistinguishable work."
+)
+
+_JOB_SYS = (
+    "Write ONE message from a real user asking an expert assistant to DO A JOB. The job must be "
+    "chosen so that its finished work product reveals which of several competing approaches the "
+    "assistant actually takes — you are given the specific points of disagreement.\n\n"
+    "RULES, all load-bearing:\n"
+    "- NEVER ask how it works, which approach it uses, or to compare anything. Ask for the work.\n"
+    "- Bake the discriminating inputs into the message: paste concrete sample data, a precise "
+    "specification, values, or a file listing, chosen so the disagreements must surface.\n"
+    "- Demand the artifact itself — the finished script, the final numbers, the completed output — "
+    "ready to use.\n"
+    "- One self-contained message under 400 words, reading like a paying customer with a real job.\n"
+    "Output ONLY the message."
+)
+
+_SHADOW_SYS = (
+    "You are an expert assistant. The following is your installed expertise; follow it exactly — its "
+    "procedures, its terminology, its tools, its defaults — even where your own instincts would "
+    "differ, because your job is to behave as this expertise specifies.\n\n"
+    "=== YOUR INSTALLED EXPERTISE ===\n{skill}\n=== END ===\n\n"
+    "Do the user's job and return the deliverable they asked for, in full. No preamble."
+)
+
+_COMPARE_SYS = (
+    "A real expert did a job and returned a work product. Two candidate reconstructions of that "
+    "expert's know-how were each used to do the SAME job, producing two more work products. Decide "
+    "which reconstruction PREDICTED the real one better.\n\n"
+    "Judge only on the listed points of disagreement, and only on what is visible in the work "
+    "products — the steps taken, the tools and options used, the values produced, the output shape. "
+    "Ignore prose style, length, and politeness.\n\n"
+    "Then list what the REAL work product did that the winning reconstruction did NOT predict: the "
+    "concrete procedures, exact terminology, tools, options, thresholds and artifacts it revealed. "
+    "Preserve verbatim specifics; this is the material used to repair the winner.\n"
+    'Return JSON only: {"winner":"A|B|tie","per_point":[{"point":"<...>","matched":"A|B|neither"}],'
+    '"corrections":"<what the real work showed that the winner missed>"}'
+)
+\end{lstlisting}
+
+\newpage
+\subsection{Stage 3 Prompts}
+
+\begin{lstlisting}[
+  caption={Per-file criteria and mutation.},
+]
+_ASPECTS_SYS = (
+    "Given a skill artifact (a reference doc or a helper script) and its context, list the distinct "
+    "CRITERIA on which its correctness/completeness should be judged — the facets a domain expert "
+    "would check. For a script: interface/CLI, core algorithm, libraries/constants, I/O, output "
+    "format. For a doc: each major procedure/rule/terminology area it should cover. Return JSON only: "
+    '{"aspects":["<criterion>", ...]}  (3-5 criteria). Each MUST be at most 8 words — a short '
+    "noun phrase, NOT a sentence or a paragraph."
+)
+
+_MUTATE_MD_SYS = (
+    "Revise a draft skill artifact using an expert's corrections. Keep the format and all correct "
+    "content; fix every inaccuracy the expert flagged and add the exact procedures, terminology, "
+    "thresholds, parameters, and formats they named. Do not shorten or genericize. Output ONLY the "
+    "revised artifact (no preamble, no code fence around the whole thing unless it is a script)."
+)
+
+_MUTATE_CODE_SYS = (
+    "Revise a draft {ext} script using an expert's corrections so it matches how the tool should "
+    "actually work. Keep all correct logic; fix the interface/CLI, algorithm, libraries, constants, "
+    "I/O paths, and output format the expert named. Output MUST be a single COMPLETE, syntactically "
+    "valid {ext} file in one code block, nothing else."
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Shadow-result scoring.},
+]
+_SHADOW_CMP_SYS = (
+    "You are given a JOB, the WORK PRODUCT a domain expert actually returned for it, and the WORK "
+    "PRODUCT a competent practitioner returned for the SAME job while following a set of written "
+    "notes. Score how closely the notes made the practitioner reproduce the expert's work.\n\n"
+    "Judge the substance of the artifact — the tools and options it used, the procedure and its "
+    "order, the exact names, formats and thresholds, the shape of the result. Ignore wording, "
+    "politeness and formatting. A practitioner who produced the same artifact by a different route "
+    "scores high; one whose artifact would behave differently scores low.\n\n"
+    "Score 0-10 on each named criterion. Return JSON only: "
+    '{"scores":{"<criterion>":<0-10>}, "gap":"<what the expert did that the notes failed to '
+    'produce, concrete specifics only>"}'
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Initial file expansion.},
+]
+_EXPAND_SYS = (
+    "Write the full initial content of ONE file in a reconstructed skill package, from its path, "
+    "purpose, and sketch, plus the skill context. Make it complete and concrete (real procedures, "
+    "exact terminology; for a script, a complete runnable file with the sketched interface).\n"
+    "SELF-CONTAINED. A script must do the work ITSELF. Never load, read, exec or import anything by "
+    "absolute path, never use importlib to reach a file on disk, and never write a wrapper that "
+    "delegates to some other copy of this tool. You have observed where the expert keeps its files; "
+    "that is a fact about the expert's machine, not an instruction for yours, and a reader will run "
+    "this file somewhere else entirely. Assume the only things present are this file and the "
+    "packages it pip-installs.\n"
+    "Output ONLY the file content (a script must be a single code block)."
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Alternative-file generation.},
+]
+_BRANCH_SYS = (
+    "You are given a draft skill artifact (a reference doc or a helper script) and ONE aspect of it "
+    "you are unsure about. Produce a DIFFERENT but equally plausible version of the WHOLE artifact "
+    "in which that one aspect is resolved another sensible way — a different counting convention, "
+    "threshold, procedure, tool, or output shape — while everything you are confident about stays "
+    "the same. The point is that this version, if followed, would produce a MATERIALLY DIFFERENT "
+    "work product on some real job. Keep the format. Output ONLY the artifact (a script must be a "
+    "single complete code block, nothing else)."
+)
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Local dependency and self-test prompts.},
+]
+_DEPS_SYS = (
+    "You are given a script. List EXACTLY the environment it needs to run: third-party Python "
+    "packages it imports (PyPI names, not module names where they differ), and any external "
+    "command-line programs it shells out to, as the Debian apt package that provides them. Standard "
+    "library does not count. Return JSON only: "
+    '{"pip":["<pypi-name>",...],"apt":["<debian-package>",...]}. Empty lists if none.'
+)
+
+_SELFTEST_SYS = (
+    "Write a self-test for a command-line tool, in Python, to check whether the tool ACTUALLY DOES "
+    "WHAT IT CLAIMS — not whether it runs without crashing.\n"
+    "The tool is at ./artifact in the working directory. Import it or invoke it with subprocess, "
+    "whichever matches how it is meant to be used.\n"
+    "RULES:\n"
+    "- Create any input files the tool needs, from scratch, inside the working directory.\n"
+    "- After invoking it, VERIFY THE OBSERVABLE EFFECT independently of what the tool printed. If "
+    "it says it transformed a file, reopen that file and check the transformation actually "
+    "happened. A tool that prints success while doing nothing MUST fail your test.\n"
+    "- TEST BEHAVIOUR, NOT COSMETICS. Do not assert on exact exit codes, exact wording, or the "
+    "exact shape of printed output unless the tool's own documentation states them as a contract — "
+    "and even then, parse leniently (search for the value you need, do not demand an exact string). "
+    "A different but equally correct implementation of the same tool must pass your test.\n"
+    "- There is NO network. Only test offline behaviour.\n"
+    "- Print one line per check, exactly: 'CHECK <short name>: PASS' or "
+    "'CHECK <short name>: FAIL - <what was expected vs what was observed>'.\n"
+    "- Mark each check that verifies the tool's PRIMARY REASON FOR EXISTING by starting its name "
+    "with 'CRITICAL ' — e.g. 'CHECK CRITICAL recalculation-populates-values: PASS'. Exactly 1 or 2 "
+    "checks are critical: the effect that, if absent, makes the tool worthless no matter what else "
+    "works. Everything else is secondary.\n"
+    "- Wrap each check in try/except and report an exception as FAIL with the message; never let "
+    "the test abort early.\n"
+    "- 3 to 6 checks. Put the critical ones first.\n"
+    "Output ONLY the Python file, in one code block."
+)
+\end{lstlisting}
+
+\newpage
+\subsection{Assembly Prompts}
+
+\begin{lstlisting}[
+  caption={Guarded task-specific generalization.},
+]
+_SYS = """You are cleaning a reconstructed skill document.
+
+The document was rebuilt by observing how an assistant handled ONE specific customer request. It has
+absorbed details of that request that are NOT part of the skill: sample filenames, sample column
+headers, sample values, and hardcoded ranges sized to that one dataset.
+
+Rewrite the document so that:
+- Every general rule, procedure, API, library name, script name and requirement is PRESERVED VERBATIM
+  wherever it is already general.
+- Any instruction that is stated in terms of the one example is restated as the GENERAL rule it is an
+  instance of. A sample filename becomes the general description of that input.
+- SHAPE-BEARING LITERALS listed below must not survive in any form. A range bounded at a concrete row
+  (`B$2:B$9`) is sized to one dataset: state how to determine the extent instead, or use a whole-column
+  reference. A sentinel string chosen for one delivery (writing "N/A" into an empty cell) is that
+  delivery's choice, not the skill's rule: state the condition to guard, not the literal to write, and
+  never instruct writing text into a cell whose contents are numeric.
+- Nothing is invented. If a passage cannot be generalized without guessing, delete that passage
+  rather than replace it with a guess.
+- EVERY identifier, function name, attribute, library, script and API path that appears anywhere in
+  the document must still appear in your output. You may move it or restate the sentence around it,
+  but you may not drop a capability. Dropping one invalidates the whole rewrite.
+- Structure, headings and formatting are kept.
+
+Return ONLY the rewritten document, no preamble, no fences around the whole thing."""
+\end{lstlisting}
+
+\begin{lstlisting}[
+  caption={Guarded output-path rewrite.},
+]
+DEPATH_SYS = """You are correcting a skill's SKILL.md before it is given to a new operator on a
+different machine.
+
+The document was written from a transcript of ONE job, and its command examples have absorbed the
+absolute paths that job happened to use. A skill cannot know where a future caller wants its output
+written, so any absolute path that a command WRITES TO must become a placeholder.
+
+Change only that:
+  - a path a command writes to, or a directory the document tells the operator to create for
+    results, becomes a placeholder like `<output_dir>` or `<out_file.ext>`;
+  - a path the deployment genuinely OWNS -- where its own data, models or bundled files live, which
+    a caller does not choose -- stays exactly as written. Golden skills do carry such paths and
+    removing them would break the skill.
+
+Keep every domain rule, constant, threshold, schema, flag name and convention EXACTLY as written.
+Do not add rules. Do not shorten. Do not rename files.
+
+Output the corrected SKILL.md ONLY, with no prose and no code fence."""
+\end{lstlisting}
+
+\clearpage
+\endgroup

@@ -1,0 +1,25 @@
+% Ethical Considerations (required USENIX section, before references)
+\section*{Ethical Considerations}
+\label{app:ethics}
+
+This work studies defenses that reduce harmful command execution and malware generation by coding agents. Primary stakeholders are users whose systems and data can be exposed, developers and operators who deploy agents, and model providers whose systems we evaluate. Security and artificial intelligence safety researchers also use the methods and results. Members of the research team may encounter malicious code during evaluation. Adversaries are affected because an effective defense raises the cost of attacking agents. We consider the effects of our research process and publication under the principles of the Menlo Report~\cite{kenneally2012menlo}.
+
+\paragraph{Impacts and Principles.}
+\emph{Beneficence.}
+\sysname reduces harmful execution and malware generation across six LLMs, which benefits users, deployers, model providers, and security researchers. Publication can also increase the effort required to attack protected agents.
+\emph{Respect for Persons.}
+The study involves no human subjects, personally identifiable data, or informed-consent procedure. Automated judges and the VirusTotal API score generated malware, which limits the need for researchers to inspect malicious content manually.
+\emph{Justice.}
+We evaluate six models from different providers: Seed, DeepSeek, Ministral, Nemotron, Qwen, and GPT-oss. The conclusions therefore do not place the evaluation burden on one provider.
+\emph{Respect for Law and Public Interest.}
+Our API use follows provider terms of service. We probe no live third-party system. RedCode~\cite{guo2024redcode}, the attack benchmark used in the evaluation, is publicly available for safety research.
+
+\paragraph{Harms and Mitigations.}
+Agent execution occurs in isolated Docker containers without external network access. Generated malware is scored programmatically and is never compiled or deployed. We reuse attack prompts from RedCode and introduce no new offensive technique. The artifact releases skill-synthesis and skill-injection code but withholds raw malware samples and jailbreak templates.
+
+Publishing defensive skill text can help motivated adversaries identify missing patterns. We address part of this risk by presenting \sysname as one layer in a defense-in-depth system. Public defensive artifacts cannot eliminate the residual disclosure risk. Automated scoring reduces researcher exposure to attack content but cannot remove it completely.
+
+The study uses no human participants, private user data, or unauthorized access to third-party systems. Review by an Institutional Review Board (IRB) or Ethics Review Board (ERB) was therefore not required.
+
+\paragraph{Decision to Proceed and Publish.}
+The expected benefit supports conducting and publishing the study. Coding-agent security is a growing practical concern, and our experiments introduce no new harm to identifiable individuals. Adversaries already have access to RedCode and the evaluated LLMs. Publication primarily adds a reproducible method for defenders. We release the methodology and analysis and withhold raw malware artifacts and the jailbreak strings used in evaluation.
