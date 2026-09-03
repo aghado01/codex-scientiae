@@ -25,7 +25,7 @@ function Get-PesterBatchJob {
     }
     $runner = (Resolve-Path -LiteralPath $runner).Path
     $artifactBoundary = [System.IO.Path]::Combine(
-        $repository, 'tests', 'artifact-boundary.ps1')
+        $repository, 'src', 'logistics', 'artifact-boundary.ps1')
     if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
         throw "pester-batch runner support not found: '$artifactBoundary'"
     }

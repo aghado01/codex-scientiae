@@ -18,7 +18,7 @@
 
   Allocate a fresh run directory, or read existing ones newest-first. Pure path work — no crawler,
   no document identity, no lane knowledge, no filesystem discovery beyond enumerating the tier root
-  itself.
+  itself. Containment checks and the test TEMP convention live in the sibling artifact-boundary.ps1.
 
   Two properties the layout exists for:
 

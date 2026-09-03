@@ -2,7 +2,7 @@
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path "$PSScriptRoot/../..").Path
     $script:TestsRoot = Join-Path $script:RepositoryRoot 'tests'
-    . (Join-Path $script:TestsRoot 'artifact-boundary.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/logistics/artifact-boundary.ps1')
 }
 
 Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {

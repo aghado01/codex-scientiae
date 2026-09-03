@@ -1,3 +1,17 @@
+function Get-JsonlEngineScratchRoot {
+    <# CODEX_JSON_SCRATCH_ROOT when set, otherwise <repo>/artifacts/json-scratch. #>
+    $configured = [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
+    if ($null -ne $configured) {
+        if ([string]::IsNullOrWhiteSpace($configured) -or
+                -not [System.IO.Path]::IsPathFullyQualified($configured)) {
+            throw 'CODEX_JSON_SCRATCH_ROOT must name a non-empty absolute directory'
+        }
+        return [System.IO.Path]::GetFullPath($configured)
+    }
+    return [System.IO.Path]::Combine(
+        $script:JsonlEngineRepositoryRoot, 'artifacts', 'json-scratch')
+}
+
 function Resolve-JsonlEngineRuntime {
     [CmdletBinding()]
     param([string] $PythonPath = '')

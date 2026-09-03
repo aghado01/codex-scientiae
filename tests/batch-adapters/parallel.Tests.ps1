@@ -6,7 +6,7 @@ BeforeAll {
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
     $script:RepositoryArtifactBoundary = Join-Path $script:RepositoryRoot `
-        'tests/artifact-boundary.ps1'
+        'src/logistics/artifact-boundary.ps1'
     $script:PythonPath = (Resolve-Path `
         (Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe')).Path
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
@@ -24,8 +24,10 @@ BeforeAll {
         Copy-Item -LiteralPath $script:RepositoryRunner -Destination (Join-Path $tests 'run.ps1')
         Copy-Item -LiteralPath $script:RepositoryPytestRunner `
             -Destination (Join-Path $tests 'pytest.ps1')
+        $logistics = Join-Path $repository 'src/logistics'
+        [void][System.IO.Directory]::CreateDirectory($logistics)
         Copy-Item -LiteralPath $script:RepositoryArtifactBoundary `
-            -Destination (Join-Path $tests 'artifact-boundary.ps1')
+            -Destination (Join-Path $logistics 'artifact-boundary.ps1')
         Set-Content -LiteralPath (Join-Path $repository 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]

@@ -6,8 +6,10 @@ through `adapters.psd1`. It exports `Get-PesterBatchJob`, `Get-PytestBatchJob`, 
 files in one module, not one PowerShell module per adapter; no unitary adapter module or compatibility alias
 is introduced.
 
-Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts`. Child processes receive
-repository-local `TEMP`, `TMP`, and `TMPDIR`; the operating-system user temp tree is not a fallback.
+Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts` through
+`src/logistics/artifact-boundary.ps1`. Child processes receive repository-local `TEMP`, `TMP`, and
+`TMPDIR`; the operating-system user temp tree is not a fallback. `tests/batch.ps1` is the public
+test-batch caller, including a one-file selection.
 
 A successor LaTeX conversion planner can rejoin this module later under the same job-emission contract
 (`New-BatchJob` only; caller owns `New-BatchPlan` / `Invoke-BatchPlan`). The retired latex-ingest adapter

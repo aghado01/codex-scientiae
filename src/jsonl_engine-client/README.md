@@ -28,7 +28,9 @@ The interpreter is selected in this order:
 There is no ambient `PATH` fallback. The selected environment must have the repository installed
 editable. Restore it with the commands in the root `pyproject.toml` when necessary.
 Ambient import/startup/warning settings are removed from the child; UTF-8, unbuffered output, user-site
-isolation, and no-bytecode policy are pinned by the client.
+isolation, and no-bytecode policy are pinned by the client. Temporary `New-JsonlEngineInputFile`
+staging uses `CODEX_JSON_SCRATCH_ROOT` when set, otherwise `<repo>/artifacts/json-scratch`, matching
+the Python engine. It does not fall back to the operating-system temp tree.
 
 Relative `-PythonPath` values, including the environment-selected value, and relative path parameters
 on the high-level commands are resolved against the caller's current FileSystem location before the

@@ -10,6 +10,13 @@ if (-not (Test-Path -LiteralPath $script:AdaptersExecutorManifest -PathType Leaf
 }
 Import-Module $script:AdaptersExecutorManifest -Scope Local -ErrorAction Stop
 
+$script:AdaptersArtifactBoundary = [System.IO.Path]::GetFullPath(
+    (Join-Path $script:AdaptersModuleRoot '../logistics/artifact-boundary.ps1'))
+if (-not (Test-Path -LiteralPath $script:AdaptersArtifactBoundary -PathType Leaf)) {
+    throw "adapters dependency not found: '$script:AdaptersArtifactBoundary'"
+}
+. $script:AdaptersArtifactBoundary
+
 function Resolve-BatchAdapterRunDirectory {
     [CmdletBinding()]
     param(
@@ -26,20 +33,13 @@ function Resolve-BatchAdapterRunDirectory {
         throw "$Adapter RunDirectory must be an existing absolute path: '$RunDirectory'"
     }
 
-    $artifactCandidate = [System.IO.Path]::Combine($RepositoryRoot, 'artifacts')
-    if (-not (Test-Path -LiteralPath $artifactCandidate -PathType Container)) {
-        throw "$Adapter repository artifacts root not found: '$artifactCandidate'"
+    try {
+        return Resolve-TestHarnessRunDirectory -RunDirectory $candidate `
+            -RepositoryRoot $RepositoryRoot
     }
-    $artifactRoot = (Resolve-Path -LiteralPath $artifactCandidate).Path
-    $run = (Resolve-Path -LiteralPath $candidate).Path
-    $relative = [System.IO.Path]::GetRelativePath($artifactRoot, $run)
-    $parentPrefix = '..' + [System.IO.Path]::DirectorySeparatorChar
-    if ($relative -eq '.' -or $relative -eq '..' -or
-            [System.IO.Path]::IsPathFullyQualified($relative) -or
-            $relative.StartsWith($parentPrefix, [System.StringComparison]::Ordinal)) {
-        throw "$Adapter RunDirectory must be a descendant of RepositoryRoot/artifacts: '$RunDirectory'"
+    catch {
+        throw "$Adapter $($_.Exception.Message)"
     }
-    return $run
 }
 
 $hostFiles = @(

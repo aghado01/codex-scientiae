@@ -36,7 +36,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-. ([System.IO.Path]::Combine($PSScriptRoot, 'artifact-boundary.ps1'))
+. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'artifact-boundary.ps1'))
 . ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'run-paths.ps1'))
 
 $defaultPath = @($PSScriptRoot)

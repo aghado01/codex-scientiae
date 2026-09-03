@@ -1,4 +1,14 @@
 #requires -Version 7.0
+<#
+  src/logistics/artifact-boundary.ps1 — repository artifacts containment.
+
+  Sibling of run-paths.ps1 (minting). This file owns descendant checks, run-directory
+  resolution against the repository root, and the test TEMP/TMP/TMPDIR convention.
+
+  tests/batch.ps1 is the public test-batch caller, including a one-file selection.
+  tests/run.ps1 and tests/pytest.ps1 are child entrypoints; they load this helper from src.
+  batch-adapters consume the same descendant check rather than duplicating it.
+#>
 
 function Test-TestHarnessDescendantPath {
     param(

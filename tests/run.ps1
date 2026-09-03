@@ -8,7 +8,8 @@
   (falls back to a normally-installed >=5 if that anchor isn't set). Throws on any test failure, a missing
   path, OR an empty run, so child processes exit non-zero and nested callers can observe the failure.
   This exact-container entrypoint requires TEMP, TMP, and TMPDIR to identify one directory below the
-  repository artifacts root. The public batch adapter supplies that boundary.
+  repository artifacts root. The public caller is tests/batch.ps1, including a one-file selection;
+  this script is the child entrypoint Get-PesterBatchJob invokes.
 #>
 [CmdletBinding()]
 param(
@@ -24,12 +25,12 @@ param(
     [AllowEmptyCollection()] [string[]] $ExcludeTag = @()
 )
 
-$artifactBoundary = Join-Path $PSScriptRoot 'artifact-boundary.ps1'
+$repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
+$artifactBoundary = Join-Path $repositoryRoot 'src/logistics/artifact-boundary.ps1'
 if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
     throw "run.ps1: artifact boundary helper not found: '$artifactBoundary'"
 }
 . $artifactBoundary
-$repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $null = Assert-TestHarnessTempEnvironment -RepositoryRoot $repositoryRoot
 
 if (-not (Get-Module Pester | Where-Object { $_.Version -ge [version]'5.0' })) {

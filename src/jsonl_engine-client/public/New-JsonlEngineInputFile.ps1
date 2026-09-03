@@ -21,20 +21,8 @@ function New-JsonlEngineInputFile {
 
     $isTemporary = [string]::IsNullOrWhiteSpace($Path)
     $fullPath = if ($isTemporary) {
-        $configuredScratch = [System.Environment]::GetEnvironmentVariable(
-            'CODEX_JSON_SCRATCH_ROOT')
-        $temporaryRoot = if ($null -eq $configuredScratch) {
-            [System.IO.Path]::GetTempPath()
-        }
-        else {
-            if ([string]::IsNullOrWhiteSpace($configuredScratch) -or
-                -not [System.IO.Path]::IsPathFullyQualified($configuredScratch)) {
-                throw 'CODEX_JSON_SCRATCH_ROOT must name a non-empty absolute directory'
-            }
-            [System.IO.Path]::GetFullPath($configuredScratch)
-        }
         [System.IO.Path]::Combine(
-            $temporaryRoot,
+            (Get-JsonlEngineScratchRoot),
             "codex-jsonl_engine-input-$([guid]::NewGuid().ToString('N')).json")
     }
     else {

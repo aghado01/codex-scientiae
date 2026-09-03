@@ -464,6 +464,7 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
         $configuredScratch = Join-Path $TestDrive 'configured-json-scratch'
         $priorScratch = [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
         $temporary = $null
+        $defaultTemporary = $null
         try {
             $env:CODEX_JSON_SCRATCH_ROOT = $configuredScratch
             $temporary = New-JsonlEngineInputFile -InputObject $null
@@ -471,10 +472,22 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
             [System.IO.Path]::GetDirectoryName($temporary.Path) |
                 Should -Be ([System.IO.Path]::GetFullPath($configuredScratch))
             @(Read-JsonDocument $temporary.Path).Count | Should -Be 1
+
+            Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
+            $defaultTemporary = New-JsonlEngineInputFile -InputObject $null
+            $expectedRoot = [System.IO.Path]::GetFullPath(
+                (Join-Path $script:RepoRoot 'artifacts/json-scratch'))
+            [System.IO.Path]::GetDirectoryName($defaultTemporary.Path) |
+                Should -Be $expectedRoot
+            $defaultTemporary.Path.StartsWith(
+                [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath()),
+                [System.StringComparison]::OrdinalIgnoreCase) | Should -BeFalse
         }
         finally {
-            if ($null -ne $temporary -and [System.IO.File]::Exists($temporary.Path)) {
-                [System.IO.File]::Delete($temporary.Path)
+            foreach ($staged in @($temporary, $defaultTemporary)) {
+                if ($null -ne $staged -and [System.IO.File]::Exists($staged.Path)) {
+                    [System.IO.File]::Delete($staged.Path)
+                }
             }
             if ($null -eq $priorScratch) {
                 Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue

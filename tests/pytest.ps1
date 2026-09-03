@@ -1,10 +1,11 @@
 #requires -Version 7.0
 
 <#
-    Exact-file pytest runner for direct and batch execution.
+    Exact-file pytest child entrypoint for Get-PytestBatchJob.
 
-    The runner owns pytest command construction and its native JUnit result. It does not own
-    scheduling, run allocation, or generic batch-result persistence.
+    The public caller is tests/batch.ps1, including a one-file selection. This script owns pytest
+    command construction and its native JUnit result. It does not own scheduling, run allocation, or
+    generic batch-result persistence.
 #>
 [CmdletBinding()]
 param(
@@ -21,7 +22,7 @@ param(
     [string] $OutputVerbosity = 'Normal'
 )
 
-$artifactBoundary = Join-Path $PSScriptRoot 'artifact-boundary.ps1'
+$artifactBoundary = Join-Path $RepositoryRoot 'src/logistics/artifact-boundary.ps1'
 if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
     throw "pytest.ps1: artifact boundary helper not found: '$artifactBoundary'"
 }

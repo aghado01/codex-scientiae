@@ -21,7 +21,7 @@ function Get-PytestBatchJob {
         [System.IO.Path]::Combine($repository, 'tests', 'pytest.ps1')) `
         -RepositoryRoot $repository -Role 'runner'
     $null = Resolve-PytestBatchFileDependency -Path (
-        [System.IO.Path]::Combine($repository, 'tests', 'artifact-boundary.ps1')) `
+        [System.IO.Path]::Combine($repository, 'src', 'logistics', 'artifact-boundary.ps1')) `
         -RepositoryRoot $repository -Role 'runner support'
     $python = Resolve-PytestBatchPythonPath -PythonPath $PythonPath -RepositoryRoot $repository
     $childPowerShell = Resolve-PytestBatchPowerShellPath -PowerShellPath $PowerShellPath
