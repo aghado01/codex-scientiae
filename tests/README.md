@@ -57,8 +57,10 @@ pwsh -File tests/batch.ps1 -Framework Pester -PesterPath tests/<owner>/<behavior
 ```
 
 `{suite}` is the `tests/<owner>` segment the batch selected; a batch spanning several owners is
-named `mixed`. Pass `-RunDirectory` to own the root yourself — the temp convention still applies,
-so a caller never has to set three environment variables by hand.
+named `mixed`. Pass `-RunDirectory` to own the root yourself — it must already exist under
+`artifacts/`, is resolved against the repository root rather than the process working directory,
+and the temp convention still applies so a caller never has to set three environment variables by
+hand. Do not mint a `test-runs/` directory.
 
 `tests/parallel.ps1` remains the batch shell and takes `-RunDirectory` as **mandatory**. That is
 deliberate: it is held to a thinness contract (`tests/batch-adapters/parallel.Tests.ps1`) that
@@ -98,13 +100,11 @@ For every new or changed Python test file:
   contaminate the file runner's result.
 - Do not add pytest-xdist, per-file manifests or sidecars, scheduler locks, or custom batch loops.
 
-At minimum, verify Python files through the public batch shell. Bare pytest is prohibited because it can
-inherit an ambient machine temp directory:
+At minimum, verify Python files through `tests/batch.ps1`, the house-convention caller. Bare pytest
+is prohibited because it can inherit an ambient machine temp directory:
 
 ```pwsh
-pwsh -File tests/parallel.ps1 -Framework Pytest `
-  -PytestPath tests/<owner>/test_<behavior>.py `
-  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss) -MaxWorkers 1
+pwsh -File tests/batch.ps1 -Framework Pytest -PytestPath tests/<owner>/test_<behavior>.py -MaxWorkers 1
 ```
 
 The admitted contract requires an exact-file container, native JUnit, declared
@@ -124,7 +124,7 @@ only this shelf and never fall back to use-case-local installations:
 
 `run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It refuses ambient temp:
 `TEMP`, `TMP`, and `TMPDIR` must name the same job-local directory below the repository `artifacts` root.
-Use `tests/parallel.ps1` for repository-facing execution.
+Use `tests/batch.ps1` for repository-facing execution.
 
 `run.ps1` imports Pester 5 or newer from the portable PowerShell module tree
 when available, falls back to the normal module path, exits non-zero on test
@@ -144,9 +144,10 @@ runner's only durable runner-owned artifact. `selected` is the sum of pass/fail/
 
 ### Multilingual batch execution
 
-`parallel.ps1` is the repository-facing multilingual shell. Its mandatory `RunDirectory` must already exist
-as an absolute descendant of `RepositoryRoot/artifacts` and belong to the caller; the shell never allocates
-or timestamps a run. `Framework` explicitly selects
+`tests/batch.ps1` is the house-convention caller: it mints `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`
+when `-RunDirectory` is omitted. `parallel.ps1` is the thin multilingual shell. Its mandatory
+`RunDirectory` must already exist as an absolute descendant of `RepositoryRoot/artifacts` and belong
+to the caller; the shell never allocates or timestamps a run. Do not mint a `test-runs/` directory. `Framework` explicitly selects
 `All`, `Pester`, or `Pytest` and defaults to `All`. `Path` supplies the common selection and defaults to the
 repository `tests/` directory; optional `PesterPath` and `PytestPath` override it per framework. There is no
 separate workload profile. Architecture decisions [D24 and D27](../issues/batch-executor/planning/decisions.md)
@@ -222,12 +223,11 @@ Python project environment. `requirements.txt` is a generated runtime-only compa
 dependency authority.
 
 Pytest processes require an explicit `--basetemp` plus `TEMP`, `TMP`, and `TMPDIR` beneath a compact
-caller-owned runstamp in `artifacts/tests/`. The public batch shell supplies those boundaries:
+caller-owned runstamp in `artifacts/tests/`. `tests/batch.ps1` mints that root and supplies those
+boundaries:
 
 ```pwsh
-pwsh -File tests/parallel.ps1 -Framework Pytest `
-  -PytestPath tests/jsonl_engine/test_reader.py `
-  -RunDirectory (Resolve-Path artifacts/tests/<suite>/YYYYMMDD_HHmmss)
+pwsh -File tests/batch.ps1 -Framework Pytest -PytestPath tests/jsonl_engine/test_reader.py
 ```
 
 The cache provider is disabled in repository configuration because `.pytest_cache` is neither evidence nor

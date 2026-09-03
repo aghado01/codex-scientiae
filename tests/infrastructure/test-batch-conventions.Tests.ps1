@@ -13,7 +13,7 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
 
     It 'names the same suite from a file inside that owner' {
         Resolve-TestSuiteName -TestsRoot $script:TestsRoot -RepositoryRoot $script:RepositoryRoot `
-            -SelectedPath @('tests/TeXdig/WalkProjection.Tests.ps1') | Should -BeExactly 'TeXdig'
+            -SelectedPath @('tests/logistics/run-paths.Tests.ps1') | Should -BeExactly 'logistics'
     }
 
     It 'accepts absolute and repository-relative paths alike' {
@@ -120,5 +120,66 @@ Describe 'Set-TestHarnessTempEnvironment' -Tag 'Infrastructure' {
         $result = Set-TestHarnessTempEnvironment -RunDirectory $script:RunDir `
             -RepositoryRoot $script:RepositoryRoot
         $result | Should -BeExactly ([System.IO.Path]::GetFullPath((Join-Path $script:RunDir 'temp')))
+    }
+
+    It 'refuses a RunDirectory outside artifacts and does not create it' {
+        $outside = Join-Path $script:RepositoryRoot (
+            '_harness-outside-run-{0}' -f [guid]::NewGuid().ToString('N'))
+        { Set-TestHarnessTempEnvironment -RunDirectory $outside `
+            -RepositoryRoot $script:RepositoryRoot } |
+            Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
+        Test-Path -LiteralPath $outside | Should -BeFalse
+    }
+
+    It 'does not resolve a relative RunDirectory against the process working directory' {
+        $cwd = (Resolve-Path (Join-Path $script:RepositoryRoot '..')).Path
+        $leaf = '_codex-harness-cwd-probe-{0}' -f [guid]::NewGuid().ToString('N')
+        $leaked = Join-Path $cwd $leaf
+        $previous = Get-Location
+        try {
+            Set-Location -LiteralPath $cwd
+            { Set-TestHarnessTempEnvironment -RunDirectory $leaf `
+                -RepositoryRoot $script:RepositoryRoot } |
+                Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
+            Test-Path -LiteralPath $leaked | Should -BeFalse
+        }
+        finally {
+            Set-Location -LiteralPath $previous.Path
+            if (Test-Path -LiteralPath $leaked) {
+                Remove-Item -LiteralPath $leaked -Recurse -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+}
+
+Describe 'Resolve-TestHarnessRunDirectory' -Tag 'Infrastructure' {
+    BeforeAll {
+        $script:ArtifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $script:RepositoryRoot
+    }
+
+    It 'resolves a repository-relative artifacts path regardless of working directory' {
+        $run = Join-Path $script:ArtifactRoot (
+            'tests/_convention-probe/{0}' -f [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $run | Out-Null
+        $relative = [System.IO.Path]::GetRelativePath($script:RepositoryRoot, $run)
+        $cwd = (Resolve-Path (Join-Path $script:RepositoryRoot '..')).Path
+        $previous = Get-Location
+        try {
+            Set-Location -LiteralPath $cwd
+            $resolved = Resolve-TestHarnessRunDirectory -RunDirectory $relative `
+                -RepositoryRoot $script:RepositoryRoot
+            $resolved | Should -BeExactly (Resolve-Path -LiteralPath $run).Path
+        }
+        finally {
+            Set-Location -LiteralPath $previous.Path
+            Remove-Item -LiteralPath $run -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'rejects the retired test-runs name at the repository root' {
+        { Resolve-TestHarnessRunDirectory -RunDirectory 'test-runs/leak-probe' `
+            -RepositoryRoot $script:RepositoryRoot } |
+            Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
+        Test-Path -LiteralPath (Join-Path $script:RepositoryRoot 'test-runs') | Should -BeFalse
     }
 }

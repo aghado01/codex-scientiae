@@ -66,6 +66,23 @@ function Resolve-TestHarnessArtifactPath {
     return $candidate
 }
 
+function Resolve-TestHarnessRunDirectory {
+    <# Absolute existing directory under RepositoryRoot/artifacts. A relative value is resolved
+       against RepositoryRoot, not the process working directory. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
+    )
+
+    $resolved = Resolve-TestHarnessArtifactPath -Value $RunDirectory `
+        -RepositoryRoot $RepositoryRoot -Role 'RunDirectory' -BasePath $RepositoryRoot
+    if (-not (Test-Path -LiteralPath $resolved -PathType Container)) {
+        throw "RunDirectory must be an existing directory under RepositoryRoot/artifacts: '$RunDirectory'"
+    }
+    return (Resolve-Path -LiteralPath $resolved).Path
+}
+
 function Resolve-TestSuiteName {
     <# The tests/{owner} segment a batch selected — the same grouping tests/README requires a file
        to be filed under. One distinct owner names the run; a batch spanning several, or one whose
@@ -117,6 +134,8 @@ function Set-TestHarnessTempEnvironment {
     )
 
     $artifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $RepositoryRoot
+    $run = Resolve-TestHarnessRunDirectory -RunDirectory $RunDirectory `
+        -RepositoryRoot $RepositoryRoot
     $conformant = $true
     $seen = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
     foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
@@ -136,7 +155,7 @@ function Set-TestHarnessTempEnvironment {
     # Three variables naming three different directories is not a deliberate setting.
     if ($conformant -and $seen.Count -eq 1) { return @($seen)[0] }
 
-    $owned = Join-Path ([System.IO.Path]::GetFullPath($RunDirectory)) 'temp'
+    $owned = Join-Path $run 'temp'
     New-Item -ItemType Directory -Force -Path $owned | Out-Null
     foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
         Set-Item -LiteralPath "env:$name" -Value $owned

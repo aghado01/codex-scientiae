@@ -10,8 +10,9 @@
   This script is that caller. It mints artifacts/tests/{suite}/{stamp}[_NN] through the logistics
   minting authority, points TEMP/TMP/TMPDIR at a job-local tree unless they are already conformant,
   and forwards everything else to parallel.ps1 untouched. Pass -RunDirectory to own the root
-  yourself; the temp convention still applies so a caller never has to set three environment
-  variables by hand.
+  yourself — that path is resolved against the repository root, must already exist under
+  artifacts/, and is rejected before any temp directory is created. The temp convention still
+  applies so a caller never has to set three environment variables by hand.
 
   Every other parameter is forwarded verbatim through $args, so `-PythonPath`, `-MaxWorkers`,
   `-Tag`, and the rest behave exactly as they do on parallel.ps1.
@@ -57,6 +58,10 @@ if ([string]::IsNullOrWhiteSpace($RunDirectory)) {
         [System.IO.Path]::Combine($RepositoryRoot, 'artifacts'))
     Write-Information -InformationAction Continue -MessageData (
         'Test batch root: suite={0}; run={1}' -f $suite, $RunDirectory)
+}
+else {
+    $RunDirectory = Resolve-TestHarnessRunDirectory -RunDirectory $RunDirectory `
+        -RepositoryRoot $RepositoryRoot
 }
 
 $null = Set-TestHarnessTempEnvironment -RunDirectory $RunDirectory -RepositoryRoot $RepositoryRoot
