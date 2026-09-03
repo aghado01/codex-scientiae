@@ -7,9 +7,9 @@
   portable-env integration is degraded, so we import it by explicit path anchored on $env:PORTABLE_ROOT
   (falls back to a normally-installed >=5 if that anchor isn't set). Throws on any test failure, a missing
   path, OR an empty run, so child processes exit non-zero and nested callers can observe the failure.
-  This exact-container entrypoint requires TEMP, TMP, and TMPDIR to identify one directory below the
-  repository artifacts root. The public caller is tests/batch.ps1, including a one-file selection;
-  this script is the child entrypoint Get-PesterBatchJob invokes.
+  This exact-container entrypoint requires CODEX_TEMP under the repository artifacts root. The
+  public caller is tests/batch.ps1, including a one-file selection; this script is the child
+  entrypoint Get-PesterBatchJob invokes. Ambient TEMP is not a substitute.
 #>
 [CmdletBinding()]
 param(
@@ -31,7 +31,7 @@ if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
     throw "run.ps1: artifact boundary helper not found: '$artifactBoundary'"
 }
 . $artifactBoundary
-$null = Assert-TestHarnessTempEnvironment -RepositoryRoot $repositoryRoot
+$null = Assert-CodexTempEnvironment -RepositoryRoot $repositoryRoot
 
 if (-not (Get-Module Pester | Where-Object { $_.Version -ge [version]'5.0' })) {
     $manifest = $null

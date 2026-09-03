@@ -69,6 +69,7 @@ function Get-TeXdigBatchJob {
                 WorkingDirectory = $repository
                 Environment = @{
                     CODEX_JSON_SCRATCH_ROOT = $address.JsonScratchRoot
+                    CODEX_TEMP = $address.TempRoot
                     TEMP = $address.TempRoot
                     TMP = $address.TempRoot
                     TMPDIR = $address.TempRoot

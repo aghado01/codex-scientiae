@@ -41,22 +41,22 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
     }
 }
 
-Describe 'Set-TestHarnessTempEnvironment' -Tag 'Infrastructure' {
+Describe 'Set-CodexTempEnvironment' -Tag 'Infrastructure' {
     BeforeAll {
         $script:ArtifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $script:RepositoryRoot
     }
     BeforeEach {
         $script:Saved = @{}
-        foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
+        foreach ($name in @('CODEX_TEMP', 'TEMP', 'TMP', 'TMPDIR')) {
             $script:Saved[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
         }
-        # A run root inside the boundary, but not the ambient temp the harness already handed us.
         $script:RunDir = Join-Path $script:ArtifactRoot (
             'tests/_convention-probe/{0}' -f [guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Force -Path $script:RunDir | Out-Null
+        Remove-Item -LiteralPath 'env:CODEX_TEMP' -ErrorAction SilentlyContinue
     }
     AfterEach {
-        foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
+        foreach ($name in @('CODEX_TEMP', 'TEMP', 'TMP', 'TMPDIR')) {
             if ($null -eq $script:Saved[$name]) {
                 Remove-Item -LiteralPath "env:$name" -ErrorAction SilentlyContinue
             } else {
@@ -66,66 +66,51 @@ Describe 'Set-TestHarnessTempEnvironment' -Tag 'Infrastructure' {
         Remove-Item -LiteralPath $script:RunDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    It 'owns the temp tree when the ambient value is outside the artifact boundary' {
-        # Not GetTempPath(): the harness has already pointed that inside the boundary, so it would
-        # be treated as a deliberate conformant setting and correctly left alone.
+    It 'sets CODEX_TEMP under the run directory and does not mutate ambient TEMP' {
         $outside = $script:RepositoryRoot
-        (Test-TestHarnessDescendantPath -Root $script:ArtifactRoot -Path $outside) |
-            Should -BeFalse -Because 'the fixture must actually be outside the boundary'
         foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
             Set-Item -LiteralPath "env:$name" -Value $outside
         }
-        $result = Set-TestHarnessTempEnvironment -RunDirectory $script:RunDir `
+        $result = Set-CodexTempEnvironment -RunDirectory $script:RunDir `
             -RepositoryRoot $script:RepositoryRoot
         $expected = Join-Path $script:RunDir 'temp'
         $result | Should -BeExactly ([System.IO.Path]::GetFullPath($expected))
         Test-Path -LiteralPath $expected -PathType Container | Should -BeTrue
+        $env:CODEX_TEMP | Should -BeExactly $result
         foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
             [System.Environment]::GetEnvironmentVariable($name, 'Process') |
-                Should -BeExactly $result
+                Should -BeExactly $outside
         }
     }
 
-    It 'owns the temp tree when a variable is unset' {
-        Set-Item -LiteralPath 'env:TEMP' -Value $script:ArtifactRoot
-        Set-Item -LiteralPath 'env:TMP' -Value $script:ArtifactRoot
-        Remove-Item -LiteralPath 'env:TMPDIR' -ErrorAction SilentlyContinue
-        $result = Set-TestHarnessTempEnvironment -RunDirectory $script:RunDir `
+    It 'owns the tree when CODEX_TEMP is unset' {
+        $result = Set-CodexTempEnvironment -RunDirectory $script:RunDir `
             -RepositoryRoot $script:RepositoryRoot
         $result | Should -BeExactly ([System.IO.Path]::GetFullPath((Join-Path $script:RunDir 'temp')))
     }
 
-    It 'leaves a deliberate conformant setting alone' {
+    It 'leaves a deliberate CODEX_TEMP under artifacts alone' {
         $deliberate = Join-Path $script:RunDir 'chosen'
         New-Item -ItemType Directory -Force -Path $deliberate | Out-Null
-        foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
-            Set-Item -LiteralPath "env:$name" -Value $deliberate
-        }
-        $result = Set-TestHarnessTempEnvironment -RunDirectory $script:RunDir `
+        Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $deliberate
+        $result = Set-CodexTempEnvironment -RunDirectory $script:RunDir `
             -RepositoryRoot $script:RepositoryRoot
         $result | Should -BeExactly ([System.IO.Path]::GetFullPath($deliberate))
         Test-Path -LiteralPath (Join-Path $script:RunDir 'temp') | Should -BeFalse
     }
 
-    It 'takes over when the three variables disagree, conformant or not' {
-        # Three directories inside the boundary is not one job-local directory, which is what
-        # conftest.py and Assert-TestHarnessTempEnvironment both require.
-        $i = 0
-        foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
-            $each = Join-Path $script:RunDir "each$i"
-            New-Item -ItemType Directory -Force -Path $each | Out-Null
-            Set-Item -LiteralPath "env:$name" -Value $each
-            $i++
-        }
-        $result = Set-TestHarnessTempEnvironment -RunDirectory $script:RunDir `
+    It 'takes over when CODEX_TEMP is outside artifacts' {
+        Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $script:RepositoryRoot
+        $result = Set-CodexTempEnvironment -RunDirectory $script:RunDir `
             -RepositoryRoot $script:RepositoryRoot
         $result | Should -BeExactly ([System.IO.Path]::GetFullPath((Join-Path $script:RunDir 'temp')))
+        $env:CODEX_TEMP | Should -BeExactly $result
     }
 
     It 'refuses a RunDirectory outside artifacts and does not create it' {
         $outside = Join-Path $script:RepositoryRoot (
             '_harness-outside-run-{0}' -f [guid]::NewGuid().ToString('N'))
-        { Set-TestHarnessTempEnvironment -RunDirectory $outside `
+        { Set-CodexTempEnvironment -RunDirectory $outside `
             -RepositoryRoot $script:RepositoryRoot } |
             Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
         Test-Path -LiteralPath $outside | Should -BeFalse
@@ -138,7 +123,7 @@ Describe 'Set-TestHarnessTempEnvironment' -Tag 'Infrastructure' {
         $previous = Get-Location
         try {
             Set-Location -LiteralPath $cwd
-            { Set-TestHarnessTempEnvironment -RunDirectory $leaf `
+            { Set-CodexTempEnvironment -RunDirectory $leaf `
                 -RepositoryRoot $script:RepositoryRoot } |
                 Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
             Test-Path -LiteralPath $leaked | Should -BeFalse
@@ -148,6 +133,53 @@ Describe 'Set-TestHarnessTempEnvironment' -Tag 'Infrastructure' {
             if (Test-Path -LiteralPath $leaked) {
                 Remove-Item -LiteralPath $leaked -Recurse -Force -ErrorAction SilentlyContinue
             }
+        }
+    }
+}
+
+Describe 'Assert-CodexTempEnvironment' -Tag 'Infrastructure' {
+    BeforeAll {
+        $script:ArtifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $script:RepositoryRoot
+    }
+    BeforeEach {
+        $script:Saved = @{}
+        foreach ($name in @('CODEX_TEMP', 'TEMP', 'TMP', 'TMPDIR')) {
+            $script:Saved[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
+        }
+        $script:RunDir = Join-Path $script:ArtifactRoot (
+            'tests/_convention-probe/{0}' -f [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $script:RunDir | Out-Null
+    }
+    AfterEach {
+        foreach ($name in @('CODEX_TEMP', 'TEMP', 'TMP', 'TMPDIR')) {
+            if ($null -eq $script:Saved[$name]) {
+                Remove-Item -LiteralPath "env:$name" -ErrorAction SilentlyContinue
+            } else {
+                Set-Item -LiteralPath "env:$name" -Value $script:Saved[$name]
+            }
+        }
+        Remove-Item -LiteralPath $script:RunDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    It 'rejects a missing CODEX_TEMP even when ambient TEMP is under artifacts' {
+        Remove-Item -LiteralPath 'env:CODEX_TEMP' -ErrorAction SilentlyContinue
+        Set-Item -LiteralPath 'env:TEMP' -Value $script:ArtifactRoot
+        Set-Item -LiteralPath 'env:TMP' -Value $script:ArtifactRoot
+        Set-Item -LiteralPath 'env:TMPDIR' -Value $script:ArtifactRoot
+        { Assert-CodexTempEnvironment -RepositoryRoot $script:RepositoryRoot } |
+            Should -Throw '*CODEX_TEMP must be an absolute path under RepositoryRoot/artifacts*'
+    }
+
+    It 'projects CODEX_TEMP onto TEMP TMP and TMPDIR for this process' {
+        $owned = Join-Path $script:RunDir 'temp'
+        New-Item -ItemType Directory -Force -Path $owned | Out-Null
+        Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $owned
+        Set-Item -LiteralPath 'env:TEMP' -Value $script:RepositoryRoot
+        $result = Assert-CodexTempEnvironment -RepositoryRoot $script:RepositoryRoot
+        $result | Should -BeExactly ([System.IO.Path]::GetFullPath($owned))
+        foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
+            [System.Environment]::GetEnvironmentVariable($name, 'Process') |
+                Should -BeExactly $result
         }
     }
 }

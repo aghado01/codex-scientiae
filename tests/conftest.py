@@ -30,7 +30,7 @@ def _require_artifact_path(value: str, *, label: str) -> Path:
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Reject pytest processes that could write through ambient temp or cache paths."""
+    """Require CODEX_TEMP under artifacts/. Ambient TEMP is not a substitute."""
 
     basetemp = config.getoption("basetemp")
     if not basetemp:
@@ -40,24 +40,22 @@ def pytest_configure(config: pytest.Config) -> None:
         )
     _require_artifact_path(str(basetemp), label="pytest basetemp")
 
-    temp_values = {name: os.environ.get(name) for name in ("TEMP", "TMP", "TMPDIR")}
-    if any(not value for value in temp_values.values()):
-        raise pytest.UsageError("TEMP, TMP, and TMPDIR must all be explicitly configured")
-    resolved = {
-        name: _require_artifact_path(value or "", label=name)
-        for name, value in temp_values.items()
-    }
-    if len(set(resolved.values())) != 1:
-        raise pytest.UsageError("TEMP, TMP, and TMPDIR must name one job-local directory")
+    codex_temp = os.environ.get("CODEX_TEMP")
+    if not codex_temp:
+        raise pytest.UsageError(
+            "CODEX_TEMP must be an absolute path under the repository artifacts root; "
+            "use the repository test entrypoint"
+        )
+    temp_root = _require_artifact_path(codex_temp, label="CODEX_TEMP")
     if not sys.dont_write_bytecode:
         raise pytest.UsageError("pytest must run with Python bytecode writes disabled")
 
-    tempfile.tempdir = str(next(iter(resolved.values())))
+    tempfile.tempdir = str(temp_root)
+    for name in ("TEMP", "TMP", "TMPDIR"):
+        os.environ[name] = str(temp_root)
 
     clock = os.environ.get("CODEX_PROCUREMENT_RATE_CLOCK")
     if clock:
         _require_artifact_path(clock, label="CODEX_PROCUREMENT_RATE_CLOCK")
     else:
-        os.environ["CODEX_PROCUREMENT_RATE_CLOCK"] = str(
-            next(iter(resolved.values())) / "procurement-rate-clock.json"
-        )
+        os.environ["CODEX_PROCUREMENT_RATE_CLOCK"] = str(temp_root / "procurement-rate-clock.json")

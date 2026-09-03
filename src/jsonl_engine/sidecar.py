@@ -10,7 +10,6 @@ import hashlib
 import itertools
 import json
 import os
-import tempfile
 import threading
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -79,6 +78,7 @@ class StorePaths:
 
 SCRATCH_DIRNAME = os.path.join("artifacts", "json-scratch")
 SCRATCH_ROOT_ENV = "CODEX_JSON_SCRATCH_ROOT"
+TEMP_ROOT_ENV = "CODEX_TEMP"
 
 
 def scratch_root() -> str:
@@ -88,19 +88,15 @@ def scratch_root() -> str:
     is per-artifact and outlives any one of them, so filing it under a run stamp would scatter one
     logical thing across every run that ever touched the store.
 
-    Deliberately inside the repository rather than the system temp directory. A process writing to
-    the repo has no business reaching for another volume to coordinate with itself, and on this
-    machine that means engaging C: for work happening entirely on D:. artifacts/ is already
-    gitignored regenerable output, which is exactly what these are.
-
     ``CODEX_JSON_SCRATCH_ROOT`` selects a process-scoped coordination root. Batch workers use a
     job-local value so independent jobs do not write to one shared directory. Every process that
     can write the same artifact must receive the same value, because the directory defines the
     lock-coordination domain.
 
-    Without that override, the production default remains the repository scratch directory below.
-    It falls back to the system temp directory only when there is no repository to anchor to -- the
-    engine has to keep working when installed as a wheel somewhere else.
+    ``CODEX_TEMP`` is the project ephemeral root. When the JSON scratch override is unset, scratch
+    is ``{CODEX_TEMP}/json-scratch``. Ambient TEMP/TMP/TMPDIR are not consulted.
+
+    Without those overrides, the production default remains the repository scratch directory.
     """
     configured = os.environ.get(SCRATCH_ROOT_ENV)
     if configured is not None:
@@ -111,12 +107,18 @@ def scratch_root() -> str:
             )
         root = os.path.abspath(configured)
     else:
-        try:
+        temp_root = os.environ.get(TEMP_ROOT_ENV)
+        if temp_root is not None:
+            if not temp_root.strip() or not os.path.isabs(temp_root):
+                raise ValueError(
+                    f"{TEMP_ROOT_ENV} must name a non-empty absolute directory, got "
+                    f"{temp_root!r}"
+                )
+            root = os.path.join(os.path.abspath(temp_root), "json-scratch")
+        else:
             from .paths import find_repository_root
 
             root = os.path.join(find_repository_root(), SCRATCH_DIRNAME)
-        except (RuntimeError, ImportError):
-            root = os.path.join(tempfile.gettempdir(), "codex-json-scratch")
     os.makedirs(root, exist_ok=True)
     return root
 

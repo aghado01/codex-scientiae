@@ -79,6 +79,7 @@ function Get-PesterBatchJob {
             JsonScratchRoot = $jsonScratchRoot
             ArtifactEnvironment = 'CODEX_TEST_ARTIFACT_ROOT'
             ScratchEnvironment = 'CODEX_JSON_SCRATCH_ROOT'
+            TempEnvironment = 'CODEX_TEMP'
             ResultFormat = $ResultFormat
             PesterManifest = $pester.Path
             PesterVersion = $pester.Version.ToString()
@@ -95,6 +96,7 @@ function Get-PesterBatchJob {
                 Environment = @{
                     CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
                     CODEX_JSON_SCRATCH_ROOT = $jsonScratchRoot
+                    CODEX_TEMP = $address.TempRoot
                     TEMP = $address.TempRoot
                     TMP = $address.TempRoot
                     TMPDIR = $address.TempRoot

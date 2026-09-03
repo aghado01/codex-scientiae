@@ -82,6 +82,7 @@ param(
     [Parameter(Mandatory)] [string] $ArtifactRoot,
     [string] $FullNameFilter = ''
 )
+$env:CODEX_TEMP = $TempPath
 $env:TEMP = $TempPath
 $env:TMP = $TempPath
 $env:TMPDIR = $TempPath
@@ -281,6 +282,7 @@ Describe 'Get-PesterBatchJob planning' {
             $environment = $job.ProcessSpec.Environment
             $environment.CODEX_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
             $environment.CODEX_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
+            $environment.CODEX_TEMP | Should -Be $job.Metadata.TempRoot
             @($environment.TEMP, $environment.TMP, $environment.TMPDIR) |
                 Should -Be @($job.Metadata.TempRoot, $job.Metadata.TempRoot, $job.Metadata.TempRoot)
             foreach ($write in @(
@@ -293,6 +295,7 @@ Describe 'Get-PesterBatchJob planning' {
             $job.Metadata.ArtifactContract | Should -Be 'D23/ContainerRoot'
             $job.Metadata.ArtifactEnvironment | Should -Be 'CODEX_TEST_ARTIFACT_ROOT'
             $job.Metadata.ScratchEnvironment | Should -Be 'CODEX_JSON_SCRATCH_ROOT'
+            $job.Metadata.TempEnvironment | Should -Be 'CODEX_TEMP'
             $job.Metadata.ResultPersistence | Should -Be 'PesterNative'
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.ResultPath | Should -BeFalse
@@ -400,11 +403,23 @@ Describe 'repository Pester runner contract' {
             -Root (Join-Path $TestDrive 'runner-temp-boundary') -UseRepositoryRunner
         $selected = Write-PesterBatchFixture (Join-Path $fixture.Tests 'selected.Tests.ps1')
 
-        $output = @(& ([System.Environment]::ProcessPath) -NoProfile -File $fixture.Runner `
-                -Path $selected -OutputVerbosity None 2>&1)
-        $LASTEXITCODE | Should -Not -Be 0
-        (@($output | ForEach-Object ToString) -join "`n") |
-            Should -Match 'TEMP must be a descendant of RepositoryRoot/artifacts'
+        $savedCodexTemp = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP', 'Process')
+        try {
+            Remove-Item -LiteralPath 'env:CODEX_TEMP' -ErrorAction SilentlyContinue
+            $output = @(& ([System.Environment]::ProcessPath) -NoProfile -File $fixture.Runner `
+                    -Path $selected -OutputVerbosity None 2>&1)
+            $LASTEXITCODE | Should -Not -Be 0
+            (@($output | ForEach-Object ToString) -join "`n") |
+                Should -Match 'CODEX_TEMP must be an absolute path under RepositoryRoot/artifacts'
+        }
+        finally {
+            if ($null -eq $savedCodexTemp) {
+                Remove-Item -LiteralPath 'env:CODEX_TEMP' -ErrorAction SilentlyContinue
+            }
+            else {
+                Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $savedCodexTemp
+            }
+        }
         $global:LASTEXITCODE = 0
     }
 

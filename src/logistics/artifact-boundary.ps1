@@ -3,7 +3,9 @@
   src/logistics/artifact-boundary.ps1 — repository artifacts containment.
 
   Sibling of run-paths.ps1 (minting). This file owns descendant checks, run-directory
-  resolution against the repository root, and the test TEMP/TMP/TMPDIR convention.
+  resolution against the repository root, and `CODEX_TEMP`. Ambient TEMP/TMP/TMPDIR are
+  not a project scratch source. Isolated children may receive those names projected from
+  `CODEX_TEMP` so OS temp APIs cannot leak.
 
   tests/batch.ps1 is the public test-batch caller, including a one-file selection.
   tests/run.ps1 and tests/pytest.ps1 are child entrypoints; they load this helper from src.
@@ -131,12 +133,9 @@ function Resolve-TestSuiteName {
     return 'mixed'
 }
 
-function Set-TestHarnessTempEnvironment {
-    <# The harness owns the temp convention rather than half-deferring to ambient state. The
-       boundary admits exactly one thing — a temp tree under artifacts/ — so an ambient value that
-       is already conformant was set deliberately and is left alone; anything else (unset, the
-       system temp, a path outside the boundary) is replaced with {RunDirectory}/temp instead of
-       failing three checks deep in a child process. Returns the directory now in force. #>
+function Set-CodexTempEnvironment {
+    <# Set CODEX_TEMP to a job-local tree under artifacts/. Ambient TEMP/TMP/TMPDIR are not read
+       and are not written. A CODEX_TEMP already absolute and under artifacts/ is left alone. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
@@ -146,57 +145,38 @@ function Set-TestHarnessTempEnvironment {
     $artifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $RepositoryRoot
     $run = Resolve-TestHarnessRunDirectory -RunDirectory $RunDirectory `
         -RepositoryRoot $RepositoryRoot
-    $conformant = $true
-    $seen = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
-    foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
-        $value = [System.Environment]::GetEnvironmentVariable($name, 'Process')
-        if ([string]::IsNullOrWhiteSpace($value) -or
-                -not [System.IO.Path]::IsPathFullyQualified($value)) {
-            $conformant = $false
-            break
-        }
+    $value = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP', 'Process')
+    if (-not [string]::IsNullOrWhiteSpace($value) -and
+            [System.IO.Path]::IsPathFullyQualified($value)) {
         $full = [System.IO.Path]::GetFullPath($value)
-        if (-not (Test-TestHarnessDescendantPath -Root $artifactRoot -Path $full)) {
-            $conformant = $false
-            break
+        if (Test-TestHarnessDescendantPath -Root $artifactRoot -Path $full) {
+            return $full
         }
-        [void]$seen.Add($full)
     }
-    # Three variables naming three different directories is not a deliberate setting.
-    if ($conformant -and $seen.Count -eq 1) { return @($seen)[0] }
 
     $owned = Join-Path $run 'temp'
     New-Item -ItemType Directory -Force -Path $owned | Out-Null
-    foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
-        Set-Item -LiteralPath "env:$name" -Value $owned
-    }
+    Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $owned
     return $owned
 }
 
-function Assert-TestHarnessTempEnvironment {
+function Assert-CodexTempEnvironment {
+    <# Require CODEX_TEMP under artifacts/. Project it onto TEMP/TMP/TMPDIR for this process so
+       Pester TestDrive and GetTempPath cannot follow the ambient OS temp tree. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
     )
 
-    $resolved = [System.Collections.Generic.List[string]]::new()
+    $value = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP', 'Process')
+    if ([string]::IsNullOrWhiteSpace($value) -or
+            -not [System.IO.Path]::IsPathFullyQualified($value)) {
+        throw 'CODEX_TEMP must be an absolute path under RepositoryRoot/artifacts'
+    }
+    $resolved = Resolve-TestHarnessArtifactPath -Value $value `
+        -RepositoryRoot $RepositoryRoot -Role 'CODEX_TEMP'
     foreach ($name in @('TEMP', 'TMP', 'TMPDIR')) {
-        $value = [System.Environment]::GetEnvironmentVariable($name, 'Process')
-        if ([string]::IsNullOrWhiteSpace($value) -or
-                -not [System.IO.Path]::IsPathFullyQualified($value)) {
-            throw "test harness requires absolute TEMP, TMP, and TMPDIR paths below RepositoryRoot/artifacts"
-        }
-        $resolved.Add((Resolve-TestHarnessArtifactPath -Value $value `
-                -RepositoryRoot $RepositoryRoot -Role $name))
+        Set-Item -LiteralPath "env:$name" -Value $resolved
     }
-
-    $comparer = if ($IsWindows) {
-        [System.StringComparer]::OrdinalIgnoreCase
-    }
-    else { [System.StringComparer]::Ordinal }
-    if (-not $comparer.Equals($resolved[0], $resolved[1]) -or
-            -not $comparer.Equals($resolved[0], $resolved[2])) {
-        throw 'test harness requires TEMP, TMP, and TMPDIR to name one job-local directory'
-    }
-    return $resolved[0]
+    return $resolved
 }

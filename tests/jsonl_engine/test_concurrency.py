@@ -17,6 +17,7 @@ from jsonl_engine import JsonlEngine, JsonlStore
 from jsonl_engine.publication import PinnedPublicationRoot
 from jsonl_engine.sidecar import (
     SCRATCH_ROOT_ENV,
+    TEMP_ROOT_ENV,
     find_stale_scratch,
     lock_path,
     scratch_root,
@@ -158,6 +159,7 @@ class TestScratchRoot(unittest.TestCase):
         """Resolve the production default without creating its shared directory."""
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(SCRATCH_ROOT_ENV, None)
+            os.environ.pop(TEMP_ROOT_ENV, None)
             with mock.patch("jsonl_engine.sidecar.os.makedirs"):
                 return scratch_root()
 
@@ -195,6 +197,33 @@ class TestScratchRoot(unittest.TestCase):
                 os.environ, {SCRATCH_ROOT_ENV: configured}
             ):
                 with self.assertRaisesRegex(ValueError, SCRATCH_ROOT_ENV):
+                    scratch_root()
+
+    def test_codex_temp_selects_a_json_scratch_child(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            temp_root = os.path.join(tmpdir, "codex-temp")
+            expected = os.path.join(os.path.abspath(temp_root), "json-scratch")
+            with mock.patch.dict(os.environ, {TEMP_ROOT_ENV: temp_root}, clear=False):
+                os.environ.pop(SCRATCH_ROOT_ENV, None)
+                self.assertEqual(expected, scratch_root())
+
+    def test_json_scratch_override_wins_over_codex_temp(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            configured = os.path.join(tmpdir, "explicit-json-scratch")
+            temp_root = os.path.join(tmpdir, "codex-temp")
+            with mock.patch.dict(
+                os.environ,
+                {SCRATCH_ROOT_ENV: configured, TEMP_ROOT_ENV: temp_root},
+            ):
+                self.assertEqual(os.path.abspath(configured), scratch_root())
+
+    def test_codex_temp_must_be_an_absolute_directory(self):
+        for configured in ("", "relative/temp"):
+            with self.subTest(configured=configured), mock.patch.dict(
+                os.environ, {TEMP_ROOT_ENV: configured}, clear=False
+            ):
+                os.environ.pop(SCRATCH_ROOT_ENV, None)
+                with self.assertRaisesRegex(ValueError, TEMP_ROOT_ENV):
                     scratch_root()
 
 

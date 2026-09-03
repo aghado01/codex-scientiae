@@ -7,9 +7,9 @@ files in one module, not one PowerShell module per adapter; no unitary adapter m
 is introduced.
 
 Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts` through
-`src/logistics/artifact-boundary.ps1`. Child processes receive repository-local `TEMP`, `TMP`, and
-`TMPDIR`; the operating-system user temp tree is not a fallback. `tests/batch.ps1` is the public
-test-batch caller, including a one-file selection.
+`src/logistics/artifact-boundary.ps1`. Child processes receive `CODEX_TEMP` under that run, and
+`TEMP`/`TMP`/`TMPDIR` are projected from it so OS temp APIs cannot follow the ambient user temp
+tree. `tests/batch.ps1` is the public test-batch caller, including a one-file selection.
 
 A successor LaTeX conversion planner can rejoin this module later under the same job-emission contract
 (`New-BatchJob` only; caller owns `New-BatchPlan` / `Invoke-BatchPlan`). The retired latex-ingest adapter
@@ -36,7 +36,7 @@ Planning resolves and freezes:
 One private pure resolver owns all run-relative address composition. Planning creates no directories or
 files. The job declares the XML, retained artifact, and temporary roots in `Writes`.
 `ProcessSpec.Environment` transports `CODEX_TEST_ARTIFACT_ROOT`, a job-local
-`CODEX_JSON_SCRATCH_ROOT`, and identical `TEMP`, `TMP`, and `TMPDIR` values. Pester's XML is an explicit
+`CODEX_JSON_SCRATCH_ROOT`, `CODEX_TEMP`, and `TEMP`/`TMP`/`TMPDIR` projected from `CODEX_TEMP`. Pester's XML is an explicit
 runner-native artifact; retained suite evidence stays below the container artifact root; and the generic
 batch execution result remains the in-memory return from `Invoke-BatchPlan`.
 
@@ -69,8 +69,8 @@ The planning contract freezes:
 - one container beneath `RunDirectory/pytest-jobs/`, containing `pytest.xml`, `artifacts/`, and `temp/`.
 
 One private resolver owns all three addresses. Planning creates none; each is declared in `Writes`.
-`CODEX_TEST_ARTIFACT_ROOT` transports the retained evidence root, while the temporary address contains
-pytest/Python scratch and the test-local JSON-engine coordination root. Native JUnit remains the durable
+`CODEX_TEST_ARTIFACT_ROOT` transports the retained evidence root. `CODEX_TEMP` is the job ephemeral
+root; pytest/Python scratch and JSON-engine coordination live under it. Native JUnit remains the durable
 framework result and the generic executor record remains in memory. The resolved child PowerShell is
 transported as `CODEX_TEST_POWERSHELL_PATH`; shell-surface tests consume that exact path and use `PATH`
 only for direct, non-batch pytest. `Metadata.PowerShellEnvironment` names that transport key.

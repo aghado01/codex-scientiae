@@ -29,8 +29,8 @@ There is no ambient `PATH` fallback. The selected environment must have the repo
 editable. Restore it with the commands in the root `pyproject.toml` when necessary.
 Ambient import/startup/warning settings are removed from the child; UTF-8, unbuffered output, user-site
 isolation, and no-bytecode policy are pinned by the client. Temporary `New-JsonlEngineInputFile`
-staging uses `CODEX_JSON_SCRATCH_ROOT` when set, otherwise `<repo>/artifacts/json-scratch`, matching
-the Python engine. It does not fall back to the operating-system temp tree.
+staging uses `CODEX_JSON_SCRATCH_ROOT` when set, otherwise `{CODEX_TEMP}/json-scratch`, otherwise
+`<repo>/artifacts/json-scratch`, matching the Python engine. Ambient TEMP is not a fallback.
 
 Relative `-PythonPath` values, including the environment-selected value, and relative path parameters
 on the high-level commands are resolved against the caller's current FileSystem location before the
@@ -103,13 +103,13 @@ equivalent raw spelling. A string comparison therefore includes JSON quotes, for
 validates and serializes it exactly once before invoking the engine.
 
 `New-JsonlEngineInputFile` stages one structured boundary value as strict UTF-8 without a BOM and with
-one terminating LF. An explicit relative `-Path` is caller-relative. With no path, the command uses the
-absolute `CODEX_JSON_SCRATCH_ROOT` when set and otherwise the operating-system process temp directory;
-when configured, a blank or relative scratch root is rejected. Publication uses a sibling scratch file
+one terminating LF. An explicit relative `-Path` is caller-relative. With no path, the command uses
+`CODEX_JSON_SCRATCH_ROOT`, else `{CODEX_TEMP}/json-scratch`, else `<repo>/artifacts/json-scratch`.
+A blank or relative configured root is rejected. Publication uses a sibling scratch file
 and removes that transaction file on failure. The returned `JsonlEngine.InputFile` is never removed
 automatically: `IsTemporary` records that the module chose its name, while the caller owns retention and
-cleanup. The module does not allocate run identities. Batch owners must provide job-local scratch when
-isolation is required; the child engine otherwise retains its own direct-call scratch policy.
+cleanup. The module does not allocate run identities. Batch owners set job-local `CODEX_TEMP` and
+`CODEX_JSON_SCRATCH_ROOT`; the child engine otherwise uses the repository scratch directory.
 
 ## Non-goals
 

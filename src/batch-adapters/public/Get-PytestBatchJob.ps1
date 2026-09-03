@@ -84,6 +84,7 @@ function Get-PytestBatchJob {
             JsonScratchRoot = $jsonScratchRoot
             ArtifactEnvironment = 'CODEX_TEST_ARTIFACT_ROOT'
             ScratchEnvironment = 'CODEX_JSON_SCRATCH_ROOT'
+            TempEnvironment = 'CODEX_TEMP'
             PowerShellEnvironment = 'CODEX_TEST_POWERSHELL_PATH'
             ResultFormat = 'JUnitXml/xunit2'
             PythonPath = $python
@@ -102,6 +103,7 @@ function Get-PytestBatchJob {
                     CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
                     CODEX_JSON_SCRATCH_ROOT = $jsonScratchRoot
                     CODEX_TEST_POWERSHELL_PATH = $childPowerShell
+                    CODEX_TEMP = $address.TempRoot
                     TEMP = $address.TempRoot
                     TMP = $address.TempRoot
                     TMPDIR = $address.TempRoot

@@ -49,7 +49,7 @@ For every new or changed test file:
 - Do not add per-file manifests, sidecars, workload profiles, scheduler locks, or custom batch logic.
 
 At minimum, verify the file through `tests/batch.ps1`, the house-convention caller. It mints
-`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`, points `TEMP`/`TMP`/`TMPDIR` at a job-local tree,
+`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`, sets `CODEX_TEMP` to a job-local tree,
 and forwards every other argument to `tests/parallel.ps1` verbatim:
 
 ```pwsh
@@ -59,8 +59,7 @@ pwsh -File tests/batch.ps1 -Framework Pester -PesterPath tests/<owner>/<behavior
 `{suite}` is the `tests/<owner>` segment the batch selected; a batch spanning several owners is
 named `mixed`. Pass `-RunDirectory` to own the root yourself — it must already exist under
 `artifacts/`, is resolved against the repository root rather than the process working directory,
-and the temp convention still applies so a caller never has to set three environment variables by
-hand. Do not mint a `test-runs/` directory.
+and `CODEX_TEMP` is set unless already conformant. Do not mint a `test-runs/` directory.
 
 `tests/parallel.ps1` remains the batch shell and takes `-RunDirectory` as **mandatory**. That is
 deliberate: it is held to a thinness contract (`tests/batch-adapters/parallel.Tests.ps1`) that
@@ -122,8 +121,8 @@ only this shelf and never fall back to use-case-local installations:
 ./brewery/node/restore-node.ps1
 ```
 
-`run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It refuses ambient temp:
-`TEMP`, `TMP`, and `TMPDIR` must name the same job-local directory below the repository `artifacts` root.
+`run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It requires
+`CODEX_TEMP` under the repository `artifacts` root; ambient `TEMP` is not a substitute.
 Use `tests/batch.ps1` for repository-facing execution.
 
 `run.ps1` imports Pester 5 or newer from the portable PowerShell module tree
@@ -222,9 +221,9 @@ required. MCP registrations invoke `packages/uv/uv.exe` directly; `.venv` contai
 Python project environment. `requirements.txt` is a generated runtime-only compatibility export, not the
 dependency authority.
 
-Pytest processes require an explicit `--basetemp` plus `TEMP`, `TMP`, and `TMPDIR` beneath a compact
-caller-owned runstamp in `artifacts/tests/`. `tests/batch.ps1` mints that root and supplies those
-boundaries:
+Pytest processes require an explicit `--basetemp` plus `CODEX_TEMP` beneath a compact
+caller-owned runstamp in `artifacts/tests/`. `tests/batch.ps1` mints that root and supplies that
+variable:
 
 ```pwsh
 pwsh -File tests/batch.ps1 -Framework Pytest -PytestPath tests/jsonl_engine/test_reader.py
@@ -327,7 +326,8 @@ The frozen batch address is conceptually:
 ~~~
 
 The adapter provides the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT`, supplies
-job-local `TEMP`, `TMP`, `TMPDIR`, and JSON scratch values, and declares every address class as a job write.
+job-local `CODEX_TEMP` and JSON scratch values, projects `TEMP`/`TMP`/`TMPDIR` from `CODEX_TEMP`, and
+declares every address class as a job write.
 Planning creates nothing; execution may create the assigned roots. A suite
 that retains evidence validates this value as an absolute path and writes only beneath it. It does not fall
 back to repository-global `artifacts/`, a timestamp allocator, its source tree, the current directory, or a

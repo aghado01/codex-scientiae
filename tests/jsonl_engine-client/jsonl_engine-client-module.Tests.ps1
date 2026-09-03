@@ -462,8 +462,11 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
         @(Get-ChildItem -LiteralPath $TestDrive -Filter '*.tmp' -File).Count | Should -Be 0
 
         $configuredScratch = Join-Path $TestDrive 'configured-json-scratch'
+        $codexTemp = Join-Path $TestDrive 'codex-temp'
         $priorScratch = [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
+        $priorTemp = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP')
         $temporary = $null
+        $fromTemp = $null
         $defaultTemporary = $null
         try {
             $env:CODEX_JSON_SCRATCH_ROOT = $configuredScratch
@@ -474,6 +477,12 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
             @(Read-JsonDocument $temporary.Path).Count | Should -Be 1
 
             Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
+            $env:CODEX_TEMP = $codexTemp
+            $fromTemp = New-JsonlEngineInputFile -InputObject $null
+            [System.IO.Path]::GetDirectoryName($fromTemp.Path) |
+                Should -Be ([System.IO.Path]::GetFullPath((Join-Path $codexTemp 'json-scratch')))
+
+            Remove-Item Env:CODEX_TEMP -ErrorAction SilentlyContinue
             $defaultTemporary = New-JsonlEngineInputFile -InputObject $null
             $expectedRoot = [System.IO.Path]::GetFullPath(
                 (Join-Path $script:RepoRoot 'artifacts/json-scratch'))
@@ -484,7 +493,7 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
                 [System.StringComparison]::OrdinalIgnoreCase) | Should -BeFalse
         }
         finally {
-            foreach ($staged in @($temporary, $defaultTemporary)) {
+            foreach ($staged in @($temporary, $fromTemp, $defaultTemporary)) {
                 if ($null -ne $staged -and [System.IO.File]::Exists($staged.Path)) {
                     [System.IO.File]::Delete($staged.Path)
                 }
@@ -494,6 +503,12 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
             }
             else {
                 $env:CODEX_JSON_SCRATCH_ROOT = $priorScratch
+            }
+            if ($null -eq $priorTemp) {
+                Remove-Item Env:CODEX_TEMP -ErrorAction SilentlyContinue
+            }
+            else {
+                $env:CODEX_TEMP = $priorTemp
             }
         }
     }

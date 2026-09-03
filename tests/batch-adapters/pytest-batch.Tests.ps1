@@ -115,6 +115,7 @@ Describe 'Get-PytestBatchJob planning' {
             $environment.CODEX_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
             $environment.CODEX_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
             $environment.CODEX_TEST_POWERSHELL_PATH | Should -Be $script:PowerShellPath
+            $environment.CODEX_TEMP | Should -Be $job.Metadata.TempRoot
             @($environment.TEMP, $environment.TMP, $environment.TMPDIR) |
                 Should -Be @($job.Metadata.TempRoot, $job.Metadata.TempRoot, $job.Metadata.TempRoot)
             $environment.PYTHONDONTWRITEBYTECODE | Should -Be '1'
@@ -259,10 +260,10 @@ def test_runner_environment():
     assert "PYTHONHOME" not in os.environ
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
-    assert os.environ["TMP"] == os.environ["TEMP"] == os.environ["TMPDIR"]
-    assert Path(tempfile.gettempdir()) == Path(os.environ["TEMP"])
+    assert os.environ["CODEX_TEMP"] == os.environ["TEMP"] == os.environ["TMP"] == os.environ["TMPDIR"]
+    assert Path(tempfile.gettempdir()) == Path(os.environ["CODEX_TEMP"])
     assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
-    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["TEMP"])
+    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["CODEX_TEMP"])
 '@
         $resultPath = Join-Path $fixture.RunDirectory 'direct/pytest.xml'
         $tempPath = Join-Path $fixture.RunDirectory 'direct/temp'
@@ -270,7 +271,7 @@ def test_runner_environment():
         foreach ($name in @('PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'CODEX_REGEN_FIXTURES',
                 'PYTHONPATH', 'PYTHONHOME',
                 'PYTEST_DISABLE_PLUGIN_AUTOLOAD', 'PYTHONDONTWRITEBYTECODE',
-                'TMP', 'TEMP', 'TMPDIR', 'CODEX_JSON_SCRATCH_ROOT',
+                'TMP', 'TEMP', 'TMPDIR', 'CODEX_TEMP', 'CODEX_JSON_SCRATCH_ROOT',
                 'CODEX_PROCUREMENT_RATE_CLOCK')) {
             $saved[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
         }
@@ -321,11 +322,11 @@ def test_pass(tmp_path):
     artifact = Path(os.environ["CODEX_TEST_ARTIFACT_ROOT"])
     artifact.mkdir(parents=True, exist_ok=True)
     (artifact / "pass.txt").write_text("retained", encoding="utf-8")
-    assert Path(os.environ["TMP"]).is_absolute()
-    assert os.environ["TMP"] == os.environ["TEMP"] == os.environ["TMPDIR"]
-    assert Path(tempfile.gettempdir()) == Path(os.environ["TEMP"])
+    assert Path(os.environ["CODEX_TEMP"]).is_absolute()
+    assert os.environ["CODEX_TEMP"] == os.environ["TEMP"] == os.environ["TMP"] == os.environ["TMPDIR"]
+    assert Path(tempfile.gettempdir()) == Path(os.environ["CODEX_TEMP"])
     assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
-    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["TEMP"])
+    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["CODEX_TEMP"])
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert "PYTEST_ADDOPTS" not in os.environ

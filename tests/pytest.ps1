@@ -77,6 +77,7 @@ function Set-PytestProcessEnvironment {
     $StartInfo.Environment['PYTEST_DISABLE_PLUGIN_AUTOLOAD'] = '1'
     $StartInfo.Environment['PYTHONDONTWRITEBYTECODE'] = '1'
     $StartInfo.Environment['PYTHONUTF8'] = '1'
+    $StartInfo.Environment['CODEX_TEMP'] = $TempPath
     $StartInfo.Environment['TMP'] = $TempPath
     $StartInfo.Environment['TEMP'] = $TempPath
     $StartInfo.Environment['TMPDIR'] = $TempPath
