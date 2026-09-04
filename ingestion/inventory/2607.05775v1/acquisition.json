@@ -1,0 +1,29 @@
+{
+  "schema": "codex-scientiae/acquisition/0.1",
+  "state": "acquired",
+  "slug": "2607.05775v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.05775v1",
+    "provider_roles": [
+      "artifact-origin",
+      "artifact-access",
+      "metadata-authority"
+    ]
+  },
+  "forms": [
+    {
+      "kind": "pdf",
+      "path": "2607.05775v1.pdf",
+      "format": "application/pdf",
+      "bytes": 179496,
+      "sha256": "fa4a400e0cd34f4b9c8381f6424dbb641815e6e1cff27c017bc2450c6845daf1",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/pdf/2607.05775v1",
+      "candidate_id": "arxiv-pdf",
+      "fetched_at": "2026-09-01T07:37:09.828695Z",
+      "provider_checksum": null,
+      "local_import": null
+    }
+  ]
+}

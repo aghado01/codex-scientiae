@@ -19,6 +19,7 @@ the slug and identifies an immutable provider version.
   {slug}.tar.gz or arXiv-{slug}.tar.gz  # acquired LaTeX source archive
   {slug}-tex/         # stable raw extraction of that archive
   {slug}.pdf          # optional acquired PDF form of the same document
+  {slug}-html/        # optional acquired HTML site (entrypoint `{slug}.html`)
   {slug}.arxiv.json   # optional provider/acquisition evidence
   {slug}-latex.patch.jsonl # optional latex-ingest curated errata
   article.json        # authoritative flat article and source-ready sentinel
