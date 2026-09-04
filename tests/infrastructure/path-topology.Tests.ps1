@@ -3,7 +3,6 @@
 BeforeAll {
     $script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
     $script:RequiredTopologyFiles = @(
-        '.codex/config.toml'
         'README.md'
         'CLAUDE.md'
         'AGENTS.md'
@@ -26,8 +25,8 @@ BeforeAll {
                 continue
             }
             foreach ($file in @(Get-ChildItem -LiteralPath $root -Recurse -File | Where-Object {
-                $_.Extension -in '.ps1', '.psm1', '.psd1', '.json', '.md', '.js', '.mjs', '.cmd', '.toml'
-            })) {
+                        $_.Extension -in '.ps1', '.psm1', '.psd1', '.json', '.md', '.js', '.mjs', '.cmd', '.toml'
+                    })) {
                 $files.Add($file)
             }
         }
@@ -50,7 +49,7 @@ BeforeAll {
         $failures = [System.Collections.Generic.List[string]]::new()
 
         $files = @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'src'),
-                    (Join-Path $script:RepoRoot 'tests') -Recurse -File | Where-Object {
+            (Join-Path $script:RepoRoot 'tests') -Recurse -File | Where-Object {
                 $_.Extension -in '.ps1', '.psm1'
             })
         foreach ($file in $files) {
@@ -142,7 +141,7 @@ BeforeAll {
         $pytestRunnerOwners = [System.Collections.Generic.List[string]]::new()
         $compositionOwners = [System.Collections.Generic.List[string]]::new()
         $scriptFiles = @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'src'),
-                (Join-Path $script:RepoRoot 'tests') -Recurse -File | Where-Object {
+            (Join-Path $script:RepoRoot 'tests') -Recurse -File | Where-Object {
                 $_.Extension -in @('.ps1', '.psm1')
             })
         foreach ($scriptFile in $scriptFiles) {
@@ -157,7 +156,7 @@ BeforeAll {
                 continue
             }
             if ($scriptFile.Name -notlike '*.Tests.ps1' -and
-                    $ast.Extent.Text -match 'PytestContainerObservation') {
+                $ast.Extent.Text -match 'PytestContainerObservation') {
                 $pytestRunnerOwners.Add($relative)
             }
             foreach ($command in @($ast.FindAll({
@@ -253,7 +252,7 @@ BeforeAll {
 
         $processOwners = [System.Collections.Generic.List[string]]::new()
         foreach ($file in @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'src') `
-                -Recurse -File | Where-Object { $_.Extension -in @('.ps1', '.psm1') })) {
+                    -Recurse -File | Where-Object { $_.Extension -in @('.ps1', '.psm1') })) {
             $text = [System.IO.File]::ReadAllText($file.FullName)
             if ($text -match 'ProcessStartInfo' -and $text -match "jsonl_engine") {
                 $processOwners.Add(
@@ -423,8 +422,8 @@ Describe 'source path topology' {
                             -ErrorAction SilentlyContinue | Select-Object -First 1)
                 }
                 [pscustomobject]@{
-                    Name = $record.Name
-                    Command = $record.Command
+                    Name      = $record.Name
+                    Command   = $record.Command
                     Available = $available
                 }
             })

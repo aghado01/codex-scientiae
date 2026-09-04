@@ -18,7 +18,7 @@ from jsonl_engine.publication import (
     copy_file_no_clobber,
 )
 from jsonl_test_support import article as article_record
-from tests.support.filesystem import directory_link
+from tests.filesystem import directory_link
 
 
 class TestPinnedHierarchy(unittest.TestCase):

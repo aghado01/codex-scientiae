@@ -71,7 +71,7 @@ Describe 'run log substrate' {
             (Start-RunLog -Module second -LogPath (Join-Path $TestDrive 'b.jsonl')) | Should -Be $p1
             (Start-RunLog -Module third -LogPath (Join-Path $TestDrive 'c.jsonl') -Force) | Should -Not -Be $p1
         }
-        It 'default mint shares Get-ArtifactsRoot from sibling run-paths.ps1' {
+        It 'default mint shares Get-ArtifactsRoot from sibling containment.ps1' {
             Get-Command Get-ArtifactsRoot | Should -Not -BeNullOrEmpty
             $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
             (Get-ArtifactsRoot) | Should -Be ([System.IO.Path]::GetFullPath((Join-Path $repo 'artifacts')))

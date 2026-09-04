@@ -11,7 +11,7 @@ from procurement.source._safety import _plain_directory, _regular_file
 from procurement.source.contracts import ArchiveLimits
 from procurement.source.tree import fingerprint_source_tree
 
-from tests.support.filesystem import directory_link
+from tests.filesystem import directory_link
 
 
 def _limits(**overrides: int) -> ArchiveLimits:

@@ -36,7 +36,6 @@ param(
 $ErrorActionPreference = 'Stop'
 
 . ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'infrastructure', 'containment.ps1'))
-. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'infrastructure', 'run-paths.ps1'))
 . ([System.IO.Path]::Combine($PSScriptRoot, 'suite-name.ps1'))
 
 $defaultPath = @($PSScriptRoot)
@@ -54,8 +53,7 @@ if ([string]::IsNullOrWhiteSpace($RunDirectory)) {
     }
     $suite = Resolve-TestSuiteName -TestsRoot $PSScriptRoot -RepositoryRoot $RepositoryRoot `
         -SelectedPath $selected
-    $RunDirectory = New-TestSuiteRunDir -Suite $suite -ArtifactsRoot (
-        [System.IO.Path]::Combine($RepositoryRoot, 'artifacts'))
+    $RunDirectory = New-TestSuiteRunDir -Suite $suite -RepositoryRoot $RepositoryRoot
     Write-Information -InformationAction Continue -MessageData (
         'Test batch root: suite={0}; run={1}' -f $suite, $RunDirectory)
 }

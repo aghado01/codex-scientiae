@@ -8,7 +8,7 @@ directory must cost nothing but the time to rebuild.
 **Every write is scoped under a module or process-name subfolder.** Nothing writes a bare
 `artifacts/bin`, `artifacts/obj`, `artifacts/publish` or similar. This directory is shared by every
 process that emits regenerable output — .NET builds, test runs, publish staging, the npm cache,
-tectonic, latex-ingest, math-render — so an unscoped top-level `bin/` collides with all of them and
+tectonic, math-render — so an unscoped top-level `bin/` collides with all of them and
 makes it impossible to clear one module's output without disturbing the rest.
 
 The operating-system user temp tree, including `%LOCALAPPDATA%\Temp` on Windows, is not a project

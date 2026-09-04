@@ -5,10 +5,10 @@
   Independently callable steps for archive expansion, tree validation, publication of `{slug}-tex/`,
   probe ledger assembly, and jsonl_engine `deposit` publication of `article.json`. Workflow scripts
   compose these steps; `Publish-LatexSourceTree` and `New-LatexSourceDeposit` are the standard
-  compositions. No dependency on the latex-ingest converter.
+  compositions.
 #>
 
-. "$PSScriptRoot/../../infrastructure/portable-path.ps1"
+. "$PSScriptRoot/../../infrastructure/containment.ps1"
 . "$PSScriptRoot/../../infrastructure/crawl.ps1"
 . "$PSScriptRoot/../../infrastructure/probe-ledger.ps1"
 Import-Module (Join-Path $PSScriptRoot '../../jsonl_engine-client/jsonl_engine-client.psd1') `

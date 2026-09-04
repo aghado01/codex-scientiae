@@ -11,7 +11,7 @@ from jsonl_engine.documents import JsonDocumentError, JsonDocumentKind, JsonDocu
 from jsonl_engine.publication import PinnedPublicationRoot
 from jsonl_engine.schemas import SchemaCatalog
 
-from tests.support.filesystem import directory_link
+from tests.filesystem import directory_link
 
 
 @dataclass(frozen=True, slots=True)

@@ -21,7 +21,7 @@ the slug and identifies an immutable provider version.
   {slug}.pdf          # optional acquired PDF form of the same document
   {slug}-html/        # optional acquired HTML site (entrypoint `{slug}.html`)
   {slug}.arxiv.json   # optional provider/acquisition evidence
-  {slug}-latex.patch.jsonl # optional latex-ingest curated errata
+  {slug}-latex.patch.jsonl # optional document-local LaTeX errata
   article.json        # authoritative flat article and source-ready sentinel
 ```
 
@@ -32,27 +32,9 @@ output. Generated artifacts after raw extraction belong under the applicable run
 
 ### Document-local LaTeX curation
 
-`{slug}-latex.patch.jsonl` is an optional durable input owned by latex-ingest. Its canonical address is the
-document directory beside `article.json`; it is not allowed inside `{slug}-tex/`, a conversion run, lane
-output, or a deliverable shelf. It is not acquired source evidence, does not enter `article.json`, and does
-not contribute to the immutable source-tree fingerprint. Source publication and conversion never create,
-rewrite, move, or delete it. Its lifecycle is explicit curation: absence means faithful conversion, a present
-file is reapplied on every conversion, and a stale or count-mismatched record requires review or removal.
-
-Lookup uses the validated manifest slug to construct that one literal sibling and performs no scan, inferred
-basename, or output-directory fallback. The slug satisfies `article.schema.json#/$defs/portableLeaf`: one
-nonempty segment; not `.` or `..`; no trailing dot or space, `<>:"/\|?*`, or U+0000–U+001F; and no
-case-insensitive Windows device basename (`CON`, `PRN`, `AUX`, `NUL`, `COM1`–`COM9`, `LPT1`–`LPT9`) before a
-dot or end. A present patch must be a physical non-reparse file no larger than 1 MiB (1,048,576 raw bytes).
-Non-file occupancy, reparse traversal, and larger inputs fail; a missing exact leaf alone means `absent`.
-
-The patch suffix does not opt this domain format into strict shared-engine semantics. Its application parser
-accepts blank lines and full-line `#` or `//` comments; each remaining physical line is one JSON object with a
-supported operation and required reason. Files use valid UTF-8 without a BOM; LF or CRLF and a missing final
-newline are accepted, while a bare CR is rejected. Applied records preserve physical-line and curator
-provenance in file order. Conversion and run-local oracle evidence carry the same raw-byte identity—`absent`
-or `sha256:<64-lowercase-hex>`—and batch execution refuses drift from the identity frozen during planning.
-A same-named file in generated `OutDir` is ignored.
+`{slug}-latex.patch.jsonl` is an optional durable sibling of `article.json`. It is not allowed inside
+`{slug}-tex/`. It is not acquired source evidence, does not enter `article.json`, and does not contribute to
+the source-tree fingerprint. `New-LatexSourceDeposit` does not create, rewrite, move, or delete it.
 
 ## Source-ready publication
 
@@ -157,16 +139,16 @@ Canonical on-demand build:
 
 ```pwsh
 # Enumerate direct-child article.json and publish inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./supellex/gauntlet -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Fold -CatalogDir ./supellex/gauntlet -Force
 ```
 
-PowerShell helper: `Invoke-InventoryBuild` in `src/procurement/scripts/inventory-catalog.ps1`. Engine verb:
+PowerShell helper: `Invoke-InventoryBuild` in `src/procurement/scripts/catalog.ps1`. Engine verb:
 `build-inventory` (`--catalog-dir`, `--article-paths-json`, optional `--force`). Enumeration stays in
 PowerShell; the engine validates each `{catalog}/{slug}/article.json` path against the article slug and
 publishes the registry. An existing `inventory.jsonl` is refused unless `-Force` / `--force` is set.
@@ -174,21 +156,12 @@ publishes the registry. An existing `inventory.jsonl` is refused unless `-Force`
 Precursor unpack/deposit over the same parent (arXiv-shaped archives only today):
 
 ```pwsh
-pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -DepositBatch -CatalogDir ./supellex/staging
 ```
 
 `ConvertFrom-ArxivSourceArchiveLeaf` extracts `\d{4}\.\d{4,5}(?:v\d+)?` from tarball filenames so prefixes
 such as `arXiv-{slug}` are accepted before `New-LatexSourceDeposit` runs. Non-arXiv archive naming is out
 of scope for this batch helper.
 
-`src/latex-ingest/inventory-catalog.ps1` predates this article contract. Its direct-child admission checks
-and collision rules remain design evidence, but its `metadata.json`/`document-inventory-row/0.1` projection
-is a legacy specification rather than the active materializer.
-
-The public LaTeX batch adapter and production converter already read `article.json`; a directory address
-prefers it. Planning performs only confined address resolution and the shallow fields needed for job
-identity; it does not start Python or claim schema authority. The conversion worker invokes
-`validate-json <path> article.schema.json` through the shared client before consuming a canonical article,
-so the Python engine and shipped schema remain authoritative at both publication and use. Temporary
-`metadata.json` and `codex-scientiae/document-metadata/0.1` readers support migration only. No new producer
-may create the legacy manifest or nested inventory-row shape.
+No new producer may create `metadata.json` or a nested inventory-row shape. The live deposit and catalog
+entrypoints are `src/procurement/scripts/latex-source.ps1` and `src/procurement/scripts/catalog.ps1`.

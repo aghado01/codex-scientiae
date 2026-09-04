@@ -1,14 +1,173 @@
 #requires -Version 7.0
 <#
-  Batch LaTeX source deposit over a catalog parent.
+  Catalog-parent helpers for procurement.
 
-  Discovers arXiv-shaped source archives under a catalog root (loose tarballs or per-child
-  deposits), normalizes each into `{slug}/{slug}.tar.gz` or `arXiv-{slug}.tar.gz`, then runs
-  New-LatexSourceDeposit so validation and article.json minting happen before inventory rebuild.
+  Library (dot-source): inventory build/fold and LaTeX deposit-batch discovery.
+  CLI: -Build, -Fold, or -DepositBatch with -CatalogDir.
+
+  Deposit ceremony lives in latex-source.ps1. This file sources it.
 #>
+[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Library')]
+param(
+    [Parameter(ParameterSetName = 'Build')]
+    [switch] $Build,
+
+    [Parameter(ParameterSetName = 'Fold')]
+    [switch] $Fold,
+
+    [Parameter(ParameterSetName = 'DepositBatch')]
+    [switch] $DepositBatch,
+
+    [Parameter(Mandatory, ParameterSetName = 'Build')]
+    [Parameter(Mandatory, ParameterSetName = 'Fold')]
+    [Parameter(Mandatory, ParameterSetName = 'DepositBatch')]
+    [ValidateNotNullOrEmpty()]
+    [string] $CatalogDir,
+
+    [Parameter(ParameterSetName = 'Build')]
+    [Parameter(ParameterSetName = 'Fold')]
+    [switch] $Force,
+
+    [Parameter(ParameterSetName = 'DepositBatch')]
+    [switch] $IncludeExisting,
+
+    [Parameter(ParameterSetName = 'DepositBatch')]
+    [string] $MainTex = '',
+
+    [Parameter(ParameterSetName = 'DepositBatch')]
+    [switch] $FailOnError,
+
+    [Parameter(ParameterSetName = 'Build')]
+    [Parameter(ParameterSetName = 'Fold')]
+    [Parameter(ParameterSetName = 'DepositBatch')]
+    [string] $PythonPath = '',
+
+    [Parameter(ParameterSetName = 'Build')]
+    [Parameter(ParameterSetName = 'Fold')]
+    [Parameter(ParameterSetName = 'DepositBatch')]
+    [ValidateRange(1, 3600)]
+    [int] $EngineTimeoutSeconds = 300
+)
 
 . "$PSScriptRoot/latex-source.ps1"
-. "$PSScriptRoot/../../infrastructure/portable-path.ps1"
+
+function Resolve-ProcurementCatalogRoot {
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string]$CatalogDir)
+
+    $root = (Resolve-Path -LiteralPath $CatalogDir -ErrorAction Stop).Path
+    if (-not [System.IO.Directory]::Exists($root)) {
+        throw "catalog directory is not a directory: '$CatalogDir'"
+    }
+    if (Test-PathHasReparsePoint -Path $root) {
+        throw "catalog directory must not traverse a symbolic link or reparse point: '$root'"
+    }
+    return $root
+}
+
+function Get-InventoryArticlePaths {
+    <#
+    .SYNOPSIS
+        List direct-child article.json paths under a catalog root.
+    .DESCRIPTION
+        Only `{catalog}/{slug}/article.json` participates. Children without a sentinel are ignored;
+        a present non-file occupancy of article.json fails.
+    #>
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string]$CatalogDir)
+
+    $root = Resolve-ProcurementCatalogRoot -CatalogDir $CatalogDir
+    $paths = [System.Collections.Generic.List[string]]::new()
+    foreach ($child in @(Get-ChildItem -LiteralPath $root -Force -Directory | Sort-Object Name)) {
+        if (($child.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+            throw "catalog child must not be a reparse point: '$($child.FullName)'"
+        }
+        $article = Join-Path $child.FullName 'article.json'
+        $entry = Get-Item -LiteralPath $article -Force -ErrorAction SilentlyContinue
+        if ($null -eq $entry) { continue }
+        if (-not $entry.PSIsContainer -and
+            ($entry.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq 0 -and
+            [System.IO.File]::Exists($article)) {
+            $paths.Add((Resolve-Path -LiteralPath $article).Path)
+            continue
+        }
+        throw "catalog child article.json is not a regular file: '$article'"
+    }
+    return $paths.ToArray()
+}
+
+function Invoke-InventoryBuild {
+    <#
+    .SYNOPSIS
+        Build `{CatalogDir}/inventory.jsonl` from direct-child article.json sentinels.
+    .DESCRIPTION
+        Publishes a new inventory when absent. Pass -Force to overwrite an existing inventory.jsonl.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$CatalogDir,
+        [switch]$Force,
+        [string]$PythonPath = '',
+        [ValidateRange(1, 3600)][int]$EngineTimeoutSeconds = 300
+    )
+
+    $root = Resolve-ProcurementCatalogRoot -CatalogDir $CatalogDir
+    $articlePaths = @(Get-InventoryArticlePaths -CatalogDir $root)
+    $staged = jsonl_engine-client\New-JsonlEngineInputFile -InputObject @($articlePaths)
+    try {
+        $argument = [System.Collections.Generic.List[string]]::new()
+        $argument.Add('--catalog-dir')
+        $argument.Add($root)
+        $argument.Add('--article-paths-json')
+        $argument.Add($staged.Path)
+        if ($Force) { $argument.Add('--force') }
+
+        $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'build-inventory' `
+                -Argument $argument.ToArray() `
+                -PythonPath $PythonPath `
+                -TimeoutSeconds $EngineTimeoutSeconds)
+        if ($frames.Count -ne 1) {
+            throw "jsonl engine verb 'build-inventory' returned $($frames.Count) values; expected exactly one"
+        }
+        return [pscustomobject]$frames[0].value
+    } finally {
+        if ($staged.IsTemporary -and [System.IO.File]::Exists($staged.Path)) {
+            [System.IO.File]::Delete($staged.Path)
+        }
+    }
+}
+
+function Invoke-InventoryFold {
+    <#
+    .SYNOPSIS
+        Build `{CatalogDir}/inventory.jsonl` from direct-child inventory.jsonl stores.
+    .DESCRIPTION
+        Publishes a new inventory when absent. Pass -Force to overwrite an existing inventory.jsonl.
+        Inner inventories remain the source of truth; children without one are skipped.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$CatalogDir,
+        [switch]$Force,
+        [string]$PythonPath = '',
+        [ValidateRange(1, 3600)][int]$EngineTimeoutSeconds = 300
+    )
+
+    $root = Resolve-ProcurementCatalogRoot -CatalogDir $CatalogDir
+    $argument = [System.Collections.Generic.List[string]]::new()
+    $argument.Add('--catalog-dir')
+    $argument.Add($root)
+    if ($Force) { $argument.Add('--force') }
+
+    $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'fold-inventory' `
+            -Argument $argument.ToArray() `
+            -PythonPath $PythonPath `
+            -TimeoutSeconds $EngineTimeoutSeconds)
+    if ($frames.Count -ne 1) {
+        throw "jsonl engine verb 'fold-inventory' returned $($frames.Count) values; expected exactly one"
+    }
+    return [pscustomobject]$frames[0].value
+}
 
 # New-style arXiv id embedded in a tarball leaf: YYMM.NNNNN with optional version suffix.
 $script:ArxivSourceSlugPattern = [regex]::new(
@@ -47,20 +206,6 @@ function ConvertFrom-ArxivSourceArchiveLeaf {
     return ConvertFrom-ArxivSourceSlugText -Text $stem
 }
 
-function Resolve-LatexSourceBatchCatalogRoot {
-    [CmdletBinding()]
-    param([Parameter(Mandatory)][string]$CatalogDir)
-
-    $root = (Resolve-Path -LiteralPath $CatalogDir -ErrorAction Stop).Path
-    if (-not [System.IO.Directory]::Exists($root)) {
-        throw "catalog directory is not a directory: '$CatalogDir'"
-    }
-    if (Test-PathHasReparsePoint -Path $root) {
-        throw "catalog directory must not traverse a symbolic link or reparse point: '$root'"
-    }
-    return $root
-}
-
 function Get-LatexSourceBatchCandidates {
     <#
     .SYNOPSIS
@@ -78,7 +223,7 @@ function Get-LatexSourceBatchCandidates {
         [switch]$IncludeExisting
     )
 
-    $root = Resolve-LatexSourceBatchCatalogRoot -CatalogDir $CatalogDir
+    $root = Resolve-ProcurementCatalogRoot -CatalogDir $CatalogDir
     $bySlug = [System.Collections.Generic.Dictionary[string, object]]::new(
         [System.StringComparer]::Ordinal)
 
@@ -101,12 +246,12 @@ function Get-LatexSourceBatchCandidates {
                 "'$($bySlug[$slug].ArchivePath)' and '$($file.FullName)'")
         }
         $bySlug[$slug] = [pscustomobject]@{
-            Slug         = $slug
-            ArchivePath  = $file.FullName
-            DocumentDir  = $documentDir
-            Origin       = 'loose-archive'
-            HasArticle   = $hasArticle
-            ArticlePath  = $articlePath
+            Slug        = $slug
+            ArchivePath = $file.FullName
+            DocumentDir = $documentDir
+            Origin      = 'loose-archive'
+            HasArticle  = $hasArticle
+            ArticlePath = $articlePath
         }
     }
 
@@ -154,12 +299,12 @@ function Get-LatexSourceBatchCandidates {
             continue
         }
         $bySlug[$hit.Slug] = [pscustomobject]@{
-            Slug         = $hit.Slug
-            ArchivePath  = $hit.ArchivePath
-            DocumentDir  = $child.FullName
-            Origin       = 'child-archive'
-            HasArticle   = $hasArticle
-            ArticlePath  = $articlePath
+            Slug        = $hit.Slug
+            ArchivePath = $hit.ArchivePath
+            DocumentDir = $child.FullName
+            Origin      = 'child-archive'
+            HasArticle  = $hasArticle
+            ArticlePath = $articlePath
         }
     }
 
@@ -229,7 +374,7 @@ function Invoke-LatexSourceDepositBatch {
         [string]$MainTex = ''
     )
 
-    $root = Resolve-LatexSourceBatchCatalogRoot -CatalogDir $CatalogDir
+    $root = Resolve-ProcurementCatalogRoot -CatalogDir $CatalogDir
     $candidates = @(Get-LatexSourceBatchCandidates -CatalogDir $root -IncludeExisting:$IncludeExisting)
     $results = [System.Collections.Generic.List[object]]::new()
 
@@ -280,9 +425,41 @@ function Invoke-LatexSourceDepositBatch {
     }
 
     return [pscustomobject]@{
-        CatalogDir   = $root
+        CatalogDir     = $root
         CandidateCount = $results.Count
-        Results      = $results.ToArray()
-        FailedCount  = @($results | Where-Object { $_.Status -eq 'failed' }).Count
+        Results        = $results.ToArray()
+        FailedCount    = @($results | Where-Object { $_.Status -eq 'failed' }).Count
+    }
+}
+
+if ($PSCmdlet.ParameterSetName -ne 'Library') {
+    $ErrorActionPreference = 'Stop'
+    switch ($PSCmdlet.ParameterSetName) {
+        'Build' {
+            Invoke-InventoryBuild -CatalogDir $CatalogDir `
+                -Force:$Force `
+                -PythonPath $PythonPath `
+                -EngineTimeoutSeconds $EngineTimeoutSeconds |
+                ConvertTo-Json -Depth 6
+        }
+        'Fold' {
+            Invoke-InventoryFold -CatalogDir $CatalogDir `
+                -Force:$Force `
+                -PythonPath $PythonPath `
+                -EngineTimeoutSeconds $EngineTimeoutSeconds |
+                ConvertTo-Json -Depth 6
+        }
+        'DepositBatch' {
+            $batch = Invoke-LatexSourceDepositBatch -CatalogDir $CatalogDir `
+                -IncludeExisting:$IncludeExisting `
+                -WhatIf:$WhatIfPreference `
+                -PythonPath $PythonPath `
+                -EngineTimeoutSeconds $EngineTimeoutSeconds `
+                -MainTex $MainTex
+            $batch | ConvertTo-Json -Depth 6
+            if ($FailOnError -and [int]$batch.FailedCount -gt 0) {
+                exit 1
+            }
+        }
     }
 }

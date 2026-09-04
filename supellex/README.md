@@ -31,7 +31,7 @@ user profile, checkout location, or current machine.
   {slug}-tex/           # validated stable extraction
   {slug}.pdf            # optional acquired PDF form
   {slug}.arxiv.json     # optional provider/acquisition evidence
-  {slug}-latex.patch.jsonl # optional latex-ingest curated errata
+  {slug}-latex.patch.jsonl # optional document-local LaTeX errata
   article.json          # source-ready transaction sentinel and flat article manifest
 ```
 
@@ -93,48 +93,6 @@ rolls back only the exact article this transaction created, while a concurrently
 deleted. Existing equivalent evidence is returned idempotently; an existing article or source tree with
 different evidence is a conflict, never an overwrite. Failure publishes no partial article.
 
-## Convert a standardized leaf
-
-The production converter accepts a source-ready article or its document directory:
-
-```pwsh
-. ./src/latex-ingest/latex-ingest.ps1
-
-Invoke-ArxivLatexToMarkdown `
-    -MetadataPath './supellex/<segment>/<slug>/article.json' `
-    -OutDir ./path/to/lane-output
-```
-
-`-DocumentDir` remains an alias for the historically named `-MetadataPath`. A directory input resolves
-`article.json` first. During bounded migration only, the converter may fall back to `metadata.json` and the
-older `codex-scientiae/document-metadata/0.1` shape. New automation must not produce that legacy file.
-
-The production entrypoint revalidates the archive and source fingerprints, reads the article-owned
-entrypoint, and writes generated ref/doc/diagram/oracle evidence into the run directory. Before trusting a
-canonical article it calls the Python engine's `validate-json <path> article.schema.json` verb; this is the
-authoritative consumption-time schema check. Batch-adapter planning intentionally remains a shallow,
-process-free address and identity check. The converter never initializes, infers an archive, recognizes
-`{slug}-latex/`, or writes into the source tree.
-
-An optional `{slug}-latex.patch.jsonl` is resolved only from the validated article's document directory. It
-is a durable latex-ingest curation input, independent of the source-deposit transaction and excluded from the
-article's immutable source forms and tree fingerprint. The converter never creates or mutates it, and a file
-with the same name in `-OutDir` is ignored. Lookup constructs that one literal leaf from the manifest slug;
-it does not scan for alternatives. The slug follows `article.schema.json#/$defs/portableLeaf`: one nonempty
-segment; not `.` or `..`; no trailing dot or space, `<>:"/\|?*`, control characters U+0000–U+001F, or
-case-insensitive Windows device basename (`CON`, `PRN`, `AUX`, `NUL`, `COM1`–`COM9`, `LPT1`–`LPT9`) before
-a dot or end. Absence is a faithful no-op. A present patch must be a physical non-reparse file of at most
-1 MiB (1,048,576 raw bytes). Present files deliberately retain a tolerant application grammar: blank lines
-and full-line `#` or `//` comments are allowed, while every other line is one JSON patch object with a
-supported operation and a required reason. This exception is not parsed or normalized through the strict
-shared JSONL engine.
-
-Applied records retain physical-line and curator provenance in file order. Stale or count-mismatched records
-fail loudly. The conversion result exposes the raw-byte identity (`absent` or
-`sha256:<64-lowercase-hex>`) as `patch_identity` and the ordered records as `patched[]`; the run-local oracle
-records the same identity and `patches_applied`. Batch planning pins the identity and the worker refuses a
-created, removed, or changed patch rather than executing under a stale job identity.
-
 ## Inventory and batch migration
 
 The canonical localized inventory model is a deterministic JSONL materialization of direct-child
@@ -145,40 +103,23 @@ On-demand helpers:
 
 ```pwsh
 # Full unpack/validate/deposit ceremony for arXiv-shaped archives under a catalog parent
-pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -DepositBatch -CatalogDir ./supellex/staging
 
 # Sweep direct-child article.json and build inventory.jsonl via jsonl_engine
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./supellex/gauntlet -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Fold -CatalogDir ./supellex/gauntlet -Force
 ```
 
 After procuring into a destination, rebuild that destination's first-order `inventory.jsonl`
 (`rebuild_article_inventory`, `force=true`). Fold a parent inventory only when asked
 (`fold_article_inventory`).
 
-`src/latex-ingest/inventory-catalog.ps1` and its nested metadata row shape remain a legacy specification of
-useful admission behavior. They are not active canonical `article.json` producers or materializers.
-
-The public `Get-LatexBatchJob` adapter can already resolve an explicitly supplied `article.json` or a
-document-directory address, preferring `article.json` for a directory. It temporarily accepts legacy
-`metadata.json` readers as well. The repository `src/latex-ingest/latex-batch.ps1` shell is still coupled to
-the legacy catalog reader; migrating that materialization/read path is separate from article deposit and
-converter activation.
-
-## Legacy compatibility is a bounded migration tool
-
-Old archive/slug callers may explicitly import `src/latex-ingest/latex-ingest-compat.ps1`. That compatibility
-surface may still read an existing metadata-era `metadata.json`, but deposit publication is only through
-`New-LatexSourceDeposit` (`article.json`). Do not create new `metadata.json` sentinels.
-
-Explicit source reuse or work-directory overrides in the compatibility shim may keep an investigation
-moving, but the shim warns and labels such results `compat-*`. Such a run does not make a leaf compliant.
-Retire the compatibility readers and producer only after their callers and existing deposits have migrated.
+Do not create new `metadata.json` sentinels. Deposit publication is `New-LatexSourceDeposit` (`article.json`).
 
 ## Existing top-level segments
 
@@ -202,10 +143,8 @@ exceptions, and migration state. Do not encode one segment's nesting assumptions
 - [ ] Archive/provider evidence belongs to the same logical document version.
 - [ ] `New-LatexSourceDeposit` succeeds and creates or idempotently validates `article.json`.
 - [ ] The article validates as flat `codex-scientiae/article/0.1`.
-- [ ] A production conversion succeeds through the article or document directory without changing the
-      source-tree fingerprint.
-- [ ] Any document-local LaTeX patch is reviewed as explicit curation, remains outside `{slug}-tex/` and
-      generated output, and has a conversion audit matching its raw-byte identity.
+- [ ] Any document-local LaTeX patch is reviewed as explicit curation and remains outside `{slug}-tex/`
+      and generated output.
 - [ ] Generated evidence is found under the run directory, not `{slug}-tex/`.
 - [ ] Legacy `metadata.json`, `{slug}-latex/`, and compatibility-only exceptions are recorded for removal.
 - [ ] Any localized inventory is deliberately materialized from explicit direct-child articles, or

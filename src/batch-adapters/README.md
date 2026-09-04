@@ -9,7 +9,7 @@ is introduced.
 Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts` through
 `Resolve-ArtifactRunDirectory` in `src/infrastructure/containment.ps1`. Child processes receive
 `CDXSCI_TEMP` under that run, and `TEMP`/`TMP`/`TMPDIR` are projected from it so OS temp APIs cannot
-follow the ambient user temp tree. `tests/batch.ps1` is the public test-batch caller, including a
+follow the ambient user temp tree. `tests/batch.ps1` is the public caller for test batches, including a
 one-file selection; suite naming lives in `tests/suite-name.ps1`.
 
 Every planner obeys the same job-emission contract (`New-BatchJob` only; caller owns `New-BatchPlan` /

@@ -18,7 +18,7 @@
   Sink resolution, first hit wins:
     -LogPath <file>          exactly there
     -RunDir <dir>            trace.jsonl inside a run dir the caller already minted
-                             (New-ModuleRunDir in src/infrastructure/run-paths.ps1)
+                             (New-ModuleRunDir in src/infrastructure/containment.ps1)
     $env:CDXSCI_RUNLOG_DIR    a parent process's run dir; the child lands beside the parent
                              as trace-{module}-{pid}.jsonl — never a shared handle
     (minted)                 artifacts/{module}/logs/{stamp}.jsonl — regenerable tier,
@@ -29,15 +29,15 @@
   sink). Appends are per-record ([File]::AppendAllText — crash-safe, no handle discipline,
   safe under the multi-agent concurrency this repo actually runs).
 
-  A second Start-RunLog in the same process JOINS the live context, so composed lanes
-  (latex-ingest sourcing tex-render) trace into one file; -Force replaces it. Write-RunLog
+  A second Start-RunLog in the same process JOINS the live context, so composed callers
+  trace into one file; -Force replaces it. Write-RunLog
   before any Start is safe: warn+ still reaches stderr, the file sink is just off — shared
   substrate may log opportunistically without demanding its host started a run.
 
   Dot-source to use:  src/infrastructure/logger.ps1
 #>
 
-. "$PSScriptRoot/run-paths.ps1"
+. "$PSScriptRoot/containment.ps1"
 
 $script:RunLogLevels = @{ trace = 0; debug = 1; info = 2; warn = 3; error = 4 }
 $script:RunLog = $null          # live context: Path, Module, FileLevel, ConsoleLevel, Clock, Counts

@@ -1,7 +1,7 @@
 """Byte-equality gate for JsonlEngine.
 
 Every case here is a record set plus a declared text policy, frozen as committed bytes under
-tests/fixtures/jsonl_engine/. The engine re-emits each case into a temporary directory and the
+tests/jsonl_engine/fixtures/goldens/. The engine re-emits each case into a temporary directory and the
 bytes must match exactly. This is what makes a change to the writer's internals reviewable: a
 refactor that is meant to preserve output either does, or this says which case it broke.
 

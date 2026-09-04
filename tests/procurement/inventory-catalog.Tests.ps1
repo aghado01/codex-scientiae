@@ -17,8 +17,7 @@ BeforeAll {
     }
     $script:Utf8 = [System.Text.UTF8Encoding]::new($false, $true)
 
-    . (Join-Path $script:RepositoryRoot 'src/procurement/scripts/inventory-catalog.ps1')
-    . (Join-Path $script:RepositoryRoot 'src/procurement/scripts/latex-source-batch.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/procurement/scripts/catalog.ps1')
 
     function Write-InventoryTestArticle {
         param(
@@ -194,25 +193,19 @@ Describe 'Invoke-InventoryBuild' {
     }
 }
 
-Describe 'procurement CLI wrappers' {
-    It 'resolve host libraries from src/procurement/scripts' {
-        $scriptsDir = Join-Path $script:RepositoryRoot 'src/procurement/scripts'
-        foreach ($name in @(
-                'inventory-catalog.ps1',
-                'latex-source-batch.ps1'
-            )) {
-            [System.IO.File]::Exists((Join-Path $scriptsDir $name)) | Should -BeTrue
-        }
-
+Describe 'procurement catalog CLI' {
+    It 'dispatches build fold and deposit-batch against a missing catalog' {
+        $catalog = Join-Path $script:RepositoryRoot 'src/procurement/scripts/catalog.ps1'
+        Test-Path -LiteralPath $catalog -PathType Leaf | Should -BeTrue
         $missing = Join-Path $TestDrive 'missing-catalog'
-        foreach ($name in @(
-                'inventory-build.ps1',
-                'inventory-fold.ps1',
-                'latex-source-deposit-batch.ps1'
+        foreach ($verb in @(
+                @{ Build = $true }
+                @{ Fold = $true }
+                @{ DepositBatch = $true }
             )) {
             $err = $null
             try {
-                & (Join-Path $scriptsDir $name) -CatalogDir $missing
+                & $catalog @verb -CatalogDir $missing
             }
             catch {
                 $err = $_

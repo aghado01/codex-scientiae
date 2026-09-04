@@ -31,7 +31,7 @@ from procurement.storage.article import get_procurement_article_metadata_extensi
 from procurement.storage.schemas import get_procurement_schema_catalog
 
 from jsonl_test_support import article as article_record
-from tests.support.filesystem import directory_link
+from tests.filesystem import directory_link
 
 
 PROTOCOL = "codex-scientiae/jsonl_engine-cli"

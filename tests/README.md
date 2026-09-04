@@ -2,8 +2,8 @@
 
 Repository tests are multilingual and grouped by the source module or product shell they currently
 exercise. The grouping makes module boundaries and future evictions legible; it does not imply that every
-embedded capability ultimately belongs to its present module. Shared durable fixtures remain under
-`tests/fixtures/`.
+embedded capability ultimately belongs to its present module. Durable fixtures live beside the suite
+that owns them, for example `tests/jsonl_engine/fixtures/`.
 
 Framework semantics stay separate while their jobs share the batch executor:
 
@@ -171,7 +171,7 @@ order.
 
 Caller-owned repository run directories belong under
 `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`. `New-TestSuiteRunDir` in
-`src/infrastructure/run-paths.ps1` is the minting authority for that stamp and `tests/batch.ps1` calls
+`src/infrastructure/containment.ps1` is the minting authority for that stamp and `tests/batch.ps1` calls
 it; do not format a stamp by hand. `_NN` is a same-second collision sequence, not a label — a run
 directory never carries a description. Its sibling `New-ModuleRunDir` mints the other runstamped
 tier, `artifacts/{module}/{stamp}/{slug}/`, from the same format; there is no `runs/` segment in
@@ -438,7 +438,7 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | `batch-adapters/` | Pester and pytest batch planning (executor job emission). |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology plus host infrastructure primitives (run paths, portable paths, file-bytes, crawl, logger) |
-| `procurement/` | Scholarly discovery and acquisition (Python libraries; PowerShell catalog/deposit under `src/procurement/scripts`) |
+| `procurement/` | Scholarly discovery and acquisition (Python libraries; PowerShell `catalog.ps1` and `latex-source.ps1`) |
 | `mcp-servers/` | Python and PowerShell MCP servers plus protocol-level tests. |
 | `node_utils/` | Node-backed utilities (md-lint, math-render, pdf-raster, tikz-render) |
 

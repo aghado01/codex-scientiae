@@ -15,7 +15,7 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
 
     It 'names the same suite from a file inside that owner' {
         Resolve-TestSuiteName -TestsRoot $script:TestsRoot -RepositoryRoot $script:RepositoryRoot `
-            -SelectedPath @('tests/infrastructure/run-paths.Tests.ps1') | Should -BeExactly 'infrastructure'
+            -SelectedPath @('tests/infrastructure/containment.Tests.ps1') | Should -BeExactly 'infrastructure'
     }
 
     It 'accepts absolute and repository-relative paths alike' {
@@ -45,7 +45,7 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
 
 Describe 'Set-TempEnvironment' -Tag 'Infrastructure' {
     BeforeAll {
-        $script:ArtifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $script:RepositoryRoot
+        $script:ArtifactRoot = Get-ArtifactsRoot -RepositoryRoot $script:RepositoryRoot
     }
     BeforeEach {
         $script:Saved = @{}
@@ -141,7 +141,7 @@ Describe 'Set-TempEnvironment' -Tag 'Infrastructure' {
 
 Describe 'Assert-TempEnvironment' -Tag 'Infrastructure' {
     BeforeAll {
-        $script:ArtifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $script:RepositoryRoot
+        $script:ArtifactRoot = Get-ArtifactsRoot -RepositoryRoot $script:RepositoryRoot
     }
     BeforeEach {
         $script:Saved = @{}
@@ -188,7 +188,7 @@ Describe 'Assert-TempEnvironment' -Tag 'Infrastructure' {
 
 Describe 'Resolve-ArtifactRunDirectory' -Tag 'Infrastructure' {
     BeforeAll {
-        $script:ArtifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $script:RepositoryRoot
+        $script:ArtifactRoot = Get-ArtifactsRoot -RepositoryRoot $script:RepositoryRoot
     }
 
     It 'resolves a repository-relative artifacts path regardless of working directory' {
