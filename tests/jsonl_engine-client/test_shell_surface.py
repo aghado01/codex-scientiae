@@ -30,7 +30,7 @@ CLIENT = RepoPaths.resolve(
 
 
 def _pwsh() -> str:
-    configured = os.environ.get("CODEX_TEST_POWERSHELL_PATH")
+    configured = os.environ.get("CDXSCI_TEST_POWERSHELL_PATH")
     if configured is not None:
         return configured if os.path.isfile(configured) else ""
     return shutil.which("pwsh") or ""

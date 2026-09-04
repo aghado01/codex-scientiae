@@ -1,21 +1,21 @@
 function Get-JsonlEngineScratchRoot {
-    <# CODEX_JSON_SCRATCH_ROOT, else {CODEX_TEMP}/json-scratch, else <repo>/artifacts/json-scratch. #>
-    $configured = [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
+    <# CDXSCI_JSON_SCRATCH_ROOT, else {CDXSCI_TEMP}/json-scratch, else <repo>/artifacts/json-scratch. #>
+    $configured = [System.Environment]::GetEnvironmentVariable('CDXSCI_JSON_SCRATCH_ROOT')
     if ($null -ne $configured) {
         if ([string]::IsNullOrWhiteSpace($configured) -or
                 -not [System.IO.Path]::IsPathFullyQualified($configured)) {
-            throw 'CODEX_JSON_SCRATCH_ROOT must name a non-empty absolute directory'
+            throw 'CDXSCI_JSON_SCRATCH_ROOT must name a non-empty absolute directory'
         }
         return [System.IO.Path]::GetFullPath($configured)
     }
-    $codexTemp = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP')
-    if ($null -ne $codexTemp) {
-        if ([string]::IsNullOrWhiteSpace($codexTemp) -or
-                -not [System.IO.Path]::IsPathFullyQualified($codexTemp)) {
-            throw 'CODEX_TEMP must name a non-empty absolute directory'
+    $cdxsciTemp = [System.Environment]::GetEnvironmentVariable('CDXSCI_TEMP')
+    if ($null -ne $cdxsciTemp) {
+        if ([string]::IsNullOrWhiteSpace($cdxsciTemp) -or
+                -not [System.IO.Path]::IsPathFullyQualified($cdxsciTemp)) {
+            throw 'CDXSCI_TEMP must name a non-empty absolute directory'
         }
         return [System.IO.Path]::Combine(
-            [System.IO.Path]::GetFullPath($codexTemp), 'json-scratch')
+            [System.IO.Path]::GetFullPath($cdxsciTemp), 'json-scratch')
     }
     return [System.IO.Path]::Combine(
         $script:JsonlEngineRepositoryRoot, 'artifacts', 'json-scratch')
@@ -27,7 +27,7 @@ function Resolve-JsonlEngineRuntime {
 
     $candidate = $PythonPath
     if ([string]::IsNullOrWhiteSpace($candidate)) {
-        $candidate = [System.Environment]::GetEnvironmentVariable('CODEX_JSONL_ENGINE_PYTHON')
+        $candidate = [System.Environment]::GetEnvironmentVariable('CDXSCI_JSONL_ENGINE_PYTHON')
     }
 
     if (-not [string]::IsNullOrWhiteSpace($candidate)) {
@@ -53,7 +53,7 @@ function Resolve-JsonlEngineRuntime {
 
     throw @"
 No repository Python environment was found under '$script:JsonlEngineRepositoryRoot'.
-Set CODEX_JSONL_ENGINE_PYTHON or pass -PythonPath, or restore the repository environment:
+Set CDXSCI_JSONL_ENGINE_PYTHON or pass -PythonPath, or restore the repository environment:
   brewery/uv/restore-uv.ps1
 "@
 }

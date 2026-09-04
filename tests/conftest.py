@@ -30,7 +30,7 @@ def _require_artifact_path(value: str, *, label: str) -> Path:
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Require CODEX_TEMP under artifacts/. Ambient TEMP is not a substitute."""
+    """Require CDXSCI_TEMP under artifacts/. Ambient TEMP is not a substitute."""
 
     basetemp = config.getoption("basetemp")
     if not basetemp:
@@ -40,13 +40,13 @@ def pytest_configure(config: pytest.Config) -> None:
         )
     _require_artifact_path(str(basetemp), label="pytest basetemp")
 
-    codex_temp = os.environ.get("CODEX_TEMP")
-    if not codex_temp:
+    cdxsci_temp = os.environ.get("CDXSCI_TEMP")
+    if not cdxsci_temp:
         raise pytest.UsageError(
-            "CODEX_TEMP must be an absolute path under the repository artifacts root; "
+            "CDXSCI_TEMP must be an absolute path under the repository artifacts root; "
             "use the repository test entrypoint"
         )
-    temp_root = _require_artifact_path(codex_temp, label="CODEX_TEMP")
+    temp_root = _require_artifact_path(cdxsci_temp, label="CDXSCI_TEMP")
     if not sys.dont_write_bytecode:
         raise pytest.UsageError("pytest must run with Python bytecode writes disabled")
 
@@ -54,8 +54,8 @@ def pytest_configure(config: pytest.Config) -> None:
     for name in ("TEMP", "TMP", "TMPDIR"):
         os.environ[name] = str(temp_root)
 
-    clock = os.environ.get("CODEX_PROCUREMENT_RATE_CLOCK")
+    clock = os.environ.get("CDXSCI_PROCUREMENT_RATE_CLOCK")
     if clock:
-        _require_artifact_path(clock, label="CODEX_PROCUREMENT_RATE_CLOCK")
+        _require_artifact_path(clock, label="CDXSCI_PROCUREMENT_RATE_CLOCK")
     else:
-        os.environ["CODEX_PROCUREMENT_RATE_CLOCK"] = str(temp_root / "procurement-rate-clock.json")
+        os.environ["CDXSCI_PROCUREMENT_RATE_CLOCK"] = str(temp_root / "procurement-rate-clock.json")

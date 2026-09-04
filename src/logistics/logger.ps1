@@ -19,13 +19,13 @@
     -LogPath <file>          exactly there
     -RunDir <dir>            trace.jsonl inside a run dir the caller already minted
                              (New-ModuleRunDir in src/logistics/run-paths.ps1)
-    $env:CODEX_RUNLOG_DIR    a parent process's run dir; the child lands beside the parent
+    $env:CDXSCI_RUNLOG_DIR    a parent process's run dir; the child lands beside the parent
                              as trace-{module}-{pid}.jsonl — never a shared handle
     (minted)                 artifacts/{module}/logs/{stamp}.jsonl — regenerable tier,
                              gitignored wholesale
 
-  Config: -FileLevel / -ConsoleLevel on Start-RunLog; $env:CODEX_RUNLOG_LEVEL and
-  $env:CODEX_RUNLOG_CONSOLE override per run without touching call sites ('off' disables a
+  Config: -FileLevel / -ConsoleLevel on Start-RunLog; $env:CDXSCI_RUNLOG_LEVEL and
+  $env:CDXSCI_RUNLOG_CONSOLE override per run without touching call sites ('off' disables a
   sink). Appends are per-record ([File]::AppendAllText — crash-safe, no handle discipline,
   safe under the multi-agent concurrency this repo actually runs).
 
@@ -71,7 +71,7 @@ function Start-RunLog {
         [ValidateSet('trace', 'debug', 'info', 'warn', 'error', 'off')] [string] $FileLevel = 'trace',
         [ValidateSet('trace', 'debug', 'info', 'warn', 'error', 'off')] [string] $ConsoleLevel = 'warn',
         [System.Collections.IDictionary] $Data,
-        [switch] $Export,   # export the log's dir as CODEX_RUNLOG_DIR so spawned children join this run
+        [switch] $Export,   # export the log's dir as CDXSCI_RUNLOG_DIR so spawned children join this run
         [switch] $Force
     )
     if ($script:RunLog -and -not $Force) {
@@ -82,7 +82,7 @@ function Start-RunLog {
     $path = $LogPath
     if (-not $path) {
         $dir = $RunDir
-        if (-not $dir -and $env:CODEX_RUNLOG_DIR) { $dir = $env:CODEX_RUNLOG_DIR }
+        if (-not $dir -and $env:CDXSCI_RUNLOG_DIR) { $dir = $env:CDXSCI_RUNLOG_DIR }
         if ($dir) {
             $path = Join-Path $dir 'trace.jsonl'
             # taken = another process owns it (runs are immutable-new, so a fresh run dir never
@@ -104,12 +104,12 @@ function Start-RunLog {
     $script:RunLog = @{
         Path         = $path
         Module       = $Module
-        FileLevel    = Resolve-RunLogLevel $env:CODEX_RUNLOG_LEVEL (Resolve-RunLogLevel $FileLevel 0)
-        ConsoleLevel = Resolve-RunLogLevel $env:CODEX_RUNLOG_CONSOLE (Resolve-RunLogLevel $ConsoleLevel 3)
+        FileLevel    = Resolve-RunLogLevel $env:CDXSCI_RUNLOG_LEVEL (Resolve-RunLogLevel $FileLevel 0)
+        ConsoleLevel = Resolve-RunLogLevel $env:CDXSCI_RUNLOG_CONSOLE (Resolve-RunLogLevel $ConsoleLevel 3)
         Clock        = [System.Diagnostics.Stopwatch]::StartNew()
         Counts       = @{ trace = 0; debug = 0; info = 0; warn = 0; error = 0 }
     }
-    if ($Export) { $env:CODEX_RUNLOG_DIR = $dirName }
+    if ($Export) { $env:CDXSCI_RUNLOG_DIR = $dirName }
 
     $start = [ordered]@{ module = $Module; pid = $PID }
     if ($Data) { foreach ($k in $Data.Keys) { $start[$k] = $Data[$k] } }

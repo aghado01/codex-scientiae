@@ -1,3 +1,14 @@
+# Fable namespace cleanup
+
+Done 2026-09-04.
+
+- Env prefix `CODEX_` → `CDXSCI_`. `CODEX_SCIENTIAE_ROOT` → `CDXSCI_ROOT`.
+- Signatures: `Set-CodexTempEnvironment` → `Set-TempEnvironment`; `Assert-CodexTempEnvironment` → `Assert-TempEnvironment`.
+- Helper file: `assert-codex-temp.ps1` → `assert-temp.ps1`.
+- Left alone: Codex CLI (`.codex/`, `~/.Codex`, `-CodexConfigPath`); PowerShell type names `CodexScientiae.*`; historical `issues/grok-*`.
+
+---
+
 the tree currently has fourteen distinct CODEX_ variable names across 40 files, dominated by three.
 
 Variable	Occurrences

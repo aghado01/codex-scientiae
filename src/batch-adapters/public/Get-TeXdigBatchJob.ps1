@@ -68,8 +68,8 @@ function Get-TeXdigBatchJob {
                 PowerShellPath = $childPowerShell
                 WorkingDirectory = $repository
                 Environment = @{
-                    CODEX_JSON_SCRATCH_ROOT = $address.JsonScratchRoot
-                    CODEX_TEMP = $address.TempRoot
+                    CDXSCI_JSON_SCRATCH_ROOT = $address.JsonScratchRoot
+                    CDXSCI_TEMP = $address.TempRoot
                     TEMP = $address.TempRoot
                     TMP = $address.TempRoot
                     TMPDIR = $address.TempRoot

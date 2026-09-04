@@ -119,18 +119,18 @@ BeforeAll {
 Describe 'LaTeX source deposit through the JSONL engine' {
     BeforeEach {
         $script:PriorJsonScratch =
-            [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
+            [System.Environment]::GetEnvironmentVariable('CDXSCI_JSON_SCRATCH_ROOT')
         $script:JsonScratch = Join-Path $TestDrive 'json-engine-scratch'
         [void][System.IO.Directory]::CreateDirectory($script:JsonScratch)
-        $env:CODEX_JSON_SCRATCH_ROOT = $script:JsonScratch
+        $env:CDXSCI_JSON_SCRATCH_ROOT = $script:JsonScratch
     }
 
     AfterEach {
         if ($null -eq $script:PriorJsonScratch) {
-            Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
+            Remove-Item Env:CDXSCI_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
         }
         else {
-            $env:CODEX_JSON_SCRATCH_ROOT = $script:PriorJsonScratch
+            $env:CDXSCI_JSON_SCRATCH_ROOT = $script:PriorJsonScratch
         }
     }
 
@@ -360,14 +360,14 @@ Describe 'LaTeX source deposit through the JSONL engine' {
             Remove-Item -LiteralPath $rootReparseTarget -Recurse -Force
         }
 
-        $savedScratch = $env:CODEX_JSON_SCRATCH_ROOT
+        $savedScratch = $env:CDXSCI_JSON_SCRATCH_ROOT
         try {
-            $env:CODEX_JSON_SCRATCH_ROOT = $sourceTree
+            $env:CDXSCI_JSON_SCRATCH_ROOT = $sourceTree
             { New-LatexSourceDeposit -DocumentDir $deposit.DocumentDirectory `
                     -MainTex 'b.tex' -PythonPath $script:Python } |
                 Should -Throw '*FindingsPath must be outside the document deposit*'
         }
-        finally { $env:CODEX_JSON_SCRATCH_ROOT = $savedScratch }
+        finally { $env:CDXSCI_JSON_SCRATCH_ROOT = $savedScratch }
         [System.IO.File]::Exists($deposit.ArticlePath) | Should -BeFalse
         @(Get-ChildItem -LiteralPath $sourceTree -Filter 'codex-jsonl_engine-input-*.json' `
                 -File -ErrorAction SilentlyContinue).Count | Should -Be 0

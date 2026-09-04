@@ -112,16 +112,16 @@ Describe 'Get-PytestBatchJob planning' {
                 $job.Metadata.TempRoot
             )
             $environment = $job.ProcessSpec.Environment
-            $environment.CODEX_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
-            $environment.CODEX_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
-            $environment.CODEX_TEST_POWERSHELL_PATH | Should -Be $script:PowerShellPath
-            $environment.CODEX_TEMP | Should -Be $job.Metadata.TempRoot
+            $environment.CDXSCI_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
+            $environment.CDXSCI_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
+            $environment.CDXSCI_TEST_POWERSHELL_PATH | Should -Be $script:PowerShellPath
+            $environment.CDXSCI_TEMP | Should -Be $job.Metadata.TempRoot
             @($environment.TEMP, $environment.TMP, $environment.TMPDIR) |
                 Should -Be @($job.Metadata.TempRoot, $job.Metadata.TempRoot, $job.Metadata.TempRoot)
             $environment.PYTHONDONTWRITEBYTECODE | Should -Be '1'
             $environment.PYTEST_DISABLE_PLUGIN_AUTOLOAD | Should -Be '1'
             foreach ($removedName in @(
-                    'PYTEST_ADDOPTS', 'CODEX_REGEN_FIXTURES', 'PYTHONPATH', 'PYTHONHOME'
+                    'PYTEST_ADDOPTS', 'CDXSCI_REGEN_FIXTURES', 'PYTHONPATH', 'PYTHONHOME'
                 )) {
                 $environment.ContainsKey($removedName) | Should -BeTrue
                 $environment[$removedName] | Should -BeNullOrEmpty
@@ -255,35 +255,35 @@ from pathlib import Path
 def test_runner_environment():
     assert "PYTEST_ADDOPTS" not in os.environ
     assert "PYTEST_PLUGINS" not in os.environ
-    assert "CODEX_REGEN_FIXTURES" not in os.environ
+    assert "CDXSCI_REGEN_FIXTURES" not in os.environ
     assert "PYTHONPATH" not in os.environ
     assert "PYTHONHOME" not in os.environ
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
-    assert os.environ["CODEX_TEMP"] == os.environ["TEMP"] == os.environ["TMP"] == os.environ["TMPDIR"]
-    assert Path(tempfile.gettempdir()) == Path(os.environ["CODEX_TEMP"])
-    assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
-    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["CODEX_TEMP"])
+    assert os.environ["CDXSCI_TEMP"] == os.environ["TEMP"] == os.environ["TMP"] == os.environ["TMPDIR"]
+    assert Path(tempfile.gettempdir()) == Path(os.environ["CDXSCI_TEMP"])
+    assert Path(os.environ["CDXSCI_JSON_SCRATCH_ROOT"]).is_dir()
+    assert Path(os.environ["CDXSCI_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["CDXSCI_TEMP"])
 '@
         $resultPath = Join-Path $fixture.RunDirectory 'direct/pytest.xml'
         $tempPath = Join-Path $fixture.RunDirectory 'direct/temp'
         $saved = @{}
-        foreach ($name in @('PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'CODEX_REGEN_FIXTURES',
+        foreach ($name in @('PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'CDXSCI_REGEN_FIXTURES',
                 'PYTHONPATH', 'PYTHONHOME',
                 'PYTEST_DISABLE_PLUGIN_AUTOLOAD', 'PYTHONDONTWRITEBYTECODE',
-                'TMP', 'TEMP', 'TMPDIR', 'CODEX_TEMP', 'CODEX_JSON_SCRATCH_ROOT',
-                'CODEX_PROCUREMENT_RATE_CLOCK')) {
+                'TMP', 'TEMP', 'TMPDIR', 'CDXSCI_TEMP', 'CDXSCI_JSON_SCRATCH_ROOT',
+                'CDXSCI_PROCUREMENT_RATE_CLOCK')) {
             $saved[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
         }
         try {
             $env:PYTEST_ADDOPTS = '--collect-only'
             $env:PYTEST_PLUGINS = 'ambient_plugin'
-            $env:CODEX_REGEN_FIXTURES = '1'
+            $env:CDXSCI_REGEN_FIXTURES = '1'
             $env:PYTHONPATH = Join-Path $TestDrive 'ambient-pythonpath'
             $env:PYTHONHOME = Join-Path $TestDrive 'ambient-pythonhome'
             $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = '0'
             $env:PYTHONDONTWRITEBYTECODE = '0'
-            $env:CODEX_JSON_SCRATCH_ROOT = Join-Path $TestDrive 'host-scratch'
+            $env:CDXSCI_JSON_SCRATCH_ROOT = Join-Path $TestDrive 'host-scratch'
 
             Push-Location $TestDrive
             try {
@@ -319,18 +319,18 @@ import tempfile
 from pathlib import Path
 
 def test_pass(tmp_path):
-    artifact = Path(os.environ["CODEX_TEST_ARTIFACT_ROOT"])
+    artifact = Path(os.environ["CDXSCI_TEST_ARTIFACT_ROOT"])
     artifact.mkdir(parents=True, exist_ok=True)
     (artifact / "pass.txt").write_text("retained", encoding="utf-8")
-    assert Path(os.environ["CODEX_TEMP"]).is_absolute()
-    assert os.environ["CODEX_TEMP"] == os.environ["TEMP"] == os.environ["TMP"] == os.environ["TMPDIR"]
-    assert Path(tempfile.gettempdir()) == Path(os.environ["CODEX_TEMP"])
-    assert Path(os.environ["CODEX_JSON_SCRATCH_ROOT"]).is_dir()
-    assert Path(os.environ["CODEX_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["CODEX_TEMP"])
+    assert Path(os.environ["CDXSCI_TEMP"]).is_absolute()
+    assert os.environ["CDXSCI_TEMP"] == os.environ["TEMP"] == os.environ["TMP"] == os.environ["TMPDIR"]
+    assert Path(tempfile.gettempdir()) == Path(os.environ["CDXSCI_TEMP"])
+    assert Path(os.environ["CDXSCI_JSON_SCRATCH_ROOT"]).is_dir()
+    assert Path(os.environ["CDXSCI_PROCUREMENT_RATE_CLOCK"]).parent == Path(os.environ["CDXSCI_TEMP"])
     assert os.environ["PYTHONDONTWRITEBYTECODE"] == "1"
     assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert "PYTEST_ADDOPTS" not in os.environ
-    assert "CODEX_REGEN_FIXTURES" not in os.environ
+    assert "CDXSCI_REGEN_FIXTURES" not in os.environ
     assert "PYTHONPATH" not in os.environ
     assert "PYTHONHOME" not in os.environ
     (tmp_path / "ephemeral.txt").write_text("temporary", encoding="utf-8")
@@ -340,7 +340,7 @@ import os
 from pathlib import Path
 
 def test_fail():
-    artifact = Path(os.environ["CODEX_TEST_ARTIFACT_ROOT"])
+    artifact = Path(os.environ["CDXSCI_TEST_ARTIFACT_ROOT"])
     artifact.mkdir(parents=True, exist_ok=True)
     (artifact / "failure.txt").write_text("retained", encoding="utf-8")
     assert False, "planned pytest failure"

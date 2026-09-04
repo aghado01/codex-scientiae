@@ -22,14 +22,14 @@ the manifest directly; no protocol, runtime, or command logic belongs in the com
 The interpreter is selected in this order:
 
 1. an explicit `-PythonPath`;
-2. `CODEX_JSONL_ENGINE_PYTHON`;
+2. `CDXSCI_JSONL_ENGINE_PYTHON`;
 3. the repository `.venv` for the current platform.
 
 There is no ambient `PATH` fallback. The selected environment must have the repository installed
 editable. Restore it with the commands in the root `pyproject.toml` when necessary.
 Ambient import/startup/warning settings are removed from the child; UTF-8, unbuffered output, user-site
 isolation, and no-bytecode policy are pinned by the client. Temporary `New-JsonlEngineInputFile`
-staging uses `CODEX_JSON_SCRATCH_ROOT` when set, otherwise `{CODEX_TEMP}/json-scratch`, otherwise
+staging uses `CDXSCI_JSON_SCRATCH_ROOT` when set, otherwise `{CDXSCI_TEMP}/json-scratch`, otherwise
 `<repo>/artifacts/json-scratch`, matching the Python engine. Ambient TEMP is not a fallback.
 
 Relative `-PythonPath` values, including the environment-selected value, and relative path parameters
@@ -104,12 +104,12 @@ validates and serializes it exactly once before invoking the engine.
 
 `New-JsonlEngineInputFile` stages one structured boundary value as strict UTF-8 without a BOM and with
 one terminating LF. An explicit relative `-Path` is caller-relative. With no path, the command uses
-`CODEX_JSON_SCRATCH_ROOT`, else `{CODEX_TEMP}/json-scratch`, else `<repo>/artifacts/json-scratch`.
+`CDXSCI_JSON_SCRATCH_ROOT`, else `{CDXSCI_TEMP}/json-scratch`, else `<repo>/artifacts/json-scratch`.
 A blank or relative configured root is rejected. Publication uses a sibling scratch file
 and removes that transaction file on failure. The returned `JsonlEngine.InputFile` is never removed
 automatically: `IsTemporary` records that the module chose its name, while the caller owns retention and
-cleanup. The module does not allocate run identities. Batch owners set job-local `CODEX_TEMP` and
-`CODEX_JSON_SCRATCH_ROOT`; the child engine otherwise uses the repository scratch directory.
+cleanup. The module does not allocate run identities. Batch owners set job-local `CDXSCI_TEMP` and
+`CDXSCI_JSON_SCRATCH_ROOT`; the child engine otherwise uses the repository scratch directory.
 
 ## Non-goals
 

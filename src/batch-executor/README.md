@@ -163,8 +163,8 @@ A process specification may override `PowerShellPath`, `WorkingDirectory`, `Time
 are resolved over invocation defaults. Environment entries with `$null` values remove inherited
 variables in the child.
 
-Every child receives `CODEX_BATCH_JOB_ID` and `CODEX_BATCH_EXECUTION_MODE=Process`. Existing
-`CODEX_RUNLOG_*` variables are inherited unless overridden, allowing child-local logs to correlate
+Every child receives `CDXSCI_BATCH_JOB_ID` and `CDXSCI_BATCH_EXECUTION_MODE=Process`. Existing
+`CDXSCI_RUNLOG_*` variables are inherited unless overridden, allowing child-local logs to correlate
 with the parent run without sharing file handles.
 
 ## Non-goals

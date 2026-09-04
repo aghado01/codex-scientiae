@@ -271,7 +271,7 @@ def _canonical_provider_sequence(values: tuple[str, ...], *, label: str) -> tupl
 def _resolve_workspace_root(value: str | Path | None) -> Path:
     """Resolve one physical workspace root before allocating runtime dependencies."""
 
-    configured = value if value is not None else os.environ.get("CODEX_SCIENTIAE_ROOT")
+    configured = value if value is not None else os.environ.get("CDXSCI_ROOT")
     requested = Path(configured) if configured is not None else Path(find_repository_root())
     requested = requested.absolute()
     if not requested.is_dir():

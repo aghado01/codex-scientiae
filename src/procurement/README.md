@@ -66,7 +66,7 @@ asyncio.run(main())
 
 Provider endpoints, request floors, timeouts, attempts, and default sources live in the version 2
 `configs/defaults.json`. That data also names the confined staging root, logical local-import inboxes, source catalogs, and payload and
-archive limits. `CODEX_SCIENTIAE_ROOT` can select the workspace explicitly. `CODEX_SCHOLAR_MAILTO` supplies a contact address and
+archive limits. `CDXSCI_ROOT` can select the workspace explicitly. `CDXSCI_SCHOLAR_MAILTO` supplies a contact address and
 `OPENALEX_API_KEY` and `SEMANTIC_SCHOLAR_API_KEY` supply optional provider credentials.
 Provider categories and capabilities are adapter declarations rather than configuration data.
 `providers/builtin.py` is the built-in construction catalog; each entry binds an adapter descriptor,
@@ -88,7 +88,7 @@ generation across sentinel reads and publication.
 
 `HttpClient` uses HTTP/2. arXiv Atom and artifact routes send a rotating desktop browser profile
 (`User-Agent` plus `Sec-Fetch-*`) per request. Provider floors share a file-locked clock at
-`~/.Codex/procurement/rate-clock.json` (`CODEX_PROCUREMENT_RATE_CLOCK` overrides the path).
+`~/.Codex/procurement/rate-clock.json` (`CDXSCI_PROCUREMENT_RATE_CLOCK` overrides the path).
 
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are

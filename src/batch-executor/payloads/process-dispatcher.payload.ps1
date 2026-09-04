@@ -48,8 +48,8 @@ else { try {
         if ($null -eq $value) { [void]$startInfo.Environment.Remove($name) }
         else { $startInfo.Environment[$name] = [string]$value }
     }
-    $startInfo.Environment['CODEX_BATCH_JOB_ID'] = $JobId
-    $startInfo.Environment['CODEX_BATCH_EXECUTION_MODE'] = 'Process'
+    $startInfo.Environment['CDXSCI_BATCH_JOB_ID'] = $JobId
+    $startInfo.Environment['CDXSCI_BATCH_EXECUTION_MODE'] = 'Process'
     [void] $startInfo.ArgumentList.Add('-NoLogo')
     if (-not $LoadProfile) { [void] $startInfo.ArgumentList.Add('-NoProfile') }
     [void] $startInfo.ArgumentList.Add('-NonInteractive')

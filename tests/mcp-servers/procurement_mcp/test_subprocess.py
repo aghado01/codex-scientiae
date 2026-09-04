@@ -143,7 +143,7 @@ def test_locked_uv_launches_from_unrelated_cwd_and_closes_process_tree(
     runtime_temp.mkdir()
 
     environment = {
-        "CODEX_SCIENTIAE_ROOT": str(REPOSITORY_ROOT),
+        "CDXSCI_ROOT": str(REPOSITORY_ROOT),
         "UV_PROJECT_ENVIRONMENT": str(REPOSITORY_ROOT / ".venv"),
         "UV_PYTHON_INSTALL_DIR": str(REPOSITORY_ROOT / "packages" / "python"),
         "UV_CACHE_DIR": str(tmp_path / "uv-cache"),

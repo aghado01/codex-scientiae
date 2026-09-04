@@ -12,11 +12,11 @@ tectonic, latex-ingest, math-render — so an unscoped top-level `bin/` collides
 makes it impossible to clear one module's output without disturbing the rest.
 
 The operating-system user temp tree, including `%LOCALAPPDATA%\Temp` on Windows, is not a project
-scratch fallback. Project ephemeral writes are controlled by `CODEX_TEMP`, an absolute directory
-below this root. Isolated children may receive `TEMP`/`TMP`/`TMPDIR` projected from `CODEX_TEMP`
+scratch fallback. Project ephemeral writes are controlled by `CDXSCI_TEMP`, an absolute directory
+below this root. Isolated children may receive `TEMP`/`TMP`/`TMPDIR` projected from `CDXSCI_TEMP`
 so OS temp APIs cannot follow the ambient tree. Test-batch roots are
 `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`; `tests/batch.ps1` mints them through
-`New-TestSuiteRunDir` and sets `CODEX_TEMP`. Adapters consume that absolute address and never
+`New-TestSuiteRunDir` and sets `CDXSCI_TEMP`. Adapters consume that absolute address and never
 allocate their own runstamp. `test-runs/` is a retired bucket name, not a write location.
 
 The first path segment names a **module** or a **process**, never an output kind. Which of the two

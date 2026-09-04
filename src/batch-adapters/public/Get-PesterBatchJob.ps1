@@ -24,7 +24,7 @@ function Get-PesterBatchJob {
         throw "pester-batch runner not found: '$runner'"
     }
     $runner = (Resolve-Path -LiteralPath $runner).Path
-    foreach ($supportName in @('assert-codex-temp.ps1', 'containment.ps1')) {
+    foreach ($supportName in @('assert-temp.ps1', 'containment.ps1')) {
         $support = [System.IO.Path]::Combine(
             $repository, 'src', 'logistics', $supportName)
         if (-not (Test-Path -LiteralPath $support -PathType Leaf)) {
@@ -79,9 +79,9 @@ function Get-PesterBatchJob {
             ArtifactRoot = $address.ArtifactRoot
             TempRoot = $address.TempRoot
             JsonScratchRoot = $jsonScratchRoot
-            ArtifactEnvironment = 'CODEX_TEST_ARTIFACT_ROOT'
-            ScratchEnvironment = 'CODEX_JSON_SCRATCH_ROOT'
-            TempEnvironment = 'CODEX_TEMP'
+            ArtifactEnvironment = 'CDXSCI_TEST_ARTIFACT_ROOT'
+            ScratchEnvironment = 'CDXSCI_JSON_SCRATCH_ROOT'
+            TempEnvironment = 'CDXSCI_TEMP'
             ResultFormat = $ResultFormat
             PesterManifest = $pester.Path
             PesterVersion = $pester.Version.ToString()
@@ -96,9 +96,9 @@ function Get-PesterBatchJob {
                 PowerShellPath = $childPowerShell
                 WorkingDirectory = $repository
                 Environment = @{
-                    CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
-                    CODEX_JSON_SCRATCH_ROOT = $jsonScratchRoot
-                    CODEX_TEMP = $address.TempRoot
+                    CDXSCI_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
+                    CDXSCI_JSON_SCRATCH_ROOT = $jsonScratchRoot
+                    CDXSCI_TEMP = $address.TempRoot
                     TEMP = $address.TempRoot
                     TMP = $address.TempRoot
                     TMPDIR = $address.TempRoot

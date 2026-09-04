@@ -295,7 +295,7 @@ param($Item, $Context, $RunspaceState)
 [pscustomobject]@{
     Value = $Item.Value; ContextValue = $Context.Value
     Initialized = $RunspaceState.Initialized; Pid = $PID
-    BatchJobId = $env:CODEX_BATCH_JOB_ID; EnvironmentValue = $env:BATCH_EXECUTOR_TEST
+    BatchJobId = $env:CDXSCI_BATCH_JOB_ID; EnvironmentValue = $env:BATCH_EXECUTOR_TEST
 }
 
 '@

@@ -116,7 +116,7 @@ class RuntimeSecrets(BaseModel):
     @classmethod
     def from_environment(cls) -> "RuntimeSecrets":
         return cls(
-            contact_email=os.environ.get("CODEX_SCHOLAR_MAILTO") or None,
+            contact_email=os.environ.get("CDXSCI_SCHOLAR_MAILTO") or None,
             openalex_api_key=os.environ.get("OPENALEX_API_KEY") or None,
             semantic_scholar_api_key=os.environ.get("SEMANTIC_SCHOLAR_API_KEY") or None,
         )

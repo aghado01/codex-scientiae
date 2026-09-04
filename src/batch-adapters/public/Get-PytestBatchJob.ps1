@@ -82,10 +82,10 @@ function Get-PytestBatchJob {
             ArtifactRoot = $address.ArtifactRoot
             TempRoot = $address.TempRoot
             JsonScratchRoot = $jsonScratchRoot
-            ArtifactEnvironment = 'CODEX_TEST_ARTIFACT_ROOT'
-            ScratchEnvironment = 'CODEX_JSON_SCRATCH_ROOT'
-            TempEnvironment = 'CODEX_TEMP'
-            PowerShellEnvironment = 'CODEX_TEST_POWERSHELL_PATH'
+            ArtifactEnvironment = 'CDXSCI_TEST_ARTIFACT_ROOT'
+            ScratchEnvironment = 'CDXSCI_JSON_SCRATCH_ROOT'
+            TempEnvironment = 'CDXSCI_TEMP'
+            PowerShellEnvironment = 'CDXSCI_TEST_POWERSHELL_PATH'
             ResultFormat = 'JUnitXml/xunit2'
             PythonPath = $python
             PytestModule = 'pytest'
@@ -100,10 +100,10 @@ function Get-PytestBatchJob {
                 PowerShellPath = $childPowerShell
                 WorkingDirectory = $repository
                 Environment = @{
-                    CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
-                    CODEX_JSON_SCRATCH_ROOT = $jsonScratchRoot
-                    CODEX_TEST_POWERSHELL_PATH = $childPowerShell
-                    CODEX_TEMP = $address.TempRoot
+                    CDXSCI_TEST_ARTIFACT_ROOT = $address.ArtifactRoot
+                    CDXSCI_JSON_SCRATCH_ROOT = $jsonScratchRoot
+                    CDXSCI_TEST_POWERSHELL_PATH = $childPowerShell
+                    CDXSCI_TEMP = $address.TempRoot
                     TEMP = $address.TempRoot
                     TMP = $address.TempRoot
                     TMPDIR = $address.TempRoot
@@ -111,7 +111,7 @@ function Get-PytestBatchJob {
                     PYTHONUTF8 = '1'
                     PYTEST_ADDOPTS = $null
                     PYTEST_DISABLE_PLUGIN_AUTOLOAD = '1'
-                    CODEX_REGEN_FIXTURES = $null
+                    CDXSCI_REGEN_FIXTURES = $null
                     PYTHONPATH = $null
                     PYTHONHOME = $null
                 }

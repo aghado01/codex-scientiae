@@ -8,7 +8,7 @@ is introduced.
 
 Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts` through
 `Resolve-ArtifactRunDirectory` in `src/logistics/containment.ps1`. Child processes receive
-`CODEX_TEMP` under that run, and `TEMP`/`TMP`/`TMPDIR` are projected from it so OS temp APIs cannot
+`CDXSCI_TEMP` under that run, and `TEMP`/`TMP`/`TMPDIR` are projected from it so OS temp APIs cannot
 follow the ambient user temp tree. `tests/batch.ps1` is the public test-batch caller, including a
 one-file selection; suite naming lives in `tests/suite-name.ps1`.
 
@@ -30,15 +30,15 @@ Planning resolves and freezes:
   normalized filters;
 - the exact Pester 5-or-newer manifest imported by the child;
 - the PowerShell executable, repository working directory, runner entrypoint, and the child's
-  logistics helpers (`assert-codex-temp.ps1` and sibling `containment.ps1`);
+  logistics helpers (`assert-temp.ps1` and sibling `containment.ps1`);
 - a file-size cost hint; and
 - one container address beneath `RunDirectory/pester-jobs/`, with a Pester-native `pester.xml` result,
   retained `artifacts/`, and ephemeral `temp/` root.
 
 One private pure resolver owns all run-relative address composition. Planning creates no directories or
 files. The job declares the XML, retained artifact, and temporary roots in `Writes`.
-`ProcessSpec.Environment` transports `CODEX_TEST_ARTIFACT_ROOT`, a job-local
-`CODEX_JSON_SCRATCH_ROOT`, `CODEX_TEMP`, and `TEMP`/`TMP`/`TMPDIR` projected from `CODEX_TEMP`. Pester's XML is an explicit
+`ProcessSpec.Environment` transports `CDXSCI_TEST_ARTIFACT_ROOT`, a job-local
+`CDXSCI_JSON_SCRATCH_ROOT`, `CDXSCI_TEMP`, and `TEMP`/`TMP`/`TMPDIR` projected from `CDXSCI_TEMP`. Pester's XML is an explicit
 runner-native artifact; retained suite evidence stays below the container artifact root; and the generic
 batch execution result remains the in-memory return from `Invoke-BatchPlan`.
 
@@ -49,7 +49,7 @@ wrapper taking ownership of execution policy.
 
 The Pester adapter never allocates or joins a run, selects logger sink topology, serializes the generic
 execution record, or owns pools, cancellation, retries, and result ordering. Process jobs receive the
-executor's `CODEX_BATCH_JOB_ID`; any caller-supplied logging or correlation environment continues through ordinary
+executor's `CDXSCI_BATCH_JOB_ID`; any caller-supplied logging or correlation environment continues through ordinary
 process policy.
 
 ## Pytest adapter
@@ -71,10 +71,10 @@ The planning contract freezes:
 - one container beneath `RunDirectory/pytest-jobs/`, containing `pytest.xml`, `artifacts/`, and `temp/`.
 
 One private resolver owns all three addresses. Planning creates none; each is declared in `Writes`.
-`CODEX_TEST_ARTIFACT_ROOT` transports the retained evidence root. `CODEX_TEMP` is the job ephemeral
+`CDXSCI_TEST_ARTIFACT_ROOT` transports the retained evidence root. `CDXSCI_TEMP` is the job ephemeral
 root; pytest/Python scratch and JSON-engine coordination live under it. Native JUnit remains the durable
 framework result and the generic executor record remains in memory. The resolved child PowerShell is
-transported as `CODEX_TEST_POWERSHELL_PATH`; shell-surface tests consume that exact path and use `PATH`
+transported as `CDXSCI_TEST_POWERSHELL_PATH`; shell-surface tests consume that exact path and use `PATH`
 only for direct, non-batch pytest. `Metadata.PowerShellEnvironment` names that transport key.
 
 `tests/pytest.ps1` is the authoritative runner and the job's direct PowerShell entrypoint. It invokes the

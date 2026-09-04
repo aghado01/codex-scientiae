@@ -8,7 +8,7 @@
   there because owning it is the CALLER's job by design.
 
   This script is that caller. It mints artifacts/tests/{suite}/{stamp}[_NN] through the logistics
-  minting authority, sets CODEX_TEMP to a job-local tree unless it is already conformant, and
+  minting authority, sets CDXSCI_TEMP to a job-local tree unless it is already conformant, and
   forwards everything else to parallel.ps1 untouched. Ambient TEMP/TMP/TMPDIR are not read.
   Pass -RunDirectory to own the root yourself — that path is resolved against the repository
   root, must already exist under artifacts/, and is rejected before any temp directory is created.
@@ -64,7 +64,7 @@ else {
         -RepositoryRoot $RepositoryRoot
 }
 
-$null = Set-CodexTempEnvironment -RunDirectory $RunDirectory -RepositoryRoot $RepositoryRoot
+$null = Set-TempEnvironment -RunDirectory $RunDirectory -RepositoryRoot $RepositoryRoot
 
 $forwarded = @{
     RunDirectory = $RunDirectory

@@ -38,7 +38,7 @@ For every new or changed test file:
 - Make each `It` independent of earlier `It` blocks. Create shared read-only inputs in `BeforeAll`; reset
   mutable inputs in `BeforeEach` or within the test.
 - Put ephemeral writes in `$TestDrive`. Put retained evidence only below
-  `$env:CODEX_TEST_ARTIFACT_ROOT`; never use a repository-global artifact path, fixed temporary directory,
+  `$env:CDXSCI_TEST_ARTIFACT_ROOT`; never use a repository-global artifact path, fixed temporary directory,
   fixed port, or common build output.
 - Restore environment variables, location, modules, globals, console state, locks, runspaces, and child
   processes on every path, normally with `try`/`finally` or Pester cleanup hooks.
@@ -49,7 +49,7 @@ For every new or changed test file:
 - Do not add per-file manifests, sidecars, workload profiles, scheduler locks, or custom batch logic.
 
 At minimum, verify the file through `tests/batch.ps1`, the house-convention caller. It mints
-`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`, sets `CODEX_TEMP` to a job-local tree,
+`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`, sets `CDXSCI_TEMP` to a job-local tree,
 and forwards every other argument to `tests/parallel.ps1` verbatim:
 
 ```pwsh
@@ -59,7 +59,7 @@ pwsh -File tests/batch.ps1 -Framework Pester -PesterPath tests/<owner>/<behavior
 `{suite}` is the `tests/<owner>` segment the batch selected; a batch spanning several owners is
 named `mixed`. Pass `-RunDirectory` to own the root yourself — it must already exist under
 `artifacts/`, is resolved against the repository root rather than the process working directory,
-and `CODEX_TEMP` is set unless already conformant. Do not mint a `test-runs/` directory.
+and `CDXSCI_TEMP` is set unless already conformant. Do not mint a `test-runs/` directory.
 
 `tests/parallel.ps1` remains the batch shell and takes `-RunDirectory` as **mandatory**. That is
 deliberate: it is held to a thinness contract (`tests/batch-adapters/parallel.Tests.ps1`) that
@@ -86,14 +86,14 @@ For every new or changed Python test file:
 - Make every test method independent of earlier methods and other test files. Put reusable factories in a
   non-test support module rather than importing a sibling `test_*.py` file.
 - Put ephemeral writes in `tmp_path`, `tempfile.TemporaryDirectory`, or another unique temporary root. A
-  batch child receives an absolute `CODEX_TEST_ARTIFACT_ROOT` only for retained evidence.
+  batch child receives an absolute `CDXSCI_TEST_ARTIFACT_ROOT` only for retained evidence.
 - Treat committed fixtures as read-only. Regeneration is an explicit maintenance operation outside the
   test runner; a missing golden fails.
 - Restore environment, working directory, module/global state, mocks, locks, threads, and child processes
   on every path. Joins and subprocess waits require bounds; timeout cleanup terminates descendants.
 - Preflight optional tools with a deterministic skip reason. Do not install, restore, or build a missing
   dependency during a test.
-- Consume the adapter-provided `CODEX_TEST_POWERSHELL_PATH` for PowerShell integration. Falling back to
+- Consume the adapter-provided `CDXSCI_TEST_POWERSHELL_PATH` for PowerShell integration. Falling back to
   `PATH` is permitted only for direct, non-batch pytest.
 - Capture subprocess stdout, stderr, and exit status locally. Do not let expected stderr or a nonzero probe
   contaminate the file runner's result.
@@ -122,8 +122,8 @@ only this shelf and never fall back to use-case-local installations:
 ```
 
 `run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It requires
-`CODEX_TEMP` under the repository `artifacts` root; ambient `TEMP` is not a substitute.
-The child-process check lives in `src/logistics/assert-codex-temp.ps1`.
+`CDXSCI_TEMP` under the repository `artifacts` root; ambient `TEMP` is not a substitute.
+The child-process check lives in `src/logistics/assert-temp.ps1`.
 Use `tests/batch.ps1` for repository-facing execution.
 
 `run.ps1` imports Pester 5 or newer from the portable PowerShell module tree
@@ -222,7 +222,7 @@ required. MCP registrations invoke `packages/uv/uv.exe` directly; `.venv` contai
 Python project environment. `requirements.txt` is a generated runtime-only compatibility export, not the
 dependency authority.
 
-Pytest processes require an explicit `--basetemp` plus `CODEX_TEMP` beneath a compact
+Pytest processes require an explicit `--basetemp` plus `CDXSCI_TEMP` beneath a compact
 caller-owned runstamp in `artifacts/tests/`. `tests/batch.ps1` mints that root and supplies that
 variable:
 
@@ -326,8 +326,8 @@ The frozen batch address is conceptually:
     temp/
 ~~~
 
-The adapter provides the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT`, supplies
-job-local `CODEX_TEMP` and JSON scratch values, projects `TEMP`/`TMP`/`TMPDIR` from `CODEX_TEMP`, and
+The adapter provides the absolute `artifacts/` path to the child as `CDXSCI_TEST_ARTIFACT_ROOT`, supplies
+job-local `CDXSCI_TEMP` and JSON scratch values, projects `TEMP`/`TMP`/`TMPDIR` from `CDXSCI_TEMP`, and
 declares every address class as a job write.
 Planning creates nothing; execution may create the assigned roots. A suite
 that retains evidence validates this value as an absolute path and writes only beneath it. It does not fall
@@ -341,11 +341,11 @@ responsible for preventing collisions among its own writes below the container r
 
 The BEX-504 LaTeX integration pilot is the first concrete realization: it uses `$TestDrive` when the
 environment value is absent and six meaningful case roots directly below an absolute
-`CODEX_TEST_ARTIFACT_ROOT` when supplied. That case layout belongs to the suite and is evidence for this
+`CDXSCI_TEST_ARTIFACT_ROOT` when supplied. That case layout belongs to the suite and is evidence for this
 pilot, not a required repository-wide hierarchy.
 
 The HDBSCAN CLI suite is a second concrete layout: retained input/output and process evidence stay below
-`CODEX_TEST_ARTIFACT_ROOT/hdbscan-cli`. It does not share a retained path with LaTeX; both layouts remain
+`CDXSCI_TEST_ARTIFACT_ROOT/hdbscan-cli`. It does not share a retained path with LaTeX; both layouts remain
 owned by their independently addressed Pester containers.
 
 Read-only shared inputs are allowed when they are immutable for the duration of the run. Fixed mutable
@@ -391,7 +391,7 @@ inventory or migration record. Do not create per-file manifests or sidecars.
 | Are discovery and setup repeatable and side-effect bounded? | Hooks/top-level code inspected; mutable state restored. |
 | Are all processes, runspaces, locks, locations, modules, globals, and environment changes cleaned on every path? | `finally`/hook ownership is visible and bounded. |
 | Are ephemeral writes confined to `$TestDrive` or another unique temporary root? | Every scratch address has one container-local owner. |
-| Are retained writes confined to `CODEX_TEST_ARTIFACT_ROOT`? | No repository-global/default/fixed destination; intended roots are declared by the job. |
+| Are retained writes confined to `CDXSCI_TEST_ARTIFACT_ROOT`? | No repository-global/default/fixed destination; intended roots are declared by the job. |
 | Are shared inputs read-only and fixed resources absent or isolated? | No mutable service, fixed port, common build output, or package restore race. |
 | Are missing capabilities explicit and deterministic? | Named preflight and skip reason; no implicit fallback acquisition. |
 | Is unusual setup/runtime/process cost visible? | Inventory evidence and a justified physical-file seam or decision to retain it. |
@@ -423,7 +423,7 @@ This is the current BEX-601 authoring and review checklist.
 | Are global state, mocks, threads, locks, and children bounded? | Context/finally cleanup plus bounded joins and descendant termination. |
 | Are committed fixtures read-only? | Missing inputs fail; regeneration has a separate explicit utility. |
 | Are temporary writes container-local? | Runner-supplied `temp/`; no repository cache, bytecode, or shared engine scratch. |
-| Are retained writes explicitly owned? | Only beneath `CODEX_TEST_ARTIFACT_ROOT`, with the root declared by the job. |
+| Are retained writes explicitly owned? | Only beneath `CDXSCI_TEST_ARTIFACT_ROOT`, with the root declared by the job. |
 | Are optional executables deterministic capabilities? | Exact preflight and reasoned pytest skip; no ambient build/install fallback. |
 | Do direct and nested outcomes agree? | Same method collection and selected/pass/fail/error/skip outcome counts, JUnit, observation, and nonzero failure status. |
 | Does one failed file preserve siblings? | Executor evidence retains every sibling JUnit/artifact result and no descendant process. |

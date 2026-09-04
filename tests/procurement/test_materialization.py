@@ -115,7 +115,7 @@ class RejectingMetadataService:
 @pytest.fixture
 def layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Layout]:
     scratch = tmp_path / "json-scratch"
-    monkeypatch.setenv("CODEX_JSON_SCRATCH_ROOT", str(scratch))
+    monkeypatch.setenv("CDXSCI_JSON_SCRATCH_ROOT", str(scratch))
     staging_root = tmp_path / "staging"
     catalog_root = tmp_path / "catalog"
     staging_root.mkdir()

@@ -69,7 +69,7 @@ function Set-PytestProcessEnvironment {
     )
 
     foreach ($name in @(
-            'PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'CODEX_REGEN_FIXTURES',
+            'PYTEST_ADDOPTS', 'PYTEST_PLUGINS', 'CDXSCI_REGEN_FIXTURES',
             'PYTHONPATH', 'PYTHONHOME'
         )) {
         [void]$StartInfo.Environment.Remove($name)
@@ -77,12 +77,12 @@ function Set-PytestProcessEnvironment {
     $StartInfo.Environment['PYTEST_DISABLE_PLUGIN_AUTOLOAD'] = '1'
     $StartInfo.Environment['PYTHONDONTWRITEBYTECODE'] = '1'
     $StartInfo.Environment['PYTHONUTF8'] = '1'
-    $StartInfo.Environment['CODEX_TEMP'] = $TempPath
+    $StartInfo.Environment['CDXSCI_TEMP'] = $TempPath
     $StartInfo.Environment['TMP'] = $TempPath
     $StartInfo.Environment['TEMP'] = $TempPath
     $StartInfo.Environment['TMPDIR'] = $TempPath
-    $StartInfo.Environment['CODEX_JSON_SCRATCH_ROOT'] = $JsonScratchPath
-    $StartInfo.Environment['CODEX_PROCUREMENT_RATE_CLOCK'] = Join-Path $TempPath 'procurement-rate-clock.json'
+    $StartInfo.Environment['CDXSCI_JSON_SCRATCH_ROOT'] = $JsonScratchPath
+    $StartInfo.Environment['CDXSCI_PROCUREMENT_RATE_CLOCK'] = Join-Path $TempPath 'procurement-rate-clock.json'
 }
 
 function Invoke-PytestCapturedProcess {

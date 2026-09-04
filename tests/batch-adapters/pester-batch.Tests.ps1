@@ -9,8 +9,8 @@ BeforeAll {
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
         'src/logistics/containment.ps1'
-    $script:RepositoryAssertCodexTemp = Join-Path $script:RepositoryRoot `
-        'src/logistics/assert-codex-temp.ps1'
+    $script:RepositoryAssertTemp = Join-Path $script:RepositoryRoot `
+        'src/logistics/assert-temp.ps1'
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
     $script:LivePesterManifest = Join-Path $livePester.ModuleBase 'Pester.psd1'
 
@@ -39,8 +39,8 @@ BeforeAll {
         [void][System.IO.Directory]::CreateDirectory($logistics)
         Copy-Item -LiteralPath $script:RepositoryContainment `
             -Destination (Join-Path $logistics 'containment.ps1')
-        Copy-Item -LiteralPath $script:RepositoryAssertCodexTemp `
-            -Destination (Join-Path $logistics 'assert-codex-temp.ps1')
+        Copy-Item -LiteralPath $script:RepositoryAssertTemp `
+            -Destination (Join-Path $logistics 'assert-temp.ps1')
         Set-Content -LiteralPath (Join-Path $pesterRoot 'Pester.psm1') `
             -Encoding utf8 -Value '# fixture Pester module'
         $manifest = Join-Path $pesterRoot 'Pester.psd1'
@@ -86,12 +86,12 @@ param(
     [Parameter(Mandatory)] [string] $ArtifactRoot,
     [string] $FullNameFilter = ''
 )
-$env:CODEX_TEMP = $TempPath
+$env:CDXSCI_TEMP = $TempPath
 $env:TEMP = $TempPath
 $env:TMP = $TempPath
 $env:TMPDIR = $TempPath
-$env:CODEX_TEST_ARTIFACT_ROOT = $ArtifactRoot
-$env:CODEX_JSON_SCRATCH_ROOT = Join-Path $TempPath 'json-scratch'
+$env:CDXSCI_TEST_ARTIFACT_ROOT = $ArtifactRoot
+$env:CDXSCI_JSON_SCRATCH_ROOT = Join-Path $TempPath 'json-scratch'
 Import-Module -Name $PesterManifest -Force
 $invoke = @{
     Path = $TestPath
@@ -284,9 +284,9 @@ Describe 'Get-PesterBatchJob planning' {
                 $job.Metadata.ResultPath, $job.Metadata.ArtifactRoot, $job.Metadata.TempRoot)
             $job.Parameters.ResultPath | Should -Be $job.Metadata.ResultPath
             $environment = $job.ProcessSpec.Environment
-            $environment.CODEX_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
-            $environment.CODEX_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
-            $environment.CODEX_TEMP | Should -Be $job.Metadata.TempRoot
+            $environment.CDXSCI_TEST_ARTIFACT_ROOT | Should -Be $job.Metadata.ArtifactRoot
+            $environment.CDXSCI_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
+            $environment.CDXSCI_TEMP | Should -Be $job.Metadata.TempRoot
             @($environment.TEMP, $environment.TMP, $environment.TMPDIR) |
                 Should -Be @($job.Metadata.TempRoot, $job.Metadata.TempRoot, $job.Metadata.TempRoot)
             foreach ($write in @(
@@ -297,9 +297,9 @@ Describe 'Get-PesterBatchJob planning' {
             }
             $job.Metadata.AddressingContract | Should -Be 'D19/RunDirectory'
             $job.Metadata.ArtifactContract | Should -Be 'D23/ContainerRoot'
-            $job.Metadata.ArtifactEnvironment | Should -Be 'CODEX_TEST_ARTIFACT_ROOT'
-            $job.Metadata.ScratchEnvironment | Should -Be 'CODEX_JSON_SCRATCH_ROOT'
-            $job.Metadata.TempEnvironment | Should -Be 'CODEX_TEMP'
+            $job.Metadata.ArtifactEnvironment | Should -Be 'CDXSCI_TEST_ARTIFACT_ROOT'
+            $job.Metadata.ScratchEnvironment | Should -Be 'CDXSCI_JSON_SCRATCH_ROOT'
+            $job.Metadata.TempEnvironment | Should -Be 'CDXSCI_TEMP'
             $job.Metadata.ResultPersistence | Should -Be 'PesterNative'
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.ResultPath | Should -BeFalse
@@ -407,21 +407,21 @@ Describe 'repository Pester runner contract' {
             -Root (Join-Path $TestDrive 'runner-temp-boundary') -UseRepositoryRunner
         $selected = Write-PesterBatchFixture (Join-Path $fixture.Tests 'selected.Tests.ps1')
 
-        $savedCodexTemp = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP', 'Process')
+        $savedTemp = [System.Environment]::GetEnvironmentVariable('CDXSCI_TEMP', 'Process')
         try {
-            Remove-Item -LiteralPath 'env:CODEX_TEMP' -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath 'env:CDXSCI_TEMP' -ErrorAction SilentlyContinue
             $output = @(& ([System.Environment]::ProcessPath) -NoProfile -File $fixture.Runner `
                     -Path $selected -OutputVerbosity None 2>&1)
             $LASTEXITCODE | Should -Not -Be 0
             (@($output | ForEach-Object ToString) -join "`n") |
-                Should -Match 'CODEX_TEMP must be an absolute path under RepositoryRoot/artifacts'
+                Should -Match 'CDXSCI_TEMP must be an absolute path under RepositoryRoot/artifacts'
         }
         finally {
-            if ($null -eq $savedCodexTemp) {
-                Remove-Item -LiteralPath 'env:CODEX_TEMP' -ErrorAction SilentlyContinue
+            if ($null -eq $savedTemp) {
+                Remove-Item -LiteralPath 'env:CDXSCI_TEMP' -ErrorAction SilentlyContinue
             }
             else {
-                Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $savedCodexTemp
+                Set-Item -LiteralPath 'env:CDXSCI_TEMP' -Value $savedTemp
             }
         }
         $global:LASTEXITCODE = 0
@@ -459,7 +459,7 @@ Describe 'repository Pester runner contract' {
                 ) }).Count | Should -Be 0
 
         $source = $ast.Extent.Text
-        $source | Should -Not -Match '\bRunDirectory\b|\bMaxWorkers\b|\bRetry\b|CODEX_RUNLOG|RunspacePool'
+        $source | Should -Not -Match '\bRunDirectory\b|\bMaxWorkers\b|\bRetry\b|CDXSCI_RUNLOG|RunspacePool'
         @([regex]::Matches($source, 'PesterContainerObservation')).Count | Should -Be 1
     }
 
@@ -554,13 +554,13 @@ Describe 'pester-batch execution integration' {
         $passPath = Write-PesterBatchFixture (Join-Path $fixture.Tests 'pass.Tests.ps1') -Content @'
 Describe 'filtered integration fixture' {
     It 'selected pass' {
-        $env:CODEX_BATCH_JOB_ID | Should -Match '^pester:'
-        [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        $env:CDXSCI_BATCH_JOB_ID | Should -Match '^pester:'
+        [System.IO.Path]::IsPathFullyQualified($env:CDXSCI_TEST_ARTIFACT_ROOT) | Should -BeTrue
         [System.IO.Path]::TrimEndingDirectorySeparator(
             [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath())) |
             Should -Be ([System.IO.Path]::TrimEndingDirectorySeparator(
                 [System.IO.Path]::GetFullPath($env:TEMP)))
-        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'selected-pass'
+        $caseRoot = Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'selected-pass'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'pass artifact'
     }
@@ -572,8 +572,8 @@ Describe 'filtered integration fixture' {
         $failPath = Write-PesterBatchFixture (Join-Path $fixture.Tests 'fail.Tests.ps1') -Content @'
 Describe 'failing integration fixture' {
     It 'fails locally' {
-        [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
-        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'fails-locally'
+        [System.IO.Path]::IsPathFullyQualified($env:CDXSCI_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        $caseRoot = Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'fails-locally'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'failure artifact'
         throw 'planned isolated failure'

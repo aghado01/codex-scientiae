@@ -77,8 +77,8 @@ class StorePaths:
 
 
 SCRATCH_DIRNAME = os.path.join("artifacts", "json-scratch")
-SCRATCH_ROOT_ENV = "CODEX_JSON_SCRATCH_ROOT"
-TEMP_ROOT_ENV = "CODEX_TEMP"
+SCRATCH_ROOT_ENV = "CDXSCI_JSON_SCRATCH_ROOT"
+TEMP_ROOT_ENV = "CDXSCI_TEMP"
 
 
 def scratch_root() -> str:
@@ -88,13 +88,13 @@ def scratch_root() -> str:
     is per-artifact and outlives any one of them, so filing it under a run stamp would scatter one
     logical thing across every run that ever touched the store.
 
-    ``CODEX_JSON_SCRATCH_ROOT`` selects a process-scoped coordination root. Batch workers use a
+    ``CDXSCI_JSON_SCRATCH_ROOT`` selects a process-scoped coordination root. Batch workers use a
     job-local value so independent jobs do not write to one shared directory. Every process that
     can write the same artifact must receive the same value, because the directory defines the
     lock-coordination domain.
 
-    ``CODEX_TEMP`` is the project ephemeral root. When the JSON scratch override is unset, scratch
-    is ``{CODEX_TEMP}/json-scratch``. Ambient TEMP/TMP/TMPDIR are not consulted.
+    ``CDXSCI_TEMP`` is the project ephemeral root. When the JSON scratch override is unset, scratch
+    is ``{CDXSCI_TEMP}/json-scratch``. Ambient TEMP/TMP/TMPDIR are not consulted.
 
     Without those overrides, the production default remains the repository scratch directory.
     """

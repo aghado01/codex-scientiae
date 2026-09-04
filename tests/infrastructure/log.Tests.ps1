@@ -7,9 +7,9 @@ BeforeAll {
     . "$PSScriptRoot/../../src/logistics/logger.ps1"
 
     $script:SavedEnv = @{
-        DIR     = $env:CODEX_RUNLOG_DIR
-        LEVEL   = $env:CODEX_RUNLOG_LEVEL
-        CONSOLE = $env:CODEX_RUNLOG_CONSOLE
+        DIR     = $env:CDXSCI_RUNLOG_DIR
+        LEVEL   = $env:CDXSCI_RUNLOG_LEVEL
+        CONSOLE = $env:CDXSCI_RUNLOG_CONSOLE
     }
 
     # the mirror writes via [Console]::Error — capture it deterministically, no Mock mechanics
@@ -27,16 +27,16 @@ BeforeAll {
 }
 
 AfterAll {
-    $env:CODEX_RUNLOG_DIR = $script:SavedEnv.DIR
-    $env:CODEX_RUNLOG_LEVEL = $script:SavedEnv.LEVEL
-    $env:CODEX_RUNLOG_CONSOLE = $script:SavedEnv.CONSOLE
+    $env:CDXSCI_RUNLOG_DIR = $script:SavedEnv.DIR
+    $env:CDXSCI_RUNLOG_LEVEL = $script:SavedEnv.LEVEL
+    $env:CDXSCI_RUNLOG_CONSOLE = $script:SavedEnv.CONSOLE
 }
 
 Describe 'run log substrate' {
     BeforeEach {
-        $env:CODEX_RUNLOG_DIR = $null
-        $env:CODEX_RUNLOG_LEVEL = $null
-        $env:CODEX_RUNLOG_CONSOLE = $null
+        $env:CDXSCI_RUNLOG_DIR = $null
+        $env:CDXSCI_RUNLOG_LEVEL = $null
+        $env:CDXSCI_RUNLOG_CONSOLE = $null
     }
     AfterEach {
         Stop-RunLog | Out-Null
@@ -54,9 +54,9 @@ Describe 'run log substrate' {
             $got = Start-RunLog -Module t -RunDir $d -Force
             $got | Should -Be (Join-Path $d 'trace.jsonl')
         }
-        It 'CODEX_RUNLOG_DIR joins a parent run; a taken trace.jsonl means a sibling file, never a shared one' {
+        It 'CDXSCI_RUNLOG_DIR joins a parent run; a taken trace.jsonl means a sibling file, never a shared one' {
             $d = Join-Path $TestDrive 'parent-run'; New-Item -ItemType Directory -Path $d | Out-Null
-            $env:CODEX_RUNLOG_DIR = $d
+            $env:CDXSCI_RUNLOG_DIR = $d
             (Start-RunLog -Module kid -Force) | Should -Be (Join-Path $d 'trace.jsonl')
             Stop-RunLog | Out-Null
             (Start-RunLog -Module kid2 -Force) | Should -Be (Join-Path $d "trace-kid2-$PID.jsonl")
@@ -64,7 +64,7 @@ Describe 'run log substrate' {
         It '-Export publishes the dir for children' {
             $d = Join-Path $TestDrive 'run-exp'; New-Item -ItemType Directory -Path $d | Out-Null
             Start-RunLog -Module t -RunDir $d -Export -Force | Out-Null
-            $env:CODEX_RUNLOG_DIR | Should -Be $d
+            $env:CDXSCI_RUNLOG_DIR | Should -Be $d
         }
         It 'a second Start JOINS the live context; -Force replaces it' {
             $p1 = Start-RunLog -Module first -LogPath (Join-Path $TestDrive 'a.jsonl') -Force
@@ -127,9 +127,9 @@ Describe 'run log substrate' {
             $err | Should -Not -Match 'quiet info'
             $err | Should -Match 'WARN\s+\[con\] loud'
         }
-        It 'CODEX_RUNLOG_CONSOLE=off silences even errors; CODEX_RUNLOG_LEVEL overrides the file gate' {
-            $env:CODEX_RUNLOG_CONSOLE = 'off'
-            $env:CODEX_RUNLOG_LEVEL = 'error'
+        It 'CDXSCI_RUNLOG_CONSOLE=off silences even errors; CDXSCI_RUNLOG_LEVEL overrides the file gate' {
+            $env:CDXSCI_RUNLOG_CONSOLE = 'off'
+            $env:CDXSCI_RUNLOG_LEVEL = 'error'
             $p = Start-RunLog -Module env -LogPath (Join-Path $TestDrive 'env.jsonl') -Force
             $err = Invoke-WithStdErr { Write-RunLog 'bad' -Level error; Write-RunLog 'mid' -Level warn }
             $err | Should -Be ''

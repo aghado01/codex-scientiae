@@ -112,7 +112,7 @@ Describe 'pinned uv and Python toolchain' {
         @($registration.args) | Should -Be @(
             'run', '--project', '.', '--locked', '--no-sync',
             '--no-dev', '--offline', 'scientiae-procurement')
-        $registration.env.CODEX_SCIENTIAE_ROOT | Should -BeExactly '.'
+        $registration.env.CDXSCI_ROOT | Should -BeExactly '.'
         $registration.env.UV_PROJECT_ENVIRONMENT | Should -BeExactly './.venv'
         $registration.env.UV_PYTHON_INSTALL_DIR | Should -BeExactly './packages/python'
         $registration.env.UV_CACHE_DIR | Should -BeExactly './artifacts/uv/cache'
@@ -144,7 +144,7 @@ Describe 'pinned uv and Python toolchain' {
         @($registration.args) | Should -Be @(
             'run', '--project', '.', '--locked', '--no-sync',
             '--no-dev', '--offline', 'scientiae-procurement')
-        $registration.env.CODEX_SCIENTIAE_ROOT | Should -BeExactly '.'
+        $registration.env.CDXSCI_ROOT | Should -BeExactly '.'
         $registration.env.UV_PROJECT_ENVIRONMENT | Should -BeExactly './.venv'
     }
 }

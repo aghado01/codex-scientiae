@@ -7,8 +7,8 @@ BeforeAll {
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
     $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
         'src/logistics/containment.ps1'
-    $script:RepositoryAssertCodexTemp = Join-Path $script:RepositoryRoot `
-        'src/logistics/assert-codex-temp.ps1'
+    $script:RepositoryAssertTemp = Join-Path $script:RepositoryRoot `
+        'src/logistics/assert-temp.ps1'
     $script:PythonPath = (Resolve-Path `
         (Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe')).Path
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
@@ -30,8 +30,8 @@ BeforeAll {
         [void][System.IO.Directory]::CreateDirectory($logistics)
         Copy-Item -LiteralPath $script:RepositoryContainment `
             -Destination (Join-Path $logistics 'containment.ps1')
-        Copy-Item -LiteralPath $script:RepositoryAssertCodexTemp `
-            -Destination (Join-Path $logistics 'assert-codex-temp.ps1')
+        Copy-Item -LiteralPath $script:RepositoryAssertTemp `
+            -Destination (Join-Path $logistics 'assert-temp.ps1')
         Set-Content -LiteralPath (Join-Path $repository 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]
@@ -129,7 +129,7 @@ Describe 'multilingual test composition shell' {
                 }, $true)).Count | Should -Be 0
         $source = $ast.Extent.Text
         $source | Should -Not -Match `
-            'pester-jobs|pester\.xml|CODEX_TEST_ARTIFACT_ROOT|\bartifacts\b'
+            'pester-jobs|pester\.xml|CDXSCI_TEST_ARTIFACT_ROOT|\bartifacts\b'
         $source | Should -Not -Match `
             '\$(?:env|global):|RunspacePool|ProcessRegistry|Scheduler|Cancellation|Retry|Runstamp'
 
@@ -153,8 +153,8 @@ Describe 'multilingual test composition shell' {
             -Content @'
 Describe 'alpha parallel fixture' {
     It 'writes alpha evidence' {
-        [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
-        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'alpha'
+        [System.IO.Path]::IsPathFullyQualified($env:CDXSCI_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        $caseRoot = Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'alpha'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'alpha'
     }
@@ -164,8 +164,8 @@ Describe 'alpha parallel fixture' {
             -Content @'
 Describe 'beta parallel fixture' {
     It 'writes beta evidence' {
-        [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
-        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'beta'
+        [System.IO.Path]::IsPathFullyQualified($env:CDXSCI_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        $caseRoot = Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'beta'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'beta'
     }
@@ -214,8 +214,8 @@ Describe 'beta parallel fixture' {
             -Content @'
 Describe 'multilingual Pester fixture' {
     It 'retains Pester evidence' {
-        [void][System.IO.Directory]::CreateDirectory($env:CODEX_TEST_ARTIFACT_ROOT)
-        Set-Content -LiteralPath (Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'pester.txt') `
+        [void][System.IO.Directory]::CreateDirectory($env:CDXSCI_TEST_ARTIFACT_ROOT)
+        Set-Content -LiteralPath (Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'pester.txt') `
             -Value 'pester'
     }
 }
@@ -226,7 +226,7 @@ import os
 from pathlib import Path
 
 def test_multilingual_pytest_evidence():
-    root = Path(os.environ["CODEX_TEST_ARTIFACT_ROOT"])
+    root = Path(os.environ["CDXSCI_TEST_ARTIFACT_ROOT"])
     root.mkdir(parents=True, exist_ok=True)
     (root / "pytest.txt").write_text("pytest", encoding="utf-8")
 '@
@@ -274,8 +274,8 @@ def test_multilingual_pytest_evidence():
             -Content @'
 Describe 'passing cross-framework sibling' {
     It 'retains evidence' {
-        [void][System.IO.Directory]::CreateDirectory($env:CODEX_TEST_ARTIFACT_ROOT)
-        Set-Content -LiteralPath (Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'survived.txt') `
+        [void][System.IO.Directory]::CreateDirectory($env:CDXSCI_TEST_ARTIFACT_ROOT)
+        Set-Content -LiteralPath (Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'survived.txt') `
             -Value 'survived'
     }
 }
@@ -286,7 +286,7 @@ import os
 from pathlib import Path
 
 def test_planned_failure():
-    root = Path(os.environ["CODEX_TEST_ARTIFACT_ROOT"])
+    root = Path(os.environ["CDXSCI_TEST_ARTIFACT_ROOT"])
     root.mkdir(parents=True, exist_ok=True)
     (root / "failure.txt").write_text("retained", encoding="utf-8")
     assert False, "planned mixed-framework failure"
@@ -326,7 +326,7 @@ def test_planned_failure():
             -Content @'
 Describe 'passing sibling fixture' {
     It 'survives its failing sibling' {
-        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'pass'
+        $caseRoot = Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'pass'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'survived'
     }
@@ -336,7 +336,7 @@ Describe 'passing sibling fixture' {
             -Content @'
 Describe 'failing sibling fixture' {
     It 'fails locally after retaining evidence' {
-        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'failure'
+        $caseRoot = Join-Path $env:CDXSCI_TEST_ARTIFACT_ROOT 'failure'
         [void][System.IO.Directory]::CreateDirectory($caseRoot)
         Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'retained'
         throw 'planned parallel-shell failure'

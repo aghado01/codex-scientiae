@@ -199,25 +199,25 @@ class TestScratchRoot(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, SCRATCH_ROOT_ENV):
                     scratch_root()
 
-    def test_codex_temp_selects_a_json_scratch_child(self):
+    def test_cdxsci_temp_selects_a_json_scratch_child(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            temp_root = os.path.join(tmpdir, "codex-temp")
+            temp_root = os.path.join(tmpdir, "cdxsci-temp")
             expected = os.path.join(os.path.abspath(temp_root), "json-scratch")
             with mock.patch.dict(os.environ, {TEMP_ROOT_ENV: temp_root}, clear=False):
                 os.environ.pop(SCRATCH_ROOT_ENV, None)
                 self.assertEqual(expected, scratch_root())
 
-    def test_json_scratch_override_wins_over_codex_temp(self):
+    def test_json_scratch_override_wins_over_cdxsci_temp(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             configured = os.path.join(tmpdir, "explicit-json-scratch")
-            temp_root = os.path.join(tmpdir, "codex-temp")
+            temp_root = os.path.join(tmpdir, "cdxsci-temp")
             with mock.patch.dict(
                 os.environ,
                 {SCRATCH_ROOT_ENV: configured, TEMP_ROOT_ENV: temp_root},
             ):
                 self.assertEqual(os.path.abspath(configured), scratch_root())
 
-    def test_codex_temp_must_be_an_absolute_directory(self):
+    def test_cdxsci_temp_must_be_an_absolute_directory(self):
         for configured in ("", "relative/temp"):
             with self.subTest(configured=configured), mock.patch.dict(
                 os.environ, {TEMP_ROOT_ENV: configured}, clear=False

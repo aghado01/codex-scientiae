@@ -32,7 +32,7 @@ Sleeper = Callable[[float], Awaitable[None]]
 UtcNow = Callable[[], datetime]
 _T = TypeVar("_T")
 _DOWNLOAD_CHUNK_BYTES = 1024 * 1024
-_RATE_CLOCK_ENV = "CODEX_PROCUREMENT_RATE_CLOCK"
+_RATE_CLOCK_ENV = "CDXSCI_PROCUREMENT_RATE_CLOCK"
 _SENSITIVE_QUERY_PARAMETERS = frozenset(
     {"access_token", "api-key", "api_key", "apikey", "key", "mailto", "token"}
 )

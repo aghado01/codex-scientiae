@@ -18,8 +18,8 @@
 
   Allocate a fresh run directory, or read existing ones newest-first. Pure path work — no crawler,
   no document identity, no lane knowledge, no filesystem discovery beyond enumerating the tier root
-  itself. Containment checks and `CODEX_TEMP` live in the sibling containment.ps1.
-  Child-process projection of CODEX_TEMP onto TEMP/TMP/TMPDIR lives in assert-codex-temp.ps1.
+  itself. Containment checks and `CDXSCI_TEMP` live in the sibling containment.ps1.
+  Child-process projection of CDXSCI_TEMP onto TEMP/TMP/TMPDIR lives in assert-temp.ps1.
   Test-suite naming lives in tests/suite-name.ps1.
 
   Two properties the layout exists for:

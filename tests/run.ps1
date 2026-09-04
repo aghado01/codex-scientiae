@@ -7,7 +7,7 @@
   portable-env integration is degraded, so we import it by explicit path anchored on $env:PORTABLE_ROOT
   (falls back to a normally-installed >=5 if that anchor isn't set). Throws on any test failure, a missing
   path, OR an empty run, so child processes exit non-zero and nested callers can observe the failure.
-  This exact-container entrypoint requires CODEX_TEMP under the repository artifacts root. The
+  This exact-container entrypoint requires CDXSCI_TEMP under the repository artifacts root. The
   public caller is tests/batch.ps1, including a one-file selection; this script is the child
   entrypoint Get-PesterBatchJob invokes. Ambient TEMP is not a substitute.
 #>
@@ -26,12 +26,12 @@ param(
 )
 
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$assertCodexTemp = Join-Path $repositoryRoot 'src/logistics/assert-codex-temp.ps1'
-if (-not (Test-Path -LiteralPath $assertCodexTemp -PathType Leaf)) {
-    throw "run.ps1: CODEX_TEMP assert helper not found: '$assertCodexTemp'"
+$assertTemp = Join-Path $repositoryRoot 'src/logistics/assert-temp.ps1'
+if (-not (Test-Path -LiteralPath $assertTemp -PathType Leaf)) {
+    throw "run.ps1: CDXSCI_TEMP assert helper not found: '$assertTemp'"
 }
-. $assertCodexTemp
-$null = Assert-CodexTempEnvironment -RepositoryRoot $repositoryRoot
+. $assertTemp
+$null = Assert-TempEnvironment -RepositoryRoot $repositoryRoot
 
 if (-not (Get-Module Pester | Where-Object { $_.Version -ge [version]'5.0' })) {
     $manifest = $null

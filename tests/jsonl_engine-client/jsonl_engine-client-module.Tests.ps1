@@ -97,7 +97,7 @@ Describe 'jsonl_engine-client module' {
         $default.protocol | Should -Be 'codex-scientiae/jsonl_engine-cli'
         $default.version | Should -Be 1
         $default.framing | Should -BeTrue
-        @($default.verbs).Count | Should -Be 19
+        @($default.verbs).Count | Should -Be 20
         @($default.verbs) | Should -Contain 'deposit'
         @($default.verbs) | Should -Contain 'validate-json'
         @($default.verbs) | Should -Contain 'inspect-prefix'
@@ -106,18 +106,18 @@ Describe 'jsonl_engine-client module' {
         { Get-JsonlEngineCapability -PythonPath (Join-Path $TestDrive 'missing-python.exe') } |
             Should -Throw '*interpreter not found*'
 
-        $prior = [System.Environment]::GetEnvironmentVariable('CODEX_JSONL_ENGINE_PYTHON')
+        $prior = [System.Environment]::GetEnvironmentVariable('CDXSCI_JSONL_ENGINE_PYTHON')
         try {
-            $env:CODEX_JSONL_ENGINE_PYTHON = Join-Path $TestDrive 'ambient-missing.exe'
+            $env:CDXSCI_JSONL_ENGINE_PYTHON = Join-Path $TestDrive 'ambient-missing.exe'
             { Get-JsonlEngineCapability } | Should -Throw '*interpreter not found*'
             (Get-JsonlEngineCapability -PythonPath $script:Python).version | Should -Be 1
         }
         finally {
             if ($null -eq $prior) {
-                Remove-Item Env:CODEX_JSONL_ENGINE_PYTHON -ErrorAction SilentlyContinue
+                Remove-Item Env:CDXSCI_JSONL_ENGINE_PYTHON -ErrorAction SilentlyContinue
             }
             else {
-                $env:CODEX_JSONL_ENGINE_PYTHON = $prior
+                $env:CDXSCI_JSONL_ENGINE_PYTHON = $prior
             }
         }
     }
@@ -462,27 +462,27 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
         @(Get-ChildItem -LiteralPath $TestDrive -Filter '*.tmp' -File).Count | Should -Be 0
 
         $configuredScratch = Join-Path $TestDrive 'configured-json-scratch'
-        $codexTemp = Join-Path $TestDrive 'codex-temp'
-        $priorScratch = [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
-        $priorTemp = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP')
+        $cdxsciTemp = Join-Path $TestDrive 'cdxsci-temp'
+        $priorScratch = [System.Environment]::GetEnvironmentVariable('CDXSCI_JSON_SCRATCH_ROOT')
+        $priorTemp = [System.Environment]::GetEnvironmentVariable('CDXSCI_TEMP')
         $temporary = $null
         $fromTemp = $null
         $defaultTemporary = $null
         try {
-            $env:CODEX_JSON_SCRATCH_ROOT = $configuredScratch
+            $env:CDXSCI_JSON_SCRATCH_ROOT = $configuredScratch
             $temporary = New-JsonlEngineInputFile -InputObject $null
             $temporary.IsTemporary | Should -BeTrue
             [System.IO.Path]::GetDirectoryName($temporary.Path) |
                 Should -Be ([System.IO.Path]::GetFullPath($configuredScratch))
             @(Read-JsonDocument $temporary.Path).Count | Should -Be 1
 
-            Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
-            $env:CODEX_TEMP = $codexTemp
+            Remove-Item Env:CDXSCI_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
+            $env:CDXSCI_TEMP = $cdxsciTemp
             $fromTemp = New-JsonlEngineInputFile -InputObject $null
             [System.IO.Path]::GetDirectoryName($fromTemp.Path) |
-                Should -Be ([System.IO.Path]::GetFullPath((Join-Path $codexTemp 'json-scratch')))
+                Should -Be ([System.IO.Path]::GetFullPath((Join-Path $cdxsciTemp 'json-scratch')))
 
-            Remove-Item Env:CODEX_TEMP -ErrorAction SilentlyContinue
+            Remove-Item Env:CDXSCI_TEMP -ErrorAction SilentlyContinue
             $defaultTemporary = New-JsonlEngineInputFile -InputObject $null
             $expectedRoot = [System.IO.Path]::GetFullPath(
                 (Join-Path $script:RepoRoot 'artifacts/json-scratch'))
@@ -499,16 +499,16 @@ sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","versio
                 }
             }
             if ($null -eq $priorScratch) {
-                Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
+                Remove-Item Env:CDXSCI_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
             }
             else {
-                $env:CODEX_JSON_SCRATCH_ROOT = $priorScratch
+                $env:CDXSCI_JSON_SCRATCH_ROOT = $priorScratch
             }
             if ($null -eq $priorTemp) {
-                Remove-Item Env:CODEX_TEMP -ErrorAction SilentlyContinue
+                Remove-Item Env:CDXSCI_TEMP -ErrorAction SilentlyContinue
             }
             else {
-                $env:CODEX_TEMP = $priorTemp
+                $env:CDXSCI_TEMP = $priorTemp
             }
         }
     }

@@ -72,7 +72,7 @@ $runtimeArgs = @(
 $runtimeTemp = Join-Path $repoRoot 'artifacts/procurement-mcp/temp'
 [System.IO.Directory]::CreateDirectory($runtimeTemp) | Out-Null
 $runtimeEnvironment = [ordered]@{
-    CODEX_SCIENTIAE_ROOT = '.'
+    CDXSCI_ROOT = '.'
     UV_PROJECT_ENVIRONMENT = './.venv'
     UV_PYTHON_INSTALL_DIR = './packages/python'
     UV_CACHE_DIR = './artifacts/uv/cache'

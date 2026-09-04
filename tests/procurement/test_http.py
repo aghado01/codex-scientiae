@@ -140,7 +140,7 @@ class TestRateLimiter(unittest.TestCase):
 
     def test_default_rate_clock_path_honors_environment(self) -> None:
         with mock.patch.dict(
-            os.environ, {"CODEX_PROCUREMENT_RATE_CLOCK": "clock.json"}, clear=False
+            os.environ, {"CDXSCI_PROCUREMENT_RATE_CLOCK": "clock.json"}, clear=False
         ):
             self.assertEqual(default_rate_clock_path(), Path("clock.json"))
 

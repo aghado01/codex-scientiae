@@ -61,7 +61,7 @@ def _remove_directory_link(link: Path) -> None:
 
 @pytest.fixture
 def service_layout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("CODEX_JSON_SCRATCH_ROOT", str(tmp_path / "json-scratch"))
+    monkeypatch.setenv("CDXSCI_JSON_SCRATCH_ROOT", str(tmp_path / "json-scratch"))
     opened: list[ProcurementRootCatalog] = []
     serial = 0
 

@@ -1,12 +1,12 @@
 #requires -Version 7.0
 <#
-  src/logistics/containment.ps1 — artifacts-tier containment and CODEX_TEMP.
+  src/logistics/containment.ps1 — artifacts-tier containment and CDXSCI_TEMP.
 
   Sibling of run-paths.ps1 (minting). This file owns descendant checks, resolution of paths under
-  a workspace `artifacts/` directory, and `Set-CodexTempEnvironment`. Ambient TEMP/TMP/TMPDIR are
+  a workspace `artifacts/` directory, and `Set-TempEnvironment`. Ambient TEMP/TMP/TMPDIR are
   not a project scratch source.
 
-  Child-process projection of CODEX_TEMP onto TEMP/TMP/TMPDIR lives in assert-codex-temp.ps1.
+  Child-process projection of CDXSCI_TEMP onto TEMP/TMP/TMPDIR lives in assert-temp.ps1.
   Suite naming for tests/batch.ps1 lives in tests/suite-name.ps1.
 #>
 
@@ -93,9 +93,9 @@ function Resolve-ArtifactRunDirectory {
     return (Resolve-Path -LiteralPath $resolved).Path
 }
 
-function Set-CodexTempEnvironment {
-    <# Set CODEX_TEMP to a job-local tree under artifacts/. Ambient TEMP/TMP/TMPDIR are not read
-       and are not written. A CODEX_TEMP already absolute and under artifacts/ is left alone. #>
+function Set-TempEnvironment {
+    <# Set CDXSCI_TEMP to a job-local tree under artifacts/. Ambient TEMP/TMP/TMPDIR are not read
+       and are not written. A CDXSCI_TEMP already absolute and under artifacts/ is left alone. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
@@ -105,7 +105,7 @@ function Set-CodexTempEnvironment {
     $artifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $RepositoryRoot
     $run = Resolve-ArtifactRunDirectory -RunDirectory $RunDirectory `
         -RepositoryRoot $RepositoryRoot
-    $value = [System.Environment]::GetEnvironmentVariable('CODEX_TEMP', 'Process')
+    $value = [System.Environment]::GetEnvironmentVariable('CDXSCI_TEMP', 'Process')
     if (-not [string]::IsNullOrWhiteSpace($value) -and
             [System.IO.Path]::IsPathFullyQualified($value)) {
         $full = [System.IO.Path]::GetFullPath($value)
@@ -116,6 +116,6 @@ function Set-CodexTempEnvironment {
 
     $owned = Join-Path $run 'temp'
     New-Item -ItemType Directory -Force -Path $owned | Out-Null
-    Set-Item -LiteralPath 'env:CODEX_TEMP' -Value $owned
+    Set-Item -LiteralPath 'env:CDXSCI_TEMP' -Value $owned
     return $owned
 }
