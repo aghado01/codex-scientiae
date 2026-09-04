@@ -1,11 +1,11 @@
-# Ingestion workspace
+# Supellex workspace
 
-`ingestion/` is transitional: it contains source intake, document deposits, reprocessing queues, generated
+`supellex/` is transitional: it contains source intake, document deposits, reprocessing queues, generated
 lane output, and curated collection material accumulated under several generations of tooling. Do not treat
 the whole tree as one homogeneous inventory and do not bulk-rename it into apparent compliance.
 
 The adoption unit is a deliberately selected segment and, within it, one logical document leaf at a time.
-The current source-deposit contract is specified in [`inventory/CONVENTION.md`](inventory/CONVENTION.md).
+The current source-deposit contract is specified in [`staging/CONVENTION.md`](staging/CONVENTION.md).
 
 ## Separate the four address classes
 
@@ -20,7 +20,7 @@ The current source-deposit contract is specified in [`inventory/CONVENTION.md`](
    nor generated lane output.
 
 Runtimes may resolve absolute paths for confinement and I/O, but persisted article paths are portable,
-forward-slash paths relative to the document directory. No ingestion convention depends on a drive letter,
+forward-slash paths relative to the document directory. No deposit convention depends on a drive letter,
 user profile, checkout location, or current machine.
 
 ## Compliant document leaf
@@ -68,14 +68,14 @@ Run commands from the repository root or supply another explicit/relative docume
 
    ```pwsh
    . ./src/procurement/scripts/latex-source.ps1
-   New-LatexSourceDeposit -DocumentDir './ingestion/<segment>/<slug>'
+   New-LatexSourceDeposit -DocumentDir './supellex/<segment>/<slug>'
    ```
 
 6. Inspect the returned status and validate the article when reviewing a migration:
 
    ```pwsh
    Import-Module ./src/jsonl_engine-client/jsonl_engine-client.psd1
-   $articlePath = (Resolve-Path './ingestion/<segment>/<slug>/article.json').Path
+   $articlePath = (Resolve-Path './supellex/<segment>/<slug>/article.json').Path
    $validated = @(Invoke-JsonlEngineCommand `
        -Verb validate-json -Argument @($articlePath, 'article.schema.json'))
    if ($validated.Count -ne 1) { throw "expected one validated article" }
@@ -101,7 +101,7 @@ The production converter accepts a source-ready article or its document director
 . ./src/latex-ingest/latex-ingest.ps1
 
 Invoke-ArxivLatexToMarkdown `
-    -MetadataPath './ingestion/<segment>/<slug>/article.json' `
+    -MetadataPath './supellex/<segment>/<slug>/article.json' `
     -OutDir ./path/to/lane-output
 ```
 
@@ -145,16 +145,16 @@ On-demand helpers:
 
 ```pwsh
 # Full unpack/validate/deposit ceremony for arXiv-shaped archives under a catalog parent
-pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./supellex/staging
 
 # Sweep direct-child article.json and build inventory.jsonl via jsonl_engine
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
+pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./supellex/gauntlet -Force
 ```
 
 After procuring into a destination, rebuild that destination's first-order `inventory.jsonl`
@@ -186,12 +186,9 @@ Treat these as present-day routing hints, not a declaration that every child alr
 
 | Segment | Current interpretation |
 |---|---|
-| `inventory/` | Sandbox and proving ground for the source-deposit/article convention. |
-| `_inbox/` | Historical intake and partially processed material; survey before moving. |
-| `staging/` | Procurement or workflow staging; not authoritative solely because a file is present. |
-| `re-ingest/` | Reprocessing queue/workspace; generated intermediates may coexist with inputs. |
-| `_markdown/` | Generated LaTeX lane output; not a source-deposit root. |
-| `codices/`, `compendia/` | Curated collection/delivery structures; do not infer raw source leaves from them. |
+| `staging/` | Sandbox for the source-deposit/article convention. MCP catalog name `inventory`. |
+| `gauntlet/` | Curated collection of deposited articles. |
+| `imports/` | Configured local-import inbox (`manual`). |
 | Other named segments | Classify locally; preserve collection semantics while normalizing genuine document leaves. |
 
 When a segment is adopted, add a small segment-local note defining its scope, expected document depth,

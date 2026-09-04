@@ -1,7 +1,7 @@
-# Ingestion inventory convention
+# Staging catalog convention
 
-Status: work in progress. `ingestion/inventory` is the sandbox for developing source-deposit, article, and
-localized inventory-store conventions before broader ingestion integration.
+Status: work in progress. `supellex/staging` is the sandbox for developing source-deposit, article, and
+localized inventory-store conventions before broader corpus integration.
 
 Schema ownership is in the Python JSONL engine. The canonical leaf and inventory-row schema is
 [`article.schema.json`](../../src/jsonl_engine/schemas/article.schema.json), with identifier
@@ -60,7 +60,7 @@ The canonical entrypoint is `New-LatexSourceDeposit` in `src/procurement/scripts
 
 ```pwsh
 . ./src/procurement/scripts/latex-source.ps1
-New-LatexSourceDeposit -DocumentDir ./ingestion/inventory/1105.4224v1
+New-LatexSourceDeposit -DocumentDir ./supellex/staging/1105.4224v1
 ```
 
 PowerShell owns the source truth: archive selection and extraction, source confinement, entrypoint
@@ -157,13 +157,13 @@ Canonical on-demand build:
 
 ```pwsh
 # Enumerate direct-child article.json and publish inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./supellex/staging -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
+pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./supellex/gauntlet -Force
 ```
 
 PowerShell helper: `Invoke-InventoryBuild` in `src/procurement/scripts/inventory-catalog.ps1`. Engine verb:
@@ -174,7 +174,7 @@ publishes the registry. An existing `inventory.jsonl` is refused unless `-Force`
 Precursor unpack/deposit over the same parent (arXiv-shaped archives only today):
 
 ```pwsh
-pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./supellex/staging
 ```
 
 `ConvertFrom-ArxivSourceArchiveLeaf` extracts `\d{4}\.\d{4,5}(?:v\d+)?` from tarball filenames so prefixes
