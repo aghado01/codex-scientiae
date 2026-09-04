@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/logistics/crawl.ps1"
+    . "$PSScriptRoot/../../src/infrastructure/crawl.ps1"
 }
 
 Describe 'Invoke-Crawl reparse semantics' {

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 BeforeAll {
-    . "$PSScriptRoot/../../src/logistics/authored-jsonl.ps1"
+    . "$PSScriptRoot/../../src/infrastructure/authored-jsonl.ps1"
     function Write-Jsonl([string]$Name, [string]$Text) {
         $p = Join-Path $TestDrive $Name
         [System.IO.File]::WriteAllText($p, $Text, [System.Text.UTF8Encoding]::new($false)); return $p

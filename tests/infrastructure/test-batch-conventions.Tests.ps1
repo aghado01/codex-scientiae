@@ -2,8 +2,8 @@
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path "$PSScriptRoot/../..").Path
     $script:TestsRoot = Join-Path $script:RepositoryRoot 'tests'
-    . (Join-Path $script:RepositoryRoot 'src/logistics/containment.ps1')
-    . (Join-Path $script:RepositoryRoot 'src/logistics/assert-temp.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/infrastructure/containment.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/infrastructure/assert-temp.ps1')
     . (Join-Path $script:RepositoryRoot 'tests/suite-name.ps1')
 }
 
@@ -30,7 +30,7 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
     }
 
     It 'is mixed for the tests root itself, a bare file in it, or anything outside' {
-        foreach ($selection in @('tests', 'tests/parallel.ps1', 'src/logistics')) {
+        foreach ($selection in @('tests', 'tests/parallel.ps1', 'src/infrastructure')) {
             Resolve-TestSuiteName -TestsRoot $script:TestsRoot `
                 -RepositoryRoot $script:RepositoryRoot -SelectedPath @($selection) |
                 Should -BeExactly 'mixed' -Because "'$selection' is not owner-scoped"

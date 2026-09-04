@@ -1,5 +1,5 @@
 #requires -Version 7.0
-BeforeAll { . "$PSScriptRoot/../../src/logistics/portable-path.ps1" }
+BeforeAll { . "$PSScriptRoot/../../src/infrastructure/portable-path.ps1" }
 
 Describe 'Test-PortableLeaf' {
     It 'accepts a plain leaf' { Test-PortableLeaf '2403.08110v4' | Should -BeTrue }

@@ -228,10 +228,16 @@ BeforeAll {
             $failures.Add('JSONL engine client must have one canonical root module')
         }
 
-        $retiredLogisticsBoundary = Join-Path $script:RepoRoot `
-            ('src/logistics/engine-' + 'call.ps1')
-        if ([System.IO.File]::Exists($retiredLogisticsBoundary)) {
-            $failures.Add('retired logistics JSONL process boundary returned')
+        if ([System.IO.Directory]::Exists((Join-Path $script:RepoRoot 'src/logistics'))) {
+            $failures.Add('retired src/logistics directory returned')
+        }
+        foreach ($retiredRel in @(
+                ('src/logistics/engine-' + 'call.ps1'),
+                ('src/infrastructure/engine-' + 'call.ps1')
+            )) {
+            if ([System.IO.File]::Exists((Join-Path $script:RepoRoot $retiredRel))) {
+                $failures.Add('retired JSONL process boundary returned')
+            }
         }
         $facade = Join-Path $script:RepoRoot 'src/jsonl_engine/jso-shell.ps1'
         if (-not [System.IO.File]::Exists($facade)) {

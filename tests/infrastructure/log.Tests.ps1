@@ -1,10 +1,10 @@
 #requires -Version 7.0
-# src/logistics/logger.ps1 — the per-run execution trace. Intrinsic validation: sink resolution, level
+# src/infrastructure/logger.ps1 — the per-run execution trace. Intrinsic validation: sink resolution, level
 # gates on both sinks, JSONL parseability + codepoint safety (UTF-8-no-BOM, LF), the join/Force
 # contract, timed steps that rethrow, and the not-started grace path. No corpus, TestDrive only.
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/logistics/logger.ps1"
+    . "$PSScriptRoot/../../src/infrastructure/logger.ps1"
 
     $script:SavedEnv = @{
         DIR     = $env:CDXSCI_RUNLOG_DIR

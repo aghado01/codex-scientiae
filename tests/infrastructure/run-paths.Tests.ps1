@@ -1,5 +1,5 @@
 #requires -Version 7.0
-BeforeAll { . "$PSScriptRoot/../../src/logistics/run-paths.ps1" }
+BeforeAll { . "$PSScriptRoot/../../src/infrastructure/run-paths.ps1" }
 
 Describe 'New-TestSuiteRunDir' {
     BeforeEach {
@@ -20,7 +20,7 @@ Describe 'New-TestSuiteRunDir' {
     }
 
     It 'stamps YYYYMMDD_HHmmss in ISO order and carries no label' {
-        $leaf = Split-Path (New-TestSuiteRunDir -Suite 'logistics' -ArtifactsRoot $script:Root) -Leaf
+        $leaf = Split-Path (New-TestSuiteRunDir -Suite 'infrastructure' -ArtifactsRoot $script:Root) -Leaf
         # ISO date order is the whole point: lexical sort must be chronological.
         $leaf | Should -Match '^\d{8}_\d{6}$'
         $month = [int]$leaf.Substring(4, 2)
@@ -30,7 +30,7 @@ Describe 'New-TestSuiteRunDir' {
 
     It 'appends a two-digit _NN sequence on collision, never a label' {
         $leaves = 1..3 | ForEach-Object {
-            Split-Path (New-TestSuiteRunDir -Suite 'logistics' -ArtifactsRoot $script:Root) -Leaf
+            Split-Path (New-TestSuiteRunDir -Suite 'infrastructure' -ArtifactsRoot $script:Root) -Leaf
         }
         ($leaves | Sort-Object -Unique).Count | Should -Be 3
         foreach ($leaf in $leaves) {

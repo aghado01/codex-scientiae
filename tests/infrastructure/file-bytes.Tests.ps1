@@ -1,5 +1,5 @@
 #requires -Version 7.0
-BeforeAll { . "$PSScriptRoot/../../src/logistics/file-bytes.ps1" }
+BeforeAll { . "$PSScriptRoot/../../src/infrastructure/file-bytes.ps1" }
 
 Describe 'Get-ContentIdentity / Test-ContentIdentityFormat' {
     It 'hashes bytes to a lowercase sha256 identity' {
