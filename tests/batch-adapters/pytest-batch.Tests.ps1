@@ -5,7 +5,7 @@ BeforeAll {
     $script:AdaptersManifest = Join-Path $script:RepositoryRoot 'src/batch-adapters/adapters.psd1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
     $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
-        'src/logistics/containment.ps1'
+        'src/infrastructure/containment.ps1'
     $pythonCandidate = Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe'
     $script:PythonPath = if (Test-Path -LiteralPath $pythonCandidate -PathType Leaf) {
         (Resolve-Path -LiteralPath $pythonCandidate).Path
@@ -22,10 +22,10 @@ BeforeAll {
         [void][System.IO.Directory]::CreateDirectory($run)
         Copy-Item -LiteralPath $script:RepositoryPytestRunner `
             -Destination (Join-Path $tests 'pytest.ps1')
-        $logistics = Join-Path $Root 'src/logistics'
-        [void][System.IO.Directory]::CreateDirectory($logistics)
+        $infrastructure = Join-Path $Root 'src/infrastructure'
+        [void][System.IO.Directory]::CreateDirectory($infrastructure)
         Copy-Item -LiteralPath $script:RepositoryContainment `
-            -Destination (Join-Path $logistics 'containment.ps1')
+            -Destination (Join-Path $infrastructure 'containment.ps1')
         Set-Content -LiteralPath (Join-Path $Root 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]

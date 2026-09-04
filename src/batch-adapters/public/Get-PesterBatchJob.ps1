@@ -26,7 +26,7 @@ function Get-PesterBatchJob {
     $runner = (Resolve-Path -LiteralPath $runner).Path
     foreach ($supportName in @('assert-temp.ps1', 'containment.ps1')) {
         $support = [System.IO.Path]::Combine(
-            $repository, 'src', 'logistics', $supportName)
+            $repository, 'src', 'infrastructure', $supportName)
         if (-not (Test-Path -LiteralPath $support -PathType Leaf)) {
             throw "pester-batch runner support not found: '$support'"
         }

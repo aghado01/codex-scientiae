@@ -6,9 +6,9 @@ BeforeAll {
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
     $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
-        'src/logistics/containment.ps1'
+        'src/infrastructure/containment.ps1'
     $script:RepositoryAssertTemp = Join-Path $script:RepositoryRoot `
-        'src/logistics/assert-temp.ps1'
+        'src/infrastructure/assert-temp.ps1'
     $script:PythonPath = (Resolve-Path `
         (Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe')).Path
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
@@ -26,12 +26,12 @@ BeforeAll {
         Copy-Item -LiteralPath $script:RepositoryRunner -Destination (Join-Path $tests 'run.ps1')
         Copy-Item -LiteralPath $script:RepositoryPytestRunner `
             -Destination (Join-Path $tests 'pytest.ps1')
-        $logistics = Join-Path $repository 'src/logistics'
-        [void][System.IO.Directory]::CreateDirectory($logistics)
+        $infrastructure = Join-Path $repository 'src/infrastructure'
+        [void][System.IO.Directory]::CreateDirectory($infrastructure)
         Copy-Item -LiteralPath $script:RepositoryContainment `
-            -Destination (Join-Path $logistics 'containment.ps1')
+            -Destination (Join-Path $infrastructure 'containment.ps1')
         Copy-Item -LiteralPath $script:RepositoryAssertTemp `
-            -Destination (Join-Path $logistics 'assert-temp.ps1')
+            -Destination (Join-Path $infrastructure 'assert-temp.ps1')
         Set-Content -LiteralPath (Join-Path $repository 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]

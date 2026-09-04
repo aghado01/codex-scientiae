@@ -128,13 +128,13 @@ class TestProcureService(unittest.TestCase):
                 ProcureRequest(
                     provider="arxiv",
                     identifier=SLUG,
-                    catalog="ingestion/gauntlet/topic",
+                    catalog="supellex/gauntlet/topic",
                 )
             )
         )
-        self.assertEqual(acquisition.requests[0].catalog, "ingestion/gauntlet/topic")
+        self.assertEqual(acquisition.requests[0].catalog, "supellex/gauntlet/topic")
         self.assertEqual(acquisition.requests[0].artifacts, ("source", "pdf", "html"))
-        self.assertEqual(materialization.requests[0].catalog, "ingestion/gauntlet/topic")
+        self.assertEqual(materialization.requests[0].catalog, "supellex/gauntlet/topic")
         self.assertEqual(materialization.requests[0].acquisition_slug, SLUG)
         self.assertEqual(result.materialization.status, "deposited")
         self.assertEqual(result.acquisition.manifest.slug, SLUG)

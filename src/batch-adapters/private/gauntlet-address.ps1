@@ -1,6 +1,6 @@
-# TeXdig adapter addressing helpers.
+# Gauntlet adapter addressing helpers.
 
-function Get-TeXdigBatchStableHash {
+function Get-GauntletBatchStableHash {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [AllowEmptyString()] [string] $Value,
@@ -16,7 +16,7 @@ function Get-TeXdigBatchStableHash {
     finally { $sha.Dispose() }
 }
 
-function ConvertTo-TeXdigBatchAddressLeaf {
+function ConvertTo-GauntletBatchAddressLeaf {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Slug,
@@ -29,7 +29,7 @@ function ConvertTo-TeXdigBatchAddressLeaf {
     return "$stem-$Digest"
 }
 
-function Resolve-TeXdigBatchJobAddress {
+function Resolve-GauntletBatchJobAddress {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
@@ -37,11 +37,12 @@ function Resolve-TeXdigBatchJobAddress {
     )
 
     # The only adapter-owned run-relative composition. One document per job;
-    # the job container IS the document container: the census worker emits its
-    # six stores directly at this root (Writes root).
-    $tempRoot = [System.IO.Path]::Combine($RunDirectory, 'texdig-temp', $AddressLeaf)
+    # the job container IS the document container: the engine worker emits
+    # whatever it emits directly at this root (Writes root), and the receipt
+    # the run caller folds sits at its top.
+    $tempRoot = [System.IO.Path]::Combine($RunDirectory, 'gauntlet-temp', $AddressLeaf)
     return [pscustomobject]@{
-        JobDirectory = [System.IO.Path]::Combine($RunDirectory, 'texdig-jobs', $AddressLeaf)
+        JobDirectory = [System.IO.Path]::Combine($RunDirectory, 'gauntlet-jobs', $AddressLeaf)
         TempRoot = $tempRoot
         JsonScratchRoot = [System.IO.Path]::Combine($tempRoot, 'json-scratch')
     }

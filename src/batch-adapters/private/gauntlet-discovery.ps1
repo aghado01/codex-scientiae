@@ -1,6 +1,6 @@
-# TeXdig adapter discovery helpers.
+# Gauntlet adapter discovery helpers.
 
-function Resolve-TeXdigBatchRepositoryRoot {
+function Resolve-GauntletBatchRepositoryRoot {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
@@ -11,27 +11,28 @@ function Resolve-TeXdigBatchRepositoryRoot {
     }
     else { [System.IO.Path]::GetFullPath($RepositoryRoot, (Get-Location).Path) }
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "texdig-batch repository root not found: '$RepositoryRoot'"
+        throw "gauntlet-batch repository root not found: '$RepositoryRoot'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Resolve-TeXdigBatchRunDirectory {
+function Resolve-GauntletBatchRunDirectory {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
     )
 
-    Resolve-BatchAdapterRunDirectory -Adapter 'texdig-batch' -RunDirectory $RunDirectory `
+    Resolve-BatchAdapterRunDirectory -Adapter 'gauntlet-batch' -RunDirectory $RunDirectory `
         -RepositoryRoot $RepositoryRoot
 }
 
-function Find-TeXdigBatchArticle {
+function Find-GauntletBatchArticle {
     <# Expand caller-selected paths to deposited article directories: an
        article dir (holds article.json), an article.json file, or a collection
        dir expanded ONE level to its article children. The adapter is
-       path-based; bare-slug convenience belongs to the interactive runner. #>
+       path-based and every article must sit inside RepositoryRoot, because
+       the job id is minted from the repository-relative address. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string[]] $Path,
@@ -50,13 +51,13 @@ function Find-TeXdigBatchArticle {
         if (Test-Path -LiteralPath $absolute -PathType Leaf) {
             $file = Get-Item -LiteralPath $absolute
             if ($file.Name -ne 'article.json') {
-                throw "texdig-batch input file is not article.json: '$entry'"
+                throw "gauntlet-batch input file is not article.json: '$entry'"
             }
             if ($seen.Add($file.Directory.FullName)) { $found.Add($file.Directory.FullName) }
             continue
         }
         if (-not (Test-Path -LiteralPath $absolute -PathType Container)) {
-            throw "texdig-batch input path not found: '$entry'"
+            throw "gauntlet-batch input path not found: '$entry'"
         }
 
         $directory = (Resolve-Path -LiteralPath $absolute).Path
@@ -72,7 +73,7 @@ function Find-TeXdigBatchArticle {
             }
         }
         if ($children.Count -eq 0) {
-            throw "texdig-batch found no deposited articles under: '$entry'"
+            throw "gauntlet-batch found no deposited articles under: '$entry'"
         }
         $children.Sort([System.StringComparer]::OrdinalIgnoreCase)
         foreach ($child in $children) {
@@ -80,13 +81,20 @@ function Find-TeXdigBatchArticle {
         }
     }
 
+    foreach ($articleDirectory in $found) {
+        if (-not (Test-PathIsDescendant -Root $RepositoryRoot -Path $articleDirectory)) {
+            throw "gauntlet-batch article selection escapes RepositoryRoot: '$articleDirectory'"
+        }
+    }
+
     return $found
 }
 
-function Get-TeXdigBatchManifestRecord {
+function Get-GauntletBatchManifestRecord {
     <# Planning-time read of the deposit manifest: identity (slug, tree
-       fingerprint) and a tree-size cost hint. Shape validation stays in the
-       child worker; planning only refuses unreadable manifests. #>
+       fingerprint) and a tree-size cost hint. Deposit validity is the
+       ingestion transaction's business; planning only refuses manifests it
+       cannot read. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $ArticleDirectory
@@ -98,7 +106,7 @@ function Get-TeXdigBatchManifestRecord {
         $article = Get-Content -LiteralPath $articleJson -Raw | ConvertFrom-Json
     }
     catch {
-        throw "texdig-batch could not read article.json in '$ArticleDirectory': $($_.Exception.Message)"
+        throw "gauntlet-batch could not read article.json in '$ArticleDirectory': $($_.Exception.Message)"
     }
 
     $slug = if ($article.PSObject.Properties['slug'] -and $article.slug) {
@@ -120,9 +128,11 @@ function Get-TeXdigBatchManifestRecord {
     }
 
     $treeBytes = 0L
+    $treeDirectory = ''
     if ($treePath -ne '') {
-        $treeDirectory = [System.IO.Path]::Combine($ArticleDirectory, $treePath)
-        if (Test-Path -LiteralPath $treeDirectory -PathType Container) {
+        $candidate = [System.IO.Path]::Combine($ArticleDirectory, $treePath)
+        if (Test-Path -LiteralPath $candidate -PathType Container) {
+            $treeDirectory = $candidate
             foreach ($file in [System.IO.Directory]::EnumerateFiles(
                     $treeDirectory, '*', [System.IO.SearchOption]::AllDirectories)) {
                 $treeBytes += [System.IO.FileInfo]::new($file).Length
@@ -134,6 +144,7 @@ function Get-TeXdigBatchManifestRecord {
         ArticleDirectory = $ArticleDirectory
         Slug = $slug
         TreeSha256 = $treeSha256
+        TreeDirectory = $treeDirectory
         TreeBytes = $treeBytes
     }
 }

@@ -195,7 +195,7 @@ Describe 'Invoke-InventoryBuild' {
 }
 
 Describe 'procurement CLI wrappers' {
-    It 'resolve logistics libraries from src/procurement/scripts' {
+    It 'resolve host libraries from src/procurement/scripts' {
         $scriptsDir = Join-Path $script:RepositoryRoot 'src/procurement/scripts'
         foreach ($name in @(
                 'inventory-catalog.ps1',

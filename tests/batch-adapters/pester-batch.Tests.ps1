@@ -8,9 +8,9 @@ BeforeAll {
         'src/batch-executor/batch-executor.psd1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
-        'src/logistics/containment.ps1'
+        'src/infrastructure/containment.ps1'
     $script:RepositoryAssertTemp = Join-Path $script:RepositoryRoot `
-        'src/logistics/assert-temp.ps1'
+        'src/infrastructure/assert-temp.ps1'
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
     $script:LivePesterManifest = Join-Path $livePester.ModuleBase 'Pester.psd1'
 
@@ -35,12 +35,12 @@ BeforeAll {
         else {
             Set-Content -LiteralPath $runner -Encoding utf8 -Value 'param()'
         }
-        $logistics = Join-Path $repository 'src/logistics'
-        [void][System.IO.Directory]::CreateDirectory($logistics)
+        $infrastructure = Join-Path $repository 'src/infrastructure'
+        [void][System.IO.Directory]::CreateDirectory($infrastructure)
         Copy-Item -LiteralPath $script:RepositoryContainment `
-            -Destination (Join-Path $logistics 'containment.ps1')
+            -Destination (Join-Path $infrastructure 'containment.ps1')
         Copy-Item -LiteralPath $script:RepositoryAssertTemp `
-            -Destination (Join-Path $logistics 'assert-temp.ps1')
+            -Destination (Join-Path $infrastructure 'assert-temp.ps1')
         Set-Content -LiteralPath (Join-Path $pesterRoot 'Pester.psm1') `
             -Encoding utf8 -Value '# fixture Pester module'
         $manifest = Join-Path $pesterRoot 'Pester.psd1'
@@ -174,7 +174,7 @@ Describe 'adapters module surface for pester-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-PesterBatchJob', 'Get-PytestBatchJob', 'Get-TeXdigBatchJob')
+            'Get-GauntletBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         Get-Command Get-TestBatchJob -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         foreach ($oldPath in @(

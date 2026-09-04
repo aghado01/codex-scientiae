@@ -11,7 +11,7 @@ if (-not (Test-Path -LiteralPath $script:AdaptersExecutorManifest -PathType Leaf
 Import-Module $script:AdaptersExecutorManifest -Scope Local -ErrorAction Stop
 
 $script:AdaptersContainment = [System.IO.Path]::GetFullPath(
-    (Join-Path $script:AdaptersModuleRoot '../logistics/containment.ps1'))
+    (Join-Path $script:AdaptersModuleRoot '../infrastructure/containment.ps1'))
 if (-not (Test-Path -LiteralPath $script:AdaptersContainment -PathType Leaf)) {
     throw "adapters dependency not found: '$script:AdaptersContainment'"
 }
@@ -49,12 +49,12 @@ $hostFiles = @(
     'private/pytest-address.ps1'
     'private/pytest-discovery.ps1'
     'private/pytest-dependency.ps1'
-    'private/texdig-address.ps1'
-    'private/texdig-discovery.ps1'
-    'private/texdig-dependency.ps1'
+    'private/gauntlet-address.ps1'
+    'private/gauntlet-discovery.ps1'
+    'private/gauntlet-dependency.ps1'
+    'public/Get-GauntletBatchJob.ps1'
     'public/Get-PesterBatchJob.ps1'
     'public/Get-PytestBatchJob.ps1'
-    'public/Get-TeXdigBatchJob.ps1'
 )
 foreach ($relativePath in $hostFiles) {
     $path = Join-Path $script:AdaptersModuleRoot $relativePath
@@ -64,4 +64,4 @@ foreach ($relativePath in $hostFiles) {
     . $path
 }
 
-Export-ModuleMember -Function 'Get-PesterBatchJob', 'Get-PytestBatchJob', 'Get-TeXdigBatchJob'
+Export-ModuleMember -Function 'Get-GauntletBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob'
