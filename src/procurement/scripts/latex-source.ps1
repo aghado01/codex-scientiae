@@ -8,9 +8,9 @@
   compositions. No dependency on the latex-ingest converter.
 #>
 
-. "$PSScriptRoot/../../logistics/portable-path.ps1"
-. "$PSScriptRoot/../../logistics/crawl.ps1"
-. "$PSScriptRoot/../../logistics/probe-ledger.ps1"
+. "$PSScriptRoot/../../infrastructure/portable-path.ps1"
+. "$PSScriptRoot/../../infrastructure/crawl.ps1"
+. "$PSScriptRoot/../../infrastructure/probe-ledger.ps1"
 Import-Module (Join-Path $PSScriptRoot '../../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 

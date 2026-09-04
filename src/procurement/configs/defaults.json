@@ -34,17 +34,17 @@
     }
   },
   "acquisition": {
-    "staging_root": "ingestion/staging",
+    "staging_root": "artifacts/procurement-mcp/staging",
     "catalogs": [
       {
         "name": "inventory",
-        "path": "ingestion/inventory"
+        "path": "supellex/staging"
       }
     ],
     "local_inboxes": [
       {
         "name": "manual",
-        "path": "ingestion/imports"
+        "path": "supellex/imports"
       }
     ],
     "lock_timeout_seconds": 60,

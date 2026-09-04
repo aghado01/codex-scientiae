@@ -8,7 +8,7 @@
 #>
 
 . "$PSScriptRoot/latex-source.ps1"
-. "$PSScriptRoot/../../logistics/portable-path.ps1"
+. "$PSScriptRoot/../../infrastructure/portable-path.ps1"
 
 # New-style arXiv id embedded in a tarball leaf: YYMM.NNNNN with optional version suffix.
 $script:ArxivSourceSlugPattern = [regex]::new(

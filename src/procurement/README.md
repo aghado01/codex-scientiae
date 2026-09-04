@@ -144,7 +144,7 @@ materialize that same leaf                     -> article.json
 rebuild one catalog                            -> inventory.jsonl
 ```
 The destination may be a configured name such as `inventory` or a confined relative folder such as
-`ingestion/gauntlet/topic`. Missing destination folders are created.
+`supellex/gauntlet/topic`. Missing destination folders are created.
 `ProcureService` runs acquire then materialize at that destination as one operation.
 
 A PDF can currently be imported, receipted, and used as the human basis for an explicit DOI lookup. A lone

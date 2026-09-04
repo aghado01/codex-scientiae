@@ -31,7 +31,7 @@ does not claim that the bytes came from the selected metadata provider.
 Artifact retrieval is deliberately separate. `plan_artifact_acquisition` returns a URL-free summary from a
 fresh server-side provider plan; `acquire_artifact` replans internally, downloads requested source/PDF/HTML
 forms, and publishes or validates `acquisition.json`. Pass `catalog` to write the receipt into a configured catalog name or a workspace-relative
-destination such as `ingestion/gauntlet/topic`; omit it to use staging. Missing destination
+destination such as `supellex/gauntlet/topic`; omit it to use acquisition staging. Missing destination
 folders are created. `get_acquisition_receipt` revalidates a receipt and
 every form it names (files and the HTML tree). None of these tools accepts a client-selected URL, serialized plan, absolute
 destination, or arbitrary storage root.

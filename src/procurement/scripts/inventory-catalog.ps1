@@ -7,7 +7,7 @@
   An existing inventory.jsonl is refused unless -Force is set.
 #>
 
-. "$PSScriptRoot/../../logistics/portable-path.ps1"
+. "$PSScriptRoot/../../infrastructure/portable-path.ps1"
 Import-Module (Join-Path $PSScriptRoot '../../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 

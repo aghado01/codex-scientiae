@@ -59,6 +59,7 @@ def build_application(
         root,
         settings.acquisition.staging_root,
         label="acquisition staging root",
+        create=True,
     )
     catalog_roots = {
         catalog.name: str(
@@ -284,13 +285,23 @@ def _resolve_workspace_root(value: str | Path | None) -> Path:
     return resolved
 
 
-def _resolve_configured_directory(root: Path, value: str, *, label: str) -> Path:
+def _resolve_configured_directory(
+    root: Path, value: str, *, label: str, create: bool = False
+) -> Path:
     """Resolve one configured relative directory and confine it to the workspace."""
 
     relative = Path(value)
     if relative.is_absolute() or "\\" in value or not value.strip():
         raise ConfigurationError(f"{label} must be a non-empty relative path: {value!r}")
     lexical = (root / relative).absolute()
+    if create:
+        try:
+            lexical.relative_to(root)
+        except ValueError as exc:
+            raise ConfigurationError(
+                f"{label} escapes the workspace: {value!r}"
+            ) from exc
+        lexical.mkdir(parents=True, exist_ok=True)
     try:
         resolved = lexical.resolve(strict=True)
         resolved.relative_to(root)
