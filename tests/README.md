@@ -435,16 +435,11 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | Directory | Current ownership |
 |---|---|
 | `batch-adapters/` | Pester and pytest batch planning (executor job emission). |
-| `md-postprocess/` | Markdown post-process, audits, TOC engine, and deliverable bundling |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
-| `infrastructure/` | Repository-wide topology and structural checks |
-| `math-channel/` | Mathematical register normalization and math-render audit |
-| `md-postprocess/` | Markdown hygiene and bundle construction |
-| `procurement/` | Scholarly discovery and acquisition adapters (libraries; MCP shells under `mcp-servers/`) |
+| `infrastructure/` | Repository-wide topology plus host logistics primitives (run paths, portable paths, file-bytes, crawl, logger) |
+| `procurement/` | Scholarly discovery and acquisition (Python libraries; PowerShell catalog/deposit under `src/procurement/scripts`) |
 | `mcp-servers/` | Python and PowerShell MCP servers plus protocol-level tests. |
-| `node_utils/` | Node-backed utilities (md-lint, pdf-raster, tikz-render) |
-| `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
-| `logistics/` | Shared logistics primitives (run paths, portable paths, latex-source deposit) |
+| `node_utils/` | Node-backed utilities (md-lint, math-render, pdf-raster, tikz-render) |
 
 ## Conventions
 

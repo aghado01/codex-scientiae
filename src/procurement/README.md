@@ -16,6 +16,7 @@ providers/           provider declarations and adapters
 source/              source contracts, extraction, tree identity, LaTeX inspection, and findings
 storage/             acquisition/deposit transactions, catalog roots, and schema-backed persistence
 transport/           HTTP policy and transport primitives
+scripts/             PowerShell catalog inventory, LaTeX source deposit, and CLI wrappers
 ```
 
 The former flat `archive`, `http`, `models`, `payloads`, `settings`, `source`, `staging`, and `services`

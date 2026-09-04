@@ -67,7 +67,7 @@ Run commands from the repository root or supply another explicit/relative docume
 5. Publish the deposit:
 
    ```pwsh
-   . ./src/logistics/latex-source.ps1
+   . ./src/procurement/scripts/latex-source.ps1
    New-LatexSourceDeposit -DocumentDir './ingestion/<segment>/<slug>'
    ```
 
@@ -145,16 +145,16 @@ On-demand helpers:
 
 ```pwsh
 # Full unpack/validate/deposit ceremony for arXiv-shaped archives under a catalog parent
-pwsh -File ./scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
 
 # Sweep direct-child article.json and build inventory.jsonl via jsonl_engine
-pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
+pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
 ```
 
 After procuring into a destination, rebuild that destination's first-order `inventory.jsonl`

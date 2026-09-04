@@ -56,10 +56,10 @@ A same-named file in generated `OutDir` is ignored.
 
 ## Source-ready publication
 
-The canonical entrypoint is `New-LatexSourceDeposit` in `src/logistics/latex-source.ps1`:
+The canonical entrypoint is `New-LatexSourceDeposit` in `src/procurement/scripts/latex-source.ps1`:
 
 ```pwsh
-. ./src/logistics/latex-source.ps1
+. ./src/procurement/scripts/latex-source.ps1
 New-LatexSourceDeposit -DocumentDir ./ingestion/inventory/1105.4224v1
 ```
 
@@ -157,16 +157,16 @@ Canonical on-demand build:
 
 ```pwsh
 # Enumerate direct-child article.json and publish inventory.jsonl
-pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
+pwsh -File ./src/procurement/scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
+pwsh -File ./src/procurement/scripts/inventory-fold.ps1 -CatalogDir ./ingestion/gauntlet -Force
 ```
 
-PowerShell helper: `Invoke-InventoryBuild` in `src/logistics/inventory-catalog.ps1`. Engine verb:
+PowerShell helper: `Invoke-InventoryBuild` in `src/procurement/scripts/inventory-catalog.ps1`. Engine verb:
 `build-inventory` (`--catalog-dir`, `--article-paths-json`, optional `--force`). Enumeration stays in
 PowerShell; the engine validates each `{catalog}/{slug}/article.json` path against the article slug and
 publishes the registry. An existing `inventory.jsonl` is refused unless `-Force` / `--force` is set.
@@ -174,7 +174,7 @@ publishes the registry. An existing `inventory.jsonl` is refused unless `-Force`
 Precursor unpack/deposit over the same parent (arXiv-shaped archives only today):
 
 ```pwsh
-pwsh -File ./scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./src/procurement/scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
 ```
 
 `ConvertFrom-ArxivSourceArchiveLeaf` extracts `\d{4}\.\d{4,5}(?:v\d+)?` from tarball filenames so prefixes

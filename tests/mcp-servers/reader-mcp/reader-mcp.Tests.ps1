@@ -16,7 +16,7 @@ Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
         $script:Fixture = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
         $u8 = [System.Text.UTF8Encoding]::new($false)
 
-        # a standard single-doc bundle, built the way the toc-engine emits one
+        # a standard single-doc bundle: manuscript, toc sidecar, tree sidecar, images/
         $bundle = Join-Path $script:Fixture 'demo-01'
         New-Item -ItemType Directory -Force -Path (Join-Path $bundle 'images') | Out-Null
         # deliberately non-ASCII: the en-dash is 3 UTF-8 bytes, so a naive slice can split it

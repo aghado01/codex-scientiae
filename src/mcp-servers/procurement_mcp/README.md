@@ -96,6 +96,7 @@ validation profile rather than an exception to the LaTeX source-ready contract.
 
 ## Tests
 
-Python containers under `tests/procurement` and `tests/mcp-servers/procurement_mcp` run through
-`tests/batch.ps1`. It mints `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`. Do not invoke pytest
-directly and do not create a `test-runs` directory.
+Python containers under `tests/procurement` and `tests/mcp-servers/procurement_mcp`, and Pester
+files for the PowerShell catalog/deposit scripts, run through `tests/batch.ps1`. It mints
+`artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`. Do not invoke pytest directly and do not create a
+`test-runs` directory.
