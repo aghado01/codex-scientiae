@@ -15,14 +15,19 @@
   el = ms elapsed since Start-RunLog — the execution trace's clock; comp defaults to the
   module and is overridden per call when a sub-area speaks.
 
+  A trace belongs to a run. The logger never mints one: the run directory comes from the
+  minting authority in src/infrastructure/containment.ps1 (New-ModuleRunDir, New-TestSuiteRunDir)
+  or from a container a batch job already owns, and the logger only places the file inside it.
+
   Sink resolution, first hit wins:
-    -LogPath <file>          exactly there
-    -RunDir <dir>            trace.jsonl inside a run dir the caller already minted
-                             (New-ModuleRunDir in src/infrastructure/containment.ps1)
+    -LogPath <file>          exactly there (escape hatch; the caller owns the address)
+    -RunDir <dir>            trace.jsonl inside the run dir or job container the caller owns;
+                             created if absent, since a child may open its trace before it
+                             writes anything else
     $env:CDXSCI_RUNLOG_DIR    a parent process's run dir; the child lands beside the parent
                              as trace-{module}-{pid}.jsonl — never a shared handle
-    (minted)                 artifacts/{module}/logs/{stamp}.jsonl — regenerable tier,
-                             gitignored wholesale
+    (none)                   Start-RunLog throws. A process with no run has no trace file;
+                             Write-RunLog before any Start still mirrors warn+ to stderr.
 
   Config: -FileLevel / -ConsoleLevel on Start-RunLog; $env:CDXSCI_RUNLOG_LEVEL and
   $env:CDXSCI_RUNLOG_CONSOLE override per run without touching call sites ('off' disables a
@@ -34,10 +39,8 @@
   before any Start is safe: warn+ still reaches stderr, the file sink is just off — shared
   substrate may log opportunistically without demanding its host started a run.
 
-  Dot-source to use:  src/infrastructure/logger.ps1
+  Dot-source to use:  src/infrastructure/logger.ps1 (no dependencies of its own)
 #>
-
-. "$PSScriptRoot/containment.ps1"
 
 $script:RunLogLevels = @{ trace = 0; debug = 1; info = 2; warn = 3; error = 4 }
 $script:RunLog = $null          # live context: Path, Module, FileLevel, ConsoleLevel, Clock, Counts
@@ -83,18 +86,15 @@ function Start-RunLog {
     if (-not $path) {
         $dir = $RunDir
         if (-not $dir -and $env:CDXSCI_RUNLOG_DIR) { $dir = $env:CDXSCI_RUNLOG_DIR }
-        if ($dir) {
-            $path = Join-Path $dir 'trace.jsonl'
-            # taken = another process owns it (runs are immutable-new, so a fresh run dir never
-            # collides with itself) — land beside it, never share the file
-            if (Test-Path -LiteralPath $path) { $path = Join-Path $dir "trace-$Module-$PID.jsonl" }
-        } else {
-            $logsRoot = Join-Path (Get-ArtifactsRoot) $Module 'logs'
-            $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
-            $path = Join-Path $logsRoot "$stamp.jsonl"
-            $n = 1
-            while (Test-Path -LiteralPath $path) { $n++; $path = Join-Path $logsRoot "$stamp-$n.jsonl" }
+        if (-not $dir) {
+            throw ("Start-RunLog: no run to trace into for module '$Module'. Pass -RunDir (a run " +
+                'minted by New-ModuleRunDir / New-TestSuiteRunDir, or the job container this process ' +
+                'owns), pass -LogPath, or run under a parent that exported CDXSCI_RUNLOG_DIR.')
         }
+        $path = Join-Path $dir 'trace.jsonl'
+        # taken = another process owns it (runs are immutable-new, so a fresh run dir never
+        # collides with itself) — land beside it, never share the file
+        if (Test-Path -LiteralPath $path) { $path = Join-Path $dir "trace-$Module-$PID.jsonl" }
     }
     $dirName = [System.IO.Path]::GetDirectoryName($path)
     if ($dirName -and -not (Test-Path -LiteralPath $dirName)) {

@@ -71,10 +71,18 @@ Describe 'run log substrate' {
             (Start-RunLog -Module second -LogPath (Join-Path $TestDrive 'b.jsonl')) | Should -Be $p1
             (Start-RunLog -Module third -LogPath (Join-Path $TestDrive 'c.jsonl') -Force) | Should -Not -Be $p1
         }
-        It 'default mint shares Get-ArtifactsRoot from sibling containment.ps1' {
-            Get-Command Get-ArtifactsRoot | Should -Not -BeNullOrEmpty
+        It 'no run, no sink: without RunDir, LogPath, or an exported parent dir, Start throws and mints nothing' {
             $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-            (Get-ArtifactsRoot) | Should -Be ([System.IO.Path]::GetFullPath((Join-Path $repo 'artifacts')))
+            $before = @(Get-ChildItem -LiteralPath (Join-Path $repo 'artifacts') -Directory | ForEach-Object Name)
+            { Start-RunLog -Module orphan -Force } | Should -Throw '*no run to trace into*'
+            @(Get-ChildItem -LiteralPath (Join-Path $repo 'artifacts') -Directory | ForEach-Object Name) |
+                Should -Be $before
+            Get-Command Get-ArtifactsRoot -ErrorAction SilentlyContinue | Should -BeNullOrEmpty -Because 'the logger no longer loads the minting authority'
+        }
+        It '-RunDir is created when the owning process opens its trace before writing anything else' {
+            $d = Join-Path $TestDrive 'container/not-yet'
+            (Start-RunLog -Module early -RunDir $d -Force) | Should -Be (Join-Path $d 'trace.jsonl')
+            Test-Path -LiteralPath $d -PathType Container | Should -BeTrue
         }
     }
 
