@@ -27,6 +27,8 @@ from procurement.domain.deposits import (
 )
 from procurement.domain.metadata import ArtifactReference
 
+HTML_TREE_FORMAT = "application/x-html-source-tree"
+
 
 class LocalImportProvenance(DomainModel):
     """Configured logical source and time for a local custody transfer."""
@@ -66,6 +68,11 @@ class AcquiredArtifact(DomainModel):
     fetched_at: datetime | None = None
     provider_checksum: ChecksumExpectation | None = None
     local_import: LocalImportProvenance | None = None
+    entrypoint: str | None = Field(
+        default=None,
+        json_schema_extra={"pattern": PORTABLE_LEAF_PATTERN},
+    )
+    files: int | None = Field(default=None, ge=1)
 
     @field_validator("path", mode="before")
     @classmethod
@@ -120,6 +127,14 @@ class AcquiredArtifact(DomainModel):
             self.fetched_at.tzinfo is None or self.fetched_at.utcoffset() is None
         ):
             raise ValueError("fetched_at must include a UTC offset")
+        if self.kind == "html":
+            if self.format != HTML_TREE_FORMAT:
+                raise ValueError("html forms must use the HTML source-tree media type")
+            if self.entrypoint is None or self.files is None:
+                raise ValueError("html forms require entrypoint and files")
+            validate_deposit_slug(self.entrypoint)
+        elif self.entrypoint is not None or self.files is not None:
+            raise ValueError("entrypoint and files are only valid on html tree forms")
         return self
 
 
@@ -216,6 +231,7 @@ __all__ = [
     "AcquisitionManifest",
     "AcquisitionOutcome",
     "AcquisitionResult",
+    "HTML_TREE_FORMAT",
     "LocalImportProvenance",
     "acquisition_manifest_schema",
 ]

@@ -29,7 +29,7 @@ class SourceTreeTests(unittest.TestCase):
         second = fingerprint_source_tree(tree)
         self.assertEqual(first, second)
         self.assertEqual(("A.txt", "sub/b.tex", "z.tex"), tuple(item.path for item in first.files))
-        deposit_hash, deposit_count, deposit_tex = deposit_fingerprint_tree(str(tree))
+        deposit_hash, deposit_count, deposit_tex, _bytes = deposit_fingerprint_tree(str(tree))
         self.assertEqual(
             (deposit_hash, deposit_count, deposit_tex),
             (first.sha256, first.count, first.tex_count),

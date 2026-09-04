@@ -8,7 +8,12 @@ from pathlib import Path
 from typing import TypeVar
 
 from jsonl_engine.deposit import DepositResult
-from procurement.domain.acquisition.receipts import AcquiredArtifact, AcquisitionManifest
+from procurement.domain.acquisition.receipts import (
+    HTML_TREE_FORMAT,
+    AcquiredArtifact,
+    AcquisitionManifest,
+)
+
 from procurement.domain.materialization import (
     SourceMaterializationRequest,
     SourceMaterializationResult,
@@ -48,6 +53,7 @@ class SourceMaterializationService:
         article_deposit: Callable[..., DepositResult] = deposit_procurement_article,
         lock_timeout: float = 60.0,
         pdf_bytes: int | None = None,
+        html_bytes: int | None = None,
     ) -> None:
         if lock_timeout <= 0:
             raise ValueError("lock_timeout must be positive")
@@ -58,11 +64,13 @@ class SourceMaterializationService:
         self._inspector = LatexSourceInspector(limits)
         self._article_deposit = article_deposit
         self._lock_timeout = lock_timeout
-        self._pdf_bytes = (
-            ArtifactLimitSettings().pdf_bytes if pdf_bytes is None else pdf_bytes
-        )
+        defaults = ArtifactLimitSettings()
+        self._pdf_bytes = defaults.pdf_bytes if pdf_bytes is None else pdf_bytes
+        self._html_bytes = defaults.html_bytes if html_bytes is None else html_bytes
         if self._pdf_bytes <= 0:
             raise ValueError("pdf_bytes must be positive")
+        if self._html_bytes <= 0:
+            raise ValueError("html_bytes must be positive")
 
     async def materialize(
         self,
@@ -75,7 +83,7 @@ class SourceMaterializationService:
             request.catalog,
             request.acquisition_slug,
         )
-        _, receipt_pdf = self._forms(manifest)
+        _, receipt_pdf, receipt_html = self._forms(manifest)
         existing = await self._run_sync(
             self._deposits.inspect_existing,
             request.catalog,
@@ -84,6 +92,7 @@ class SourceMaterializationService:
             identity_anchor=request.identity_anchor,
             requested_mode=request.metadata_mode,
             receipt_has_pdf=receipt_pdf is not None,
+            receipt_has_html=receipt_html is not None,
             rebuild=request.rebuild,
         )
         metadata: DepositMetadataBundle | None = None
@@ -140,7 +149,7 @@ class SourceMaterializationService:
     @staticmethod
     def _forms(
         manifest: AcquisitionManifest,
-    ) -> tuple[AcquiredArtifact, AcquiredArtifact | None]:
+    ) -> tuple[AcquiredArtifact, AcquiredArtifact | None, AcquiredArtifact | None]:
         source = next((form for form in manifest.forms if form.kind == "source"), None)
         if source is None:
             raise SourceMaterializationError(
@@ -151,7 +160,10 @@ class SourceMaterializationService:
         pdf = next((form for form in manifest.forms if form.kind == "pdf"), None)
         if pdf is not None and pdf.format != "application/pdf":
             raise SourceMaterializationError("PDF artifact has an unexpected media type")
-        return source, pdf
+        html = next((form for form in manifest.forms if form.kind == "html"), None)
+        if html is not None and html.format != HTML_TREE_FORMAT:
+            raise SourceMaterializationError("HTML artifact has an unexpected media type")
+        return source, pdf, html
 
     def _adopt_unreceipted_pdf(
         self,
@@ -191,6 +203,44 @@ class SourceMaterializationService:
         acq.publish_manifest(published)
         return published, adopted
 
+    def _adopt_unreceipted_html(
+        self,
+        acq: AcquisitionItem,
+        manifest: AcquisitionManifest,
+        html_form: AcquiredArtifact | None,
+    ) -> tuple[AcquisitionManifest, AcquiredArtifact | None]:
+        if html_form is not None:
+            return manifest, html_form
+        html_leaf = f"{manifest.slug}-html"
+        if not acq.exists(acq.artifact_path(html_leaf)):
+            return manifest, None
+        try:
+            adopted = adopt_existing_artifact(
+                acq,
+                kind="html",
+                target_leaf=html_leaf,
+                media_type=HTML_TREE_FORMAT,
+                payload_kind="html",
+                minimum_bytes=16,
+                maximum_bytes=self._html_bytes,
+                maximum_expanded_source_bytes=1,
+            )
+        except (AcquisitionError, AcquisitionConflictError) as exc:
+            raise SourceMaterializationError(
+                f"unreceipted HTML tree at the source deposit is not valid: "
+                f"'{acq.artifact_path(html_leaf)}': {exc}"
+            ) from exc
+        published = collate_acquisition(
+            manifest,
+            AcquisitionManifest(
+                slug=manifest.slug,
+                artifact=manifest.artifact,
+                forms=(adopted,),
+            ),
+        )
+        acq.publish_manifest(published)
+        return published, adopted
+
     def _materialize(
         self,
         request: SourceMaterializationRequest,
@@ -215,12 +265,18 @@ class SourceMaterializationService:
                 or manifest.artifact != expected_manifest.artifact
             ):
                 raise SourceMaterializationError("acquisition identity changed before preparation")
-            source_form, pdf_form = self._forms(manifest)
+            source_form, pdf_form, html_form = self._forms(manifest)
             manifest, pdf_form = self._adopt_unreceipted_pdf(acq, manifest, pdf_form)
+            manifest, html_form = self._adopt_unreceipted_html(acq, manifest, html_form)
             source_path = acq.validate_form(source_form)
             pdf_source = (
                 acq.validate_form(pdf_form)
                 if pdf_form is not None
+                else None
+            )
+            html_source = (
+                acq.validate_form(html_form)
+                if html_form is not None
                 else None
             )
             existing = item.inspect_existing(
@@ -228,6 +284,7 @@ class SourceMaterializationService:
                 identity_anchor=request.identity_anchor,
                 requested_mode=request.metadata_mode,
                 receipt_has_pdf=pdf_form is not None,
+                receipt_has_html=html_form is not None,
                 rebuild=request.rebuild,
             )
             metadata = proposed_metadata
@@ -256,6 +313,8 @@ class SourceMaterializationService:
                 source_path,
                 pdf_form,
                 pdf_source,
+                html_form,
+                html_source,
                 metadata,
                 identity_anchor=request.identity_anchor,
                 main_tex=request.main_tex or "",
@@ -271,6 +330,8 @@ class SourceMaterializationService:
         source_path: Path,
         pdf_form: AcquiredArtifact | None,
         pdf_source: Path | None,
+        html_form: AcquiredArtifact | None,
+        html_source: Path | None,
         metadata: DepositMetadataBundle | None,
         *,
         identity_anchor: WorkIdentityAnchor | None,
@@ -317,6 +378,21 @@ class SourceMaterializationService:
                         f"unreceipted PDF occupies the source deposit: '{item.pdf_path}'"
                     )
 
+            html_path: str | None = None
+            html_leaf: str | None = None
+            if html_form is not None and html_source is not None:
+                if html_source.parent != item.directory:
+                    raise SourceMaterializationError(
+                        "HTML artifact is not in the catalog document directory"
+                    )
+                html_leaf = html_form.path
+                html_path = str(html_source)
+            else:
+                if item.exists(item.html_path):
+                    raise SourceMaterializationError(
+                        f"unreceipted HTML tree occupies the source deposit: '{item.html_path}'"
+                    )
+
             metadata_path: str | None = None
             metadata_route = None
             if metadata is not None:
@@ -351,6 +427,7 @@ class SourceMaterializationService:
                 findings=findings,
                 metadata_json=(item.metadata_path.name if metadata is not None else None),
                 pdf=pdf_leaf,
+                html=html_leaf,
                 lock_timeout=self._lock_timeout,
                 publication_root=item.publication_root,
                 overwrite=overwrite,
@@ -370,6 +447,7 @@ class SourceMaterializationService:
                 source_path=installed.path,
                 metadata_path=metadata_path,
                 pdf_path=pdf_path,
+                html_path=html_path,
                 archive_sha256=extraction.archive_sha256,
                 tree_sha256=installed.inspection.tree_sha256,
                 archive_kind=extraction.archive_kind,

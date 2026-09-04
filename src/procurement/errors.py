@@ -61,6 +61,10 @@ class AcquisitionError(ProcurementError):
     """Artifact planning, retrieval, validation, or publication failed."""
 
 
+class ArtifactUnavailableError(AcquisitionError):
+    """A planned artifact route was absent or was not a paper."""
+
+
 class AcquisitionConflictError(AcquisitionError):
     """Staged bytes or their receipt conflict with an acquisition request."""
 

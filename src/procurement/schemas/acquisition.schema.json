@@ -132,6 +132,26 @@
                 "local_import": {"type": "null"}
               }
             }
+          },
+          {
+            "if": {
+              "properties": {"kind": {"const": "html"}},
+              "required": ["kind"]
+            },
+            "then": {
+              "required": ["entrypoint", "files"],
+              "properties": {
+                "format": {"const": "application/x-html-source-tree"},
+                "entrypoint": {"type": "string", "minLength": 1},
+                "files": {"type": "integer", "minimum": 1}
+              }
+            },
+            "else": {
+              "properties": {
+                "entrypoint": {"type": "null"},
+                "files": {"type": "null"}
+              }
+            }
           }
         ],
         "properties": {
@@ -168,6 +188,18 @@
             "oneOf": [
               {"type": "null"},
               {"$ref": "#/$defs/localImport"}
+            ]
+          },
+          "entrypoint": {
+            "anyOf": [
+              {"$ref": "#/$defs/portableLeaf"},
+              {"type": "null"}
+            ]
+          },
+          "files": {
+            "anyOf": [
+              {"type": "integer", "minimum": 1},
+              {"type": "null"}
             ]
           }
         },

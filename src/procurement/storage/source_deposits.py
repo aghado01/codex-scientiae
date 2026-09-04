@@ -88,6 +88,7 @@ class SourceDepositItem:
         self.metadata_path = self.directory / f"{self.slug}.api-metadata.json"
         self.archive_path = self.directory / f"{self.slug}.tar.gz"
         self.pdf_path = self.directory / f"{self.slug}.pdf"
+        self.html_path = self.directory / f"{self.slug}-html"
         self.tree_path = self.directory / f"{self.slug}-tex"
         self._article = ArticleManifest(
             target_dir=str(self.directory),
@@ -173,12 +174,15 @@ class SourceDepositItem:
         identity_anchor: WorkIdentityAnchor | None = None,
         requested_mode: MetadataMode,
         receipt_has_pdf: bool,
+        receipt_has_html: bool = False,
         rebuild: bool = False,
     ) -> ExistingSourceDeposit | None:
         """Validate immutable optional forms, metadata mode, and reusable evidence."""
 
         if type(receipt_has_pdf) is not bool:
             raise TypeError("receipt_has_pdf must be a boolean")
+        if type(receipt_has_html) is not bool:
+            raise TypeError("receipt_has_html must be a boolean")
         if type(rebuild) is not bool:
             raise TypeError("rebuild must be a boolean")
         self.assert_current()
@@ -223,6 +227,16 @@ class SourceDepositItem:
             raise SourceMaterializationError(
                 "article.json freezes PDF inclusion at first publication: "
                 f"the sentinel {frozen} a PDF but the acquisition receipt would {requested} it"
+            )
+        article_has_html = any(
+            form.get("role") == "html-source" for form in article["source_forms"]
+        )
+        if article_has_html != receipt_has_html and not rebuild:
+            frozen = "included" if article_has_html else "omitted"
+            requested = "include" if receipt_has_html else "omit"
+            raise SourceMaterializationError(
+                "article.json freezes HTML inclusion at first publication: "
+                f"the sentinel {frozen} an HTML tree but the acquisition receipt would {requested} it"
             )
         self.assert_current()
         return ExistingSourceDeposit(
@@ -542,6 +556,7 @@ class SourceDepositStore:
         identity_anchor: WorkIdentityAnchor | None = None,
         requested_mode: MetadataMode,
         receipt_has_pdf: bool,
+        receipt_has_html: bool = False,
         rebuild: bool = False,
     ) -> ExistingSourceDeposit | None:
         """Inspect immutable evidence without creating a document directory."""
@@ -554,6 +569,7 @@ class SourceDepositStore:
                 identity_anchor=identity_anchor,
                 requested_mode=requested_mode,
                 receipt_has_pdf=receipt_has_pdf,
+                receipt_has_html=receipt_has_html,
                 rebuild=rebuild,
             )
 

@@ -466,6 +466,7 @@ def _cmd_deposit(args: argparse.Namespace) -> int:
         metadata_json=args.metadata_json,
         metadata_extension=_load_metadata_extension(args.metadata_extension),
         pdf=args.pdf,
+        html=args.html,
     )
     _emit_for(args, [result.as_dict()])
     return 0
@@ -652,6 +653,7 @@ def _build_parser() -> argparse.ArgumentParser:
         help="application metadata extension as module:factory; required with --metadata-json",
     )
     deposit.add_argument("--pdf")
+    deposit.add_argument("--html")
     deposit.set_defaults(handler=_cmd_deposit)
 
     build_inventory_cmd = sub.add_parser(

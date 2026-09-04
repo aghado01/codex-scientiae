@@ -35,7 +35,7 @@ def register_procure_tools(server: MCPServer) -> None:
                 provider=provider,
                 identifier=identifier,
                 catalog=catalog,
-                artifacts=tuple(artifacts) if artifacts is not None else ("source", "pdf"),
+                artifacts=tuple(artifacts) if artifacts is not None else ("source", "pdf", "html"),
                 main_tex=main_tex,
                 metadata=metadata or ArtifactIdentityMetadata(),
             )

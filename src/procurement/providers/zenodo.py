@@ -357,12 +357,12 @@ class ZenodoProvider:
             target = {
                 "source": f"{slug}.tar.gz",
                 "pdf": f"{slug}.pdf",
-                "html": f"{slug}.html",
+                "html": f"{slug}-html",
             }[kind]
             media = {
                 "source": "application/gzip",
                 "pdf": "application/pdf",
-                "html": "text/html",
+                "html": "application/x-html-source-tree",
             }[kind]
             payloads.append(
                 PlannedArtifact(

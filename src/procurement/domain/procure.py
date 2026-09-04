@@ -27,7 +27,7 @@ class ProcureRequest(DomainModel):
     identifier: str = Field(min_length=1)
     catalog: str = Field(min_length=1)
     artifacts: tuple[ArtifactKind, ...] = Field(
-        default=("source", "pdf"),
+        default=("source", "pdf", "html"),
         min_length=1,
         json_schema_extra={"uniqueItems": True},
     )

@@ -14,7 +14,11 @@ from filelock import FileLock, Timeout
 from jsonl_engine.documents import JsonDocumentError, JsonDocumentStore
 from jsonl_engine.inventory_catalog import MAX_CATALOG_CHILDREN
 from jsonl_engine.publication import PinnedPublicationRoot
-from procurement.domain.acquisition.receipts import AcquiredArtifact, AcquisitionManifest
+from procurement.domain.acquisition.receipts import (
+    HTML_TREE_FORMAT,
+    AcquiredArtifact,
+    AcquisitionManifest,
+)
 from procurement.domain.deposits import validate_deposit_slug
 from procurement.domain.metadata import ArtifactReference
 from procurement.errors import AcquisitionConflictError, AcquisitionError
@@ -32,6 +36,7 @@ from procurement.storage.safety import (
 
 _JOURNAL_LEAF = ".acquisition-publish.json"
 _PARTIAL_LEAF = ".download.part"
+_HTML_PARTIAL_LEAF = ".html.part"
 _FORM_ORDER = {"source": 0, "pdf": 1, "html": 2}
 _ACQUISITION_ROOT_KINDS = frozenset(
     {
@@ -163,7 +168,7 @@ def collate_acquisition(
         if current is None:
             forms[new_form.kind] = new_form
             continue
-        immutable = ("path", "format", "bytes", "sha256")
+        immutable = ("path", "format", "bytes", "sha256", "entrypoint", "files")
         if any(getattr(current, field) != getattr(new_form, field) for field in immutable):
             raise AcquisitionConflictError(
                 f"acquired {new_form.kind!r} form conflicts with its existing receipt"
@@ -230,6 +235,35 @@ class AcquisitionItem:
         """Validate one receipt form against this pinned item generation."""
 
         path = self.artifact_path(form.path)
+        if form.kind == "html":
+            from procurement.operations.html_tree import fingerprint_html_tree
+
+            if form.entrypoint is None or form.files is None:
+                raise AcquisitionConflictError(
+                    f"html form is missing tree identity: '{path}'"
+                )
+            try:
+                info = self.publication_root.stat_path(path)
+            except OSError as exc:
+                raise AcquisitionConflictError(
+                    f"HTML tree is not accessible: '{path}'"
+                ) from exc
+            if not stat.S_ISDIR(info.st_mode) or is_link_or_reparse(info):
+                raise AcquisitionConflictError(
+                    f"HTML tree is not a physical directory: '{path}'"
+                )
+            with self.publication_root.pin_child(form.path) as tree:
+                identity = fingerprint_html_tree(tree, entrypoint=form.entrypoint)
+            if (
+                identity.sha256 != form.sha256
+                or identity.bytes != form.bytes
+                or identity.files != form.files
+                or identity.entrypoint != form.entrypoint
+            ):
+                raise AcquisitionConflictError(
+                    f"staged HTML tree no longer matches acquisition.json: '{path}'"
+                )
+            return path
         size, digest = self.measure_file(path)
         if size != form.bytes or digest != form.sha256:
             raise AcquisitionConflictError(
@@ -262,11 +296,15 @@ class AcquisitionItem:
     def private_download_path(self) -> Path:
         return self.directory / _PARTIAL_LEAF
 
+    def private_html_path(self) -> Path:
+        return self.directory / _HTML_PARTIAL_LEAF
+
     def artifact_path(self, leaf: str) -> Path:
         return self.directory / validate_deposit_slug(leaf)
 
     def write_journal(self, artifact: ArtifactReference, partial: Path, form: AcquiredArtifact) -> Path:
-        if partial.parent != self.directory or partial.name != _PARTIAL_LEAF:
+        expected = self.private_html_path() if form.kind == "html" else self.private_download_path()
+        if Path(partial) != expected:
             raise AcquisitionError("publication partial is outside the locked staging item")
         journal = AcquisitionManifest(
             slug=self.slug,
@@ -287,7 +325,9 @@ class AcquisitionItem:
             pass
 
     def publish_download(self, partial: Path, form: AcquiredArtifact) -> Path:
-        if partial.parent != self.directory or partial.name != _PARTIAL_LEAF:
+        if form.kind == "html":
+            return self.publish_html_tree(partial, form)
+        if Path(partial) != self.private_download_path():
             raise AcquisitionError("publication partial is outside the locked staging item")
         destination = self.artifact_path(form.path)
         if self.exists(destination):
@@ -300,6 +340,25 @@ class AcquisitionItem:
             ) from exc
         except OSError as exc:
             raise AcquisitionError(f"artifact publication failed: '{destination}'") from exc
+        self.validate_form(form)
+        return destination
+
+    def publish_html_tree(self, partial: Path, form: AcquiredArtifact) -> Path:
+        if form.kind != "html" or form.format != HTML_TREE_FORMAT:
+            raise AcquisitionError("HTML tree publication requires an html tree form")
+        if Path(partial) != self.private_html_path():
+            raise AcquisitionError("HTML publication partial is outside the locked staging item")
+        destination = self.artifact_path(form.path)
+        if self.exists(destination):
+            raise AcquisitionConflictError(f"refusing to overwrite staged artifact: '{destination}'")
+        try:
+            self.publication_root.publish_directory(partial, destination)
+        except FileExistsError as exc:
+            raise AcquisitionConflictError(
+                f"staged artifact appeared during publication: '{destination}'"
+            ) from exc
+        except OSError as exc:
+            raise AcquisitionError(f"HTML tree publication failed: '{destination}'") from exc
         self.validate_form(form)
         return destination
 
@@ -323,21 +382,17 @@ class AcquisitionItem:
                     f"publication journal is not one receipt fragment: '{self._journal.path}'"
                 )
             form = journal.forms[0]
-            partial = self.private_download_path()
+            partial = (
+                self.private_html_path() if form.kind == "html" else self.private_download_path()
+            )
             destination = self.artifact_path(form.path)
             if self.exists(destination):
                 self.validate_form(form)
                 if self.exists(partial):
-                    size, digest = self.measure_file(partial)
-                    if size != form.bytes or digest != form.sha256:
-                        raise AcquisitionConflictError(
-                            f"publication partial conflicts with journal: '{partial}'"
-                        )
-                    self.unlink(partial)
+                    self._assert_partial_matches_form(partial, form)
+                    self._discard_partial(partial, form.kind)
             elif self.exists(partial):
-                size, digest = self.measure_file(partial)
-                if size != form.bytes or digest != form.sha256:
-                    raise AcquisitionConflictError(f"publication partial conflicts with journal: '{partial}'")
+                self._assert_partial_matches_form(partial, form)
                 self.publish_download(partial, form)
             else:
                 self.delete_journal()
@@ -347,13 +402,60 @@ class AcquisitionItem:
                 self.publish_manifest(manifest)
                 self.delete_journal()
 
-        partial = self.private_download_path()
-        if self.exists(partial):
-            info = self.publication_root.stat_path(partial)
-            if not stat.S_ISREG(info.st_mode) or is_link_or_reparse(info):
-                raise AcquisitionConflictError(f"private download is not a regular file: '{partial}'")
-            self.unlink(partial)
+        self._discard_abandoned_partials()
         return manifest
+
+    def _assert_partial_matches_form(self, partial: Path, form: AcquiredArtifact) -> None:
+        if form.kind == "html":
+            from procurement.operations.html_tree import fingerprint_html_tree
+
+            if form.entrypoint is None:
+                raise AcquisitionConflictError("html journal form is missing an entrypoint")
+            info = self.publication_root.stat_path(partial)
+            if not stat.S_ISDIR(info.st_mode) or is_link_or_reparse(info):
+                raise AcquisitionConflictError(
+                    f"HTML publication partial is not a physical directory: '{partial}'"
+                )
+            with self.publication_root.pin_child(partial.name) as tree:
+                identity = fingerprint_html_tree(tree, entrypoint=form.entrypoint)
+            if (
+                identity.sha256 != form.sha256
+                or identity.bytes != form.bytes
+                or identity.files != form.files
+            ):
+                raise AcquisitionConflictError(
+                    f"publication partial conflicts with journal: '{partial}'"
+                )
+            return
+        size, digest = self.measure_file(partial)
+        if size != form.bytes or digest != form.sha256:
+            raise AcquisitionConflictError(
+                f"publication partial conflicts with journal: '{partial}'"
+            )
+
+    def _discard_partial(self, partial: Path, kind: str) -> None:
+        if kind == "html":
+            self.publication_root.remove_owned_tree(partial)
+            return
+        self.unlink(partial)
+
+    def _discard_abandoned_partials(self) -> None:
+        file_partial = self.private_download_path()
+        if self.exists(file_partial):
+            info = self.publication_root.stat_path(file_partial)
+            if not stat.S_ISREG(info.st_mode) or is_link_or_reparse(info):
+                raise AcquisitionConflictError(
+                    f"private download is not a regular file: '{file_partial}'"
+                )
+            self.unlink(file_partial)
+        html_partial = self.private_html_path()
+        if self.exists(html_partial):
+            info = self.publication_root.stat_path(html_partial)
+            if not stat.S_ISDIR(info.st_mode) or is_link_or_reparse(info):
+                raise AcquisitionConflictError(
+                    f"private HTML tree is not a physical directory: '{html_partial}'"
+                )
+            self.publication_root.remove_owned_tree(html_partial)
 
 
 def store_for_catalog(

@@ -184,6 +184,7 @@ class SourceMaterializationResult(DomainModel):
     source_path: str = Field(min_length=1)
     metadata_path: str | None = None
     pdf_path: str | None = None
+    html_path: str | None = None
     archive_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     tree_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     archive_kind: Literal["tar+gzip", "single-tex+gzip"]

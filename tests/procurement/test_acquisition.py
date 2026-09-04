@@ -80,7 +80,7 @@ def planned_artifact(
     leaf, media_type, payload_kind, minimum = {
         "source": ("arXiv-2008.10579v1.tar.gz", "application/gzip", "gzip", 2),
         "pdf": ("2008.10579v1.pdf", "application/pdf", "pdf", 5),
-        "html": ("2008.10579v1.html", "text/html", "html", 16),
+        "html": ("2008.10579v1-html", "application/x-html-source-tree", "html", 16),
     }[kind]
     return PlannedArtifact(
         kind=kind,
@@ -125,7 +125,7 @@ def acquired_artifact(
     leaf, media_type = {
         "source": ("arXiv-2008.10579v1.tar.gz", "application/gzip"),
         "pdf": ("2008.10579v1.pdf", "application/pdf"),
-        "html": ("2008.10579v1.html", "text/html"),
+        "html": ("2008.10579v1-html", "application/x-html-source-tree"),
     }[kind]
     return AcquiredArtifact(
         kind=kind,
@@ -137,6 +137,8 @@ def acquired_artifact(
         candidate_id=f"test-{kind}",
         fetched_at=NOW,
         provider_checksum=checksum,
+        entrypoint="2008.10579v1.html" if kind == "html" else None,
+        files=1 if kind == "html" else None,
     )
 
 
@@ -489,6 +491,8 @@ class TestProviderPlanning(unittest.TestCase):
             self.assertEqual(plan.artifact.identifier, "hep-th/9901001v2")
             self.assertEqual(plan.deposit_slug, "hep-th_9901001v2")
             self.assertEqual(tuple(item.kind for item in plan.payloads), ("source", "pdf", "html"))
+            self.assertEqual(plan.payloads[2].target_leaf, "hep-th_9901001v2-html")
+            self.assertEqual(plan.payloads[2].media_type, "application/x-html-source-tree")
             self.assertEqual(len(plan.payloads[0].candidates), 2)
             self.assertEqual(plan.payloads[0].candidates[0].candidate_id, "arxiv-source")
             self.assertIn("/src/hep-th/9901001v2", plan.payloads[0].candidates[0].url)

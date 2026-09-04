@@ -113,7 +113,7 @@ class RecordingMaterialization:
 class TestProcureRequest(unittest.TestCase):
     def test_defaults_source_and_pdf_and_requires_a_destination(self) -> None:
         request = ProcureRequest(provider="arxiv", identifier=SLUG, catalog="inventory")
-        self.assertEqual(request.artifacts, ("source", "pdf"))
+        self.assertEqual(request.artifacts, ("source", "pdf", "html"))
         self.assertIsInstance(request.metadata, ArtifactIdentityMetadata)
         with self.assertRaises(ValidationError):
             ProcureRequest(provider="arxiv", identifier=SLUG, catalog="")
@@ -133,7 +133,7 @@ class TestProcureService(unittest.TestCase):
             )
         )
         self.assertEqual(acquisition.requests[0].catalog, "ingestion/gauntlet/topic")
-        self.assertEqual(acquisition.requests[0].artifacts, ("source", "pdf"))
+        self.assertEqual(acquisition.requests[0].artifacts, ("source", "pdf", "html"))
         self.assertEqual(materialization.requests[0].catalog, "ingestion/gauntlet/topic")
         self.assertEqual(materialization.requests[0].acquisition_slug, SLUG)
         self.assertEqual(result.materialization.status, "deposited")

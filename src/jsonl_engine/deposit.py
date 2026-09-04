@@ -355,7 +355,7 @@ def _same_directory_generation(left: os.stat_result, right: os.stat_result) -> b
     ) == getattr(right, "st_ctime_ns", None)
 
 
-def _fingerprint_pinned_tree(root: PinnedPublicationRoot) -> Tuple[str, int, int]:
+def _fingerprint_pinned_tree(root: PinnedPublicationRoot) -> Tuple[str, int, int, int]:
     """Fingerprint one retained physical tree without following links or reparses."""
 
     records: List[Tuple[str, int, str]] = []
@@ -438,14 +438,15 @@ def _fingerprint_pinned_tree(root: PinnedPublicationRoot) -> Tuple[str, int, int
         if relative.casefold().endswith(".tex"):
             tex_files += 1
     tree_hash = hashlib.sha256(b"".join(witnessed)).hexdigest()
-    return tree_hash, len(records), tex_files
+    total_bytes = sum(size for _, size, _ in records)
+    return tree_hash, len(records), tex_files, total_bytes
 
 
 def _fingerprint_tree(
     root: str,
     *,
     publication_root: PinnedPublicationRoot | None = None,
-) -> Tuple[str, int, int]:
+) -> Tuple[str, int, int, int]:
     """Fingerprint one physical source tree through a retained directory generation."""
 
     requested = os.path.abspath(os.fspath(root))
@@ -470,7 +471,7 @@ def _assert_tree_snapshot(
     expected_tex_files: int,
     publication_root: PinnedPublicationRoot | None = None,
 ) -> None:
-    actual_sha256, actual_files, actual_tex_files = _fingerprint_tree(
+    actual_sha256, actual_files, actual_tex_files, _total_bytes = _fingerprint_tree(
         root,
         publication_root=publication_root,
     )
@@ -658,6 +659,8 @@ def _assemble_article(
     metadata_extension: Optional[ArticleMetadataExtension],
     pdf: Optional[str],
     pdf_full: Optional[str],
+    html: Optional[str] = None,
+    html_full: Optional[str] = None,
 ) -> Tuple[Dict[str, Any], Tuple[_FileWitness, ...]]:
     witnesses: List[_FileWitness] = []
     provider = None
@@ -723,6 +726,31 @@ def _assemble_article(
                 media_type="application/pdf",
                 witnesses=witnesses,
             )
+        )
+    if html is not None and html_full is not None:
+        if html != f"{slug}-html":
+            raise DepositError(
+                f"html tree must use the canonical deposit path {slug + '-html'!r}, got {html!r}"
+            )
+        with publication_root.pin_child(html) as html_root:
+            html_sha256, html_files, _tex, html_bytes = _fingerprint_pinned_tree(html_root)
+            html_entrypoint = f"{slug}.html"
+            _resolve_relative(
+                html_root,
+                html_entrypoint,
+                label="html entrypoint",
+                kind="file",
+            )
+        source_forms.append(
+            {
+                "role": "html-source",
+                "path": html,
+                "format": "application/x-html-source-tree",
+                "entrypoint": html_entrypoint,
+                "files": html_files,
+                "bytes": html_bytes,
+                "sha256": html_sha256,
+            }
         )
 
     provider_evidence = []
@@ -918,6 +946,8 @@ def _publish_article_transaction(
     metadata_extension: Optional[ArticleMetadataExtension],
     pdf: Optional[str],
     pdf_full: Optional[str],
+    html: Optional[str] = None,
+    html_full: Optional[str] = None,
     lock_timeout: float,
     overwrite: bool = False,
 ) -> DepositResult:
@@ -958,6 +988,8 @@ def _publish_article_transaction(
             metadata_extension=metadata_extension,
             pdf=pdf,
             pdf_full=pdf_full,
+            html=html,
+            html_full=html_full,
         )
         _assert_tree_snapshot(
             tree_full,
@@ -1051,6 +1083,7 @@ def _deposit_article_pinned(
     metadata_json: Optional[str] = None,
     metadata_extension: Optional[ArticleMetadataExtension] = None,
     pdf: Optional[str] = None,
+    html: Optional[str] = None,
     lock_timeout: float = 60.0,
     overwrite: bool = False,
 ) -> DepositResult:
@@ -1136,6 +1169,18 @@ def _deposit_article_pinned(
             label="pdf",
             kind="file",
         )
+    html_full = None
+    if html is not None:
+        html, html_full = _resolve_relative(
+            publication_root,
+            html,
+            label="html",
+            kind="directory",
+        )
+        if html != f"{slug}-html":
+            raise DepositError(
+                f"html must use the canonical deposit path {slug + '-html'!r}, got {html!r}"
+            )
 
     with publication_root.pin_descendant(tree) as tree_root:
         entrypoint, _ = _resolve_relative(
@@ -1168,6 +1213,8 @@ def _deposit_article_pinned(
             metadata_extension=metadata_extension,
             pdf=pdf,
             pdf_full=pdf_full,
+            html=html,
+            html_full=html_full,
             lock_timeout=lock_timeout,
             overwrite=overwrite,
         )
@@ -1192,6 +1239,7 @@ def deposit_article(
     metadata_json: Optional[str] = None,
     metadata_extension: Optional[ArticleMetadataExtension] = None,
     pdf: Optional[str] = None,
+    html: Optional[str] = None,
     lock_timeout: float = 60.0,
     publication_root: PinnedPublicationRoot | None = None,
     overwrite: bool = False,
@@ -1229,6 +1277,7 @@ def deposit_article(
                 metadata_json=metadata_json,
                 metadata_extension=metadata_extension,
                 pdf=pdf,
+                html=html,
                 lock_timeout=lock_timeout,
                 overwrite=overwrite,
             )

@@ -183,7 +183,7 @@ def test_locked_uv_launches_from_unrelated_cwd_and_closes_process_tree(
                 read_timeout_seconds=15,
             ) as client:
                 result = await client.list_tools()
-                assert len(result.tools) == 17
+                assert len(result.tools) == 18
                 assert result.tools[0].name == "discover_search"
                 assert result.tools[-1].name == "list_procurement_providers"
                 assert len(captured) == 1
@@ -243,7 +243,7 @@ def test_project_local_registration_launches_from_repository_root() -> None:
                 read_timeout_seconds=15,
             ) as client:
                 result = await client.list_tools()
-                assert len(result.tools) == 17
+                assert len(result.tools) == 18
                 assert len(captured) == 1
         return captured[0]
 

@@ -367,8 +367,8 @@ class ArxivProvider:
                 payloads.append(
                     PlannedArtifact(
                         kind=kind,
-                        target_leaf=f"{slug}.html",
-                        media_type="text/html",
+                        target_leaf=f"{slug}-html",
+                        media_type="application/x-html-source-tree",
                         payload_kind="html",
                         minimum_bytes=16,
                         maximum_bytes=self._artifact_limits.html_bytes,

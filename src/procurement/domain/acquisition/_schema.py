@@ -96,6 +96,26 @@ def acquired_artifact_schema_extra(schema: dict[str, Any]) -> None:
                 }
             },
         },
+        {
+            "if": {
+                "properties": {"kind": {"const": "html"}},
+                "required": ["kind"],
+            },
+            "then": {
+                "required": ["entrypoint", "files"],
+                "properties": {
+                    "format": {"const": "application/x-html-source-tree"},
+                    "entrypoint": {"type": "string", "minLength": 1},
+                    "files": {"type": "integer", "minimum": 1},
+                },
+            },
+            "else": {
+                "properties": {
+                    "entrypoint": {"type": "null"},
+                    "files": {"type": "null"},
+                }
+            },
+        },
     ]
 
 

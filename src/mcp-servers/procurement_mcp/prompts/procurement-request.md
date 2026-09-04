@@ -7,16 +7,16 @@ The slash-command name is `procurement-request`. MCP tools are snake_case (`proc
 ## One source-ready paper
 
 1. If the identifier is unversioned, call `get_work` (source `arxiv` when it is an arXiv id) and use the versioned id as the slug. A versioned arXiv id is already the slug; do not call `get_work` first.
-2. Call `procure_source` with `provider`, `identifier`, and `catalog` set to the destination. Default artifacts are source and PDF. Default metadata is `artifact-identity`.
+2. Call `procure_source` with `provider`, `identifier`, and `catalog` set to the destination. Default artifacts are source, PDF, and HTML. Default metadata is `artifact-identity`. Do not pass `artifacts` unless asked to omit a form.
 3. `catalog` is a configured name (`inventory`) or a workspace-relative folder (`ingestion/<collection>/<topic>`). Missing folders are created. Refuse absolute paths and `..`.
-4. Do not `acquire_artifact` into staging and then copy. Do not rename `arXiv-{slug}.tar.gz` to `{slug}.tar.gz`. The unpacked tree is `{slug}-tex/`.
+4. Do not `acquire_artifact` into staging and then copy. Do not rename `arXiv-{slug}.tar.gz` to `{slug}.tar.gz`. The unpacked tree is `{slug}-tex/`. HTML, when available, lands as `{slug}-html/` with entrypoint `{slug}.html`. Missing HTML is `unavailable`, not a failed paper. HTML is a witness form; it does not mint `article.json` and is not a markdown conversion.
 
-A lone PDF cannot mint `article.json`. Fresh preprints often have no journal DOI in the arXiv Atom feed; that is not a failure. Do not use metadata `omit` unless asked. `procure_source` does not rewrite an existing `article.json`. If the sentinel is missing a form the receipt now has, see Inventory view.
+A lone PDF cannot mint `article.json`. Fresh preprints often have no journal DOI in the arXiv Atom feed; that is not a failure. Do not use metadata `omit` unless asked. `procure_source` does not rewrite an existing `article.json`. If the sentinel is missing a form the receipt now has (PDF or HTML tree), see Inventory view.
 
 ## Bytes only or local files
 
 - Bytes without unpacking: `acquire_artifact`. Pass `catalog` to land at a destination; omit it only for staging.
-- A file already on disk: `list_local_import_inboxes`, then `import_local_artifact` with `catalog`, then `materialize_source_deposit` if a source-ready leaf is required. `procure_source` does not import local files. A valid unreceipted file already at the planned destination leaf is adopted in place; do not move it aside and re-download.
+- A file already on disk: `list_local_import_inboxes`, then `import_local_artifact` with `catalog`, then `materialize_source_deposit` if a source-ready leaf is required. `procure_source` does not import local files. A valid unreceipted occupant already at the planned destination (`{slug}.pdf`, source archive, or `{slug}-html/`) is adopted in place; do not move it aside and re-download.
 
 ## Batch (related papers, one destination)
 

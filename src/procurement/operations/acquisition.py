@@ -29,11 +29,24 @@ from procurement.domain.acquisition.receipts import (
     AcquisitionOutcome,
     AcquisitionResult,
 )
-from procurement.errors import AcquisitionConflictError, AcquisitionError, ProviderError
+from procurement.errors import (
+    AcquisitionConflictError,
+    AcquisitionError,
+    ArtifactUnavailableError,
+    ProviderError,
+)
 from procurement.runtime.concurrency import await_boundary
 from procurement.transport.http import HttpClient, HttpDownload, RequestPolicy, browser_headers
 from procurement.providers.base import Capability
 from procurement.providers.catalog import ProviderCatalog
+from procurement.domain.acquisition.receipts import HTML_TREE_FORMAT
+from procurement.operations.html_tree import (
+    HTML_PARTIAL_LEAF,
+    html_entrypoint_leaf,
+    html_prefix_path,
+    retrieve_html_tree,
+    validate_html_tree,
+)
 from procurement.storage.acquisitions import (
     AcquisitionItem,
     AcquisitionStore,
@@ -97,22 +110,6 @@ def validate_pdf_payload(
         raise AcquisitionError("PDF payload lacks its required header or end marker")
 
 
-def validate_html_payload(
-    path: str | Path,
-    *,
-    publication_root: PinnedPublicationRoot | None = None,
-) -> None:
-    """Validate that one payload starts as an HTML document."""
-
-    try:
-        with _open_payload(path, publication_root) as handle:
-            head = handle.read(8192).decode("utf-8", errors="strict").casefold()
-    except UnicodeDecodeError as exc:
-        raise AcquisitionError("HTML payload is not valid UTF-8") from exc
-    if "<html" not in head and "<!doctype html" not in head:
-        raise AcquisitionError("HTML payload lacks an HTML document marker")
-
-
 def adopt_existing_artifact(
     item: AcquisitionItem,
     *,
@@ -129,6 +126,27 @@ def adopt_existing_artifact(
     """Receipt one validated unreceipted occupant already at its planned leaf."""
 
     path = item.artifact_path(target_leaf)
+    if payload_kind == "html":
+        with item.publication_root.pin_child(target_leaf) as tree:
+            identity = validate_html_tree(
+                tree,
+                entrypoint=html_entrypoint_leaf(item.slug),
+                minimum_bytes=minimum_bytes,
+                maximum_bytes=maximum_bytes,
+                expected_bytes=expected_bytes,
+            )
+        if checksum is not None:
+            raise AcquisitionError("HTML trees do not carry a single-file provider checksum")
+        return AcquiredArtifact(
+            kind=kind,
+            path=target_leaf,
+            format=HTML_TREE_FORMAT,
+            bytes=identity.bytes,
+            sha256=identity.sha256,
+            custody="adopted",
+            entrypoint=identity.entrypoint,
+            files=identity.files,
+        )
     size, digest = item.measure_file(path)
     if size < minimum_bytes:
         raise AcquisitionError(
@@ -168,7 +186,7 @@ def adopt_existing_artifact(
     elif payload_kind == "pdf":
         validate_pdf_payload(path, publication_root=item.publication_root)
     else:
-        validate_html_payload(path, publication_root=item.publication_root)
+        raise AcquisitionError(f"unsupported occupant payload kind {payload_kind!r}")
     return AcquiredArtifact(
         kind=kind,
         path=target_leaf,
@@ -360,7 +378,7 @@ class AcquisitionService:
                     )
                     continue
 
-                acquired, errors = await self._acquire_payload(
+                acquired, errors, unavailable = await self._acquire_payload(
                     transaction,
                     item,
                     plan,
@@ -370,7 +388,7 @@ class AcquisitionService:
                     outcomes.append(
                         AcquisitionOutcome(
                             kind=payload.kind,
-                            status="error",
+                            status="unavailable" if unavailable else "error",
                             error="; ".join(errors) or "no retrieval candidate succeeded",
                         )
                     )
@@ -428,13 +446,28 @@ class AcquisitionService:
         item: AcquisitionItem,
         plan: ArtifactPlan,
         payload: PlannedArtifact,
-    ) -> tuple[tuple[Path, AcquiredArtifact] | None, list[str]]:
+    ) -> tuple[tuple[Path, AcquiredArtifact] | None, list[str], bool]:
         errors: list[str] = []
+        unavailable: list[str] = []
         policy = replace(
             self._policies.get(plan.artifact.provider.casefold(), RequestPolicy()),
             max_decoded_body_bytes=payload.maximum_bytes,
         )
         for candidate in payload.candidates:
+            if payload.payload_kind == "html":
+                acquired = await self._acquire_html_candidate(
+                    transaction,
+                    item,
+                    plan,
+                    payload,
+                    candidate,
+                    policy,
+                    errors,
+                    unavailable,
+                )
+                if acquired is not None:
+                    return acquired, errors, False
+                continue
             partial = item.private_download_path()
             retained = False
             try:
@@ -464,13 +497,83 @@ class AcquisitionService:
                     provider_checksum=payload.checksum,
                 )
                 retained = True
-                return (partial, form), errors
+                return (partial, form), errors, False
             except (ProviderError, AcquisitionError, OSError) as exc:
                 errors.append(f"{candidate.candidate_id}: {exc}")
             finally:
                 if not retained:
                     await transaction.run(self._unlink_if_present, item, partial)
-        return None, errors
+        if unavailable and not errors:
+            return None, unavailable, True
+        return None, errors or unavailable, False
+
+    async def _acquire_html_candidate(
+        self,
+        transaction: _AsyncAcquisitionTransaction,
+        item: AcquisitionItem,
+        plan: ArtifactPlan,
+        payload: PlannedArtifact,
+        candidate,
+        policy: RequestPolicy,
+        errors: list[str],
+        unavailable: list[str],
+    ) -> tuple[Path, AcquiredArtifact] | None:
+        partial = item.private_html_path()
+        retained = False
+        try:
+            await transaction.run(self._prepare_html_partial, item)
+            with item.publication_root.pin_child(HTML_PARTIAL_LEAF) as tree:
+                identity = await retrieve_html_tree(
+                    self._http,
+                    landing_url=candidate.url,
+                    allowed_hosts=candidate.allowed_hosts,
+                    tree_root=tree,
+                    entrypoint=html_entrypoint_leaf(plan.deposit_slug),
+                    prefix_path=html_prefix_path(candidate.url),
+                    provider=plan.artifact.provider,
+                    rate_key=plan.artifact.provider,
+                    policy=policy,
+                    maximum_tree_bytes=payload.maximum_bytes,
+                    minimum_entrypoint_bytes=payload.minimum_bytes,
+                    expected_entrypoint_bytes=payload.expected_bytes,
+                    checksum=payload.checksum,
+                )
+            form = AcquiredArtifact(
+                kind="html",
+                path=payload.target_leaf,
+                format=HTML_TREE_FORMAT,
+                bytes=identity.bytes,
+                sha256=identity.sha256,
+                origin_url=candidate.url,
+                candidate_id=candidate.candidate_id,
+                fetched_at=identity.fetched_at,
+                provider_checksum=payload.checksum,
+                entrypoint=identity.entrypoint,
+                files=identity.files,
+            )
+            retained = True
+            return partial, form
+        except ArtifactUnavailableError as exc:
+            unavailable.append(f"{candidate.candidate_id}: {exc}")
+        except (ProviderError, AcquisitionError, OSError) as exc:
+            errors.append(f"{candidate.candidate_id}: {exc}")
+        finally:
+            if not retained:
+                await transaction.run(self._discard_html_partial, item)
+        return None
+
+    @staticmethod
+    def _prepare_html_partial(item: AcquisitionItem) -> None:
+        partial = item.private_html_path()
+        if item.exists(partial):
+            item.publication_root.remove_owned_tree(partial)
+        item.publication_root.mkdir_leaf(HTML_PARTIAL_LEAF)
+
+    @staticmethod
+    def _discard_html_partial(item: AcquisitionItem) -> None:
+        partial = item.private_html_path()
+        if item.exists(partial):
+            item.publication_root.remove_owned_tree(partial)
 
     @staticmethod
     def _recover_item(item: AcquisitionItem) -> AcquisitionManifest | None:
@@ -561,4 +664,6 @@ class AcquisitionService:
         elif payload.payload_kind == "pdf":
             validate_pdf_payload(path, publication_root=item.publication_root)
         else:
-            validate_html_payload(path, publication_root=item.publication_root)
+            raise AcquisitionError(
+                f"file download cannot validate payload kind {payload.payload_kind!r}"
+            )

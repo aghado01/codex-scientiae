@@ -33,7 +33,7 @@ fresh server-side provider plan; `acquire_artifact` replans internally, download
 forms, and publishes or validates `acquisition.json`. Pass `catalog` to write the receipt into a configured catalog name or a workspace-relative
 destination such as `ingestion/gauntlet/topic`; omit it to use staging. Missing destination
 folders are created. `get_acquisition_receipt` revalidates a receipt and
-every file it names. None of these tools accepts a client-selected URL, serialized plan, absolute
+every form it names (files and the HTML tree). None of these tools accepts a client-selected URL, serialized plan, absolute
 destination, or arbitrary storage root.
 `list_local_import_inboxes` exposes configured logical inbox names, and `import_local_artifact` validates a
 portable direct-child PDF or gzip source before publishing the same acquisition receipt with explicit
@@ -53,13 +53,15 @@ and validates its source in place, and publishes `article.json` last. The receip
 the extracted tree is `{slug}-tex/`. Its typed
 metadata strategy is `artifact-identity`, `explicit-doi`, or `omit`; the first two reuse or persist
 `{slug}.api-metadata.json`, while omit never calls a metadata provider. An explicit DOI is cross-checked
-against any DOI declared by the validated LaTeX closure. Default publication freezes PDF inclusion;
-`rebuild=true` replaces a stale sentinel from current receipt evidence. It does not acquire bytes or
-rebuild an inventory.
+against any DOI declared by the validated LaTeX closure. Default publication freezes PDF and HTML
+inclusion; `rebuild=true` replaces a stale sentinel from current receipt evidence. It does not acquire
+bytes or rebuild an inventory. HTML, when receipted, is `{slug}-html/` with entrypoint `{slug}.html`.
+Absence at the provider is `unavailable` and does not fail a source-ready procure.
 
 `procure_source` is acquire then materialize in lock-step at one destination. It requires a catalog
-destination and a source artifact (default forms are source and PDF). Independent acquire, import, and
-materialize tools remain for bytes-only work and retries.
+destination and a source artifact (default forms are source, PDF, and HTML). Independent acquire, import,
+and materialize tools remain for bytes-only work and retries. `acquire_artifact` still defaults to source
+only.
 
 `inspect_article_catalog` reports the current direct-child source-ready population and whether
 `inventory.jsonl` is present, without writing. `rebuild_article_inventory` rebuilds `inventory.jsonl`
@@ -82,8 +84,8 @@ The intended compositions are:
 - Refresh a first-order catalog: rebuild `inventory.jsonl` from current direct-child articles,
   without reacquiring or unpacking them.
 
-The first source-ready publication freezes metadata mode and PDF inclusion. Later acquisition can add
-staged forms. Default materialization refuses a form-set change; `materialize_source_deposit` with
+The first source-ready publication freezes metadata mode and PDF and HTML inclusion. Later acquisition
+can add staged forms. Default materialization refuses a form-set change; `materialize_source_deposit` with
 `rebuild=true` rewrites `article.json` from the current receipt. Interrupted pre-sentinel components are
 validated and adopted on retry; private tree scratch is swept under the source lease. Inventory
 replacement is generation-pinned and requires an explicit `force` request.
@@ -91,3 +93,9 @@ replacement is generation-pinned and requires an explicit `force` request.
 A PDF-only acquisition can be receipted and can motivate an explicit DOI lookup, but the current
 materializer does not mint `article.json` from a lone PDF. That route requires a separately versioned PDF
 validation profile rather than an exception to the LaTeX source-ready contract.
+
+## Tests
+
+Python containers under `tests/procurement` and `tests/mcp-servers/procurement_mcp` run through
+`tests/batch.ps1`. It mints `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`. Do not invoke pytest
+directly and do not create a `test-runs` directory.

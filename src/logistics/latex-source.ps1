@@ -1150,6 +1150,7 @@ function New-LatexSourceDepositFacts {
         return [System.IO.Path]::GetRelativePath($DocumentDir, $Path).Replace('\', '/')
     }
     $pdfPath = Join-Path $DocumentDir "$Slug.pdf"
+    $htmlPath = Join-Path $DocumentDir "$Slug-html"
     return [pscustomobject]@{
         Skipped             = $false
         DocumentDir         = $DocumentDir
@@ -1166,6 +1167,7 @@ function New-LatexSourceDepositFacts {
         ProviderJson        = (& $relative $ProviderPath)
         MetadataJson        = (& $relative $MetadataPath)
         Pdf                 = $(if ([System.IO.File]::Exists($pdfPath)) { (& $relative $pdfPath) } else { $null })
+        Html                = $(if ([System.IO.Directory]::Exists($htmlPath)) { (& $relative $htmlPath) } else { $null })
         Publication         = $Publication
         Findings            = [pscustomobject]@{
             checks                = $Ledger.Results()
@@ -1270,6 +1272,7 @@ function Invoke-JsonlEngineArticleDeposit {
             $argument.Add('procurement.storage.article:get_procurement_article_metadata_extension')
         }
         if ($Facts.Pdf) { $argument.Add('--pdf'); $argument.Add($Facts.Pdf) }
+        if ($Facts.Html) { $argument.Add('--html'); $argument.Add($Facts.Html) }
 
         $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'deposit' `
                 -Argument $argument.ToArray() -PythonPath $PythonPath `
@@ -1354,6 +1357,10 @@ function Publish-LatexSourceTree {
         $pdfPath = Join-Path $documentRoot "$Slug.pdf"
         if (Test-PathHasReparsePoint -Path $pdfPath) {
             throw "PDF source must not traverse a symbolic link or reparse point: '$pdfPath'"
+        }
+        $htmlPath = Join-Path $documentRoot "$Slug-html"
+        if (Test-PathHasReparsePoint -Path $htmlPath) {
+            throw "HTML source must not traverse a symbolic link or reparse point: '$htmlPath'"
         }
 
         $nonce = [guid]::NewGuid().ToString('N')

@@ -155,6 +155,36 @@ class ArticleManifest(BaseStore):
                 "selection",
             )
 
+        html_forms = [
+            (index, form)
+            for index, form in indexed_forms
+            if form.get("role") == "html-source"
+        ]
+        if len(html_forms) > 1:
+            conflict("source_forms may contain at most one html-source", "source_forms")
+        if html_forms:
+            html_index, html = html_forms[0]
+            if html_index < 2:
+                conflict(
+                    "html-source cannot occupy the archive or source-tree slots",
+                    "source_forms",
+                    html_index,
+                )
+            if html.get("path") != f"{record['slug']}-html":
+                conflict(
+                    "html-source path must be '<slug>-html'",
+                    "source_forms",
+                    html_index,
+                    "path",
+                )
+            if html.get("entrypoint") != f"{record['slug']}.html":
+                conflict(
+                    "html-source entrypoint must be '<slug>.html'",
+                    "source_forms",
+                    html_index,
+                    "entrypoint",
+                )
+
         resolution = record["evidence"].get("metadata_resolution")
         api_evidence = [
             item

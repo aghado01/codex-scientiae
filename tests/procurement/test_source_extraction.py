@@ -138,7 +138,7 @@ class SourceExtractionTests(unittest.TestCase):
         self.assertEqual("10.1234/Example.DOI", inspection.embedded_metadata.doi)
 
         fingerprint = fingerprint_source_tree(destination)
-        deposit_hash, deposit_files, deposit_tex = deposit_fingerprint_tree(str(destination))
+        deposit_hash, deposit_files, deposit_tex, _bytes = deposit_fingerprint_tree(str(destination))
         self.assertEqual(deposit_hash, fingerprint.sha256)
         self.assertEqual((deposit_files, deposit_tex), (fingerprint.count, fingerprint.tex_count))
         self.assertEqual(fingerprint.sha256, inspection.tree_sha256)
