@@ -95,7 +95,7 @@ def build_application(
     secrets = secrets or RuntimeSecrets.from_environment()
     http = http or HttpClient(
         rate_limiter=RateLimiter(
-            state_path=default_rate_clock_path(),
+            state_path=default_rate_clock_path(root),
             lock_timeout=settings.acquisition.lock_timeout_seconds,
         ),
     )

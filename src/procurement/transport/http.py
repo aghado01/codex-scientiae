@@ -38,13 +38,18 @@ _SENSITIVE_QUERY_PARAMETERS = frozenset(
 )
 
 
-def default_rate_clock_path() -> Path:
-    """Return the shared rate-clock file, honoring an explicit environment override."""
+def default_rate_clock_path(workspace_root: str | Path | None = None) -> Path:
+    """Shared rate-clock file. Override: CDXSCI_PROCUREMENT_RATE_CLOCK.
+    Default: <workspace>/artifacts/procurement-mcp/rate-clock.json."""
 
     override = os.environ.get(_RATE_CLOCK_ENV, "").strip()
     if override:
         return Path(override)
-    return Path.home() / ".Codex" / "procurement" / "rate-clock.json"
+    if workspace_root is None:
+        raise ValueError(
+            "rate clock default requires workspace_root or CDXSCI_PROCUREMENT_RATE_CLOCK"
+        )
+    return Path(workspace_root) / "artifacts" / "procurement-mcp" / "rate-clock.json"
 
 DEFAULT_BROWSER_USER_AGENTS: tuple[str, ...] = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",

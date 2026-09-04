@@ -175,8 +175,8 @@ Caller-owned repository run directories belong under
 it; do not format a stamp by hand. `_NN` is a same-second collision sequence, not a label — a run
 directory never carries a description. Its sibling `New-ModuleRunDir` mints the other runstamped
 tier, `artifacts/{module}/{stamp}/{slug}/`, from the same format; there is no `runs/` segment in
-either, because the stamp under a module already IS the run. The repository `.codex/` tree is
-client-owned state and is not a test-run or scratch destination. Direct successful runs remove their
+either, because the stamp under a module already IS the run. The repository `.codex/` tree and
+user-global `~/.Codex` are Codex CLI client state, not a test-run or scratch destination. Direct successful runs remove their
 caller-owned root after accepting the outcome; retained failed-run evidence remains under the same
 `artifacts/tests/` tier.
 

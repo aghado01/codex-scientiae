@@ -17,8 +17,8 @@ This document is intentionally vague in order not to overspecify or otherwise bl
    sequence, never a label). `New-TestSuiteRunDir` in `src/logistics/run-paths.ps1` is the minting
    authority and `tests/batch.ps1` calls it — do not format a stamp by hand. Module run output uses
    the sibling tier `artifacts/{module}/{stamp}/{slug}/` via `New-ModuleRunDir`.
-   The repository `.codex/` tree is client-owned state and is not a project write boundary. Non-repository
-   scratch may use the separately authorized global `~/.Codex/tmp` location.
+   The repository `.codex/` tree and the user-global `~/.Codex` tree are Codex CLI client state,
+   not a project write boundary.
 
 ## Codex-Scientiae MCPs
 

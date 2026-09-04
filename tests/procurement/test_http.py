@@ -144,6 +144,20 @@ class TestRateLimiter(unittest.TestCase):
         ):
             self.assertEqual(default_rate_clock_path(), Path("clock.json"))
 
+    def test_default_rate_clock_path_is_workspace_process_state(self) -> None:
+        env = os.environ.copy()
+        env.pop("CDXSCI_PROCUREMENT_RATE_CLOCK", None)
+        workspace = Path("/tmp/workspace-root")
+        with mock.patch.dict(os.environ, env, clear=True):
+            path = default_rate_clock_path(workspace)
+            with self.assertRaises(ValueError):
+                default_rate_clock_path()
+        self.assertEqual(
+            path, workspace / "artifacts" / "procurement-mcp" / "rate-clock.json"
+        )
+        self.assertNotIn(".Codex", path.parts)
+        self.assertNotIn(".cdxsci", path.parts)
+
 
 class TestBrowserHeaders(unittest.TestCase):
     def test_browser_headers_omits_email_and_generates_desktop_defaults(self) -> None:

@@ -88,7 +88,7 @@ generation across sentinel reads and publication.
 
 `HttpClient` uses HTTP/2. arXiv Atom and artifact routes send a rotating desktop browser profile
 (`User-Agent` plus `Sec-Fetch-*`) per request. Provider floors share a file-locked clock at
-`~/.Codex/procurement/rate-clock.json` (`CDXSCI_PROCUREMENT_RATE_CLOCK` overrides the path).
+`<workspace>/artifacts/procurement-mcp/rate-clock.json` (`CDXSCI_PROCUREMENT_RATE_CLOCK` overrides the path).
 
 `AcquisitionService` asks an artifact-capable provider for an immutable internal plan, then streams each
 requested form through one shared transaction. Plans never cross the MCP execution boundary. Downloads are

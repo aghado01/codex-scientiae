@@ -19,7 +19,7 @@ HTML is a default `procure_source` form. Do not pass a reduced `artifacts` list 
 
 A 429 opens a cooldown (typically 30–120s). Any further arXiv request during that window **resets** the timer. Do not probe to see if it has cleared.
 
-The server serializes arXiv HTTP on a jittered ~3s floor, applies a 429 cooldown, and shares that floor across MCP/CLI processes through a file-locked clock (`~/.Codex/procurement/rate-clock.json`, overridable by `CDXSCI_PROCUREMENT_RATE_CLOCK`). Overlapping tool calls still queue and can trip client timeouts. Parallel subagents do not finish sooner.
+The server serializes arXiv HTTP on a jittered ~3s floor, applies a 429 cooldown, and shares that floor across MCP/CLI processes through a file-locked clock (`artifacts/procurement-mcp/rate-clock.json` in the workspace, overridable by `CDXSCI_PROCUREMENT_RATE_CLOCK`). Overlapping tool calls still queue and can trip client timeouts. Parallel subagents do not finish sooner.
 
 - One in-flight arXiv-touching call at a time: `procure_source`, `acquire_artifact` with provider `arxiv`, `plan_artifact_acquisition` with provider `arxiv`, `prepare_source_deposit_metadata` with artifact provider `arxiv`, and discovery (`get_work`, `discover_search`, `resolve_reference`) with source `arxiv` or `all`.
 - A versioned arXiv id is already the slug. Skip `get_work` and skip a pre-pass of `plan_artifact_acquisition`; `procure_source` replans internally.
