@@ -26,11 +26,11 @@ param(
 )
 
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$artifactBoundary = Join-Path $repositoryRoot 'src/logistics/artifact-boundary.ps1'
-if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
-    throw "run.ps1: artifact boundary helper not found: '$artifactBoundary'"
+$assertCodexTemp = Join-Path $repositoryRoot 'src/logistics/assert-codex-temp.ps1'
+if (-not (Test-Path -LiteralPath $assertCodexTemp -PathType Leaf)) {
+    throw "run.ps1: CODEX_TEMP assert helper not found: '$assertCodexTemp'"
 }
-. $artifactBoundary
+. $assertCodexTemp
 $null = Assert-CodexTempEnvironment -RepositoryRoot $repositoryRoot
 
 if (-not (Get-Module Pester | Where-Object { $_.Version -ge [version]'5.0' })) {
@@ -67,7 +67,7 @@ if ($Tag.Count -gt 0) { $cfg.Filter.Tag = [string[]]@($Tag) }
 if ($ExcludeTag.Count -gt 0) { $cfg.Filter.ExcludeTag = [string[]]@($ExcludeTag) }
 $resolvedResultPath = $null
 if (-not [string]::IsNullOrWhiteSpace($ResultPath)) {
-    $resolvedResultPath = Resolve-TestHarnessArtifactPath -Value $ResultPath `
+    $resolvedResultPath = Resolve-ArtifactDescendantPath -Value $ResultPath `
         -RepositoryRoot $repositoryRoot -Role 'run.ps1 ResultPath' `
         -BasePath (Get-Location).Path
     $resultDirectory = [System.IO.Path]::GetDirectoryName($resolvedResultPath)

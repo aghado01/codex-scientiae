@@ -123,6 +123,7 @@ only this shelf and never fall back to use-case-local installations:
 
 `run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It requires
 `CODEX_TEMP` under the repository `artifacts` root; ambient `TEMP` is not a substitute.
+The child-process check lives in `src/logistics/assert-codex-temp.ps1`.
 Use `tests/batch.ps1` for repository-facing execution.
 
 `run.ps1` imports Pester 5 or newer from the portable PowerShell module tree

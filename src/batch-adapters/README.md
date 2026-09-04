@@ -7,9 +7,10 @@ files in one module, not one PowerShell module per adapter; no unitary adapter m
 is introduced.
 
 Every planner rejects a `RunDirectory` outside `RepositoryRoot/artifacts` through
-`src/logistics/artifact-boundary.ps1`. Child processes receive `CODEX_TEMP` under that run, and
-`TEMP`/`TMP`/`TMPDIR` are projected from it so OS temp APIs cannot follow the ambient user temp
-tree. `tests/batch.ps1` is the public test-batch caller, including a one-file selection.
+`Resolve-ArtifactRunDirectory` in `src/logistics/containment.ps1`. Child processes receive
+`CODEX_TEMP` under that run, and `TEMP`/`TMP`/`TMPDIR` are projected from it so OS temp APIs cannot
+follow the ambient user temp tree. `tests/batch.ps1` is the public test-batch caller, including a
+one-file selection; suite naming lives in `tests/suite-name.ps1`.
 
 A successor LaTeX conversion planner can rejoin this module later under the same job-emission contract
 (`New-BatchJob` only; caller owns `New-BatchPlan` / `Invoke-BatchPlan`). The retired latex-ingest adapter
@@ -28,7 +29,8 @@ Planning resolves and freezes:
 - a stable `pester:<repository-relative-path>#<digest>` job ID from repository-relative test identity plus
   normalized filters;
 - the exact Pester 5-or-newer manifest imported by the child;
-- the PowerShell executable, repository working directory, and runner entrypoint;
+- the PowerShell executable, repository working directory, runner entrypoint, and the child's
+  logistics helpers (`assert-codex-temp.ps1` and sibling `containment.ps1`);
 - a file-size cost hint; and
 - one container address beneath `RunDirectory/pester-jobs/`, with a Pester-native `pester.xml` result,
   retained `artifacts/`, and ephemeral `temp/` root.

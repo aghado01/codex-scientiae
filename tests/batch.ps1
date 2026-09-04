@@ -35,8 +35,9 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'artifact-boundary.ps1'))
+. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'containment.ps1'))
 . ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'run-paths.ps1'))
+. ([System.IO.Path]::Combine($PSScriptRoot, 'suite-name.ps1'))
 
 $defaultPath = @($PSScriptRoot)
 $effectivePath = if ($Path.Count -gt 0) { $Path } else { $defaultPath }
@@ -59,7 +60,7 @@ if ([string]::IsNullOrWhiteSpace($RunDirectory)) {
         'Test batch root: suite={0}; run={1}' -f $suite, $RunDirectory)
 }
 else {
-    $RunDirectory = Resolve-TestHarnessRunDirectory -RunDirectory $RunDirectory `
+    $RunDirectory = Resolve-ArtifactRunDirectory -RunDirectory $RunDirectory `
         -RepositoryRoot $RepositoryRoot
 }
 

@@ -22,11 +22,11 @@ param(
     [string] $OutputVerbosity = 'Normal'
 )
 
-$artifactBoundary = Join-Path $RepositoryRoot 'src/logistics/artifact-boundary.ps1'
-if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
-    throw "pytest.ps1: artifact boundary helper not found: '$artifactBoundary'"
+$containment = Join-Path $RepositoryRoot 'src/logistics/containment.ps1'
+if (-not (Test-Path -LiteralPath $containment -PathType Leaf)) {
+    throw "pytest.ps1: containment helper not found: '$containment'"
 }
-. $artifactBoundary
+. $containment
 
 function Resolve-PytestRunnerPath {
     param(
@@ -161,9 +161,9 @@ $python = Resolve-PytestRunnerPath -Value $PythonPath -BasePath $repository `
     -Role 'Python interpreter' -PathType Leaf
 $config = Resolve-PytestRunnerPath -Value $PytestConfig -BasePath $repository `
     -Role 'pytest config' -PathType Leaf
-$resolvedResultPath = Resolve-TestHarnessArtifactPath -Value $ResultPath `
+$resolvedResultPath = Resolve-ArtifactDescendantPath -Value $ResultPath `
     -RepositoryRoot $repository -Role 'pytest.ps1 ResultPath' -BasePath $repository
-$resolvedTempPath = Resolve-TestHarnessArtifactPath -Value $TempPath `
+$resolvedTempPath = Resolve-ArtifactDescendantPath -Value $TempPath `
     -RepositoryRoot $repository -Role 'pytest.ps1 TempPath' -BasePath $repository
 
 $resultDirectory = [System.IO.Path]::GetDirectoryName($resolvedResultPath)

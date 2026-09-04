@@ -5,8 +5,10 @@ BeforeAll {
     $script:ParallelShell = Join-Path $script:RepositoryRoot 'tests/parallel.ps1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
-    $script:RepositoryArtifactBoundary = Join-Path $script:RepositoryRoot `
-        'src/logistics/artifact-boundary.ps1'
+    $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
+        'src/logistics/containment.ps1'
+    $script:RepositoryAssertCodexTemp = Join-Path $script:RepositoryRoot `
+        'src/logistics/assert-codex-temp.ps1'
     $script:PythonPath = (Resolve-Path `
         (Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe')).Path
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
@@ -26,8 +28,10 @@ BeforeAll {
             -Destination (Join-Path $tests 'pytest.ps1')
         $logistics = Join-Path $repository 'src/logistics'
         [void][System.IO.Directory]::CreateDirectory($logistics)
-        Copy-Item -LiteralPath $script:RepositoryArtifactBoundary `
-            -Destination (Join-Path $logistics 'artifact-boundary.ps1')
+        Copy-Item -LiteralPath $script:RepositoryContainment `
+            -Destination (Join-Path $logistics 'containment.ps1')
+        Copy-Item -LiteralPath $script:RepositoryAssertCodexTemp `
+            -Destination (Join-Path $logistics 'assert-codex-temp.ps1')
         Set-Content -LiteralPath (Join-Path $repository 'pyproject.toml') -Encoding utf8 -Value @'
 [tool.pytest.ini_options]
 python_files = ["test_*.py"]

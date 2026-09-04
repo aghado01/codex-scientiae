@@ -2,18 +2,20 @@
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path "$PSScriptRoot/../..").Path
     $script:TestsRoot = Join-Path $script:RepositoryRoot 'tests'
-    . (Join-Path $script:RepositoryRoot 'src/logistics/artifact-boundary.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/logistics/containment.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/logistics/assert-codex-temp.ps1')
+    . (Join-Path $script:RepositoryRoot 'tests/suite-name.ps1')
 }
 
 Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
     It 'names the suite from a selected owner directory' {
         Resolve-TestSuiteName -TestsRoot $script:TestsRoot -RepositoryRoot $script:RepositoryRoot `
-            -SelectedPath @('tests/logistics') | Should -BeExactly 'logistics'
+            -SelectedPath @('tests/infrastructure') | Should -BeExactly 'infrastructure'
     }
 
     It 'names the same suite from a file inside that owner' {
         Resolve-TestSuiteName -TestsRoot $script:TestsRoot -RepositoryRoot $script:RepositoryRoot `
-            -SelectedPath @('tests/logistics/run-paths.Tests.ps1') | Should -BeExactly 'logistics'
+            -SelectedPath @('tests/infrastructure/run-paths.Tests.ps1') | Should -BeExactly 'infrastructure'
     }
 
     It 'accepts absolute and repository-relative paths alike' {
@@ -24,11 +26,11 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
 
     It 'is mixed when the batch spans more than one owner' {
         Resolve-TestSuiteName -TestsRoot $script:TestsRoot -RepositoryRoot $script:RepositoryRoot `
-            -SelectedPath @('tests/TeXdig', 'tests/logistics') | Should -BeExactly 'mixed'
+            -SelectedPath @('tests/procurement', 'tests/infrastructure') | Should -BeExactly 'mixed'
     }
 
     It 'is mixed for the tests root itself, a bare file in it, or anything outside' {
-        foreach ($selection in @('tests', 'tests/parallel.ps1', 'src/TeXdig')) {
+        foreach ($selection in @('tests', 'tests/parallel.ps1', 'src/logistics')) {
             Resolve-TestSuiteName -TestsRoot $script:TestsRoot `
                 -RepositoryRoot $script:RepositoryRoot -SelectedPath @($selection) |
                 Should -BeExactly 'mixed' -Because "'$selection' is not owner-scoped"
@@ -43,7 +45,7 @@ Describe 'Resolve-TestSuiteName' -Tag 'Infrastructure' {
 
 Describe 'Set-CodexTempEnvironment' -Tag 'Infrastructure' {
     BeforeAll {
-        $script:ArtifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $script:RepositoryRoot
+        $script:ArtifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $script:RepositoryRoot
     }
     BeforeEach {
         $script:Saved = @{}
@@ -139,7 +141,7 @@ Describe 'Set-CodexTempEnvironment' -Tag 'Infrastructure' {
 
 Describe 'Assert-CodexTempEnvironment' -Tag 'Infrastructure' {
     BeforeAll {
-        $script:ArtifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $script:RepositoryRoot
+        $script:ArtifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $script:RepositoryRoot
     }
     BeforeEach {
         $script:Saved = @{}
@@ -184,9 +186,9 @@ Describe 'Assert-CodexTempEnvironment' -Tag 'Infrastructure' {
     }
 }
 
-Describe 'Resolve-TestHarnessRunDirectory' -Tag 'Infrastructure' {
+Describe 'Resolve-ArtifactRunDirectory' -Tag 'Infrastructure' {
     BeforeAll {
-        $script:ArtifactRoot = Get-TestHarnessArtifactRoot -RepositoryRoot $script:RepositoryRoot
+        $script:ArtifactRoot = Get-RepositoryArtifactsRoot -RepositoryRoot $script:RepositoryRoot
     }
 
     It 'resolves a repository-relative artifacts path regardless of working directory' {
@@ -198,7 +200,7 @@ Describe 'Resolve-TestHarnessRunDirectory' -Tag 'Infrastructure' {
         $previous = Get-Location
         try {
             Set-Location -LiteralPath $cwd
-            $resolved = Resolve-TestHarnessRunDirectory -RunDirectory $relative `
+            $resolved = Resolve-ArtifactRunDirectory -RunDirectory $relative `
                 -RepositoryRoot $script:RepositoryRoot
             $resolved | Should -BeExactly (Resolve-Path -LiteralPath $run).Path
         }
@@ -209,7 +211,7 @@ Describe 'Resolve-TestHarnessRunDirectory' -Tag 'Infrastructure' {
     }
 
     It 'rejects the retired test-runs name at the repository root' {
-        { Resolve-TestHarnessRunDirectory -RunDirectory 'test-runs/leak-probe' `
+        { Resolve-ArtifactRunDirectory -RunDirectory 'test-runs/leak-probe' `
             -RepositoryRoot $script:RepositoryRoot } |
             Should -Throw '*RunDirectory must be a descendant of RepositoryRoot/artifacts*'
         Test-Path -LiteralPath (Join-Path $script:RepositoryRoot 'test-runs') | Should -BeFalse

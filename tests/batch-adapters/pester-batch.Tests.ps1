@@ -7,8 +7,10 @@ BeforeAll {
     $script:BatchExecutorManifest = Join-Path $script:RepositoryRoot `
         'src/batch-executor/batch-executor.psd1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
-    $script:RepositoryArtifactBoundary = Join-Path $script:RepositoryRoot `
-        'src/logistics/artifact-boundary.ps1'
+    $script:RepositoryContainment = Join-Path $script:RepositoryRoot `
+        'src/logistics/containment.ps1'
+    $script:RepositoryAssertCodexTemp = Join-Path $script:RepositoryRoot `
+        'src/logistics/assert-codex-temp.ps1'
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
     $script:LivePesterManifest = Join-Path $livePester.ModuleBase 'Pester.psd1'
 
@@ -35,8 +37,10 @@ BeforeAll {
         }
         $logistics = Join-Path $repository 'src/logistics'
         [void][System.IO.Directory]::CreateDirectory($logistics)
-        Copy-Item -LiteralPath $script:RepositoryArtifactBoundary `
-            -Destination (Join-Path $logistics 'artifact-boundary.ps1')
+        Copy-Item -LiteralPath $script:RepositoryContainment `
+            -Destination (Join-Path $logistics 'containment.ps1')
+        Copy-Item -LiteralPath $script:RepositoryAssertCodexTemp `
+            -Destination (Join-Path $logistics 'assert-codex-temp.ps1')
         Set-Content -LiteralPath (Join-Path $pesterRoot 'Pester.psm1') `
             -Encoding utf8 -Value '# fixture Pester module'
         $manifest = Join-Path $pesterRoot 'Pester.psd1'

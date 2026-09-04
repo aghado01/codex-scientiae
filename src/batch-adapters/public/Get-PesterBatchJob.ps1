@@ -24,10 +24,12 @@ function Get-PesterBatchJob {
         throw "pester-batch runner not found: '$runner'"
     }
     $runner = (Resolve-Path -LiteralPath $runner).Path
-    $artifactBoundary = [System.IO.Path]::Combine(
-        $repository, 'src', 'logistics', 'artifact-boundary.ps1')
-    if (-not (Test-Path -LiteralPath $artifactBoundary -PathType Leaf)) {
-        throw "pester-batch runner support not found: '$artifactBoundary'"
+    foreach ($supportName in @('assert-codex-temp.ps1', 'containment.ps1')) {
+        $support = [System.IO.Path]::Combine(
+            $repository, 'src', 'logistics', $supportName)
+        if (-not (Test-Path -LiteralPath $support -PathType Leaf)) {
+            throw "pester-batch runner support not found: '$support'"
+        }
     }
     $pester = Resolve-PesterBatchDependency -PesterManifest $PesterManifest `
         -RepositoryRoot $repository

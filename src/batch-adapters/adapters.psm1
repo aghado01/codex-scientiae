@@ -10,12 +10,12 @@ if (-not (Test-Path -LiteralPath $script:AdaptersExecutorManifest -PathType Leaf
 }
 Import-Module $script:AdaptersExecutorManifest -Scope Local -ErrorAction Stop
 
-$script:AdaptersArtifactBoundary = [System.IO.Path]::GetFullPath(
-    (Join-Path $script:AdaptersModuleRoot '../logistics/artifact-boundary.ps1'))
-if (-not (Test-Path -LiteralPath $script:AdaptersArtifactBoundary -PathType Leaf)) {
-    throw "adapters dependency not found: '$script:AdaptersArtifactBoundary'"
+$script:AdaptersContainment = [System.IO.Path]::GetFullPath(
+    (Join-Path $script:AdaptersModuleRoot '../logistics/containment.ps1'))
+if (-not (Test-Path -LiteralPath $script:AdaptersContainment -PathType Leaf)) {
+    throw "adapters dependency not found: '$script:AdaptersContainment'"
 }
-. $script:AdaptersArtifactBoundary
+. $script:AdaptersContainment
 
 function Resolve-BatchAdapterRunDirectory {
     [CmdletBinding()]
@@ -34,7 +34,7 @@ function Resolve-BatchAdapterRunDirectory {
     }
 
     try {
-        return Resolve-TestHarnessRunDirectory -RunDirectory $candidate `
+        return Resolve-ArtifactRunDirectory -RunDirectory $candidate `
             -RepositoryRoot $RepositoryRoot
     }
     catch {
