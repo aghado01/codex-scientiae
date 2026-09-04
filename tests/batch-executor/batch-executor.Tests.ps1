@@ -345,7 +345,7 @@ finally { $null = Stop-RunLog }
         )
 
         $run = Invoke-BatchExecutor -InputObject $items -ScriptPath $worker -ExecutionMode Process `
-            -Context @{ LogLibrary = (Join-Path $PSScriptRoot '../../src/logistics/logger.ps1') } -MaxWorkers 2
+            -Context @{ LogLibrary = (Join-Path $PSScriptRoot '../../src/infrastructure/logger.ps1') } -MaxWorkers 2
 
         $run.Results.State | Should -Be @('Succeeded', 'Failed', 'Succeeded')
         ($run.Results[1].Errors -join "`n") | Should -Match 'planned failure bad'

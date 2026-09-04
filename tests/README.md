@@ -123,7 +123,7 @@ only this shelf and never fall back to use-case-local installations:
 
 `run.ps1` is the exact-container child entrypoint used by `Get-PesterBatchJob`. It requires
 `CDXSCI_TEMP` under the repository `artifacts` root; ambient `TEMP` is not a substitute.
-The child-process check lives in `src/logistics/assert-temp.ps1`.
+The child-process check lives in `src/infrastructure/assert-temp.ps1`.
 Use `tests/batch.ps1` for repository-facing execution.
 
 `run.ps1` imports Pester 5 or newer from the portable PowerShell module tree
@@ -171,7 +171,7 @@ order.
 
 Caller-owned repository run directories belong under
 `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`. `New-TestSuiteRunDir` in
-`src/logistics/run-paths.ps1` is the minting authority for that stamp and `tests/batch.ps1` calls
+`src/infrastructure/run-paths.ps1` is the minting authority for that stamp and `tests/batch.ps1` calls
 it; do not format a stamp by hand. `_NN` is a same-second collision sequence, not a label — a run
 directory never carries a description. Its sibling `New-ModuleRunDir` mints the other runstamped
 tier, `artifacts/{module}/{stamp}/{slug}/`, from the same format; there is no `runs/` segment in
@@ -437,7 +437,7 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 |---|---|
 | `batch-adapters/` | Pester and pytest batch planning (executor job emission). |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
-| `infrastructure/` | Repository-wide topology plus host logistics primitives (run paths, portable paths, file-bytes, crawl, logger) |
+| `infrastructure/` | Repository-wide topology plus host infrastructure primitives (run paths, portable paths, file-bytes, crawl, logger) |
 | `procurement/` | Scholarly discovery and acquisition (Python libraries; PowerShell catalog/deposit under `src/procurement/scripts`) |
 | `mcp-servers/` | Python and PowerShell MCP servers plus protocol-level tests. |
 | `node_utils/` | Node-backed utilities (md-lint, math-render, pdf-raster, tikz-render) |

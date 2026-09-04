@@ -26,7 +26,7 @@ param(
 )
 
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$assertTemp = Join-Path $repositoryRoot 'src/logistics/assert-temp.ps1'
+$assertTemp = Join-Path $repositoryRoot 'src/infrastructure/assert-temp.ps1'
 if (-not (Test-Path -LiteralPath $assertTemp -PathType Leaf)) {
     throw "run.ps1: CDXSCI_TEMP assert helper not found: '$assertTemp'"
 }

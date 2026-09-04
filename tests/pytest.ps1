@@ -22,7 +22,7 @@ param(
     [string] $OutputVerbosity = 'Normal'
 )
 
-$containment = Join-Path $RepositoryRoot 'src/logistics/containment.ps1'
+$containment = Join-Path $RepositoryRoot 'src/infrastructure/containment.ps1'
 if (-not (Test-Path -LiteralPath $containment -PathType Leaf)) {
     throw "pytest.ps1: containment helper not found: '$containment'"
 }

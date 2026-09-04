@@ -70,7 +70,9 @@ $runtimeArgs = @(
     'scientiae-procurement'
 )
 $runtimeTemp = Join-Path $repoRoot 'artifacts/procurement-mcp/temp'
+$runtimeStaging = Join-Path $repoRoot 'artifacts/procurement-mcp/staging'
 [System.IO.Directory]::CreateDirectory($runtimeTemp) | Out-Null
+[System.IO.Directory]::CreateDirectory($runtimeStaging) | Out-Null
 $runtimeEnvironment = [ordered]@{
     CDXSCI_ROOT = '.'
     UV_PROJECT_ENVIRONMENT = './.venv'

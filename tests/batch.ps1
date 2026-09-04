@@ -7,7 +7,7 @@
   directory, name the artifacts tier, touch the environment, or loop. `RunDirectory` is mandatory
   there because owning it is the CALLER's job by design.
 
-  This script is that caller. It mints artifacts/tests/{suite}/{stamp}[_NN] through the logistics
+  This script is that caller. It mints artifacts/tests/{suite}/{stamp}[_NN] through the infrastructure
   minting authority, sets CDXSCI_TEMP to a job-local tree unless it is already conformant, and
   forwards everything else to parallel.ps1 untouched. Ambient TEMP/TMP/TMPDIR are not read.
   Pass -RunDirectory to own the root yourself — that path is resolved against the repository
@@ -35,8 +35,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'containment.ps1'))
-. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'logistics', 'run-paths.ps1'))
+. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'infrastructure', 'containment.ps1'))
+. ([System.IO.Path]::Combine($RepositoryRoot, 'src', 'infrastructure', 'run-paths.ps1'))
 . ([System.IO.Path]::Combine($PSScriptRoot, 'suite-name.ps1'))
 
 $defaultPath = @($PSScriptRoot)

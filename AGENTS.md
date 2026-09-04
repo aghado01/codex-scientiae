@@ -14,7 +14,7 @@ This document is intentionally vague in order not to overspecify or otherwise bl
 
 4. Repository test runs and test scratch belong under `artifacts/tests/{suite}/YYYYMMDD_HHmmss[_NN]`
    (ISO-ordered date so directory names sort chronologically; `_NN` is a same-second collision
-   sequence, never a label). `New-TestSuiteRunDir` in `src/logistics/run-paths.ps1` is the minting
+   sequence, never a label). `New-TestSuiteRunDir` in `src/infrastructure/run-paths.ps1` is the minting
    authority and `tests/batch.ps1` calls it — do not format a stamp by hand. Module run output uses
    the sibling tier `artifacts/{module}/{stamp}/{slug}/` via `New-ModuleRunDir`.
    The repository `.codex/` tree and the user-global `~/.Codex` tree are Codex CLI client state,
