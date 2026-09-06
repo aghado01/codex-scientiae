@@ -10,7 +10,7 @@
 
 . "$PSScriptRoot/../../infrastructure/containment.ps1"
 . "$PSScriptRoot/../../infrastructure/crawl.ps1"
-. "$PSScriptRoot/../../infrastructure/probe-ledger.ps1"
+. "$PSScriptRoot/probe-ledger.ps1"
 Import-Module (Join-Path $PSScriptRoot '../../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 

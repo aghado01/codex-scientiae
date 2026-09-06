@@ -44,7 +44,7 @@
     "local_inboxes": [
       {
         "name": "manual",
-        "path": "supellex/imports"
+        "path": "artifacts/procurement-mcp/imports"
       }
     ],
     "lock_timeout_seconds": 60,

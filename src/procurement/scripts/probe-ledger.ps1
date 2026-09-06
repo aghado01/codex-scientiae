@@ -1,7 +1,7 @@
 #requires -Version 7.0
 <#
 .SYNOPSIS
-  src/infrastructure/probe-ledger.ps1 — witnessed probe outcome ledger.
+  src/procurement/scripts/probe-ledger.ps1 — witnessed probe outcome ledger.
 
 .DESCRIPTION
   Maintains an ordered record of verified probe outcomes (passed, not-applicable, waived)

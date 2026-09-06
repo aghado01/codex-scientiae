@@ -1,6 +1,6 @@
 #requires -Version 7.0
 BeforeAll {
-    . "$PSScriptRoot/../../src/infrastructure/probe-ledger.ps1"
+    . "$PSScriptRoot/../../src/procurement/scripts/probe-ledger.ps1"
 }
 
 Describe 'ProbeLedger lifecycle and recording' {

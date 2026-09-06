@@ -129,7 +129,6 @@ Treat these as present-day routing hints, not a declaration that every child alr
 |---|---|
 | `staging/` | Sandbox for the source-deposit/article convention. MCP catalog name `inventory`. |
 | `gauntlet/` | Curated collection of deposited articles. |
-| `imports/` | Configured local-import inbox (`manual`). |
 | Other named segments | Classify locally; preserve collection semantics while normalizing genuine document leaves. |
 
 When a segment is adopted, add a small segment-local note defining its scope, expected document depth,

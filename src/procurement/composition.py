@@ -77,6 +77,7 @@ def build_application(
                 root,
                 inbox.path,
                 label=f"local inbox {inbox.name!r}",
+                create=True,
             )
         )
         for inbox in settings.acquisition.local_inboxes
