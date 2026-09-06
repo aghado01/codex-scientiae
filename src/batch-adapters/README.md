@@ -147,9 +147,12 @@ container, not yet created), `-EngineRoot`, `-SourceTree` (the tex tree to proce
 main file inside it), and `-TreeSha256` (to echo in the receipt), plus whatever `WorkerParameter` names the
 caller froze. The row has already resolved everything the worker needs; it opens neither `article.json` nor
 the inventory. It creates `OutDirectory` itself, writes only below `OutDirectory` and `CDXSCI_TEMP`, and
-exits non-zero on failure. The child bootstrap treats **any error record** in the merged stream as failure, so a worker that
-spawns a native process must route that process's stderr to a file inside the job container rather than
-letting it flow into the PowerShell error stream.
+fails by **throwing** (any error record). The entrypoint is invoked with `&` inside the child bootstrap's
+pipeline, so a bare `exit` code is not observed; a worker that only exits non-zero is recorded as
+`Succeeded`. The same rule cuts the other way: the bootstrap treats **any error record** in the merged
+stream as failure, so a worker that spawns a native process must route that process's stderr to a file
+inside the job container rather than letting it flow into the PowerShell error stream (a child's own
+stderr lines surface as result warnings, not errors).
 
 On success the worker leaves `receipt.json` at the top of `OutDirectory` with schema
 `codex-scientiae/inventory-receipt/0.1`: `engine`, `engineVersion`, `engineCommit`, `article` (`slug`,
