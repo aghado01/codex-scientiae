@@ -10,6 +10,13 @@ if (-not (Test-Path -LiteralPath $script:AdaptersExecutorManifest -PathType Leaf
 }
 Import-Module $script:AdaptersExecutorManifest -Scope Local -ErrorAction Stop
 
+$script:AdaptersJsonlClientManifest = [System.IO.Path]::GetFullPath(
+    (Join-Path $script:AdaptersModuleRoot '../jsonl_engine-client/jsonl_engine-client.psd1'))
+if (-not (Test-Path -LiteralPath $script:AdaptersJsonlClientManifest -PathType Leaf)) {
+    throw "adapters dependency not found: '$script:AdaptersJsonlClientManifest'"
+}
+Import-Module $script:AdaptersJsonlClientManifest -Scope Local -ErrorAction Stop
+
 $script:AdaptersContainment = [System.IO.Path]::GetFullPath(
     (Join-Path $script:AdaptersModuleRoot '../infrastructure/containment.ps1'))
 if (-not (Test-Path -LiteralPath $script:AdaptersContainment -PathType Leaf)) {
@@ -49,10 +56,10 @@ $hostFiles = @(
     'private/pytest-address.ps1'
     'private/pytest-discovery.ps1'
     'private/pytest-dependency.ps1'
-    'private/gauntlet-address.ps1'
-    'private/gauntlet-discovery.ps1'
-    'private/gauntlet-dependency.ps1'
-    'public/Get-GauntletBatchJob.ps1'
+    'private/inventory-address.ps1'
+    'private/inventory-discovery.ps1'
+    'private/inventory-dependency.ps1'
+    'public/Get-InventoryBatchJob.ps1'
     'public/Get-PesterBatchJob.ps1'
     'public/Get-PytestBatchJob.ps1'
 )
@@ -64,4 +71,4 @@ foreach ($relativePath in $hostFiles) {
     . $path
 }
 
-Export-ModuleMember -Function 'Get-GauntletBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob'
+Export-ModuleMember -Function 'Get-InventoryBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob'

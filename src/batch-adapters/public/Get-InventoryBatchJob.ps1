@@ -1,13 +1,14 @@
-function Get-GauntletBatchJob {
-    <# Plan gauntlet work for an external engine: one deposited article per
-       job, the job container is the document container. The engine lives in
-       its own repository (EngineRoot) and supplies the child entrypoint
-       (Worker); this adapter knows neither its runtime nor its store layout.
-       Emits BatchJob records only; the caller owns New-BatchPlan /
-       Invoke-BatchPlan. Planning creates no directories and runs nothing. #>
+function Get-InventoryBatchJob {
+    <# Plan one process job per deposited article for an external engine.
+       Path is an article directory, article.json, inventory.jsonl, or a
+       catalog directory that holds inventory.jsonl (first-order or folded).
+       The engine lives in its own repository (EngineRoot) and supplies the
+       child entrypoint (Worker). Emits BatchJob records only; the caller
+       owns New-BatchPlan / Invoke-BatchPlan. Planning creates no directories
+       and runs nothing. #>
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory, Position = 0)] [Alias('ArticlePath')]
+        [Parameter(Mandatory, Position = 0)] [Alias('ArticlePath', 'CatalogPath')]
         [ValidateNotNullOrEmpty()] [string[]] $Path,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
         [ValidateNotNullOrEmpty()] [string] $RepositoryRoot = $script:AdaptersDefaultRepositoryRoot,
@@ -15,19 +16,21 @@ function Get-GauntletBatchJob {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $EngineRoot,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Worker,
         [string] $PowerShellPath,
+        [string] $PythonPath,
         [System.Collections.IDictionary] $WorkerParameter = @{}
     )
 
-    $repository = Resolve-GauntletBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
-    $run = Resolve-GauntletBatchRunDirectory -RunDirectory $RunDirectory -RepositoryRoot $repository
-    $engineRoot = Resolve-GauntletBatchEngineRoot -EngineRoot $EngineRoot -RepositoryRoot $repository
-    $worker = Resolve-GauntletBatchWorker -Worker $Worker -EngineRoot $engineRoot
-    $childPowerShell = Resolve-GauntletBatchPowerShellPath -PowerShellPath $PowerShellPath
-    $frozenWorkerParameter = Resolve-GauntletBatchWorkerParameter -WorkerParameter $WorkerParameter
-    $articles = @(Find-GauntletBatchArticle -Path $Path -RepositoryRoot $repository)
+    $repository = Resolve-InventoryBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
+    $run = Resolve-InventoryBatchRunDirectory -RunDirectory $RunDirectory -RepositoryRoot $repository
+    $engineRoot = Resolve-InventoryBatchEngineRoot -EngineRoot $EngineRoot -RepositoryRoot $repository
+    $worker = Resolve-InventoryBatchWorker -Worker $Worker -EngineRoot $engineRoot
+    $childPowerShell = Resolve-InventoryBatchPowerShellPath -PowerShellPath $PowerShellPath
+    $frozenWorkerParameter = Resolve-InventoryBatchWorkerParameter -WorkerParameter $WorkerParameter
+    $articles = @(Find-InventoryBatchArticle -Path $Path -RepositoryRoot $repository `
+            -PythonPath $PythonPath)
 
     foreach ($articleDirectory in $articles) {
-        $manifest = Get-GauntletBatchManifestRecord -ArticleDirectory $articleDirectory
+        $manifest = Get-InventoryBatchManifestRecord -ArticleDirectory $articleDirectory
         $relativePath = [System.IO.Path]::GetRelativePath($repository, $articleDirectory) -replace '\\', '/'
 
         # Identity = engine + article address + frozen tree fingerprint: a
@@ -38,10 +41,10 @@ function Get-GauntletBatchJob {
             "article=$relativePath"
             "tree=$($manifest.TreeSha256)"
         ) -join "`n"
-        $digest = Get-GauntletBatchStableHash -Value $identityMaterial
-        $id = "gauntlet:${Engine}:$relativePath#$digest"
-        $addressLeaf = ConvertTo-GauntletBatchAddressLeaf -Slug $manifest.Slug -Digest $digest
-        $address = Resolve-GauntletBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
+        $digest = Get-InventoryBatchStableHash -Value $identityMaterial
+        $id = "inventory:${Engine}:$relativePath#$digest"
+        $addressLeaf = ConvertTo-InventoryBatchAddressLeaf -Slug $manifest.Slug -Digest $digest
+        $address = Resolve-InventoryBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
 
         $parameters = @{}
         foreach ($key in @($frozenWorkerParameter.Keys)) { $parameters[$key] = $frozenWorkerParameter[$key] }
@@ -50,11 +53,11 @@ function Get-GauntletBatchJob {
         $parameters['EngineRoot'] = $engineRoot
 
         $metadata = @{
-            Domain = 'gauntlet'
-            Adapter = 'gauntlet-batch'
-            AddressingContract = 'RunDirectory/gauntlet-jobs'
+            Domain = 'inventory'
+            Adapter = 'inventory-batch'
+            AddressingContract = 'RunDirectory/jobs'
             ContainerContract = 'JobContainerIsDocumentContainer'
-            ReceiptContract = 'codex-scientiae/gauntlet-receipt/0.1'
+            ReceiptContract = 'codex-scientiae/inventory-receipt/0.1'
             ReceiptPath = [System.IO.Path]::Combine($address.JobDirectory, 'receipt.json')
             TempEnvironment = 'CDXSCI_TEMP'
             ScratchEnvironment = 'CDXSCI_JSON_SCRATCH_ROOT'
@@ -73,7 +76,7 @@ function Get-GauntletBatchJob {
         }
 
         batch-executor\New-BatchJob -Id $id -Kind PowerShellProcess -EntryPoint $worker `
-            -Parameters $parameters -RuntimeProfile 'gauntlet-process' `
+            -Parameters $parameters -RuntimeProfile 'inventory-process' `
             -ProcessSpec @{
                 PowerShellPath = $childPowerShell
                 WorkingDirectory = $engineRoot

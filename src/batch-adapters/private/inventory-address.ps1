@@ -1,6 +1,6 @@
-# Gauntlet adapter addressing helpers.
+# Inventory-batch addressing helpers.
 
-function Get-GauntletBatchStableHash {
+function Get-InventoryBatchStableHash {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [AllowEmptyString()] [string] $Value,
@@ -16,7 +16,7 @@ function Get-GauntletBatchStableHash {
     finally { $sha.Dispose() }
 }
 
-function ConvertTo-GauntletBatchAddressLeaf {
+function ConvertTo-InventoryBatchAddressLeaf {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Slug,
@@ -29,7 +29,7 @@ function ConvertTo-GauntletBatchAddressLeaf {
     return "$stem-$Digest"
 }
 
-function Resolve-GauntletBatchJobAddress {
+function Resolve-InventoryBatchJobAddress {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
@@ -37,12 +37,11 @@ function Resolve-GauntletBatchJobAddress {
     )
 
     # The only adapter-owned run-relative composition. One document per job;
-    # the job container IS the document container: the engine worker emits
-    # whatever it emits directly at this root (Writes root), and the receipt
-    # the run caller folds sits at its top.
-    $tempRoot = [System.IO.Path]::Combine($RunDirectory, 'gauntlet-temp', $AddressLeaf)
+    # the job container IS the document container. job-temp is distinct from
+    # the caller-owned RunDirectory/temp that Set-TempEnvironment mints.
+    $tempRoot = [System.IO.Path]::Combine($RunDirectory, 'job-temp', $AddressLeaf)
     return [pscustomobject]@{
-        JobDirectory = [System.IO.Path]::Combine($RunDirectory, 'gauntlet-jobs', $AddressLeaf)
+        JobDirectory = [System.IO.Path]::Combine($RunDirectory, 'jobs', $AddressLeaf)
         TempRoot = $tempRoot
         JsonScratchRoot = [System.IO.Path]::Combine($tempRoot, 'json-scratch')
     }

@@ -1,11 +1,11 @@
-# Gauntlet adapter dependency helpers.
+# Inventory-batch dependency helpers.
 #
-# The engine under test lives in its own repository. Planning freezes only
-# where it is (EngineRoot) and which child entrypoint it offers (Worker); it
-# never resolves node, perl, or any other engine runtime. Runtime preflight is
-# the engine-side launcher's job, before it asks codex-scientiae for a plan.
+# The engine lives in its own repository. Planning freezes only where it is
+# (EngineRoot) and which child entrypoint it offers (Worker). It never
+# resolves node, perl, or any other engine runtime. Runtime preflight is the
+# engine-side launcher's job, before it asks for a plan.
 
-function Resolve-GauntletBatchEngineRoot {
+function Resolve-InventoryBatchEngineRoot {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $EngineRoot,
@@ -13,23 +13,23 @@ function Resolve-GauntletBatchEngineRoot {
     )
 
     if (-not [System.IO.Path]::IsPathFullyQualified($EngineRoot)) {
-        throw "gauntlet-batch EngineRoot must be an existing absolute directory: '$EngineRoot'"
+        throw "inventory-batch EngineRoot must be an existing absolute directory: '$EngineRoot'"
     }
     $candidate = [System.IO.Path]::GetFullPath($EngineRoot)
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "gauntlet-batch EngineRoot must be an existing absolute directory: '$EngineRoot'"
+        throw "inventory-batch EngineRoot must be an existing absolute directory: '$EngineRoot'"
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
     $repository = (Resolve-Path -LiteralPath $RepositoryRoot).Path
     if ($resolved -eq $repository -or
             (Test-PathIsDescendant -Root $repository -Path $resolved) -or
             (Test-PathIsDescendant -Root $resolved -Path $repository)) {
-        throw "gauntlet-batch EngineRoot must lie outside RepositoryRoot: '$EngineRoot'"
+        throw "inventory-batch EngineRoot must lie outside RepositoryRoot: '$EngineRoot'"
     }
     return $resolved
 }
 
-function Resolve-GauntletBatchWorker {
+function Resolve-InventoryBatchWorker {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Worker,
@@ -37,21 +37,21 @@ function Resolve-GauntletBatchWorker {
     )
 
     if (-not [System.IO.Path]::IsPathFullyQualified($Worker)) {
-        throw "gauntlet-batch Worker must be an existing absolute .ps1 file below EngineRoot: '$Worker'"
+        throw "inventory-batch Worker must be an existing absolute .ps1 file below EngineRoot: '$Worker'"
     }
     $candidate = [System.IO.Path]::GetFullPath($Worker)
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf) -or
             [System.IO.Path]::GetExtension($candidate) -ne '.ps1') {
-        throw "gauntlet-batch Worker must be an existing absolute .ps1 file below EngineRoot: '$Worker'"
+        throw "inventory-batch Worker must be an existing absolute .ps1 file below EngineRoot: '$Worker'"
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
     if (-not (Test-PathIsDescendant -Root $EngineRoot -Path $resolved)) {
-        throw "gauntlet-batch Worker must be an existing absolute .ps1 file below EngineRoot: '$Worker'"
+        throw "inventory-batch Worker must be an existing absolute .ps1 file below EngineRoot: '$Worker'"
     }
     return $resolved
 }
 
-function Resolve-GauntletBatchPowerShellPath {
+function Resolve-InventoryBatchPowerShellPath {
     [CmdletBinding()]
     param([string] $PowerShellPath)
 
@@ -66,12 +66,12 @@ function Resolve-GauntletBatchPowerShellPath {
     }
     $candidate = [System.IO.Path]::GetFullPath($PowerShellPath)
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
-        throw "gauntlet-batch child PowerShell not found: '$PowerShellPath'"
+        throw "inventory-batch child PowerShell not found: '$PowerShellPath'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Resolve-GauntletBatchWorkerParameter {
+function Resolve-InventoryBatchWorkerParameter {
     <# Extra parameters the caller wants frozen into every child invocation.
        The adapter owns Article, OutDirectory, and EngineRoot; a caller may
        not shadow them. Keys must be plain PowerShell parameter names. #>
@@ -85,10 +85,10 @@ function Resolve-GauntletBatchWorkerParameter {
     foreach ($key in @($WorkerParameter.Keys)) {
         $name = [string]$key
         if ($name -notmatch '^[A-Za-z_][A-Za-z0-9_]*$') {
-            throw "gauntlet-batch WorkerParameter key is not a parameter name: '$name'"
+            throw "inventory-batch WorkerParameter key is not a parameter name: '$name'"
         }
         if ($name -in @('Article', 'OutDirectory', 'EngineRoot')) {
-            throw "gauntlet-batch WorkerParameter may not shadow the adapter-owned parameter '$name'"
+            throw "inventory-batch WorkerParameter may not shadow the adapter-owned parameter '$name'"
         }
         $frozen[$name] = $WorkerParameter[$key]
     }

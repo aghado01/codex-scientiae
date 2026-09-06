@@ -56,7 +56,7 @@ Describe 'BEX-403 adapter thinness gate' {
                 }, $true)
         }
         @($publicFunctions.Name | Sort-Object) | Should -Be @(
-            'Get-GauntletBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
+            'Get-InventoryBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
 
         $forbiddenInputs = @(
             'MaxWorkers'

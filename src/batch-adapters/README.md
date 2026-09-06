@@ -1,7 +1,7 @@
 # Batch adapters
 
 `batch-adapters` contains the domain planners for the finite-batch executor. Import the canonical module
-through `adapters.psd1`. It exports `Get-GauntletBatchJob`, `Get-PesterBatchJob`, and
+through `adapters.psd1`. It exports `Get-InventoryBatchJob`, `Get-PesterBatchJob`, and
 `Get-PytestBatchJob` while leaving the executor's four-command public surface unchanged. These are public
 files in one module, not one PowerShell module per adapter; no unitary adapter module or compatibility alias
 is introduced.
@@ -14,7 +14,9 @@ one-file selection; suite naming lives in `tests/suite-name.ps1`.
 
 Every planner obeys the same job-emission contract (`New-BatchJob` only; caller owns `New-BatchPlan` /
 `Invoke-BatchPlan`). The retired latex-ingest adapter and the in-repository TeXdig census adapter live in the
-graveyard archive; corpus runs of external engines go through the gauntlet adapter below.
+graveyard archive; corpus runs of external engines go through the inventory adapter below.
+`src/batch-runner.ps1` is the house caller for those runs. Do not hang an inventory batch off
+`tests/parallel.ps1`.
 
 ## Pester adapter
 
@@ -87,26 +89,39 @@ BEX-604 evolved `tests/parallel.ps1` into the one multilingual repository shell;
 shell exists. It combines the adapters' domain-neutral jobs into one plan while
 keeping framework selectors, observations, job IDs, address roots, and native reports distinct.
 
-## Gauntlet adapter
+## Inventory adapter
 
-`Get-GauntletBatchJob` plans corpus runs for an engine that lives in **another repository**. It accepts
-deposited article directories, `article.json` files, or collection directories (expanded one level to their
-article children) under this repository, an existing absolute `RunDirectory` below `RepositoryRoot/artifacts`,
-an `Engine` label, the engine's `EngineRoot`, and the `Worker` child entrypoint the engine supplies. One
-document per job; the job container IS the document container: the worker emits whatever it emits at
-`RunDirectory/gauntlet-jobs/<slug>-<digest>/`, with ephemeral state under
-`RunDirectory/gauntlet-temp/<slug>-<digest>/`.
+`Get-InventoryBatchJob` plans one process job per deposited article for an engine that lives in
+**another repository**. `Path` is an article directory, an `article.json` file, an `inventory.jsonl`
+file, or a catalog directory that holds `inventory.jsonl`. First-order catalogs (direct-child articles)
+and folded parent catalogs (child inventories relocated one hop) use the same store; the planner does
+not walk directories looking for `article.json`. A catalog directory without `inventory.jsonl` is
+refused.
+
+The engine is identified by an `Engine` label, an absolute `EngineRoot` outside this repository, and
+the `Worker` child entrypoint the engine supplies. One document per job; the job container IS the
+document container: the worker emits at `RunDirectory/jobs/<slug>-<digest>/`, with ephemeral state
+under `RunDirectory/job-temp/<slug>-<digest>/`.
 
 | Owner | Owns |
 | --- | --- |
-| codex-scientiae | the corpus (`supellex/gauntlet`), this planner, the batch executor, run minting under `artifacts/gauntlet/{stamp}/{engine}/`, `CDXSCI_TEMP`, and the receipt contract |
-| the engine repository | `EngineRoot`, the `Worker` (a `.ps1` below `EngineRoot`, conventionally in a gitignored `private/` tree), its runtime, and every file it writes inside the job container |
+| codex-scientiae | deposited articles and their `inventory.jsonl` views, this planner, the batch executor, `src/batch-runner.ps1`, `CDXSCI_TEMP`, and the receipt contract |
+| the engine repository | `EngineRoot`, the `Worker` (a `.ps1` below `EngineRoot`, conventionally in a gitignored `private/` tree), its runtime preflight, and every file it writes inside the job container |
+
+`src/batch-runner.ps1` is the house caller. It loads containment, adapters, and the executor from
+its own `src/` directory. It resolves the inventory and artifacts tree from `-RepositoryRoot` or
+process-scope `CDXSCI_ROOT` (no hardcoded path), defaults `-Path` to `{root}/supellex/gauntlet`,
+mints `artifacts/{engine}/{stamp}/` through `New-ModuleRunDir` (no `-Slug`: that parameter is an
+article identity, and a batch is not one article), plans, invokes, and folds receipts. `{engine}`
+is the process that produced the output. The selected inventory is in `run.json`. Engine launchers
+preflight their runtime, then call the runner with `-Engine`, `-EngineRoot`, `-Worker`, and
+`-WorkerParameter`.
 
 Planning resolves and freezes:
 
-- a stable `gauntlet:<engine>:<repository-relative-article-dir>#<digest>` id from the engine label, the article
-  address, and the deposit's frozen `treeSha256` (a re-deposit changes the id; a re-run over the same tree
-  does not; two engines over one deposit never share a container);
+- a stable `inventory:<engine>:<repository-relative-article-dir>#<digest>` id from the engine label,
+  the article address, and the deposit's frozen `treeSha256` (a re-deposit changes the id; a re-run
+  over the same tree does not; two engines over one deposit never share a container);
 - `EngineRoot` (absolute, existing, disjoint from `RepositoryRoot`) as the child working directory and
   `Worker` (absolute, existing `.ps1` below `EngineRoot`) as the child entrypoint;
 - the frozen named parameters `Article`, `OutDirectory`, and `EngineRoot`, plus any caller-supplied
@@ -114,10 +129,11 @@ Planning resolves and freezes:
 - a tree-byte cost hint; and
 - the job container and temp addresses, declared in `Writes`.
 
-The planner resolves **no engine runtime**: not node, not perl, not a dependency root. Preflight of the
-engine belongs to the engine-side launcher before it asks for a plan. `ProcessSpec.Environment` transports
-`CDXSCI_TEMP`, a job-local `CDXSCI_JSON_SCRATCH_ROOT`, and `TEMP`/`TMP`/`TMPDIR` projected from
-`CDXSCI_TEMP`; the executor adds `CDXSCI_BATCH_JOB_ID`.
+A deposit with no `latex-source-tree` sha256 is refused at plan time. The planner resolves **no
+engine runtime**: not node, not perl, not a dependency root. Inventory rows are read through
+`jsonl_engine-client` (`Get-JsonlRange`). `ProcessSpec.Environment` transports `CDXSCI_TEMP`, a
+job-local `CDXSCI_JSON_SCRATCH_ROOT`, and `TEMP`/`TMP`/`TMPDIR` projected from `CDXSCI_TEMP`; the
+executor adds `CDXSCI_BATCH_JOB_ID`.
 
 ### Worker contract
 
@@ -129,11 +145,11 @@ spawns a native process must route that process's stderr to a file inside the jo
 letting it flow into the PowerShell error stream.
 
 On success the worker leaves `receipt.json` at the top of `OutDirectory` with schema
-`codex-scientiae/gauntlet-receipt/0.1`: `engine`, `engineVersion`, `engineCommit`, `article` (`slug`,
+`codex-scientiae/inventory-receipt/0.1`: `engine`, `engineVersion`, `engineCommit`, `article` (`slug`,
 `treeSha256`, `directory`), `status` (`ok` or `failed`), `startedUtc`, `endedUtc`, `durationMs`, `stores`
 (file names it emitted), and `counts` (a flat map of numeric measurements). The receipt is the only thing
-codex-scientiae reads back; the run caller folds receipts into a run summary and never opens the engine's
-own stores. `Metadata.ReceiptPath` names the expected location.
+codex-scientiae reads back; the run caller folds receipts into `inventory-summary.jsonl` and `run.json`
+and never opens the engine's own stores. `Metadata.ReceiptPath` names the expected location.
 
 ## Ownership boundary
 

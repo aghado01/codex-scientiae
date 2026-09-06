@@ -22,12 +22,15 @@ the resolved budget is present in every execution record.
 
 ## Companion adapters
 
-The [`batch-adapters`](../batch-adapters/README.md) module exports `Get-PesterBatchJob` and
-`Get-PytestBatchJob` as public files in one package, with no compatibility alias or module per command. The
-test planners discover one physical framework file per process job and assign framework-native result and
-suite-artifact writes beneath the caller run. They emit jobs without changing this module's public surface
-or owning execution. Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
-A successor LaTeX conversion planner may rejoin the adapters module later under the same contract.
+The [`batch-adapters`](../batch-adapters/README.md) module exports `Get-InventoryBatchJob`,
+`Get-PesterBatchJob`, and `Get-PytestBatchJob` as public files in one package, with no compatibility
+alias or module per command. The test planners discover one physical framework file per process job
+and assign framework-native result and suite-artifact writes beneath the caller run. The inventory
+planner discovers deposited articles from `inventory.jsonl` (first-order or folded) or from a single
+article path. They emit jobs without changing this module's public surface or owning execution.
+Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
+`src/batch-runner.ps1` is the house caller for inventory-tree engine batches; `tests/batch.ps1` is
+the house caller for test batches. Do not hang an inventory run off `tests/parallel.ps1`.
 
 The pytest unit is one physical `test_*.py` file with native JUnit and separate retained/temporary addresses
 beneath `RunDirectory/pytest-jobs/<container>`. It uses the existing `PowerShellProcess` mode and

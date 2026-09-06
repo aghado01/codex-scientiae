@@ -6,13 +6,13 @@
     Description = 'Domain adapters that emit jobs for the shared finite-batch executor.'
     PowerShellVersion = '7.0'
     CompatiblePSEditions = @('Core')
-    FunctionsToExport = @('Get-GauntletBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
+    FunctionsToExport = @('Get-InventoryBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
     CmdletsToExport = @()
     VariablesToExport = @()
     AliasesToExport = @()
     PrivateData = @{
         PSData = @{
-            Tags = @('adapters', 'batch', 'gauntlet', 'pester', 'pytest', 'test')
+            Tags = @('adapters', 'batch', 'inventory', 'pester', 'pytest', 'test')
         }
     }
 }
