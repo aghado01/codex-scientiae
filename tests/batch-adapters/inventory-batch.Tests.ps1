@@ -27,9 +27,18 @@ BeforeAll {
             slug = $Slug
             source_forms = @(
                 [ordered]@{
+                    role = 'latex-source-archive'
+                    path = "arXiv-$Slug.tar.gz"
+                    format = 'application/gzip'
+                    bytes = $TreeBytes
+                    sha256 = ('f' * 64)
+                    archive_kind = 'tar+gzip'
+                }
+                [ordered]@{
                     role = 'latex-source-tree'
                     path = "$Slug-tex"
                     format = 'application/x-latex-source-tree'
+                    derived_from = "arXiv-$Slug.tar.gz"
                     entrypoint = 'main.tex'
                     files = 1
                     tex_files = 1
@@ -98,6 +107,9 @@ param(
     [Parameter(Mandatory)] [string] $Article,
     [Parameter(Mandatory)] [string] $OutDirectory,
     [Parameter(Mandatory)] [string] $EngineRoot,
+    [Parameter(Mandatory)] [string] $SourceTree,
+    [Parameter(Mandatory)] [string] $Entrypoint,
+    [Parameter(Mandatory)] [string] $TreeSha256,
     [string] $Marker = ''
 )
 $ErrorActionPreference = 'Stop'
@@ -108,6 +120,10 @@ $receipt = [ordered]@{
     article = $Article
     outDirectory = $OutDirectory
     engineRoot = $EngineRoot
+    sourceTree = $SourceTree
+    entrypoint = $Entrypoint
+    treeSha256 = $TreeSha256
+    entrypointExists = (Test-Path -LiteralPath (Join-Path $SourceTree $Entrypoint) -PathType Leaf)
     marker = $Marker
     temp = $env:CDXSCI_TEMP
     osTemp = $env:TEMP
@@ -165,10 +181,6 @@ $receipt | ConvertTo-Json -Depth 4 |
     }
 
     . (Join-Path $script:RepositoryRoot 'src/infrastructure/containment.ps1')
-    $pythonCandidate = Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe'
-    if (-not (Test-Path -LiteralPath $pythonCandidate -PathType Leaf)) {
-        throw "inventory-batch tests require the repository .venv Python at '$pythonCandidate'"
-    }
 
     Import-Module $script:BatchExecutorManifest -Force
     Import-Module $script:AdaptersManifest -Force
@@ -294,6 +306,13 @@ Describe 'Get-InventoryBatchJob planning' {
             $job.Parameters.Article | Should -Be $job.Metadata.ArticleDirectory
             $job.Parameters.OutDirectory | Should -Be $job.Metadata.JobDirectory
             $job.Parameters.EngineRoot | Should -Be $fixture.EngineRoot
+            $job.Parameters.SourceTree | Should -Be $job.Metadata.TreeDirectory
+            $job.Parameters.SourceTree |
+                Should -Be (Join-Path $job.Metadata.ArticleDirectory "$($job.Metadata.Slug)-tex")
+            $job.Parameters.Entrypoint | Should -Be 'main.tex'
+            $job.Parameters.TreeSha256 | Should -Be $job.Metadata.TreeSha256
+            $job.Metadata.Entrypoint | Should -Be 'main.tex'
+            $job.Metadata.ManifestSource | Should -Be 'inventory'
             $job.Parameters.Marker | Should -Be 'frozen'
             $environment = $job.ProcessSpec.Environment
             $environment.CDXSCI_JSON_SCRATCH_ROOT | Should -Be $job.Metadata.JsonScratchRoot
@@ -325,6 +344,12 @@ Describe 'Get-InventoryBatchJob planning' {
                 -Worker $fixture.Worker)
         $jobs.Count | Should -Be 3
         @($jobs.Metadata.Slug | Sort-Object) | Should -Be @('a-small', 'b-large', 'c-other')
+        foreach ($job in $jobs) {
+            $job.Parameters.SourceTree |
+                Should -Be (Join-Path $job.Metadata.ArticleDirectory "$($job.Metadata.Slug)-tex")
+            Test-Path -LiteralPath $job.Parameters.SourceTree -PathType Container | Should -BeTrue
+            $job.Metadata.ManifestSource | Should -Be 'inventory'
+        }
         @($jobs.Metadata.RepositoryRelativePath | Sort-Object) | Should -Be @(
             'catalog/alpha/a-small'
             'catalog/alpha/b-large'
@@ -341,6 +366,39 @@ Describe 'Get-InventoryBatchJob planning' {
                 -RunDirectory $fixture.RunDirectory -RepositoryRoot $fixture.Root `
                 -Engine 'stub' -EngineRoot $fixture.EngineRoot -Worker $fixture.Worker)
         @($fromFile.Id) | Should -Be @($fromDir.Id)
+    }
+
+    It 'trusts the inventory row and opens article.json only for single-article paths' {
+        $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'trusted-row')
+        $base = @{
+            RunDirectory = $fixture.RunDirectory
+            RepositoryRoot = $fixture.Root
+            Engine = 'stub'
+            EngineRoot = $fixture.EngineRoot
+            Worker = $fixture.Worker
+        }
+        # The inventory was written before article.json is spoiled: rows are the manifest.
+        Set-Content -LiteralPath (Join-Path $fixture.Small 'article.json') -Encoding utf8 -Value '{ not json'
+        $fromRows = @(Get-InventoryBatchJob @base -Path $fixture.Alpha)
+        $fromRows.Count | Should -Be 2
+        $small = @($fromRows | Where-Object { $_.Metadata.Slug -eq 'a-small' })[0]
+        $large = @($fromRows | Where-Object { $_.Metadata.Slug -eq 'b-large' })[0]
+        $small.Metadata.TreeSha256 | Should -Be ('a' * 64)
+        $small.Parameters.Entrypoint | Should -Be 'main.tex'
+        $small.EstimatedCost | Should -Be 64
+        $large.EstimatedCost | Should -Be 4096
+
+        $direct = @(Get-InventoryBatchJob @base -Path $fixture.Large)[0]
+        $direct.Metadata.ManifestSource | Should -Be 'article.json'
+        $direct.Id | Should -Be $large.Id
+        { Get-InventoryBatchJob @base -Path $fixture.Small } |
+            Should -Throw '*could not read article.json*'
+
+        # A row whose tree is not on disk is refused at plan time, not as a failed receipt.
+        Remove-Item -LiteralPath (Join-Path $fixture.Other 'c-other-tex') -Recurse -Force
+        { Get-InventoryBatchJob @base -Path $fixture.Beta } |
+            Should -Throw '*has no latex-source-tree directory*'
+        @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
     }
 
     It 'mints distinct identities per engine and per deposited tree' {
@@ -408,6 +466,8 @@ Describe 'Get-InventoryBatchJob planning' {
         { Invoke-With @{ Engine = 'Not Valid' } } | Should -Throw '*Engine*'
         { Invoke-With @{ WorkerParameter = @{ OutDirectory = 'x' } } } |
             Should -Throw '*may not shadow the adapter-owned parameter*'
+        { Invoke-With @{ WorkerParameter = @{ SourceTree = 'x' } } } |
+            Should -Throw '*may not shadow the adapter-owned parameter*'
 
         $outsideCollection = Join-Path (Split-Path -Parent $fixture.Root) 'outside-catalog'
         $outsideArticle = Write-InventoryDeposit -Collection $outsideCollection -Slug 'escapee'
@@ -435,6 +495,16 @@ Describe 'Get-InventoryBatchJob planning' {
             $script:Utf8)
         { Invoke-With @{ Path = $noTree } } |
             Should -Throw '*has no latex-source-tree sha256*'
+
+        $noEntry = Write-InventoryDeposit -Collection $fixture.Alpha -Slug 'no-entry'
+        $noEntryJson = Get-Content -LiteralPath (Join-Path $noEntry 'article.json') -Raw | ConvertFrom-Json
+        $noEntryJson.source_forms[1].entrypoint = ''
+        [System.IO.File]::WriteAllText(
+            (Join-Path $noEntry 'article.json'),
+            (($noEntryJson | ConvertTo-Json -Depth 6 -Compress) + "`n"),
+            $script:Utf8)
+        { Invoke-With @{ Path = $noEntry } } |
+            Should -Throw '*has no latex-source-tree entrypoint*'
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
     }
 }
@@ -461,6 +531,10 @@ Describe 'inventory worker hop' {
             $receipt.article | Should -Be $job.Metadata.ArticleDirectory
             $receipt.outDirectory | Should -Be $job.Metadata.JobDirectory
             $receipt.engineRoot | Should -Be $fixture.EngineRoot
+            $receipt.sourceTree | Should -Be $job.Metadata.TreeDirectory
+            $receipt.entrypoint | Should -Be 'main.tex'
+            $receipt.treeSha256 | Should -Be $job.Metadata.TreeSha256
+            $receipt.entrypointExists | Should -BeTrue
             $receipt.marker | Should -Be 'hop'
             $receipt.temp | Should -Be $job.Metadata.TempRoot
             $receipt.osTemp | Should -Be $job.Metadata.TempRoot

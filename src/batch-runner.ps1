@@ -25,7 +25,6 @@ param(
     [System.Collections.IDictionary] $WorkerParameter = @{},
     [string] $RunDirectory = '',
     [string] $PowerShellPath = '',
-    [string] $PythonPath = '',
     [nullable[int]] $MaxWorkers = $null,
     [ValidateRange(0, [int]::MaxValue)] [int] $ReservedCores = 2,
     [ValidateRange(1, [int]::MaxValue)] [int] $MinItemsPerWorker = 1,
@@ -96,7 +95,6 @@ $plan = @{
     WorkerParameter = $WorkerParameter
 }
 if (-not [string]::IsNullOrWhiteSpace($PowerShellPath)) { $plan.PowerShellPath = $PowerShellPath }
-if (-not [string]::IsNullOrWhiteSpace($PythonPath)) { $plan.PythonPath = $PythonPath }
 
 $jobs = @(Get-InventoryBatchJob @plan)
 if ($jobs.Count -eq 0) { throw 'The inventory adapter produced no jobs' }

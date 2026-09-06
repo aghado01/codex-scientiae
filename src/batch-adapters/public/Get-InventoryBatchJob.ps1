@@ -2,10 +2,11 @@ function Get-InventoryBatchJob {
     <# Plan one process job per deposited article for an external engine.
        Path is an article directory, article.json, inventory.jsonl, or a
        catalog directory that holds inventory.jsonl (first-order or folded).
-       The engine lives in its own repository (EngineRoot) and supplies the
-       child entrypoint (Worker). Emits BatchJob records only; the caller
-       owns New-BatchPlan / Invoke-BatchPlan. Planning creates no directories
-       and runs nothing. #>
+       Inventory rows are trusted as the article manifest; article.json is
+       read only for the single-article forms. The engine lives in its own
+       repository (EngineRoot) and supplies the child entrypoint (Worker).
+       Emits BatchJob records only; the caller owns New-BatchPlan /
+       Invoke-BatchPlan. Planning creates no directories and runs nothing. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)] [Alias('ArticlePath', 'CatalogPath')]
@@ -16,7 +17,6 @@ function Get-InventoryBatchJob {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $EngineRoot,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Worker,
         [string] $PowerShellPath,
-        [string] $PythonPath,
         [System.Collections.IDictionary] $WorkerParameter = @{}
     )
 
@@ -26,11 +26,12 @@ function Get-InventoryBatchJob {
     $worker = Resolve-InventoryBatchWorker -Worker $Worker -EngineRoot $engineRoot
     $childPowerShell = Resolve-InventoryBatchPowerShellPath -PowerShellPath $PowerShellPath
     $frozenWorkerParameter = Resolve-InventoryBatchWorkerParameter -WorkerParameter $WorkerParameter
-    $articles = @(Find-InventoryBatchArticle -Path $Path -RepositoryRoot $repository `
-            -PythonPath $PythonPath)
+    $selections = @(Find-InventoryBatchArticle -Path $Path -RepositoryRoot $repository)
 
-    foreach ($articleDirectory in $articles) {
-        $manifest = Get-InventoryBatchManifestRecord -ArticleDirectory $articleDirectory
+    foreach ($selection in $selections) {
+        $articleDirectory = $selection.ArticleDirectory
+        $manifest = Get-InventoryBatchManifestRecord -ArticleDirectory $articleDirectory `
+            -Record $selection.Record
         $relativePath = [System.IO.Path]::GetRelativePath($repository, $articleDirectory) -replace '\\', '/'
 
         # Identity = engine + article address + frozen tree fingerprint: a
@@ -46,11 +47,16 @@ function Get-InventoryBatchJob {
         $addressLeaf = ConvertTo-InventoryBatchAddressLeaf -Slug $manifest.Slug -Digest $digest
         $address = Resolve-InventoryBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
 
+        # The worker is handed everything the row already resolved; it never
+        # has to open article.json or the inventory itself.
         $parameters = @{}
         foreach ($key in @($frozenWorkerParameter.Keys)) { $parameters[$key] = $frozenWorkerParameter[$key] }
         $parameters['Article'] = $articleDirectory
         $parameters['OutDirectory'] = $address.JobDirectory
         $parameters['EngineRoot'] = $engineRoot
+        $parameters['SourceTree'] = $manifest.TreeDirectory
+        $parameters['Entrypoint'] = $manifest.Entrypoint
+        $parameters['TreeSha256'] = $manifest.TreeSha256
 
         $metadata = @{
             Domain = 'inventory'
@@ -61,6 +67,7 @@ function Get-InventoryBatchJob {
             ReceiptPath = [System.IO.Path]::Combine($address.JobDirectory, 'receipt.json')
             TempEnvironment = 'CDXSCI_TEMP'
             ScratchEnvironment = 'CDXSCI_JSON_SCRATCH_ROOT'
+            ManifestSource = $selection.Source
             Engine = $Engine
             EngineRoot = $engineRoot
             Worker = $worker
@@ -69,6 +76,7 @@ function Get-InventoryBatchJob {
             ArticleDirectory = $articleDirectory
             TreeDirectory = $manifest.TreeDirectory
             TreeSha256 = $manifest.TreeSha256
+            Entrypoint = $manifest.Entrypoint
             RunDirectory = $run
             JobDirectory = $address.JobDirectory
             TempRoot = $address.TempRoot
@@ -88,7 +96,7 @@ function Get-InventoryBatchJob {
                     TMPDIR = $address.TempRoot
                 }
             } `
-            -EstimatedCost ([math]::Max(1, [double]$manifest.TreeBytes)) `
+            -EstimatedCost ([math]::Max(1, $manifest.CostHint)) `
             -Writes @($address.JobDirectory, $address.TempRoot) `
             -WorkingDirectory $engineRoot -Metadata $metadata
     }

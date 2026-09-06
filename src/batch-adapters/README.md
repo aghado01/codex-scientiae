@@ -94,9 +94,12 @@ keeping framework selectors, observations, job IDs, address roots, and native re
 `Get-InventoryBatchJob` plans one process job per deposited article for an engine that lives in
 **another repository**. `Path` is an article directory, an `article.json` file, an `inventory.jsonl`
 file, or a catalog directory that holds `inventory.jsonl`. First-order catalogs (direct-child articles)
-and folded parent catalogs (child inventories relocated one hop) use the same store; the planner does
-not walk directories looking for `article.json`. A catalog directory without `inventory.jsonl` is
-refused.
+and folded parent catalogs (child inventories relocated one hop) use the same store. The inventory is
+built by the jsonl engine to be trusted downstream, so the planner takes each row as the article
+manifest: it reads `inventory.jsonl` directly, one JSON object per line with the header skipped, and
+opens neither the jsonl engine nor `article.json`. `article.json` is read only for the single-article
+`Path` forms, which carry no row. The planner never walks directories looking for `article.json`; a
+catalog directory without `inventory.jsonl` is refused.
 
 The engine is identified by an `Engine` label, an absolute `EngineRoot` outside this repository, and
 the `Worker` child entrypoint the engine supplies. One document per job; the job container IS the
@@ -124,23 +127,27 @@ Planning resolves and freezes:
   over the same tree does not; two engines over one deposit never share a container);
 - `EngineRoot` (absolute, existing, disjoint from `RepositoryRoot`) as the child working directory and
   `Worker` (absolute, existing `.ps1` below `EngineRoot`) as the child entrypoint;
-- the frozen named parameters `Article`, `OutDirectory`, and `EngineRoot`, plus any caller-supplied
-  `WorkerParameter` entries that do not shadow those three;
-- a tree-byte cost hint; and
+- the frozen named parameters `Article`, `OutDirectory`, `EngineRoot`, `SourceTree` (the deposit's
+  `{slug}-tex` directory), `Entrypoint` (the tree-relative main file from the row), and `TreeSha256`,
+  plus any caller-supplied `WorkerParameter` entries that do not shadow those six;
+- a cost hint from the row's `latex-source-archive` byte count (falling back to the tree's file count),
+  with no directory walk; and
 - the job container and temp addresses, declared in `Writes`.
 
-A deposit with no `latex-source-tree` sha256 is refused at plan time. The planner resolves **no
-engine runtime**: not node, not perl, not a dependency root. Inventory rows are read through
-`jsonl_engine-client` (`Get-JsonlRange`). `ProcessSpec.Environment` transports `CDXSCI_TEMP`, a
-job-local `CDXSCI_JSON_SCRATCH_ROOT`, and `TEMP`/`TMP`/`TMPDIR` projected from `CDXSCI_TEMP`; the
-executor adds `CDXSCI_BATCH_JOB_ID`.
+A deposit with no `latex-source-tree` sha256 or entrypoint, or whose tree directory is not on disk, is
+refused at plan time. The planner resolves **no engine runtime**: not node, not perl, not python, not a
+dependency root. `ProcessSpec.Environment` transports `CDXSCI_TEMP`, a job-local
+`CDXSCI_JSON_SCRATCH_ROOT`, and `TEMP`/`TMP`/`TMPDIR` projected from `CDXSCI_TEMP`; the executor adds
+`CDXSCI_BATCH_JOB_ID`.
 
 ### Worker contract
 
 The worker is a PowerShell 7 script taking `-Article` (deposit directory), `-OutDirectory` (the job
-container, not yet created), and `-EngineRoot`, plus whatever `WorkerParameter` names the caller froze. It
-creates `OutDirectory` itself, writes only below `OutDirectory` and `CDXSCI_TEMP`, and exits non-zero on
-failure. The child bootstrap treats **any error record** in the merged stream as failure, so a worker that
+container, not yet created), `-EngineRoot`, `-SourceTree` (the tex tree to process), `-Entrypoint` (the
+main file inside it), and `-TreeSha256` (to echo in the receipt), plus whatever `WorkerParameter` names the
+caller froze. The row has already resolved everything the worker needs; it opens neither `article.json` nor
+the inventory. It creates `OutDirectory` itself, writes only below `OutDirectory` and `CDXSCI_TEMP`, and
+exits non-zero on failure. The child bootstrap treats **any error record** in the merged stream as failure, so a worker that
 spawns a native process must route that process's stderr to a file inside the job container rather than
 letting it flow into the PowerShell error stream.
 
