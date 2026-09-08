@@ -107,30 +107,15 @@ def html_prefix_path(landing_url: str) -> str:
     return path.rstrip("/") or "/"
 
 
-_FILE_LIKE_SUFFIXES = (
-    ".gif",
-    ".htm",
-    ".html",
-    ".jpeg",
-    ".jpg",
-    ".pdf",
-    ".png",
-    ".svg",
-    ".xhtml",
-    ".xml",
-)
-
-
 def html_join_base(final_url: str) -> str:
-    """Return the URL join base so directory landings keep sibling requisites."""
+    """Return the landing's final URL as the RFC 3986 join base.
 
-    parts = urlsplit(final_url)
-    if parts.path.endswith("/"):
-        return final_url
-    last = parts.path.rsplit("/", 1)[-1].casefold()
-    if any(last.endswith(suffix) for suffix in _FILE_LIKE_SUFFIXES):
-        return final_url
-    return urlunsplit((parts.scheme, parts.netloc, f"{parts.path}/", parts.query, parts.fragment))
+    Slashless arXiv HTML landings (``/html/{id}``) use file semantics: a relative
+    ``{id}/figure.png`` replaces the last path segment. Inventing a trailing slash
+    resolves that to ``/html/{id}/{id}/figure.png`` and 404s.
+    """
+
+    return final_url
 
 
 def is_html_document(head: str) -> bool:

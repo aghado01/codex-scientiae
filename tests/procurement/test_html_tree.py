@@ -47,7 +47,7 @@ SLUG = "2008.10579v1"
 PAPER = (
     b"<!doctype html><html class=\"ltx_document\"><body>"
     b"<article class=\"ltx_document\">"
-    b"<img src=\"x1.png\">"
+    b"<img src=\"2008.10579v1/x1.png\">"
     b"<link rel=\"stylesheet\" href=\"https://static.arxiv.org/theme.css\">"
     b"<a href=\"https://arxiv.org/pdf/2008.10579v1\">pdf</a>"
     b"<img src=\"../escape.png\">"
@@ -113,13 +113,24 @@ def _service(http: HttpClient, store: AcquisitionStore) -> AcquisitionService:
 
 
 class TestHtmlConfine(unittest.TestCase):
-    def test_join_base_appends_slash_for_directory_landings(self) -> None:
-        base = html_join_base(f"https://arxiv.org/html/{SLUG}")
-        self.assertTrue(base.endswith("/"))
+    def test_join_base_keeps_slashless_arxiv_landings(self) -> None:
+        landing = f"https://arxiv.org/html/{SLUG}"
+        base = html_join_base(landing)
+        self.assertEqual(base, landing)
+        confined = confine_html_requisite(
+            f"{SLUG}/x1.png",
+            base=base,
+            prefix_path=html_prefix_path(landing),
+            allowed_hosts=("arxiv.org",),
+        )
+        self.assertEqual(confined, f"https://arxiv.org/html/{SLUG}/x1.png")
+
+    def test_trailing_slash_landing_keeps_sibling_requisites(self) -> None:
+        landing = f"https://arxiv.org/html/{SLUG}/"
         confined = confine_html_requisite(
             "x1.png",
-            base=base,
-            prefix_path=html_prefix_path(f"https://arxiv.org/html/{SLUG}"),
+            base=html_join_base(landing),
+            prefix_path=html_prefix_path(landing),
             allowed_hosts=("arxiv.org",),
         )
         self.assertEqual(confined, f"https://arxiv.org/html/{SLUG}/x1.png")
@@ -159,7 +170,7 @@ class TestHtmlConfine(unittest.TestCase):
 
     def test_parser_ignores_script_style_and_anchors(self) -> None:
         urls = collect_html_requisites(PAPER.decode("utf-8"))
-        self.assertEqual(urls, ("x1.png", "../escape.png", "/pdf/2008.10579v1"))
+        self.assertEqual(urls, (f"{SLUG}/x1.png", "../escape.png", "/pdf/2008.10579v1"))
 
     def test_relative_member_skips_the_landing_and_keeps_figures(self) -> None:
         prefix = html_prefix_path(f"https://arxiv.org/html/{SLUG}")
@@ -224,11 +235,6 @@ class TestHtmlAcquisition(unittest.TestCase):
         def handler(request: httpx.Request) -> httpx.Response:
             calls.append(request.url.path)
             if request.url.path == f"/html/{SLUG}":
-                return httpx.Response(
-                    301,
-                    headers={"location": f"https://arxiv.org/html/{SLUG}/"},
-                )
-            if request.url.path == f"/html/{SLUG}/":
                 return httpx.Response(200, content=PAPER, headers={"content-type": "text/html"})
             if request.url.path == f"/html/{SLUG}/x1.png":
                 return httpx.Response(200, content=PNG, headers={"content-type": "image/png"})
@@ -287,7 +293,9 @@ class TestHtmlAcquisition(unittest.TestCase):
             + b"<nav>"
             + (b"M" * 9000)
             + b"</nav>"
-            + b"<article class=\"ltx_document\"><img src=\"x1.png\"></article></body></html>"
+            + b"<article class=\"ltx_document\"><img src=\""
+            + SLUG.encode("ascii")
+            + b"/x1.png\"></article></body></html>"
         )
         calls: list[str] = []
 
