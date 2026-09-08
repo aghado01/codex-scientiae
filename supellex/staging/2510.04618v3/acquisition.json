@@ -1,0 +1,61 @@
+{
+  "schema": "codex-scientiae/acquisition/0.1",
+  "state": "acquired",
+  "slug": "2510.04618v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2510.04618v3",
+    "provider_roles": [
+      "artifact-origin",
+      "artifact-access",
+      "metadata-authority"
+    ]
+  },
+  "forms": [
+    {
+      "kind": "source",
+      "path": "arXiv-2510.04618v3.tar.gz",
+      "format": "application/gzip",
+      "bytes": 2476711,
+      "sha256": "bde13621a2ecba5b97d8c916ff6aef4af1aa40983958a007638349ca2edacd48",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/src/2510.04618v3",
+      "candidate_id": "arxiv-source",
+      "fetched_at": "2026-09-08T01:26:13.110133Z",
+      "provider_checksum": null,
+      "local_import": null,
+      "entrypoint": null,
+      "files": null
+    },
+    {
+      "kind": "pdf",
+      "path": "2510.04618v3.pdf",
+      "format": "application/pdf",
+      "bytes": 2313268,
+      "sha256": "51050ced82df75c143b151262d5af8763916968ca50374bd8ff778f40552b0ad",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/pdf/2510.04618v3",
+      "candidate_id": "arxiv-pdf",
+      "fetched_at": "2026-09-08T01:26:15.768111Z",
+      "provider_checksum": null,
+      "local_import": null,
+      "entrypoint": null,
+      "files": null
+    },
+    {
+      "kind": "html",
+      "path": "2510.04618v3-html",
+      "format": "application/x-html-source-tree",
+      "bytes": 6935728,
+      "sha256": "28c2b33287e0ac3fb828cb14b5b47e6d98d66d45c5d29b239ad8a6d77ed20e37",
+      "custody": "provider-download",
+      "origin_url": "https://arxiv.org/html/2510.04618v3",
+      "candidate_id": "arxiv-html",
+      "fetched_at": "2026-09-08T01:41:53.156181Z",
+      "provider_checksum": null,
+      "local_import": null,
+      "entrypoint": "2510.04618v3.html",
+      "files": 15
+    }
+  ]
+}

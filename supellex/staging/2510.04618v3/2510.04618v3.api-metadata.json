@@ -1,0 +1,123 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2510.04618v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2510.04618v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models",
+      "authors": [
+        "Qizheng Zhang",
+        "Changran Hu",
+        "Shubhangi Upasani",
+        "Boyuan Ma",
+        "Fenglu Hong",
+        "Vamsidhar Kamanuru",
+        "Jay Rainton",
+        "Chen Wu",
+        "Mengmeng Ji",
+        "Hanchen Li",
+        "Urmish Thakker",
+        "James Zou",
+        "Kunle Olukotun"
+      ],
+      "abstract": "Large language model (LLM) applications such as agents and domain-specific reasoning increasingly rely on context adaptation: modifying inputs with instructions, strategies, or evidence, rather than weight updates. Prior approaches improve usability but often suffer from brevity bias, which drops domain insights for concise summaries, and from context collapse, where iterative rewriting erodes details over time. We introduce ACE (Agentic Context Engineering), a framework that treats contexts as evolving playbooks that accumulate, refine, and organize strategies through a modular process of generation, reflection, and curation. ACE prevents collapse with structured, incremental updates that preserve detailed knowledge and scale with long-context models. Across agent and domain-specific benchmarks, ACE optimizes contexts both offline (e.g., system prompts) and online (e.g., agent memory), consistently outperforming strong baselines: +10.6% on agents and +8.6% on finance, while significantly reducing adaptation latency and rollout cost. Notably, ACE could adapt effectively without labeled supervision and instead by leveraging natural execution feedback. On the AppWorld leaderboard, ACE matches the top-ranked production-level agent on the overall average and surpasses it on the harder test-challenge split, despite using a smaller open-source model. These results show that comprehensive, evolving contexts enable scalable, efficient, and self-improving LLM systems with low overhead.",
+      "doi": null,
+      "arxiv_id": "2510.04618v3",
+      "published": "2025-10-06T09:30:18Z",
+      "updated": "2026-03-29T09:18:02Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2510.04618v3",
+      "pdf_url": "https://arxiv.org/pdf/2510.04618v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2510.04618v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2510.04618v3",
+          "url": "https://arxiv.org/abs/2510.04618v3",
+          "doi": null,
+          "arxiv_id": "2510.04618v3",
+          "published": "2025-10-06T09:30:18Z",
+          "updated": "2026-03-29T09:18:02Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2510.04618v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-08T01:26:22.544135Z",
+      "sha256": "fa9364f735e4481c5d756d19c1bdf6631ef25c58db74486c53d0d00288b94ca5",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvY3NKZGJQZDlVZUtOSUsvaWd1c3dpWlh0RUw0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUxMC4wNDYxOHYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA4VDAxOjI2OjIyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTEwLjA0NjE4djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUxMC4wNDYxOHYzPC9pZD4KICAgIDx0aXRsZT5BZ2VudGljIENvbnRleHQgRW5naW5lZXJpbmc6IEV2b2x2aW5nIENvbnRleHRzIGZvciBTZWxmLUltcHJvdmluZyBMYW5ndWFnZSBNb2RlbHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wMy0yOVQwOToxODowMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjUxMC4wNDYxOHYzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjUxMC4wNDYxOHYzIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+TGFyZ2UgbGFuZ3VhZ2UgbW9kZWwgKExMTSkgYXBwbGljYXRpb25zIHN1Y2ggYXMgYWdlbnRzIGFuZCBkb21haW4tc3BlY2lmaWMgcmVhc29uaW5nIGluY3JlYXNpbmdseSByZWx5IG9uIGNvbnRleHQgYWRhcHRhdGlvbjogbW9kaWZ5aW5nIGlucHV0cyB3aXRoIGluc3RydWN0aW9ucywgc3RyYXRlZ2llcywgb3IgZXZpZGVuY2UsIHJhdGhlciB0aGFuIHdlaWdodCB1cGRhdGVzLiBQcmlvciBhcHByb2FjaGVzIGltcHJvdmUgdXNhYmlsaXR5IGJ1dCBvZnRlbiBzdWZmZXIgZnJvbSBicmV2aXR5IGJpYXMsIHdoaWNoIGRyb3BzIGRvbWFpbiBpbnNpZ2h0cyBmb3IgY29uY2lzZSBzdW1tYXJpZXMsIGFuZCBmcm9tIGNvbnRleHQgY29sbGFwc2UsIHdoZXJlIGl0ZXJhdGl2ZSByZXdyaXRpbmcgZXJvZGVzIGRldGFpbHMgb3ZlciB0aW1lLiBXZSBpbnRyb2R1Y2UgQUNFIChBZ2VudGljIENvbnRleHQgRW5naW5lZXJpbmcpLCBhIGZyYW1ld29yayB0aGF0IHRyZWF0cyBjb250ZXh0cyBhcyBldm9sdmluZyBwbGF5Ym9va3MgdGhhdCBhY2N1bXVsYXRlLCByZWZpbmUsIGFuZCBvcmdhbml6ZSBzdHJhdGVnaWVzIHRocm91Z2ggYSBtb2R1bGFyIHByb2Nlc3Mgb2YgZ2VuZXJhdGlvbiwgcmVmbGVjdGlvbiwgYW5kIGN1cmF0aW9uLiBBQ0UgcHJldmVudHMgY29sbGFwc2Ugd2l0aCBzdHJ1Y3R1cmVkLCBpbmNyZW1lbnRhbCB1cGRhdGVzIHRoYXQgcHJlc2VydmUgZGV0YWlsZWQga25vd2xlZGdlIGFuZCBzY2FsZSB3aXRoIGxvbmctY29udGV4dCBtb2RlbHMuIEFjcm9zcyBhZ2VudCBhbmQgZG9tYWluLXNwZWNpZmljIGJlbmNobWFya3MsIEFDRSBvcHRpbWl6ZXMgY29udGV4dHMgYm90aCBvZmZsaW5lIChlLmcuLCBzeXN0ZW0gcHJvbXB0cykgYW5kIG9ubGluZSAoZS5nLiwgYWdlbnQgbWVtb3J5KSwgY29uc2lzdGVudGx5IG91dHBlcmZvcm1pbmcgc3Ryb25nIGJhc2VsaW5lczogKzEwLjYlIG9uIGFnZW50cyBhbmQgKzguNiUgb24gZmluYW5jZSwgd2hpbGUgc2lnbmlmaWNhbnRseSByZWR1Y2luZyBhZGFwdGF0aW9uIGxhdGVuY3kgYW5kIHJvbGxvdXQgY29zdC4gTm90YWJseSwgQUNFIGNvdWxkIGFkYXB0IGVmZmVjdGl2ZWx5IHdpdGhvdXQgbGFiZWxlZCBzdXBlcnZpc2lvbiBhbmQgaW5zdGVhZCBieSBsZXZlcmFnaW5nIG5hdHVyYWwgZXhlY3V0aW9uIGZlZWRiYWNrLiBPbiB0aGUgQXBwV29ybGQgbGVhZGVyYm9hcmQsIEFDRSBtYXRjaGVzIHRoZSB0b3AtcmFua2VkIHByb2R1Y3Rpb24tbGV2ZWwgYWdlbnQgb24gdGhlIG92ZXJhbGwgYXZlcmFnZSBhbmQgc3VycGFzc2VzIGl0IG9uIHRoZSBoYXJkZXIgdGVzdC1jaGFsbGVuZ2Ugc3BsaXQsIGRlc3BpdGUgdXNpbmcgYSBzbWFsbGVyIG9wZW4tc291cmNlIG1vZGVsLiBUaGVzZSByZXN1bHRzIHNob3cgdGhhdCBjb21wcmVoZW5zaXZlLCBldm9sdmluZyBjb250ZXh0cyBlbmFibGUgc2NhbGFibGUsIGVmZmljaWVudCwgYW5kIHNlbGYtaW1wcm92aW5nIExMTSBzeXN0ZW1zIHdpdGggbG93IG92ZXJoZWFkLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5MRyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQ0wiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNS0xMC0wNlQwOTozMDoxOFo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PklDTFIgMjAyNjsgMzIgcGFnZXM8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5MRyIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UWl6aGVuZyBaaGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q2hhbmdyYW4gSHU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlNodWJoYW5naSBVcGFzYW5pPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Cb3l1YW4gTWE8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkZlbmdsdSBIb25nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5WYW1zaWRoYXIgS2FtYW51cnU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkpheSBSYWludG9uPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5DaGVuIFd1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NZW5nbWVuZyBKaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFuY2hlbiBMaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+VXJtaXNoIFRoYWtrZXI8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkphbWVzIFpvdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S3VubGUgT2x1a290dW48L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models",
+    "authors": [
+      "Qizheng Zhang",
+      "Changran Hu",
+      "Shubhangi Upasani",
+      "Boyuan Ma",
+      "Fenglu Hong",
+      "Vamsidhar Kamanuru",
+      "Jay Rainton",
+      "Chen Wu",
+      "Mengmeng Ji",
+      "Hanchen Li",
+      "Urmish Thakker",
+      "James Zou",
+      "Kunle Olukotun"
+    ],
+    "abstract": "Large language model (LLM) applications such as agents and domain-specific reasoning increasingly rely on context adaptation: modifying inputs with instructions, strategies, or evidence, rather than weight updates. Prior approaches improve usability but often suffer from brevity bias, which drops domain insights for concise summaries, and from context collapse, where iterative rewriting erodes details over time. We introduce ACE (Agentic Context Engineering), a framework that treats contexts as evolving playbooks that accumulate, refine, and organize strategies through a modular process of generation, reflection, and curation. ACE prevents collapse with structured, incremental updates that preserve detailed knowledge and scale with long-context models. Across agent and domain-specific benchmarks, ACE optimizes contexts both offline (e.g., system prompts) and online (e.g., agent memory), consistently outperforming strong baselines: +10.6% on agents and +8.6% on finance, while significantly reducing adaptation latency and rollout cost. Notably, ACE could adapt effectively without labeled supervision and instead by leveraging natural execution feedback. On the AppWorld leaderboard, ACE matches the top-ranked production-level agent on the overall average and surpasses it on the harder test-challenge split, despite using a smaller open-source model. These results show that comprehensive, evolving contexts enable scalable, efficient, and self-improving LLM systems with low overhead.",
+    "identifiers": {
+      "arxiv": "2510.04618",
+      "arxiv_versioned": "2510.04618v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2510.04618v3"
+      }
+    },
+    "categories": [
+      "cs.LG",
+      "cs.AI",
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2025-10-06T09:30:18Z",
+    "updated": "2026-03-29T09:18:02Z"
+  }
+}

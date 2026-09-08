@@ -1,0 +1,440 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\usepackage{enumitem} 
+\title{Grounding Long-Context Reasoning \\ with Contextual Normalization for\\ Retrieval-Augmented Generation}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{Jiamin Chen$^1$, Yuchen Li$^2$, Xinyu Ma$^2$, Xinran Chen$^2$, Xiaokun Zhang$^1$, \\
+\textbf{Shuaiqiang Wang$^2$, Chen Ma$^1$, Dawei Yin$^2$} \\
+$^1$City University of Hong Kong, Hong Kong SAR, China\\
+$^2$Baidu Inc., Beijing, China\\
+\texttt{jmchen26-c@my.cityu.edu.hk} \\
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\newcommand{\cnorm}{\textsc{C-Norm}}
+\newcommand{\llama}{LLaMA-2-7B}
+\newcommand{\llamachat}{LLaMA-2-7B-Chat}
+\newcommand{\qwen}{Qwen2.5-1.5B}
+\newcommand{\qwenchat}{Qwen2.5-1.5B-Instruct}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+% Retrieval-Augmented Generation (RAG) has emerged as a powerful paradigm for extending the reasoning and knowledge capacity of large language models (LLMs). While prior research has emphasized retrieval quality and model integration, how the format of retrieved context influences model behavior remains poorly understood. We demonstrate that even seemingly superficial design choices, such as delimiters or structural markers in key–value extraction tasks, can cause dramatic shifts in accuracy and stability, despite identical semantic content. To systematically study this phenomenon, we construct controlled experiments varying context density, delimiter styles, and placement, and we uncover the underlying factors driving these differences. Using these insights, we propose Contextual Normalization, a simple yet effective strategy for standardizing context representations before generation. Across multiple experimental settings, it consistently improves robustness to order variation and enhances long-context utilization. Our findings highlight that grounding RAG requires not only retrieving the right content, but also how that content is presented, providing new empirical insights and a practical technique for more reliable long-context reasoning.
+Retrieval-Augmented Generation (RAG) has become an essential approach for extending the reasoning and knowledge capacity of large language models (LLMs). While prior research has primarily focused on retrieval quality and prompting strategies, the influence of how the retrieved documents are framed, i.e., context format, remains underexplored. We show that seemingly superficial choices, such as delimiters or structural markers in key–value extraction, can induce substantial shifts in accuracy and stability, even when semantic content is identical. To systematically investigate this effect, we design controlled experiments that vary context density, delimiter styles, and positional placement, revealing the underlying factors that govern performance differences. Building on these insights, we introduce Contextual Normalization, a lightweight strategy that adaptively standardizes context representations before generation. Extensive experiments on both controlled and real-world RAG benchmarks across diverse settings demonstrate that the proposed strategy consistently improves robustness to order variation and strengthens long-context utilization. These findings underscore that reliable RAG depends not only on retrieving the right content, but also on how that content is presented, offering both new empirical evidence and a practical technique for better long-context reasoning.
+\end{abstract}
+
+\section{Introduction}
+Retrieval-Augmented Generation (RAG) has emerged as a foundational paradigm for enabling large language models (LLMs) to scale to knowledge-intensive tasks by conditioning generation on external documents retrieved from large corpora~\citep{lewis2020retrieval, borgeaud2022improving}. In a standard pipeline, a retriever first identifies potentially relevant texts for a given query, and these documents are then concatenated into a prompt for the LLM. With the advent of long-context LLMs that can process tens of thousands of tokens~\citep{DBLP:conf/iclr/XiaoTCHL24,DBLP:conf/iclr/0008PWM0LSBSC24}, 
+% RAG has extended to settings involving hundreds of retrieved chunks, sometimes reaching hundreds of thousands of tokens in total. 
+the opportunities for complex reasoning over vast information spaces have been unlocked, making RAG increasingly central to real-world applications such as open-domain QA and scientific literature analysis.
+
+While long-context extensions enable RAG systems to scale to much larger evidence pools, they also introduce new challenges. Recent study~\citep{leng2024long} highlights these limitations by systematically varying context length, from 2K up to 128K tokens across dozens of models, and documenting consistent failure modes when contexts become too long or unwieldy. With the number of retrieved chunks increasing, LLMs face amplified retrieval noise, redundancy across overlapping documents, and dilution of truly relevant evidence. These issues often make it harder for LLMs to distinguish signal from distraction, leading to unstable reasoning and degraded accuracy. Moreover, positional biases~\citep{DBLP:journals/tacl/LiuLHPBPL24,zhangfound} further interact with these challenges: LLMs tend to over-attend to the beginning or end of a prompt, leaving evidence buried in the middle underutilized. Together, these factors expose a fundamental brittleness in long-context RAG that limits its reliability in real-world deployments.
+
+To mitigate these limitations, a growing line of research has explored strategies to improve long-context RAG performance. One representative approach is the prompt optimization~\citep{liu2024likelihood}, where multiple permutations of retrieved chunks are scored, and the prompt yielding the highest likelihood is selected for answering. Another direction relies on synthetic supervision: \citet{an2024make} proposes constructing curated datasets where answers depend on specific chunks within extended inputs, encouraging LLMs to develop position-invariant reasoning strategies. While effective in controlled settings, such methods face scalability issues, as generating chunk-level annotations is costly and risks positional overfitting. Architectural modifications, such as redesigned positional encodings~\citep{zhangfound}, offer more fundamental solutions but require non-trivial changes to model internals. Complementary work~\citep{vladika2025influence} provides further evidence that context size, snippet count, and model architecture interact in subtle ways, jointly shaping robustness and accuracy.
+
+
+To benchmark long-context reasoning in a way that isolates potential factors from prior knowledge, \citet{DBLP:journals/tacl/LiuLHPBPL24} propose the key–value extraction task, where LLMs must retrieve the correct value for a given key from a synthetic context. Inspired by this controlled setup, we extend the analysis and uncover a striking finding. 
+As illustrated in Figure~\ref{fig:kv_formats}, even when semantics and input length
+are held constant, altering the surface format of key–value pairs, for instance, representing them as UUIDs, plain texts, or switching delimiters such as “-” versus “\&”, leads to substantial performance differences. This finding highlights that the presentation format of context, beyond its
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \centering
+    % \vspace{-10pt}
+    \includegraphics[width=0.4\textwidth]{figures/intro.pdf}
+    \caption{Illustration of the fact that different formats yield substantial differences in RAG performance.}
+    \label{fig:kv_formats}
+    \vspace{-10pt}
+\end{wrapfigure}
+size or order, plays a critical role in determining long-context reasoning performance. It also sheds light on a possible research direction: if the surface format of context can be altered while preserving semantics, could long-context RAG performance also be systematically improved?
+Therefore, we propose the Contextual Normalization (\cnorm{}), a lightweight and model-agnostic framework designed to enhance long-context RAG performance by adaptively reformatting the input context. Rather than introducing new supervision or modifying model architectures, \cnorm{} leverages the insight that the surface format of retrieved documents directly influences how LLMs allocate attention and ground their reasoning. By systematically evaluating candidate formatting strategies using the proposed Attention Balance Score, \cnorm{} automatically selects the representation that promotes balanced and semantically aligned attention. This design enables LLMs to reason more robustly across long inputs, without requiring architectural changes, retraining, or costly annotation.  
+
+\textbf{The contributions of this work} can be summarized as follows:  
+\begin{itemize}[leftmargin=*]
+    % \item We identify the overlooked yet critical influence of context format in long-context RAG, showing that seemingly superficial changes in representation can substantially affect robustness and reasoning capacity. To understand the problem, we propose two underlying explanations for why context formats affect LLM performance from the perspective of tokenization and attention allocation, and validate these hypotheses through targeted experiments in controlled settings.
+    \item We highlight the often-overlooked but critical role of context format in long-context RAG, demonstrating that even seemingly superficial representational choices can substantially alter both robustness and reasoning capacity. To explain this phenomenon, we propose two underlying factors, i.e., tokenization and attention allocation, that account for the sensitivity of LLMs to format variations. We validate these hypotheses through targeted experiments in controlled settings.
+    \item We propose \cnorm{}, a principled approach that reformulates context presentation as a normalization problem. By leveraging attention attributions as a selection criterion, \cnorm{} adaptively chooses the most effective model-aware format, offering a simple, plug-and-play solution.
+    \item We conduct extensive experiments under both controlled and real-world settings, demonstrating that \cnorm{} consistently improves the RAG performance across diverse models. Gains are especially pronounced in challenging long-context scenarios, underscoring its practical value for reliable long-context RAG.
+\end{itemize}
+
+
+
+% -------------------------------------------------------------
+\section{How Context Format Grounds}\label{sec:kv}
+The performance of RAG systems in long-context scenarios is profoundly influenced by the effective integration of retrieved information~\citep{borgeaud2022improving, karpukhin2020dense}. While previous work~\citep{DBLP:conf/acl/AsaiSL0I0HY23} has primarily focused on the quantity and relevance of retrieved documents, we posit that the internal format of this information, more specifically, how context content in each chunk is structured, plays a critical role in grounding the model's generation. To investigate this hypothesis, we design a set of experiments centered on the key-value extraction task~\citep{DBLP:journals/tacl/LiuLHPBPL24}, a canonical challenge for LLMs requiring precise information retrieval from a given context.
+The goal of the task is to retrieve the value of a specific key from a long JSON object. More details are provided in Appendix~\ref{kvprompt}.
+
+\textbf{Context Formats.}
+To systematically investigate how context format grounds LLM's generation, 
+we propose the following context formats in the experiments: \textbf{UUID}, \textbf{Plain Text}, and \textbf{Modified UUID}.
+Each format varies only in its use of structured identifiers, allowing us to analyze the model performance to metadata and special characters.
+The Universally Unique Identifiers (UUIDs) is a 128-bit number used to uniquely identify information in computer systems, which is utilized in the standard key-value retrieval task~\citep{DBLP:journals/tacl/LiuLHPBPL24}. They are typically represented as a 32-digit hexadecimal number, displayed in five groups separated by hyphens.
+In Plain Text, all structured identifiers are removed. Both key and value are flattened into a continuous text string.
+% , requiring the model to rely solely on the semantic and textual content to identify the correct key and value.
+Modified UUID introduces a subtle change to the original UUID by replacing the hyphen (-) with a different delimiter (\&). This simple substitution allows us to probe the sensitivity of LLMs to variations in structured data, revealing how the model processes the context.
+
+
+\textbf{Settings.}
+We design a controlled experiment with 500 samples to evaluate the impact of context format on long-context RAG. We permute the position of a ``gold'' key within a long context, then measure the performance of three LLMs: \llama{}~\citep{llama}, \llamachat{}~\citep{llama}, and \qwen{}~\citep{qwen2.5}. The experiments are conducted with two context configurations to test different densities: low-density (40 contexts with 32 characters each) and high-density (10 contexts with 128 characters each). For each setting, we record two key metrics: the Overall Averaged Accuracy (\textbf{OAA}) across all positions, which measures robustness to all gold key positions, and the Optimal Positioned Accuracy (\textbf{OPA}), which captures the model's best-case performance under ideal position of gold key.
+% This setup allows us to systematically analyze how different LLMs handle varying context densities and formats and to what extent their performance depends on the structural presentation of the retrieved information.
+
+% \begin{table}[ht]
+% \centering
+% \caption{Model Performance on Key-Value Extraction Task}
+% \label{tab:results}
+% \begin{tabular}{l l cc cc}
+% \toprule
+% \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Context}} & \multicolumn{2}{c}{\textbf{Low Density}} & \multicolumn{2}{c}{\textbf{High Density}} \\
+% \cmidrule(lr){3-4} \cmidrule(lr){5-6}
+% & & \textbf{OAA} & \textbf{OPA} & \textbf{OAA} & \textbf{OPA} \\
+% \midrule
+% \multirow{3}{*}{Llama-2-7B} & UUID & 0.517 & 0.996 & 0.412 & 0.954 \\
+% & Plain Text & 0.796 & 0.998 & 0.877 & 1.000 \\
+% & Modified UUID & 0.272 & 0.954 & 0.375 & 0.946 \\
+% \midrule
+% \multirow{3}{*}{Llama-2-7B-Chat} & UUID & 0.582 & 1.000 & 0.000 & 0.000 \\
+% & Plain Text & 0.810 & 1.000 & 0.798 & 0.994 \\
+% & Modified UUID & 0.102 & 0.792 & 0.000 & 0.002 \\
+% \midrule
+% \multirow{3}{*}{Qwen2.5-1.5B} & UUID & 0.980 & 1.000 & 0.854 & 1.000 \\
+% & Plain Text & 0.926 & 1.000 & 0.949 & 1.000 \\
+% & Modified UUID & 0.954 & 1.000 & 0.785 & 1.000 \\
+% \bottomrule
+% \end{tabular}
+% \label{kv_task}
+% \end{table}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/kv_task_lineplots_title_bottom.pdf}
+    \caption{Model performance on key-value extraction task.}
+    \label{kv_task}
+    \vspace{-10pt}
+\end{figure}
+\textbf{Analysis.}
+As shown in Figure~\ref{kv_task}, the LLM performance is highly sensitive to the format of the retrieved context. The LLaMA models consistently achieve their best results with Plain Text. In contrast, \qwen{} excels with the UUID format in low-density settings, but shifts to favor Plain Text in high-density settings. This divergence across models indicates that no single format is universally optimal, as model behavior depends heavily on its internal dynamics.
+Extending the context window can improve performance, but the results make clear that it does not mitigate format effects. Even with Qwen’s 128k-token window, format remains a decisive factor. Notably, Qwen’s advantage with UUIDs holds only in low-density settings (32-character chunks). In high-density settings (128-character chunks), its UUID performance (0.854 OAA) is surpassed by Plain Text (0.949 OAA), mirroring the LLaMA family’s preference.
+The results also illustrate how fragile models can be to minor format changes. Simply replacing a hyphen with an ampersand in the Modified UUID format can cause \llamachat{}’s OAA to collapse from 0.810 to 0.102. In some high-density structured cases, the model even refused to answer entirely.
+Overall, these findings underscore that the format of retrieved context is not a neutral choice but a critical factor that can either stabilize or destabilize LLM performance in RAG.
+
+% -------------------------------------------
+\section{Unpacking the Grounding Mechanism.}
+To understand why context formats affect long-context reasoning, we delve into the internal dynamics of different LLMs. 
+We analyze two complementary perspectives, i.e. tokenization and the distribution of attention, which govern how the model allocates focus across positions. 
+Together, these analyses reveal how subtle choices in context shape robustness and reasoning capacity.  
+
+\subsection{Tokenization}
+We first look into the impact of tokenization on this key-value extraction task, focusing specifically on how delimiter choices interact with the tokenizer internals. 
+For LLMs such as Qwen2.5, which use a SentencePiece-based tokenizer~\citep{DBLP:conf/emnlp/KudoR18}, delimiter characters such as `-', `:', `\&', `\_', and `+' affect the token count of the input string significantly. 
+To this end, we use 200
+\begin{wrapfigure}{r}{0.52\textwidth}
+    \centering
+    \vspace{-5pt}
+    \includegraphics[width=0.52\textwidth]{figures/OAA_vs_TokenCount_Qwen2.pdf}
+    % \vspace{-10pt}
+    \caption{\qwen{} performance across delimiter configurations. Across settings, we observe a negative trend: configurations that inflate tokenization length tend to yield lower OAA.}
+    \label{fig:qwen_delim_tokenization}
+    % \vspace{-5pt}
+\end{wrapfigure}
+synthetic key-value samples, each consisting of 40 context pairs. The target (gold) key-value pair is inserted at each position. We report OAA as the aggregated metric.
+As shown in Figure~\ref{fig:qwen_delim_tokenization}, the results reveal a relatively strong negative correlation (Pearson’s $r = -0.82$) between the number of tokens produced and the corresponding OAA. In other words, delimiters that yield shorter tokenized sequences (e.g., hyphens or colons) lead to higher accuracy, while those producing longer tokenizations degrade performance. This suggests that more compact representations enable LLMs to allocate attention more effectively within the fixed context window.
+However, this behavior is not universal. For LLMs like LLaMA-2, which tokenize many symbols (e.g., -, \_, /, +) into single-character tokens, the number of tokens remains unchanged across different delimiters. In these cases, performance still varies with different delimiters, but the effect cannot be attributed to token count.
+
+\subsection{Attention Attribution.}~\label{attention}
+To further understand how context format shapes long-context reasoning, we use the low-density setting to observe last-layer attention distributions in both \llama{} and \qwen{}, aiming to understand why different context formats lead to different performance patterns across models. Specifically, we construct 20 key–value pairs and place the target key at varying positions and measure how attention from the final token is allocated across the sequence under both UUID and Plain Text.
+Figure~\ref{fig:attn_distribution} presents the attention weights from the final token to all preceding tokens. For \qwen{}, the Plain Text format yields sharp attention peaks at the beginning and end of the sequence, while the UUID format produces a more uniform distribution, with increased emphasis on middle positions. On the contrary, in \llama{}, UUID contexts concentrate attention at the sequence boundaries, whereas plain-text contexts lead to stronger coverage of the middle portion. This contrast in allocation explains the opposite performance trends observed in Table~\ref{kv_task}: formats that encourage more balanced attention across the sequence tend to achieve higher robustness and overall accuracy in long-context retrieval.
+
+\textbf{On the Role of Training Data.}
+To further probe why different context formats lead to distinct attention allocation patterns, we attempt to trace the effect back to the training data. With Stanford-Alpaca-7B~\citep{alpaca}, we sort tokens in its fine-tuning corpus by frequency of occurrence, and then reconstruct QA contexts where original tokens are replaced with either the most frequent or least frequent tokens. This design tests whether exposure frequency in fine-tuning data influences how attention is distributed across contexts. However, the results do not show a clear relationship between token frequency and LLM performance or attention allocation. This indicates that the grounding mechanism behind context-format sensitivity is more complex than simple token frequency statistics, likely shaped by deeper patterns acquired during both pretraining and fine-tuning. We provide the details of the experiment in Appendix~\ref{tokenreplace}.
+
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/LLaMA.pdf}
+        \caption{\llama{}}
+        \label{fig:attn_llama}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/Qwen.pdf}
+        \caption{\qwen{}}
+        \label{fig:attn_qwen}
+    \end{subfigure}
+    \caption{Attention attributions in long-context reasoning under low-density settings. The x-axis denotes the position of input tokens.}
+    \label{fig:attn_distribution}
+\end{figure}
+% --------------------------------------------------
+\section{Contextual Normalization for Enhanced Retrieval-Augmented Generation}\label{sec:method}
+Inspired by the above findings, we propose Contextual Normalization, \cnorm{}, a lightweight procedure that standardizes retrieved passages into a format that better supports grounding in long contexts.
+As shown in Figure~\ref{fig:pip}, the method operates in three stages: (i) candidate formatting of contexts, (ii) attention-guided scoring to select a format, and (iii) application of the chosen format for all contexts in RAG.
+This procedure is model-aware yet training-free, requiring only a forward pass with attention outputs.
+
+\subsection{Candidate Formatting}
+Given a query $q \in Q$ and a set of retrieved passages $\mathcal{D}=\{d_1, \dots, d_m\}$, we generate format variants of each passage using sentence-level restructuring. Specifically, with a delimiter $f \in \{\texttt{none}, \texttt{-}, \texttt{\_}, \texttt{:}, \texttt{.}, \sim, \texttt{+}, \texttt{/}, \texttt{\&}, \dots\}$ and the predefined ratio $p \in [0,1]$, a fraction $p$ of sentences in $d_i$ are reformatted by replacing whitespace with $f$. This procedure preserves semantic content while varying structural cues in a controlled manner, creating candidate contexts $\tilde{d}_i^{(f,p)}$. The formatted documents are then assembled as contexts into prompts for finishing the task.
+
+\subsection{Attention-Guided Scoring}
+To assess which format best supports grounding, we propose an \textbf{Attention Balance Score (ABS)} from the LLM's internal attention distributions. For each candidate format $f$, we sample a subset of prompts $S$ with $|S| \ll  |Q|$, and extract the last-layer attention vector $a \in \mathbb{R}^T$ corresponding to the final token. We then compute:
+\[
+\mathrm{ABS}(a) = 1 - 2 \cdot |\mu - 0.5|, 
+\quad \text{where } \mu = \sum_{t=1}^{T} (\frac{t-1}{T-1})\cdot \frac{a_t}{\sum_j a_j}.
+\]
+This score peaks when attention mass is balanced across the sequence, avoiding pathological focus on only the beginning or end of the input. The final delimiter $f^\star$ is chosen by maximizing the average ABS across $S$ sampled prompts:
+\[
+f^\star = \arg\max_{f} \;\frac{1}{S}\sum_{s=1}^S \mathrm{ABS}(a^{(f)}_s).
+\]
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/pip2.pdf}
+    \caption{Overview of the proposed \cnorm{} pipeline.}
+    \label{fig:pip}
+    % \vspace{-10pt}
+\end{figure}
+\subsection{Format Application}
+At inference time, all sentences in the retrieved documents are reformatted with the selected configuration $(f^\star, p)$ before constructing the final prompt. Here, $f^\star$ denotes the delimiter format that has been automatically chosen during the calibration stage, and $p$ specifies the proportion of sentences in which this format is applied. The reformatting step produces a normalized context representation that reduces spurious variability in how evidence is presented to the model. Importantly, the operation is performed at the sentence level, ensuring that semantic content remains intact while surface patterns are harmonized. This guarantees that answer generation relies on content rather than formatting artifacts. Since the same normalization procedure can be applied consistently across different queries, retrieval variations, and domains, the resulting prompts exhibit more uniform structure. Consequently, the target LLM can process long and heterogeneous contexts more effectively, leading to improved robustness and stability in inference-time reasoning.
+
+\textbf{To summarize}, \cnorm{} provides a lightweight, training-free mechanism for adapting context structure to the inductive biases of each model. Instead of requiring parameter updates or additional supervision, it operates purely at the input level by modifying how retrieved content is represented. By aligning the input format with the model’s internal dynamics, \cnorm{} reduces mismatches between surface structure and processing preferences, thereby systematically mitigating brittleness in long-context reasoning. This adjustment not only improves robustness to retrieval noise and ordering impact but also enhances the model’s ability to consistently extract relevant information across diverse domains. In effect, \cnorm{} acts as a compatibility layer between raw retrieval outputs and the target LLM, making downstream reasoning more stable, scalable, and less sensitive to idiosyncratic formatting artifacts.
+
+
+% ----------------------------------
+\section{Experiments}\label{sec:exp}
+To validate the effectiveness of \cnorm{} in enhancing the robustness and generalization of LLMs under long-context RAG, we design two complementary evaluation settings: a controlled QA test based on NQ-Open and the real-world task from LongBench-v2 to assess generalizability across diverse input formats and reasoning types. We show that \cnorm{} consistently improves LLM's long-context reasoning performance over various settings.
+
+\subsection{Controlled Long-Context RAG Settings}
+In this case, we propose a controlled test using a permuted version of NQ-Open to evaluate both the robustness to order variation and long-context reasoning capacity of LLMs.
+% We construct contexts where one gold document is inserted at every possible position among distractors, forcing the model to rely on grounding rather than positional bias. 
+First, we randomly sample 500 questions from NQ-Open~\citep{DBLP:journals/tacl/LiuLHPBPL24}. For each question, one gold (relevant) document is identified and mixed with 9 distractors, each containing about 100–300 tokens. We then construct 10 input permutations by placing the gold document at each possible position while shuffling the remaining distractors. The ratio $p$ in \cnorm is fixed at $p=0.5$ with 8 samples used for selecting the best delimiters.
+
+\textbf{Metrics.}
+We report two complementary metrics. Overall Averaged Accuracy (OAA) measures the accuracy averaged across all gold positions, reflecting robustness to arbitrary permutations. Optimal Positioned Accuracy (OPA) measures the accuracy under the most favorable placement of the gold document, reflecting the model's capacity in long-context reasoning regardless of positions. All results are averaged over three random seeds to reduce variance.
+
+\textbf{Models.}
+We adopt several LLMs for evaluation, including \llama{} (pretrained context length 4K)~\citep{llama}, \llamachat{} (4K), \qwen{} (128K)~\citep{qwen2.5}, and \qwenchat{} (128K). 
+For base models (e.g., \llama{} and \qwen{}), we use unaligned prompts directly following the QA format. 
+For instruction-tuned models (e.g., \llamachat{} and \qwenchat{}), we adopt aligned prompts that match their chat/instruction interfaces. 
+All generations are performed with temperature fixed at $0$ to ensure deterministic outputs and eliminate randomness from sampling.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/controlled_OAA_OPA_tight_gap_above_top.pdf}
+    \caption{Results on the controlled long-context RAG setting using NQ-Open. 
+We report Overall Averaged Accuracy (OAA) to measure robustness against context order permutations, 
+and Optimal Positioned Accuracy (OPA) to assess capacity under the best placement of the gold document. 
+Baseline denotes the original model, while $\cnorm{}$ indicates results with contextual normalization.}
+    \label{fig:control}
+    % \vspace{-10pt}
+\end{figure}
+\textbf{Experimental Results.}
+In the controlled long-context RAG evaluation on NQ-Open, as shown in Figure~\ref{fig:control}, \cnorm{} consistently improves both robustness (OAA) and reasoning capacity (OPA) across all evaluated LLMs. The gains are especially pronounced for \llama{}, where robustness increases by nearly 30\%, showing that format adaptation can compensate for the LLM’s limited reasoning ability. It highlights that long-context performance is not only determined by LLM scale or pretraining context window, but also by how the context is presented. Interestingly, the most effective formats are often not the ones most interpretable to humans. For instance, delimiter-heavy or structurally altered representations outperform plain natural text. This underscores the importance of optimizing the input format for alignment with the model’s internal dynamics rather than assuming that human-friendly representations are optimal. By automatically selecting a context format that maximizes balanced attention, \cnorm{} enables models to reason more reliably across arbitrary evidence positions, offering a practical path toward more robust long-context RAG systems.
+
+
+
+\subsection{Real-World RAG Settings}
+To evaluate the real-world utility of \cnorm{}, we adopt LongBench-v2~\citep{DBLP:journals/corr/abs-2412-15204}, a benchmark targeting long-context reasoning across diverse tasks. It contains 503 multiple-choice questions drawn from six categories, including single-document QA, multi-document QA, long in-context learning, dialogue history understanding, codebase comprehension, and structured data understanding. It covers both textual and semi-structured formats. Each question is paired with a long context ranging from 8K to over 2M words, with most falling under 128K, making it ideal for testing long-context generalization.
+We evaluate under two settings: 
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Base}, where full ground-truth context is given. This design allows us to isolate the effect of \cnorm{} under partial, noisy, and complete evidence scenarios;
+    \item \textbf{RAG}, where top-4 retrieved documents (with retrieval noise) are provided as context, simulating realistic open-domain QA. 
+\end{itemize}
+We evaluate model performance using overall accuracy, complemented by breakdowns across difficulty levels (Easy and Hard) and context lengths (Short, Medium, and Long). For this setting, we adopt \llamachat{} and \qwenchat{}, leveraging the official task templates provided by LongBench to ensure comparability with prior work. To accommodate limited computing resources, we set the maximum prompt length to 4K tokens.
+
+
+\begin{table}[ht]
+\centering
+\caption{Evaluation on LongBench-v2. 
+We report overall accuracy along with breakdowns across difficulty (Easy vs.\ Hard) and context length (Short, Medium, Long). 
+Baseline denotes the original model, while $\cnorm{}$ indicates results after applying contextual normalization.}
+\label{tab:longbench}
+\begin{tabular}{llccccccc}
+\toprule
+\textbf{Model} & \textbf{Setting} & \textbf{Method} & \textbf{Overall} & \textbf{Easy} & \textbf{Hard} & \textbf{Short} & \textbf{Medium} & \textbf{Long} \\
+\midrule
+\multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{LLaMA-2-7B}\\\textbf{-Chat}\end{tabular}} & \multirow{2}{*}{Base} & Baseline & 26.4 & 25.0 & 27.3 & 26.7 & \textbf{24.7} & 29.6 \\
+& & $\cnorm{}$ & \textbf{26.6} & \textbf{25.0} & \textbf{27.7} & \textbf{27.8} & 22.8 & \textbf{32.4} \\
+\cmidrule{2-9}
+& \multirow{2}{*}{RAG} & Baseline & 9.3 & 4.7 & 12.2 & 10.6 & 7.9 & 10.2 \\
+& & $\cnorm{}$ & \textbf{10.3} & \textbf{5.2} & \textbf{13.5} & \textbf{11.1} & \textbf{8.8} & \textbf{12.0} \\
+\midrule
+\multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}\textbf{Qwen2.5-1.5B}\\\textbf{-Instruct}\end{tabular}} & \multirow{2}{*}{Base} & Baseline & 23.7 & 24.5 & 23.2 & 29.4 & 21.4 & 18.5 \\
+& & $\cnorm{}$ & \textbf{24.7} & \textbf{25.0} & \textbf{24.4} & \textbf{31.1} & \textbf{21.9} & \textbf{19.4} \\
+\cmidrule{2-9}
+& \multirow{2}{*}{RAG} & Baseline & 25.6 & \textbf{26.6} & 25.1 & \textbf{26.1} & 26.0 & 24.1 \\
+& & $\cnorm{}$ & \textbf{26.2} & 26.0 & \textbf{26.4} & 25.0 & \textbf{27.9} & \textbf{25.0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+\textbf{Experimental Results.}
+As presented in Table~\ref{tab:longbench}, the results on LongBench-v2 demonstrate that \cnorm{} consistently improves performance across most metrics, particularly yielding gains in all Hard and Long subsets. This suggests that \cnorm{} successfully enhances long-context reasoning capabilities without negatively impacting performance in shorter-context scenarios, such as the Easy or Short subsets.
+The performance gains are more pronounced for \llamachat{} compared to \qwenchat{}. This can be attributed to the experimental constraint of a 4K-token maximum prompt length, which limits Qwen's full long-context potential. Nevertheless, the substantial improvements observed for both models under the Long setting underscore the critical role of aligning input formatting with LLM's grounding mechanisms to fully leverage its reasoning capacity in extended contexts.
+
+
+\subsection{Discussions}
+While the experiments above demonstrate the effectiveness of \cnorm{}, several design choices warrant further analysis. In particular, the choice of delimiters and the number of samples used to determine the best delimiter can influence performance and stability. This section discusses these factors, highlighting their practical impact and providing insights for applying \cnorm{} in different retrieval-augmented generation scenarios.
+
+\textbf{Delimiter Choices.}
+We first examine the effect of delimiter choices in \cnorm{}. A wider set of candidate delimiters consistently improves performance, as it increases the chance of identifying a format that better aligns with LLM’s internal processing. Interestingly, the best-performing delimiter is not always human-interpretable or intuitive. For instance, in our controlled settings, the selected delimiters vary across models: \llama{} preferred ``.'', \llamachat{} favored ``:'', \qwen{} chose ``-'', \qwenchat{} selected ``\&''. Moreover, we observe that the optimal delimiter can also vary across different context settings and lengths, which makes manual selection impractical. These findings underscore two important insights: (1) delimiters that yield high Attention Balance Scores (ABS) can substantially enhance robustness, confirming the effectiveness of \cnorm{}; and (2) optimal delimiter preferences are both model-specific and context-dependent, highlighting the necessity of automatic selection via ABS rather than relying on human intuition.
+
+\textbf{Number of Samples Used for Selecting.}
+We further examine the sensitivity of \cnorm{} to the number of samples used when selecting the best delimiter. By varying the sample size from 1 to 10, we observe that the resulting performance and chosen delimiter remain largely stable. This shows that even a very small number of samples is sufficient for reliable delimiter selection, making the procedure computationally efficient. Interestingly, we also find that when the format ratio is varied, the best delimiter may change across settings, indicating that the preferred format is context-dependent rather than determined by token statistics. Combined with the observation in Section~\ref{attention} that attention distributions under \cnorm{} consistently emphasize central tokens even when the gold document is positioned at the beginning, these results suggest that the gains of \cnorm{} are robust and not sensitive to sample size, but rather stem from its ability to adaptively adjust grounding behavior to different context structures.
+
+In summary, our analysis highlights the effectiveness of \cnorm{} in adapting to diverse models and context settings. The method consistently identifies beneficial delimiters and achieves robust improvements with only a handful of samples. Moreover, the variation of best delimiters across models, context lengths, and format ratios demonstrates the necessity of an automatic, model-guided selection process. These findings underscore that \cnorm{} provides a lightweight yet powerful mechanism for mitigating positional biases and enhancing grounding, ultimately strengthening long-context reasoning across various LLMs.
+% -----------------------------------
+
+
+\section{Related Work}
+\textbf{Retrieval Augmented Generation} (RAG) has been widely adopted to improve language models' performance on knowledge-intensive tasks~\citep{borgeaud2022improving,lewis2020retrieval,karpukhin2020dense}. Traditional RAG pipelines usually manage short context windows, typically involving tasks with concise and immediately relevant contexts~\citep{DBLP:conf/nips/LewisPPPKGKLYR020}. While effective for short and well-contained queries, the systems face substantial limitations when scaling to more complex or open-ended tasks~\citep{DBLP:conf/naacl/JeongBCHP24}. Many real-world questions require integrating dispersed evidence from multiple documents or reasoning over lengthy documents such as academic articles, legal cases, or multi-turn dialogues. Standard pipelines that retrieve and concatenate only a few short passages (typically 100–300 tokens each) often suffer from information fragmentation or omission of critical context~\citep{li2024retrieval,DBLP:journals/corr/abs-2404-06654}. Furthermore, fixed-length context windows in most pretrained LLMs (e.g., 2K–4K tokens) severely limit the amount of retrievable evidence considered simultaneously. These bottlenecks have prompted shifts toward long-context RAG setups, aiming to leverage larger contexts and improved retrieval for open-domain QA~\citep{DBLP:conf/acl/AsaiSL0I0HY23,DBLP:conf/acl/LeeCT19,DBLP:journals/corr/abs-2112-09332,li2025towards}, multi-hop reasoning~\citep{DBLP:conf/emnlp/ZhongWMPC23,DBLP:conf/coling/HoNSA20}, and complex document understanding~\citep{DBLP:conf/naacl/DuaWDSS019,DBLP:journals/corr/abs-2410-03227}.
+
+\textbf{Long-Context RAG.}
+Recent studies~\citep{DBLP:journals/tacl/LiuLHPBPL24,zhangfound,an2024make,liu2024likelihood} have revealed critical limitations in how large language models utilize long-context inputs in RAG. Simply appending more retrieved text does not guarantee improved performance, potentially causing degradation due to positional biases, information dilution, and the ``lost-in-the-middle'' phenomenon~\citep{DBLP:journals/tacl/LiuLHPBPL24}. Models often favor content at the beginning or end of the prompt, neglecting relevant information buried in the middle. This results in significant performance variance depending on the order of retrieved documents, even if the overall content remains unchanged~\citep{liu2024likelihood,zhangfound,an2024make}. Thus, the effectiveness of long-context RAG is influenced not only by the amount of available information but also by how it is ordered and integrated, motivating a deeper empirical analysis of context-order effects on LLM performance.
+
+\section{Conclusion}
+In this work, we uncover the overlooked yet critical role of context format in shaping the performance of long-context retrieval-augmented generation. Through systematic analysis, we show that seemingly superficial differences can dramatically shift model accuracy and stability, even when the underlying semantics remain unchanged. To explain this phenomenon, we investigate the mechanisms which underlie the sensitivity of LLMs to how information is structured.
+Building on these insights, we introduce \cnorm{}, a lightweight, model-agnostic, and training-free approach that adaptively selects the most effective context format based on the model’s own internal dynamics. It provides a simple plug-and-play strategy for standardizing retrieved documents before generation, without requiring architectural changes or additional training overhead.
+Extensive experiments across both controlled evaluations and the real-world RAG benchmark demonstrate that \cnorm{} consistently improves the RAG performances. Gains are especially pronounced in challenging long-context scenarios, where retrieval noise and positional biases pose the greatest hurdles.
+
+Ultimately, our findings highlight that reliable grounding in RAG depends not only on what is retrieved, but also on how it is presented to the model. By reframing context presentation as a normalization problem, \cnorm{} opens a practical new direction for improving the stability and scalability of long-context reasoning in large language models.
+
+
+% \section*{Reproducibility Statement}
+% Efforts have been made to ensure the reproducibility of this work. Detailed descriptions of experimental setups, including datasets, preprocessing steps, evaluation protocols, and metrics, are provided in Section~\ref{sec:exp}. The design of controlled settings, such as context permutation and key–value extraction tasks, is specified in Section~\ref{sec:kv} and further elaborated in Appendix~\ref{kvprompt}. Implementation details of \cnorm{}, including delimiter selection and attention attribution analysis, are described in Section~\ref{sec:method}. Hyperparameters, such as context lengths, temperature, and ratio $p$, are reported in the respective experimental subsections. To facilitate replication, we will make source code released to public once published.
+
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\appendix
+\newpage
+\section{Key-Value Extraction}\label{kvprompt}
+We adopt a controlled \textbf{key–value extraction task} to study the effect of context formatting on retrieval-augmented generation. The task is defined as follows: given a long JSON-like object containing multiple key–value pairs, the model must return the value corresponding to a specified key. Unlike open-domain QA, this setup is free from world knowledge or semantic priors, since both keys and values are synthetic 32-character strings. As a result, performance directly reflects the 
+LLM’s ability to utilize and navigate long contexts rather than any memorized information.
+This task provides a minimal yet effective probe of long-context reasoning. Because all key–value pairs are semantically meaningless, the model cannot rely on prior knowledge; instead, it must depend entirely on the context provided. Success therefore reflects two abilities: (i) robust retrieval under distraction, as the model must locate the gold key among many distractors regardless of position, and (ii) sensitivity to formatting, since any performance difference arises solely from how identifiers are represented (e.g., hyphenated UUIDs versus plain texts). This isolation makes the task particularly well-suited for analyzing how structural cues in the input guide attention and grounding.
+
+We design three variants of the input, differing only in the format of the identifiers:  
+\begin{itemize}[leftmargin=*]
+    \item \textbf{UUID}: Keys and values are expressed as standard universally unique identifiers, represented as 32-character hexadecimal strings with hyphen delimiters. 
+    \item \textbf{Plain Text}: Identifiers are flattened into continuous 32-character strings without structural delimiters. 
+    \item \textbf{Modified UUID}: Identifiers are expressed as UUIDs but with hyphens replaced by alternative delimiters (e.g., the “\&” symbol).  
+\end{itemize}
+
+\textbf{Prompt.}  
+The task prompt is shown below. The model is asked to extract the value associated with a given key.  
+\begin{tcolorbox}[colback=gray!3, colframe=black!20, title=Task Prompt]
+\textbf{Extract the value corresponding to the specified key in the JSON object below.}
+
+\begin{verbatim}
+# UUID:
+550e8400-e29b-41d4-a716-446655440000: 
+123e4567-e89b-12d3-a456-426614174000
+
+# Plain Text:
+550e8400e29b41d4a716446655440000: 
+123e4567e89b12d3a456-426614174000
+
+# Modified UUID:
+550e8400&e29b&41d4&a716&446655440000: 
+123e4567&e89b&12d3&a456&426614174000
+\end{verbatim}
+\vspace{1em}
+
+\textbf{Key: } \quad xxxxxxx \quad
+\textbf{Corresponding value:}
+\end{tcolorbox}
+
+\section{Frequency-Controlled Token Replacement}\label{tokenreplace}
+To further analyze whether token exposure during fine-tuning contributes to the observed sensitivity of attention allocation to context format, we design a \textbf{Frequency-Controlled Token Replacement} experiment. Specifically, we focus on the Stanford-Alpaca-7B model and construct test cases where context tokens are systematically replaced with tokens of varying frequency in the fine-tuning corpus.
+
+\textbf{Settings.}
+We evaluate the robustness and capacity of LLM on 100 samples from the NQ-Open dataset~\citep{DBLP:journals/tacl/LiuLHPBPL24}. Each sample is paired with 6 retrieved documents, each containing approximately 100–300 tokens. To simulate long-context reasoning, we permute the position of the gold document across all possible positions. For token replacement, we sort tokens in the Alpaca fine-tuning data by frequency of occurrence and define replacement groups corresponding to the top-$k\%$ most frequent tokens and bottom-$k\%$ least frequent tokens ($k=1,5,10$). Replacement is enforced by prompting the model to rewrite retrieved passages using only tokens from the allowed set, according to the following instruction:
+
+\begin{tcolorbox}[colback=gray!3, colframe=black!20, title=Replacement Prompt]
+\textbf{You are given a list of allowed tokens. Your task is to rewrite the text by replacing as many words as possible with the allowed tokens.}
+
+\vspace{0.5em}
+\textbf{Rules:}
+\begin{enumerate}
+    \item Do \textbf{not} add or remove sentences. 
+    \item Do \textbf{not} change the order or structure. 
+    \item Only substitute words with allowed tokens when possible. 
+    \item Keep the formatting exactly the same as the original. 
+\end{enumerate}
+
+\vspace{0.5em}
+\textbf{Allowed tokens:} \quad [token list here]
+
+\vspace{0.5em}
+\textbf{Example:} \\
+Original text: \quad \texttt{The cat is sleeping on the mat.} \\
+Rewritten text: \quad \texttt{a cat is sleeping on the mat}
+
+\vspace{0.5em}
+\textbf{Now rewrite the following text:} \quad [original text here]
+\end{tcolorbox}
+
+
+\textbf{Results.}
+Table~\ref{tab:freq_replacement} reports the overall averaged accuracy (OAA) and optimal-position accuracy (OPA) under different replacement groups. The baseline Alpaca model without replacement achieves an OAA of 0.538 and OPA of 0.690. Substituting with frequent tokens (top 10\%) slightly reduces performance (OAA = 0.530, OPA = 0.720), while extreme substitution with the most frequent single token further degrades results (OAA = 0.505, OPA = 0.640). Similarly, replacing with least frequent tokens (bottom 10\% / 5\% / 1\%) shows comparable degradation.
+
+\begin{table}[h]
+\centering
+\caption{Performance under frequency-controlled token replacement on NQ-Open with Stanford Alpaca 7B. Top-$k$ and bottom-$k$ indicate substitution using the most and least frequent tokens from the fine-tuning corpus.}
+\label{tab:freq_replacement}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Setting} & \textbf{OAA} & \textbf{OPA} \\
+\midrule\midrule
+Stanford Alpaca (no replacement) & 0.538 & 0.690 \\
+\midrule
+Top 10\%   & 0.530 & 0.720 \\
+Top 5\%    & 0.512 & 0.700 \\
+Top 1\%    & 0.505 & 0.640 \\
+\midrule
+Bottom 10\% & 0.505 & 0.680 \\
+Bottom 5\%  & 0.510 & 0.700 \\
+Bottom 1\%  & 0.502 & 0.670 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Discussion.}
+The results suggest that token frequency alone does not provide a satisfactory explanation for the different attention allocation patterns observed across context formats. Substitutions with both highly frequent and rarely seen tokens lead to similar levels of degradation, and no clear monotonic relationship is observed. This indicates that the grounding mechanism behind context sensitivity is more complex than exposure frequency, and is likely shaped jointly by pretraining dynamics and fine-tuning objectives.
+
+\end{document}

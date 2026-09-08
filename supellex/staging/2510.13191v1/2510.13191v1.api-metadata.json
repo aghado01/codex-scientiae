@@ -1,0 +1,109 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2510.13191v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2510.13191v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Grounding Long-Context Reasoning with Contextual Normalization for Retrieval-Augmented Generation",
+      "authors": [
+        "Jiamin Chen",
+        "Yuchen Li",
+        "Xinyu Ma",
+        "Xinran Chen",
+        "Xiaokun Zhang",
+        "Shuaiqiang Wang",
+        "Chen Ma",
+        "Dawei Yin"
+      ],
+      "abstract": "Retrieval-Augmented Generation (RAG) has become an essential approach for extending the reasoning and knowledge capacity of large language models (LLMs). While prior research has primarily focused on retrieval quality and prompting strategies, the influence of how the retrieved documents are framed, i.e., context format, remains underexplored. We show that seemingly superficial choices, such as delimiters or structural markers in key-value extraction, can induce substantial shifts in accuracy and stability, even when semantic content is identical. To systematically investigate this effect, we design controlled experiments that vary context density, delimiter styles, and positional placement, revealing the underlying factors that govern performance differences. Building on these insights, we introduce Contextual Normalization, a lightweight strategy that adaptively standardizes context representations before generation. Extensive experiments on both controlled and real-world RAG benchmarks across diverse settings demonstrate that the proposed strategy consistently improves robustness to order variation and strengthens long-context utilization. These findings underscore that reliable RAG depends not only on retrieving the right content, but also on how that content is presented, offering both new empirical evidence and a practical technique for better long-context reasoning.",
+      "doi": null,
+      "arxiv_id": "2510.13191v1",
+      "published": "2025-10-15T06:28:25Z",
+      "updated": "2025-10-15T06:28:25Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2510.13191v1",
+      "pdf_url": "https://arxiv.org/pdf/2510.13191v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2510.13191v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2510.13191v1",
+          "url": "https://arxiv.org/abs/2510.13191v1",
+          "doi": null,
+          "arxiv_id": "2510.13191v1",
+          "published": "2025-10-15T06:28:25Z",
+          "updated": "2025-10-15T06:28:25Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2510.13191v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-08T01:26:08.118277Z",
+      "sha256": "02618219ca61872808e95276f51b5a1fe387ad362992ea950aa8768d0549a601",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvZHJlU2VMREZ6N21saTg5cG1yMnB1bWRURFA0PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUxMC4xMzE5MXYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA4VDAxOjI2OjA4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTEwLjEzMTkxdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUxMC4xMzE5MXYxPC9pZD4KICAgIDx0aXRsZT5Hcm91bmRpbmcgTG9uZy1Db250ZXh0IFJlYXNvbmluZyB3aXRoIENvbnRleHR1YWwgTm9ybWFsaXphdGlvbiBmb3IgUmV0cmlldmFsLUF1Z21lbnRlZCBHZW5lcmF0aW9uPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjUtMTAtMTVUMDY6Mjg6MjVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI1MTAuMTMxOTF2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI1MTAuMTMxOTF2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlJldHJpZXZhbC1BdWdtZW50ZWQgR2VuZXJhdGlvbiAoUkFHKSBoYXMgYmVjb21lIGFuIGVzc2VudGlhbCBhcHByb2FjaCBmb3IgZXh0ZW5kaW5nIHRoZSByZWFzb25pbmcgYW5kIGtub3dsZWRnZSBjYXBhY2l0eSBvZiBsYXJnZSBsYW5ndWFnZSBtb2RlbHMgKExMTXMpLiBXaGlsZSBwcmlvciByZXNlYXJjaCBoYXMgcHJpbWFyaWx5IGZvY3VzZWQgb24gcmV0cmlldmFsIHF1YWxpdHkgYW5kIHByb21wdGluZyBzdHJhdGVnaWVzLCB0aGUgaW5mbHVlbmNlIG9mIGhvdyB0aGUgcmV0cmlldmVkIGRvY3VtZW50cyBhcmUgZnJhbWVkLCBpLmUuLCBjb250ZXh0IGZvcm1hdCwgcmVtYWlucyB1bmRlcmV4cGxvcmVkLiBXZSBzaG93IHRoYXQgc2VlbWluZ2x5IHN1cGVyZmljaWFsIGNob2ljZXMsIHN1Y2ggYXMgZGVsaW1pdGVycyBvciBzdHJ1Y3R1cmFsIG1hcmtlcnMgaW4ga2V5LXZhbHVlIGV4dHJhY3Rpb24sIGNhbiBpbmR1Y2Ugc3Vic3RhbnRpYWwgc2hpZnRzIGluIGFjY3VyYWN5IGFuZCBzdGFiaWxpdHksIGV2ZW4gd2hlbiBzZW1hbnRpYyBjb250ZW50IGlzIGlkZW50aWNhbC4gVG8gc3lzdGVtYXRpY2FsbHkgaW52ZXN0aWdhdGUgdGhpcyBlZmZlY3QsIHdlIGRlc2lnbiBjb250cm9sbGVkIGV4cGVyaW1lbnRzIHRoYXQgdmFyeSBjb250ZXh0IGRlbnNpdHksIGRlbGltaXRlciBzdHlsZXMsIGFuZCBwb3NpdGlvbmFsIHBsYWNlbWVudCwgcmV2ZWFsaW5nIHRoZSB1bmRlcmx5aW5nIGZhY3RvcnMgdGhhdCBnb3Zlcm4gcGVyZm9ybWFuY2UgZGlmZmVyZW5jZXMuIEJ1aWxkaW5nIG9uIHRoZXNlIGluc2lnaHRzLCB3ZSBpbnRyb2R1Y2UgQ29udGV4dHVhbCBOb3JtYWxpemF0aW9uLCBhIGxpZ2h0d2VpZ2h0IHN0cmF0ZWd5IHRoYXQgYWRhcHRpdmVseSBzdGFuZGFyZGl6ZXMgY29udGV4dCByZXByZXNlbnRhdGlvbnMgYmVmb3JlIGdlbmVyYXRpb24uIEV4dGVuc2l2ZSBleHBlcmltZW50cyBvbiBib3RoIGNvbnRyb2xsZWQgYW5kIHJlYWwtd29ybGQgUkFHIGJlbmNobWFya3MgYWNyb3NzIGRpdmVyc2Ugc2V0dGluZ3MgZGVtb25zdHJhdGUgdGhhdCB0aGUgcHJvcG9zZWQgc3RyYXRlZ3kgY29uc2lzdGVudGx5IGltcHJvdmVzIHJvYnVzdG5lc3MgdG8gb3JkZXIgdmFyaWF0aW9uIGFuZCBzdHJlbmd0aGVucyBsb25nLWNvbnRleHQgdXRpbGl6YXRpb24uIFRoZXNlIGZpbmRpbmdzIHVuZGVyc2NvcmUgdGhhdCByZWxpYWJsZSBSQUcgZGVwZW5kcyBub3Qgb25seSBvbiByZXRyaWV2aW5nIHRoZSByaWdodCBjb250ZW50LCBidXQgYWxzbyBvbiBob3cgdGhhdCBjb250ZW50IGlzIHByZXNlbnRlZCwgb2ZmZXJpbmcgYm90aCBuZXcgZW1waXJpY2FsIGV2aWRlbmNlIGFuZCBhIHByYWN0aWNhbCB0ZWNobmlxdWUgZm9yIGJldHRlciBsb25nLWNvbnRleHQgcmVhc29uaW5nLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI1LTEwLTE1VDA2OjI4OjI1WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuQ0wiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkppYW1pbiBDaGVuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZdWNoZW4gTGk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlhpbnl1IE1hPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaW5yYW4gQ2hlbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WGlhb2t1biBaaGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2h1YWlxaWFuZyBXYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5DaGVuIE1hPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5EYXdlaSBZaW48L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Grounding Long-Context Reasoning with Contextual Normalization for Retrieval-Augmented Generation",
+    "authors": [
+      "Jiamin Chen",
+      "Yuchen Li",
+      "Xinyu Ma",
+      "Xinran Chen",
+      "Xiaokun Zhang",
+      "Shuaiqiang Wang",
+      "Chen Ma",
+      "Dawei Yin"
+    ],
+    "abstract": "Retrieval-Augmented Generation (RAG) has become an essential approach for extending the reasoning and knowledge capacity of large language models (LLMs). While prior research has primarily focused on retrieval quality and prompting strategies, the influence of how the retrieved documents are framed, i.e., context format, remains underexplored. We show that seemingly superficial choices, such as delimiters or structural markers in key-value extraction, can induce substantial shifts in accuracy and stability, even when semantic content is identical. To systematically investigate this effect, we design controlled experiments that vary context density, delimiter styles, and positional placement, revealing the underlying factors that govern performance differences. Building on these insights, we introduce Contextual Normalization, a lightweight strategy that adaptively standardizes context representations before generation. Extensive experiments on both controlled and real-world RAG benchmarks across diverse settings demonstrate that the proposed strategy consistently improves robustness to order variation and strengthens long-context utilization. These findings underscore that reliable RAG depends not only on retrieving the right content, but also on how that content is presented, offering both new empirical evidence and a practical technique for better long-context reasoning.",
+    "identifiers": {
+      "arxiv": "2510.13191",
+      "arxiv_versioned": "2510.13191v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2510.13191v1"
+      }
+    },
+    "categories": [
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2025-10-15T06:28:25Z",
+    "updated": "2025-10-15T06:28:25Z"
+  }
+}

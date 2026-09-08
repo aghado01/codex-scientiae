@@ -1,0 +1,121 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2504.01848v3",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2504.01848v3",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "PaperBench: Evaluating AI's Ability to Replicate AI Research",
+      "authors": [
+        "Giulio Starace",
+        "Oliver Jaffe",
+        "Dane Sherburn",
+        "James Aung",
+        "Jun Shern Chan",
+        "Leon Maksin",
+        "Rachel Dias",
+        "Evan Mays",
+        "Benjamin Kinsella",
+        "Wyatt Thompson",
+        "Johannes Heidecke",
+        "Amelia Glaese",
+        "Tejal Patwardhan"
+      ],
+      "abstract": "We introduce PaperBench, a benchmark evaluating the ability of AI agents to replicate state-of-the-art AI research. Agents must replicate 20 ICML 2024 Spotlight and Oral papers from scratch, including understanding paper contributions, developing a codebase, and successfully executing experiments. For objective evaluation, we develop rubrics that hierarchically decompose each replication task into smaller sub-tasks with clear grading criteria. In total, PaperBench contains 8,316 individually gradable tasks. Rubrics are co-developed with the author(s) of each ICML paper for accuracy and realism. To enable scalable evaluation, we also develop an LLM-based judge to automatically grade replication attempts against rubrics, and assess our judge's performance by creating a separate benchmark for judges. We evaluate several frontier models on PaperBench, finding that the best-performing tested agent, Claude 3.5 Sonnet (New) with open-source scaffolding, achieves an average replication score of 21.0%. Finally, we recruit top ML PhDs to attempt a subset of PaperBench, finding that models do not yet outperform the human baseline. We open-source our code (https://github.com/openai/preparedness) to facilitate future research in understanding the AI engineering capabilities of AI agents.",
+      "doi": null,
+      "arxiv_id": "2504.01848v3",
+      "published": "2025-04-02T15:55:24Z",
+      "updated": "2025-04-07T12:15:49Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2504.01848v3",
+      "pdf_url": "https://arxiv.org/pdf/2504.01848v3",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2504.01848v3"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2504.01848v3",
+          "url": "https://arxiv.org/abs/2504.01848v3",
+          "doi": null,
+          "arxiv_id": "2504.01848v3",
+          "published": "2025-04-02T15:55:24Z",
+          "updated": "2025-04-07T12:15:49Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2504.01848v3&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-08T01:43:22.571905Z",
+      "sha256": "781983dfa8cb06438644687895688a47f5359694ebfab59b2b6adff84cfd6ed2",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvUzlEYzNaTitBeFNtWE85Mk1rd1NyNXNyVWJBPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUwNC4wMTg0OHYzJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA4VDAxOjQzOjIyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTA0LjAxODQ4djMiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUwNC4wMTg0OHYzPC9pZD4KICAgIDx0aXRsZT5QYXBlckJlbmNoOiBFdmFsdWF0aW5nIEFJJ3MgQWJpbGl0eSB0byBSZXBsaWNhdGUgQUkgUmVzZWFyY2g8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNS0wNC0wN1QxMjoxNTo0OVo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjUwNC4wMTg0OHYzIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjUwNC4wMTg0OHYzIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+V2UgaW50cm9kdWNlIFBhcGVyQmVuY2gsIGEgYmVuY2htYXJrIGV2YWx1YXRpbmcgdGhlIGFiaWxpdHkgb2YgQUkgYWdlbnRzIHRvIHJlcGxpY2F0ZSBzdGF0ZS1vZi10aGUtYXJ0IEFJIHJlc2VhcmNoLiBBZ2VudHMgbXVzdCByZXBsaWNhdGUgMjAgSUNNTCAyMDI0IFNwb3RsaWdodCBhbmQgT3JhbCBwYXBlcnMgZnJvbSBzY3JhdGNoLCBpbmNsdWRpbmcgdW5kZXJzdGFuZGluZyBwYXBlciBjb250cmlidXRpb25zLCBkZXZlbG9waW5nIGEgY29kZWJhc2UsIGFuZCBzdWNjZXNzZnVsbHkgZXhlY3V0aW5nIGV4cGVyaW1lbnRzLiBGb3Igb2JqZWN0aXZlIGV2YWx1YXRpb24sIHdlIGRldmVsb3AgcnVicmljcyB0aGF0IGhpZXJhcmNoaWNhbGx5IGRlY29tcG9zZSBlYWNoIHJlcGxpY2F0aW9uIHRhc2sgaW50byBzbWFsbGVyIHN1Yi10YXNrcyB3aXRoIGNsZWFyIGdyYWRpbmcgY3JpdGVyaWEuIEluIHRvdGFsLCBQYXBlckJlbmNoIGNvbnRhaW5zIDgsMzE2IGluZGl2aWR1YWxseSBncmFkYWJsZSB0YXNrcy4gUnVicmljcyBhcmUgY28tZGV2ZWxvcGVkIHdpdGggdGhlIGF1dGhvcihzKSBvZiBlYWNoIElDTUwgcGFwZXIgZm9yIGFjY3VyYWN5IGFuZCByZWFsaXNtLiBUbyBlbmFibGUgc2NhbGFibGUgZXZhbHVhdGlvbiwgd2UgYWxzbyBkZXZlbG9wIGFuIExMTS1iYXNlZCBqdWRnZSB0byBhdXRvbWF0aWNhbGx5IGdyYWRlIHJlcGxpY2F0aW9uIGF0dGVtcHRzIGFnYWluc3QgcnVicmljcywgYW5kIGFzc2VzcyBvdXIganVkZ2UncyBwZXJmb3JtYW5jZSBieSBjcmVhdGluZyBhIHNlcGFyYXRlIGJlbmNobWFyayBmb3IganVkZ2VzLiBXZSBldmFsdWF0ZSBzZXZlcmFsIGZyb250aWVyIG1vZGVscyBvbiBQYXBlckJlbmNoLCBmaW5kaW5nIHRoYXQgdGhlIGJlc3QtcGVyZm9ybWluZyB0ZXN0ZWQgYWdlbnQsIENsYXVkZSAzLjUgU29ubmV0IChOZXcpIHdpdGggb3Blbi1zb3VyY2Ugc2NhZmZvbGRpbmcsIGFjaGlldmVzIGFuIGF2ZXJhZ2UgcmVwbGljYXRpb24gc2NvcmUgb2YgMjEuMCUuIEZpbmFsbHksIHdlIHJlY3J1aXQgdG9wIE1MIFBoRHMgdG8gYXR0ZW1wdCBhIHN1YnNldCBvZiBQYXBlckJlbmNoLCBmaW5kaW5nIHRoYXQgbW9kZWxzIGRvIG5vdCB5ZXQgb3V0cGVyZm9ybSB0aGUgaHVtYW4gYmFzZWxpbmUuIFdlIG9wZW4tc291cmNlIG91ciBjb2RlIChodHRwczovL2dpdGh1Yi5jb20vb3BlbmFpL3ByZXBhcmVkbmVzcykgdG8gZmFjaWxpdGF0ZSBmdXR1cmUgcmVzZWFyY2ggaW4gdW5kZXJzdGFuZGluZyB0aGUgQUkgZW5naW5lZXJpbmcgY2FwYWJpbGl0aWVzIG9mIEFJIGFnZW50cy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI1LTA0LTAyVDE1OjU1OjI0WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+MzAgcGFnZXMsIDE0IGZpZ3VyZXM8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+R2l1bGlvIFN0YXJhY2U8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk9saXZlciBKYWZmZTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RGFuZSBTaGVyYnVybjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmFtZXMgQXVuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SnVuIFNoZXJuIENoYW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkxlb24gTWFrc2luPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5SYWNoZWwgRGlhczwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RXZhbiBNYXlzPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5CZW5qYW1pbiBLaW5zZWxsYTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+V3lhdHQgVGhvbXBzb248L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkpvaGFubmVzIEhlaWRlY2tlPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbWVsaWEgR2xhZXNlPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UZWphbCBQYXR3YXJkaGFuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "PaperBench: Evaluating AI's Ability to Replicate AI Research",
+    "authors": [
+      "Giulio Starace",
+      "Oliver Jaffe",
+      "Dane Sherburn",
+      "James Aung",
+      "Jun Shern Chan",
+      "Leon Maksin",
+      "Rachel Dias",
+      "Evan Mays",
+      "Benjamin Kinsella",
+      "Wyatt Thompson",
+      "Johannes Heidecke",
+      "Amelia Glaese",
+      "Tejal Patwardhan"
+    ],
+    "abstract": "We introduce PaperBench, a benchmark evaluating the ability of AI agents to replicate state-of-the-art AI research. Agents must replicate 20 ICML 2024 Spotlight and Oral papers from scratch, including understanding paper contributions, developing a codebase, and successfully executing experiments. For objective evaluation, we develop rubrics that hierarchically decompose each replication task into smaller sub-tasks with clear grading criteria. In total, PaperBench contains 8,316 individually gradable tasks. Rubrics are co-developed with the author(s) of each ICML paper for accuracy and realism. To enable scalable evaluation, we also develop an LLM-based judge to automatically grade replication attempts against rubrics, and assess our judge's performance by creating a separate benchmark for judges. We evaluate several frontier models on PaperBench, finding that the best-performing tested agent, Claude 3.5 Sonnet (New) with open-source scaffolding, achieves an average replication score of 21.0%. Finally, we recruit top ML PhDs to attempt a subset of PaperBench, finding that models do not yet outperform the human baseline. We open-source our code (https://github.com/openai/preparedness) to facilitate future research in understanding the AI engineering capabilities of AI agents.",
+    "identifiers": {
+      "arxiv": "2504.01848",
+      "arxiv_versioned": "2504.01848v3",
+      "doi": null,
+      "external": {
+        "arxiv": "2504.01848v3"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2025-04-02T15:55:24Z",
+    "updated": "2025-04-07T12:15:49Z"
+  }
+}

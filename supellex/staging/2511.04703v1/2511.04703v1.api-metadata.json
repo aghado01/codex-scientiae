@@ -1,0 +1,179 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2511.04703v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2511.04703v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Measuring what Matters: Construct Validity in Large Language Model Benchmarks",
+      "authors": [
+        "Andrew M. Bean",
+        "Ryan Othniel Kearns",
+        "Angelika Romanou",
+        "Franziska Sofia Hafner",
+        "Harry Mayne",
+        "Jan Batzner",
+        "Negar Foroutan",
+        "Chris Schmitz",
+        "Karolina Korgul",
+        "Hunar Batra",
+        "Oishi Deb",
+        "Emma Beharry",
+        "Cornelius Emde",
+        "Thomas Foster",
+        "Anna Gausen",
+        "María Grandury",
+        "Simeng Han",
+        "Valentin Hofmann",
+        "Lujain Ibrahim",
+        "Hazel Kim",
+        "Hannah Rose Kirk",
+        "Fangru Lin",
+        "Gabrielle Kaili-May Liu",
+        "Lennart Luettgau",
+        "Jabez Magomere",
+        "Jonathan Rystrøm",
+        "Anna Sotnikova",
+        "Yushi Yang",
+        "Yilun Zhao",
+        "Adel Bibi",
+        "Antoine Bosselut",
+        "Ronald Clark",
+        "Arman Cohan",
+        "Jakob Foerster",
+        "Yarin Gal",
+        "Scott A. Hale",
+        "Inioluwa Deborah Raji",
+        "Christopher Summerfield",
+        "Philip H. S. Torr",
+        "Cozmin Ududec",
+        "Luc Rocher",
+        "Adam Mahdi"
+      ],
+      "abstract": "Evaluating large language models (LLMs) is crucial for both assessing their capabilities and identifying safety or robustness issues prior to deployment. Reliably measuring abstract and complex phenomena such as 'safety' and 'robustness' requires strong construct validity, that is, having measures that represent what matters to the phenomenon. With a team of 29 expert reviewers, we conduct a systematic review of 445 LLM benchmarks from leading conferences in natural language processing and machine learning. Across the reviewed articles, we find patterns related to the measured phenomena, tasks, and scoring metrics which undermine the validity of the resulting claims. To address these shortcomings, we provide eight key recommendations and detailed actionable guidance to researchers and practitioners in developing LLM benchmarks.",
+      "doi": null,
+      "arxiv_id": "2511.04703v1",
+      "published": "2025-11-03T17:39:40Z",
+      "updated": "2025-11-03T17:39:40Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2511.04703v1",
+      "pdf_url": "https://arxiv.org/pdf/2511.04703v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2511.04703v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2511.04703v1",
+          "url": "https://arxiv.org/abs/2511.04703v1",
+          "doi": null,
+          "arxiv_id": "2511.04703v1",
+          "published": "2025-11-03T17:39:40Z",
+          "updated": "2025-11-03T17:39:40Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2511.04703v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-08T01:55:22.516735Z",
+      "sha256": "3ab66632baba8672e7590ac20488164430766a6ad7e8aed9ac524978d17a79ef",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvdjM2ZkZERjRzV3QzaHRZRCs5SFRZeWtpbFAwPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUxMS4wNDcwM3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA4VDAxOjU1OjIyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTExLjA0NzAzdjEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUxMS4wNDcwM3YxPC9pZD4KICAgIDx0aXRsZT5NZWFzdXJpbmcgd2hhdCBNYXR0ZXJzOiBDb25zdHJ1Y3QgVmFsaWRpdHkgaW4gTGFyZ2UgTGFuZ3VhZ2UgTW9kZWwgQmVuY2htYXJrczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI1LTExLTAzVDE3OjM5OjQwWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNTExLjA0NzAzdjEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNTExLjA0NzAzdjEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5FdmFsdWF0aW5nIGxhcmdlIGxhbmd1YWdlIG1vZGVscyAoTExNcykgaXMgY3J1Y2lhbCBmb3IgYm90aCBhc3Nlc3NpbmcgdGhlaXIgY2FwYWJpbGl0aWVzIGFuZCBpZGVudGlmeWluZyBzYWZldHkgb3Igcm9idXN0bmVzcyBpc3N1ZXMgcHJpb3IgdG8gZGVwbG95bWVudC4gUmVsaWFibHkgbWVhc3VyaW5nIGFic3RyYWN0IGFuZCBjb21wbGV4IHBoZW5vbWVuYSBzdWNoIGFzICdzYWZldHknIGFuZCAncm9idXN0bmVzcycgcmVxdWlyZXMgc3Ryb25nIGNvbnN0cnVjdCB2YWxpZGl0eSwgdGhhdCBpcywgaGF2aW5nIG1lYXN1cmVzIHRoYXQgcmVwcmVzZW50IHdoYXQgbWF0dGVycyB0byB0aGUgcGhlbm9tZW5vbi4gV2l0aCBhIHRlYW0gb2YgMjkgZXhwZXJ0IHJldmlld2Vycywgd2UgY29uZHVjdCBhIHN5c3RlbWF0aWMgcmV2aWV3IG9mIDQ0NSBMTE0gYmVuY2htYXJrcyBmcm9tIGxlYWRpbmcgY29uZmVyZW5jZXMgaW4gbmF0dXJhbCBsYW5ndWFnZSBwcm9jZXNzaW5nIGFuZCBtYWNoaW5lIGxlYXJuaW5nLiBBY3Jvc3MgdGhlIHJldmlld2VkIGFydGljbGVzLCB3ZSBmaW5kIHBhdHRlcm5zIHJlbGF0ZWQgdG8gdGhlIG1lYXN1cmVkIHBoZW5vbWVuYSwgdGFza3MsIGFuZCBzY29yaW5nIG1ldHJpY3Mgd2hpY2ggdW5kZXJtaW5lIHRoZSB2YWxpZGl0eSBvZiB0aGUgcmVzdWx0aW5nIGNsYWltcy4gVG8gYWRkcmVzcyB0aGVzZSBzaG9ydGNvbWluZ3MsIHdlIHByb3ZpZGUgZWlnaHQga2V5IHJlY29tbWVuZGF0aW9ucyBhbmQgZGV0YWlsZWQgYWN0aW9uYWJsZSBndWlkYW5jZSB0byByZXNlYXJjaGVycyBhbmQgcHJhY3RpdGlvbmVycyBpbiBkZXZlbG9waW5nIExMTSBiZW5jaG1hcmtzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMTEtMDNUMTc6Mzk6NDBaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD4zOXRoIENvbmZlcmVuY2Ugb24gTmV1cmFsIEluZm9ybWF0aW9uIFByb2Nlc3NpbmcgU3lzdGVtcyAoTmV1cklQUyAyMDI1KSBUcmFjayBvbiBEYXRhc2V0cyBhbmQgQmVuY2htYXJrczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbmRyZXcgTS4gQmVhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UnlhbiBPdGhuaWVsIEtlYXJuczwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QW5nZWxpa2EgUm9tYW5vdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RnJhbnppc2thIFNvZmlhIEhhZm5lcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFycnkgTWF5bmU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkphbiBCYXR6bmVyPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5OZWdhciBGb3JvdXRhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q2hyaXMgU2NobWl0ejwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+S2Fyb2xpbmEgS29yZ3VsPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5IdW5hciBCYXRyYTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+T2lzaGkgRGViPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5FbW1hIEJlaGFycnk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNvcm5lbGl1cyBFbWRlPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UaG9tYXMgRm9zdGVyPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Bbm5hIEdhdXNlbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWFyw61hIEdyYW5kdXJ5PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TaW1lbmcgSGFuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5WYWxlbnRpbiBIb2ZtYW5uPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5MdWphaW4gSWJyYWhpbTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGF6ZWwgS2ltPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5IYW5uYWggUm9zZSBLaXJrPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5GYW5ncnUgTGluPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5HYWJyaWVsbGUgS2FpbGktTWF5IExpdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TGVubmFydCBMdWV0dGdhdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmFiZXogTWFnb21lcmU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkpvbmF0aGFuIFJ5c3Ryw7htPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Bbm5hIFNvdG5pa292YTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WXVzaGkgWWFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WWlsdW4gWmhhbzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QWRlbCBCaWJpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbnRvaW5lIEJvc3NlbHV0PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Sb25hbGQgQ2xhcms8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkFybWFuIENvaGFuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5KYWtvYiBGb2Vyc3RlcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WWFyaW4gR2FsPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TY290dCBBLiBIYWxlPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5JbmlvbHV3YSBEZWJvcmFoIFJhamk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNocmlzdG9waGVyIFN1bW1lcmZpZWxkPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5QaGlsaXAgSC4gUy4gVG9ycjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Q296bWluIFVkdWRlYzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+THVjIFJvY2hlcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QWRhbSBNYWhkaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Measuring what Matters: Construct Validity in Large Language Model Benchmarks",
+    "authors": [
+      "Andrew M. Bean",
+      "Ryan Othniel Kearns",
+      "Angelika Romanou",
+      "Franziska Sofia Hafner",
+      "Harry Mayne",
+      "Jan Batzner",
+      "Negar Foroutan",
+      "Chris Schmitz",
+      "Karolina Korgul",
+      "Hunar Batra",
+      "Oishi Deb",
+      "Emma Beharry",
+      "Cornelius Emde",
+      "Thomas Foster",
+      "Anna Gausen",
+      "María Grandury",
+      "Simeng Han",
+      "Valentin Hofmann",
+      "Lujain Ibrahim",
+      "Hazel Kim",
+      "Hannah Rose Kirk",
+      "Fangru Lin",
+      "Gabrielle Kaili-May Liu",
+      "Lennart Luettgau",
+      "Jabez Magomere",
+      "Jonathan Rystrøm",
+      "Anna Sotnikova",
+      "Yushi Yang",
+      "Yilun Zhao",
+      "Adel Bibi",
+      "Antoine Bosselut",
+      "Ronald Clark",
+      "Arman Cohan",
+      "Jakob Foerster",
+      "Yarin Gal",
+      "Scott A. Hale",
+      "Inioluwa Deborah Raji",
+      "Christopher Summerfield",
+      "Philip H. S. Torr",
+      "Cozmin Ududec",
+      "Luc Rocher",
+      "Adam Mahdi"
+    ],
+    "abstract": "Evaluating large language models (LLMs) is crucial for both assessing their capabilities and identifying safety or robustness issues prior to deployment. Reliably measuring abstract and complex phenomena such as 'safety' and 'robustness' requires strong construct validity, that is, having measures that represent what matters to the phenomenon. With a team of 29 expert reviewers, we conduct a systematic review of 445 LLM benchmarks from leading conferences in natural language processing and machine learning. Across the reviewed articles, we find patterns related to the measured phenomena, tasks, and scoring metrics which undermine the validity of the resulting claims. To address these shortcomings, we provide eight key recommendations and detailed actionable guidance to researchers and practitioners in developing LLM benchmarks.",
+    "identifiers": {
+      "arxiv": "2511.04703",
+      "arxiv_versioned": "2511.04703v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2511.04703v1"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2025-11-03T17:39:40Z",
+    "updated": "2025-11-03T17:39:40Z"
+  }
+}

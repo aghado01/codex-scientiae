@@ -1,0 +1,16 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Implications for Online and Continual Learning} 
+Online and continual learning are key research directions in machine learning for addressing issues like distribution shifts~\citep{koh2021wilds,gulrajani2021domain} and limited training data~\citep{pan2010survey,hutchinson2017overcoming,zhuang2019transfer}.
+\name offers a flexible and efficient alternative to conventional model fine-tuning, as adapting contexts is generally cheaper than updating model weights~\citep{brown2020gpt3,lester2021prompttuning,li2021prefixtuning,hu2021lora}.
+Moreover, because contexts are human-interpretable, \name enables \textit{selective unlearning}~\citep{cao2015unlearning,bourtoule2021sisa,liu2024rethinkingllmunlearning}, whether due to privacy or legal constraints~\citep{gdpr2016art17,ccpa1798_105}, or when outdated or incorrect information is identified by domain experts.
+These are promising directions for future work, where \name could play a central role in advancing continuous and responsible learning.
+
+\paragraph{Limitations and Challenges}  
+A limitation of \name is its reliance on a reasonably strong Reflector: if the Reflector fails to extract meaningful insights from generated traces or outcomes, the constructed context may become noisy or even harmful.  
+In domain-specific tasks where no model can extract useful insights, the resulting context will naturally lack them. This dependency is similar to Dynamic Cheatsheet~\citep{suzgun2025dynamic}, where the quality of adaptation hinges on the underlying model’s ability to curate memory.  
+We also note that not all applications require rich or detailed contexts.  
+Tasks like HotPotQA~\citep{yang2018hotpotqa} often benefit more from concise, high-level instructions (\eg how to retrieve and synthesize evidence) than from long contexts.  
+Similarly, games with fixed strategies such as Game of 24~\citep{suzgun2025dynamic} may only need a single reusable rule, rendering additional context redundant.  
+Overall, \name is most beneficial in settings that demand detailed domain knowledge, complex tool use, or environment-specific strategies that go beyond what is already embedded in model weights or simple system instructions.

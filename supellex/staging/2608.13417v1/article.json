@@ -1,0 +1,189 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2608.13417v1",
+  "initialized_utc": "2026-09-08T01:25:12.882045Z",
+  "title": "Beyond Final Scores: A Systematic Evaluation of Agents for Long-Horizon AI Research and Development",
+  "authors": [
+    "Yiwei Li",
+    "Wanli Yang",
+    "Hexiang Tan",
+    "Xiangzhou Huang",
+    "Zhengyu Chen",
+    "Ziran Li",
+    "Borun Chen",
+    "Shanglin Lei",
+    "Huaisheng Zhu",
+    "Hao Tian",
+    "Fei Sun",
+    "Xunliang Cai",
+    "Jingang Wang"
+  ],
+  "abstract": "Autonomous agents are increasingly capable of improving models, systems, and other technical artifacts through long-horizon experimentation. To understand the current state of this capability, however, evaluation must go beyond final scores, which neither reveal where progress is gained or lost nor indicate whether accumulated experience improves later decisions. We therefore present a systematic evaluation of seven frontier models on 36 long-horizon tasks based on a new framework that uses rule-based metrics to characterize within-run behavior through Solution Framing, Execution, and Feedback Control and controlled comparisons to assess experience reuse within and across tasks. The results show that current agents operate more like engineering optimizers than fully autonomous researchers: they can formulate and implement practical solutions, but their performance varies substantially across runs, their strongest solutions mainly adapt or combine established techniques, and genuine methodological novelty remains rare. Detailed analysis reveals that observed performance is shaped by multiple factors, including distinct process bottlenecks behind similar final outcomes, experience reuse that can help or mislead subsequent decisions, and harness designs that affect performance stability. These findings suggest concrete directions for improving model training, inference-time strategies, experience management, and harness design.",
+  "identifiers": {
+    "arxiv": "2608.13417",
+    "arxiv_versioned": "2608.13417v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2608.13417v1"
+    }
+  },
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-08-13T16:11:22Z",
+  "updated": "2026-08-13T16:11:22Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2608.13417v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10579,
+        "sha256": "62fdb1d144bdb3b7f2b378a6196657c740dab174d50b1e6c61e7ecf385e3721c",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-08T01:25:10.972521Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2608.13417v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "3a07e3b8eb9ff8f8a2e81e2a528b13d95005284d2c0fc7733b7a64939f2a3c02"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Beyond Final Scores: A Systematic Evaluation of Agents for Long-Horizon AI Research and Development",
+        "authors_tex": [
+          "Yiwei Li\\textsuperscript{1,*}, Wanli Yang\\textsuperscript{2,*}, Hexiang Tan\\textsuperscript{2,*},\nXiangzhou Huang\\textsuperscript{1}, Zhengyu Chen\\textsuperscript{1} \\\\ \n\\textbf{Ziran Li\\textsuperscript{1}, Borun Chen\\textsuperscript{1}, Shanglin Lei\\textsuperscript{1}, Huaisheng Zhu\\textsuperscript{1} } \\\\\n\\textbf{Hao Tian\\textsuperscript{1}, Fei Sun\\textsuperscript{2}, Xunliang Cai\\textsuperscript{1}, Jingang Wang\\textsuperscript{1} }\\\\ \n    \\textsuperscript{1}Meituan \\\\\n    \\textsuperscript{2}University of Chinese Academy of Sciences \\\\\n\t\\texttt{liyiwei10@meituan.com} \\\\"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 499,
+        "sha256": "91994c9155ceb46defcc0e5f9a66346f8adb81f50ef0d2b999c0645931af3263"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2608.13417v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2608.13417v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1578705,
+      "sha256": "98fe08b0b1ea1efc321627c04b2419c6b8f21b544f3a334e621f4d69a4863bec",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2608.13417v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2608.13417v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 42,
+      "tex_files": 16,
+      "sha256": "f1df16f96d827b0077e8530f9626be0152ff8b192eec9a43b3fceac1ed26a075"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2608.13417v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1999166,
+      "sha256": "4aab37089179edb013b835e29e0896412ab766383626e88f5f877fb258d46542"
+    },
+    {
+      "role": "html-source",
+      "path": "2608.13417v1-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2608.13417v1.html",
+      "files": 21,
+      "bytes": 1615158,
+      "sha256": "a4139768069ed92cf0eef8e5b00b145cf4232ed532f95f763d18eec6f5ded69a"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-08T01:41:22.159199Z",
+    "publication": "recovered-existing-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 46
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 42
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 16
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,590 @@
+\newpage
+\section{Extended Results}
+
+\subsection{Generalization across Different LLMs}
+\label{subsec:generalization-across-llms}
+
+\name is a model-agnostic framework that operates on execution traces and contextual deltas, and does not rely on any architectural or training-specific features of DeepSeek-V3.1 (the default backbone we use in the main text). 
+We evaluated \name with three additional models of varying size, cost, and capability: GPT-OSS-120B (Table~\ref{tab:appworld-results-gpt-oss-120b} and \ref{tab:ds-results-gpt-oss-120b}), GPT-5.1 (Table~\ref{tab:appworld-results-gpt51} and \ref{tab:ds-results-gpt51}), and Llama-3.3-70B-Instruct (Table~\ref{tab:ds-results-llama70b}). 
+In each case, the Generator, Reflector, and Curator were all switched to the new model without changes to the algorithm.
+
+\paragraph{Analysis} Across all four LLM families we tested (DeepSeek-V3.1, GPT-OSS-120B, GPT-5.1, and Llama-3.3-70B-Instruct), \name consistently improves performance over both the base LLM/agent, GEPA, and other baselines, often by 5 to 12 points depending on the task and supervision setting. The relative gains of \name remain stable even when switching to models that differ significantly in size, cost, and training recipe, and \name delivers benefits with or without ground-truth labels, validating the robustness of its context adaptation mechanism. The online variant reliably achieves the strongest performance across all models. 
+
+We note that the magnitude of improvement can vary across model families: for example, Llama-3.3-70B-Instruct shows smaller gains compared to GPT-5.1 or GPT-OSS-120B. This is expected since \name relies on the quality of intermediate reflections and calibrations, and smaller or weaker models naturally generate noisier feedback. Even in these cases, however, \name remains beneficial, demonstrating that the framework is broadly applicable while still reflecting the inherent capability limits of the underlying LLM, as we discussed in the “Limitations and Challenges” paragraph in \S\ref{sec:discussion}.
+
+\begin{table*}[!tbhp]
+  \centering
+  \resizebox{\textwidth}{!}{ 
+  \begin{tabular}{lc|cc|cc|c}
+    \toprule[1.25pt]
+    \multirow{2}{*}{\textbf{Method}} 
+      & \multirow{2}{*}{\textbf{GT Labels}}
+      & \multicolumn{2}{c|}{\textbf{Test-Normal}} 
+      & \multicolumn{2}{c|}{\textbf{Test-Challenge}} 
+      & \multirow{2}{*}{\textbf{Average}}\\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}
+      & & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{GPT-OSS-120B as Base LLM}} \\
+    \textcolor{gray}{\texttt{ReAct}} & & \textcolor{gray}{54.8} & \textcolor{gray}{33.9} & \textcolor{gray}{34.5} & \textcolor{gray}{15.1} & \textcolor{gray}{34.6} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{Offline Adaptation}} \\
+    \texttt{ReAct} + GEPA & \checkmark & $56.0_{\textcolor{scoregreen}{+1.2}}$ & $33.9_{\textcolor{gray}{+0.0}}$ & $40.1_{\textcolor{scoregreen}{+5.6}}$ & $20.9_{\textcolor{scoregreen}{+5.8}}$ & $37.7_{\textcolor{scoregreen}{+3.1}}$\\
+    \texttt{ReAct} + \name & \checkmark 
+      & $\textcolor{black}{\mathbf{61.3}}_{\textcolor{scoregreen}{\mathbf{+6.5}}}$ 
+      & $\textcolor{black}{39.3}_{\textcolor{scoregreen}{\mathbf{+5.4}}}$ 
+      & $\textcolor{black}{\mathbf{40.3}}_{\textcolor{scoregreen}{\mathbf{+5.8}}}$ 
+      & $\textcolor{black}{\mathbf{20.9}}_{\textcolor{scoregreen}{\mathbf{+5.8}}}$ 
+      & $\textcolor{black}{\mathbf{40.5}}_{\textcolor{scoregreen}{\mathbf{+5.9}}}$\\
+    \texttt{ReAct} + \name & \xmark 
+      & $58.3_{\textcolor{scoregreen}{+3.5}}$ 
+      & $\textcolor{black}{\mathbf{41.1}}_{\textcolor{scoregreen}{\mathbf{+7.2}}}$ 
+      & $39.6_{\textcolor{scoregreen}{+5.1}}$ 
+      & $18.7_{\textcolor{scoregreen}{+3.6}}$ 
+      & $39.4_{\textcolor{scoregreen}{+4.8}}$\\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{Online Adaptation}} \\
+    \texttt{ReAct} + DC (CU) & \xmark 
+      & $49.4_{\textcolor{red}{-5.4}}$ 
+      & $33.9_{\textcolor{gray}{+0.0}}$ 
+      & $30.8_{\textcolor{red}{-3.7}}$ 
+      & $18.2_{\textcolor{scoregreen}{+3.1}}$ 
+      & $33.1_{\textcolor{red}{-1.5}}$\\
+    \texttt{ReAct} + \name & \xmark 
+      & $\textcolor{black}{\mathbf{60.7}}_{\textcolor{scoregreen}{\mathbf{+5.9}}}$ 
+      & $44.6_{\textcolor{scoregreen}{+10.7}}$ 
+      & $\textcolor{black}{\mathbf{43.2}}_{\textcolor{scoregreen}{\mathbf{+8.7}}}$ 
+      & $\textcolor{black}{\mathbf{20.1}}_{\textcolor{scoregreen}{\mathbf{+5.0}}}$ 
+      & $\textcolor{black}{\mathbf{42.2}}_{\textcolor{scoregreen}{\mathbf{+7.6}}}$\\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on the AppWorld Agent Benchmark (GPT-OSS-120B as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation. We evaluate the \name framework against multiple baselines on top of the official \texttt{ReAct} implementation, both for offline and online context adaptation.}
+  \label{tab:appworld-results-gpt-oss-120b}
+\end{table*}
+
+\begin{table}[t!]
+  \centering
+  \resizebox{0.75\linewidth}{!}{ 
+  \begin{tabular}{lc|cc|c}
+    \toprule[1.25pt]
+    \multirow{2}{*}{\textbf{Method}} 
+      & \multirow{2}{*}{\textbf{GT Labels}}
+      & \multicolumn{2}{c|}{\textbf{Test-Normal}} 
+      & \multirow{2}{*}{\textbf{Average}}\\
+    \cmidrule(lr){3-4}
+      & & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{GPT-5.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{ReAct}} & & \textcolor{gray}{61.9} & \textcolor{gray}{46.4} & \textcolor{gray}{54.2} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Offline Adaptation}} \\
+    \texttt{ReAct} + GEPA & \checkmark 
+      & $64.3_{\textcolor{scoregreen}{+2.4}}$ 
+      & $48.2_{\textcolor{scoregreen}{+1.8}}$ 
+      & $56.2_{\textcolor{scoregreen}{+2.0}}$ \\
+    \texttt{ReAct} + \name & \checkmark 
+      & $66.7_{\textcolor{scoregreen}{+4.8}}$ 
+      & $53.6_{\textcolor{scoregreen}{+7.2}}$ 
+      & $60.2_{\textcolor{scoregreen}{+6.0}}$ \\
+    \texttt{ReAct} + \name & \xmark 
+      & $\textcolor{black}{\mathbf{67.3}}_{\textcolor{scoregreen}{\mathbf{+5.4}}}$ 
+      & $\textcolor{black}{\mathbf{55.4}}_{\textcolor{scoregreen}{\mathbf{+9.0}}}$ 
+      & $\textcolor{black}{\mathbf{61.3}}_{\textcolor{scoregreen}{\mathbf{+7.1}}}$ \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Online Adaptation}} \\
+    \texttt{ReAct} + DC (CU) & \xmark 
+      & $62.5_{\textcolor{scoregreen}{+0.6}}$ 
+      & $55.4_{\textcolor{scoregreen}{+9.0}}$ 
+      & $58.9_{\textcolor{scoregreen}{+4.7}}$ \\
+    \texttt{ReAct} + \name & \xmark 
+      & $\textcolor{black}{\mathbf{72.6}}_{\textcolor{scoregreen}{\mathbf{+10.7}}}$ 
+      & $\textcolor{black}{\mathbf{58.9}}_{\textcolor{scoregreen}{\mathbf{+12.5}}}$ 
+      & $\textcolor{black}{\mathbf{65.8}}_{\textcolor{scoregreen}{\mathbf{+11.6}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on the AppWorld Agent Benchmark (GPT-5.1 as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation. We evaluate the \name framework against multiple baselines on top of the official \texttt{ReAct} implementation, both for offline and online context adaptation.}
+  \label{tab:appworld-results-gpt51}
+\end{table}
+
+\begin{table*}[t!]
+  \centering
+  \resizebox{0.8\textwidth}{!}{ 
+  \begin{tabular}{lc|c|c|c}
+    \toprule[1.25pt]
+    \textbf{Method}
+      & \textbf{GT Labels}
+      & \textbf{FiNER (Acc$\uparrow$)} 
+      & \textbf{Formula (Acc$\uparrow$)}
+      & \textbf{Average}\\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{GPT-OSS-120B as Base LLM}} \\
+    \textcolor{gray}{\texttt{Base LLM}} & & \textcolor{gray}{66.6} & \textcolor{gray}{71.5} & \textcolor{gray}{69.1}\\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Offline Adaptation}} \\
+    GEPA & \checkmark & $67.9_{\textcolor{scoregreen}{+1.3}}$ & $71.5_{\textcolor{scoregreen}{+0.0}}$ & $69.7_{\textcolor{scoregreen}{+0.6}}$ \\
+    \name & \checkmark & $\textcolor{black}{\mathbf{73.8}}_{\textcolor{scoregreen}{\mathbf{+7.2}}}$ & $\textcolor{black}{\mathbf{88.5}}_{\textcolor{scoregreen}{\mathbf{+17.0}}}$ & $\textcolor{black}{\mathbf{81.2}}_{\textcolor{scoregreen}{\mathbf{+12.1}}}$ \\
+    \name & \xmark & $69.7_{\textcolor{scoregreen}{+3.1}}$ & $84.0_{\textcolor{scoregreen}{+12.5}}$ & $76.9_{\textcolor{scoregreen}{+7.8}}$ \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Online Adaptation}} \\
+    DC & \xmark & $55.8_{\textcolor{red}{-10.8}}$ & $66.0_{\textcolor{red}{-5.5}}$ & $60.9_{\textcolor{red}{-8.2}}$ \\
+    \name & \xmark & $\mathbf{70.5}_{\textcolor{scoregreen}{\mathbf{+3.9}}}$ & $\mathbf{85.0}_{\textcolor{scoregreen}{\mathbf{+13.5}}}$ & $\mathbf{77.8}_{\textcolor{scoregreen}{\mathbf{+8.7}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on Financial Analysis Benchmark (GPT-OSS-120B as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation.}
+  \label{tab:ds-results-gpt-oss-120b}
+\end{table*}
+
+\begin{table*}[t!]
+  \centering
+  \resizebox{0.8\textwidth}{!}{ 
+  \begin{tabular}{lc|c|c|c}
+    \toprule[1.25pt]
+    \textbf{Method}
+      & \textbf{GT Labels}
+      & \textbf{FiNER (Acc$\uparrow$)} 
+      & \textbf{Formula (Acc$\uparrow$)}
+      & \textbf{Average}\\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{GPT-5.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{Base LLM}} & & \textcolor{gray}{73.5} & \textcolor{gray}{73.0} & \textcolor{gray}{73.3}\\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Offline Adaptation}} \\
+    GEPA & \checkmark & $74.5_{\textcolor{scoregreen}{+1.0}}$ & $73.0_{\textcolor{scoregreen}{+0.0}}$ & $73.8_{\textcolor{scoregreen}{+0.5}}$ \\
+    \name & \checkmark & $\textcolor{black}{\mathbf{81.0}}_{\textcolor{scoregreen}{\mathbf{+7.5}}}$ & $\textcolor{black}{\mathbf{84.5}}_{\textcolor{scoregreen}{\mathbf{+11.5}}}$ & $\textcolor{black}{\mathbf{82.8}}_{\textcolor{scoregreen}{\mathbf{+9.5}}}$ \\
+    \name & \xmark & $78.2_{\textcolor{scoregreen}{+4.7}}$ & $76.5_{\textcolor{scoregreen}{+3.5}}$ & $77.4_{\textcolor{scoregreen}{+4.1}}$ \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Online Adaptation}} \\
+    DC & \xmark & $70.0_{\textcolor{red}{-3.5}}$ & $69.0_{\textcolor{red}{-4.0}}$ & $69.5_{\textcolor{red}{-3.8}}$ \\
+    \name & \xmark & $\mathbf{75.2}_{\textcolor{scoregreen}{\mathbf{+1.7}}}$ & $\mathbf{79.0}_{\textcolor{scoregreen}{\mathbf{+6.0}}}$ & $\mathbf{77.1}_{\textcolor{scoregreen}{\mathbf{+3.8}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on Financial Analysis Benchmark (GPT-5.1 as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation.}
+  \label{tab:ds-results-gpt51}
+\end{table*}
+
+\begin{table}[t!]
+  \centering
+  \resizebox{0.55\textwidth}{!}{ 
+  \begin{tabular}{lc|c}
+    \toprule[1.25pt]
+    \textbf{Method}
+      & \textbf{GT Labels}
+      & \textbf{FiNER (Acc$\uparrow$)} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{3}{c}{\texttt{Llama-3.3-70B-Instruct as Base LLM}} \\
+    \textcolor{gray}{\texttt{Base LLM}} & & \textcolor{gray}{62.5} \\
+    \midrule
+
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{3}{c}{\texttt{Offline Adaptation}} \\
+    GEPA & \checkmark & $59.41_{\textcolor{red}{-3.09}}$ \\
+    \name & \checkmark & $\textcolor{black}{\mathbf{64.9}}_{\textcolor{scoregreen}{\mathbf{+2.4}}}$ \\
+    \name & \xmark & $64.2_{\textcolor{scoregreen}{+1.7}}$ \\
+    \midrule
+
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{3}{c}{\texttt{Online Adaptation}} \\
+    DC & \xmark & $59.0_{\textcolor{red}{-3.5}}$ \\
+    \name & \xmark & $\mathbf{63.6}_{\textcolor{scoregreen}{\mathbf{+1.1}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on Financial Analysis Benchmark (Llama-3.3-70B-Instruct as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation.}
+  \label{tab:ds-results-llama70b}
+\end{table}
+
+\subsection{Beyond Finance: Additional Domain Tasks}
+\label{subsec:streambench-results}
+
+We evaluate \name on two additional domain tasks from StreamBench~\citep{wu2024streambench} under the non-streaming setting (\ie offline adaptation): DDXPlus~\citep{fansi2022ddxplus} for medical reasoning (Table~\ref{tab:ddxplus-streambench}) and BIRD-SQL~\citep{li2023can} for Text-to-SQL generation (Table~\ref{tab:birdsql-streambench}).
+For \name, we perform offline adaptation using 1000 randomly sampled training examples.
+For GEPA, we use the same 1000 examples for training, and reserve a separate validation set of 500 examples for BIRD-SQL or 372 examples for DDXPlus (StreamBench provides 1372 train/val examples for DDXPlus in total).
+All other settings follow the main-text configuration unless stated otherwise.
+
+\paragraph{Analysis} On DDXPlus, \name substantially improves over the base LLM, rising from 75.2 to 90.2 accuracy (\textbf{+15.0}). 
+In contrast, GEPA yields a much smaller gain (76.4, \textbf{+1.2}). 
+This suggests that \name's test-time evolving context transfers well to multi-step, domain-heavy diagnostic reasoning.
+On BIRD-SQL, \name also improves consistently over the base model on all splits, achieving better overall average (52.9, \textbf{+5.1}). 
+The gains are driven mainly by the Simple subset (53.5, \textbf{+7.1}).
+While GEPA yields larger gains on Moderate and Challenging, \name still improves over the base model on both splits. 
+Overall, these results indicate that \name generalizes beyond finance to both knowledge-intensive reasoning and structured code generation tasks.
+
+% -------------------- DDXPlus (StreamBench) --------------------
+\begin{table}[t!]
+  \centering
+  \resizebox{0.42\textwidth}{!}{
+  \begin{tabular}{l|c}
+    \toprule[1.25pt]
+    \textbf{Method} & \textbf{Accuracy ($\uparrow$)} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{2}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{Base LLM}} & \textcolor{gray}{75.2} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{2}{c}{\texttt{Offline Adaptation}} \\
+    GEPA & $76.4_{\textcolor{scoregreen}{+1.2}}$ \\
+    \name  & $\textcolor{black}{\mathbf{90.2}}_{\textcolor{scoregreen}{\mathbf{+15.0}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on Medical Reasoning Benchmark (DeepSeek-V3.1-671B as the Base LLM).} We use DDXPlus from StreamBench.}
+  \label{tab:ddxplus-streambench}
+\end{table}
+
+
+% -------------------- BIRD-SQL (StreamBench) --------------------
+\begin{table}[t!]
+  \centering
+  \resizebox{0.75\textwidth}{!}{
+  \begin{tabular}{l|c c c|c}
+    \toprule[1.25pt]
+    \textbf{Method} & \textbf{Simple ($\uparrow$)} & \textbf{Moderate ($\uparrow$)} & \textbf{Challenging ($\uparrow$)} & \textbf{Average} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{Base LLM}} & \textcolor{gray}{46.4} & \textcolor{gray}{48.2} & \textcolor{gray}{55.1} & \textcolor{gray}{47.8} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Offline Adaptation}} \\
+    GEPA & $51.6_{\textcolor{scoregreen}{+5.2}}$ & $\mathbf{51.9}_{\textcolor{scoregreen}{\mathbf{+3.7}}}$ & $\mathbf{57.2}_{\textcolor{scoregreen}{\mathbf{+2.1}}}$ & $52.2_{\textcolor{scoregreen}{+4.4}}$ \\
+    \name  & $\mathbf{53.5}_{\textcolor{scoregreen}{\mathbf{+7.1}}}$ & $50.7_{\textcolor{scoregreen}{+2.5}}$ & $56.6_{\textcolor{scoregreen}{+1.5}}$ & $\mathbf{52.9}_{\textcolor{scoregreen}{\mathbf{+5.1}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on Text-to-SQL Benchmark (DeepSeek-V3.1-671B as the Base LLM).} We use BIRD-SQL from StreamBench.}
+  \label{tab:birdsql-streambench}
+\end{table}
+
+\subsection{Fine-Grained Cost Analysis}
+\label{subsec:fine-grained-cost-breakdown}
+
+We perform a fine-grained cost analysis of \name and GEPA for both the \emph{adaptation} and \emph{evaluation} stages (offline adaptation setting), using AppWorld as a representative application.
+For \name, we run offline adaptation with 1 epoch and 1 reflector refinement round.
+While increasing the number of epochs or refinement rounds will increase cost, the qualitative trends below should remain: \name avoids expensive validation-time re-evaluation and performs localized updates rather than repeated full rewrites.
+For GEPA, we use the official DSPy implementation~\citep{DSPyMIPROv2} with \verb|auto="heavy"| to maximize optimization strength.
+
+\paragraph{Adaptation Stage}
+Across adaptation (Table~\ref{tab:cost-adapt-aggregate} and Table~\ref{tab:cost-adapt-average}), \name reduces input-token usage by 80.8\% relative to GEPA (204.1M $\rightarrow$ 39.3M) and output-token usage by 83.6\% (1.87M $\rightarrow$ 0.31M).
+This gap is primarily driven by (1) GEPA's prompt-validation loop, which repeatedly evaluates candidate prompts on a held-out validation set (57 queries), incurring substantial additional LLM calls and validation tokens, and (2) \name's incremental context updates, which replace full prompt rewrites with localized Generator-Reflector-Curator updates.
+
+\paragraph{Evaluation Stage}
+At evaluation time (Table~\ref{tab:cost-eval-aggregate} and Table~\ref{tab:cost-eval-average}), \name uses more \emph{raw} input tokens per query than GEPA due to its richer, more actionable playbook.
+However, output-token usage is similar (115.0 vs.~101.8), and the number of rollouts is comparable across methods.
+Moreover, under modern prompt/KV-caching infrastructures, the additional input tokens can be largely amortized: using OpenAI's default prompt caching, 91.8\% of \name's input tokens are served from cache, resulting in an 82.6\% reduction in billed input-token cost (see \S\ref{subsec:results-cost-speed}).
+
+% Adaptation stage: Aggregate statistics
+\begin{table}[!tbhp]
+  \centering
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lrrrr}
+    \toprule[1.25pt]
+    \textbf{Method} & \textbf{Total \# input tokens} & \textbf{Total \# output tokens} & \textbf{Total \# rollouts} & \textbf{Total \# queries} \\
+    \midrule
+    GEPA (prompt generation)  & 65,005,192  & 1,266,090 & 429   & 90 \\
+    GEPA (prompt validation)  & 139,070,904 &   604,098 & 1,026 & 57 \\
+    GEPA (total)              & 204,076,096 & 1,870,188 & 1,455 & 147 \\
+    \midrule
+    \name (Generator)           & 31,012,122  & 198,847   & 1,790 & 90 \\
+    \name (Reflector)           & 4,685,840   & 70,487    & 161   & 90 \\
+    \name (Curator)             & 3,552,963   & 37,794    & 124   & 90 \\
+    \name (total)               &
+      39,250,925~{\textcolor{red}{(-80.8\%)}} &
+      307,128~{\textcolor{red}{(-83.6\%)}} &
+      2,075~{\textcolor{scoregreen}{(+42.6\%)}} &
+      90~{\textcolor{red}{(-38.8\%)}} \\
+    \bottomrule[1.25pt]
+  \end{tabular}%
+  }
+  \caption{\textbf{Adaptation-Stage Aggregate Cost Statistics on AppWorld.} The percentages compare \name (total) against GEPA (total).}
+  \label{tab:cost-adapt-aggregate}
+\end{table}
+
+% Adaptation stage: Average statistics
+\begin{table}[!tbhp]
+  \centering
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lrrrrrr}
+    \toprule[1.25pt]
+    \textbf{Method}
+      & \textbf{Avg \# input / rollout}
+      & \textbf{Avg \# output / rollout}
+      & \textbf{Avg \# input / query}
+      & \textbf{Avg \# output / query}
+      & \textbf{Total \# rollouts}
+      & \textbf{Total \# queries} \\
+    \midrule
+    GEPA (prompt generation) & 151,600.4 & 2,951.4 &   722,279.9 & 14,067.7 &   429 &  90 \\
+    GEPA (prompt validation) & 135,550.8 &   589.2 & 2,439,840.4 & 10,600.0 & 1,026 &  57 \\
+    GEPA (total)             & 140,291.8 & 1,285.4 & 1,387,538.4 & 12,721.7 & 1,455 & 147 \\
+    \midrule
+    \name (Generator)          &  17,326.6 &   111.1 &   344,579.1 &  2,209.4 & 1,790 &  90 \\
+    \name (Reflector)          &  29,112.4 &   437.3 &    52,064.9 &    783.2 &   161 &  90 \\
+    \name (Curator)            &  28,667.4 &   304.8 &    39,477.4 &    420.0 &   124 &  90 \\
+    \name (total)              &
+      18,914.9~{\textcolor{red}{(-86.5\%)}} &
+      148.0~{\textcolor{red}{(-88.5\%)}} &
+      436,121.4~{\textcolor{red}{(-68.6\%)}} &
+      3,412.5~{\textcolor{red}{(-73.2\%)}} &
+      2,075~{\textcolor{scoregreen}{(+42.6\%)}} &
+      90~{\textcolor{red}{(-38.8\%)}} \\
+    \bottomrule[1.25pt]
+  \end{tabular}%
+  }
+  \caption{\textbf{Adaptation-Stage Average Cost Statistics on AppWorld.} The percentages compare \name (total) against GEPA (total).}
+  \label{tab:cost-adapt-average}
+\end{table}
+
+% Evaluation stage: Aggregate statistics
+\begin{table}[!tbhp]
+  \centering
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lrrrr}
+    \toprule[1.25pt]
+    \textbf{Method} & \textbf{Total \# input tokens} & \textbf{Total \# output tokens} & \textbf{Total \# rollouts} & \textbf{Total \# eval queries} \\
+    \midrule
+    Base ReAct & 27,460,411 & 289,802 & 2,430 & 160 \\
+    GEPA       & 26,960,675 & 251,442 & 2,470 & 160 \\
+    \name        &
+      58,623,267~{\textcolor{scoregreen}{(+117.4\%)}} &
+      270,652~{\textcolor{scoregreen}{(+7.6\%)}} &
+      2,354~{\textcolor{red}{(-4.7\%)}} &
+      160~{\textcolor{gray}{(+0.0\%)}} \\
+    \bottomrule[1.25pt]
+  \end{tabular}%
+  }
+  \caption{\textbf{Evaluation-Stage Aggregate Cost Statistics on AppWorld.} The percentages compare \name against GEPA.}
+  \label{tab:cost-eval-aggregate}
+\end{table}
+
+% Evaluation stage: Average statistics
+\begin{table}[!tbhp]
+  \centering
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lrrrrrr}
+    \toprule[1.25pt]
+    \textbf{Method}
+      & \textbf{Avg \# input / rollout}
+      & \textbf{Avg \# output / rollout}
+      & \textbf{Avg \# input / query}
+      & \textbf{Avg \# output / query}
+      & \textbf{Total \# rollouts}
+      & \textbf{Total \# eval queries} \\
+    \midrule
+    Base ReAct & 11,298.5 & 119.3 & 171,627.6 & 1,811.3 & 2,430 & 160 \\
+    GEPA       & 10,918.5 & 101.8 & 168,504.2 & 1,571.5 & 2,470 & 160 \\
+    \name        &
+      24,912.4~{\textcolor{scoregreen}{(+128.2\%)}} &
+      115.0~{\textcolor{scoregreen}{(+13.0\%)}} &
+      366,395.4~{\textcolor{scoregreen}{(+117.4\%)}} &
+      1,691.6~{\textcolor{scoregreen}{(+7.6\%)}} &
+      2,354~{\textcolor{red}{(-4.7\%)}} &
+      160~{\textcolor{gray}{(+0.0\%)}} \\
+    \bottomrule[1.25pt]
+  \end{tabular}%
+  }
+  \caption{\textbf{Evaluation-Stage Average Cost Statistics on AppWorld.} The percentages compare \name against GEPA.}
+  \label{tab:cost-eval-average}
+\end{table}
+
+
+\subsection{Robustness to Reflection Quality}
+\label{subsec:robust-reflection}
+
+We conduct two analyses to evaluate \name's sensitivity to reflection quality. Unless otherwise noted, experiments are run on FiNER with \name offline adaptation.
+
+\paragraph{Using Weaker Reflector Models} 
+To test whether \name requires a strong reflector, we vary the Reflector across three models with substantially different capability: GPT-OSS-120B, DeepSeek-V3.1-671B, and GPT-5.1 (Table~\ref{tab:weaker-reflector}). 
+Across all choices, \name consistently improves over the base LLM, including when the Reflector is much weaker. 
+While stronger reflectors yield larger gains, the method remains effective across a wide range of reflector strengths.
+
+\paragraph{Robustness to Noisy or Harmful Reflector Feedback}
+We further stress-test \name with actively harmful reflector outputs by injecting adversarial or conflicting bullets: we invoke a ``harmful'' reflector that is explicitly instructed to inject harmful reflection once every $X$ adaptation steps, where larger $X$ means less frequent corruption (Table~\ref{tab:harmful-reflector-frequency}). 
+\name is robust to moderate noise levels: performance degrades gradually as corruption becomes more frequent and stays above the base LLM except in the extreme case of injecting harmful updates every iteration. 
+This suggests that \name's update mechanism tolerates substantial noise in the reflection stream, with failures emerging only under intentionally adversarial conditions.
+
+\paragraph{Takeaway and Mitigation}
+\name is not highly sensitive to reflector quality: (1) weaker reflectors still provide substantial gains, (2) moderate noise or conflicting updates are largely tolerated, and (3) performance drops below the base model only under sustained adversarial corruption.
+In practice, \name's bullet-point analyzer (``grow-and-refine''; \S\ref{subsec:grow-and-refine}), which merges and deduplicates semantically similar bullets and can filter entries flagged as potentially harmful via metadata, serves as a first line of defense against context noise.
+Additional safeguards (\eg contradiction detection, prompting the Curator to prioritize high-confidence updates, or periodic pruning of outdated entries) are compatible extensions that could further improve playbook compactness and consistency~\citep{zhou2024defending}.
+
+% (1) Using Weaker Reflector Models
+\begin{table}
+  \centering
+  \small
+  \resizebox{0.8\linewidth}{!}{%
+  \begin{tabular}{lccc c}
+    \toprule[1.25pt]
+    \textbf{Method} & \textbf{Generator LLM} & \textbf{Reflector LLM} & \textbf{Curator LLM} & \textbf{Accuracy ($\uparrow$)} \\
+    \midrule
+    Base LLM & DeepSeek-V3.1 & - & - & 70.7 \\
+    \name & DeepSeek-V3.1 & GPT-OSS-120B & DeepSeek-V3.1 & 76.6~(\textcolor{scoregreen}{+5.9}) \\
+    \name & DeepSeek-V3.1 & DeepSeek-V3.1 & DeepSeek-V3.1 & 78.3~(\textcolor{scoregreen}{+7.6}) \\
+    \name & DeepSeek-V3.1 & GPT-5.1 & DeepSeek-V3.1 & 78.5~(\textcolor{scoregreen}{+7.8}) \\
+    \bottomrule[1.25pt]
+  \end{tabular}%
+  }
+  \caption{\textbf{Weaker Reflector Models on FiNER.} We vary the Reflector while keeping the Generator/Curator fixed. Parentheses report deltas vs.\ the base LLM.}
+  \label{tab:weaker-reflector}
+\end{table}
+
+% (2) Robustness to Noisy or Harmful Reflector Feedback
+\begin{table}
+  \centering
+  \small
+  \resizebox{0.7\linewidth}{!}{%
+  \begin{tabular}{lc}
+    \toprule[1.25pt]
+    \textbf{Harmful Reflector Frequency (every $X$ iters)} & \textbf{Accuracy ($\uparrow$)} \\
+    \midrule
+    base LLM & 70.7 \\
+    \midrule
+    1   & 66.7~(\textcolor{red}{-4.0}) \\
+    5   & 76.1~(\textcolor{scoregreen}{+5.4}) \\
+    10  & 77.0~(\textcolor{scoregreen}{+6.3}) \\
+    25  & 77.8~(\textcolor{scoregreen}{+7.1}) \\
+    50  & 78.2~(\textcolor{scoregreen}{+7.5}) \\
+    100 & 78.2~(\textcolor{scoregreen}{+7.5}) \\
+    \midrule
+    No harmful reflector & 78.3~(\textcolor{scoregreen}{+7.6}) \\
+    \bottomrule[1.25pt]
+  \end{tabular}%
+  }
+  \caption{\textbf{Robustness to Noisy or Harmful Reflector Feedback on FiNER.} We invoke a harmful reflector once every $X$ adaptation steps. Parentheses report deltas vs.\ the base LLM.}
+  \label{tab:harmful-reflector-frequency}
+\end{table}
+
+\subsection{Ablation on Incremental Context Update}
+\label{subsec:incremental-update-ablation}
+
+In this ablation, we run offline context adaptation on AppWorld using \name with and without incremental context updates, and evaluate on the test-normal split with DeepSeek-V3.1.
+We find that incremental updates are critical: by preserving useful information that would otherwise be lost to context collapse, they account for a large share of \name’s gains.
+
+\begin{table}[!tbhp]
+  \centering
+  \resizebox{0.95\linewidth}{!}{
+  \begin{tabular}{l|cc|c}
+    \toprule[1.25pt]
+    \textbf{Method} & \textbf{Test-Normal TGC ($\uparrow$)} & \textbf{Test-Normal SGC ($\uparrow$)} & \textbf{Average} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{4}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{ReAct}} 
+      & \textcolor{gray}{63.7} 
+      & \textcolor{gray}{42.9} 
+      & \textcolor{gray}{53.3} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{4}{c}{\texttt{Offline Adaptation}} \\
+    \texttt{ReAct} + \name (no incremental update)
+      & $67.3_{\textcolor{scoregreen}{+3.6}}$ 
+      & $46.4_{\textcolor{scoregreen}{+3.5}}$ 
+      & $56.9_{\textcolor{scoregreen}{+3.6}}$ \\
+    \texttt{ReAct} + \name (with incremental update)
+      & $\textcolor{black}{\mathbf{76.2}}_{\textcolor{scoregreen}{\mathbf{+12.5}}}$ 
+      & $\textcolor{black}{\mathbf{64.3}}_{\textcolor{scoregreen}{\mathbf{+21.4}}}$ 
+      & $\textcolor{black}{\mathbf{70.3}}_{\textcolor{scoregreen}{\mathbf{+17.0}}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Ablation on Incremental Context Updates (AppWorld, DeepSeek-V3.1).} We run offline context adaptation with \name with/without incremental updates and evaluate on test-normal. Improvements are relative to \texttt{ReAct}.}
+  \label{tab:appworld-ablation-incremental-update}
+\end{table}
+
+
+\subsection{Sensitivity Analysis on Hyperparameter Choice}
+\label{subsec:hyperparam-sensitivity}
+
+\paragraph{Reflection Iterations}
+This parameter trades off (1) extracting enough high-quality insights from the inference traces and (2) avoiding ``overthinking" that introduces noisy or unnecessary updates. Empirically, 5 rounds offers a good balance. On AppWorld, 1 round under-extracts useful strategy fragments and leaves clear headroom, while too many rounds (\eg 10) can degrade performance.
+
+% Table 1: # Reflection iterations (with deltas vs. N/A baseline)
+\begin{table}[!tbhp]
+  \centering
+  \resizebox{0.85\linewidth}{!}{
+  \begin{tabular}{c|cc|c}
+    \toprule[1.25pt]
+    \textbf{\# Reflection Iterations} & \textbf{Test-Normal TGC ($\uparrow$)} & \textbf{Test-Normal SGC ($\uparrow$)} & \textbf{Average} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{4}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{N/A (without \texttt{\name})}  & \textcolor{gray}{63.7} & \textcolor{gray}{42.9} & \textcolor{gray}{53.3} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{4}{c}{\texttt{Offline Adaptation}} \\
+    1  & $69.0_{\textcolor{scoregreen}{+5.3}}$  & $53.6_{\textcolor{scoregreen}{+10.7}}$ & $61.3_{\textcolor{scoregreen}{+8.0}}$ \\
+    3  & $74.4_{\textcolor{scoregreen}{+10.7}}$ & $57.1_{\textcolor{scoregreen}{+14.2}}$ & $65.8_{\textcolor{scoregreen}{+12.5}}$ \\
+    5  & $72.6_{\textcolor{scoregreen}{+8.9}}$  & $62.5_{\textcolor{scoregreen}{+19.6}}$ & $67.6_{\textcolor{scoregreen}{+14.3}}$ \\
+    10 & $71.4_{\textcolor{scoregreen}{+7.7}}$  & $58.9_{\textcolor{scoregreen}{+16.0}}$ & $65.2_{\textcolor{scoregreen}{+11.9}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Effect of Reflection Iterations (AppWorld, DeepSeek-V3.1).} We report test-normal results under offline context adaptation. Improvements are relative to running \texttt{ReAct} without \texttt{\name}.}
+  \label{tab:ablation-reflection-iters}
+\end{table}
+
+\paragraph{Deduplication Threshold}
+This controls how aggressively newly extracted insights are merged with existing entries. On FiNER, performance changes only mildly across the tested range, suggesting \name is robust to moderate variation in dedup aggressiveness.
+
+% Table 2: Deduplication threshold (with deltas vs. N/A baseline)
+\begin{table}[!tbhp]
+  \centering
+  \resizebox{0.45\linewidth}{!}{
+  \begin{tabular}{c|c}
+    \toprule[1.25pt]
+    \textbf{Deduplication Threshold} & \textbf{FiNER (Acc $\uparrow$)} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{2}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{N/A (without \texttt{\name})}  & \textcolor{gray}{70.7} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{2}{c}{\texttt{Offline Adaptation}} \\
+    50\% & $77.0_{\textcolor{scoregreen}{+6.3}}$ \\
+    70\% & $73.9_{\textcolor{scoregreen}{+3.2}}$ \\
+    90\% & $78.6_{\textcolor{scoregreen}{+7.9}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Effect of Deduplication Threshold (FiNER, DeepSeek-V3.1).}}
+  \label{tab:ablation-dedup-threshold}
+\end{table}
+
+\paragraph{Pruning Trigger (Maximum Context Length)}
+This threshold determines when \name merges and prunes older or low-utility entries to prevent unbounded growth. It balances (1) retaining enough accumulated context to improve learning from experience and (2) keeping the context compact to reduce cost and limit noise. On FiNER, performance is stable from 10K to 100K tokens, indicating \name does not require finely tuned length thresholds; pruning mainly removes stale or harmful fragments while preserving core reusable strategies.
+
+% Table 3: Maximum context length for pruning
+\begin{table}[!tbhp]
+  \centering
+  \resizebox{0.45\linewidth}{!}{
+  \begin{tabular}{c|c}
+    \toprule[1.25pt]
+    \textbf{Max Context Length} & \textbf{FiNER (Acc $\uparrow$)} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{2}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{N/A (without \texttt{\name})}  & \textcolor{gray}{70.7} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{2}{c}{\texttt{Offline Adaptation}} \\
+    10K  & $78.6_{\textcolor{scoregreen}{+7.9}}$ \\
+    50K  & $78.4_{\textcolor{scoregreen}{+7.7}}$ \\
+    100K & $78.3_{\textcolor{scoregreen}{+7.6}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Effect of Pruning Trigger (FiNER, DeepSeek-V3.1).}}
+  \label{tab:ablation-max-context-length}
+\end{table}
+
+Overall, \name is not highly sensitive to these hyperparameters: reasonable choices (\eg 3-5 reflection rounds, 50-90\% dedup threshold, and 10K-100K pruning triggers) consistently yield strong performance.

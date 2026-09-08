@@ -1,0 +1,119 @@
+% --- enable advanced tcolorbox skins without touching main .tex
+% \tcbuselibrary{skins,breakable}
+
+\newcommand{\name}{\textsc{ACE}\xspace}
+
+\newcommand{\fillme}{{\bf XXX}\xspace}
+\newcommand{\eg}{{\it e.g.,}\xspace}
+\newcommand{\ie}{{\it i.e.,}\xspace}
+\newcommand{\etal}{{\it et.~al}\xspace}
+\newcommand{\bigO}{\mathrm{O}}
+
+\newcommand{\cmark}{\ding{51}}  % Checkmark
+\newcommand{\xmark}{\ding{55}}  % Cross
+
+\newcounter{packednmbr}
+\newenvironment{packedenumerate}{\begin{list}{\thepackednmbr.}{\usecounter{packednmbr}\setlength{\itemsep}{0.5pt}\addtolength{\labelwidth}{-4pt}\setlength{\leftmargin}{2ex}\setlength{\listparindent}{\parindent}\setlength{\parsep}{1pt}\setlength{\topsep}{2pt}}}{\end{list}}
+\newenvironment{packeditemize}{\begin{list}{$\bullet$}{\setlength{\itemsep}{0.5pt}\addtolength{\labelwidth}{-4pt}\setlength{\leftmargin}{2ex}\setlength{\listparindent}{\parindent}\setlength{\parsep}{1pt}\setlength{\topsep}{2pt}}}{\end{list}}
+\newenvironment{packedpackeditemize}{\begin{list}{$\bullet$}{\setlength{\itemsep}{0.5pt}\addtolength{\labelwidth}{-4pt}\setlength{\leftmargin}{\labelwidth}\setlength{\listparindent}{\parindent}\setlength{\parsep}{1pt}\setlength{\topsep}{0pt}}}{\end{list}}
+\newenvironment{packedtrivlist}{\begin{list}{\setlength{\itemsep}{0.2pt}\addtolength{\labelwidth}{-4pt}\setlength{\leftmargin}{\labelwidth}\setlength{\listparindent}{\parindent}\setlength{\parsep}{1pt}\setlength{\topsep}{0pt}}}{\end{list}}
+
+\definecolor{refinegreen}{RGB}{0, 128, 75}
+\definecolor{scoregreen}{RGB}{34, 139, 34}
+
+\definecolor{darkgray}{RGB}{70,70,70}
+\definecolor{lightgray}{RGB}{240,240,240}
+
+% Configure tcolorbox styles
+\tcbset{
+    boxstyle/.style={
+        enhanced,
+        sharp corners,
+        colback=gray!20,
+        colframe=gray!60,
+        boxrule=1pt,
+        left=10pt,
+        right=10pt,
+        top=5pt,
+        bottom=5pt
+    },
+    headerstyle/.style={
+        enhanced,
+        sharp corners,
+        colback=gray!60,
+        coltext=white,
+        boxrule=0pt,
+        left=10pt,
+        right=10pt,
+        top=5pt,
+        bottom=5pt,
+        fontupper=\bfseries
+    },
+    verbatimstyle/.style={
+        enhanced,
+        sharp corners,
+        colback=gray!10,
+        colframe=gray!40,
+        boxrule=1pt,
+        left=10pt,
+        right=10pt,
+        top=5pt,
+        bottom=5pt,
+        listing only,
+        fontupper=\ttfamily\small
+    }
+}
+
+% ===== Compatible & clean prompt visuals (no tcb skins needed) =====
+\definecolor{PromptBack}{gray}{0.97}
+\definecolor{PromptTitleBack}{gray}{0.90}
+\definecolor{PromptFrame}{gray}{0.60}
+
+\lstdefinelanguage{prompt}{
+  morekeywords={USER,SYSTEM,ASSISTANT,Task,Context,Cheatsheet,Reflection,Instructions,Answer},
+  sensitive=false
+}
+
+\newcommand{\lstb}[1]{\textbf{#1}}
+\newcommand{\lstem}[1]{\textit{#1}}
+
+\lstdefinestyle{promptstyle}{
+  language=prompt,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left, numberstyle=\tiny, numbersep=9pt, stepnumber=1,
+  columns=fullflexible, keepspaces=true, showstringspaces=false,
+  breaklines=true, breakatwhitespace=true,
+  frame=none,
+  escapeinside={(*@}{@*)},
+  literate=
+    {…}{{\ldots}}1
+    {–}{{--}}1
+    {—}{{---}}1
+    {“}{{``}}1
+    {”}{{''}}1
+    {’}{{'}}1
+    {•}{{\textbullet}}1
+}
+
+\newtcblisting{PromptCard}[2][]{%
+  listing engine=listings, listing only,
+  colback=PromptBack, colframe=PromptFrame, boxrule=0.5pt,
+  arc=1.2mm,
+  left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+  listing options={style=promptstyle, xleftmargin=1.8em}, 
+  title={#2}, fonttitle=\bfseries\sffamily\footnotesize,
+  colbacktitle=PromptTitleBack, coltitle=black,
+  #1
+}
+
+\newcommand{\PromptCardFromFile}[3][]{%
+  \begin{tcolorbox}[
+    colback=PromptBack, colframe=PromptFrame, boxrule=0.5pt,
+    arc=1.2mm, left=2mm,right=2mm,top=1.2mm,bottom=1.2mm,
+    title={#2}, fonttitle=\bfseries\sffamily\footnotesize,
+    colbacktitle=PromptTitleBack, coltitle=black,
+    #1
+  ]
+    \lstinputlisting[style=promptstyle, xleftmargin=1.8em]{#3}
+  \end{tcolorbox}
+}

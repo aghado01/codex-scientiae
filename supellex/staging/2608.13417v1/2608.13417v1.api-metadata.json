@@ -1,0 +1,119 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2608.13417v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2608.13417v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Beyond Final Scores: A Systematic Evaluation of Agents for Long-Horizon AI Research and Development",
+      "authors": [
+        "Yiwei Li",
+        "Wanli Yang",
+        "Hexiang Tan",
+        "Xiangzhou Huang",
+        "Zhengyu Chen",
+        "Ziran Li",
+        "Borun Chen",
+        "Shanglin Lei",
+        "Huaisheng Zhu",
+        "Hao Tian",
+        "Fei Sun",
+        "Xunliang Cai",
+        "Jingang Wang"
+      ],
+      "abstract": "Autonomous agents are increasingly capable of improving models, systems, and other technical artifacts through long-horizon experimentation. To understand the current state of this capability, however, evaluation must go beyond final scores, which neither reveal where progress is gained or lost nor indicate whether accumulated experience improves later decisions. We therefore present a systematic evaluation of seven frontier models on 36 long-horizon tasks based on a new framework that uses rule-based metrics to characterize within-run behavior through Solution Framing, Execution, and Feedback Control and controlled comparisons to assess experience reuse within and across tasks. The results show that current agents operate more like engineering optimizers than fully autonomous researchers: they can formulate and implement practical solutions, but their performance varies substantially across runs, their strongest solutions mainly adapt or combine established techniques, and genuine methodological novelty remains rare. Detailed analysis reveals that observed performance is shaped by multiple factors, including distinct process bottlenecks behind similar final outcomes, experience reuse that can help or mislead subsequent decisions, and harness designs that affect performance stability. These findings suggest concrete directions for improving model training, inference-time strategies, experience management, and harness design.",
+      "doi": null,
+      "arxiv_id": "2608.13417v1",
+      "published": "2026-08-13T16:11:22Z",
+      "updated": "2026-08-13T16:11:22Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2608.13417v1",
+      "pdf_url": "https://arxiv.org/pdf/2608.13417v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2608.13417v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2608.13417v1",
+          "url": "https://arxiv.org/abs/2608.13417v1",
+          "doi": null,
+          "arxiv_id": "2608.13417v1",
+          "published": "2026-08-13T16:11:22Z",
+          "updated": "2026-08-13T16:11:22Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2608.13417v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-08T01:25:10.972521Z",
+      "sha256": "3a07e3b8eb9ff8f8a2e81e2a528b13d95005284d2c0fc7733b7a64939f2a3c02",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvbThodktTUDU0eCtqUS9iNUoybTFRTHdkaUpvPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOC4xMzQxN3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA4VDAxOjI1OjEwWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA4LjEzNDE3djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xMzQxN3YxPC9pZD4KICAgIDx0aXRsZT5CZXlvbmQgRmluYWwgU2NvcmVzOiBBIFN5c3RlbWF0aWMgRXZhbHVhdGlvbiBvZiBBZ2VudHMgZm9yIExvbmctSG9yaXpvbiBBSSBSZXNlYXJjaCBhbmQgRGV2ZWxvcG1lbnQ8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wOC0xM1QxNjoxMToyMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjYwOC4xMzQxN3YxIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjYwOC4xMzQxN3YxIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+QXV0b25vbW91cyBhZ2VudHMgYXJlIGluY3JlYXNpbmdseSBjYXBhYmxlIG9mIGltcHJvdmluZyBtb2RlbHMsIHN5c3RlbXMsIGFuZCBvdGhlciB0ZWNobmljYWwgYXJ0aWZhY3RzIHRocm91Z2ggbG9uZy1ob3Jpem9uIGV4cGVyaW1lbnRhdGlvbi4gVG8gdW5kZXJzdGFuZCB0aGUgY3VycmVudCBzdGF0ZSBvZiB0aGlzIGNhcGFiaWxpdHksIGhvd2V2ZXIsIGV2YWx1YXRpb24gbXVzdCBnbyBiZXlvbmQgZmluYWwgc2NvcmVzLCB3aGljaCBuZWl0aGVyIHJldmVhbCB3aGVyZSBwcm9ncmVzcyBpcyBnYWluZWQgb3IgbG9zdCBub3IgaW5kaWNhdGUgd2hldGhlciBhY2N1bXVsYXRlZCBleHBlcmllbmNlIGltcHJvdmVzIGxhdGVyIGRlY2lzaW9ucy4gV2UgdGhlcmVmb3JlIHByZXNlbnQgYSBzeXN0ZW1hdGljIGV2YWx1YXRpb24gb2Ygc2V2ZW4gZnJvbnRpZXIgbW9kZWxzIG9uIDM2IGxvbmctaG9yaXpvbiB0YXNrcyBiYXNlZCBvbiBhIG5ldyBmcmFtZXdvcmsgdGhhdCB1c2VzIHJ1bGUtYmFzZWQgbWV0cmljcyB0byBjaGFyYWN0ZXJpemUgd2l0aGluLXJ1biBiZWhhdmlvciB0aHJvdWdoIFNvbHV0aW9uIEZyYW1pbmcsIEV4ZWN1dGlvbiwgYW5kIEZlZWRiYWNrIENvbnRyb2wgYW5kIGNvbnRyb2xsZWQgY29tcGFyaXNvbnMgdG8gYXNzZXNzIGV4cGVyaWVuY2UgcmV1c2Ugd2l0aGluIGFuZCBhY3Jvc3MgdGFza3MuIFRoZSByZXN1bHRzIHNob3cgdGhhdCBjdXJyZW50IGFnZW50cyBvcGVyYXRlIG1vcmUgbGlrZSBlbmdpbmVlcmluZyBvcHRpbWl6ZXJzIHRoYW4gZnVsbHkgYXV0b25vbW91cyByZXNlYXJjaGVyczogdGhleSBjYW4gZm9ybXVsYXRlIGFuZCBpbXBsZW1lbnQgcHJhY3RpY2FsIHNvbHV0aW9ucywgYnV0IHRoZWlyIHBlcmZvcm1hbmNlIHZhcmllcyBzdWJzdGFudGlhbGx5IGFjcm9zcyBydW5zLCB0aGVpciBzdHJvbmdlc3Qgc29sdXRpb25zIG1haW5seSBhZGFwdCBvciBjb21iaW5lIGVzdGFibGlzaGVkIHRlY2huaXF1ZXMsIGFuZCBnZW51aW5lIG1ldGhvZG9sb2dpY2FsIG5vdmVsdHkgcmVtYWlucyByYXJlLiBEZXRhaWxlZCBhbmFseXNpcyByZXZlYWxzIHRoYXQgb2JzZXJ2ZWQgcGVyZm9ybWFuY2UgaXMgc2hhcGVkIGJ5IG11bHRpcGxlIGZhY3RvcnMsIGluY2x1ZGluZyBkaXN0aW5jdCBwcm9jZXNzIGJvdHRsZW5lY2tzIGJlaGluZCBzaW1pbGFyIGZpbmFsIG91dGNvbWVzLCBleHBlcmllbmNlIHJldXNlIHRoYXQgY2FuIGhlbHAgb3IgbWlzbGVhZCBzdWJzZXF1ZW50IGRlY2lzaW9ucywgYW5kIGhhcm5lc3MgZGVzaWducyB0aGF0IGFmZmVjdCBwZXJmb3JtYW5jZSBzdGFiaWxpdHkuIFRoZXNlIGZpbmRpbmdzIHN1Z2dlc3QgY29uY3JldGUgZGlyZWN0aW9ucyBmb3IgaW1wcm92aW5nIG1vZGVsIHRyYWluaW5nLCBpbmZlcmVuY2UtdGltZSBzdHJhdGVnaWVzLCBleHBlcmllbmNlIG1hbmFnZW1lbnQsIGFuZCBoYXJuZXNzIGRlc2lnbi48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOC0xM1QxNjoxMToyMlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkFJIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZaXdlaSBMaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+V2FubGkgWWFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGV4aWFuZyBUYW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlhpYW5nemhvdSBIdWFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Wmhlbmd5dSBDaGVuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5aaXJhbiBMaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+Qm9ydW4gQ2hlbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2hhbmdsaW4gTGVpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5IdWFpc2hlbmcgWmh1PC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5IYW8gVGlhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+RmVpIFN1bjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WHVubGlhbmcgQ2FpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5KaW5nYW5nIFdhbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Beyond Final Scores: A Systematic Evaluation of Agents for Long-Horizon AI Research and Development",
+    "authors": [
+      "Yiwei Li",
+      "Wanli Yang",
+      "Hexiang Tan",
+      "Xiangzhou Huang",
+      "Zhengyu Chen",
+      "Ziran Li",
+      "Borun Chen",
+      "Shanglin Lei",
+      "Huaisheng Zhu",
+      "Hao Tian",
+      "Fei Sun",
+      "Xunliang Cai",
+      "Jingang Wang"
+    ],
+    "abstract": "Autonomous agents are increasingly capable of improving models, systems, and other technical artifacts through long-horizon experimentation. To understand the current state of this capability, however, evaluation must go beyond final scores, which neither reveal where progress is gained or lost nor indicate whether accumulated experience improves later decisions. We therefore present a systematic evaluation of seven frontier models on 36 long-horizon tasks based on a new framework that uses rule-based metrics to characterize within-run behavior through Solution Framing, Execution, and Feedback Control and controlled comparisons to assess experience reuse within and across tasks. The results show that current agents operate more like engineering optimizers than fully autonomous researchers: they can formulate and implement practical solutions, but their performance varies substantially across runs, their strongest solutions mainly adapt or combine established techniques, and genuine methodological novelty remains rare. Detailed analysis reveals that observed performance is shaped by multiple factors, including distinct process bottlenecks behind similar final outcomes, experience reuse that can help or mislead subsequent decisions, and harness designs that affect performance stability. These findings suggest concrete directions for improving model training, inference-time strategies, experience management, and harness design.",
+    "identifiers": {
+      "arxiv": "2608.13417",
+      "arxiv_versioned": "2608.13417v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2608.13417v1"
+      }
+    },
+    "categories": [
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-08-13T16:11:22Z",
+    "updated": "2026-08-13T16:11:22Z"
+  }
+}

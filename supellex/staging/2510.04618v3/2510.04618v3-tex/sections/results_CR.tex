@@ -1,0 +1,305 @@
+\section{Results}
+
+Our evaluation of \name shows that:
+\begin{packeditemize}
+    \item \textbf{Enabling High-Performance, Self-Improving Agents.} ACE enables agents to self-improve by dynamically refining their input context, both in offline and online settings. It boosts accuracy on the AppWorld benchmark by up to 17.1\% by learning to engineer better contexts from execution feedback alone, without needing ground-truth labels. (\S\ref{subsec:agent-main-results})
+    \item \textbf{Large Gains on Domain-Specific Benchmarks.} On complex financial reasoning benchmarks, ACE delivers an average performance gain of 8.6\% over strong baselines by constructing comprehensive playbooks with domain-specific concepts and insights. (\S\ref{subsec:finance-main-results})
+    \item \textbf{Effective by Design.} Ablation studies confirm our design choices are key to success, with components like the Reflector, multi-epoch refinement, and incremental delta update each contributing substantial performance gains. (\S\ref{subsec:results-ablation})
+    \item \textbf{Lower Cost and Adaptation Latency.} ACE achieves these gains efficiently, reducing adaptation latency by 86.9\% on average, while requiring fewer rollouts and lower token dollar costs. (\S\ref{subsec:results-cost-speed})
+\end{packeditemize}
+
+\subsection{Tasks and Datasets}
+
+We evaluate \name on two categories of LLM applications that benefit most from evolving contexts: 
+(1) \emph{LLM agent}, which require multi-turn reasoning, tool use, and environment interaction; with ACE, agents can accumulate and reuse strategies across episodes and environments; and  
+(2) \emph{domain-specific reasoning}, which demand mastery of specialized concepts and tactics; we focus on financial analysis as a main case study, and show additional results on medical reasoning and text-to-SQL. 
+
+\begin{packeditemize}
+    \item \textbf{LLM Agent: AppWorld~\citep{trivedi2024appworld}} is a suite of autonomous agent tasks involving API understanding, code generation, and environment interaction. 
+    It provides a realistic execution environment with common applications and APIs (\eg email, file system) and tasks of two difficulty levels (normal and challenge). 
+    A public leaderboard~\citep{AppWorldLeaderboard} tracks performance, where, at the time of submission, the best system achieved only 60.3\% average accuracy, highlighting the benchmark’s difficulty and realism.
+    \item \textbf{Domain-Specific Reasoning: Financial, Medical, and Text-to-SQL Benchmarks} We use finance as our main case study in \S\ref{subsec:finance-main-results}. 
+    For financial analysis, we focus on FiNER~\citep{loukas2022finer} and Formula~\citep{wang2025finlora}, which test LLMs on financial reasoning tasks that rely on the eXtensible Business Reporting Language (XBRL).
+    \emph{FiNER} requires labeling tokens in XBRL financial documents with one of 139 fine-grained entity types, a key step for financial information extraction in regulated domains.  
+    \emph{Formula} focuses on applying financial concepts and performing computations to answer queries, \ie numerical reasoning.
+    Beyond finance, we evaluate on two additional domain tasks from StreamBench~\citep{wu2024streambench}: DDXPlus~\citep{fansi2022ddxplus} (medical reasoning) and BIRD-SQL~\citep{li2023can} (text-to-SQL).
+\end{packeditemize} 
+
+\paragraph{Evaluation Metrics}  
+For AppWorld, we follow the official benchmark protocol and report \emph{Task Goal Completion} (TGC) and \emph{Scenario Goal Completion} (SGC) on both the test-normal and test-challenge splits.  
+For FiNER, Formula and DDXPlus, we follow the original setup and report accuracy, measured as the proportion of predicted answers that exactly match the ground truth. 
+For BIRD-SQL, we use GPT-4o-mini~\citep{gpt4omini} under LLM-as-a-judge~\citep{zheng2023judging}. 
+
+All datasets follow the original train/validation/test splits. 
+For \emph{offline} context adaptation, methods are optimized on the training split and evaluated on the test split with pass@1 accuracy.  
+For \emph{online} context adaptation, methods are evaluated sequentially on the test split: for each sample, the model first predicts with the current context, then updates its context based on that sample.  
+The same shuffled test split is used across all methods.
+
+\subsection{Baselines and Methods}
+
+\paragraph{Base LLM} The base model is evaluated directly on each benchmark without any context engineering, using the default prompts provided by dataset authors.  
+For AppWorld, we follow the official \texttt{ReAct}~\citep{yao2023react} implementation released by the benchmark authors, and build all other baselines and methods on top of this framework. 
+
+\paragraph{In-Context Learning (ICL)~\citep{agarwal2024many}} ICL provides the model with task demonstrations in the input prompt (few-shot or many-shot). 
+This allows the model to infer the task format and desired output without weight updates.  
+We supply all training samples when they fit within the model’s context window; otherwise, we fill the window with as many demonstrations as possible.
+
+\paragraph{MIPROv2~\citep{opsahl2024optimizing}} MIPROv2 is a popular prompt optimizer for LLM applications that works by jointly optimizing system instructions and in-context demonstrations via bayesian optimization.   
+We use the official DSPy implementation~\citep{DSPyMIPROv2}, setting \verb|auto="heavy"| to maximize optimization performance.
+
+\paragraph{GEPA~\citep{agrawal2025gepa}} GEPA (Genetic-Pareto) is a sample-efficient prompt optimizer based on reflective prompt evolution. 
+It collects execution traces (reasoning, tool calls, intermediate outputs) and applies natural-language reflection to diagnose errors, assign credit, and propose prompt updates. 
+A genetic Pareto search maintains a frontier of high-performing prompts, mitigating local optima.  
+Empirically, GEPA outperforms reinforcement learning methods such as GRPO and prompt optimizers like MIPROv2, achieving up to 10–20\% higher accuracy with as much as 35× fewer rollouts. 
+We use the official DSPy implementation~\citep{DSPyGEPA}, setting \verb|auto="heavy"| to maximize optimization performance.
+
+\paragraph{Dynamic Cheatsheet (DC)~\citep{suzgun2025dynamic}} DC is a test-time learning approach that introduces an adaptive external memory of reusable strategies and code snippets.  
+By continuously updating this memory with newly encountered inputs and outputs, DC enables models to accumulate knowledge and reuse it across tasks, often leading to substantial improvements over static prompting methods.  
+A key advantage of DC is that it does not require ground-truth labels: the model can curate its own memory from its generations, making the method highly flexible and broadly applicable.  
+We use the official implementation released by the authors~\citep{Suzgun2025_DynamicCheatsheet_code} and set it to use the \texttt{cumulative} mode (DC-CU).
+
+\paragraph{ACE (ours)} ACE optimizes LLM contexts for both offline and online adaptation through an agentic context engineering framework.  
+To ensure fairness, we use the same LLM for the Generator, Reflector, and Curator (non-thinking mode of DeepSeek-V3.1~\citep{deepseekai2024deepseekv3technicalreport}), preventing knowledge transfer from a stronger Reflector or Curator to a weaker Generator. 
+This isolates the benefit of context construction itself. 
+We additionally evaluate ACE with other backbone LLMs in the appendix, where we observe consistent gains.
+We adopt a batch size of 1 (constructing a delta context from each sample).
+We set the maximum number of Reflector refinement rounds and the maximum number of epoch in offline adaptation to 5. 
+
+\subsection{Results on Agent Benchmark}
+\label{subsec:agent-main-results}
+
+\begin{table*}[!tbhp]
+  \centering
+  \resizebox{\textwidth}{!}{ 
+  \begin{tabular}{lc|cc|cc|c}
+    \toprule[1.25pt]
+    \multirow{2}{*}{\textbf{Method}} 
+      & \multirow{2}{*}{\textbf{GT Labels}}
+      & \multicolumn{2}{c|}{\textbf{Test-Normal}} 
+      & \multicolumn{2}{c|}{\textbf{Test-Challenge}} 
+      & \multirow{2}{*}{\textbf{Average}}\\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}
+      & & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{DeepSeek-V3.1-671B as Base LLM}} \\
+    \textcolor{gray}{\texttt{ReAct}} & & \textcolor{gray}{63.7} & \textcolor{gray}{42.9} & \textcolor{gray}{41.5} & \textcolor{gray}{21.6} & \textcolor{gray}{42.4} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{Offline Adaptation}} \\
+    \texttt{ReAct} + ICL & \checkmark & $64.3_{\textcolor{scoregreen}{+0.6}}$ & $46.4_{\textcolor{scoregreen}{+3.5}}$ & $46.0_{\textcolor{scoregreen}{+4.5}}$ & $27.3_{\textcolor{scoregreen}{+5.7}}$ & $46.0_{\textcolor{scoregreen}{+3.6}}$ \\
+    \texttt{ReAct} + GEPA & \checkmark & $64.9_{\textcolor{scoregreen}{+1.2}}$ & $44.6_{\textcolor{scoregreen}{+1.7}}$ & $46.0_{\textcolor{scoregreen}{+4.5}}$ & $30.2_{\textcolor{scoregreen}{+8.6}}$ & $46.4_{\textcolor{scoregreen}{+4.0}}$\\
+    \texttt{ReAct} + ACE & \checkmark & $\textcolor{black}{\mathbf{76.2}}_{\textcolor{scoregreen}{\mathbf{+12.5}}}$ & $\textcolor{black}{\mathbf{64.3}}_{\textcolor{scoregreen}{\mathbf{+21.4}}}$ & $\textcolor{black}{\mathbf{57.3}}_{\textcolor{scoregreen}{\mathbf{+15.8}}}$ & $\textcolor{black}{\mathbf{39.6}}_{\textcolor{scoregreen}{\mathbf{+18.0}}}$ & $\textcolor{black}{\mathbf{59.4}}_{\textcolor{scoregreen}{\mathbf{+17.0}}}$\\
+    \texttt{ReAct} + ACE & \xmark & $75.0_{\textcolor{scoregreen}{+11.3}}$ & $\textcolor{black}{\mathbf{64.3}}_{\textcolor{scoregreen}{\mathbf{+21.4}}}$ & $54.4_{\textcolor{scoregreen}{+12.9}}$ & $35.2_{\textcolor{scoregreen}{+13.6}}$ & $57.2_{\textcolor{scoregreen}{+14.8}}$\\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{Online Adaptation}} \\
+    \texttt{ReAct} + DC (CU) & \xmark & $65.5_{\textcolor{scoregreen}{+1.8}}$ & $\textcolor{black}{\mathbf{58.9}}_{\textcolor{scoregreen}{\mathbf{+16.0}}}$ & $52.3_{\textcolor{scoregreen}{+10.8}}$ & $30.8_{\textcolor{scoregreen}{+9.2}}$ & $51.9_{\textcolor{scoregreen}{+9.5}}$\\
+    \texttt{ReAct} + ACE & \xmark & $\textcolor{black}{\mathbf{69.6}}_{\textcolor{scoregreen}{\mathbf{+5.9}}}$ & $53.6_{\textcolor{scoregreen}{+10.7}}$ & $\textcolor{black}{\mathbf{66.0}}_{\textcolor{scoregreen}{\mathbf{+24.5}}}$ & $\textcolor{black}{\mathbf{48.9}}_{\textcolor{scoregreen}{\mathbf{+27.3}}}$ & $\textcolor{black}{\mathbf{59.5}}_{\textcolor{scoregreen}{\mathbf{+17.1}}}$\\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on the AppWorld Agent Benchmark (DeepSeek-V3.1-671B as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation. We evaluate the ACE framework against multiple baselines on top of the official \texttt{ReAct} implementation, both for offline and online context adaptation. 
+  \texttt{ReAct} + ACE outperforms selected baselines by an average of 10.6\%, and could achieve good performance even without access to GT labels. }
+  \label{tab:appworld-results}
+  \vspace{-5pt}
+\end{table*}
+
+\paragraph{Analysis: AppWorld}  
+As shown in Table~\ref{tab:appworld-results}, ACE consistently improves over strong baselines on AppWorld.  
+In the offline setting, \texttt{ReAct} + ACE outperforms both \texttt{ReAct} + ICL and \texttt{ReAct} + GEPA by significant margins (12.3\% and 11.9\%, respectively), demonstrating that structured, evolving, and detailed contexts enable more effective agent learning than fixed demonstrations or single optimized instruction prompts.  
+These gains extend to the online setting, where ACE continues to outperform prior adaptive methods such as Dynamic Cheatsheet by an average of 7.6\%.
+
+In the agent use case, ACE remains effective even \textit{without} access to ground-truth labels during adaptation: \texttt{ReAct} + ACE achieves an average improvement of 14.8\% over the \texttt{ReAct} baseline in this setting.  
+This robustness arises because ACE leverages signals naturally available during execution (\eg code execution success or failure) to guide the Reflector and Curator in forming structured lessons of successes and failures. 
+Together, these results establish ACE as a strong and versatile framework for building self-improving agents that adapt reliably both with and without labeled supervision. 
+
+Notably, on the latest AppWorld leaderboard (as of September 20, 2025; Figure \ref{fig:appworld-leaderboard}), \texttt{ReAct} + ACE (59.4\% average) matches the top-1-ranked IBM CUGA (60.3\%)\footnote{We mention IBM CUGA as a rough contextual reference to show that ACE operates in a similar performance range on the AppWorld leaderboard. It is not used as a methodological baseline, and we do not make direct comparisons. CUGA’s internal design differs from ACE’s context-adaptation focus, and all baselines are evaluated under identical setups to isolate methodological effects rather than agent-engineering choices.}, a production-level GPT-4.1–based agent~\citep{marreed2025towards}, despite using the much smaller open-source model DeepSeek-V3.1.
+With online adaptation, \texttt{ReAct} + ACE even surpasses IBM CUGA by 8.4\% in TGC and 0.7\% in SGC on test-challenge, underscoring the effectiveness of \name in building comprehensive and self-evolving contexts for agents.
+
+\subsection{Results on Domain-Specific Benchmark}
+\label{subsec:finance-main-results}
+
+\begin{table*}[!tbhp]
+  \centering
+  \resizebox{0.8\textwidth}{!}{ 
+  \begin{tabular}{lc|c|c|c}
+    \toprule[1.25pt]
+    \textbf{Method}
+      & \textbf{GT Labels}
+      & \textbf{FiNER (Acc$\uparrow$)} 
+      & \textbf{Formula (Acc$\uparrow$)}
+      & \textbf{Average}\\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{Base LLM}} & & \textcolor{gray}{70.7} & \textcolor{gray}{67.5} & \textcolor{gray}{69.1}\\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Offline Adaptation}} \\
+    ICL & \checkmark & $72.3_{\textcolor{scoregreen}{+1.6}}$ & $67.0_{\textcolor{red}{-0.5}}$ & $69.6_{\textcolor{scoregreen}{+0.5}}$ \\
+    MIPROv2 & \checkmark & $72.4_{\textcolor{scoregreen}{+1.7}}$ & $69.5_{\textcolor{scoregreen}{+2.0}}$ & $70.9_{\textcolor{scoregreen}{+1.8}}$ \\
+    GEPA & \checkmark & $73.5_{\textcolor{scoregreen}{+2.8}}$ & $71.5_{\textcolor{scoregreen}{+4.0}}$ & $72.5_{\textcolor{scoregreen}{+3.4}}$ \\
+    ACE & \checkmark & $\textcolor{black}{\mathbf{78.3}}_{\textcolor{scoregreen}{\mathbf{+7.6}}}$ & $\textcolor{black}{\mathbf{85.5}}_{\textcolor{scoregreen}{\mathbf{+18.0}}}$ & $\textcolor{black}{\mathbf{81.9}}_{\textcolor{scoregreen}{\mathbf{+12.8}}}$ \\
+    ACE & \xmark & $71.1_{\textcolor{scoregreen}{+0.4}}$ & $83.0_{\textcolor{scoregreen}{+15.5}}$ & $77.1_{\textcolor{scoregreen}{+8.0}}$ \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{5}{c}{\texttt{Online Adaptation}} \\
+    DC (CU) & \checkmark & $74.2_{\textcolor{scoregreen}{+3.5}}$ & $69.5_{\textcolor{scoregreen}{+2.0}}$ & $71.8_{\textcolor{scoregreen}{+2.7}}$ \\
+    DC (CU) & \xmark & $68.3_{\textcolor{red}{-2.4}}$ & $62.5_{\textcolor{red}{-5.0}}$ & $65.4_{\textcolor{red}{-3.7}}$ \\
+    ACE & \checkmark & $\textcolor{black}{\mathbf{76.7}}_{\textcolor{scoregreen}{\mathbf{+6.0}}}$ & $76.5_{\textcolor{scoregreen}{+9.0}}$ & $\textcolor{black}{\mathbf{76.6}}_{\textcolor{scoregreen}{\mathbf{+7.5}}}$ \\
+    ACE & \xmark & $67.3_{\textcolor{red}{-3.4}}$ & $\mathbf{78.5}_{\textcolor{scoregreen}{\mathbf{+11.0}}}$ & $72.9_{\textcolor{scoregreen}{+3.8}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Results on Financial Analysis Benchmark (DeepSeek-V3.1-671B as the Base LLM).} ``GT labels" indicates whether ground-truth labels are available to the Reflector during adaptation. With GT labels, ACE achieves consistent improvements in both offline and online settings, highlighting the advantage of structured and evolving contexts for domain-specific reasoning. However, we also observe that in the absence of reliable feedback signals (\eg ground-truth labels or execution outcomes), both ACE and other adaptive methods such as Dynamic Cheatsheet may degrade, suggesting that context adaptation depends critically on feedback quality.}
+  \label{tab:ds-results}
+  \vspace{-5pt}
+\end{table*}
+
+\paragraph{Analysis: Finance Benchmark} As shown in Table~\ref{tab:ds-results}, ACE delivers strong improvements on financial analysis benchmarks.  
+In the offline setting, when provided with ground-truth answers from the training split, ACE surpasses ICL, MIPROv2, and GEPA by clear margins (an average of 10.9\%), showing that structured and evolving contexts are particularly effective when tasks require precise domain knowledge (\eg financial concepts, XBRL rules) that goes beyond fixed demonstrations or monolithic optimized prompts.  
+In the online setting, ACE continues to exceed prior adaptive methods such as DC by an average of 6.2\%, further confirming the benefit of agentic context engineering for accumulating reusable insights across specialized domains. 
+
+Moreover, we also observe that when ground-truth supervision or reliable execution signals are absent, both ACE and DC may degrade in performance.  
+In such cases, the constructed context can be polluted by spurious or misleading signals, highlighting a potential limitation of inference-time adaptation without reliable feedback.  
+This suggests that while ACE is robust under rich feedback (\eg code execution results or formula correctness in agent tasks), its effectiveness depends on the availability of signals that allow the Reflector and Curator to make sound judgments.  
+We return to this limitation in \S\ref{sec:discussion}. 
+
+\paragraph{Analysis: Medical and Text-to-SQL Benchmark} While this subsection focuses on finance as a detailed case study, ACE is not finance-specific: we also see consistent gains on other domain-specific tasks, including medical reasoning and text-to-SQL, suggesting that the same playbook-style context adaptation transfers across domains. 
+Full results are reported in Appendix~\S\ref{subsec:streambench-results}.
+
+\subsection{Generalization across LLMs} 
+Table~\ref{tab:appworld-results} and Table~\ref{tab:ds-results} use our default backbone (DeepSeek-V3.1), but ACE is not specific to this model. 
+We can swap in other LLMs without changing the algorithm or prompts, and still see consistent gains on AppWorld and Finance benchmarks. 
+Appendix~\S\ref{subsec:generalization-across-llms} reports full results on GPT-OSS-120B, GPT-5.1, and Llama-3.3-70B-Instruct, where ACE improves over the corresponding base agents or models. 
+These results suggest ACE is a generalizable method for test-time context evolution across LLM families.
+
+\subsection{Ablation Study and Sensitivity Analysis}
+\label{subsec:results-ablation}
+
+\paragraph{Ablation Study} Table~\ref{tab:ablation} reports ablation studies on AppWorld, analyzing how individual design choices of \name contribute to effective context adaptation. 
+We examine three factors: (1) \textit{the Reflector with iterative refinement}, our addition to the agentic framework beyond Dynamic Cheatsheet, (2) \textit{multi-epoch adaptation}, which refines contexts over training samples multiple times, and (3) \textit{offline warmup}, which initializes the context through offline adaptation before online adaptation begins.
+Additionally, we study the effect of \emph{incremental context update} and why it is a key enabler for ACE's performance gain in Appendix~\S\ref{subsec:incremental-update-ablation}.
+
+\begin{table*}[!tbhp]
+  \centering
+  \resizebox{\textwidth}{!}{ 
+  \begin{tabular}{lc|cc|cc|c}
+    \toprule[1.25pt]
+    \multirow{2}{*}{\textbf{Method}} 
+      & \multirow{2}{*}{\textbf{GT Labels}}
+      & \multicolumn{2}{c|}{\textbf{Test-Normal}} 
+      & \multicolumn{2}{c|}{\textbf{Test-Challenge}} 
+      & \multirow{2}{*}{\textbf{Average}}\\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}
+      & & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} & \textbf{TGC$\uparrow$} & \textbf{SGC$\uparrow$} \\
+    \midrule[1.1pt]
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{DeepSeek-V3.1 as Base LLM}} \\
+    \textcolor{gray}{\texttt{ReAct}} & & \textcolor{gray}{63.7} & \textcolor{gray}{42.9} & \textcolor{gray}{41.5} & \textcolor{gray}{21.6} & \textcolor{gray}{42.4} \\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{Offline Adaptation}} \\
+    \texttt{ReAct} + ACE w/o Reflector or multi-epoch & \checkmark  
+      & $70.8_{\textcolor{scoregreen}{+7.1}}$ 
+      & $55.4_{\textcolor{scoregreen}{+12.5}}$ 
+      & $55.9_{\textcolor{scoregreen}{+14.4}}$ 
+      & $38.1_{\textcolor{scoregreen}{+17.5}}$
+      & $55.1_{\textcolor{scoregreen}{+12.7}}$\\
+    \texttt{ReAct} + ACE w/o multi-epoch & \checkmark 
+      & $72.0_{\textcolor{scoregreen}{+8.3}}$ 
+      & $60.7_{\textcolor{scoregreen}{+17.8}}$ 
+      & $54.9_{\textcolor{scoregreen}{+13.4}}$ 
+      & $39.6_{\textcolor{scoregreen}{+18.0}}$ 
+      & $56.8_{\textcolor{scoregreen}{+14.4}}$\\
+    \texttt{ReAct} + ACE & \checkmark 
+      & $76.2_{\textcolor{scoregreen}{+12.5}}$ 
+      & $64.3_{\textcolor{scoregreen}{+21.4}}$ 
+      & $57.3_{\textcolor{scoregreen}{+15.8}}$ 
+      & $39.6_{\textcolor{scoregreen}{+18.0}}$ 
+      & $59.4_{\textcolor{scoregreen}{+17.0}}$\\
+    \midrule
+    \rowcolor[rgb]{0.93,0.93,0.93}
+    \multicolumn{7}{c}{\texttt{Online Adaptation}} \\
+    \texttt{ReAct} + ACE & \xmark 
+      & $67.9_{\textcolor{scoregreen}{+4.2}}$ 
+      & $51.8_{\textcolor{scoregreen}{+8.9}}$ 
+      & $61.4_{\textcolor{scoregreen}{+19.9}}$ 
+      & $43.2_{\textcolor{scoregreen}{+21.6}}$ 
+      & $56.1_{\textcolor{scoregreen}{+13.7}}$\\
+    \texttt{ReAct} + ACE + offline warmup & \xmark 
+      & $69.6_{\textcolor{scoregreen}{+5.9}}$ 
+      & $53.6_{\textcolor{scoregreen}{+10.7}}$ 
+      & $66.0_{\textcolor{scoregreen}{+24.5}}$ 
+      & $48.9_{\textcolor{scoregreen}{+27.3}}$ 
+      & $59.5_{\textcolor{scoregreen}{+17.1}}$ \\
+    \bottomrule[1.25pt]
+  \end{tabular}}
+  \caption{\textbf{Ablation Studies on AppWorld.} We study how particular design choices of \name (iterative refinement, multi-epoch adaptation, and offline warmup) could help high-quality context adaptation. }
+  \label{tab:ablation}
+  \vspace{-10pt}
+\end{table*}
+
+\paragraph{Robustness to Reflection Quality} \name is robust to reflection quality: it remains effective with a much weaker Reflector and shows only modest additional gains from stronger reflectors, and it degrades gracefully under noisy/harmful reflections, staying above the base model except under fully adversarial updates every iteration. Full experiment results are in Appendix~\S\ref{subsec:robust-reflection}.
+
+\paragraph{Sensitivity to Hyperparameter Choice} \name's gains are stable across a wide range of reasonable hyperparameter settings (\eg Reflector refinement rounds, number of adaptation epochs, and grow-and-refine thresholds): performance changes are modest, and ACE consistently remains above the corresponding baselines. Full discussion and detailed results are reported in Appendix~\S\ref{subsec:hyperparam-sensitivity}.
+
+\subsection{Cost and Speed Analysis}
+\label{subsec:results-cost-speed}
+
+Due to its support for incremental, ``delta" context updates and non-LLM-based context merging and de-duplication, \name demonstrates particular advantages in reducing the cost (in terms of the number of rollouts or the amount of dollar cost for token ingestion/generation) and latency of adaptation. 
+
+As examples, on the offline adaptation of AppWorld, ACE achieves 82.3\% reduction in adaptation latency and 75.1\% reduction in the number of rollouts as compared to GEPA (Table \ref{tab:cost-speed}(a)). 
+On the online adaptation of FiNER, ACE achieves 91.5\% reduction in adaptation latency and 83.6\% reduction in token dollar cost for token ingestion/generation as compared to DC (Table \ref{tab:cost-speed}(b)).
+
+\begin{table}[!tbhp]
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}
+    \centering
+    \resizebox{\linewidth}{!}{%
+      \begin{tabular}{@{}lcc@{}}
+        \toprule[1.25pt]
+        \textbf{Method} & \textbf{Latency (s)$\downarrow$} & \textbf{\# Rollouts$\downarrow$}\\
+        \midrule[1.1pt]
+        ReAct + GEPA & 53898 & 1434\\
+        ReAct + ACE & 9517\textsubscript{\textcolor{red}{(-82.3\%)}} & 357\textsubscript{\textcolor{red}{(-75.1\%)}}\\
+        \bottomrule
+      \end{tabular}
+    }
+    \vspace{2pt}\\
+    (a) \textbf{Offline} (AppWorld).
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.43\linewidth}
+    \centering
+    \resizebox{\linewidth}{!}{%
+      \begin{tabular}{@{}lcc@{}}
+        \toprule[1.25pt]
+        \textbf{Method} & \textbf{Latency (s)$\downarrow$} & \textbf{Token Cost (\$)$\downarrow$}\\
+        \midrule[1.1pt]
+        DC (CU) & 65104 & 17.7\\
+        ACE & 5503\textsubscript{\textcolor{red}{(-91.5\%)}} & 2.9\textsubscript{\textcolor{red}{(-83.6\%)}}\\
+        \bottomrule
+      \end{tabular}
+    }
+    \vspace{2pt}\\
+    (b) \textbf{Online} (FiNER).
+  \end{minipage}
+
+  \vspace{3pt}
+  \caption{\textbf{Cost and Speed Analysis.} We measure the context adaptation latency, number of rollouts, and dollar costs of \name against GEPA (offline) and DC (online).}
+  \label{tab:cost-speed}
+  \vspace{-10pt}
+\end{table}
+
+\paragraph{Fine-Grained Cost Analysis} 
+We conduct a fine-grained cost analysis of \name and GEPA (as a representative baseline).
+On AppWorld, \name is substantially cheaper during offline adaptation, reducing input/output token usage by \textbf{80.8\%/83.6\%} vs.~GEPA: \name avoids GEPA's prompt-validation loop and replaces repeated full rewrites with localized delta updates.
+At evaluation time, while \name may use more \emph{raw} input tokens due to a richer playbook, this does not necessarily translate to higher \emph{billed} serving cost because a large fraction of the context is reused by KV caching; we quantify this effect in the next paragraph.
+Full results, including a component-wise token breakdown for both methods, are in Appendix~\S\ref{subsec:fine-grained-cost-breakdown}.
+
+\paragraph{KV Cache Reuse: Longer Context $\ne$ Higher Serving Cost} 
+Although \name produces longer contexts than methods such as GEPA, this does not translate to linearly higher inference cost or GPU memory usage.  
+Modern serving infrastructures are increasingly optimized for long-context workloads through techniques such as the reuse~\citep{gim2024prompt, yao2025cacheblend}, compression~\citep{liu2024kivi, liu2024cachegen}, and offload~\citep{lee2024infinigen, li2025continuum} of KV cache.  
+These mechanisms allow frequently reused context segments to be cached locally or remotely, avoiding repetitive and expensive prefill operations.  
+Ongoing advances in ML systems suggest that the amortized cost of handling long contexts is likely to decrease, making context-rich approaches like \name increasingly practical in deployment. 
+In our prompt-caching study with the OpenAI API (GPT-5.1), we find that \name achieves \emph{high cache reuse}: \textbf{91.8\%} of input tokens are served from cache during evaluation stage, which reduces billed input-token cost by \textbf{82.6\%} relative to counting raw context tokens.
