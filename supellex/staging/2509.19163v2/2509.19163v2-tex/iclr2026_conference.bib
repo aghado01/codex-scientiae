@@ -1,0 +1,961 @@
+@incollection{Bengio+chapter2007,
+author = {Bengio, Yoshua and LeCun, Yann},
+booktitle = {Large Scale Kernel Machines},
+publisher = {MIT Press},
+title = {Scaling Learning Algorithms Towards {AI}},
+year = {2007}
+}
+
+@article{Hinton06,
+author = {Hinton, Geoffrey E. and Osindero, Simon and Teh, Yee Whye},
+journal = {Neural Computation},
+pages = {1527--1554},
+title = {A Fast Learning Algorithm for Deep Belief Nets},
+volume = {18},
+year = {2006}
+}
+
+@article{handa2025economic,
+  title={Which economic tasks are performed with ai? evidence from millions of claude conversations},
+  author={Handa, Kunal and Tamkin, Alex and McCain, Miles and Huang, Saffron and Durmus, Esin and Heck, Sarah and Mueller, Jared and Hong, Jerry and Ritchie, Stuart and Belonax, Tim and others},
+  journal={arXiv preprint arXiv:2503.04761},
+  year={2025}
+}
+
+@techreport{Chatterji2025HowPU,
+ title = "How People Use ChatGPT",
+ author = "Chatterji, Aaron and Cunningham, Thomas and Deming, David J and Hitzig, Zoe and Ong, Christopher and Shan, Carl Yan and Wadman, Kevin",
+ institution = "National Bureau of Economic Research",
+ type = "Working Paper",
+ series = "Working Paper Series",
+ number = "34255",
+ year = "2025",
+ month = "September",
+ doi = {10.3386/w34255},
+ URL = "http://www.nber.org/papers/w34255",
+ abstract = {Despite the rapid adoption of LLM chatbots, little is known about how they are used. We document the growth of ChatGPT’s consumer product from its launch in November 2022 through July 2025, when it had been adopted by around 10% of the world’s adult population. Early adopters were disproportionately male but the gender gap has narrowed dramatically, and we find higher growth rates in lower-income countries. Using a privacy-preserving automated pipeline, we classify usage patterns within a representative sample of ChatGPT conversations. We find steady growth in work-related messages but even faster growth in non-work-related messages, which have grown from 53% to more than 70% of all usage. Work usage is more common for educated users in highly-paid professional occupations. We classify messages by conversation topic and find that “Practical Guidance,” “Seeking Information,” and “Writing” are the three most common topics and collectively account for nearly 80% of all conversations. Writing dominates work-related tasks, highlighting chatbots’ unique ability to generate digital outputs compared to traditional search engines. Computer programming and self-expression both represent relatively small shares of use. Overall, we find that ChatGPT provides economic value through decision support, which is especially important in knowledge-intensive jobs.},
+}
+
+@article{tomlinson2025working,
+  title={Working with AI: Measuring the occupational implications of generative AI},
+  author={Tomlinson, Kiran and Jaffe, Sonia and Wang, Will and Counts, Scott and Suri, Siddharth},
+  journal={arXiv preprint arXiv:2507.07935},
+  year={2025},
+  publisher={Tech. rep., arXiv}
+}
+
+@book{goodfellow2016deep,
+title={Deep learning},
+author={Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron and Bengio, Yoshua},
+volume={1},
+year={2016},
+publisher={MIT Press}
+}
+
+
+@inproceedings{mitchell2023detectgpt,
+  title={DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature},
+  author={Mitchell, Eric and Lee, Yoonho and Khazatsky, Alexander and Manning, Christopher D. and Finn, Chelsea},
+  booktitle={Proceedings of the International Conference on Machine Learning},
+  year={2023}
+}
+
+@inproceedings{Hashimoto2019UnifyingHA,
+    title = "Unifying Human and Statistical Evaluation for Natural Language Generation",
+    author = "Hashimoto, Tatsunori B.  and
+      Zhang, Hugh  and
+      Liang, Percy",
+    editor = "Burstein, Jill  and
+      Doran, Christy  and
+      Solorio, Thamar",
+    booktitle = "Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+    month = jun,
+    year = "2019",
+    address = "Minneapolis, Minnesota",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N19-1169/",
+    doi = "10.18653/v1/N19-1169",
+    pages = "1689--1701",
+    abstract = "How can we measure whether a natural language generation system produces both high quality and diverse outputs? Human evaluation captures quality but not diversity, as it does not catch models that simply plagiarize from the training set. On the other hand, statistical evaluation (i.e., perplexity) captures diversity but not quality, as models that occasionally emit low quality samples would be insufficiently penalized. In this paper, we propose a unified framework which evaluates both diversity and quality, based on the optimal error rate of predicting whether a sentence is human- or machine-generated. We demonstrate that this error rate can be efficiently estimated by combining human and statistical evaluation, using an evaluation metric which we call HUSE. On summarization and chit-chat dialogue, we show that (i) HUSE detects diversity defects which fool pure human evaluation and that (ii) techniques such as annealing for improving quality actually decrease HUSE due to decreased diversity."
+}
+@inproceedings{ostheimer-etal-2024-text,
+    title = "Text Style Transfer Evaluation Using Large Language Models",
+    author = "Ostheimer, Phil  and
+      Nagda, Mayank  and
+      Kloft, Marius  and
+      Fellenz, Sophie",
+    editor = "Calzolari, Nicoletta  and
+      Kan, Min-Yen  and
+      Hoste, Veronique  and
+      Lenci, Alessandro  and
+      Sakti, Sakriani  and
+      Xue, Nianwen",
+    booktitle = "Proceedings of the 2024 Joint International Conference on Computational Linguistics, Language Resources and Evaluation (LREC-COLING 2024)",
+    month = may,
+    year = "2024",
+    address = "Torino, Italia",
+    publisher = "ELRA and ICCL",
+    url = "https://aclanthology.org/2024.lrec-main.1373/",
+    pages = "15802--15822",
+    abstract = "Evaluating Text Style Transfer (TST) is a complex task due to its multi-faceted nature. The quality of the generated text is measured based on challenging factors, such as style transfer accuracy, content preservation, and overall fluency. While human evaluation is considered to be the gold standard in TST assessment, it is costly and often hard to reproduce. Therefore, automated metrics are prevalent in these domains. Nonetheless, it is uncertain whether and to what extent these automated metrics correlate with human evaluations. Recent strides in Large Language Models (LLMs) have showcased their capacity to match and even exceed average human performance across diverse, unseen tasks. This suggests that LLMs could be a viable alternative to human evaluation and other automated metrics in TST evaluation. We compare the results of different LLMs in TST evaluation using multiple input prompts. Our findings highlight a strong correlation between (even zero-shot) prompting and human evaluation, showing that LLMs often outperform traditional automated metrics. Furthermore, we introduce the concept of prompt ensembling, demonstrating its ability to enhance the robustness of TST evaluation. This research contributes to the ongoing efforts for more robust and diverse evaluation methods by standardizing and validating TST evaluation with LLMs."
+}
+
+@inproceedings{zhao-etal-2023-discoscore,
+    title = "{D}isco{S}core: Evaluating Text Generation with {BERT} and Discourse Coherence",
+    author = "Zhao, Wei  and
+      Strube, Michael  and
+      Eger, Steffen",
+    editor = "Vlachos, Andreas  and
+      Augenstein, Isabelle",
+    booktitle = "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+    month = may,
+    year = "2023",
+    address = "Dubrovnik, Croatia",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.eacl-main.278/",
+    doi = "10.18653/v1/2023.eacl-main.278",
+    pages = "3865--3883",
+    abstract = "Recently, there has been a growing interest in designing text generation systems from a discourse coherence perspective, e.g., modeling the interdependence between sentences. Still, recent BERT-based evaluation metrics are weak in recognizing coherence, and thus are not reliable in a way to spot the discourse-level improvements of those text generation systems. In this work, we introduce DiscoScore, a parametrized discourse metric, which uses BERT to model discourse coherence from different perspectives, driven by Centering theory. Our experiments encompass 16 non-discourse and discourse metrics, including DiscoScore and popular coherence models, evaluated on summarization and document-level machine translation (MT). We find that (i) the majority of BERT-based metrics correlate much worse with human rated coherence than early discourse metrics, invented a decade ago; (ii) the recent state-of-the-art BARTScore is weak when operated at system level{---}which is particularly problematic as systems are typically compared in this manner. DiscoScore, in contrast, achieves strong system-level correlation with human ratings, not only in coherence but also in factual consistency and other aspects, and surpasses BARTScore by over 10 correlation points on average. Further, aiming to understand DiscoScore, we provide justifications to the importance of discourse coherence for evaluation metrics, and explain the superiority of one variant over another. Our code is available at \url{https://github.com/AIPHES/DiscoScore}."
+}
+@inproceedings{schmidtova-etal-2024-automatic-metrics,
+    title = "Automatic Metrics in Natural Language Generation: A survey of Current Evaluation Practices",
+    author = "Schmidtova, Patricia  and
+      Mahamood, Saad  and
+      Balloccu, Simone  and
+      Dusek, Ondrej  and
+      Gatt, Albert  and
+      Gkatzia, Dimitra  and
+      Howcroft, David M.  and
+      Platek, Ondrej  and
+      Sivaprasad, Adarsa",
+    editor = "Mahamood, Saad  and
+      Minh, Nguyen Le  and
+      Ippolito, Daphne",
+    booktitle = "Proceedings of the 17th International Natural Language Generation Conference",
+    month = sep,
+    year = "2024",
+    address = "Tokyo, Japan",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.inlg-main.44/",
+    pages = "557--583",
+    abstract = "Automatic metrics are extensively used to evaluate Natural Language Processing systems. However, there has been increasing focus on how the are used and reported by practitioners within the field. In this paper, we have conducted a survey on the use of automatic metrics, focusing particularly on natural language generation tasks. We inspect which metrics are used as well as why they are chosen and how their use is reported. Our findings from this survey reveal significant shortcomings, including inappropriate metric usage, lack of implementation details and missing correlations with human judgements. We conclude with recommendations that we believe authors should follow to enable more rigour within the field."
+}
+
+@inproceedings{ramprasad-etal-2024-evaluating,
+    title = "Evaluating the Factuality of Zero-shot Summarizers Across Varied Domains",
+    author = "Ramprasad, Sanjana  and
+      Krishna, Kundan  and
+      Lipton, Zachary  and
+      Wallace, Byron",
+    editor = "Graham, Yvette  and
+      Purver, Matthew",
+    booktitle = "Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (Volume 2: Short Papers)",
+    month = mar,
+    year = "2024",
+    address = "St. Julian{'}s, Malta",
+    publisher = "Association for Computational Linguistics",
+    pages = "50--59",
+}
+
+@inproceedings{ceballos2024open,
+  title={Open (clinical) llms are sensitive to instruction phrasings},
+  author={Ceballos-Arroyo, Alberto Mario and Munnangi, Monica and Sun, Jiuding and Zhang, Karen and Mcinerney, Jered and Wallace, Byron C and Amir, Silvio},
+  booktitle={Proceedings of the 23rd Workshop on Biomedical Natural Language Processing},
+  pages={50--71},
+  year={2024}
+}
+
+
+@misc{Campos2016MSMA,
+      title={MS MARCO: A Human Generated MAchine Reading COmprehension Dataset}, 
+      author={Payal Bajaj and Daniel Campos and Nick Craswell and Li Deng and Jianfeng Gao and Xiaodong Liu and Rangan Majumder and Andrew McNamara and Bhaskar Mitra and Tri Nguyen and Mir Rosenberg and Xia Song and Alina Stoica and Saurabh Tiwary and Tong Wang},
+      year={2018},
+      eprint={1611.09268},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/1611.09268}, 
+}
+@article{radford2019language,
+  title={Language Models are Unsupervised Multitask Learners},
+  author={Radford, Alec and Wu, Jeff and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
+  year={2019}
+}
+@article{Brown2008AutomaticMO,
+  title={Automatic measurement of propositional idea density from part-of-speech tagging},
+  author={Cati Brown and Tony Snodgrass and Susan Kemper and Ruth E. Herman and Michael A. Covington},
+  journal={Behavior Research Methods},
+  year={2008},
+  volume={40},
+  pages={540-545},
+  url={https://api.semanticscholar.org/CorpusID:8283299}
+}
+
+@article{wiebe2004learning,
+author = {Wiebe, Janyce and Wilson, Theresa and Bruce, Rebecca and Bell, Matthew and Martin, Melanie},
+title = {Learning Subjective Language},
+year = {2004},
+issue_date = {September 2004},
+publisher = {MIT Press},
+address = {Cambridge, MA, USA},
+volume = {30},
+number = {3},
+issn = {0891-2017},
+url = {https://doi.org/10.1162/0891201041850885},
+doi = {10.1162/0891201041850885},
+abstract = {Subjectivity in natural language refers to aspects of language used to express opinions, evaluations, and speculations. There are numerous natural language processing applications for which subjectivity analysis is relevant, including information extraction and text categorization. The goal of this work is learning subjective language from corpora. Clues of subjectivity are generated and tested, including low-frequency words, collocations, and adjectives and verbs identified using distributional similarity. The features are also examined working together in concert. The features, generated from different data sets using different procedures, exhibit consistency in performance in that they all do better and worse on the same data sets. In addition, this article shows that the density of subjectivity clues in the surrounding context strongly affects how likely it is that a word is subjective, and it provides the results of an annotation study assessing the subjectivity of sentences with high-density features. Finally, the clues are used to perform opinion piece recognition (a type of text categorization and genre detection) to demonstrate the utility of the knowledge acquired in this article.},
+journal = {Comput. Linguist.},
+month = sep,
+pages = {277–308},
+numpages = {32}
+}
+
+
+
+@book{bandalos2018measurement,
+  title={Measurement theory and applications for the social sciences},
+  author={Bandalos, Deborah L},
+  year={2018},
+  publisher={Guilford Publications}
+}
+@inproceedings{
+ramprasad2025do,
+title={Do Automatic Factuality Metrics Measure Factuality? A Critical Evaluation},
+author={Sanjana Ramprasad and Byron C Wallace},
+booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
+year={2025},
+url={https://openreview.net/forum?id=gEeIutncjh}
+}
+
+@misc{jiang2023mistral7b,
+      title={Mistral 7B}, 
+      author={Albert Q. Jiang and Alexandre Sablayrolles and Arthur Mensch and Chris Bamford and Devendra Singh Chaplot and Diego de las Casas and Florian Bressand and Gianna Lengyel and Guillaume Lample and Lucile Saulnier and Lélio Renard Lavaud and Marie-Anne Lachaux and Pierre Stock and Teven Le Scao and Thibaut Lavril and Thomas Wang and Timothée Lacroix and William El Sayed},
+      year={2023},
+      eprint={2310.06825},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2310.06825}, 
+}
+@article{Hsieh2005ThreeAT,
+  title={Three Approaches to Qualitative Content Analysis},
+  author={H. F. Hsieh and Sarah Elizabeth Shannon},
+  journal={Qualitative Health Research},
+  year={2005},
+  volume={15},
+  pages={1277 - 1288},
+  url={https://api.semanticscholar.org/CorpusID:10790185}
+}
+
+@inproceedings{shaib-etal-2024-detection,
+    title = "Detection and Measurement of Syntactic Templates in Generated Text",
+    author = "Shaib, Chantal  and
+      Elazar, Yanai  and
+      Li, Junyi Jessy  and
+      Wallace, Byron C",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.368/",
+    doi = "10.18653/v1/2024.emnlp-main.368",
+    pages = "6416--6431",
+    abstract = "The diversity of text can be measured beyond word-level features, however existing diversity evaluation focuses primarily on word-level features. Here we propose a method for evaluating diversity over syntactic features to characterize general repetition in models, beyond frequent $n$-grams. Specifically, we define \textit{syntactic templates} (e.g., strings comprising parts-of-speech) and show that models tend to produce templated text in downstream tasks at a higher rate than what is found in human-reference textsWe find that most (76{\%}) templates in model-generated text can be found in pre-training data (compared to only 35{\%} of human-authored text), and are not overwritten during fine-tuning or alignment processes such as RLHF. The connection between templates in generated text and the pre-training data allows us to analyze syntactic templates in models where we do not have the pre-training data.We also find that templates as features are able to differentiate between models, tasks, and domains, and are useful for qualitatively evaluating common model constructions.Finally, we demonstrate the use of templates as a useful tool for analyzing style memorization of training data in LLMs."
+}
+
+@inproceedings{shaib2023summarizing,
+  title={Summarizing, simplifying, and synthesizing medical evidence using GPT-3 (with varying success)},
+  author={Shaib, Chantal and Li, Millicent and Joseph, Sebastian and Marshall, Iain and Li, Junyi Jessy and Wallace, Byron C},
+  booktitle={Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  pages={1387--1407},
+  year={2023}
+}
+
+@inproceedings{wang-etal-2023-automated,
+    title = "Automated Metrics for Medical Multi-Document Summarization Disagree with Human Evaluations",
+    author = "Wang, Lucy Lu  and
+      Otmakhova, Yulia  and
+      DeYoung, Jay  and
+      Truong, Thinh Hung  and
+      Kuehl, Bailey  and
+      Bransom, Erin  and
+      Wallace, Byron C.",
+    editor = "Rogers, Anna  and
+      Boyd-Graber, Jordan  and
+      Okazaki, Naoaki",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-long.549/",
+    doi = "10.18653/v1/2023.acl-long.549",
+    pages = "9871--9889",
+    abstract = "Evaluating multi-document summarization (MDS) quality is difficult. This is especially true in the case of MDS for biomedical literature reviews, where models must synthesize contradicting evidence reported across different documents. Prior work has shown that rather than performing the task, models may exploit shortcuts that are difficult to detect using standard n-gram similarity metrics such as ROUGE. Better automated evaluation metrics are needed, but few resources exist to assess metrics when they are proposed. Therefore, we introduce a dataset of human-assessed summary quality facets and pairwise preferences to encourage and support the development of better automated evaluation methods for literature review MDS. We take advantage of community submissions to the Multi-document Summarization for Literature Review (MSLR) shared task to compile a diverse and representative sample of generated summaries. We analyze how automated summarization evaluation metrics correlate with lexical features of generated summaries, to other automated metrics including several we propose in this work, and to aspects of human-assessed summary quality. We find that not only do automated metrics fail to capture aspects of quality as assessed by humans, in many cases the system rankings produced by these metrics are anti-correlated with rankings according to human annotators."
+}
+
+
+
+@article{DeYoung2023DoMS,
+    title = "Do Multi-Document Summarization Models Synthesize?",
+    author = "DeYoung, Jay  and
+      Martinez, Stephanie C.  and
+      Marshall, Iain J.  and
+      Wallace, Byron C.",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "12",
+    year = "2024",
+    address = "Cambridge, MA",
+    publisher = "MIT Press",
+    url = "https://aclanthology.org/2024.tacl-1.58/",
+    doi = "10.1162/tacl_a_00687",
+    pages = "1043--1062",
+    abstract = "Multi-document summarization entails producing concise synopses of collections of inputs. For some applications, the synopsis should accurately synthesize inputs with respect to a key aspect, e.g., a synopsis of film reviews written about a particular movie should reflect the average critic consensus. As a more consequential example, narrative summaries that accompany biomedical systematic reviews of clinical trial results should accurately summarize the potentially conflicting results from individual trials. In this paper we ask: To what extent do modern multi-document summarization models implicitly perform this sort of synthesis? We run experiments over opinion and evidence synthesis datasets using a suite of summarization models, from fine-tuned transformers to GPT-4. We find that existing models partially perform synthesis, but imperfectly: Even the best performing models are over-sensitive to changes in input ordering and under-sensitive to changes in input compositions (e.g., ratio of positive to negative reviews). We propose a simple, general, effective method for improving model synthesis capabilities by generating an explicitly diverse set of candidate outputs, and then selecting from these the string best aligned with the expected aggregate measure for the inputs, or abstaining when the model produces no good candidate."
+}
+
+@inproceedings{Marchal2022EstablishingAQ,
+    title = "Establishing Annotation Quality in Multi-label Annotations",
+    author = "Marchal, Marian  and
+      Scholman, Merel  and
+      Yung, Frances  and
+      Demberg, Vera",
+    editor = "Calzolari, Nicoletta  and
+      Huang, Chu-Ren  and
+      Kim, Hansaem  and
+      Pustejovsky, James  and
+      Wanner, Leo  and
+      Choi, Key-Sun  and
+      Ryu, Pum-Mo  and
+      Chen, Hsin-Hsi  and
+      Donatelli, Lucia  and
+      Ji, Heng  and
+      Kurohashi, Sadao  and
+      Paggio, Patrizia  and
+      Xue, Nianwen  and
+      Kim, Seokhwan  and
+      Hahm, Younggyun  and
+      He, Zhong  and
+      Lee, Tony Kyungil  and
+      Santus, Enrico  and
+      Bond, Francis  and
+      Na, Seung-Hoon",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.322/",
+    pages = "3659--3668",
+    abstract = "In many linguistic fields requiring annotated data, multiple interpretations of a single item are possible. Multi-label annotations more accurately reflect this possibility. However, allowing for multi-label annotations also affects the chance that two coders agree with each other. Calculating inter-coder agreement for multi-label datasets is therefore not trivial. In the current contribution, we evaluate different metrics for calculating agreement on multi-label annotations: agreement on the intersection of annotated labels, an augmented version of Cohen{'}s Kappa, and precision, recall and F1. We propose a bootstrapping method to obtain chance agreement for each measure, which allows us to obtain an adjusted agreement coefficient that is more interpretable. We demonstrate how various measures affect estimates of agreement on simulated datasets and present a case study of discourse relation annotations. We also show how the proportion of double labels, and the entropy of the label distribution, influences the measures outlined above and how a bootstrapped adjusted agreement can make agreement measures more comparable across datasets in multi-label scenarios."
+}
+
+@article{olmo20242,
+  title={2 OLMo 2 Furious},
+  author={OLMo, Team and Walsh, Pete and Soldaini, Luca and Groeneveld, Dirk and Lo, Kyle and Arora, Shane and Bhagia, Akshita and Gu, Yuling and Huang, Shengyi and Jordan, Matt and others},
+  journal={arXiv preprint arXiv:2501.00656},
+  year={2024}
+}
+
+
+
+@inproceedings{
+sun2024evaluating,
+title={Evaluating the Zero-shot Robustness of Instruction-tuned Language Models},
+author={Jiuding Sun and Chantal Shaib and Byron C Wallace},
+booktitle={The Twelfth International Conference on Learning Representations},
+year={2024},
+url={https://openreview.net/forum?id=g9diuvxN6D}
+}
+
+@article{sharkey2025open,
+  title={Open problems in mechanistic interpretability},
+  author={Sharkey, Lee and Chughtai, Bilal and Batson, Joshua and Lindsey, Jack and Wu, Jeff and Bushnaq, Lucius and Goldowsky-Dill, Nicholas and Heimersheim, Stefan and Ortega, Alejandro and Bloom, Joseph and others},
+  journal={arXiv preprint arXiv:2501.16496},
+  year={2025}
+}
+
+
+@article{bai2022constitutional,
+  title={Constitutional ai: Harmlessness from ai feedback},
+  author={Bai, Yuntao and Kadavath, Saurav and Kundu, Sandipan and Askell, Amanda and Kernion, Jackson and Jones, Andy and Chen, Anna and Goldie, Anna and Mirhoseini, Azalia and McKinnon, Cameron and others},
+  journal={arXiv preprint arXiv:2212.08073},
+  year={2022}
+}
+
+@inproceedings{zhang2020bertscore,
+  title={BERTScore: Evaluating text generation with BERT},
+  author={Zhang, Tianyi and Kishore, Varsha and Wu, Felix and Weinberger, Kilian Q and Artzi, Yoav},
+  booktitle={International Conference on Learning Representations},
+  year={2020}
+}
+
+
+
+@article{soldaini2024dolma,
+  title={Dolma: An open corpus of three trillion tokens for language model pretraining research},
+  author={Soldaini, Luca and Kinney, Rodney and Bhagia, Akshita and Schwenk, Dustin and Atkinson, David and Authur, Russell and Bogin, Ben and Chandu, Khyathi and Dumas, Jennifer and Elazar, Yanai and others},
+  journal={arXiv preprint arXiv:2402.00159},
+  year={2024}
+}
+
+@inproceedings{yang-etal-2023-many,
+    title = "How Many and Which Training Points Would Need to be Removed to Flip this Prediction?",
+    author = "Yang, Jinghan  and
+      Jain, Sarthak  and
+      Wallace, Byron C.",
+    editor = "Vlachos, Andreas  and
+      Augenstein, Isabelle",
+    booktitle = "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+    month = may,
+    year = "2023",
+    address = "Dubrovnik, Croatia",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.eacl-main.188/",
+    doi = "10.18653/v1/2023.eacl-main.188",
+    pages = "2571--2584",
+}
+
+
+@inproceedings{jain22,
+  title={Influence Functions for Sequence Tagging Models},
+  author={Sarthak Jain and Varun Manjunatha and Byron C. Wallace and Ani Nenkova},
+  Booktitle={Proceedings of the Findings of the Conference on Empirical Methods for Natural Language Processing (EMNLP)},
+  pages ={824--839},
+  year = {2022}
+}
+
+@inproceedings{han2020,
+    title = {{Explaining Black Box Predictions and Unveiling Data Artifacts through Influence Functions}},
+    author = {Xiaochuang Han and Byron C. Wallace and Yulia Tsvetkov},
+    booktitle={{Proceedings of the Conference of the Association for Computational Linguistics (ACL)}},
+    pages = {5553--5563},
+    year = {2020},
+}
+
+
+@inproceedings{pezeshkpour-etal-2021-empirical,
+    title = "An Empirical Comparison of Instance Attribution Methods for {NLP}",
+    author = "Pezeshkpour, Pouya  and
+      Jain, Sarthak  and
+      Wallace, Byron  and
+      Singh, Sameer",
+    editor = "Toutanova, Kristina  and
+      Rumshisky, Anna  and
+      Zettlemoyer, Luke  and
+      Hakkani-Tur, Dilek  and
+      Beltagy, Iz  and
+      Bethard, Steven  and
+      Cotterell, Ryan  and
+      Chakraborty, Tanmoy  and
+      Zhou, Yichao",
+    booktitle = "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jun,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.naacl-main.75/",
+    doi = "10.18653/v1/2021.naacl-main.75",
+    pages = "967--975",
+    abstract = "Widespread adoption of deep models has motivated a pressing need for approaches to interpret network outputs and to facilitate model debugging. Instance attribution methods constitute one means of accomplishing these goals by retrieving training instances that (may have) led to a particular prediction. Influence functions (IF; Koh and Liang 2017) provide machinery for doing this by quantifying the effect that perturbing individual train instances would have on a specific test prediction. However, even approximating the IF is computationally expensive, to the degree that may be prohibitive in many cases. Might simpler approaches (e.g., retrieving train examples most similar to a given test point) perform comparably? In this work, we evaluate the degree to which different potential instance attribution agree with respect to the importance of training samples. We find that simple retrieval methods yield training instances that differ from those identified via gradient-based methods (such as IFs), but that nonetheless exhibit desirable characteristics similar to more complex attribution methods. Code for all methods and experiments in this paper is available at: \url{https://github.com/successar/instance_attributions_NLP}."
+}
+
+
+
+
+@inproceedings{Russell2025PeopleWF,
+    title = "People who frequently use {C}hat{GPT} for writing tasks are accurate and robust detectors of {AI}-generated text",
+    author = "Russell, Jenna  and
+      Karpinska, Marzena  and
+      Iyyer, Mohit",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.acl-long.267/",
+    doi = "10.18653/v1/2025.acl-long.267",
+    pages = "5342--5373",
+    ISBN = "979-8-89176-251-0",
+    abstract = "In this paper, we study how well humans can detect text generated by commercial LLMs (GPT-4o, Claude, o1). We hire annotators to read 300 non-fiction English articles, label them as either human-written or AI-generated, and provide paragraph-length explanations for their decisions. Our experiments show that annotators who frequently use LLMs for writing tasks excel at detecting AI-generated text, even without any specialized training or feedback. In fact, the majority vote among five such ``expert'' annotators misclassifies only 1 of 300 articles, significantly outperforming most commercial and open-source detectors we evaluated even in the presence of evasion tactics like paraphrasing and humanization. Qualitative analysis of the experts' free-form explanations shows that while they rely heavily on specific lexical clues ({`}AI vocabulary'), they also pick up on more complex phenomena within the text (e.g., formality, originality, clarity) that are challenging to assess for automatic detectors. We release our annotated dataset and code to spur future research into both human and automated detection of AI-generated text."
+}
+
+@article{copestake2024,
+  title={LLMs as supersloppers},
+  author={Copestake, Ann and Duggan, Lucy and Herbelot, Aurelie and Moeding, Amira and von Redecker, Eva},
+  journal = {None},
+  year={2024}
+}
+
+
+
+@inproceedings{hovy2016measuring,
+  title={The Enemy in Your Own Camp: How Well Can We Detect Statistically-Generated Fake Reviews--An Adversarial Study},
+  author={Hovy, Dirk},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  pages={351--356},
+  year={2016},
+  organization={Association for Computational Linguistics},
+  doi={10.18653/v1/P16-2057}
+}
+
+@book{Gunning1952-lq,
+title = "The technique of clear writing",
+author = "Gunning, Robert",
+publisher = "McGraw-Hill",
+address = "New York",
+abstract = "289 p. 21 cm",
+year = 1952,
+keywords = "English language",
+language = "en"
+}
+
+
+@inproceedings{salkar-etal-2022-self,
+    title = "Self-Repetition in Abstractive Neural Summarizers",
+    author = "Salkar, Nikita  and
+      Trikalinos, Thomas  and
+      Wallace, Byron  and
+      Nenkova, Ani",
+    editor = "He, Yulan  and
+      Ji, Heng  and
+      Li, Sujian  and
+      Liu, Yang  and
+      Chang, Chua-Hui",
+    booktitle = "Proceedings of the 2nd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 12th International Joint Conference on Natural Language Processing (Volume 2: Short Papers)",
+    month = nov,
+    year = "2022",
+    address = "Online only",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.aacl-short.42/",
+    doi = "10.18653/v1/2022.aacl-short.42",
+    pages = "341--350",
+}
+
+@inproceedings{bache2013text,
+  title={Text-based measures of document diversity},
+  author={Bache, Kevin and Newman, David and Smyth, Padhraic},
+  booktitle={Proceedings of the 19th ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={23--31},
+  year={2013}
+}
+
+@inproceedings{alihosseini-etal-2019-jointly,
+    title = "Jointly Measuring Diversity and Quality in Text Generation Models",
+    author = "Alihosseini, Danial  and
+      Montahaei, Ehsan  and
+      Soleymani Baghshah, Mahdieh",
+    editor = "Bosselut, Antoine  and
+      Celikyilmaz, Asli  and
+      Ghazvininejad, Marjan  and
+      Iyer, Srinivasan  and
+      Khandelwal, Urvashi  and
+      Rashkin, Hannah  and
+      Wolf, Thomas",
+    booktitle = "Proceedings of the Workshop on Methods for Optimizing and Evaluating Neural Language Generation",
+    month = jun,
+    year = "2019",
+    address = "Minneapolis, Minnesota",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/W19-2311/",
+    doi = "10.18653/v1/W19-2311",
+    pages = "90--98",
+}
+
+
+@inproceedings{flekova2016exploring,
+  title={Exploring stylistic variation with age and income on Twitter},
+  author={Flekova, Lucie and Gurevych, Iryna},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  pages={313--319},
+  year={2016}
+}
+
+@article{Flesch1948ANR,
+  title={A new readability yardstick.},
+  author={Rudolf Franz Flesch},
+  journal={The Journal of applied psychology},
+  year={1948},
+  volume={32 3},
+  pages={
+          221-33
+        },
+  url={https://api.semanticscholar.org/CorpusID:39344661}
+}
+@inproceedings{Zhang2024VerbosityV,
+  title={Verbosity $\neq$ Veracity: Demystify Verbosity Compensation Behavior of Large Language Models},
+  author={Yusen Zhang and Sarkar Snigdha Sarathi Das and Rui Zhang},
+  year={2024},
+  url={https://api.semanticscholar.org/CorpusID:273970177}
+}
+
+
+@article{Fanous2025SycEvalEL,
+  title={SycEval: Evaluating LLM Sycophancy},
+  author={A.H. Fanous and Jacob Goldberg and Ank A. Agarwal and Joanna Lin and Anson Y. Zhou and Roxana Daneshjou and Oluwasanmi Koyejo},
+  journal={ArXiv},
+  year={2025},
+  volume={abs/2502.08177},
+  url={https://api.semanticscholar.org/CorpusID:276287766}
+}
+@misc{ElKishky2024OpenAIOS,
+      title={OpenAI o1 System Card}, 
+      author={OpenAI and : and Aaron Jaech and Adam Kalai and Adam Lerer and Adam Richardson and Ahmed El-Kishky and Aiden Low and Alec Helyar and Aleksander Madry and Alex Beutel and Alex Carney and Alex Iftimie and Alex Karpenko and Alex Tachard Passos and Alexander Neitz and Alexander Prokofiev and Alexander Wei and Allison Tam and Ally Bennett and Ananya Kumar and Andre Saraiva and Andrea Vallone and Andrew Duberstein and Andrew Kondrich and Andrey Mishchenko and Andy Applebaum and Angela Jiang and Ashvin Nair and Barret Zoph and Behrooz Ghorbani and Ben Rossen and Benjamin Sokolowsky and Boaz Barak and Bob McGrew and Borys Minaiev and Botao Hao and Bowen Baker and Brandon Houghton and Brandon McKinzie and Brydon Eastman and Camillo Lugaresi and Cary Bassin and Cary Hudson and Chak Ming Li and Charles de Bourcy and Chelsea Voss and Chen Shen and Chong Zhang and Chris Koch and Chris Orsinger and Christopher Hesse and Claudia Fischer and Clive Chan and Dan Roberts and Daniel Kappler and Daniel Levy and Daniel Selsam and David Dohan and David Farhi and David Mely and David Robinson and Dimitris Tsipras and Doug Li and Dragos Oprica and Eben Freeman and Eddie Zhang and Edmund Wong and Elizabeth Proehl and Enoch Cheung and Eric Mitchell and Eric Wallace and Erik Ritter and Evan Mays and Fan Wang and Felipe Petroski Such and Filippo Raso and Florencia Leoni and Foivos Tsimpourlas and Francis Song and Fred von Lohmann and Freddie Sulit and Geoff Salmon and Giambattista Parascandolo and Gildas Chabot and Grace Zhao and Greg Brockman and Guillaume Leclerc and Hadi Salman and Haiming Bao and Hao Sheng and Hart Andrin and Hessam Bagherinezhad and Hongyu Ren and Hunter Lightman and Hyung Won Chung and Ian Kivlichan and Ian O'Connell and Ian Osband and Ignasi Clavera Gilaberte and Ilge Akkaya and Ilya Kostrikov and Ilya Sutskever and Irina Kofman and Jakub Pachocki and James Lennon and Jason Wei and Jean Harb and Jerry Twore and Jiacheng Feng and Jiahui Yu and Jiayi Weng and Jie Tang and Jieqi Yu and Joaquin Quiñonero Candela and Joe Palermo and Joel Parish and Johannes Heidecke and John Hallman and John Rizzo and Jonathan Gordon and Jonathan Uesato and Jonathan Ward and Joost Huizinga and Julie Wang and Kai Chen and Kai Xiao and Karan Singhal and Karina Nguyen and Karl Cobbe and Katy Shi and Kayla Wood and Kendra Rimbach and Keren Gu-Lemberg and Kevin Liu and Kevin Lu and Kevin Stone and Kevin Yu and Lama Ahmad and Lauren Yang and Leo Liu and Leon Maksin and Leyton Ho and Liam Fedus and Lilian Weng and Linden Li and Lindsay McCallum and Lindsey Held and Lorenz Kuhn and Lukas Kondraciuk and Lukasz Kaiser and Luke Metz and Madelaine Boyd and Maja Trebacz and Manas Joglekar and Mark Chen and Marko Tintor and Mason Meyer and Matt Jones and Matt Kaufer and Max Schwarzer and Meghan Shah and Mehmet Yatbaz and Melody Y. Guan and Mengyuan Xu and Mengyuan Yan and Mia Glaese and Mianna Chen and Michael Lampe and Michael Malek and Michele Wang and Michelle Fradin and Mike McClay and Mikhail Pavlov and Miles Wang and Mingxuan Wang and Mira Murati and Mo Bavarian and Mostafa Rohaninejad and Nat McAleese and Neil Chowdhury and Neil Chowdhury and Nick Ryder and Nikolas Tezak and Noam Brown and Ofir Nachum and Oleg Boiko and Oleg Murk and Olivia Watkins and Patrick Chao and Paul Ashbourne and Pavel Izmailov and Peter Zhokhov and Rachel Dias and Rahul Arora and Randall Lin and Rapha Gontijo Lopes and Raz Gaon and Reah Miyara and Reimar Leike and Renny Hwang and Rhythm Garg and Robin Brown and Roshan James and Rui Shu and Ryan Cheu and Ryan Greene and Saachi Jain and Sam Altman and Sam Toizer and Sam Toyer and Samuel Miserendino and Sandhini Agarwal and Santiago Hernandez and Sasha Baker and Scott McKinney and Scottie Yan and Shengjia Zhao and Shengli Hu and Shibani Santurkar and Shraman Ray Chaudhuri and Shuyuan Zhang and Siyuan Fu and Spencer Papay and Steph Lin and Suchir Balaji and Suvansh Sanjeev and Szymon Sidor and Tal Broda and Aidan Clark and Tao Wang and Taylor Gordon and Ted Sanders and Tejal Patwardhan and Thibault Sottiaux and Thomas Degry and Thomas Dimson and Tianhao Zheng and Timur Garipov and Tom Stasi and Trapit Bansal and Trevor Creech and Troy Peterson and Tyna Eloundou and Valerie Qi and Vineet Kosaraju and Vinnie Monaco and Vitchyr Pong and Vlad Fomenko and Weiyi Zheng and Wenda Zhou and Wes McCabe and Wojciech Zaremba and Yann Dubois and Yinghai Lu and Yining Chen and Young Cha and Yu Bai and Yuchen He and Yuchen Zhang and Yunyun Wang and Zheng Shao and Zhuohan Li},
+      year={2024},
+      eprint={2412.16720},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2412.16720}, 
+}
+
+@article{Li2024LLMsasJudgesAC,
+  title={LLMs-as-Judges: A Comprehensive Survey on LLM-based Evaluation Methods},
+  author={Haitao Li and Qian Dong and Junjie Chen and Huixue Su and Yujia Zhou and Qingyao Ai and Ziyi Ye and Yiqun Liu},
+  journal={ArXiv},
+  year={2024},
+  volume={abs/2412.05579},
+  url={https://api.semanticscholar.org/CorpusID:274596907}
+}
+
+@inproceedings{namuduri2025qudsim,
+title={{QUD}sim: Quantifying Discourse Similarities in {LLM}-Generated Text},
+author={Ramya Namuduri and Yating Wu and Anshun Asher Zheng and Manya Wadhwa and Greg Durrett and Junyi Jessy Li},
+booktitle={Second Conference on Language Modeling},
+year={2025},
+url={https://openreview.net/forum?id=zFz1BJu211}
+}
+
+
+@misc{meta2024llama4, title={Introducing LLaMA 4: Advancing Multimodal Intelligence}, author={Meta AI}, year={2024}, url={https://ai.meta.com/blog/llama-4-multimodal-intelligence/} } 
+
+
+@inproceedings{Tevet2020EvaluatingTE,
+  title={Evaluating the Evaluation of Diversity in Natural Language Generation},
+  author={Guy Tevet and Jonathan Berant},
+  booktitle={Conference of the European Chapter of the Association for Computational Linguistics},
+  year={2020},
+  url={https://api.semanticscholar.org/CorpusID:215238851}
+}
+
+@inproceedings{Meister2021RevisitingTU,
+    title = "Revisiting the {U}niform {I}nformation {D}ensity Hypothesis",
+    author = {Meister, Clara  and
+      Pimentel, Tiago  and
+      Haller, Patrick  and
+      J{\"a}ger, Lena  and
+      Cotterell, Ryan  and
+      Levy, Roger},
+    editor = "Moens, Marie-Francine  and
+      Huang, Xuanjing  and
+      Specia, Lucia  and
+      Yih, Scott Wen-tau",
+    booktitle = "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2021",
+    address = "Online and Punta Cana, Dominican Republic",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.emnlp-main.74/",
+    doi = "10.18653/v1/2021.emnlp-main.74",
+    pages = "963--980",
+    abstract = "The uniform information density (UID) hypothesis posits a preference among language users for utterances structured such that information is distributed uniformly across a signal. While its implications on language production have been well explored, the hypothesis potentially makes predictions about language comprehension and linguistic acceptability as well. Further, it is unclear how uniformity in a linguistic signal{---}or lack thereof{---}should be measured, and over which linguistic unit, e.g., the sentence or language level, this uniformity should hold. Here we investigate these facets of the UID hypothesis using reading time and acceptability data. While our reading time results are generally consistent with previous work, they are also consistent with a weakly super-linear effect of surprisal, which would be compatible with UID{'}s predictions. For acceptability judgments, we find clearer evidence that non-uniformity in information density is predictive of lower acceptability. We then explore multiple operationalizations of UID, motivated by different interpretations of the original hypothesis, and analyze the scope over which the pressure towards uniformity is exerted. The explanatory power of a subset of the proposed operationalizations suggests that the strongest trend may be a regression towards a mean surprisal across the language, rather than the phrase, sentence, or document{---}a finding that supports a typical interpretation of UID, namely that it is the byproduct of language users maximizing the use of a (hypothetical) communication channel."
+}
+@article{atreides2024cognitive,
+title = {Cognitive biases in natural language: Automatically detecting, differentiating, and measuring bias in text},
+journal = {Cognitive Systems Research},
+volume = {88},
+pages = {101304},
+year = {2024},
+issn = {1389-0417},
+doi = {https://doi.org/10.1016/j.cogsys.2024.101304},
+url = {https://www.sciencedirect.com/science/article/pii/S1389041724000986},
+author = {Kyrtin Atreides and David J. Kelley},
+keywords = {AI, Ethics, Cognitive Bias, Detection, Decision-making, Misinformation, Attention Economy, NLP, Benchmarking, Collective Intelligence},
+abstract = {We examine preliminary results from the first automated system to detect the 188 cognitive biases included in the 2016 Cognitive Bias Codex, as applied to both human and AI-generated text, and compared to a human baseline of performance. The human baseline was constructed from the collective intelligence of a small but diverse group of volunteers independently submitting their detected cognitive biases for each sample in the task used for the first phase. This baseline was used as an approximation of the ground truth on this task, for lack of any prior established and relevant benchmark. Results showed the system’s performance to be above that of the average human, but below that of the top-performing human and the collective, with greater performance on a subset of 18 out of the 24 categories in the codex. This version of the system was also applied to analyzing responses to 150 open-ended questions put to each of the top 5 performing closed and open-source Large Language Models, as of the time of testing. Results from this second phase showed measurably higher rates of cognitive bias detection across roughly half of all categories than those observed when analyzing human-generated text. The level of model contamination was also considered for two types of contamination observed, where the models gave canned responses. Levels of cognitive bias detected in each model were compared both to one another and to data from the first phase.}
+}
+
+@article{mahdawi2025ai,
+  title={AI-generated ‘slop’is slowly killing the internet, so why is nobody trying to stop it},
+  author={Mahdawi, Arwa},
+  journal={The Guardian},
+  year={2025},
+  url={https://www.theguardian.com/global/commentisfree/2025/jan/08/ai-generated-slop-slowly-killing-internet-nobody-trying-to-stop-it}
+}
+
+@article{hoffman2024first,
+  title={First came “spam.” now, with ai, we’ve got “slop.”},
+  author={Hoffman, Benjamin},
+  journal={The New York Times},
+  volume={11},
+  year={2024},
+  url={https://www.nytimes.com/2024/06/11/style/ai-search-slop.html},
+}
+
+@article{wallace2024,
+  title={How long will A.I.’s ‘slop’ era last?},
+  author={Wallace-Wells, David},
+  journal={The New York Times},
+  year={2024},
+  url={https://www.nytimes.com/2024/07/24/opinion/ai-annoying-future.html}
+}
+
+@article{Habibzadeh2023GPTZeroPI,
+  title={GPTZero Performance in Identifying Artificial Intelligence-Generated Medical Texts: A Preliminary Study},
+  author={Farrokh Habibzadeh},
+  journal={Journal of Korean Medical Science},
+  year={2023},
+  volume={38},
+  url={https://api.semanticscholar.org/CorpusID:261978383}
+}
+
+@article{Hans2024SpottingLW,
+  title={Spotting LLMs With Binoculars: Zero-Shot Detection of Machine-Generated Text},
+  author={Abhimanyu Hans and Avi Schwarzschild and Valeriia Cherepanova and Hamid Kazemi and Aniruddha Saha and Micah Goldblum and Jonas Geiping and Tom Goldstein},
+  journal={ArXiv},
+  year={2024},
+  volume={abs/2401.12070},
+  url={https://api.semanticscholar.org/CorpusID:267068867}
+}
+
+
+@inproceedings{papineni2002bleu,
+  title={Bleu: a method for automatic evaluation of machine translation},
+  author={Papineni, Kishore and Roukos, Salim and Ward, Todd and Zhu, Wei-Jing},
+  booktitle={Proceedings of the 40th annual meeting of the Association for Computational Linguistics},
+  pages={311--318},
+  year={2002}
+}
+
+@inproceedings{lin2004rouge,
+  title={ROUGE: A package for automatic evaluation of summaries},
+  author={Lin, Chin-Yew},
+  booktitle={Text summarization branches out},
+  pages={74--81},
+  year={2004}
+}
+
+@inproceedings{zhang2020bertscore,
+  title={BERTScore: Evaluating text generation with BERT},
+  author={Zhang, Tianyi and Kishore, Varsha and Wu, Felix and Weinberger, Kilian Q and Artzi, Yoav},
+  booktitle={International Conference on Learning Representations},
+  year={2020}
+}
+
+
+@techreport{NBERw34255,
+ title = "How People Use ChatGPT",
+ author = "Chatterji, Aaron and Cunningham, Thomas and Deming, David J and Hitzig, Zoe and Ong, Christopher and Shan, Carl Yan and Wadman, Kevin",
+ institution = "National Bureau of Economic Research",
+ type = "Working Paper",
+ series = "Working Paper Series",
+ number = "34255",
+ year = "2025",
+ month = "September",
+ doi = {10.3386/w34255},
+ URL = "http://www.nber.org/papers/w34255"
+}
+
+@article{bharadwaj2025flattery,
+  title={Flattery, Fluff, and Fog: Diagnosing and Mitigating Idiosyncratic Biases in Preference Models},
+  author={Bharadwaj, Anirudh and Malaviya, Chaitanya and Joshi, Nitish and Yatskar, Mark},
+  journal={arXiv preprint arXiv:2506.05339},
+  year={2025}
+}
+
+@inproceedings{chakrabarty2024art,
+  title={Art or artifice? large language models and the false promise of creativity},
+  author={Chakrabarty, Tuhin and Laban, Philippe and Agarwal, Divyansh and Muresan, Smaranda and Wu, Chien-Sheng},
+  booktitle={Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems},
+  pages={1--34},
+  year={2024}
+}
+@inproceedings{chakrabarty2025can,
+  title={Can ai writing be salvaged? mitigating idiosyncrasies and improving human-ai alignment in the writing process through edits},
+  author={Chakrabarty, Tuhin and Laban, Philippe and Wu, Chien-Sheng},
+  booktitle={Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems},
+  pages={1--33},
+  year={2025}
+}
+
+@article{10.1162/0891201041850885,
+  title={Learning Subjective Language},
+  author={Janyce Wiebe and Theresa Wilson and Rebecca F. Bruce and Matthew Bell and Melanie J. Martin},
+  journal={Computational Linguistics},
+  year={2004},
+  volume={30},
+  pages={277-308},
+  url={https://api.semanticscholar.org/CorpusID:2896078}
+}
+
+@article{copestake2024,
+  title={LLMs as supersloppers},
+  author={Copestake, Ann and Duggan, Lucy and Herbelot, Aurelie and Moeding, Amira and von Redecker, Eva},
+  journal = {None},
+  year={2024}
+}
+
+
+
+
+@inproceedings{kincaid1975derivation,
+  title={Derivation of New Readability Formulas (Automated Readability Index, Fog Count and Flesch Reading Ease Formula) for Navy Enlisted Personnel},
+  author={Peter Kincaid and Robert P. Fishburne and Richard L. Rogers and Brad S. Chissom},
+  year={1975},
+  url={https://api.semanticscholar.org/CorpusID:61131325}
+}
+
+
+@article{flesch1948new,
+  title={A New Readability Yardstick},
+  author={Flesch, Rudolf},
+  journal={Journal of Applied Psychology},
+  volume={32},
+  number={3},
+  pages={221--233},
+  year={1948},
+  publisher={American Psychological Association},
+  doi={10.1037/h0057532}
+}
+
+
+
+@article{anthropic2024model,
+  title={Model card addendum: Claude 3.5 haiku and upgraded claude 3.5 sonnet},
+  author={Anthropic, Sonnet},
+  journal={URL https://api.semanticscholar.org/CorpusID},
+  volume={273639283},
+  year={2024}
+}
+
+@misc{deepseekai2025deepseekr1incentivizingreasoningcapability,
+      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}, 
+      author={DeepSeek-AI},
+      year={2025},
+      eprint={2501.12948},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2501.12948}, 
+}
+
+@article{liu2023g,
+  title={G-eval: NLG evaluation using gpt-4 with better human alignment},
+  author={Liu, Yang and Iter, Dan and Xu, Yichong and Wang, Shuohang and Xu, Ruochen and Zhu, Chenguang},
+  journal={arXiv preprint arXiv:2303.16634},
+  year={2023}
+}
+@article{Yang2024CanWT,
+  title={Can We Trust LLMs? Mitigate Overconfidence Bias in LLMs through Knowledge Transfer},
+  author={Haoyan Yang and Yixuan Wang and Xingyin Xu and Hanyuan Zhang and Yirong Bian},
+  journal={ArXiv},
+  year={2024},
+  volume={abs/2405.16856},
+  url={https://api.semanticscholar.org/CorpusID:270063599}
+}
+
+@misc{gemmateam2024gemma2improvingopen,
+      title={Gemma 2: Improving Open Language Models at a Practical Size}, 
+      author={Gemma Team and Morgane Riviere and Shreya Pathak and Pier Giuseppe Sessa and Cassidy Hardin and Surya Bhupatiraju and Léonard Hussenot and Thomas Mesnard and Bobak Shahriari and Alexandre Ramé and Johan Ferret and Peter Liu and Pouya Tafti and Abe Friesen and Michelle Casbon and Sabela Ramos and Ravin Kumar and Charline Le Lan and Sammy Jerome and Anton Tsitsulin and Nino Vieillard and Piotr Stanczyk and Sertan Girgin and Nikola Momchev and Matt Hoffman and Shantanu Thakoor and Jean-Bastien Grill and Behnam Neyshabur and Olivier Bachem and Alanna Walton and Aliaksei Severyn and Alicia Parrish and Aliya Ahmad and Allen Hutchison and Alvin Abdagic and Amanda Carl and Amy Shen and Andy Brock and Andy Coenen and Anthony Laforge and Antonia Paterson and Ben Bastian and Bilal Piot and Bo Wu and Brandon Royal and Charlie Chen and Chintu Kumar and Chris Perry and Chris Welty and Christopher A. Choquette-Choo and Danila Sinopalnikov and David Weinberger and Dimple Vijaykumar and Dominika Rogozińska and Dustin Herbison and Elisa Bandy and Emma Wang and Eric Noland and Erica Moreira and Evan Senter and Evgenii Eltyshev and Francesco Visin and Gabriel Rasskin and Gary Wei and Glenn Cameron and Gus Martins and Hadi Hashemi and Hanna Klimczak-Plucińska and Harleen Batra and Harsh Dhand and Ivan Nardini and Jacinda Mein and Jack Zhou and James Svensson and Jeff Stanway and Jetha Chan and Jin Peng Zhou and Joana Carrasqueira and Joana Iljazi and Jocelyn Becker and Joe Fernandez and Joost van Amersfoort and Josh Gordon and Josh Lipschultz and Josh Newlan and Ju-yeong Ji and Kareem Mohamed and Kartikeya Badola and Kat Black and Katie Millican and Keelin McDonell and Kelvin Nguyen and Kiranbir Sodhia and Kish Greene and Lars Lowe Sjoesund and Lauren Usui and Laurent Sifre and Lena Heuermann and Leticia Lago and Lilly McNealus and Livio Baldini Soares and Logan Kilpatrick and Lucas Dixon and Luciano Martins and Machel Reid and Manvinder Singh and Mark Iverson and Martin Görner and Mat Velloso and Mateo Wirth and Matt Davidow and Matt Miller and Matthew Rahtz and Matthew Watson and Meg Risdal and Mehran Kazemi and Michael Moynihan and Ming Zhang and Minsuk Kahng and Minwoo Park and Mofi Rahman and Mohit Khatwani and Natalie Dao and Nenshad Bardoliwalla and Nesh Devanathan and Neta Dumai and Nilay Chauhan and Oscar Wahltinez and Pankil Botarda and Parker Barnes and Paul Barham and Paul Michel and Pengchong Jin and Petko Georgiev and Phil Culliton and Pradeep Kuppala and Ramona Comanescu and Ramona Merhej and Reena Jana and Reza Ardeshir Rokni and Rishabh Agarwal and Ryan Mullins and Samaneh Saadat and Sara Mc Carthy and Sarah Cogan and Sarah Perrin and Sébastien M. R. Arnold and Sebastian Krause and Shengyang Dai and Shruti Garg and Shruti Sheth and Sue Ronstrom and Susan Chan and Timothy Jordan and Ting Yu and Tom Eccles and Tom Hennigan and Tomas Kocisky and Tulsee Doshi and Vihan Jain and Vikas Yadav and Vilobh Meshram and Vishal Dharmadhikari and Warren Barkley and Wei Wei and Wenming Ye and Woohyun Han and Woosuk Kwon and Xiang Xu and Zhe Shen and Zhitao Gong and Zichuan Wei and Victor Cotruta and Phoebe Kirk and Anand Rao and Minh Giang and Ludovic Peran and Tris Warkentin and Eli Collins and Joelle Barral and Zoubin Ghahramani and Raia Hadsell and D. Sculley and Jeanine Banks and Anca Dragan and Slav Petrov and Oriol Vinyals and Jeff Dean and Demis Hassabis and Koray Kavukcuoglu and Clement Farabet and Elena Buchatskaya and Sebastian Borgeaud and Noah Fiedel and Armand Joulin and Kathleen Kenealy and Robert Dadashi and Alek Andreev},
+      year={2024},
+      eprint={2408.00118},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2408.00118}, 
+}
+
+@inproceedings{Murugadoss2024EvaluatingTE,
+author = {Murugadoss, Bhuvanashree and Poelitz, Christian and Drosos, Ian and Le, Vu and McKenna, Nick and Negreanu, Carina Suzana and Parnin, Chris and Sarkar, Advait},
+title = {Evaluating the evaluator: measuring LLMs' adherence to task evaluation instructions},
+year = {2025},
+isbn = {978-1-57735-897-8},
+publisher = {AAAI Press},
+url = {https://doi.org/10.1609/aaai.v39i18.34157},
+doi = {10.1609/aaai.v39i18.34157},
+abstract = {LLMs-as-a-judge is a recently popularized method which replaces human judgements in task evaluation with automatic evaluation using LLMs. Due to widespread use of RLHF (Reinforcement Learning from Human Feedback), state-of-the-art LLMs like GPT4 and Llama3 are expected to have strong alignment with human preferences when prompted for a quality judgement, such as the coherence of a text. While this seems beneficial, it is not clear whether the assessments by an LLM-as-a-judge constitute only an evaluation based on the instructions in the prompts, or reflect its preference for high-quality data similar to its fine-tune data. To investigate how much influence prompting the LLMs-as-a-judge has on the alignment of AI judgements to human judgements, we analyze prompts with increasing levels of instructions about the target quality of an evaluation, for several LLMs-as-a-judge. Further, we compare to a prompt-free method using model perplexity as a quality measure instead. We aggregate a taxonomy of quality criteria commonly used across state-of-the-art evaluations with LLMs and provide this as a rigorous benchmark of models as judges. Overall, we show that the LLMs-as-a-judge benefit only little from highly detailed instructions in prompts and that perplexity can sometimes align better with human judgements than prompting, especially on textual quality.},
+booktitle = {Proceedings of the Thirty-Ninth AAAI Conference on Artificial Intelligence and Thirty-Seventh Conference on Innovative Applications of Artificial Intelligence and Fifteenth Symposium on Educational Advances in Artificial Intelligence},
+articleno = {2184},
+numpages = {9},
+series = {AAAI'25/IAAI'25/EAAI'25}
+}
+
+
+@article{shaib2024standardizing,
+  title={Standardizing the measurement of text diversity: A tool and a comparative analysis of scores},
+  author={Shaib, Chantal and Barrow, Joe and Sun, Jiuding and Siu, Alexa F and Wallace, Byron C and Nenkova, Ani},
+  journal={arXiv preprint arXiv:2403.00553},
+  year={2024}
+}
+
+@article{Gooding2025WritingAA,
+  title={Writing as a testbed for open ended agents},
+  author={Sian Gooding and Lucia Lopez-Rivilla and Edward Grefenstette},
+  journal={ArXiv},
+  year={2025},
+  volume={abs/2503.19711},
+  url={https://api.semanticscholar.org/CorpusID:277314053}
+}
+
+@inproceedings{Adcock2026TheL4,
+  title={The Llama 4 Herd: Architecture, Training, Evaluation, and Deployment Notes},
+  author={Aaron Adcock and Aayushi Srivastava and Abhimanyu Dubey and Abhinav Jauhri and Abhinav Pande and Abhinav Pandey and Abhinav Sharma and Abhishek Kadian and Abhishek Kumawat and Adam Kelsey and Adam Stelle and Adeel Ashraf Cheema and Adela Kabiljo and Adina Katz and Adi Gangidi and Aditya Tayade and Adolfo Victoria and Adrian Samatan Alastuey and Adrien Conrath and Afroz Mohiuddin and Ahmed Sharif and Ahnaf Siddiqui and Ahuva Goldstand and Aijung Li and Aidan Boyd and Aidin Kazemi Daliri and Aisha Iqbal and Ajay Menon and Ajit Mathews and Akhil Mathur and Akshat Agarwal and Alan Schelten and Alana Shine and Alejandro Castillejo Munoz and A M Guliaev and Alexander Radovic and Alex Song and Alex Vaughan and Alexander Simeonov and Alexandre Rezende and Alexei Baevski and Alexey Roubaud and Allen Ma and Alvin Lee and Alyssa Pereira and Aman Ahmed and Aman Shankar and Amanda Kallet and Amar Budhiraja and Ameya Khandekar and Amine Benhalloum and Amir Gershman and Amit Nagpal and Amit Zohar and Amr Sharaf and Anant Desai and Anastasia Razdaibiedina and Anca Agape and Andranik Kurghinyan and Andre Perunicic and Andrea Madotto and Andrei Darabanov and Andr'es Alvarado and Andrew Brown and Andrew Cohen and Andrew Fang and Andrew Freeman and Andrew Gallagher and Andrew Gu and Andrew Prasetyo Jo and Andrew Ryan and Andrew Steffen and Andrew Wei and Andrey Rusakov and Andrii Golovei and Andy Shang and Angela Fan and Angela Flewellen and Animesh Pathak and Anirudh Goyal and Ankit Ramchandani and Ankur Pai and Ankur Singh and Ankush Garg and Anlu Xing and Anna Cai and Anna Grosul and Anna Prochowska and Anna Sun and Annie Dong and Annie Franco and Anqi Hu and Anshul Chawla and An-419 thony Hartshorn and Antonia Sheng and Antony Thomas and Anuj Goyal and Anusha De and Anvit Bodiwala and Aobo Yang and Apara-jita Saraf and Apurva Samudra and Aran Mun and Arash Rahnama and Archi Mitra and Archie Sravankumar and Archit Gupta and Aria Haghighi and Ariel Stolerman and Arkabandhu Chowdhury and Arnab Choudhury and Artem Korenev and Arthur Guo and Arthur Hinsvark and Arun Mallya and Arvind Neelakantan and Arya Talebzadeh and Ashish Shah and Ashmitha Jeevaraj Shetty and Ashwin Bharambe and Asif Islam and Aston Zhang and Austen Gregerson and Avi Lewis and Aya Ibrahim and Ayaz Minhas and Ayelet Dahan and Ayelet Regev Dabah and Bangsheng Tang and Bar Ulman and Bardiya Sadeghi and Bartosz J\k{e}drzejewski and Barys Skarabahaty and Beibei Zhu and Beibin Li and Ben Bharier and Benjamin Leonhardi and Benjamin Muller and Bennett Plessala and Bernie Huang and Beth Loyd and Bhargavi Paranjape and Bhavik Sheth and Bill Bonner and Bill Holland and Bill Wang and Bingzhe Liu and Binh Tang and Bo Liu and Bo Wu and Boduo Li and Bokai Yu and Bor-Chun Chen and Boris Araya and Boris Vidolov and Bo-Juen Chen and Boya Peng and Boyu Ni and Bradley Davis and Bram Wasti and Brandon Adams and Brandon Taylor and Brandon Wu and Brant Swidler and Brian Chiang and Brian Clerkin and Brian Fuller and Brooks Cutter and Bruno Novais and Bryan Gmyrek and Bysshe Easton and Cait Campos and Canaan Case and Carl Chengyan Fu and Carly Burton and Caro Diaz and Catherine Cole and Ce Liu and Cedric Fougerat and Cen Peng and Cen Zhao and Changhan Wang and Changkyu Kim and Chantal Shaib and Chao Zhou and Charlotte Caucheteux and Chau Nguyen and Chawin Sitawarin and Chaya Nayak and Chelsea Asher and Chen Fan and Chenguang Zhu and Cheng Cheng and Cheng Zhang and Chenguang Zhu and Chen Ruan and Chengzhu Yu and Chenheli Hua and Chenxi Whitehouse and Cheryl Holloway and Ching-Hsiang Chu and Ching-Yao Chuang and Chinmay Karande and Chirag Nagpal and Chlo'e Bakalar and Chloe Bi and Chris Cai and Chris Marra and Chris McConnell and Chris Thi and Chris Tindal and Chris Waterson and Christian Deverall and Christian Fuegen and Christian Keller and Christine Cheng and Christine Jou and Christine Smith and Christine Wang and Christoph Feichtenhofer and Christophe Touret and Christopher Luc and Christy Sauper and Chuanhao Zhuge and Chun-Yi Sung and Chunqiang Tang and Chunyang Wu and Clara Siegel and Cody Heale and Cody Wilbourn and Colin White and Congying Xia and Corinne Wong and Cornel Rat and Cristian Canton Ferrer and Cyrille Habis and Cyrus Nikolaidis and Dmytro Lohachov and Da Ju and Dalton Flanagan and Damien Allonsius and Damon Civin and Dan Johnson and Daniel Bolya and Daniel Francisco and Daniel Fried and Daniel Hawthorne and Daniel Haziza and Daniel Ho and Daniel Kreymer and Daniel Li and Daniel Machlab and Dan McKinnon and Daniel Obenshain and Daniel Rodriguez and Daniel Song and Daniel Tse and Danielle Pintz and Danny Livshits and Daryl James Rodrigo and Dat Huynh and Daulet Askarov and David Brandfonbrener and David Esiobu and David Kant and David Levin and David Renardy and David Soofian and David Stevens and David Xu and David Zhang and Deep Shah and Delia David and Demi Douglas and Denis Boyda and Desh Raj and Devamanyu Hazarika and D. Mekala and Dhruv Choudhary and Dhruv Mahajan and Di Jin and D{\'i}dac Sur{\'i}s Coll-Vinent and Didem Foss and Diego Garcia-Olano and Diego Perino and Dieuwke Hupkes and DiJia Su and Dilip Madathil and Dinesh Govindasamy and Dinesh Reddy V. Yeduguru and Dmitry Vengertsev and Dong He and Dong Li and Dong Wang and Dongzhuo Li and Duc Le and Dunant Hin and Dustin Holland and Duy Nguyen and Edward Dowling and Eden Litt and Egor Lakomkin and Ehab A. AlBadawy and Ehsan K. Ardestani and Elad Eckstein and Elahe Dabir and Elaine Montgomery and E I Lobanova and Elior Abramoviz and Eliot Hedeman and Elissa Li and Elizabeth Hilbert and Ellen Tan and Elliot Yun and Elodie Stener and Emil Stoimenov and Emilien Garreau and Emily Dinan and Emily Hahn and Emily Wood and Emma Li and Emmanuel Ademuwagun and Emrah Şeker and Eric Alamillo and Eric Gan and Eric Han and Eric Huang and Eric Michael Smith and Eric-Tuan Le and Ernie Chang and Eryk Helenowski and Eslam Elnikety and Esteban Arcaute and Ethan Myers and Eugene Nho and Eugene Poliukhovych and Evan Dunbar and Evgeniy Litvinenko and Evrim Altintacs and Eyal Hochman and Eyal Shtrauch and Fabian Mastenbroek and Faiza Zeb and Faizan Ahmad and Farhad Farahbakhshian and Fei Kou and Fei Sun and Feiyu Chen and Felix Chung and Feng Tian and Feng Xu and Filip Radenovic and Filippos Kokkinos and Francesco Barbieri and Francesco Caggioni and Francisco Esparza and Francisco Guzm’an and Frank J. Kanayet and Frank Seide and Frank Zhang and Fred Lewis and Freda Huang and Fulton Wang and Gabriele Synnaeve and Gabriela Jacques-Silva and Gabriella Schwarz and Gaganjit Ghardhora and Gal Elfer and Garrett Dickson and Gaurav Chaurasia and Gautam Sewani and Geet Shingi and Gefei Zuo and Geonhwa Jeong and George Puthanpurackal and Georgia Swee and Gerard Moreno-Torres Bertran and Gil Keren and Gina Ling and Gjergji Stasa and Gobinda Saha and Gor Safran and Gordy French and Goutham Rajendran and Govind Thattai and Grace Cineas and Graeme Nail and Greg Fletcher and Gr{\'e}goire Mialon and Griffin Adams and Grigory Sizov and Guan Pang and Hady Elsahar and Hai Dang Tran and Hailey Nguyen and Haiping Wu and Hakan Inan and Hamid Eghbalzadeh and Han Fang and Han Zou and Hannah Doyle and Han-nah Korevaar and Hannah Wang and Hannah Werbel and Han Zha and Hany Morsy and Hao Ma and Haoci Zhang and Haonan Sun and Haozhu Wang and Hardik Shah and Haroun Habeeb and Harrison Rudolph and Harsh Gupta and Harsh Poddar and Harshil Parikh and Hejia Zhang and Heming Wang and Hengduo Li and Himanshu Sharma and Hoang Phi Nguyen and Hongbo Zhang and Honghao Qiu and Hongjiang Lv and Hongli Xu and Hongyuan Zhan and Hossein Hamooni and Howard Huang and Hu Xu and Hugo Laurenccon and Hugo Touvron and Hung Dinh and Hunter Goldman and Hussein Mehanna and Huy Nguyen and Hweimi Tsuo and Ian Graves and Ian Yu and Ibrahim Damlaj and Idan Cohen and Igor Tufanov and Ilan Goldenstein and Ilias Leontiadis and Iliyan Zarov and Imad Ahmed and Innocent Djiofack and Iosif Spulber and Irina-Elena Veliche and Isabella Ramos and Ishan Misra and Itai Gal and Ivan Evtimov and Ivan Obraztsov and Jack Wu and Jacqueline Romero Vertino and Jaemo Koo and Jaewon Lee and Jake Jung and Jake Weissman and JAMES G. Beldock and James Crnkovich and James M. Grinage and James Hongyi Zeng and James Kohli and James Tian and Jamie Cahill and Jan Geffert and Jan Seidel and Janey Tracey and Jang Hyun Cho and Janice Wei and Jarrod Kahn and Jasmyn Howell and Jason Long Vu and Jason Park and Jason Yan and Jason Yip and Jay Li and Jay Mahadeokar and Jaya Bharath R Goluguri and Jayasi Mehar and Jean-Baptiste Gaya and Jeet Shah and J. Jeffrey Hanson and Jeff Marcus and Jeff Walsh and Jeff Yang and Jelmer van der Linde and Jemma Fan and Jennifer Chan and Jenny Zhen and Jenya Lee and Jeremy Fu and Jeremy Reizenstein and Jeremy Teboul and Jesse He and Jessica Zhong and Ji Hou and Ji Yang and Jia Ding and Jiabo Hu and Jiacheng Zhu and Jiadong Guo and Jialiang Wang and Jialin Ouyang and Jianfeng Chi and Jianyu Huang and Jianyun Zhao and Jiaowen Yang and Jiatong Zhou and Jiawei Zhao and Jiawen Liu and Jie Wang and Jie You and Jiecao Yu and Jillian Schwiep and Jilong Wu and Jing Huang and Jing Li and Jing Yu Koh and Jing Zhang and Jingxiang Chen and Jingyi Yang and Jingyue Shen and Jinho Hwang and Jinxi Guo and Jiwan Khatiwada and Joanna Bitton and Joe Li and Joe Quanaim and Joel Beales and Johan Schuijt and John Chang and John Quan and Johnnie Chan and Jon Shepard and Jona Harris and Jonah Rubin and Jonathan Janzen and Jonathan M. Kaldor and Jorge Lopez Silva and Jose Leitao and Joseph Greer and Joseph Moon and Joseph Rocca and Joseph Tighe and Josh Fromm and Joshua Deng and Joshua Fernandes and Joshua Saxe and Joyce Zheng and Juan Pino and Julien Prigent and Jun Chen and Junjiao Tian and Junjie Qi and Junjie Wang and Junteng Jia and Kade Baker and Kai Londenberg and Kai Wang and Kainan Peng and Kaiyan Peng and Kaiyue Yang and Kalyan Vasudev Alwala and Kam Hou Yu and Kanika Narang and Karan Chadha and Karan Sikka and Karen Zhang and Karina Schuberts and Karishma Mandyam and Karthik Abinav Sankararaman and Karthik Padthe and Karthik Prasad and Karthik Sivakumar and Kartikeya Upasani and Kate Plawiak and Kate Saenko and Katevrina vZmol'ikov'a and Kathryn Stadler and Kathy Matosich and Katie Doulgass and Kaveh Hassani and Kay Ji and Ke Li and Kenneth Heafield and Kenny Yu and Keqian Li and Kevin Chih-Yao Ma and Kevin Hannan and Keyu Man and Kezhen Chen and Khalid El-Arini and Khrystyna Hutsulyak and Kieran Nash and Ki-ran Jagadeesh and Kody Bartelt and Konstantin Topaloglou-Mundy and Konstantinos Chatziioannou and Konstantinos Karanasos and Konstantinos Vougioukas and Kostas Tsiampouris and Kristen Hamill and Kristy Choi and Krithika Iyer and Kshitiz Malik and Kuen-ley Chiu and Kun Huang and Kunal Bhalla and Kunal Chawla and Kunpeng Li and Kushal Lakhotia and Kyle Monk and Lakshya Garg and Lalit Chourey and Lars Hamre and Laura Gustafson and Lauren Deason and Laurence Rouesnel and Laurens van der Maaten and A Lavender and Lawrence Chen and Lawrence Jang and Leandro Silva and Leda Sari and Lee Hetherington and Lei Zhang and Leiyu Zhao and Lele Chen and Leo Chenghui Li and Leon Yang and Leon Zhan and Levi Corallo and Liang Tan and Licheng Yu and Lijuan Liu and Lilach Mor and Lincoln Lin and Linfeng Li and Lisa Titus and Liz Jenkins and Lovish Madaan and Lu Fang and Lu Yuan and Lucas Nava and Lucas Pasqualin and Lucas Switzer and Lucia Fang and Lucy Sun and Luka Tadic and Lukas Blecher and Lukas Landzaat and Luxin Zhang and Madhavi Rao and Madian Khabsa and Mahalia Miller and Mahendra Kariya and Ma-hesh Pasupuleti and Mahi Luthra and Manaal Faruqui and Manav Avlani and Manchen Wang and Mannat Singh and Manohar Paluri and Manoj Chakkaravarthy and Manoj Nair and Maquelle Tiffany and Marcin Pawlowski and Marcus Wu and Maria Lomeli and Mario Consuegra and Marion Boiteux and Marios Galanis and Marshall Chen and Martin Gleize and Maryam Fazel-Zarandi and Matan Hasson and Mathew Oldham and Mathieu Rita and Matt Dordal and Matthew Setzler and Matt Staats and Matt Wilde and Matthew Paul Clark and Matthew Grange and Matthias Lennie and Matthew Schmohl and Max Raphael and Maxim Naumov and Maxim Samoylov and Maxime Lecanu and Maya Pavlova and Md Taha Bin Jawaid and Meghan Keneally and Melissa Hall Melanie Kambadur and Meng Zhang and Mengchen Liu and Mengdi Lin and Mengjiao Wang and Mervyn Abraham and Miao Liu and Michael Au-Yeung and Michael Feldergraf and Michael Man and Michael Matheny and Michael Suo and Michael Tontchev and Michel Meyer and Michelle Ma and Mihir Patel and Mihir Kale and Mik Vyatskov and Mikayla Alexander and Mike Andersland and Mike Clark and Mike Lewis and Mike Li and Mike Macey and Michael L Seltzer and Mikel Jimenez Fernandez and Mikhail Antonov and Mikhail Plekhanov and Milan Zhou and Min Si and Ming Qiao and Mingbo Ma and Mingjun Zhang and Mingyi Liang and Miquel Jubert Hermoso and Mirac Suzgun and Mirjam Skarica and Mitesh Kumar Singh and Mohammad Kabbani and Mohammad Rastegari and Mona Sarantakos and Monica Sim and Monika Gangapuram and Mor Moshe and Morrie Doulaty and Morvarid Metanat and Moya Chen and Mrinal Kumar and Mun-ish Bansal and Murali Ramarao and Na Li and Nadav Azaria and Nahiyan Malik and Naman Goyal and Nancy Vargas Balderas and Nanshu Wang and Naoyuki Kanda and Natalia Gimelshein and Natalia Neverova and Nathan Aclander and Natt Sithiviraporn and Navneet Madhu Kumar and Ned Newton and Neeraj Bahl and Negar Ghorbani and Neil Patel and Neta-lee Golan and Nicholas Longenbaugh and Nick Egebo and Nikhil Johri and Nikhil Mehta and Nikhil Naik and Niko Moritz and Niko-lay Bashlykov and Nikolay Bogoychev and Nikolay Pavlovich Laptev and Niladri S. Chatterji and Nile Jones and Nimish Shah and Ning Dong and Ning Li and Ning Zhang and Nishant Yadav and Noam Paz and Norman Cheng and Olaoluwa Adesanya and Oleg Repin and Oleksandr Maksymets and Omkar Salpekar and Omri Harosh and Onkar Pednekar and Onur cCelebi and Oran Gafni and Oren Edinger and Osama Hanna and Owais Khan Mohammed and Ozlem Kalinli and Paden Tomasello and Pankaj Singh and Paola Quevedo and Parag Jain and Paria Rashidinejad and Parker Tooley and Parth Parekh and Parth Thakkar and Parvin Taheri and Pasan Hapuarachchi and Pascal Kesseli and Patrick Alrassy and Paulo de Rezende Pinatti and Pavan Balaji and Pawan Sisodiya and Pedro Jose Ferreira Moreira and Pe-dro Rittner and Pedro Valenzuela and Peize Sun and Peizhao Zhang and Peng-Jen Chen and Pengchao Wang and Pengchuan Zhang and Pengwei Li and Petar Vasi{\'c} and Peter S. Carras and Peter Ney and Peter Weng and Petru Dumea and Phil Hayes and Philip Woods and Pierre Andrews and Pierre M'enard and Ping-Hao Wu and Pingchuan Liu and Piotr Doll{\'a}r and Plamen Dzhelepov and Polina Zvyagina and Amy Posten and Prabhav Agrawal and Pradhapan Rajendran and Pradyot Prakash and Prajjwal Bhargava and Pramono and Pranay Shah and Pranshu Dave and Prash Jain and Pratik Dubal and Praveen Gollakota and Praveen Krishnan and Pritish Yuvraj and Projjal Ghosh and Punit Singh Koura and Puxin Xu and Qi Qi and Qi Zhou and Qian Guan and Qian Sun and Qiang Liu and Qing He and Qinqing Zheng and Qirui Yang and Qizhen Guo and Quanzeng You and Quentin Carbonneaux and Quentin Duval and Quintin Fettes and Rachad Alao and Rachel Batish and Rachel Guo and Rachel Rodriguez and Radhika Bhargava and Rafael Asuncion and Raghotham Murthy and Rahul Dutta and Rahul Jha and Rahul Kindi and Rahul Mitra and Raj Ganapathy and Raj Shah and Rajarshi Das and Rajat Shrivastava and Rajesh Nishtala and Ramakant Shankar and Raman Shukhau and Ramon Calderer and Rangaprabhu Parthasarathy and Ranjan Subramanian and Raphael Bensadoun and Rares Bostan and Rashnil Chaturvedi and Ravi Agrawal and Ray Gao and Raymond Li and Rebecca Kogen and Ricardo Juan Palma Duran and Ricardo Silveira Cabral and Richard Lee and Richard Yuanzhe Pang and Riddhish Bhalodia and Riham Mansour and Rishabh Singh and Rishi Godugu and Ritun Patney and Rob Boyle and Robbie Goldfarb and Robert Caldwell and Robert Kuo and Roberta Raileanu and Robin Battey and Robin Sharma and Rochit Sapra and Rocky Wang and Rodolfo Granata and Rodrigo De Castro and Rodrigo Paim and Rohan Maheshwari and Rohan Varma and Rohit Girdhar and Rohit Patel and Roshan Sumbaly and Roy Sheaffer and Ruan Silva and Ruben Rodriguez Buchillon and Rui Hou and Rui-Li Xie and Ruslan Mavlyutov and Ruslan Semenov and Rustam Dinov and Ruxiao Bao and Ryan Fox and Ryan Kilpatrick and Ryan Kwan and Ryan Lim and Ryan Smith and Saaketh Narayan and Sabrina Qiao and Sachin Mehta and Sachin Siby and Sagar Jain and Saghar Hosseini and Sagie Gur-Ari and Sa-hana Chennabasappa and Sahin Cem Geyik and Sai Jayesh Bondu and Sai Mounika Chowdhary Nekkalapudi and Saif Hasan and Saisuke Okabayashi and Saketh Rambhatla and Salil Sawhney and Sam Dunster and Sam Zhao and Saman Keon and Samaneh Azadi and Sameet Sapra and Samuel Dooley and Samyak Datta and Sandeep Parab and Sang Michael Xie and Sanjay Singh and Sanyuan Chen and Sara Behn and Sara Khodeir and Sarah Shirazyan and Sargun Dhillon and Sarunya Pumma and Sasha Sidorov and Saskia Adaime and Saurabh Khanna and Sayem Wani and Scott Brenton and Sean Bell and Sean Kelly and Sean Koger and Sean Nunley and Sean Perry and Sebastian Caicedo and Sebastian Dahlgren and Sebastian Ruder and Seiji Yamamoto and Selam Mehretu and Selvan Sunitha Ravi and Sen Lyu and Senthil Chellapan and Serafeim Mellos and Sergey Edunov and Sergey Royt and Shaina Cohen and Shangfu Peng and Shannon Adams and Shaoliang Nie and Sharadh Ramaswamy and Sharan Narang and Shashank Pisupati and Shashidhar Gandham and Shaun Lim and Shaun Lindsay and Sheena Artrip and Shelly Sheynin and Shen Yan and Sheng Feng and Sheng Shen and Shengbao Zheng and Shenghao Lin and Shengjie Bi and Shengxin Zha and Shengye Wan and Shengyi Qian and Shengyong Cai and Shengzhi Shao and Shervin Shahidi and Shikai Li and Shimon Bernholtz and Shiqi Wang and S. G. Patil and Shiv Verma and Pranavkrishna Shivashankar and Shiyang Chen and Sho Yaida and Shoubhik Debnath and Shreyas Siravara and Shruti Bhosale and Shuang Ma and Shun Zhang and Shuo Tang and Shuqiang Zhang and Shuyan Zhou and Sicong Che and Sidd Srinivisan and Siddharth Bhattacharya and Siddharth Patki and Sijia Chen and Sili Chen and Simon Vandenhende and Simone Merello and Si-Yuan Wang and Sivan Barzily and Sixian Yi and Siyu Lin and SK Bong and Sky Yin and Sneha Agarwal and Soerian Lieve and Soji Sajuyigbe and Song Jiang and Songlin Li and Sonia Kim and Sopan Khosla and Soumi Maiti and Spencer Whitman and Sravya Popuri and Sreen Tallam and Srinivas Vaidyanathan and Sten Sootla and St{\'e}phane Collot and Stephanie Ding and Stephen Chen and Steven Cai and Suchin Gururangan and Sudarshan Govindaprasad and Sue Young and Suganthi Dewakar and Sujan Kumar Gonugondla and Sujeet Bhandari and Suman Gumudavelli and Sumit Gupta and Summer Deng and Sungmin Cho and Suresh Ganapathy and Surjyendu Dhal and Susan Fedynak and Susana Contrera and Suyoun Kim and Sylvestre-Alvise Rebuffi and T. Chahande and Tamar Herman and Tan Li and Tao Xu and Tara Fowler and Tarek Sheasha and Tarun Anand and Tarun Kalluri and Tarun Singh and Tatiana Shavrina and Ted Li and Teja Rao and Tejas Patil and Teng Li and Thach Bui and Thai-Quyen Quach and Thamer Alharbash and Thanh Vinh Vo and Thawan Kooburat and Thilo Koehler and Thomas Georgiou and Thomas Scialom and Tian Ye and Tianhe Li and Tianjun Zhang and Tianyu Li and Tijmen Blankevoort and Timon Willi and Timothy Chou and Timothy Leung and TJ Lee and Todor Mihaylov and Tom Heatwole and Tong Xiao and Tony Cao and Tony Lee and Trang Le and Tristan Rice and Tsz Kei Serena Chan and Tuan Tran and Tudor Tiplea and Tyler Baumgartner and Uday R. Savagaonkar and Ujjwal Karn and Ulises Martinez Araiza and Umar Farooq and Uriel Cohen and Usman Sharif and Utkarsh Murarka and Van Phung and Varun Joginpalli and Varun Saravagi and Vasu Sharma and Vasudha Viswamurthy and Vedanuj Goswami and Vedika Seth and Venkat Ramesh and Vibhor Gupta and Victoria Montanez and Vidhya Natarajan and Vidya Sarma and Vignesh Ramanathan and Viktor Kerkez and Vinay Rao and Vincent Gonguet and Vincent Mauge and Vir-ginie Do and Vish Vogeti and Vishrav Chaudhary and Viswesh Sankaran and V{\'i}tor Albiero and Vivek Miglani and Vivek Pai and Vlad Cojanu and Vlad Shubin and Vlad T. Mihailescu and Vladan Petrovic and Vladimir Ivanov and Vladislav Vorotilov and Vrushali Bhutada and Wai I Ng and Wei Cheng and Wei Sun and Wei Tu and Wei Wei and Wei Zhou and Wei-Ning Hsu and Weiwei Chu and Weizhe Yuan and Wenchen Wang and Wenjun Zhao and Wenwen Jiang and Wenyin Fu and Wenzhe Jiang and Whit-ney Meers and Will Constable and Will Wang and William R. Wong and Xavier Martinet and Xi Victoria Lin and Xi Yan and Xi Yin and Xian Li and Xianfeng Rui and Xianjun Yang and Xia Tang and Xiaodong Wang and Xiaofang Wang and Xiaolan Wang and Xiaoliang Dai and Xiaoliang Peng and Xiaopeng Li and Xiaozhu Meng and Xibei Zhang and Xide Xia and Xin Jin and xinbo Gao and Xinfeng Xie and Xingyi Zhou and Xu Ma and Xuan Ju and Xuanyi Zhao and Xubo Liu and Xuchao Jia and Xuedong Zhang and Xuefei Cao and Xuewei Wang and Xuewei Wu and Xunnan Xu and Xutai Ma and Xuyang Wang and Yan-Hong Cui and Yang Chen and Yang Li and Yang Shu and Yang Xia and Yanjun Chen and Yanjun Zhou and Yash Mehta and Yash Patel and Yash Tekena and Yashesh Gaur and Yasmine Babaei and Yaxuan Zhou and Ye Hu and Ye Qi and Yejin Lee and Yeming Wen and Yen-Cheng Liu and Yexin Bruce Wu and Yi Pan and Yi Yang and Yi-Hui Lin and Yifan Wang and Yifan Wu and Yifan Yang and Yifei Huang and Yiftah Ben Aharon and Yilin Yang and Yiling You and Ying Xu and Ying Zhang and Yingquan Yuan and Yingru Liu and Yingyi Ma and Yining Yang and Yiting Lu and Yonatan Komornik and Yongjie Lin and Yoni Goyhman and Yossi Moran Mamo and Youngjin Nam and Yu Wang and Yu Lu and Yu Zhao and Yu-Ho Hsieh and Yu-Jung Lo and Yuandong Tian and Yuanhang Zhang and Yuanhao Xiong and Yuanshun Yao and Yuchen Hao and Yuchen Zhang and Yuchuan Li and Yue Cao and Yue Yu and Yue Zhao and Yuhan Guo and Yuhao Wang and Yuheng Huang and Yujie Lu and Yujun Shi and Yulun Wang and Yun He and Yun Wang and Yundi Qian and Yunfan Wang and Yunhao Tang and Yuning Mao and Yunlu Li and Yuqi Dai and Yuriy Hulovatyy and Yushi Hu and Yuxuan Sun and Zach Rait and Zach Wentz and Zacharie Delpierre Coudert and Zachary Collins and Zahra Hankir and Zecheng He and Zeeshan Ahmed and Zef Rosnbrick and Zhan Shu and Zhanna Rohalska and Zhaoduo Wen and Zhe Liu and Zhen Qiao and Zhenggang Xu and Zhengwen Zhou and Zhengxing Chen and Zhenyu Tang and Zhichen Wu and Zhicheng Ouyang and Zhihong Lei and Zhipeng Hong and Zhiping Xiu and Zhiwei Zhao and Zhong Meng and Zhou Jin and Zhouhao Zeng and Zichang Liu and Zi-Yuan Meng and Zihuan Qiao and Zinnia Zheng and Zixi Qi and Ziyi Luo and Zoe Foulkes Birkhead and Zoey Sun and Zohar Achdut},
+  year={2026},
+  url={https://api.semanticscholar.org/CorpusID:284910371}
+}
+@misc{olmo20252olmo2furious,
+      title={2 OLMo 2 Furious}, 
+      author={Team OLMo and Pete Walsh and Luca Soldaini and Dirk Groeneveld and Kyle Lo and Shane Arora and Akshita Bhagia and Yuling Gu and Shengyi Huang and Matt Jordan and Nathan Lambert and Dustin Schwenk and Oyvind Tafjord and Taira Anderson and David Atkinson and Faeze Brahman and Christopher Clark and Pradeep Dasigi and Nouha Dziri and Michal Guerquin and Hamish Ivison and Pang Wei Koh and Jiacheng Liu and Saumya Malik and William Merrill and Lester James V. Miranda and Jacob Morrison and Tyler Murray and Crystal Nam and Valentina Pyatkin and Aman Rangapur and Michael Schmitz and Sam Skjonsberg and David Wadden and Christopher Wilhelm and Michael Wilson and Luke Zettlemoyer and Ali Farhadi and Noah A. Smith and Hannaneh Hajishirzi},
+      year={2025},
+      eprint={2501.00656},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2501.00656}, 
+}
+
+
+@article{Blodgett2020LanguageI,
+  title={Language (Technology) is Power: A Critical Survey of “Bias” in NLP},
+  author={Su Lin Blodgett and Solon Barocas and Hal Daum'e and Hanna M. Wallach},
+  journal={ArXiv},
+  year={2020},
+  volume={abs/2005.14050},
+  url={https://api.semanticscholar.org/CorpusID:218971825}
+}
+
+@misc{openai2024gpt4technicalreport,
+      title={GPT-4 Technical Report}, 
+      author={OpenAI and Josh Achiam and Steven Adler and Sandhini Agarwal and Lama Ahmad and Ilge Akkaya and Florencia Leoni Aleman and Diogo Almeida and Janko Altenschmidt and Sam Altman and Shyamal Anadkat and Red Avila and Igor Babuschkin and Suchir Balaji and Valerie Balcom and Paul Baltescu and Haiming Bao and Mohammad Bavarian and Jeff Belgum and Irwan Bello and Jake Berdine and Gabriel Bernadett-Shapiro and Christopher Berner and Lenny Bogdonoff and Oleg Boiko and Madelaine Boyd and Anna-Luisa Brakman and Greg Brockman and Tim Brooks and Miles Brundage and Kevin Button and Trevor Cai and Rosie Campbell and Andrew Cann and Brittany Carey and Chelsea Carlson and Rory Carmichael and Brooke Chan and Che Chang and Fotis Chantzis and Derek Chen and Sully Chen and Ruby Chen and Jason Chen and Mark Chen and Ben Chess and Chester Cho and Casey Chu and Hyung Won Chung and Dave Cummings and Jeremiah Currier and Yunxing Dai and Cory Decareaux and Thomas Degry and Noah Deutsch and Damien Deville and Arka Dhar and David Dohan and Steve Dowling and Sheila Dunning and Adrien Ecoffet and Atty Eleti and Tyna Eloundou and David Farhi and Liam Fedus and Niko Felix and Simón Posada Fishman and Juston Forte and Isabella Fulford and Leo Gao and Elie Georges and Christian Gibson and Vik Goel and Tarun Gogineni and Gabriel Goh and Rapha Gontijo-Lopes and Jonathan Gordon and Morgan Grafstein and Scott Gray and Ryan Greene and Joshua Gross and Shixiang Shane Gu and Yufei Guo and Chris Hallacy and Jesse Han and Jeff Harris and Yuchen He and Mike Heaton and Johannes Heidecke and Chris Hesse and Alan Hickey and Wade Hickey and Peter Hoeschele and Brandon Houghton and Kenny Hsu and Shengli Hu and Xin Hu and Joost Huizinga and Shantanu Jain and Shawn Jain and Joanne Jang and Angela Jiang and Roger Jiang and Haozhun Jin and Denny Jin and Shino Jomoto and Billie Jonn and Heewoo Jun and Tomer Kaftan and Łukasz Kaiser and Ali Kamali and Ingmar Kanitscheider and Nitish Shirish Keskar and Tabarak Khan and Logan Kilpatrick and Jong Wook Kim and Christina Kim and Yongjik Kim and Jan Hendrik Kirchner and Jamie Kiros and Matt Knight and Daniel Kokotajlo and Łukasz Kondraciuk and Andrew Kondrich and Aris Konstantinidis and Kyle Kosic and Gretchen Krueger and Vishal Kuo and Michael Lampe and Ikai Lan and Teddy Lee and Jan Leike and Jade Leung and Daniel Levy and Chak Ming Li and Rachel Lim and Molly Lin and Stephanie Lin and Mateusz Litwin and Theresa Lopez and Ryan Lowe and Patricia Lue and Anna Makanju and Kim Malfacini and Sam Manning and Todor Markov and Yaniv Markovski and Bianca Martin and Katie Mayer and Andrew Mayne and Bob McGrew and Scott Mayer McKinney and Christine McLeavey and Paul McMillan and Jake McNeil and David Medina and Aalok Mehta and Jacob Menick and Luke Metz and Andrey Mishchenko and Pamela Mishkin and Vinnie Monaco and Evan Morikawa and Daniel Mossing and Tong Mu and Mira Murati and Oleg Murk and David Mély and Ashvin Nair and Reiichiro Nakano and Rajeev Nayak and Arvind Neelakantan and Richard Ngo and Hyeonwoo Noh and Long Ouyang and Cullen O'Keefe and Jakub Pachocki and Alex Paino and Joe Palermo and Ashley Pantuliano and Giambattista Parascandolo and Joel Parish and Emy Parparita and Alex Passos and Mikhail Pavlov and Andrew Peng and Adam Perelman and Filipe de Avila Belbute Peres and Michael Petrov and Henrique Ponde de Oliveira Pinto and Michael and Pokorny and Michelle Pokrass and Vitchyr H. Pong and Tolly Powell and Alethea Power and Boris Power and Elizabeth Proehl and Raul Puri and Alec Radford and Jack Rae and Aditya Ramesh and Cameron Raymond and Francis Real and Kendra Rimbach and Carl Ross and Bob Rotsted and Henri Roussez and Nick Ryder and Mario Saltarelli and Ted Sanders and Shibani Santurkar and Girish Sastry and Heather Schmidt and David Schnurr and John Schulman and Daniel Selsam and Kyla Sheppard and Toki Sherbakov and Jessica Shieh and Sarah Shoker and Pranav Shyam and Szymon Sidor and Eric Sigler and Maddie Simens and Jordan Sitkin and Katarina Slama and Ian Sohl and Benjamin Sokolowsky and Yang Song and Natalie Staudacher and Felipe Petroski Such and Natalie Summers and Ilya Sutskever and Jie Tang and Nikolas Tezak and Madeleine B. Thompson and Phil Tillet and Amin Tootoonchian and Elizabeth Tseng and Preston Tuggle and Nick Turley and Jerry Tworek and Juan Felipe Cerón Uribe and Andrea Vallone and Arun Vijayvergiya and Chelsea Voss and Carroll Wainwright and Justin Jay Wang and Alvin Wang and Ben Wang and Jonathan Ward and Jason Wei and CJ Weinmann and Akila Welihinda and Peter Welinder and Jiayi Weng and Lilian Weng and Matt Wiethoff and Dave Willner and Clemens Winter and Samuel Wolrich and Hannah Wong and Lauren Workman and Sherwin Wu and Jeff Wu and Michael Wu and Kai Xiao and Tao Xu and Sarah Yoo and Kevin Yu and Qiming Yuan and Wojciech Zaremba and Rowan Zellers and Chong Zhang and Marvin Zhang and Shengjia Zhao and Tianhao Zheng and Juntang Zhuang and William Zhuk and Barret Zoph},
+      year={2024},
+      eprint={2303.08774},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2303.08774}, 
+}
+
+
+@inproceedings{
+padmakumar2024does,
+title={Does Writing with Language Models Reduce Content Diversity?},
+author={Vishakh Padmakumar and He He},
+booktitle={The Twelfth International Conference on Learning Representations},
+year={2024},
+url={https://openreview.net/forum?id=Feiz5HtCD0}
+}
+
+@article{chakrabarty2025ai,
+  title={Ai-slop to ai-polish? aligning language models through edit-based writing rewards and test-time computation},
+  author={Chakrabarty, Tuhin and Laban, Philippe and Wu, Chien-Sheng},
+  journal={arXiv preprint arXiv:2504.07532},
+  year={2025}
+}
+
+@article{Clarke2024LLMbasedRA,
+  title={LLM-based relevance assessment still can't replace human relevance assessment},
+  author={Charles L. A. Clarke and Laura Dietz},
+  journal={ArXiv},
+  year={2024},
+  volume={abs/2412.17156},
+  url={https://api.semanticscholar.org/CorpusID:274982001}
+}

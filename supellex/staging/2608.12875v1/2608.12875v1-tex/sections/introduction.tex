@@ -1,0 +1,41 @@
+\section{Introduction}
+\label{sec:intro}
+
+We show that an LLM without task-specific training now matches the best text embedding models across a broad suite of standard embedding tasks. 
+Embedding models reach this quality through specialised contrastive training, hard-negative mining, and multi-stage distillation; our best LLM reaches it without a dedicated embedding-training pipeline.\footnote{While embedding models have increasingly adopted LLMs as their backbone~\citep{tao2024llms,nie2025textembeddingmeetslarge}, they output vectors and use training tailored to embedding tasks. Meanwhile, ``LLMs'' in this work are generative models prompted to output text, with no dedicated embedding training.}
+The deployment costs differ sharply: LLM inference is substantially more expensive and slower on the same hardware.
+We call this the \textbf{Embedder's Dilemma}: LLMs now match the best embedding models in aggregate, but at much higher cost and lower throughput.
+
+We ask a practical question: \emph{should you replace your embedding pipeline with an LLM?}
+Our results favour embedding models as the default and LLMs for reasoning-heavy retrieval. A hybrid pipeline captures the retrieval benefit while controlling cost and throughput.
+
+We compare ten frontier LLMs from six families with 26 text embedding models (118M--14B parameters). The evaluation uses \textbf{\mteblm}, a 37-task benchmark built from the Massive Text Embedding Benchmark \citep[MTEB;][]{muennighoff2023mteb}, covering classification, semantic textual similarity (STS), clustering, pair classification, and retrieval. The full model list appears in \S\ref{sec:setup}.
+Each \mteblm{} task is a fixed subset of the corresponding MTEB task, released on Hugging Face under \texttt{mteb/llm-eval-*}; both paradigms are scored on exactly that subset.
+\mteblm{} scores compare models within this benchmark; MTEB leaderboard scores use the full test sets and follow a different evaluation basis.
+We pair the quality comparison with exact cost accounting (API token tracking for LLMs; GPU throughput benchmarking for embedding models), producing a cost--performance Pareto frontier spanning both paradigms (Figure~\ref{fig:pareto}).
+
+\textbf{Contributions.}
+We release \mteblm{}, the first benchmark to compare LLMs and embedding models across all five MTEB task categories, with cost measured alongside quality for every model.
+We implement it with the MTEB framework, part of an ecosystem that spans multilingual text (MMTEB; \citealp{enevoldsen2025mmtebmassivemultilingualtext}), image (MIEB; \citealp{xiao2025mieb}), audio (MAEB; \citealp{elassadi2026maeb}), and video (MVEB; \citealp{elassadi2026mveb}).
+The Pareto frontier contains the leading embeddings and Gemini~3.1~Pro, whose small score gain comes at three orders of magnitude higher cost.
+We identify the \emph{thinking-token tax}: reasoning accounts for 28--81\% of LLM inference cost, while lower reasoning budgets preserve retrieval quality for most models in our ablation (\S\ref{sec:ablation}).
+
+Our empirical findings are:
+\begin{enumerate}
+    \item \textbf{In aggregate, the paradigms tie.}
+    The best LLM and embedding model differ by 0.4 points, within statistical noise (\S\ref{sec:categories}).
+    The pattern holds across the task suite.
+
+    \item \textbf{The advantage is task-specific.}
+    LLMs lead on reasoning-heavy retrieval, embedding models lead on classification, and the paradigms are statistically even on clustering, STS, and pair classification.
+    LLMs excel when cross-document reasoning is required; embedding pipelines excel wherever geometric similarity or labelled-reference matching suffices (\S\ref{sec:tasks}--\ref{sec:categories}).
+
+    \item \textbf{The cost gap is large.}
+    Gemini~3.1~Pro costs 1{,}431$\times$ as much as a comparable embedding model, and the gap persists across hardware scenarios.
+    Reasoning contributes substantially to this asymmetry. Lower reasoning budgets preserve or improve retrieval for most evaluated models (\S\ref{sec:cost_results}--\ref{sec:ablation}).
+
+    \item \textbf{Throughput lags by orders of magnitude, even on the same hardware.}
+    Served on an identical H100, open-weight LLMs process 2.5--736$\times$ fewer tokens per second than embedding models, consistent with the architectural difference between autoregressive generation and a single encoder pass (\S\ref{sec:throughput_results}; Figure~\ref{fig:throughput}).
+\end{enumerate}
+
+LLMs and embedding models therefore serve complementary roles. Embedding pipelines remain the efficient default for classification, similarity, and clustering; LLMs are most useful for reasoning-intensive retrieval.

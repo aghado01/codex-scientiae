@@ -1,0 +1,28 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Text Embedding Models, Evaluation, and Cost}
+
+Dense text representations have evolved rapidly from contextualised encoders \citep{devlin2019bert, reimers2019sentencebert} to billion-parameter, instruction-tuned models \citep{su2022instructor}.
+Leading systems such as E5 \citep{wang2024textembeddingsweaklysupervisedcontrastive, wang2024improvingtextembeddingslarge}, NV-Embed \citep{lee2024nvembedimprovedtechniques}, SFR-2 \citep{meng2024sfremb2}, and Gemini Embedding \citep{lee2025geminiembedding} achieve strong performance through contrastive training on large curated corpora.
+MTEB \citep{muennighoff2023mteb} standardised evaluation across eight task categories and now tracks hundreds of models on a public leaderboard.\footnote{\url{https://huggingface.co/spaces/mteb/leaderboard}}
+The framework has expanded across multilingual text (MMTEB; \citealp{enevoldsen2025mmtebmassivemultilingualtext}), image (MIEB; \citealp{xiao2025mieb}), audio (MAEB; \citealp{elassadi2026maeb}), and video (MVEB; \citealp{elassadi2026mveb}).
+HUME \citep{assadi2025humemeasuringhumanmodelperformance} measures human performance on MTEB tasks and benchmarks LLMs as annotators. Our study asks whether an LLM can replace an embedding pipeline.
+We extend this line of evaluation with exact cost and throughput accounting across both paradigms.
+
+\citet{schwartz2020green} introduced ``Green AI,'' arguing that accuracy focus neglects computational and environmental costs.
+\citet{gonzalez2026costaware} constructs Pareto frontiers of fine-tuned BERT-scale encoders vs.\ GPT-4o on text classification, finding encoders match or exceed frontier LLMs at 1--2 orders of magnitude lower cost.
+The ``overthinking'' literature \citep{sui2025stopoverthinking} documents verbose reasoning traces and their computational cost. \citet{snell2024scalingllmtesttimecompute} show that adaptive test-time compute can outperform a uniform reasoning budget. We study these questions on classification, similarity, clustering, and retrieval workloads.
+
+
+\subsection{LLMs, Cross-Document Reasoning, and Retrieval}
+
+LLMs with controllable reasoning now span closed APIs (Gemini~3.1~Pro, GPT-5 \citep{singh2026openaigpt5card}, Claude~Opus~4.6 \citep{anthropic2026claudeopus46}) and open weights (Qwen3 \citep{yang2025qwen3technicalreport}, Llama~3 \citep{grattafiori2024llama3herdmodels}, and DeepSeek-R1 \citep{deepseekai2025deepseekr1incentivizingreasoningcapability}, among others).
+We evaluate ten models across six families (\S\ref{sec:setup}), including dense and mixture-of-experts models from closed and open providers. This diversity lets us distinguish recurring patterns from effects specific to one provider.
+\citet{bucher2024finetuned} find that fine-tuned encoder models significantly outperform zero-shot frontier LLMs across all tested classification benchmarks, with margins ranging from 5 to over 75 F1 points depending on task granularity, consistent with our 5.6-point embedding advantage under the kNN vs.\ zero-shot comparison.
+
+Dense retrieval \citep{karpukhin2020dpr} and the BEIR benchmark \citep{thakur2021beir} established strong zero-shot bi-encoder performance. Bi-encoders process queries and documents independently, without cross-attention between them.
+The BRIGHT benchmark \citep{su2024bright} complements BEIR with reasoning-intensive queries. Its top embedding model scores 18.3 nDCG@10, while LLM-augmented retrieval improves by up to 12.2 points, showing the limitations of independent query and document encoding on such tasks.
+RAG \citep{lewis2020rag, gao2024retrievalaugmentedgenerationlargelanguage} pairs embedding retrieval with LLM reasoning. We evaluate this reranking stage directly \citep{sun2023rankgpt}, crossing first-stage retrievers with cross-encoder and LLM listwise rerankers on BEIR and BRIGHT (\S\ref{sec:rerank}).
+\citet{lu2025cothurts} show CoT reranking consistently underperforms direct-output reranking on BEIR/BRIGHT despite higher cost, the document-ranking counterpart to our finding that reduced thinking holds or improves retrieval on all six tasks.
+Appendix~\ref{app:extended_related} covers LLMs as text encoders, GritLM, and the wider set of frontier models.

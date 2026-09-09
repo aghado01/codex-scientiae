@@ -1,0 +1,103 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2510.15061v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2510.15061v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Antislop: A Comprehensive Framework for Identifying and Eliminating Repetitive Patterns in Language Models",
+      "authors": [
+        "Samuel Paech",
+        "Allen Roush",
+        "Judah Goldfeder",
+        "Ravid Shwartz-Ziv"
+      ],
+      "abstract": "Widespread LLM adoption has introduced characteristic repetitive phraseology, termed \"slop,\" which degrades output quality and makes AI-generated text immediately recognizable. We present Antislop, a comprehensive framework providing tools to both detect and eliminate these overused patterns. Our approach combines three innovations: (1) The Antislop Sampler, which uses backtracking to suppress unwanted strings at inference time without destroying vocabulary; (2) An automated pipeline that profiles model-specific slop against human baselines and generates training data; (3) Final Token Preference Optimization (FTPO), a novel fine-tuning method that operates on individual tokens, surgically adjusting logits wherever a banned pattern has appeared in an inference trace. We demonstrate that some slop patterns appear over 1,000x more frequently in LLM output than human text. The Antislop Sampler successfully suppresses 8,000+ patterns while maintaining quality, whereas token banning becomes unusable at just 2,000. Most importantly, FTPO achieves 90% slop reduction while maintaining or improving performance in cross-domain evals including GSM8K, MMLU, and creative writing tasks. In contrast, DPO suffers significant degradation in writing quality and lexical diversity despite achieving weaker suppression. We release all code and results under MIT license: https://github.com/sam-paech/auto-antislop.",
+      "doi": null,
+      "arxiv_id": "2510.15061v2",
+      "published": "2025-10-16T18:22:22Z",
+      "updated": "2025-10-21T21:42:07Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2510.15061v2",
+      "pdf_url": "https://arxiv.org/pdf/2510.15061v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2510.15061v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2510.15061v2",
+          "url": "https://arxiv.org/abs/2510.15061v2",
+          "doi": null,
+          "arxiv_id": "2510.15061v2",
+          "published": "2025-10-16T18:22:22Z",
+          "updated": "2025-10-21T21:42:07Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2510.15061v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-09T23:10:33.212940Z",
+      "sha256": "6d977f75e14deeba83916d4574d139567e283736f874d8637b8525d047197993",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvOFQ1WGRwMjZldEorN1k2dE5McEJyS1lsWnhVPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUxMC4xNTA2MXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA5VDIzOjEwOjMzWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTEwLjE1MDYxdjIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUxMC4xNTA2MXYyPC9pZD4KICAgIDx0aXRsZT5BbnRpc2xvcDogQSBDb21wcmVoZW5zaXZlIEZyYW1ld29yayBmb3IgSWRlbnRpZnlpbmcgYW5kIEVsaW1pbmF0aW5nIFJlcGV0aXRpdmUgUGF0dGVybnMgaW4gTGFuZ3VhZ2UgTW9kZWxzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjUtMTAtMjFUMjE6NDI6MDdaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI1MTAuMTUwNjF2MiIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI1MTAuMTUwNjF2MiIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PldpZGVzcHJlYWQgTExNIGFkb3B0aW9uIGhhcyBpbnRyb2R1Y2VkIGNoYXJhY3RlcmlzdGljIHJlcGV0aXRpdmUgcGhyYXNlb2xvZ3ksIHRlcm1lZCAic2xvcCwiIHdoaWNoIGRlZ3JhZGVzIG91dHB1dCBxdWFsaXR5IGFuZCBtYWtlcyBBSS1nZW5lcmF0ZWQgdGV4dCBpbW1lZGlhdGVseSByZWNvZ25pemFibGUuIFdlIHByZXNlbnQgQW50aXNsb3AsIGEgY29tcHJlaGVuc2l2ZSBmcmFtZXdvcmsgcHJvdmlkaW5nIHRvb2xzIHRvIGJvdGggZGV0ZWN0IGFuZCBlbGltaW5hdGUgdGhlc2Ugb3ZlcnVzZWQgcGF0dGVybnMuIE91ciBhcHByb2FjaCBjb21iaW5lcyB0aHJlZSBpbm5vdmF0aW9uczogKDEpIFRoZSBBbnRpc2xvcCBTYW1wbGVyLCB3aGljaCB1c2VzIGJhY2t0cmFja2luZyB0byBzdXBwcmVzcyB1bndhbnRlZCBzdHJpbmdzIGF0IGluZmVyZW5jZSB0aW1lIHdpdGhvdXQgZGVzdHJveWluZyB2b2NhYnVsYXJ5OyAoMikgQW4gYXV0b21hdGVkIHBpcGVsaW5lIHRoYXQgcHJvZmlsZXMgbW9kZWwtc3BlY2lmaWMgc2xvcCBhZ2FpbnN0IGh1bWFuIGJhc2VsaW5lcyBhbmQgZ2VuZXJhdGVzIHRyYWluaW5nIGRhdGE7ICgzKSBGaW5hbCBUb2tlbiBQcmVmZXJlbmNlIE9wdGltaXphdGlvbiAoRlRQTyksIGEgbm92ZWwgZmluZS10dW5pbmcgbWV0aG9kIHRoYXQgb3BlcmF0ZXMgb24gaW5kaXZpZHVhbCB0b2tlbnMsIHN1cmdpY2FsbHkgYWRqdXN0aW5nIGxvZ2l0cyB3aGVyZXZlciBhIGJhbm5lZCBwYXR0ZXJuIGhhcyBhcHBlYXJlZCBpbiBhbiBpbmZlcmVuY2UgdHJhY2UuIFdlIGRlbW9uc3RyYXRlIHRoYXQgc29tZSBzbG9wIHBhdHRlcm5zIGFwcGVhciBvdmVyIDEsMDAweCBtb3JlIGZyZXF1ZW50bHkgaW4gTExNIG91dHB1dCB0aGFuIGh1bWFuIHRleHQuIFRoZSBBbnRpc2xvcCBTYW1wbGVyIHN1Y2Nlc3NmdWxseSBzdXBwcmVzc2VzIDgsMDAwKyBwYXR0ZXJucyB3aGlsZSBtYWludGFpbmluZyBxdWFsaXR5LCB3aGVyZWFzIHRva2VuIGJhbm5pbmcgYmVjb21lcyB1bnVzYWJsZSBhdCBqdXN0IDIsMDAwLiBNb3N0IGltcG9ydGFudGx5LCBGVFBPIGFjaGlldmVzIDkwJSBzbG9wIHJlZHVjdGlvbiB3aGlsZSBtYWludGFpbmluZyBvciBpbXByb3ZpbmcgcGVyZm9ybWFuY2UgaW4gY3Jvc3MtZG9tYWluIGV2YWxzIGluY2x1ZGluZyBHU004SywgTU1MVSwgYW5kIGNyZWF0aXZlIHdyaXRpbmcgdGFza3MuIEluIGNvbnRyYXN0LCBEUE8gc3VmZmVycyBzaWduaWZpY2FudCBkZWdyYWRhdGlvbiBpbiB3cml0aW5nIHF1YWxpdHkgYW5kIGxleGljYWwgZGl2ZXJzaXR5IGRlc3BpdGUgYWNoaWV2aW5nIHdlYWtlciBzdXBwcmVzc2lvbi4gV2UgcmVsZWFzZSBhbGwgY29kZSBhbmQgcmVzdWx0cyB1bmRlciBNSVQgbGljZW5zZTogaHR0cHM6Ly9naXRodWIuY29tL3NhbS1wYWVjaC9hdXRvLWFudGlzbG9wLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5MRyIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMTAtMTZUMTg6MjI6MjJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD4xMSBwYWdlcyArIGFwcGVuZGljZXMsIDE2IGZpZ3VyZXM8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5MRyIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2FtdWVsIFBhZWNoPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5BbGxlbiBSb3VzaDwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SnVkYWggR29sZGZlZGVyPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5SYXZpZCBTaHdhcnR6LVppdjwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Antislop: A Comprehensive Framework for Identifying and Eliminating Repetitive Patterns in Language Models",
+    "authors": [
+      "Samuel Paech",
+      "Allen Roush",
+      "Judah Goldfeder",
+      "Ravid Shwartz-Ziv"
+    ],
+    "abstract": "Widespread LLM adoption has introduced characteristic repetitive phraseology, termed \"slop,\" which degrades output quality and makes AI-generated text immediately recognizable. We present Antislop, a comprehensive framework providing tools to both detect and eliminate these overused patterns. Our approach combines three innovations: (1) The Antislop Sampler, which uses backtracking to suppress unwanted strings at inference time without destroying vocabulary; (2) An automated pipeline that profiles model-specific slop against human baselines and generates training data; (3) Final Token Preference Optimization (FTPO), a novel fine-tuning method that operates on individual tokens, surgically adjusting logits wherever a banned pattern has appeared in an inference trace. We demonstrate that some slop patterns appear over 1,000x more frequently in LLM output than human text. The Antislop Sampler successfully suppresses 8,000+ patterns while maintaining quality, whereas token banning becomes unusable at just 2,000. Most importantly, FTPO achieves 90% slop reduction while maintaining or improving performance in cross-domain evals including GSM8K, MMLU, and creative writing tasks. In contrast, DPO suffers significant degradation in writing quality and lexical diversity despite achieving weaker suppression. We release all code and results under MIT license: https://github.com/sam-paech/auto-antislop.",
+    "identifiers": {
+      "arxiv": "2510.15061",
+      "arxiv_versioned": "2510.15061v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2510.15061v2"
+      }
+    },
+    "categories": [
+      "cs.LG",
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2025-10-16T18:22:22Z",
+    "updated": "2025-10-21T21:42:07Z"
+  }
+}

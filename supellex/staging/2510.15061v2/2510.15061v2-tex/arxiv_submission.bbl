@@ -1,0 +1,287 @@
+\begin{thebibliography}{35}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Castricato et~al.(2024)Castricato, Lile, Anand, Schoelkopf, Verma, and
+  Biderman]{castricato2024suppressing}
+Louis Castricato, Nathan Lile, Suraj Anand, Hailey Schoelkopf, Siddharth Verma,
+  and Stella Biderman.
+\newblock Suppressing pink elephants with direct principle feedback, 2024.
+\newblock URL \url{https://arxiv.org/abs/2402.07896}.
+
+\bibitem[Cobbe et~al.(2021)Cobbe, Kosaraju, Bavarian, Chen, Jun, Kaiser,
+  Plappert, Tworek, Hilton, Nakano, Hesse, and Schulman]{cobbe2021gsm8k}
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun,
+  {\L}ukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro
+  Nakano, Christopher Hesse, and John Schulman.
+\newblock Training verifiers to solve math word problems.
+\newblock \emph{arXiv preprint arXiv:2110.14168}, 2021.
+\newblock URL \url{https://arxiv.org/abs/2110.14168}.
+
+\bibitem[Guiraud(1960)]{Guiraud1960}
+Pierre Guiraud.
+\newblock \emph{Problèmes et méthodes de la statistique linguistique}.
+\newblock Presses Universitaires de France, 1960.
+
+\bibitem[Hendrycks et~al.(2021)Hendrycks, Burns, Basart, Zou, Mazeika, Song,
+  and Steinhardt]{hendrycks2021mmlu}
+Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn
+  Song, and Jacob Steinhardt.
+\newblock Measuring massive multitask language understanding.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2021.
+\newblock URL \url{https://arxiv.org/abs/2009.03300}.
+
+\bibitem[Holtzman et~al.(2020)Holtzman, Buys, Du, Forbes, and
+  Choi]{holtzman-etal-2020-curious}
+Ari Holtzman, Jan Buys, Li~Du, Maxwell Forbes, and Yejin Choi.
+\newblock The curious case of neural text degeneration.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2020.
+
+\bibitem[Hu et~al.(2021)Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, and
+  Chen]{hu2021lora}
+Edward~J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean
+  Wang, Lu~Wang, and Weizhu Chen.
+\newblock Lora: Low-rank adaptation of large language models, 2021.
+\newblock URL \url{https://arxiv.org/abs/2106.09685}.
+
+\bibitem[Hu et~al.(2019)Hu, Khayrallah, Culkin, Xia, Chen, Post, and
+  Van~Durme]{hu2019improved}
+J.~Edward Hu, Huda Khayrallah, Ryan Culkin, Patrick Xia, Tongfei Chen, Matt
+  Post, and Benjamin Van~Durme.
+\newblock Improved lexically constrained decoding for translation and
+  monolingual rewriting.
+\newblock In \emph{Proceedings of the 2019 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies}, pages 839--850, Minneapolis, Minnesota, 2019. Association for
+  Computational Linguistics.
+\newblock URL \url{https://aclanthology.org/N19-1090/}.
+
+\bibitem[Jon et~al.(2023)Jon, Vari{\v{s}}, Nov{\'a}k, Aires, and
+  Bojar]{jon2023negative}
+Josef Jon, Du{\v{s}}an Vari{\v{s}}, Michal Nov{\'a}k, Jo{\~a}o~Paulo Aires, and
+  Ond{\v{r}}ej Bojar.
+\newblock Negative lexical constraints in neural machine translation.
+\newblock \emph{arXiv preprint arXiv:2308.03601}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2308.03601}.
+
+\bibitem[Kirk et~al.(2024)Kirk, Mediratta, Nalmpantis, Luketina, Hambro,
+  Grefenstette, and Raileanu]{kirk-etal-2024-rlhf}
+Robert Kirk, Ishita Mediratta, Christoforos Nalmpantis, Jelena Luketina, Eric
+  Hambro, Edward Grefenstette, and Roberta Raileanu.
+\newblock Understanding the effects of rlhf on llm generalisation and
+  diversity.
+\newblock \emph{arXiv preprint arXiv:2310.06452}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2310.06452}.
+
+\bibitem[Kwon et~al.(2023)Kwon, Li, Zhuang, Sheng, Zheng, Yu, Gonzalez, Zhang,
+  and Stoica]{Kwon2023PagedAttention}
+Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody~Hao Yu,
+  Joseph~E. Gonzalez, Hao Zhang, and Ion Stoica.
+\newblock Efficient memory management for large language model serving with
+  pagedattention.
+\newblock In \emph{Proceedings of the 29th ACM Symposium on Operating Systems
+  Principles (SOSP '23)}, pages 611--626, New York, NY, USA, 2023. ACM.
+\newblock \doi{10.1145/3600006.3613165}.
+
+\bibitem[Lanchantin et~al.(2025)Lanchantin, Chen, Dhuliawala, Yu, Weston,
+  Sukhbaatar, and Kulikov]{lanchantin2025divpo}
+Jack Lanchantin, Angelica Chen, Shehzaad Dhuliawala, Ping Yu, Jason Weston,
+  Sainbayar Sukhbaatar, and Ilia Kulikov.
+\newblock Diverse preference optimization.
+\newblock \emph{arXiv preprint arXiv:2501.18101}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2501.18101}.
+
+\bibitem[Li et~al.(2016)Li, Galley, Brockett, Gao, and Dolan]{Li2016Distinct}
+Jiwei Li, Michel Galley, Chris Brockett, Jianfeng Gao, and Bill Dolan.
+\newblock A diversity-promoting objective function for neural conversation
+  models.
+\newblock In \emph{NAACL-HLT}, pages 110--119, 2016.
+\newblock \doi{10.18653/v1/N16-1014}.
+
+\bibitem[Li et~al.(2020)Li, Roller, Kulikov, Welleck, Boureau, Cho, and
+  Weston]{li-etal-2020-dont}
+Margaret Li, Stephen Roller, Ilia Kulikov, Sean Welleck, Y-Lan Boureau,
+  Kyunghyun Cho, and Jason Weston.
+\newblock Don’t say that! making inconsistent dialogue unlikely with
+  unlikelihood training.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics (ACL)}, pages 4715--4728, 2020.
+
+\bibitem[McCarthy and Jarvis(2010)]{McCarthyJarvis2010HDD}
+Philip~M. McCarthy and Scott Jarvis.
+\newblock Mtld, vocd-d, and hd-d: A validation study of sophisticated
+  approaches to lexical diversity assessment.
+\newblock \emph{Behavior Research Methods}, 42\penalty0 (2):\penalty0 381--392,
+  2010.
+\newblock \doi{10.3758/BRM.42.2.381}.
+
+\bibitem[Murthy et~al.(2024)Murthy, Ullman, and Hu]{murthy-etal-2024-alignment}
+Sonia~K. Murthy, Tomer Ullman, and Jennifer Hu.
+\newblock One fish, two fish, but not the whole sea: Alignment reduces language
+  models’ conceptual diversity.
+\newblock \emph{arXiv preprint arXiv:2411.04427}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2411.04427}.
+
+\bibitem[Nguyen et~al.(2025)Nguyen, Baker, Neo, Roush, Kirsch, and
+  Shwartz-Ziv]{nguyen2025turningheatminpsampling}
+Minh~Nhat Nguyen, Andrew Baker, Clement Neo, Allen Roush, Andreas Kirsch, and
+  Ravid Shwartz-Ziv.
+\newblock Turning up the heat: Min-p sampling for creative and coherent llm
+  outputs, 2025.
+\newblock URL \url{https://arxiv.org/abs/2407.01082}.
+
+\bibitem[Nitral-AI(2024)]{nitral_reddit_sfw_wp_sharegpt}
+Nitral-AI.
+\newblock Reddit-sfw-writing\_prompts\_sharegpt.
+\newblock
+  \url{https://huggingface.co/datasets/Nitral-AI/Reddit-SFW-Writing_Prompts_ShareGPT},
+  2024.
+\newblock Accessed: 2025-09-16.
+
+\bibitem[O'Mahony et~al.(2024)O'Mahony, Grinsztajn, Schoelkopf, and
+  Biderman]{omahony-etal-2024-mode}
+Laura O'Mahony, L{'e}o Grinsztajn, Hailey Schoelkopf, and Stella Biderman.
+\newblock Attributing mode collapse in the fine-tuning of large language
+  models.
+\newblock In \emph{ICLR Workshop on Mathematical and Empirical Understanding of
+  Foundation Models (ME-FoMo)}, 2024.
+
+\bibitem[Paech(2023)]{paech2023eqbench}
+Samuel~J. Paech.
+\newblock Eq-bench: An emotional intelligence benchmark for large language
+  models, 2023.
+\newblock URL \url{https://arxiv.org/abs/2312.06281}.
+
+\bibitem[Paech(2025)]{paech2025longform}
+Samuel~J. Paech.
+\newblock Longform creative writing benchmark.
+\newblock \url{https://github.com/EQ-bench/longform-writing-bench}, 2025.
+\newblock GitHub repository.
+
+\bibitem[{Project Gutenberg}()]{project_gutenberg}
+{Project Gutenberg}.
+\newblock Project gutenberg.
+\newblock URL \url{https://www.gutenberg.org/}.
+
+\bibitem[Rafailov et~al.(2023)Rafailov, Sharma, Mitchell, Ermon, Manning, and
+  Finn]{rafailov-etal-2023-direct}
+Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher~D.
+  Manning, and Chelsea Finn.
+\newblock Direct preference optimization: Your language model is secretly a
+  reward model.
+\newblock \emph{arXiv preprint arXiv:2305.18290}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2305.18290}.
+
+\bibitem[Razin et~al.(2024)Razin, Malladi, Bhaskar, Chen, Arora, and
+  Hanin]{razin2024unintentional}
+Noam Razin, Sadhika Malladi, Adithya Bhaskar, Danqi Chen, Sanjeev Arora, and
+  Boris Hanin.
+\newblock Unintentional unalignment: Likelihood displacement in direct
+  preference optimization.
+\newblock \emph{arXiv preprint arXiv:2410.08847}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2410.08847}.
+
+\bibitem[Roush et~al.(2022)Roush, Basu, Moorthy, and
+  Dubovoy]{roush-etal-2022-language}
+Allen Roush, Sanjay Basu, Akshay Moorthy, and Dmitry Dubovoy.
+\newblock Most language models can be poets too: An {AI} writing assistant and
+  constrained text generation studio.
+\newblock In \emph{Proceedings of the Second Workshop on When Creative AI Meets
+  Conversational AI (CAI)}, pages 9--15, 2022.
+\newblock URL \url{https://aclanthology.org/2022.cai-1.2/}.
+
+\bibitem[Shypula et~al.(2025)Shypula, Li, Zhang, Padmakumar, Yin, and
+  Bastani]{shypula2025diversity}
+Alexander Shypula, Shuo Li, Botong Zhang, Vishakh Padmakumar, Kayo Yin, and
+  Osbert Bastani.
+\newblock Does instruction tuning reduce diversity? a case study using code
+  generation.
+\newblock In \emph{ICLR 2025 Workshop on Deep Learning for Code (DL4C)}, 2025.
+\newblock URL \url{https://openreview.net/forum?id=hMEHnLJyrU}.
+\newblock OpenReview.
+
+\bibitem[Speer et~al.(2018)Speer, Chin, Lin, Jewett, and
+  Nathan]{robyn_speer_2018_1443582}
+Robyn Speer, Joshua Chin, Andrew Lin, Sara Jewett, and Lance Nathan.
+\newblock Luminosoinsight/wordfreq: v2.2, October 2018.
+\newblock URL \url{https://doi.org/10.5281/zenodo.1443582}.
+
+\bibitem[Stiennon et~al.(2020)Stiennon, Ouyang, Wu, Ziegler, Lowe, Voss,
+  Radford, Amodei, and Christiano]{stiennon2020learning}
+Nisan Stiennon, Long Ouyang, Jeffrey Wu, Daniel Ziegler, Ryan Lowe, Casey Voss,
+  Alec Radford, Dario Amodei, and Paul Christiano.
+\newblock Learning to summarize with human feedback.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2020.
+
+\bibitem[Turboderp(2024)]{turboderp_exllamav2_0_3_0}
+Turboderp.
+\newblock Exllamav2, 2024.
+\newblock URL \url{https://github.com/turboderp-org/exllamav2}.
+
+\bibitem[Weidmann(2024{\natexlab{a}})]{weidmann2024dry}
+Philipp~Emanuel Weidmann.
+\newblock Dry: A modern repetition penalty that reliably prevents looping.
+\newblock GitHub pull request \#5677 to
+  \texttt{oobabooga/text-generation-webui}, May 2024{\natexlab{a}}.
+\newblock URL
+  \url{https://github.com/oobabooga/text-generation-webui/pull/5677}.
+\newblock Merged May 20, 2024.
+
+\bibitem[Weidmann(2024{\natexlab{b}})]{weidmann2024xtc}
+Philipp~Emanuel Weidmann.
+\newblock Exclude top choices (xtc): A sampler that boosts creativity, breaks
+  writing clichés, and inhibits non-verbatim repetition.
+\newblock GitHub pull request \#6335 to
+  \texttt{oobabooga/text-generation-webui}, September 2024{\natexlab{b}}.
+\newblock URL
+  \url{https://github.com/oobabooga/text-generation-webui/pull/6335}.
+\newblock Merged Sep 28, 2024.
+
+\bibitem[Welleck et~al.(2020)Welleck, Kulikov, Roller, Dinan, Cho, and
+  Weston]{welleck-etal-2020-neural}
+Sean Welleck, Ilia Kulikov, Stephen Roller, Emily Dinan, Kyunghyun Cho, and
+  Jason Weston.
+\newblock Neural text generation with unlikelihood training.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2020.
+
+\bibitem[Wu et~al.(2025)Wu, Yang, Zhan, Yuan, Chao, and Wong]{wu2025survey}
+Junchao Wu, Shu Yang, Runzhe Zhan, Yulin Yuan, Lidia~Sam Chao, and Derek~Fai
+  Wong.
+\newblock A survey on llm-generated text detection: Necessity, methods, and
+  future directions.
+\newblock \emph{Computational Linguistics}, 51\penalty0 (1):\penalty0 275--338,
+  2025.
+
+\bibitem[Wu et~al.(2024)Wu, Xie, Yang, Wu, Gao, Ding, Wang, and
+  He]{wu2024betaDPO}
+Junkang Wu, Yuexiang Xie, Zhengyi Yang, Jiancan Wu, Jinyang Gao, Bolin Ding,
+  Xiang Wang, and Xiangnan He.
+\newblock $\beta$-dpo: Direct preference optimization with dynamic $\beta$.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2024.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2024/file/ea888178abdb6fc233226d12321d754f-Paper-Conference.pdf}.
+
+\bibitem[Yun et~al.(2025)Yun, An, Wang, Peng, and
+  Shang]{yun-etal-2025-diversity}
+Longfei Yun, Chenyang An, Zilong Wang, Letian Peng, and Jingbo Shang.
+\newblock The price of format: Diversity collapse in llms.
+\newblock \emph{arXiv preprint arXiv:2505.18949}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2505.18949}.
+
+\bibitem[Zhang et~al.(2025)Zhang, Chi, Nguyen, Upasani, Bikel, Weston, and
+  Smith]{zhang-etal-2025-safety}
+Yiming Zhang, Jianfeng Chi, Hailey Nguyen, Kartikeya Upasani, Daniel Bikel,
+  Jason Weston, and Eric~Michael Smith.
+\newblock Backtracking improves generation safety.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations (ICLR)}, 2025.
+
+\end{thebibliography}

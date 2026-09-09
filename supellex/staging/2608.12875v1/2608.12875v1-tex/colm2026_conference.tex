@@ -1,0 +1,113 @@
+\documentclass{article} % For LaTeX2e
+\usepackage[final]{colm2026_conference}
+
+% T1 encoding: OT1 cannot typeset \k (ogonek) in Rafa{\l} Po{\'s}wi\k{a}ta
+% and similar accented author names in the bibliography.
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{graphicx}   % also provides \rotatebox
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{colortbl}
+% lineno redefines \showhyphens (a kernel warning) and is only needed for the
+% submission's line numbers, so load it only in that mode.
+\ifcolmsubmission\usepackage{lineno}\fi
+\usepackage{float}      % for the [H] specifier on Figure 1
+\usepackage{placeins}   % for \FloatBarrier
+
+% hyperref loads last (before its own \hypersetup) to avoid option clashes.
+% `hyphens' lets long URLs break across lines; without it the repository URL
+% is a single unbreakable box and its paragraph comes out underfull.
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{hyperref}
+\usepackage{url}
+
+\definecolor{darkblue}{rgb}{0, 0, 0.5}
+\hypersetup{colorlinks=true, citecolor=darkblue, linkcolor=darkblue, urlcolor=darkblue}
+\def\niklas#1{{\color{purple}[\textbf{niklas:} #1]}}
+
+\graphicspath{{figures/}}
+
+\title{The Embedder's Dilemma: LLMs Are Better, \\but at What Cost?}
+
+\author{Adnan El Assadi \\
+Harvard University
+\And
+Niklas Muennighoff \\
+Stanford University
+\And
+Jinhyuk Lee \\
+Independent Researcher}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\newcommand{\mteblm}{MTEB(LLM)}
+
+\begin{document}
+
+% Tighten float spacing to save vertical space
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{6pt}
+\setlength{\belowcaptionskip}{2pt}
+
+\ifcolmsubmission
+\linenumbers
+\fi
+
+\maketitle
+
+\input{sections/abstract}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{pareto_cost_performance.pdf}
+\caption{\textbf{Cost vs.\ performance across 36 models on \mteblm.}
+The frontier contains the leading embedding models and Gemini~3.1~Pro, which extends it by 0.4 points at 1{,}431$\times$ the cost of a comparable embedding.}
+\label{fig:pareto}
+\end{figure}
+
+\input{sections/introduction}
+
+\input{sections/related}
+
+\input{sections/setup}
+
+\input{sections/results}
+
+\input{sections/discussion}
+
+\input{sections/conclusion}
+
+\section*{Acknowledgments}
+
+We are extremely thankful to Laude Institute for supporting this work.
+
+\section*{Reproducibility Statement}
+
+Code, raw results, and analysis scripts are released at \url{https://github.com/embeddings-benchmark/embedders-dilemma} in an implementation built on the MTEB framework.
+The LLM-specific datasets are hosted on Hugging Face under \texttt{mteb/llm-eval-*}, and each task pins its dataset to an exact revision.
+LLM prompt templates, schema validation logic, and token-usage extraction scripts are included in the release, and every figure and table in the paper regenerates from the released result files.
+The provided scripts reproduce the embedding throughput benchmarks on an NVIDIA H100 GPU.
+Detailed experimental configurations are described in \S\ref{sec:setup} and Appendix~\ref{app:reproducibility}.
+
+\section*{Ethics Statement}
+
+This work compares publicly available models on standard benchmarks and does not involve human subjects or private data.
+All evaluated datasets are publicly hosted and have been previously released for research purposes.
+Cost and throughput reporting may influence deployment decisions; we encourage practitioners to consider the environmental impact of LLM-based pipelines, including the carbon footprint of chain-of-thought inference, alongside the economic factors discussed in this paper.
+Reducing reasoning budgets can preserve performance on some tasks while lowering compute use.
+LLM assistance was used during the preparation of this paper for writing polish, phrasing refinement, and code formatting (e.g., matplotlib styling); no LLM was used to originate research ideas, generate evaluation data, produce plots, or evaluate model outputs. All scientific content, experimental design, and conclusions are the authors' own.
+
+
+\bibliographystyle{colm2026_conference}
+\bibliography{colm2026_conference}
+
+
+\appendix
+
+\input{sections/appendix}
+
+\end{document}

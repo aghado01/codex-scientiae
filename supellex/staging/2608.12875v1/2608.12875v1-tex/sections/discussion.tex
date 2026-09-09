@@ -1,0 +1,50 @@
+\section{Discussion}
+\label{sec:discussion}
+
+In aggregate, the two paradigms tie on maximum performance. The LLM advantage is narrow and specific: reasoning-heavy retrieval, where bi-encoders score systematically low \citep{su2024bright}.
+Pro leads on 5/6 retrieval datasets, showing a consistent advantage across the suite.
+Capability profiles show this split: LLMs lead on retrieval while embeddings provide balanced, often superior, coverage across the other four categories (Appendix~\ref{app:figures}, Figure~\ref{fig:radar}).
+
+Viewed through the lens of information retrieval, our results reproduce the classic bi-encoder versus cross-encoder tradeoff at LLM scale~\citep{reimers2019sentencebert, muennighoff2022sgptgptsentenceembeddings}.
+One design choice separates the four architectures we evaluate (Figure~\ref{fig:architecture}): how many documents the model is allowed to read jointly with the query.
+Embedding pipelines encode queries and documents independently: each document is processed once, offline, and each query requires only vector comparisons.
+A cross-encoder reranker reads one document at a time, an LLM listwise reranker reads the top-$k$ shortlist at once, and an LLM in corpus-in-context mode is the extreme case, reading the entire corpus in a single forward pass.
+Cost follows that ordering because query-specific computation repeats for each query: reranking scales with the shortlist $k$, and corpus-in-context processing scales with the corpus $N$.
+Quality follows the same ordering, which is why reranking is a more economical way to add reasoning than placing the full corpus in context (\S\ref{sec:rerank}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{architecture_schematic.pdf}
+\caption{\textbf{How many documents each architecture reads jointly with the query.}
+\emph{Top:} the pipeline. \emph{Bottom:} its attention mask, drawn over the same $N$ documents at the same scale in every panel so the four are directly comparable.
+Each row is a token and each column a token it may read.
+The red region is what one forward pass reads jointly with the query; it cannot be computed before the query arrives, so cost grows with it.}
+\label{fig:architecture}
+\end{figure}
+
+Our retrieve-then-rerank experiment (\S\ref{sec:rerank}) shows the same pattern in a production-style setting: a reranker helps most on reasoning-heavy retrieval and little on semantic retrieval.
+The same-hardware results attribute much of the quality--cost gap to the underlying inference procedures.
+
+The classification pipelines receive different supervision. Embedding classifiers use kNN over the full labelled training distribution; the LLM receives label names, task descriptions, and up to five examples. Fine-grained tasks make this difference especially visible (\S\ref{sec:fewshot}).
+Leading embedding models are also contrastively trained on data overlapping these domains and label spaces, so part of the gap reflects in-domain fit rather than a general representational advantage.
+The comparison is therefore between deployment pipelines as practitioners meet them, not intrinsic ceilings: a classification-post-trained LLM would likely narrow the gap, and none was available among the frontier models we evaluate.
+
+The thinking-token tax reveals a mismatch between default reasoning budgets and these tasks.
+Reasoning improves the overall Flash score, while lower reasoning budgets preserve retrieval quality for most evaluated models.
+Where direct reading comprehension suffices, the model reconsiders straightforward relevance judgements, making the default reasoning budget wasteful for most of these benchmark tasks \citep{lu2025cothurts}.
+For practitioners, reducing reasoning effort preserves retrieval quality for most evaluated models while removing the largest component of LLM cost.
+
+\paragraph{Deployment implications.}
+These findings motivate a hybrid architecture: embedding models provide high-throughput candidate retrieval, followed by LLM reasoning over a shortlist (Figure~\ref{fig:throughput}).
+This division of labour supports retrieve-then-reason pipelines \citep{lewis2020rag, gao2024retrievalaugmentedgenerationlargelanguage}; our reranker results (\S\ref{sec:rerank}) show where they help.
+Across the four non-retrieval categories, small-to-medium embedding models closely match the best LLM at a fraction of the cost.
+Hardware improvements will reduce the absolute cost of both paradigms. Their different inference procedures preserve an embedding throughput advantage for similarity, classification, and clustering workloads (\S\ref{sec:throughput}).
+Accuracy-only leaderboards obscure large cost differences between similarly scored systems. We recommend reporting Pareto frontiers and significance tests alongside accuracy \citep{card2020reporting, dehghani2021benchmarklottery}.
+
+\paragraph{Limitations.}
+\label{sec:limitations}
+Our ten LLMs from six families are a snapshot of a fast-moving frontier; because \mteblm{} uses the MTEB framework, future models can be evaluated with the same pipeline.
+The corpus-in-context protocol places corpora of 82--415 documents entirely in the prompt, which is only feasible at small scale: production corpora require an indexed first stage, so the cost gap we report is a lower bound.
+We complement this setting with a bi-encoder, cross-encoder reranker, and LLM listwise reranker comparison on BEIR and BRIGHT (\S\ref{sec:rerank}).
+Embeddings also benefit from post-hoc threshold optimisation in pair classification (MTEB convention) with no LLM analogue.
+Appendix~\ref{app:extended_limitations} gives the full set.

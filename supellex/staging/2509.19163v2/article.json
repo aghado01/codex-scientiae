@@ -1,0 +1,180 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2509.19163v2",
+  "initialized_utc": "2026-09-09T17:21:14.327948Z",
+  "title": "Measuring AI \"Slop\" in Text",
+  "authors": [
+    "Chantal Shaib",
+    "Tuhin Chakrabarty",
+    "Diego Garcia-Olano",
+    "Byron C. Wallace"
+  ],
+  "abstract": "AI \"slop\" is an increasingly popular term used to describe low-quality AI-generated text, but there is currently no agreed upon definition of this term nor a means to measure its occurrence. In this work, we develop a taxonomy of \"slop\" through interviews with experts in NLP, writing, and philosophy, and propose a set of interpretable dimensions for its assessment in text. Through span-level annotation, we find that binary \"slop\" judgments are (somewhat) subjective, but such determinations nonetheless correlate with latent dimensions such as coherence and relevance. Our framework can be used to evaluate AI-generated text in both detection and binary preference tasks, potentially offering new insights into the linguistic and stylistic factors that contribute to quality judgments.",
+  "identifiers": {
+    "arxiv": "2509.19163",
+    "arxiv_versioned": "2509.19163v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2509.19163v2"
+    }
+  },
+  "categories": [
+    "cs.CL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2025-09-23T15:41:19Z",
+  "updated": "2026-01-24T04:46:30Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2509.19163v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7147,
+        "sha256": "d7b0ddaac5d6ba431681d08538f11ce90f10105725ee3b68e3454c53c0b01964",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-09T17:21:13.453869Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2509.19163v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "91f2675e4fc8a3018ab7974cb1b3a96d63adc4efadd39520506fa9abefca461e"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "iclr2026_conference.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Measuring AI ``Slop'' in Text",
+        "authors_tex": [
+          "\\textbf{Chantal Shaib$^1$\\thanks{All experimentation and data processing done at NEU.}}\\quad\\quad\n\\textbf{Tuhin Chakrabarty$^2$}\\quad\\quad\n\\textbf{Diego Garcia-Olano$^3$}\\quad\\quad\n\\textbf{Byron C. Wallace$^1$}\\quad\\quad \\\\\n$^1$Northeastern University, $^2$Stony Brook University, $^3$Meta AI\\\\\n\\small\\texttt{shaib.c@northeastern.edu}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 228,
+        "sha256": "6a49812087e80ca074b6fef7a39a7edba9460f0377780aee6e566706968d2fbd"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2509.19163v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2509.19163v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 908238,
+      "sha256": "d6f75088f0b685e4371bcd2863900d2b3ec0d03eeda13e3bd857cccd08fc4c75",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2509.19163v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2509.19163v2.tar.gz",
+      "entrypoint": "iclr2026_conference.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 29,
+      "tex_files": 2,
+      "sha256": "e6398dc5a9c8ec05d5ec11ca5e9a1330e6d58b3f5f12be3a3bb94736ba71473b"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2509.19163v2.pdf",
+      "format": "application/pdf",
+      "bytes": 1486112,
+      "sha256": "60defef85f66fc383366bc46bcbfefcb930c2d1eca4ba1735c0d3ef76aebcc11"
+    },
+    {
+      "role": "html-source",
+      "path": "2509.19163v2-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2509.19163v2.html",
+      "files": 22,
+      "bytes": 2146185,
+      "sha256": "89f0f62271a69bc223355f930e66f8cc5cef258a43d602b120447bc6b4daab8a"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-09T17:21:14.327948Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 30
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 29
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "iclr2026_conference.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

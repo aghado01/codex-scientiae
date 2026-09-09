@@ -1,0 +1,91 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Models}
+
+\paragraph{LLMs.}
+We evaluate ten frontier LLMs spanning six families: three Gemini~3 models via the Gemini API (Gemini~3.1~Pro, Gemini~3~Flash, Gemini~3.1~Flash-Lite) and seven open-weight models served via OpenRouter (DeepSeek-R1, DeepSeek-V4-Flash, Qwen3.6-27B, Qwen3.6-35B-A3B, GLM-4.7, Kimi-K2.6, and MiniMax-M2.7).
+Together they span dense and mixture-of-experts architectures, reasoning and instruct variants, and a wide capability and cost range.
+Gemini~3.1~Flash-Lite provides a non-reasoning baseline; the other models support extended reasoning (chain-of-thought tokens \citep{wei2022cot}, billed at the output token rate).
+
+\paragraph{Embedding models.}
+We evaluate 26 text embedding models from 118M to 14B parameters. The multi-model families are multilingual-E5 \citep{wang2024textembeddingsweaklysupervisedcontrastive,wang2024improvingtextembeddingslarge}, Qwen3-Embedding \citep{qwen2025qwen3embedding}, F2LLM-v2 \citep{zhang2026f2llmv2}, Jina-v5 \citep{akram2026jinaembeddingsv5}, and GTE-Qwen2 \citep{li2023generaltextembeddingsmultistage}. We also include models from Tencent \citep{hu2025kalmv2}, NVIDIA \citep{babakhin2025llamaembednemotron}, Salesforce \citep{meng2024sfremb2}, Snowflake \citep{yu2024arctic}, and Google \citep{vera2025embeddinggemma}, together with E5-Mistral \citep{wang2024improvingtextembeddingslarge}, GritLM \citep{muennighoff2025generativerepresentationalinstructiontuning}, Linq-Embed-Mistral \citep{choi2024linq}, BGE-M3 \citep{chen2025m3embeddingmultilingualitymultifunctionalitymultigranularity}, and Octen-8B.
+All embedding models run locally on a single NVIDIA H100 80GB HBM3 GPU.
+Table~\ref{tab:main_results} lists every model with its score and cost; full details appear in Appendix~\ref{app:models_detail}.
+
+
+\subsection{Tasks and Evaluation Protocol}
+\label{sec:tasks}
+
+We introduce \textbf{\mteblm}, a 37-task benchmark covering classification, STS, clustering, pair classification, and retrieval, implemented with the MTEB framework \citep{muennighoff2023mteb}.
+It follows MTEB's task and result interfaces, allowing new models and datasets to use the same evaluation pipeline.
+Each \mteblm{} task is a new LLM-specific evaluation dataset derived from the corresponding original MTEB task (fixed seed\,=\,42; Appendix~\ref{app:datasets}), ensuring all submissions are evaluated on identical data.
+
+\paragraph{Why these tasks.}
+We use subsets rather than MTEB(eng, v2) because generative evaluation is orders of magnitude more expensive: one pass over the full suite would cost hundreds of dollars per LLM, and corpus-in-context retrieval requires the corpus to fit in the prompt.
+Tasks are selected to span all five categories, cover multiple languages and domains, and keep retrieval corpora small enough for shorter-context models.
+MTEB's task-selection analysis was also designed around embedding models, so v2 is not automatically the right frame for a cross-paradigm comparison.
+
+We compare complete deployment pipelines: embedding models use kNN for classification, cosine similarity for STS and retrieval, and $k$-means for clustering; LLMs receive zero-shot prompts.
+This comparison reflects a common deployment setting in which practitioners consider LLMs because labelled data are scarce.
+Our few-shot ablation (\S\ref{sec:fewshot}) tests whether a small number of in-context examples narrows the resulting gap.
+
+\paragraph{Classification (8 tasks).}
+Sentiment (IMDB, ToxicConversations, TweetSentiment), intent detection (Banking77: 77 classes; MassiveIntent: 60 intents), and multilingual classification (AmazonCounterfactual, MTOPDomain, MassiveScenario).
+\emph{LLM:} Zero-shot structured output for each test split sample.
+\emph{Embedding:} kNN trained on embeddings on the labelled training split, then used for test split predictions.
+\emph{Metric:} Accuracy.
+
+\paragraph{Semantic Textual Similarity (10 tasks).}
+English benchmarks (STSBenchmark, SICK-R, STS12--16), a biomedical benchmark (BIOSSES), and multilingual benchmarks (STS17, STS22v2).
+\emph{LLM:} Rates similarity on each task's native scale, returning a float.
+\emph{Embedding:} Cosine similarity between embeddings.
+\emph{Metric:} Spearman correlation.
+
+\paragraph{Clustering (9 tasks).}
+Scientific papers (ArXiv, BioRxiv, MedRxiv) and online discussions (Reddit, StackExchange, TwentyNewsgroups).
+\emph{LLM:} All documents in a single prompt with sequential identifiers; the model receives the ground-truth cluster count $k$ and returns cluster assignments as a JSON array.
+\emph{Embedding:} $k$-means on document embeddings.
+\emph{Metric:} V-measure.
+
+\paragraph{Pair Classification (4 tasks).}
+Duplicate detection (SprintDuplicateQuestions), paraphrase identification (TwitterURLCorpus), legal matching (LegalBenchPC), and entailment (RTE3, multilingual).
+\emph{LLM:} Binary output per pair with reasoning.
+\emph{Embedding:} Cosine similarity with threshold sweep (MTEB convention; best threshold chosen post-hoc on the test set).
+\emph{Metric:} Average precision and accuracy.
+
+\paragraph{Retrieval (6 tasks).}
+A domain-diverse suite: legal (AILAStatutes; LegalBench consumer-contracts QA \citep{guha2023legalbench}), finance (HC3-Finance \citep{guo2023hc3}), public-health QA, French QA (FQuAD \citep{dhoffschmidt2020fquad}), and Danish social media (TwitterHjerne \citep{holm2024danoliterate}).
+\emph{LLM:} Corpus-in-context \citep{lee2024longcontextlanguagemodelssubsume}: the full corpus is placed in the prompt with sequential identifiers; prompt caching \citep{gim2024promptcache} amortises the corpus prefix across queries.
+Corpora are deliberately small (82--415 documents) so that models with shorter context windows can be evaluated on identical data; this keeps the whole corpus readable in one prompt, which production-scale retrieval does not permit (see \S\ref{sec:limitations}).
+\emph{Embedding:} Cosine similarity ranking.
+\emph{Metric:} Recall@1 (nDCG@$k$ results in released data files).
+
+
+\subsection{Cost Methodology}
+\label{sec:cost}
+
+\paragraph{Embedding costs.}
+We measure maximum-throughput token processing on an H100 80GB at sequence length~512 (largest fitting batch) and compute cost as $r_{\text{GPU}} / T$, where $r_{\text{GPU}} = \$2.49$/hr (Lambda Labs H100 spot, March 2026) and $T$ is tokens per hour.
+Costs range from \$0.001 (mE5-small) to \$0.22 (F2LLM-v2-14B); full per-model throughput and cost data appear in Table~\ref{tab:embedding_throughput} (Appendix~\ref{app:emb_throughput}).
+
+\paragraph{LLM costs.}
+Token usage is extracted from each provider's \texttt{usage\_stats}. We bill every non-input (generated) token at the output rate:
+\begin{equation}
+\text{Cost} = (\text{input} - \text{cached}) \cdot r_{\text{in}} + \text{cached} \cdot r_{\text{cache}} + (\text{total} - \text{input}) \cdot r_{\text{out}}
+\label{eq:cost}
+\end{equation}
+where $r_{\text{cache}} = r_{\text{in}} / 10$. Reasoning (``thinking'') tokens are part of the generated total and are billed at the output rate, matching provider billing; providers report them differently, and we attribute each model's reasoning share from its usage statistics (Appendix~\ref{app:cost_detail}).
+Gemini models are priced at Gemini API rates and open-weight models at OpenRouter public rates (March/June 2026).
+Costs range from \$3.16 (DeepSeek-V4-Flash) to \$154.14 (Gemini~3.1~Pro); the complete token-level breakdown is in Table~\ref{tab:llm_tokens} (Appendix~\ref{app:tokens_table}).
+
+
+\subsection{Throughput Methodology}
+\label{sec:throughput}
+
+We serve both paradigms on the same GPU, giving the throughput comparison common hardware and removing API rate limits.
+This differs from our cost accounting (\S\ref{sec:cost}), which uses API rates for LLMs and GPU-rental rates for embeddings.
+We serve the two open-weight LLMs that fit on a single H100 (Qwen3.6-27B dense, Qwen3.6-35B-A3B MoE) under vLLM, and run embedding models batched on the same GPU, measuring both in tokens per second (configuration in Appendix~\ref{app:cost_detail}).
+Gemini is API-only, and larger open models such as DeepSeek-R1 need multiple GPUs.
+This end-to-end comparison uses each paradigm's standard inference procedure: encoder batching for embeddings and autoregressive decoding for LLMs (Appendix~\ref{app:extended_limitations}).
+Per-model embedding throughput is reported in Table~\ref{tab:embedding_throughput} (Appendix~\ref{app:emb_throughput}); the comparison appears in Figure~\ref{fig:throughput} (Appendix~\ref{app:figures}).

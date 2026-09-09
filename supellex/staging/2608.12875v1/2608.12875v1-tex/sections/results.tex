@@ -1,0 +1,117 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Overall Performance}
+\label{sec:overall}
+
+Across all 36 models, the best LLM and the best embedding model are effectively tied.
+Gemini~3.1~Pro leads with a mean score of 77.6 on \mteblm{}, followed closely by Octen-8B (77.2) and Qwen3-E-8B (77.0; full ranking in Appendix~\ref{app:models}).
+Gemini~3~Flash scores 75.2, and Flash-Lite scores 64.5. The reasoning-capable Gemini models occupy the top LLM ranks.
+
+\subsection{Task-Category Analysis}
+\label{sec:categories}
+
+The aggregate tie hides large differences between task categories.
+Table~\ref{tab:main_results} reports per-category scores for the top models, and full per-category rankings for all 36 models appear in Appendix~\ref{app:category_rankings}.
+Figure~\ref{fig:taskrange} (Appendix~\ref{app:figures}) shows this at the task level: some embedding model matches the best LLM on 7 of 8 classification and 7 of 10 STS tasks, but on only 1 of 6 retrieval tasks.
+Retrieval is where the paradigms separate; elsewhere the choice is about cost, not quality.
+
+\input{tables/main_results}
+
+\paragraph{Retrieval ($+$8.5): LLMs lead.}
+Pro leads the best embedding on retrieval (64.5 vs.\ 56.0) and wins five of the six retrieval tasks, losing only legal statute retrieval (Appendix~\ref{app:retrieval_detail}).
+
+\paragraph{Classification ($-$5.6): embeddings lead.}
+SFR-2 \citep{meng2024sfremb2} (90.8) outscores Pro (85.2) by a wide margin.
+The gap widens on fine-grained tasks (Banking77: 77 classes; MassiveIntent: 60 intents), a consequence of the kNN-vs-zero-shot setup we adopt for deployment realism (\S\ref{sec:tasks}); see \S\ref{sec:discussion} for the structural argument.
+
+\paragraph{Clustering, STS, and pair classification: statistical ties.}
+On clustering the best embedding (SFR-2, 66.7) edges Pro (66.6); on STS Qwen3-E-4B \citep{qwen2025qwen3embedding} (88.8) edges Pro (88.5); on pair classification KaLM-12B \citep{hu2025kalmv2} (87.1) leads Pro (83.2).
+All three rest on geometric proximity or labelled-reference matching, which cosine similarity over learned embeddings captures directly.
+
+\paragraph{Statistical significance.}
+A paired bootstrap test (10{,}000 resamples) places the overall difference between Pro and Octen-8B within statistical noise ($\Delta$\,=\,$+$0.3, $p$\,=\,0.85, 95\%~CI\,=\,[$-$2.4, $+$3.1]).
+Category-level tests favour LLMs on retrieval and embeddings on classification; clustering, STS, and pair classification are statistically even (Appendix~\ref{app:significance}, Table~\ref{tab:significance}).
+
+The category-level cost--performance frontiers show the same division (Figure~\ref{fig:paretocat}): Pro extends the retrieval frontier, while embeddings define the frontiers for classification, clustering, STS, and pair classification.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{pareto_per_category.pdf}
+\caption{\textbf{Cost vs.\ performance by task category.}
+Each panel plots score (0--100) against cost per benchmark pass (log scale) for all 36 models; the line is the Pareto frontier over all models and the star marks the best LLM in that category.
+Pro extends the retrieval frontier; embedding models define the frontiers for classification, clustering, STS, and pair classification.}
+\label{fig:paretocat}
+\end{figure*}
+
+
+\subsection{Retrieve-then-Rerank}
+\label{sec:rerank}
+
+The corpus-in-context comparison above pits single-vector embeddings against LLMs directly; production systems often insert a middle stage: a cross-encoder or LLM reranker over a first-stage shortlist.
+We evaluate this pipeline on the standard IR benchmarks BEIR (semantic) and BRIGHT (reasoning-heavy), crossing four first-stage retrievers with cross-encoder and LLM listwise rerankers (Figure~\ref{fig:rerank}; the full matrix is in Appendix~\ref{app:rerank_matrix}, Table~\ref{tab:reranker_matrix}).
+The result follows the same task-dependent pattern: on reasoning-heavy BRIGHT, an LLM listwise reranker improves a strong embedding first stage from 22.3 to 35.1 nDCG@10.
+On semantic BEIR, the strong embedding alone scores 63.1, ahead of the best reranked configuration at 60.3.
+Cost scales with shortlist size: reranking a top-100 shortlist costs \$10--30 per benchmark, against \$154 for reading the full corpus in context.
+The MoE Qwen3.6-35B-A3B is cheaper still, reaching 33.6 nDCG@10 on BRIGHT for \$10 where Qwen3.6-27B reaches 35.1 for \$30.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{reranker_beir_bright.pdf}
+\caption{\textbf{Retrieve-then-rerank.}
+LLM listwise reranking improves every first stage on BRIGHT. On BEIR, a strong embedding first stage outperforms all reranked configurations.}
+\label{fig:rerank}
+\end{figure}
+
+
+\subsection{Cost and Throughput}
+\label{sec:cost_results}
+
+\paragraph{Embeddings dominate the Pareto frontier.}
+The Pareto frontier contains the embedding models and Gemini~3.1~Pro, which costs 1{,}431$\times$ as much as the best embedding of comparable quality (Figure~\ref{fig:pareto}).
+Pro's marginal 0.4-point aggregate edge over Octen-8B comes with a benchmark cost of \$154.14 versus \$0.11.
+
+\paragraph{The thinking-token tax.}
+The structural driver of LLM cost is internal reasoning (Equation~\ref{eq:cost}; Figure~\ref{fig:cost_breakdown}).
+Reasoning tokens account for 28--81\% of inference cost across the reasoning models. Flash-Lite provides a non-reasoning reference point and ranks below most embeddings. This spending buys little on most tasks: lower reasoning budgets preserve or improve retrieval for four of six models (\S\ref{sec:ablation}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{thinking_tax.pdf}
+\caption{\textbf{The thinking-token tax: what reasoning costs, and what it buys.}
+\emph{(a)} API cost per benchmark pass by token type for all ten LLMs.
+\emph{(b)} Mean retrieval score with default vs.\ disabled reasoning for six models from five families; labels show the reduction in generated tokens.
+Four models preserve or improve retrieval with 54--96\% fewer generated tokens; the two Qwen models lose ground.}
+\label{fig:cost_breakdown}
+\end{figure}
+
+\paragraph{Cost sensitivity.}
+The 1{,}431$\times$ ratio assumes H100 spot pricing (\$2.49/hr).
+Under alternative hardware and pricing the ratio ranges from 338$\times$ (commercial embedding API at \$0.10/MTok) to 2{,}424$\times$ (L4 GPU at \$0.49/hr).
+The order-of-magnitude gap persists across all evaluated cost assumptions (Appendix~\ref{app:cost_sensitivity}).
+
+
+\subsection{Throughput Constraints}
+\label{sec:throughput_results}
+
+Served on the same H100, embedding models process tokens far faster than LLMs (Figure~\ref{fig:throughput}, Appendix~\ref{app:figures}).
+The two open-weight LLMs that fit on a single H100 (Qwen3.6-27B, Qwen3.6-35B-A3B) sustain 5{,}400--5{,}900 tokens/second, whereas embedding models range from 14{,}700 tok/s (the largest, F2LLM-14B) to 4.3M tok/s (the smallest, mE5-small), a 2.5$\times$ to 736$\times$ advantage on identical hardware.
+With hardware and serving stack fixed, the measured gap reflects the different inference procedures: autoregressive decoding and a single encoder pass.
+At production scale (millions of documents and continuous ingestion), this throughput gap limits the practicality of LLM-based pipelines.
+
+\subsection{Ablation: Reduced Thinking}
+\label{sec:ablation}
+
+We re-evaluate Gemini~3~Flash with \texttt{reasoning\_effort=low} and, for the open models, with reasoning disabled at the serving layer, cutting reasoning tokens by 54--96\% on the retrieval tasks (Table~\ref{tab:ablation_nocot}; cross-family results in Figure~\ref{fig:cost_breakdown}b; details in Appendix~\ref{app:ablation_detail}).
+Two findings stand out.
+First, reduced reasoning preserves or improves all six Flash retrieval scores and four of six cross-family averages.
+Second, classification changes by less than one point on all tested tasks ($|\Delta| < 1.0$).
+The retrieval advantage largely persists under reduced reasoning budgets, indicating a limited role for additional test-time reasoning.
+
+
+
+\subsection{Ablation: Few-Shot Classification}
+\label{sec:fewshot}
+
+To test whether labelled examples can close the classification gap, we evaluate Flash with 5 in-context examples per task (Table~\ref{tab:ablation_fewshot}; details in Appendix~\ref{app:ablation_detail}).
+Five-shot results are similar to or worse than the zero-shot scores on the small-label tasks. Note that the embedding kNN classifier uses the full labelled train set. The LLM prompt only gets five examples here, yet given these results, it seems unlikely more would help.

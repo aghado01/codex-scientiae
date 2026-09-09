@@ -1,0 +1,677 @@
+% ============================================================
+% APPENDIX — 9  sections
+% A: Statistical Significance
+% B: Evaluated Models and Tasks
+% C: Ablation Studies
+% D: Per-Category Rankings and Figures
+% E: Qualitative Error Analysis
+% F: Extended Related Work
+% G: Extended Limitations
+% H: Cost and Throughput Details
+% I: Reproducibility
+% ============================================================
+
+
+% ============================================================
+\section{Statistical Significance Testing}
+\label{app:significance}
+% ============================================================
+
+\paragraph{Bootstrap procedure.}
+We implement a paired bootstrap test \citep{efron1979bootstrap} comparing Gemini~3.1~Pro against the best embedding model in each comparison.
+The resampling unit is the task level: each bootstrap replicate draws \mteblm{} tasks with replacement from the full \mteblm{} task set, and the score difference is computed as the mean-of-means difference across the resampled task set.
+Task-level resampling accommodates the different metrics used across categories (accuracy, Spearman $\rho$, V-measure, average precision, and Recall@1). Equal task weighting matches the macro-average score.
+
+We report unadjusted $p$-values for five planned category-level comparisons. Under a Bonferroni threshold of $\alpha$\,=\,0.01, classification remains significant and retrieval falls above the threshold.
+
+Table~\ref{tab:significance} reports the full results.
+The overall comparison (Pro vs.\ Octen-8B across \mteblm) yields $\Delta$\,=\,$+$0.3, 95\%~CI\,=\,[$-$2.4, +3.1], $p$\,=\,0.85, a statistical tie.
+Category-level tests identify two significant differences:
+\begin{itemize}
+    \item \textbf{Classification:} embeddings win ($\Delta$\,=\,$-$5.6, CI\,=\,[$-$9.2, $-$2.4], $p$\,$<$\,0.01)
+    \item \textbf{Retrieval:} LLMs win ($\Delta$\,=\,+8.5, CI\,=\,[+0.2, +16.8], $p$\,$<$\,0.05)
+\end{itemize}
+STS ($p$\,=\,0.74), clustering ($p$\,=\,0.97), and pair classification ($p$\,=\,0.49) show no significant paradigm difference.
+
+\input{tables/significance}
+
+
+% ============================================================
+\section{Evaluated Models and Tasks}
+\label{app:models_detail}
+% ============================================================
+
+This section lists the evaluated models, category- and task-level results, and benchmark tasks and metrics.
+
+\subsection{Model Overview}
+
+Table~\ref{tab:full_models} lists all 36 evaluated models — 10 LLMs and 26 embedding models — with parameter counts, mean \mteblm{} scores, total benchmark costs, and paper references.
+Models range from mE5-small (118M parameters, \$0.001) to Gemini~3.1~Pro (\$154.14).
+Models without a dedicated paper are marked ``--''.
+
+\input{tables/full_models}
+
+\subsection{Full Per-Category Rankings}
+\label{app:models}
+
+Table~\ref{tab:category_scores} compares Pro with the best embedding in each category. Table~\ref{tab:full_results_by_category} gives per-category scores for all 36 models.
+Pro ranks first overall largely because of retrieval; on classification, it ranks below ten embedding models.
+The reasoning-capable Gemini models rank far above the non-reasoning Flash-Lite, which places 31st of 36 overall.
+
+\input{tables/category_scores}
+\input{tables/full_results_by_category}
+
+\subsection{Per-Task Scores (Representative Models)}
+\label{app:per_task}
+
+Table~\ref{tab:per_task_scores} reports individual task scores for 5 representative models (2 LLMs, 3 embeddings) across all \mteblm{} tasks, alongside the best embedding score per task.
+The scores vary substantially by task. For example, Pro is strongest on FQuAD retrieval, and SFR-2 is strongest on SprintDuplicateQuestions.
+This complementarity supports the hybrid-pipeline recommendation in \S\ref{sec:discussion}.
+
+\input{tables/per_task_scores}
+
+\subsection{Full Per-Task Scores for All Models}
+\label{app:full_per_task_all}
+
+Tables~\ref{tab:full_per_task_all_models}--\ref{tab:full_per_task_ret} provide the complete score matrix for all 36 models across every \mteblm{} task, presented one table per category so that each fits the page upright.
+The tables share a common layout: models are rows, ordered by overall \mteblm{} score, with the ten LLMs listed first and the 26 embedding models below; the category's tasks are columns, with its metric given in the caption.
+The final column gives each model's mean over the category, matching the corresponding column of Table~\ref{tab:main_results}.
+Bold marks the best value in a column, whether a single task or the category mean.
+Because rows are ordered by overall score rather than by category, this column is not monotonic: it shows where a model over- or under-performs its overall rank.
+These tables extend Table~\ref{tab:per_task_scores} to all models.
+
+\input{tables/full_per_task_all_models}
+
+\subsection{Benchmark Task Suite}
+\label{app:datasets}
+
+Table~\ref{tab:datasets} lists all 37 tasks with languages, sample counts, and source citations.
+All are held-out subsets (seed\,=\,42) derived from MTEB and MMTEB tasks, hosted on Hugging Face under \texttt{mteb/llm-eval-*}; the exact dataset path and pinned revision for each task are listed in the released repository.
+Table~\ref{tab:token_budget} provides per-task token budgets for cost estimation, broken down by split.
+
+\input{tables/datasets}
+
+\input{tables/token_budget}
+
+
+% ============================================================
+\section{Ablation Studies}
+\label{app:ablation_detail}
+% ============================================================
+
+This section details the reduced-thinking and few-shot experiments and provides a per-task retrieval breakdown.
+
+\subsection{Reduced-Thinking Ablation Details}
+\label{app:ablation_reduced}
+
+Our reduced-thinking ablation uses Gemini~3~Flash with \texttt{reasoning\_effort=low}, which instructs the model to minimise internal chain-of-thought reasoning.
+We evaluate on all 6 retrieval tasks and 3 representative classification tasks (IMDB, Banking77, ToxicConversations).
+
+The reduction differs by task type: 54--94\% on retrieval and 12--30\% on classification.
+This suggests the model adaptively allocates more reasoning to retrieval (where documents must be read and compared) than classification (where the decision is more immediate).
+
+Reduced reasoning preserves or improves all six Flash retrieval scores and four of six cross-family averages (Figure~\ref{fig:cost_breakdown}b).
+We hypothesise that excessive reasoning introduces second-guessing: the model considers multiple interpretations of a document's relevance when a more direct reading would suffice.
+
+On classification, all three tasks show $|\Delta| < 1.0$, indicating no measurable benefit from additional reasoning in this ablation.
+This result is consistent with the supervision asymmetry between kNN and zero-shot classification.
+
+\input{tables/ablation_nocot}
+
+\input{tables/ablation_fewshot}
+
+\subsection{Per-Task Retrieval Analysis}
+\label{app:retrieval_detail}
+
+The six retrieval tasks in our benchmark span qualitatively different retrieval challenges; per-task scores for all 36 models are in Table~\ref{tab:full_per_task_ret}.
+We provide a per-task breakdown of the aggregate retrieval advantage ($+$8.5) reported in \S\ref{sec:categories}.
+Pro leads five retrieval tasks, and Octen-8B leads AILAStatutes.
+
+\paragraph{FQuAD (French reading-comprehension QA).}
+Answering requires reading French passages in context and matching the supporting one.
+Pro (92.0) leads the best embedding (72.0) by a wide margin, the largest LLM advantage in the suite.
+
+\paragraph{Consumer-Contracts QA (legal).}
+Yes/no questions over consumer-contract clauses.
+Pro (86.0) outperforms the best embedding (70.0), consistent with the need to interpret the clause.
+
+\paragraph{Public-Health QA.}
+Pro (90.0) edges the best embedding (85.0); factual health QA is partly captured by dense retrieval, narrowing the gap.
+
+\paragraph{HC3-Finance QA.}
+Pro (71.0) narrowly leads the best embedding (67.0) on financial QA retrieval.
+
+\paragraph{TwitterHjerne (Danish social media).}
+Retrieving relevant tweets given a query.
+Pro (33.4) slightly outperforms embeddings (best: 31.5); both handle keyword-centric retrieval similarly.
+
+\paragraph{AILAStatutes (legal statute retrieval): where reasoning hurts.}
+Matching case facts to relevant statutes.
+The best embedding (Octen-8B, 23.2) outperforms Pro (14.5): Pro over-retrieves broadly associated provisions, while cosine similarity naturally produces a narrower, more precise ranking.
+
+
+
+% ============================================================
+\section{Per-Category Rankings and Figures}
+\label{app:category_rankings}
+% ============================================================
+
+This section provides task- and model-level figures, followed by category-level rankings.
+Figure~\ref{fig:taskrange} is the task-level view of the paper's central claim and is referenced from \S\ref{sec:categories}.
+
+\subsection{Task- and Model-Level Figures}
+\label{app:figures}
+
+The figures below show task-level performance, throughput, category profiles, and cross-model correlations.
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{task_performance_range.pdf}
+\caption{\textbf{Per-task performance.}
+Horizontal bars show the full embedding score range (min to max across 26 models) for each \mteblm{} task, grouped by category.
+Circle = best embedding; diamond = best LLM on that task, taken over all ten (six different LLMs hold it across the suite, Gemini~3.1~Pro on 21 of 37 tasks).
+Where the diamond falls inside the bar, some embedding model already matches the best LLM: this holds on 7 of 8 classification tasks and 7 of 10 STS tasks, but on only 1 of 6 retrieval tasks.}
+\label{fig:taskrange}
+\end{figure*}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{throughput_comparison.pdf}
+\caption{\textbf{Same-hardware inference throughput.}
+Two open-weight LLMs and seven representative embedding models (118M--14B) served on one H100 (tokens/second, log scale); the full 26-model embedding throughput is in Table~\ref{tab:embedding_throughput}.
+Even the slowest embedding runs $\sim$2.5$\times$ faster than the fastest LLM; the fastest runs $\sim$736$\times$ faster.}
+\label{fig:throughput}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\linewidth]{radar_capability_profile.pdf}
+\caption{\textbf{Capability profiles across five task categories.}
+Gemini~3.1~Pro (red), Qwen3.6-27B (amber), and Octen-8B (blue).
+The LLMs lead on retrieval, while Octen-8B leads on classification and remains competitive across categories.}
+\label{fig:radar}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{task_correlation_heatmap.pdf}
+\caption{\textbf{Cross-model task-behaviour correlation.}
+Pearson correlations based on per-task \mteblm{} scores.
+LLMs and embedding models form visually distinct clusters: LLMs are strongly intercorrelated while embedding models cluster by architecture family.
+Lower inter-paradigm correlations are consistent with their different category profiles.}
+\label{fig:heatmap}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Per-Category Model Rankings}
+\label{app:rankings_figs}
+
+Figures~\ref{fig:ranking_overall}--\ref{fig:ranking_ret} rank all 36 evaluated models overall and within each of the five MTEB task categories.
+They show category-dependent performance: LLMs lead on retrieval, embedding models lead on classification, and the two paradigms are statistically indistinguishable on clustering, STS, and pair classification.
+Flash-Lite ranks near the bottom in every category, below the reasoning-capable Gemini models.
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ranking_Overall.pdf}
+\caption{\textbf{Overall rankings.} Pro (77.6) narrowly leads Octen-8B (77.2); the difference lies within statistical noise ($p$\,=\,0.85). Flash-Lite (64.5) ranks near the bottom.}
+\label{fig:ranking_overall}
+\end{figure*}
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ranking_Classification.pdf}
+\caption{\textbf{Classification rankings.} SFR-2 ranks first (90.8); Pro scores 85.2 and ranks below ten embedding models.}
+\label{fig:ranking_clf}
+\end{figure*}
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ranking_Clustering.pdf}
+\caption{\textbf{Clustering rankings.} Statistical tie; SFR-2 (66.7) edges Pro (66.6). Flash-Lite scores 21.7.}
+\label{fig:ranking_clu}
+\end{figure*}
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ranking_STS.pdf}
+\caption{\textbf{STS rankings.} Qwen3-E-4B (88.8) and Pro (88.5) are essentially tied; no significant paradigm difference ($p$\,=\,0.74).}
+\label{fig:ranking_sts}
+\end{figure*}
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ranking_PairClassification.pdf}
+\caption{\textbf{Pair Classification rankings.} KaLM-12B (87.1) outperforms Pro (83.2).}
+\label{fig:ranking_pair}
+\end{figure*}
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ranking_Retrieval.pdf}
+\caption{\textbf{Retrieval rankings.} Pro leads the best embedding (64.5 vs.\ 56.0) and ranks first on five of six tasks.}
+\label{fig:ranking_ret}
+\end{figure*}
+
+\FloatBarrier
+
+\subsection{Full Retrieve-then-Rerank Matrix}
+\label{app:rerank_matrix}
+
+Table~\ref{tab:reranker_matrix} reports the complete matrix summarised by Figure~\ref{fig:rerank} (\S\ref{sec:rerank}): all four first-stage retrievers crossed with every cross-encoder and LLM listwise reranker, on BEIR and BRIGHT.
+
+\input{tables/reranker_matrix}
+
+
+% ============================================================
+\section{Qualitative Error Analysis}
+\label{app:samples}
+% ============================================================
+
+We present model predictions from the evaluation files to illustrate differences between LLM and embedding approaches.
+The examples cover classification ambiguity, STS calibration, retrieval precision, and differences between Pro and Flash.
+
+\subsection{Classification: Over-Interpretation vs.\ Anchored Reference}
+
+Several classification errors involve ambiguous inputs for which the LLM infers an intent that differs from the dataset convention.
+With kNN, an embedding classifier can anchor its prediction to similar labelled examples, which helps on fine-grained tasks such as Banking77 and MassiveIntent.
+
+\paragraph{Banking77 (77 classes): ``locate my card.''}
+\begin{quote}
+\small
+\textbf{Input:} ``How do I locate my card?''
+
+\textbf{Pro reasoning:} ``The user is asking how to locate their card, indicating that they have misplaced it or it is missing. This aligns with the intent for a lost or stolen card.''
+
+\textbf{Pro prediction:} \texttt{lost\_or\_stolen\_card} \hfill \textcolor{red}{Incorrect (gold: \texttt{card\_arrival})}
+
+\textbf{Flash prediction:} \texttt{card\_arrival} \hfill \textcolor{green!60!black}{Correct}
+\end{quote}
+
+\noindent Flash predicts the gold label; Pro predicts \texttt{lost\_or\_stolen\_card}.
+The LLM infers ``locate'' implies loss; Flash's lower-depth reasoning follows the surface-level reading.
+In the training data, ``locate my card'' aligns with delivery tracking.
+The kNN classifier matches to examples like ``Where is my card?'' and correctly predicts \texttt{card\_arrival}.
+
+\paragraph{Banking77: ``know when my card will arrive.''}
+\begin{quote}
+\small
+\textbf{Input:} ``Is there a way to know when my card will arrive?''
+
+\textbf{Pro reasoning:} ``The user is asking for information regarding the timeframe or expected date for their card's delivery, which aligns with the \texttt{card\_delivery\_estimate} category.''
+
+\textbf{Pro prediction:} \texttt{card\_delivery\_estimate} \hfill \textcolor{red}{Incorrect (gold: \texttt{card\_arrival})}
+
+\textbf{Flash prediction:} \texttt{card\_delivery\_estimate} \hfill \textcolor{red}{Incorrect (gold: \texttt{card\_arrival})}
+\end{quote}
+
+\noindent Both models make the same error here, illustrating the ambiguity between ``arrival'' and ``delivery estimate'' without labelled context.
+The kNN classifier uses the full 77-class reference set to resolve such near-neighbour cases.
+
+\paragraph{MassiveIntent (60 classes): ``remind me about my schedule.''}
+\begin{quote}
+\small
+\textbf{Input (en):} ``remind me about my schedule for the afternoon''
+
+\textbf{Pro reasoning:} ``The user is asking to be reminded about their schedule for the afternoon, which involves checking or querying their calendar events.''
+
+\textbf{Pro prediction:} \texttt{calendar\_query} \hfill \textcolor{red}{Incorrect (gold: \texttt{calendar\_set})}
+\end{quote}
+
+\noindent ``Remind me'' is an action verb (set a reminder) but the LLM interprets it as information-seeking (query).
+This example illustrates the ambiguity between action and query intents.
+
+\paragraph{MassiveScenario (German): ``wir brauchen rosa.''}
+\begin{quote}
+\small
+\textbf{Input (de):} ``wir brauchen rosa'' (we need pink)
+
+\textbf{Pro reasoning:} ``The utterance 'wir brauchen rosa' (we need pink) implies adding an item ('rosa' / pink) to a shopping list or note-taking application.''
+
+\textbf{Pro prediction:} \texttt{lists} \hfill \textcolor{red}{Incorrect (gold: \texttt{iot})}
+\end{quote}
+
+\noindent The LLM correctly reasons about the surface form but miscategorises the scenario: \texttt{iot} refers to controlling physical smart-home devices, not arbitrary colour references.
+
+\begin{quote}
+\small
+\textbf{Input (de):} ``wie ist die einstellung f{\"u}r die helligkeit an meinem bildschirm'' (what is the brightness setting on my screen)
+
+\textbf{Pro reasoning:} ``The user is asking about the brightness setting on their screen, which involves controlling or checking the state of a device. This falls under the IoT category.''
+
+\textbf{Pro prediction:} \texttt{iot} \hfill \textcolor{red}{Incorrect (gold: \texttt{general})}
+\end{quote}
+
+\noindent Both errors reflect the fine-grained scenario taxonomy: \texttt{iot} refers to controlling physical smart-home devices, not arbitrary brightness settings or colour references.
+The LLM correctly identifies device-related surface features but miscategorises the scenario.
+
+\paragraph{AmazonCounterfactual: hypothetical ``would be great.''}
+\begin{quote}
+\small
+\textbf{Input:} ``Would be great to have on my tablet instead of carrying the book.''
+
+\textbf{Pro reasoning:} ``The review expresses a hypothetical situation ('have on my tablet') that has not actually happened, indicated by the phrase 'Would be great'. This describes an alternative condition and its potential consequence.''
+
+\textbf{Pro prediction:} \texttt{counterfactual} \hfill \textcolor{red}{Incorrect (gold: \texttt{not-counterfactual})}
+\end{quote}
+
+\noindent The phrase ``would be'' supports the LLM's hypothetical reading. The dataset convention labels forward-looking wishes as \texttt{not-counterfactual}.
+This may reflect a mismatch between a plausible linguistic interpretation and the dataset's annotation convention.
+
+\paragraph{When LLMs succeed on classification.}
+\begin{quote}
+\small
+\textbf{Input:} ``I still have not received my new card, I ordered over a week ago.''
+
+\textbf{Pro prediction:} \texttt{card\_arrival} \hfill \textcolor{green!60!black}{Correct}
+\end{quote}
+
+\noindent In this less ambiguous example, the LLM matches the gold annotation.
+
+
+\subsection{STS: Calibration and Semantic Precision}
+
+The examples below show two kinds of disagreement between LLM scores and STS annotations: sensitivity to fine distinctions and higher scores for inferred mechanistic equivalence.
+
+\paragraph{STSBenchmark: agreement on a simple paraphrase.}
+\begin{quote}
+\small
+\textbf{S1:} ``open again, open anew'' \quad \textbf{S2:} ``open again or anew.''
+
+\textbf{Pro:} 5.0 \quad \textbf{Gold:} 5.0 \quad \textbf{$|\Delta|$:} 0.0
+\end{quote}
+
+\noindent The LLM score matches the annotation for this near-identical paraphrase.
+
+\paragraph{STSBenchmark: conservative scoring on ideological distinctions.}
+\begin{quote}
+\small
+\textbf{S1:} ``\ldots a shift from a muslim identity to an islamist identity.''
+
+\textbf{S2:} ``\ldots to change a muslim identity for an islamic identity.''
+
+\textbf{Pro:} 4.5 \quad \textbf{Gold:} 5.0 \quad \textbf{$|\Delta|$:} 0.5
+\end{quote}
+
+\noindent The LLM distinguishes ``Islamist'' (political ideology) from ``Islamic'' (religious adjective); the gold standard treats them as equivalent.
+This linguistically defensible distinction reduces agreement with the benchmark annotation.
+
+\paragraph{BIOSSES: conservative scoring on biomedical paraphrases.}
+\begin{quote}
+\small
+\textbf{S1:} ``It has recently been shown that Craf is essential for Kras G12D-induced NSCLC.''
+
+\textbf{S2:} ``It has recently become evident that Craf is essential for the onset of Kras-driven non-small cell lung cancer.''
+
+\textbf{Pro reasoning:} ``Both sentences state that Craf is essential for the development of Kras-driven NSCLC. Sentence 1 specifies the particular mutation (Kras G12D), whereas Sentence 2 is slightly more general.''
+
+\textbf{Pro:} 3.8 \quad \textbf{Gold:} 4.0 \quad \textbf{$|\Delta|$:} 0.2
+\end{quote}
+
+\noindent The LLM correctly notes the specificity difference (``Kras G12D'' vs.\ ``Kras-driven'') and downweights accordingly.
+The gold annotation gives 4.0, treating the two as highly similar; the LLM's 3.8 is slightly more conservative.
+
+\paragraph{BIOSSES: LLM over-scores on mechanistic equivalence.}
+\begin{quote}
+\small
+\textbf{S1:} ``More recently, IDH mutations and resultant 2-hydroxyglutarate (2HG) production in leukemia cells were found to impair TET2 function.''
+
+\textbf{S2:} ``It has also been recently reported that mutations of the isocitrate dehydrogenase genes IDH1 and IDH2 inhibit TET catalytic activity.''
+
+\textbf{Pro reasoning:} ``Both sentences describe the exact same biochemical pathway: mutations in IDH genes lead to the production of 2-hydroxyglutarate (2-HG), which in turn inhibits TET2 enzymatic activity.''
+
+\textbf{Pro:} 3.8 \quad \textbf{Gold:} 3.2 \quad \textbf{$|\Delta|$:} 0.6
+\end{quote}
+
+\noindent The LLM identifies a mechanistic relationship and scores the pair 3.8, compared with the gold score of 3.2.
+Expert adjudication would be needed to determine whether this difference reflects model calibration or annotation criteria.
+
+
+\subsection{Retrieval: Reasoning Depth vs.\ Geometric Precision}
+
+The retrieval examples show how joint query--document processing can help on reading-comprehension tasks and how broader associations can hurt precise statute retrieval.
+
+\paragraph{FQuAD: reading comprehension in context.}
+On French reading-comprehension retrieval, the LLM reads each candidate passage in the prompt and selects the one that answers the query, reaching Recall@1\,=\,92.0 versus 72.0 for the best embedding.
+The LLM processes the query jointly with the candidate passages, which may explain part of the observed advantage.
+
+\paragraph{AILAStatutes: where reasoning hurts.}
+\begin{quote}
+\small
+\textbf{Query:} Legal case about a bank employee terminated for misconduct.
+
+\textbf{Pro:} Returns 14 documents spanning broad legal concepts (contract law, employment law, due process). Gold: only 4 specific statutes.
+The LLM's associative reasoning retrieves plausible but non-relevant provisions.
+
+\textbf{Octen-8B:} Returns a narrower, more precise set via cosine similarity with legal embeddings.
+\end{quote}
+
+\noindent In this example, Pro retrieves plausible but irrelevant provisions, while the embedding model produces a narrower ranking.
+
+\paragraph{TwitterHjerne: corpus-in-context precision.}
+\begin{quote}
+\small
+\textbf{Query (Danish):} ``S{\o}nnen vil gerne lave \#pebern{\o}dder. De par gange jeg har pr{\o}vet det, blev de kun OK. Er der nogen, der kan anbefale en opskrift? \#twitterhjerne''
+(``My son would like to make peppernuts. The few times I've tried, they were only OK. Can anyone recommend a recipe? \#twitterhjerne'')
+
+\textbf{Pro:} Returns documents [1, 2]: exact match. \textbf{Recall@1\,=\,1.0 on this query.}
+
+\textbf{Best embedding:} Recall@1\,=\,31.5 over the full task.
+\end{quote}
+
+\noindent For this query with explicit topical keywords, corpus-in-context retrieval returns the correct tweet first.
+The overall task-level advantage for Pro (33.4 vs.\ 31.5 for embeddings) is modest, reflecting that both paradigms handle keyword-centric retrieval similarly.
+
+
+\subsection{Model Scale Effects: Flash vs.\ Pro on the Same Input}
+
+\paragraph{Banking77: Flash succeeds where Pro over-interprets.}
+
+As shown above, Flash correctly predicts \texttt{card\_arrival} for ``How do I locate my card?'' while Pro predicts \texttt{lost\_or\_stolen\_card}.
+In this example, more reasoning does not improve the prediction.
+Pro's extended chain-of-thought introduces an interpretive step (``locate implies misplacement'') that Flash's lighter-weight reasoning bypasses.
+Aggregate scores provide context: Pro remains slightly stronger than Flash on classification overall.
+
+\paragraph{Retrieval scale effects.}
+
+On FQuAD reading-comprehension retrieval, all three Gemini models outscore the best embedding, with a clear quality ladder:
+\begin{itemize}
+    \item Pro (Recall@1\,=\,92.0): reads and matches passages precisely.
+    \item Flash (Recall@1\,=\,88.0): captures most of the advantage.
+    \item Flash-Lite (Recall@1\,=\,84.0): still well above embeddings, even without reasoning.
+    \item Best embedding (Recall@1\,=\,72.0): limited to single-vector matching.
+\end{itemize}
+
+Flash-Lite already outperforms the best embedding on this task; Pro adds a modest gain at much higher cost. This result is consistent with the reduced-thinking ablation (\S\ref{sec:ablation}).
+
+\paragraph{Summary.}
+The examples illustrate four patterns:
+\begin{enumerate}
+\item \textbf{Ambiguous label boundaries}: LLM predictions can differ from dataset conventions; kNN anchors decisions to labelled examples.
+\item \textbf{STS calibration}: model scores can differ from annotations when they attend to different semantic details.
+\item \textbf{Retrieval breadth}: joint processing can help reading comprehension but can also retrieve broadly related material.
+\item \textbf{Model scale}: the value of additional capacity or reasoning varies across examples and must be weighed against cost.
+\end{enumerate}
+Estimating the frequency of these patterns requires a systematic error analysis.
+
+
+% ============================================================
+\section{Extended Related Work}
+\label{app:extended_related}
+% ============================================================
+
+\subsection{LLMs as Text Encoders and Judges}
+
+The boundary between generative LLMs and discriminative embedding models has blurred considerably.
+LLM-as-a-judge frameworks \citep{zheng2023judging} repurpose frozen LLMs for evaluation. \citet{sun2023textclassificationlargelanguage} find that zero-shot LLM classification underperforms fine-tuned models on standard benchmarks and propose chain-of-thought prompting to narrow the gap.
+Fine-tuned encoder models outperform zero-shot frontier LLMs across the classification benchmarks tested by \citet{bucher2024finetuned}, with margins of 5 to over 75 F1 points depending on task granularity. This is consistent with our 5.6-point advantage for kNN-equipped embedding pipelines.
+The LOFT benchmark \citep{lee2024longcontextlanguagemodelssubsume} evaluates long-context LLMs on retrieval by placing entire corpora in the prompt (corpus-in-context prompting); our retrieval evaluation adopts the same protocol.
+
+On the representational side, several lines of work extract embeddings from LLMs.
+SGPT \citep{muennighoff2022sgptgptsentenceembeddings} uses weighted mean pooling over GPT decoder states. \citet{jiang2023scalingsentenceembeddingslarge} use in-context learning to extract sentence embeddings from decoder-only LLMs, while \citet{behnamghader2024llm2veclargelanguagemodels} adapt decoder-only LLMs into sentence encoders. \citet{springer2025repetitionimproveslanguagemodel} show that repeating the input can improve these embeddings by enabling effective bidirectional attention.
+GritLM \citep{muennighoff2025generativerepresentationalinstructiontuning} goes further, unifying generation and representation in a single model that achieved strong performance on both MTEB and generative benchmarks at the time of its release.
+
+These methods combine elements of both paradigms. At inference time, they produce fixed-length vectors compared via cosine similarity, so our cost accounting treats them as embedding models.
+Several of our 26 evaluated models (e.g., E5-Mistral, GritLM) are built on LLM backbones and incorporate LLM-derived representations.
+
+HUME \citep{assadi2025humemeasuringhumanmodelperformance} also benchmarks LLMs as annotators on MTEB tasks and finds that they fall short of human judgment on reranking. This complements our finding that zero-shot LLM classifiers underperform embedding pipelines with kNN access to labelled references.
+Our study adds a controlled comparison on identical tasks, data, and metrics, together with exact cost accounting.
+
+\subsection{Frontier LLMs and Open-Weight Reasoning Models}
+
+LLMs have advanced rapidly since GPT-4 \citep{openai2024gpt4technicalreport}.
+OpenAI's o1 \citep{openai2024o1} demonstrated extended chain-of-thought reasoning at inference time using reinforcement learning.
+At the time of our evaluation, closed-source models with controllable reasoning included Gemini~3.1~Pro, GPT-5 \citep{singh2026openaigpt5card}, and Claude~Opus~4.6 \citep{anthropic2026claudeopus46}. These models support extended thinking tokens billed separately from output; newer models have since appeared (e.g.\ GPT-5.4).
+Open-weight alternatives include Llama~3 \citep{grattafiori2024llama3herdmodels}, Qwen3 \citep{yang2025qwen3technicalreport}, and DeepSeek-R1 \citep{deepseekai2025deepseekr1incentivizingreasoningcapability}. DeepSeek-R1 shows that reinforcement-learning-based training can elicit strong reasoning at lower inference cost.
+Gemma~3 \citep{gemmateam2025gemma3technicalreport} is a compact multilingual model family.
+
+We evaluate ten LLMs across six families (\S\ref{sec:setup}), including DeepSeek-R1 and open-weight Qwen3.6, GLM, Kimi, and MiniMax models alongside Gemini~3. The cost and task-level patterns recur across this set, although their magnitude varies by model.
+GPT-5 \citep{singh2026openaigpt5card} and Claude~Opus~4.6 \citep{anthropic2026claudeopus46} remain to be evaluated. The same evaluation framework can accommodate these and future models.
+
+\subsection{Cross-Encoders and Late-Interaction Retrieval}
+
+Cross-encoder rerankers (models that jointly encode query and document to produce a relevance score) and late-interaction models such as ColBERT \citep{khattab2020colbert} occupy a middle ground between bi-encoder speed and LLM reasoning depth.
+We evaluate this middle ground directly (\S\ref{sec:rerank}) by crossing four first-stage retrievers with cross-encoder and LLM listwise rerankers on BEIR and BRIGHT \citep{sun2023rankgpt,weller2025rank1testtimecomputereranking}. Reranking improves reasoning-heavy retrieval, while the strongest embedding alone remains best on semantic retrieval.
+
+\citet{li2024ragvslcllms} compare RAG with long-context LLMs on QA tasks. Long-context LLMs achieve higher quality at greater token cost, while a Self-Route hybrid retains 93--100\% of their quality at 38--61\% of the token cost, depending on the model. This result supports the hybrid recommendation in \S\ref{sec:discussion}.
+
+
+% ============================================================
+\section{Extended Limitations}
+\label{app:extended_limitations}
+% ============================================================
+
+We expand on the six limitations summarised in \S\ref{sec:limitations}.
+
+\paragraph{(i) LLM coverage.}
+The ten evaluated LLMs span six families, dense and mixture-of-experts architectures, and reasoning and instruct variants. They provide a snapshot of a fast-moving frontier.
+At current public rates, the Pareto frontier includes Gemini~3.1~Pro and the leading embeddings; the lowest-cost LLM evaluated scores below the best embedding.
+Closed APIs not yet covered (GPT-5 \citep{singh2026openaigpt5card} and Claude~Opus~4.6 \citep{anthropic2026claudeopus46}) may have different cost--capability profiles, so the numerical conclusions should be updated as new evaluations become available.
+The released evaluation pipeline makes this straightforward to extend as new models are released.
+
+\paragraph{(ii) Supervision asymmetry.}
+Classification uses labelled-reference kNN for embeddings and zero-shot prompting for LLMs.
+This setup reflects deployments with scarce labelled data and gives the two pipelines different supervision. Five examples preserve performance on the small-label tasks and reduce Banking77 performance (\S\ref{sec:fewshot}).
+
+\paragraph{(iii) Small-corpus retrieval.}
+The corpus-in-context protocol places entire corpora (82--415 documents) in the LLM prompt, a setting that grants the LLM three structural advantages: the corpus fits entirely in context, prompt caching amortises input cost across queries, and the model can reason globally over the full document set.
+Each is a property of the protocol rather than a measured effect; we did not vary corpus size, so we do not quantify how retrieval quality would change at larger scale.
+At BEIR or production scale, placing the full corpus in context is generally impractical; an indexed first stage is needed, so the small-corpus cost gap is a lower bound for this protocol.
+We complement corpus-in-context retrieval with bi-encoder, cross-encoder, and LLM-reranker comparisons on BEIR and BRIGHT (\S\ref{sec:rerank}). Reranking benefits reasoning-heavy retrieval; the strongest embedding retains the lead on semantic retrieval \citep{sun2023rankgpt,weller2025rank1testtimecomputereranking}.
+nDCG@$k$ results for the small-corpus setting are available in the released data files and preserve the paradigm-level ordering.
+
+\paragraph{(iv) Reasoning-control granularity.}
+Reasoning controls differ by provider: Gemini's \texttt{reasoning\_effort=low} provides a soft hint, while the open models support fully disabled reasoning.
+We use both settings. Reduced reasoning preserves or improves retrieval for four of six models across five families (Figure~\ref{fig:cost_breakdown}b); token accounting varies by provider.
+
+\paragraph{(v) Throughput comparison.}
+We serve two open-weight LLMs (Qwen3.6-27B and Qwen3.6-35B-A3B) and the embedding models on the same H100, removing API rate limits and hardware choice as confounds.
+The resulting 2.5--736$\times$ gap is consistent with the difference between autoregressive decoding and a single encoder pass.
+
+\paragraph{(vi) Task weighting sensitivity.}
+Our aggregate metric weights all \mteblm{} tasks equally regardless of dataset size, task difficulty, or practical importance.
+Alternative weighting schemes (by dataset size, normalised z-scores, or task-family weighting) may shift aggregate conclusions.
+Aggregate numbers should therefore be interpreted alongside the reported category- and task-level results.
+Alternative aggregation methods such as the Borda count used by MMTEB \citep{enevoldsen2025mmtebmassivemultilingualtext} are applicable to \mteblm{} and may produce different paradigm orderings.
+
+
+% ============================================================
+\section{Cost and Throughput Details}
+\label{app:tokens}
+% ============================================================
+
+This section reports token usage, embedding throughput, cost sensitivity, and the cost methodology underlying \S\ref{sec:cost_results}--\ref{sec:throughput_results}.
+
+\subsection{Detailed LLM Token Usage}
+\label{app:tokens_table}
+
+Table~\ref{tab:llm_tokens} provides the complete token-level breakdown for each LLM across all \mteblm{} tasks.
+For each model, we report input, standard-output, cached, reasoning, and total tokens, together with the cost decomposition. Gemini reports reasoning separately, whereas OpenRouter includes it in the completion count.
+The reasoning-heavy LLMs generate 8--26M reasoning tokens (Qwen3.6-27B 26M, GLM-4.7 25M, Kimi-K2.6 22M, Gemini~3~Flash 14M, Pro 9M), compared with 1--3M standard-output tokens. Reasoning accounts for 28--81\% of total inference cost across these models: 81\% for Qwen3.6-27B and 28\% for DeepSeek-V4-Flash.
+The non-reasoning Flash-Lite costs \$6.85 and ranks below most embeddings.
+
+\input{tables/llm_tokens}
+
+\subsection{Embedding Throughput and Cost}
+\label{app:emb_throughput}
+
+Table~\ref{tab:embedding_throughput} reports the throughput (tokens/second) and derived cost per million tokens for each of the 26 embedding models, benchmarked on a single NVIDIA H100 80GB HBM3 GPU at sequence length 512 with maximum batch size.
+Costs range from \$0.00016/MTok (mE5-small, 118M parameters, 4.3M tok/s) to \$0.047/MTok (F2LLM-v2-14B, 14.7K tok/s).
+Total benchmark cost spans 291$\times$ across the embedding models, compared with a 1{,}431$\times$ gap between the best embedding and Gemini~3.1~Pro.
+
+Each model's total benchmark cost uses its own tokenizer's token count (4.4--5.5M tokens across vocabularies), avoiding tokenizer mismatch.
+
+\input{tables/embedding_throughput}
+
+\subsection{Cost Sensitivity Analysis}
+\label{app:cost_sensitivity}
+
+Table~\ref{tab:cost_sensitivity} shows how the LLM-to-embedding cost ratio varies under alternative hardware and pricing assumptions.
+We consider five scenarios for embedding inference:
+\begin{enumerate}
+    \item \textbf{H100 spot} (\$2.49/hr, Lambda Labs, March 2026): baseline, 1{,}431$\times$
+    \item \textbf{H100 on-demand} (\$3.99/hr): higher price, 893$\times$
+    \item \textbf{A100 spot} (\$1.49/hr, est.\ 1.5$\times$ slower): 1{,}594$\times$
+    \item \textbf{L4 spot} (\$0.49/hr, est.\ 3$\times$ slower): much lower throughput, 2{,}424$\times$
+    \item \textbf{Commercial API} (e.g.\ \$0.10/MTok): fixed per-token pricing, 338$\times$
+\end{enumerate}
+In all five scenarios, the cost ratio exceeds 300$\times$.
+
+\input{tables/cost_sensitivity}
+
+\paragraph{Per-query economics and training amortisation.}
+The benchmark-level ratios translate directly to per-query terms: both paradigms answer the same queries, so dividing by the query count rescales both sides equally and leaves the 29--1{,}431$\times$ range unchanged.
+Two effects widen the gap further under sustained deployment.
+First, embedding training is a one-time cost amortised over the deployment lifetime (and, for public checkpoints, across all users), so its per-query contribution vanishes at scale, whereas LLM inference cost recurs in full on every query.
+Second, document embeddings are computed once and reused across queries, while corpus-in-context reading repeats per query and is only partially offset by prompt caching.
+The benchmark-pass comparison is therefore conservative: it charges embeddings their full encoding cost while granting the LLM cached-input rates.
+
+\subsection{Detailed Cost Methodology}
+\label{app:cost_detail}
+
+\paragraph{Embedding cost pipeline.}
+For each model, we tokenize all \mteblm{} tasks with its HuggingFace \texttt{AutoTokenizer}. We then benchmark maximum-throughput processing on an NVIDIA H100 80GB at sequence length 512, using the largest batch that fits in memory. Cost is $(\text{tokens} / 10^6) \times (r_{\text{GPU}} / T)$, where $r_{\text{GPU}} = \$2.49$/hr (Lambda Labs spot pricing, March 2026) and $T$ is sustained throughput in tokens/hour.
+
+Token counts range from 4.4M (Gemma-based tokenizers) to 5.5M (Mistral-based), a 26\% range driven by vocabulary differences.
+Using a single proxy tokenizer (e.g., GPT-2 at 6.75M tokens) would overestimate embedding costs by 22--54\%.
+
+\paragraph{LLM cost pipeline.}
+Token usage is extracted from each provider's \texttt{usage\_stats} in every task's JSON result file.
+For Gemini, \texttt{input\_tokens}\,=\,\texttt{prompt\_token\_count} (including cached tokens), \texttt{output\_tokens}\,=\,\texttt{candidates\_token\_count} (excluding reasoning), and \texttt{cached\_tokens}\,=\,\texttt{cached\_content\_token\_count}. Total tokens equal input plus output plus reasoning.
+For the open models served via OpenRouter, the completion count already includes reasoning and \texttt{total}\,=\,input\,+\,output, with reasoning reported separately.
+We bill every generated token, $\text{total}-\text{input}$, at the output rate. This equals output plus reasoning for Gemini and the reasoning-inclusive completion count for open models. Each model's reasoning share comes from its usage statistics (Figure~\ref{fig:cost_breakdown}).
+For multilingual tasks (STS17, STS22v2, RTE3), per-language entries report different token counts and are summed; for classification tasks with multiple entries per split, all entries share identical \texttt{usage\_stats} and are counted once.
+
+Gemini API prices per MTok input/output are \$0.25/\$1.50 for Flash-Lite, \$0.50/\$3.00 for Flash, and \$2.00/\$12.00 for Pro; cached input is billed at 10\%. Open models use OpenRouter public rates (March/June 2026).
+
+\paragraph{Throughput measurement.}
+We serve both paradigms on the same NVIDIA H100 and measure sustained tokens/second.
+Open-weight LLMs (Qwen3.6-27B, Qwen3.6-35B-A3B) run under vLLM (BF16, tensor-parallel\,=\,1, 256 concurrent requests, 200/100 input/output tokens); embedding models run batch inference on the same GPU.
+Holding hardware fixed removes API rate limits and GPU choice as explanations for the measured gap.
+
+
+% ============================================================
+\section{Reproducibility}
+\label{app:reproducibility}
+% ============================================================
+
+All code, datasets, result files, and analysis scripts are released at \url{https://github.com/embeddings-benchmark/embedders-dilemma} and implemented with the MTEB framework.
+
+\paragraph{LLM prompt templates.}
+Prompt design follows a consistent structure across all five task categories:
+\begin{itemize}
+    \item \textbf{System prompt}: one sentence describing the task type and output format.
+    \item \textbf{User prompt}: task-specific instruction, followed by the input text(s).
+    \item \textbf{Output schema}: a Pydantic model with fields \texttt{reasoning} (free text, optional) and \texttt{output} (constrained to valid labels or numeric ranges). JSON mode is enabled for all calls.
+\end{itemize}
+Example system prompts: \emph{Classification}: ``You are a text classifier. Return a JSON with your reasoning and the predicted label from the provided list.'' \emph{Retrieval}: ``You are a retrieval assistant. Given a query and a set of numbered documents, identify the document IDs most relevant to the query. Return a JSON list of IDs in ranked order.''
+
+\paragraph{Schema validation and failure handling.}
+All LLM outputs are validated against the Pydantic schema after generation.
+If validation fails (e.g., invalid label or malformed JSON), the prompt is retried with an appended correction instruction, up to twice per sample.
+The final validation failure rate is $<$0.3\%; failed samples receive a null prediction and are counted as incorrect.
+
+\paragraph{Token usage tracking.}
+For each API call we log: \texttt{prompt\_token\_count}, \texttt{candidates\_token\_count}, \texttt{cached\_content\_token\_count}, \texttt{total\_token\_count}, and \texttt{thoughts\_token\_count} from \texttt{GenerateContentResponse.usage\_metadata}.
+Thinking tokens are verified as $\texttt{total} - \texttt{prompt} - \texttt{candidates}$ to cross-check against \texttt{thoughts\_token\_count}; agreement was exact in all cases.
+Pricing sources and throughput configurations are documented in \S\ref{app:cost_detail}.

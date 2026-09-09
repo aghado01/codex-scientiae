@@ -1,0 +1,181 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2510.15061v2",
+  "initialized_utc": "2026-09-09T23:10:33.776820Z",
+  "title": "Antislop: A Comprehensive Framework for Identifying and Eliminating Repetitive Patterns in Language Models",
+  "authors": [
+    "Samuel Paech",
+    "Allen Roush",
+    "Judah Goldfeder",
+    "Ravid Shwartz-Ziv"
+  ],
+  "abstract": "Widespread LLM adoption has introduced characteristic repetitive phraseology, termed \"slop,\" which degrades output quality and makes AI-generated text immediately recognizable. We present Antislop, a comprehensive framework providing tools to both detect and eliminate these overused patterns. Our approach combines three innovations: (1) The Antislop Sampler, which uses backtracking to suppress unwanted strings at inference time without destroying vocabulary; (2) An automated pipeline that profiles model-specific slop against human baselines and generates training data; (3) Final Token Preference Optimization (FTPO), a novel fine-tuning method that operates on individual tokens, surgically adjusting logits wherever a banned pattern has appeared in an inference trace. We demonstrate that some slop patterns appear over 1,000x more frequently in LLM output than human text. The Antislop Sampler successfully suppresses 8,000+ patterns while maintaining quality, whereas token banning becomes unusable at just 2,000. Most importantly, FTPO achieves 90% slop reduction while maintaining or improving performance in cross-domain evals including GSM8K, MMLU, and creative writing tasks. In contrast, DPO suffers significant degradation in writing quality and lexical diversity despite achieving weaker suppression. We release all code and results under MIT license: https://github.com/sam-paech/auto-antislop.",
+  "identifiers": {
+    "arxiv": "2510.15061",
+    "arxiv_versioned": "2510.15061v2",
+    "doi": null,
+    "external": {
+      "arxiv": "2510.15061v2"
+    }
+  },
+  "categories": [
+    "cs.LG",
+    "cs.CL"
+  ],
+  "concepts": [],
+  "primary_category": "cs.LG",
+  "published": "2025-10-16T18:22:22Z",
+  "updated": "2025-10-21T21:42:07Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2510.15061v2.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9663,
+        "sha256": "d86be55cfea702000a60f93c235fe1949f20098f2154069e855f2f2723abe908",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-09T23:10:33.212940Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2510.15061v2&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "6d977f75e14deeba83916d4574d139567e283736f874d8637b8525d047197993"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "arxiv_submission.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Antislop: A Comprehensive Framework for Identifying and Eliminating Repetitive Patterns in Language Models",
+        "authors_tex": [
+          "{\\small\n\\begingroup\n\\setlength{\\tabcolsep}{0pt}\n\\renewcommand{\\arraystretch}{1.05}\n\\begin{tabular}{@{}c@{\\hspace{1.2em}}c@{\\hspace{1.2em}}c@{\\hspace{1.2em}}c@{}}\n\\textbf{Samuel J Paech} &\n\\textbf{Allen G Roush} &\n\\textbf{Judah Goldfeder} &\n\\textbf{Ravid Shwartz\\textendash Ziv} \\\\\n{\\ttfamily\\footnotesize \\nolinkurl{spaech@gmail.com}} &\n{\\ttfamily\\footnotesize \\nolinkurl{allen.roush@thoughtworks.com}} &\n{\\ttfamily\\footnotesize \\nolinkurl{jag2396@columbia.edu}} &\n{\\ttfamily\\footnotesize \\nolinkurl{ravidziv@gmail.com}} \\\\\nIndependent & Thoughtworks & Columbia University & New York University\n\\end{tabular}\n\\endgroup\n}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 413,
+        "sha256": "ab23604816e1b78d601b738207d2ce260999aa935f998c91547ec66ddd035dac"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2510.15061v2",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2510.15061v2.tar.gz",
+      "format": "application/gzip",
+      "bytes": 548921,
+      "sha256": "0e92223dcfe590bdc0ab51737b7cefd27fc95180f850989b4f14e9221ca7104d",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2510.15061v2-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2510.15061v2.tar.gz",
+      "entrypoint": "arxiv_submission.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 23,
+      "tex_files": 2,
+      "sha256": "3b0fcbb221131f3c7fd8cd1eb376f9c22a4eaeb54de01cfa2ac01ad4f5026a58"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2510.15061v2.pdf",
+      "format": "application/pdf",
+      "bytes": 1023691,
+      "sha256": "e20e46fa115451aeb39fd4ba36a2956746f58d3bea1208f59e43e3b9bf694711"
+    },
+    {
+      "role": "html-source",
+      "path": "2510.15061v2-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2510.15061v2.html",
+      "files": 17,
+      "bytes": 1790556,
+      "sha256": "198a8f4285d6105ded5a26f2dfba9dff48ce105adffc55267acfd3dd1abab552"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-09T23:10:33.776820Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 25
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 23
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 2
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "arxiv_submission.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We present \mteblm{}, the first cost-aware comparison of LLM and embedding deployment pipelines across five MTEB task categories, evaluating ten LLMs from six families and 26 embedding models on 37 tasks.
+The two paradigms match in aggregate but differ by task: LLMs lead on reasoning-heavy retrieval, embeddings lead on classification, and the rest are tied. Comparable LLM quality comes with substantially higher cost and lower throughput.
+
+Embedding pipelines therefore remain the cost-efficient default, with reasoning-intensive retrieval the clearest case for an LLM.
+Our retrieve-then-rerank results support a hybrid strategy: embeddings for candidate retrieval, LLMs for reasoning over the shortlist.
+
+Pareto frontiers add deployment cost and throughput to accuracy-based rankings, and we encourage their wider use.
+\mteblm{} is released with MTEB-compatible code and datasets, so the evaluation can expand as new models appear.
