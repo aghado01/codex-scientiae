@@ -1,0 +1,101 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2607.21366v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2607.21366v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Hilbert Operator for Progressive Encoding (HOPE): A Mathematical Framework for Deconstructing Learned Representations in Deep Networks",
+      "authors": [
+        "Hossein Mobahi",
+        "Peter L. Bartlett"
+      ],
+      "abstract": "Deep neural networks encode complex representations, but deconstructing this internal knowledge remains a challenge. Given the link between learning and compression, network compression offers a promising lens to analyze this knowledge. However, standard compression heuristics often suffer from scale symmetries and architectural biases. To resolve these, we introduce Hilbert Operator for Progressive Encoding (HOPE), a mathematical framework to gradually deconstruct the representations in trained network weights. HOPE shifts network compression from the discrete domain into a Hilbert space of continuous functions. By modeling individual neurons as rank-1 Hilbert-Schmidt operators, HOPE unifies pruning and neuron merging as low-rank subspace projection. Extending this formulation, HOPE introduces macro block eviction to encompass multi-layer structures like entire residual pathways under the same unified metric. This unified approach enables unbiased architectural decisions across layers with different types and sizes. HOPE is a data-free and hyperparameter-free framework. We present proof-of-concept experiments in model compression and fine-tuning to highlight the practical potential of our theory.",
+      "doi": null,
+      "arxiv_id": "2607.21366v1",
+      "published": "2026-07-23T14:31:16Z",
+      "updated": "2026-07-23T14:31:16Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2607.21366v1",
+      "pdf_url": "https://arxiv.org/pdf/2607.21366v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "stat.ML"
+      ],
+      "external_ids": {
+        "arxiv": "2607.21366v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2607.21366v1",
+          "url": "https://arxiv.org/abs/2607.21366v1",
+          "doi": null,
+          "arxiv_id": "2607.21366v1",
+          "published": "2026-07-23T14:31:16Z",
+          "updated": "2026-07-23T14:31:16Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2607.21366v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-09T23:29:56.869854Z",
+      "sha256": "f6b74afb1b5f661035bcf3a5b3b42b9c8deb3dc76cb92e1f4e5bc342685a2626",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvT3R4OEJNYXlnaWlDZFZubjZ3OHk2STlHa2dJPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwNy4yMTM2NnYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTA5VDIzOjI5OjU3WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA3LjIxMzY2djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwNy4yMTM2NnYxPC9pZD4KICAgIDx0aXRsZT5IaWxiZXJ0IE9wZXJhdG9yIGZvciBQcm9ncmVzc2l2ZSBFbmNvZGluZyAoSE9QRSk6IEEgTWF0aGVtYXRpY2FsIEZyYW1ld29yayBmb3IgRGVjb25zdHJ1Y3RpbmcgTGVhcm5lZCBSZXByZXNlbnRhdGlvbnMgaW4gRGVlcCBOZXR3b3JrczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA3LTIzVDE0OjMxOjE2WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA3LjIxMzY2djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA3LjIxMzY2djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5EZWVwIG5ldXJhbCBuZXR3b3JrcyBlbmNvZGUgY29tcGxleCByZXByZXNlbnRhdGlvbnMsIGJ1dCBkZWNvbnN0cnVjdGluZyB0aGlzIGludGVybmFsIGtub3dsZWRnZSByZW1haW5zIGEgY2hhbGxlbmdlLiBHaXZlbiB0aGUgbGluayBiZXR3ZWVuIGxlYXJuaW5nIGFuZCBjb21wcmVzc2lvbiwgbmV0d29yayBjb21wcmVzc2lvbiBvZmZlcnMgYSBwcm9taXNpbmcgbGVucyB0byBhbmFseXplIHRoaXMga25vd2xlZGdlLiBIb3dldmVyLCBzdGFuZGFyZCBjb21wcmVzc2lvbiBoZXVyaXN0aWNzIG9mdGVuIHN1ZmZlciBmcm9tIHNjYWxlIHN5bW1ldHJpZXMgYW5kIGFyY2hpdGVjdHVyYWwgYmlhc2VzLiBUbyByZXNvbHZlIHRoZXNlLCB3ZSBpbnRyb2R1Y2UgSGlsYmVydCBPcGVyYXRvciBmb3IgUHJvZ3Jlc3NpdmUgRW5jb2RpbmcgKEhPUEUpLCBhIG1hdGhlbWF0aWNhbCBmcmFtZXdvcmsgdG8gZ3JhZHVhbGx5IGRlY29uc3RydWN0IHRoZSByZXByZXNlbnRhdGlvbnMgaW4gdHJhaW5lZCBuZXR3b3JrIHdlaWdodHMuCiAgSE9QRSBzaGlmdHMgbmV0d29yayBjb21wcmVzc2lvbiBmcm9tIHRoZSBkaXNjcmV0ZSBkb21haW4gaW50byBhIEhpbGJlcnQgc3BhY2Ugb2YgY29udGludW91cyBmdW5jdGlvbnMuIEJ5IG1vZGVsaW5nIGluZGl2aWR1YWwgbmV1cm9ucyBhcyByYW5rLTEgSGlsYmVydC1TY2htaWR0IG9wZXJhdG9ycywgSE9QRSB1bmlmaWVzIHBydW5pbmcgYW5kIG5ldXJvbiBtZXJnaW5nIGFzIGxvdy1yYW5rIHN1YnNwYWNlIHByb2plY3Rpb24uIEV4dGVuZGluZyB0aGlzIGZvcm11bGF0aW9uLCBIT1BFIGludHJvZHVjZXMgbWFjcm8gYmxvY2sgZXZpY3Rpb24gdG8gZW5jb21wYXNzIG11bHRpLWxheWVyIHN0cnVjdHVyZXMgbGlrZSBlbnRpcmUgcmVzaWR1YWwgcGF0aHdheXMgdW5kZXIgdGhlIHNhbWUgdW5pZmllZCBtZXRyaWMuIFRoaXMgdW5pZmllZCBhcHByb2FjaCBlbmFibGVzIHVuYmlhc2VkIGFyY2hpdGVjdHVyYWwgZGVjaXNpb25zIGFjcm9zcyBsYXllcnMgd2l0aCBkaWZmZXJlbnQgdHlwZXMgYW5kIHNpemVzLiBIT1BFIGlzIGEgZGF0YS1mcmVlIGFuZCBoeXBlcnBhcmFtZXRlci1mcmVlIGZyYW1ld29yay4gV2UgcHJlc2VudCBwcm9vZi1vZi1jb25jZXB0IGV4cGVyaW1lbnRzIGluIG1vZGVsIGNvbXByZXNzaW9uIGFuZCBmaW5lLXR1bmluZyB0byBoaWdobGlnaHQgdGhlIHByYWN0aWNhbCBwb3RlbnRpYWwgb2Ygb3VyIHRoZW9yeS48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuTEciIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5BSSIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09InN0YXQuTUwiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wNy0yM1QxNDozMToxNlo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkxHIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Ib3NzZWluIE1vYmFoaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UGV0ZXIgTC4gQmFydGxldHQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Hilbert Operator for Progressive Encoding (HOPE): A Mathematical Framework for Deconstructing Learned Representations in Deep Networks",
+    "authors": [
+      "Hossein Mobahi",
+      "Peter L. Bartlett"
+    ],
+    "abstract": "Deep neural networks encode complex representations, but deconstructing this internal knowledge remains a challenge. Given the link between learning and compression, network compression offers a promising lens to analyze this knowledge. However, standard compression heuristics often suffer from scale symmetries and architectural biases. To resolve these, we introduce Hilbert Operator for Progressive Encoding (HOPE), a mathematical framework to gradually deconstruct the representations in trained network weights. HOPE shifts network compression from the discrete domain into a Hilbert space of continuous functions. By modeling individual neurons as rank-1 Hilbert-Schmidt operators, HOPE unifies pruning and neuron merging as low-rank subspace projection. Extending this formulation, HOPE introduces macro block eviction to encompass multi-layer structures like entire residual pathways under the same unified metric. This unified approach enables unbiased architectural decisions across layers with different types and sizes. HOPE is a data-free and hyperparameter-free framework. We present proof-of-concept experiments in model compression and fine-tuning to highlight the practical potential of our theory.",
+    "identifiers": {
+      "arxiv": "2607.21366",
+      "arxiv_versioned": "2607.21366v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2607.21366v1"
+      }
+    },
+    "categories": [
+      "cs.LG",
+      "cs.AI",
+      "stat.ML"
+    ],
+    "concepts": [],
+    "primary_category": "cs.LG",
+    "published": "2026-07-23T14:31:16Z",
+    "updated": "2026-07-23T14:31:16Z"
+  }
+}

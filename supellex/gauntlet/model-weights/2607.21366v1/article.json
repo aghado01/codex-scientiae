@@ -1,0 +1,172 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2607.21366v1",
+  "initialized_utc": "2026-09-09T23:29:57.215287Z",
+  "title": "Hilbert Operator for Progressive Encoding (HOPE): A Mathematical Framework for Deconstructing Learned Representations in Deep Networks",
+  "authors": [
+    "Hossein Mobahi",
+    "Peter L. Bartlett"
+  ],
+  "abstract": "Deep neural networks encode complex representations, but deconstructing this internal knowledge remains a challenge. Given the link between learning and compression, network compression offers a promising lens to analyze this knowledge. However, standard compression heuristics often suffer from scale symmetries and architectural biases. To resolve these, we introduce Hilbert Operator for Progressive Encoding (HOPE), a mathematical framework to gradually deconstruct the representations in trained network weights. HOPE shifts network compression from the discrete domain into a Hilbert space of continuous functions. By modeling individual neurons as rank-1 Hilbert-Schmidt operators, HOPE unifies pruning and neuron merging as low-rank subspace projection. Extending this formulation, HOPE introduces macro block eviction to encompass multi-layer structures like entire residual pathways under the same unified metric. This unified approach enables unbiased architectural decisions across layers with different types and sizes. HOPE is a data-free and hyperparameter-free framework. We present proof-of-concept experiments in model compression and fine-tuning to highlight the practical potential of our theory.",
+  "identifiers": {
+    "arxiv": "2607.21366",
+    "arxiv_versioned": "2607.21366v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2607.21366v1"
+    }
+  },
+  "categories": [
+    "cs.LG",
+    "cs.AI",
+    "stat.ML"
+  ],
+  "concepts": [],
+  "primary_category": "cs.LG",
+  "published": "2026-07-23T14:31:16Z",
+  "updated": "2026-07-23T14:31:16Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2607.21366v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 8889,
+        "sha256": "b644b290b9cc9dc7fd75e854cfb31398c43ca57f13b12107090a43c49d5f4bcb",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-09T23:29:56.869854Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2607.21366v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "f6b74afb1b5f661035bcf3a5b3b42b9c8deb3dc76cb92e1f4e5bc342685a2626"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Hilbert Operator for Progressive Encoding (HOPE)\\\\[1ex]\n\\normalfont\\fontsize{14}{18}\\selectfont A Mathematical Framework for Deconstructing Learned Representations in Deep Networks",
+        "authors_tex": [
+          "Hossein Mobahi",
+          "Peter L. Bartlett"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 213,
+        "sha256": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2607.21366v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2607.21366v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 373455,
+      "sha256": "44bf2d118322d1b9087f083cc2977bf0d8e96e4e28e82e60e1d03879894ec689",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2607.21366v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2607.21366v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 6,
+      "tex_files": 1,
+      "sha256": "9dc288ec65c07d38054e37c383e9d094da9ea4009b084cecc8f33809e14f14a6"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2607.21366v1.pdf",
+      "format": "application/pdf",
+      "bytes": 1089944,
+      "sha256": "8106a86c0c72aee05b0fbcc5e13095edc03fe725538b1bfa5c50c18ea806067b"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-09T23:29:57.215287Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 8
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 6
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}
