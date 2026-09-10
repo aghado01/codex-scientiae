@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
@@ -77,7 +77,8 @@ Describe 'batch-executor private phase-state contracts' {
                 'ItemCount', 'Items', 'ExecutionMode', 'HasRunspaceItems', 'HasProcessItems',
                 'WorkerDefinition', 'InitializerDefinition', 'IssPreset', 'ModulePath', 'Budget',
                 'Policy', 'CancellationToken', 'WaitTimeoutSeconds', 'WaitSliceMilliseconds',
-                'ProcessDrainMilliseconds', 'InitialSessionState', 'EncodedChildCommand')
+                'ProcessDrainMilliseconds', 'InitialSessionState', 'EncodedChildCommand',
+                'Timeouts', 'CaptureLimits', 'Runtime', 'NativeAssemblyPath')
             $preparation.ItemCount | Should -Be 2
             $preparation.HasRunspaceItems | Should -BeTrue
             $preparation.HasProcessItems | Should -BeTrue
@@ -107,7 +108,7 @@ Describe 'batch-executor private phase-state contracts' {
             $lifecycle.PSObject.Properties.Name | Should -Be @(
                 'Preparation', 'Phase', 'Pool', 'PendingPipeline', 'Invocations', 'Results',
                 'ChildProcessRegistry', 'InfrastructureErrors', 'Timing', 'WaitOutcome', 'CompletedNormally',
-                'TeardownCompleted')
+                'TeardownCompleted', 'Deadline', 'Cleanup')
             $lifecycle.Phase | Should -Be 'Prepared'
             $lifecycle.PendingPipeline | Should -BeNullOrEmpty
             $lifecycle.Invocations.GetType().GetGenericTypeDefinition() | Should -Be `
@@ -210,7 +211,8 @@ Describe 'batch-executor private phase-state contracts' {
                 Set-BatchExecutorInvocationTerminalOverride -Invocation $invocation -State Cancelled
 
                 $invocation.PSObject.Properties.Name | Should -Be @(
-                    'PreparedItem', 'Pipeline', 'AsyncResult', 'QueuedUtc', 'TerminalOverride')
+                    'PreparedItem', 'Pipeline', 'AsyncResult', 'InvocationTask', 'InputCollection',
+                    'OutputCollection', 'QueuedUtc', 'TerminalOverride')
                 $invocation.TerminalOverride | Should -Be 'Cancelled'
                 { Set-BatchExecutorInvocationTerminalOverride -Invocation $invocation -State TimedOut } |
                     Should -Throw "*already 'Cancelled'*"

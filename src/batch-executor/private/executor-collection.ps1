@@ -18,12 +18,16 @@ function Receive-BatchExecutorResults {
         try {
             $pipelineOutput = @()
             try {
-                if ($invocation.TerminalOverride -eq 'TimedOut' -and
-                        -not $invocation.AsyncResult.IsCompleted) {
+                $asyncCompleted = $null -ne $invocation.AsyncResult -and $invocation.AsyncResult.IsCompleted
+                if ($invocation.TerminalOverride -eq 'TimedOut' -and -not $asyncCompleted) {
                     try { $pipeline.Stop() } catch {}
+                    $asyncCompleted = $null -ne $invocation.AsyncResult -and $invocation.AsyncResult.IsCompleted
                 }
-                if ($invocation.AsyncResult.IsCompleted) {
-                    $pipelineOutput = @($pipeline.EndInvoke($invocation.AsyncResult))
+                if ($asyncCompleted) {
+                    try { $pipelineOutput = @($pipeline.EndInvoke($invocation.AsyncResult)) }
+                    catch {
+                        if ($null -eq $invocation.TerminalOverride) { throw }
+                    }
                 }
             }
             catch {
@@ -33,18 +37,21 @@ function Receive-BatchExecutorResults {
                 }
             }
 
-            # EndInvoke output is already adapted/unwrapped when materialized through @(...).
             $envelope = if ($pipelineOutput.Count -gt 0) { $pipelineOutput[-1] } else { $null }
             $errors = [System.Collections.Generic.List[string]]::new()
             $warnings = [System.Collections.Generic.List[string]]::new()
             $information = [System.Collections.Generic.List[string]]::new()
-            foreach ($record in @($pipeline.Streams.Error)) { $errors.Add($record.ToString()) }
-            foreach ($record in @($pipeline.Streams.Warning)) { $warnings.Add($record.Message) }
-            foreach ($record in @($pipeline.Streams.Information)) {
-                $information.Add($(if ($null -ne $record.MessageData) {
-                            $record.MessageData.ToString()
-                        }
-                        else { $record.ToString() }))
+            $pipelineCompleted = $null -ne $invocation.AsyncResult -and
+                $invocation.AsyncResult.IsCompleted
+            if ($pipelineCompleted) {
+                foreach ($record in @($pipeline.Streams.Error)) { $errors.Add($record.ToString()) }
+                foreach ($record in @($pipeline.Streams.Warning)) { $warnings.Add($record.Message) }
+                foreach ($record in @($pipeline.Streams.Information)) {
+                    $information.Add($(if ($null -ne $record.MessageData) {
+                                $record.MessageData.ToString()
+                            }
+                            else { $record.ToString() }))
+                }
             }
             if ($envelope -and $envelope.Failure) { $errors.Add([string]$envelope.Failure) }
             if ($envelope -and $envelope.PSObject.Properties['Errors']) {
@@ -58,8 +65,13 @@ function Receive-BatchExecutorResults {
                 }
             }
             if ($invocation.TerminalOverride -eq 'TimedOut') {
-                $errors.Add(
-                    "batch wait exceeded the total timeout of $($preparation.WaitTimeoutSeconds) second(s)")
+                if ($Lifecycle.WaitOutcome.Kind -eq 'ExecutionTimeout') {
+                    $errors.Add('executor execution timeout')
+                }
+                else {
+                    $errors.Add(
+                        "batch wait exceeded the total timeout of $($preparation.WaitTimeoutSeconds) second(s)")
+                }
             }
             if ($invocation.TerminalOverride -eq 'Cancelled') {
                 $warnings.Add('caller cancellation requested')
@@ -91,29 +103,52 @@ function Receive-BatchExecutorResults {
                 $jobStdErr = [string[]]@($envelope.StdErr)
             }
 
-            $Lifecycle.Results[$preparedItem.Index] = [pscustomobject]@{
-                Id = $preparedItem.Id
-                Index = $preparedItem.Index
-                Input = $preparedItem.Input
-                State = $state
-                Output = $jobOutput
-                Errors = $errors.ToArray()
-                Warnings = $warnings.ToArray()
-                Information = $information.ToArray()
-                QueuedUtc = $invocation.QueuedUtc
-                StartedUtc = $startedUtc
-                EndedUtc = $endedUtc
-                DurationMs = $durationMs
-                RunspaceId = if ($envelope) { $envelope.RunspaceId } else { $null }
-                ThreadId = if ($envelope) { $envelope.ThreadId } else { $null }
-                ProcessId = if ($envelope) { $envelope.ProcessId } else { $null }
-                ExitCode = if ($envelope -and $envelope.PSObject.Properties['ExitCode']) {
+            $observation = if ($envelope -and $envelope.PSObject.Properties['Observation'] -and
+                    $null -ne $envelope.Observation) {
+                $envelope.Observation
+            }
+            else {
+                New-BatchExecutorObservation -Submitted:$true `
+                    -Started:($null -ne $startedUtc) 
+            }
+            if ($invocation.TerminalOverride -eq 'TimedOut') {
+                $observation.StopReason = if ($Lifecycle.WaitOutcome.Kind -eq 'ExecutionTimeout') {
+                    'ExecutionTimeout'
+                }
+                else { 'WaitTimeout' }
+                $observation.StopPhase = 'Await'
+            }
+            elseif ($invocation.TerminalOverride -eq 'Cancelled') {
+                $observation.StopReason = 'CallerCancellation'
+                $observation.StopPhase = 'Await'
+            }
+
+            $capture = if ($envelope -and $envelope.PSObject.Properties['Capture'] -and
+                    $null -ne $envelope.Capture) {
+                $envelope.Capture
+            }
+            else {
+                New-BatchExecutorCaptureRecord -Protocol $(if ($preparedItem.Mode -eq 'Process') {
+                        'missing'
+                    }
+                    else { 'not-applicable' })
+            }
+
+            $Lifecycle.Results[$preparedItem.Index] = New-BatchExecutorItemResult `
+                -Id $preparedItem.Id -Index $preparedItem.Index -OriginalInput $preparedItem.Input `
+                -State $state -Output $jobOutput -Errors $errors.ToArray() `
+                -Warnings $warnings.ToArray() -Information $information.ToArray() `
+                -QueuedUtc $invocation.QueuedUtc -StartedUtc $startedUtc -EndedUtc $endedUtc `
+                -DurationMs $durationMs `
+                -RunspaceId $(if ($envelope) { $envelope.RunspaceId } else { $null }) `
+                -ThreadId $(if ($envelope) { $envelope.ThreadId } else { $null }) `
+                -ProcessId $(if ($envelope) { $envelope.ProcessId } else { $null }) `
+                -ExitCode $(if ($envelope -and $envelope.PSObject.Properties['ExitCode']) {
                     $envelope.ExitCode
                 }
-                else { $null }
-                StdOut = $jobStdOut
-                StdErr = $jobStdErr
-            }
+                else { $null }) `
+                -StdOut $jobStdOut -StdErr $jobStdErr `
+                -Observation $observation -Capture $capture
         }
         catch {
             $materializationError = $_
@@ -123,35 +158,31 @@ function Receive-BatchExecutorResults {
             $fallbackWarnings = [System.Collections.Generic.List[string]]::new()
             $fallbackErrors.Add($materializationError.ToString())
             if ($invocation.TerminalOverride -eq 'TimedOut') {
-                $fallbackErrors.Add(
-                    "batch wait exceeded the total timeout of $($preparation.WaitTimeoutSeconds) second(s)")
+                if ($Lifecycle.WaitOutcome.Kind -eq 'ExecutionTimeout') {
+                    $fallbackErrors.Add('executor execution timeout')
+                }
+                else {
+                    $fallbackErrors.Add(
+                        "batch wait exceeded the total timeout of $($preparation.WaitTimeoutSeconds) second(s)")
+                }
             }
             if ($invocation.TerminalOverride -eq 'Cancelled') {
                 $fallbackWarnings.Add('caller cancellation requested')
             }
-            $Lifecycle.Results[$preparedItem.Index] = [pscustomobject]@{
-                Id = $preparedItem.Id
-                Index = $preparedItem.Index
-                Input = $preparedItem.Input
-                State = if ($invocation.TerminalOverride) {
-                    $invocation.TerminalOverride
-                }
-                else { 'Failed' }
-                Output = @()
-                Errors = $fallbackErrors.ToArray()
-                Warnings = $fallbackWarnings.ToArray()
-                Information = @()
-                QueuedUtc = $invocation.QueuedUtc
-                StartedUtc = $null
-                EndedUtc = [datetime]::UtcNow
-                DurationMs = $null
-                RunspaceId = $null
-                ThreadId = $null
-                ProcessId = $null
-                ExitCode = $null
-                StdOut = @()
-                StdErr = @()
-            }
+            $Lifecycle.Results[$preparedItem.Index] = New-BatchExecutorItemResult `
+                -Id $preparedItem.Id -Index $preparedItem.Index -OriginalInput $preparedItem.Input `
+                -State $(if ($invocation.TerminalOverride) { $invocation.TerminalOverride } else { 'Failed' }) `
+                -Errors $fallbackErrors.ToArray() -Warnings $fallbackWarnings.ToArray() `
+                -QueuedUtc $invocation.QueuedUtc -EndedUtc ([datetime]::UtcNow) `
+                -Observation (New-BatchExecutorObservation -Submitted:$true -Started:$false `
+                    -StopReason $(if ($invocation.TerminalOverride -eq 'Cancelled') { 'CallerCancellation' }
+                        elseif ($invocation.TerminalOverride -eq 'TimedOut' -and
+                            $Lifecycle.WaitOutcome.Kind -eq 'ExecutionTimeout') { 'ExecutionTimeout' }
+                        elseif ($invocation.TerminalOverride -eq 'TimedOut') { 'WaitTimeout' }
+                        else { '' }) `
+                    -StopPhase Collect) `
+                -Capture (New-BatchExecutorCaptureRecord -StdOutComplete:$false -StdErrComplete:$false `
+                    -Protocol $(if ($preparedItem.Mode -eq 'Process') { 'missing' } else { 'not-applicable' }))
         }
     }
 

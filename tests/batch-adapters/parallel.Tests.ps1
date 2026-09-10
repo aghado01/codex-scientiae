@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
@@ -99,6 +99,7 @@ Describe 'multilingual test composition shell' {
 
         $forbiddenMembers = @(
             'CreateRunspacePool', 'CreateRunspace', 'BeginInvoke', 'EndInvoke'
+            'InvokeAsync', 'StopAsync', 'WaitForExitAsync'
             'AddScript', 'AddCommand', 'Invoke', 'Start', 'Kill', 'WaitForExit'
             'CreateDirectory', 'WriteAllText', 'AppendAllText', 'NewGuid'
         )

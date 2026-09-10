@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 $script:BatchExecutorModuleRoot = $PSScriptRoot
 $script:BatchExecutorPayloadRoot = Join-Path $script:BatchExecutorModuleRoot 'payloads'
@@ -56,6 +56,9 @@ foreach ($payload in $payloadDefinitions) {
 }
 
 $hostFiles = @(
+    'private/native-loader.ps1'
+    'private/runtime-admission.ps1'
+    'private/result-contract.ps1'
     'private/script-definition.ps1'
     'private/worker-budget.ps1'
     'private/property-access.ps1'

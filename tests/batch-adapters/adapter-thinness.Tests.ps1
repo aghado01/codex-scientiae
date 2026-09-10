@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     $script:AdaptersModuleRoot = (Resolve-Path `
@@ -161,6 +161,7 @@ Describe 'BEX-403 adapter thinness gate' {
         )
         $forbiddenExecutionMembers = @(
             'CreateRunspacePool', 'CreateRunspace', 'BeginInvoke', 'EndInvoke'
+            'InvokeAsync', 'StopAsync', 'WaitForExitAsync'
             'AddScript', 'AddCommand', 'Invoke', 'Start', 'Kill', 'WaitForExit'
         )
         $forbiddenPlannerMembers = @(

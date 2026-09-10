@@ -10,6 +10,10 @@ function Stop-BatchExecutorLifecycle {
     }
     if ($Lifecycle.Phase -eq 'Closed') { return }
 
+    Import-BatchExecutorNative
+    $deadline = $Lifecycle.Deadline
+    if ($null -ne $deadline) { $deadline.StartCleanup() }
+    $swCleanup = [System.Diagnostics.Stopwatch]::StartNew()
     $cleanupSucceeded = $true
     try {
         if ($Lifecycle.Phase -ne 'TearingDown') {
@@ -22,21 +26,29 @@ function Stop-BatchExecutorLifecycle {
             "could not enter teardown phase: $($_.Exception.Message)")
     }
 
-    # This path also runs when Ctrl+C or an infrastructure exception unwinds the exported function.
-    # Kill children first, then stop their supervising pipelines, then close the shared pool.
     Stop-BatchExecutorChildProcesses -Registry $Lifecycle.ChildProcessRegistry `
         -Reason $(if ($Lifecycle.CompletedNormally) {
                 'final registry cleanup'
             }
             else { 'exceptional batch teardown' }) `
-        -Diagnostics $Lifecycle.InfrastructureErrors
-    Stop-BatchExecutorPipelines -Invocations $Lifecycle.Invocations
+        -Diagnostics $Lifecycle.InfrastructureErrors `
+        -Deadline $deadline
+    Stop-BatchExecutorPipelines -Invocations $Lifecycle.Invocations -Deadline $deadline
 
     $pendingPipeline = $Lifecycle.PendingPipeline
-    Stop-BatchExecutorPendingPipeline -Pipeline $pendingPipeline
+    Stop-BatchExecutorPendingPipeline -Pipeline $pendingPipeline -Deadline $deadline
     foreach ($invocation in $Lifecycle.Invocations) {
         $pipeline = $invocation.Pipeline
+        if ($null -ne $invocation.InputCollection) {
+            try { $invocation.InputCollection.Dispose() } catch {}
+            $invocation.InputCollection = $null
+        }
+        if ($null -ne $invocation.OutputCollection) {
+            try { $invocation.OutputCollection.Dispose() } catch {}
+            $invocation.OutputCollection = $null
+        }
         if ($null -eq $pipeline) {
+            $invocation.InvocationTask = $null
             $invocation.AsyncResult = $null
             continue
         }
@@ -45,6 +57,7 @@ function Stop-BatchExecutorLifecycle {
         try {
             [void]$pipeline.Dispose()
             $invocation.Pipeline = $null
+            $invocation.InvocationTask = $null
             $invocation.AsyncResult = $null
         }
         catch {
@@ -60,6 +73,7 @@ function Stop-BatchExecutorLifecycle {
             foreach ($invocation in $Lifecycle.Invocations) {
                 if ([object]::ReferenceEquals($invocation.Pipeline, $pendingPipeline)) {
                     $invocation.Pipeline = $null
+                    $invocation.InvocationTask = $null
                     $invocation.AsyncResult = $null
                 }
             }
@@ -91,14 +105,34 @@ function Stop-BatchExecutorLifecycle {
     }
     else { $Lifecycle.Pool = $null }
 
+    foreach ($entry in $Lifecycle.ChildProcessRegistry.ToArray()) {
+        $owned = $entry.Value
+        $exited = $false
+        try {
+            if ($owned -is [CodexScientiae.BatchExecutor.Native.ContainedProcess]) {
+                $exited = $owned.ConfirmedRelease
+            }
+            elseif ($owned -is [System.Diagnostics.Process]) {
+                $exited = $owned.HasExited
+            }
+        }
+        catch { $exited = $false }
+        if ($exited) {
+            [object] $removed = $null
+            [void]$Lifecycle.ChildProcessRegistry.TryRemove($entry.Key, [ref]$removed)
+            try { $owned.Dispose() } catch {}
+        }
+    }
     if ($Lifecycle.ChildProcessRegistry.Count -gt 0) {
         $cleanupSucceeded = $false
         $Lifecycle.InfrastructureErrors.Add(
             "batch executor teardown retained $($Lifecycle.ChildProcessRegistry.Count) child process record(s)")
     }
 
+    $Lifecycle.Timing['CleanupMs'] = $swCleanup.ElapsedMilliseconds
     $Lifecycle.TeardownCompleted = $cleanupSucceeded
     if ($cleanupSucceeded) {
+        $Lifecycle.Cleanup = New-BatchExecutorCleanupRecord -State Confirmed
         try {
             if ($Lifecycle.Phase -eq 'TearingDown') {
                 Set-BatchExecutorLifecyclePhase -Lifecycle $Lifecycle -Phase Closed
@@ -109,13 +143,16 @@ function Stop-BatchExecutorLifecycle {
             $Lifecycle.TeardownCompleted = $false
             $Lifecycle.InfrastructureErrors.Add(
                 "could not close teardown phase: $($_.Exception.Message)")
+            $Lifecycle.Cleanup = New-BatchExecutorCleanupRecord -State Incomplete `
+                -Reason $Lifecycle.InfrastructureErrors[-1]
         }
     }
-
-    # On a normal execution there is no earlier exception to preserve, so incomplete release is fatal.
-    # During exceptional/host-stop unwind, retain the original failure and its teardown diagnostics.
-    if (-not $cleanupSucceeded -and $Lifecycle.CompletedNormally) {
-        throw "batch executor teardown incomplete: $($Lifecycle.InfrastructureErrors[-1])"
+    else {
+        $reason = if ($Lifecycle.InfrastructureErrors.Count -gt 0) {
+            $Lifecycle.InfrastructureErrors[-1]
+        }
+        else { 'cleanup was not confirmed' }
+        $Lifecycle.Cleanup = New-BatchExecutorCleanupRecord -State Incomplete -Reason $reason
     }
 }
 
@@ -129,7 +166,10 @@ function New-BatchExecutorExecutionRecord {
             'CodexScientiae.BatchExecutor.Internal.LifecycleState') {
         throw 'batch executor execution-record projection requires a lifecycle state record'
     }
-    if ($Lifecycle.Phase -ne 'Closed' -or -not $Lifecycle.TeardownCompleted) {
+
+    $closed = $Lifecycle.Phase -eq 'Closed' -and $Lifecycle.TeardownCompleted
+    $incomplete = $Lifecycle.Phase -eq 'TearingDown' -and $Lifecycle.CompletedNormally
+    if (-not $closed -and -not $incomplete) {
         throw 'batch executor execution record requires a closed lifecycle'
     }
 
@@ -139,11 +179,21 @@ function New-BatchExecutorExecutionRecord {
     $timedOut = @($results | Where-Object State -EQ 'TimedOut').Count
     $cancelled = @($results | Where-Object State -EQ 'Cancelled').Count
     $preparation = $Lifecycle.Preparation
+    $cleanup = if ($null -ne $Lifecycle.Cleanup) { $Lifecycle.Cleanup }
+        else { New-BatchExecutorCleanupRecord -State Confirmed }
+    $runtime = if ($null -ne $preparation.Runtime) { $preparation.Runtime }
+        else { $null }
+    $errorList = [System.Collections.Generic.List[string]]::new()
+    $warningList = [System.Collections.Generic.List[string]]::new()
+    Add-BatchExecutorString -List $errorList -Value $Lifecycle.InfrastructureErrors
+    Add-BatchExecutorString -List $warningList -Value $preparation.Budget.Warnings
+    $errorArray = [string[]]$errorList.ToArray()
+    $warningArray = [string[]]$warningList.ToArray()
 
-    return [pscustomobject]@{
+    $properties = [ordered]@{
         Results = $results
-        Errors = $Lifecycle.InfrastructureErrors.ToArray()
-        Warnings = @($preparation.Budget.Warnings)
+        Errors = $errorArray
+        Warnings = $warningArray
         Budget = $preparation.Budget
         Policy = $preparation.Policy
         Timing = [pscustomobject]$Lifecycle.Timing
@@ -154,5 +204,8 @@ function New-BatchExecutorExecutionRecord {
             TimedOut = $timedOut
             Cancelled = $cancelled
         }
+        Cleanup = $cleanup
+        Runtime = $runtime
     }
+    return (New-BatchExecutorPropertyRecord -Property $properties)
 }

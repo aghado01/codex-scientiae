@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force

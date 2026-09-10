@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
@@ -38,7 +38,7 @@ Describe 'batch-executor result collection' {
                 $result.PSObject.Properties.Name | Should -Be @(
                     'Id', 'Index', 'Input', 'State', 'Output', 'Errors', 'Warnings', 'Information',
                     'QueuedUtc', 'StartedUtc', 'EndedUtc', 'DurationMs', 'RunspaceId', 'ThreadId',
-                    'ProcessId', 'ExitCode', 'StdOut', 'StdErr')
+                    'ProcessId', 'ExitCode', 'StdOut', 'StdErr', 'Observation', 'Capture')
                 $result.Id | Should -Be 'identity'
                 $result.Index | Should -Be 0
                 $result.State | Should -Be 'Succeeded'
@@ -72,9 +72,10 @@ Describe 'batch-executor result collection' {
             try {
                 Start-BatchExecutorInvocations -Lifecycle $lifecycle
                 Wait-BatchExecutorInvocations -Lifecycle $lifecycle
-                # A completed async result from another operation deterministically makes EndInvoke
-                # fail for this pipeline without corrupting the sibling invocation.
-                $lifecycle.Invocations[0].AsyncResult = [System.Threading.Tasks.Task]::CompletedTask
+                # A faulted invocation task is observed without EndInvoke and without corrupting
+                # the sibling invocation.
+                $lifecycle.Invocations[0].AsyncResult = [System.Threading.Tasks.Task]::FromException(
+                    [System.InvalidOperationException]::new('planned collection failure'))
                 Receive-BatchExecutorResults -Lifecycle $lifecycle
 
                 $lifecycle.Results.Id | Should -Be @('broken-collection', 'good-collection')

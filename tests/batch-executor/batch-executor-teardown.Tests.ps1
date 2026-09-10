@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
@@ -61,6 +61,7 @@ Describe 'batch-executor teardown and final assembly' {
             $lifecycle.PendingPipeline | Should -BeNullOrEmpty
             $lifecycle.Invocations[0].Pipeline | Should -BeNullOrEmpty
             $lifecycle.Invocations[0].AsyncResult | Should -BeNullOrEmpty
+            $lifecycle.Invocations[0].InvocationTask | Should -BeNullOrEmpty
             $lifecycle.ChildProcessRegistry.Count | Should -Be 0
 
             # Closed teardown is idempotent and remains silent.
@@ -87,9 +88,10 @@ Describe 'batch-executor teardown and final assembly' {
             $record = New-BatchExecutorExecutionRecord -Lifecycle $lifecycle
 
             $record.PSObject.Properties.Name | Should -Be @(
-                'Results', 'Errors', 'Warnings', 'Budget', 'Policy', 'Timing', 'Summary')
+                'Results', 'Errors', 'Warnings', 'Budget', 'Policy', 'Timing', 'Summary',
+                'Cleanup', 'Runtime')
             $record.Timing.PSObject.Properties.Name | Should -Be @(
-                'PoolOpenMs', 'DispatchMs', 'WaitMs', 'CollectMs', 'TotalMs')
+                'PrepareMs', 'PoolOpenMs', 'DispatchMs', 'WaitMs', 'CollectMs', 'CleanupMs', 'TotalMs')
             $record.Summary.PSObject.Properties.Name | Should -Be @(
                 'Total', 'Succeeded', 'Failed', 'TimedOut', 'Cancelled')
             $record.Summary.Total | Should -Be 1
@@ -115,13 +117,16 @@ Describe 'batch-executor teardown and final assembly' {
             $lifecycle.Pool = $fakePool
             $lifecycle.CompletedNormally = $true
 
-            { Stop-BatchExecutorLifecycle -Lifecycle $lifecycle } |
-                Should -Throw '*batch executor teardown incomplete*planned pool disposal failure*'
+            @(Stop-BatchExecutorLifecycle -Lifecycle $lifecycle).Count | Should -Be 0
             $lifecycle.Phase | Should -Be 'TearingDown'
             $lifecycle.TeardownCompleted | Should -BeFalse
+            $lifecycle.Cleanup.State | Should -Be 'Incomplete'
             [object]::ReferenceEquals($lifecycle.Pool, $fakePool) | Should -BeTrue
             $lifecycle.InfrastructureErrors -join "`n" | Should -Match `
                 'could not dispose runspace pool:.*planned pool disposal failure'
+            $record = New-BatchExecutorExecutionRecord -Lifecycle $lifecycle
+            $record.Cleanup.State | Should -Be 'Incomplete'
+            $record.Results.Count | Should -Be 0
         }
     }
 }

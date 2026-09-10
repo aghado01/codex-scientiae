@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
@@ -51,9 +51,13 @@ python_files = ["test_*.py"]
     }
 
     function Get-PytestBatchObservation {
-        param([Parameter(Mandatory)] [string[]] $Output)
+        param([AllowEmptyCollection()] [object[]] $Output = @())
 
-        $matches = @($Output | ForEach-Object {
+        $lines = foreach ($item in @($Output)) {
+            if ($null -eq $item) { continue }
+            [string]$item
+        }
+        $matches = @($lines | ForEach-Object {
                 if ($_ -match '^PytestContainerObservation\s+(.+)$') { $Matches[1] }
             })
         $matches.Count | Should -Be 1
@@ -387,7 +391,7 @@ def test_fail():
 
         $observations = foreach ($result in $execution.Results) {
             Test-Path -LiteralPath $result.Input.Metadata.ResultPath -PathType Leaf | Should -BeTrue
-            Get-PytestBatchObservation -Output @($result.StdOut)
+            Get-PytestBatchObservation -Output (@($result.StdOut) + @($result.Output))
         }
         @($observations.pytest_exit_code) | Should -Be @(0, 1, 5)
         @($observations.selected) | Should -Be @(1, 1, 0)

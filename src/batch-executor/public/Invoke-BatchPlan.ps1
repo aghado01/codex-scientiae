@@ -8,6 +8,12 @@ function Invoke-BatchPlan {
         [ValidateRange(1, 100)] [int] $SerializationDepth = 12,
         [ValidateRange(0, [int]::MaxValue)] [int] $ProcessTimeoutSeconds = 0,
         [ValidateRange(0, [int]::MaxValue)] [int] $WaitTimeoutSeconds = 0,
+        [ValidateRange(0, [int]::MaxValue)] [int] $ExecutionTimeoutSeconds = 0,
+        [ValidateRange(0, [int]::MaxValue)] [int] $CleanupTimeoutSeconds = 30,
+        [ValidateRange(1, [long]::MaxValue)] [long] $MaxStdOutBytes = 8MB,
+        [ValidateRange(1, [long]::MaxValue)] [long] $MaxStdErrBytes = 8MB,
+        [ValidateRange(1, [long]::MaxValue)] [long] $MaxProtocolBytes = 16MB,
+        [ValidateRange(1, [int]::MaxValue)] [int] $MaxFrameBytes = 1MB,
         [System.Threading.CancellationToken] $CancellationToken = [System.Threading.CancellationToken]::None,
         [ValidateSet('SharedReadOnly', 'PerItemCopy')] [string] $RunspaceDataPolicy = 'SharedReadOnly',
         [string] $PowerShellPath,
@@ -50,6 +56,12 @@ function Invoke-BatchPlan {
         SerializationDepth = $SerializationDepth
         ProcessTimeoutSeconds = $ProcessTimeoutSeconds
         WaitTimeoutSeconds = $WaitTimeoutSeconds
+        ExecutionTimeoutSeconds = $ExecutionTimeoutSeconds
+        CleanupTimeoutSeconds = $CleanupTimeoutSeconds
+        MaxStdOutBytes = $MaxStdOutBytes
+        MaxStdErrBytes = $MaxStdErrBytes
+        MaxProtocolBytes = $MaxProtocolBytes
+        MaxFrameBytes = $MaxFrameBytes
         CancellationToken = $CancellationToken
         RunspaceDataPolicy = $RunspaceDataPolicy
         WorkingDirectory = [string]$Plan.BasePath
@@ -70,12 +82,23 @@ function Invoke-BatchPlan {
         $stableResults[$planIndex] = $result
     }
 
-    [pscustomobject]@{
-        PlanId = $Plan.Id; Results = $stableResults
-        Errors = $execution.Errors; Warnings = @($Plan.Warnings) + @($execution.Warnings)
+    $errorList = [System.Collections.Generic.List[string]]::new()
+    $warningList = [System.Collections.Generic.List[string]]::new()
+    Add-BatchExecutorString -List $errorList -Value $execution.Errors
+    Add-BatchExecutorString -List $warningList -Value $Plan.Warnings
+    Add-BatchExecutorString -List $warningList -Value $execution.Warnings
+
+    $properties = [ordered]@{
+        PlanId = $Plan.Id
+        Results = $stableResults
+        Errors = [string[]]$errorList.ToArray()
+        Warnings = [string[]]$warningList.ToArray()
         Budget = $execution.Budget
         Policy = [pscustomobject]@{ Plan = $Plan.Policy; Execution = $execution.Policy }
         Timing = $execution.Timing
         Summary = $execution.Summary
+        Cleanup = $execution.Cleanup
+        Runtime = $execution.Runtime
     }
+    return (New-BatchExecutorPropertyRecord -Property $properties)
 }

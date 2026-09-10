@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
@@ -102,7 +102,7 @@ BeforeAll {
         param([Parameter(Mandatory)] [string] $Path)
         [void][System.IO.Directory]::CreateDirectory([System.IO.Path]::GetDirectoryName($Path))
         Set-Content -LiteralPath $Path -Encoding utf8 -Value @'
-#requires -Version 7.0
+#requires -Version 7.5
 param(
     [Parameter(Mandatory)] [string] $Article,
     [Parameter(Mandatory)] [string] $OutDirectory,

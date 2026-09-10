@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <EnableSharedSourceRouting>false</EnableSharedSourceRouting>
+    <ArtifactsModule>batch-executor</ArtifactsModule>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CodexScientiae.BatchExecutor.Native</RootNamespace>
+    <AssemblyName>BatchExecutor.Native</AssemblyName>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\batch-executor\native\**\*.cs" />
+  </ItemGroup>
+</Project>

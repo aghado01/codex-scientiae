@@ -27,6 +27,12 @@ function Resolve-BatchExecutorPreparation {
         [ValidateRange(1, 100)] [int] $SerializationDepth = 12,
         [ValidateRange(0, [int]::MaxValue)] [int] $ProcessTimeoutSeconds = 0,
         [ValidateRange(0, [int]::MaxValue)] [int] $WaitTimeoutSeconds = 0,
+        [ValidateRange(0, [int]::MaxValue)] [int] $ExecutionTimeoutSeconds = 0,
+        [ValidateRange(0, [int]::MaxValue)] [int] $CleanupTimeoutSeconds = 30,
+        [ValidateRange(1, [long]::MaxValue)] [long] $MaxStdOutBytes = 8MB,
+        [ValidateRange(1, [long]::MaxValue)] [long] $MaxStdErrBytes = 8MB,
+        [ValidateRange(1, [long]::MaxValue)] [long] $MaxProtocolBytes = 16MB,
+        [ValidateRange(1, [int]::MaxValue)] [int] $MaxFrameBytes = 1MB,
         [System.Threading.CancellationToken] $CancellationToken = `
             [System.Threading.CancellationToken]::None,
         [ValidateSet('SharedReadOnly', 'PerItemCopy')] [string] $RunspaceDataPolicy = 'SharedReadOnly',
@@ -151,6 +157,29 @@ function Resolve-BatchExecutorPreparation {
         }
     }
 
+    $childPaths = [System.Collections.Generic.List[string]]::new()
+    if ($hasProcessItems) {
+        $seenChild = [System.Collections.Generic.HashSet[string]]::new(
+            [System.StringComparer]::OrdinalIgnoreCase)
+        if (-not [string]::IsNullOrWhiteSpace($PowerShellPath) -and $seenChild.Add($PowerShellPath)) {
+            $childPaths.Add($PowerShellPath)
+        }
+        for ($i = 0; $i -lt $count; $i++) {
+            if ($null -eq $effectiveProcessSpecs[$i]) { continue }
+            $itemPath = [string]$effectiveProcessSpecs[$i].PowerShellPath
+            if ($seenChild.Add($itemPath)) { $childPaths.Add($itemPath) }
+        }
+    }
+    $runtime = Resolve-BatchExecutorRuntimeSet -ChildPowerShellPath $childPaths.ToArray()
+    $timeouts = New-BatchExecutorTimeoutPolicy `
+        -ExecutionTimeoutSeconds $ExecutionTimeoutSeconds `
+        -WaitTimeoutSeconds $WaitTimeoutSeconds `
+        -CleanupTimeoutSeconds $CleanupTimeoutSeconds `
+        -ProcessTimeoutSeconds $ProcessTimeoutSeconds
+    $captureLimits = New-BatchExecutorCaptureLimits -MaxStdOutBytes $MaxStdOutBytes `
+        -MaxStdErrBytes $MaxStdErrBytes -MaxProtocolBytes $MaxProtocolBytes `
+        -MaxFrameBytes $MaxFrameBytes
+
     $policy = [pscustomobject]@{
         FailureAction = 'Continue'
         ExecutionMode = $ExecutionMode
@@ -158,6 +187,14 @@ function Resolve-BatchExecutorPreparation {
             elseif ($hasProcessItems) { "$RunspaceDataPolicy (Runspace); SerializedCopy (Process)" }
             else { $RunspaceDataPolicy }
         Cancellation = 'CallerTokenAndTimeout'
+        Timeouts = $timeouts
+        Capture = [pscustomobject]@{
+            MaxStdOutBytes = $MaxStdOutBytes
+            MaxStdErrBytes = $MaxStdErrBytes
+            MaxProtocolBytes = $MaxProtocolBytes
+            MaxFrameBytes = $MaxFrameBytes
+        }
+        Runtime = $runtime
         ChildProcess = if ($hasProcessItems) {
             [pscustomobject]@{
                 PowerShellPath = $PowerShellPath
@@ -180,7 +217,9 @@ function Resolve-BatchExecutorPreparation {
         return New-BatchExecutorPreparation -Item @() -ExecutionMode $ExecutionMode `
             -WorkerDefinition $workerDefinition -InitializerDefinition $initializerDefinition `
             -IssPreset $IssPreset -ModulePath $ModulePath -Budget $budget -Policy $policy `
-            -CancellationToken $CancellationToken -WaitTimeoutSeconds $WaitTimeoutSeconds
+            -CancellationToken $CancellationToken -WaitTimeoutSeconds $WaitTimeoutSeconds `
+            -Timeouts $timeouts -CaptureLimits $captureLimits -Runtime $runtime `
+            -NativeAssemblyPath $script:BatchExecutorNativePath
     }
 
     $ids = [string[]]::new($count)
@@ -248,6 +287,8 @@ function Resolve-BatchExecutorPreparation {
             Item = $InputObject[$i]
             Context = $Context
             SerializationDepth = $SerializationDepth
+            MaxProtocolBytes = $MaxProtocolBytes
+            MaxFrameBytes = $MaxFrameBytes
         }
         $payloadXml = ConvertTo-BatchExecutorCliXml -Value $payload -Depth $SerializationDepth
         $preparedItems[$i] = New-BatchExecutorPreparedItem -Index $i -Id $ids[$i] `
@@ -259,5 +300,7 @@ function Resolve-BatchExecutorPreparation {
         -WorkerDefinition $workerDefinition -InitializerDefinition $initializerDefinition `
         -IssPreset $IssPreset -ModulePath $ModulePath -Budget $budget -Policy $policy `
         -CancellationToken $CancellationToken -WaitTimeoutSeconds $WaitTimeoutSeconds `
-        -InitialSessionState $iss -EncodedChildCommand $encodedChildCommand
+        -InitialSessionState $iss -EncodedChildCommand $encodedChildCommand `
+        -Timeouts $timeouts -CaptureLimits $captureLimits -Runtime $runtime `
+        -NativeAssemblyPath $script:BatchExecutorNativePath
 }

@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 [CmdletBinding()]
 param(
@@ -32,6 +32,8 @@ param(
     [ValidateRange(1, 100)] [int] $SerializationDepth = 12,
     [ValidateRange(0, [int]::MaxValue)] [int] $ProcessTimeoutSeconds = 0,
     [ValidateRange(0, [int]::MaxValue)] [int] $WaitTimeoutSeconds = 0,
+    [ValidateRange(0, [int]::MaxValue)] [int] $ExecutionTimeoutSeconds = 0,
+    [ValidateRange(0, [int]::MaxValue)] [int] $CleanupTimeoutSeconds = 30,
     [System.Collections.IDictionary] $ProcessEnvironment = @{},
     [bool] $CreateNoWindow = $true,
     [ValidateSet('Hidden', 'Normal', 'Minimized', 'Maximized')]
@@ -108,19 +110,32 @@ $execution = batch-executor\Invoke-BatchPlan -Plan $compiled `
     -MaxWorkers $MaxWorkers -ReservedCores $ReservedCores `
     -MinItemsPerWorker $MinItemsPerWorker -SerializationDepth $SerializationDepth `
     -ProcessTimeoutSeconds $ProcessTimeoutSeconds -WaitTimeoutSeconds $WaitTimeoutSeconds `
+    -ExecutionTimeoutSeconds $ExecutionTimeoutSeconds `
+    -CleanupTimeoutSeconds $CleanupTimeoutSeconds `
     -ProcessEnvironment $ProcessEnvironment -CreateNoWindow $CreateNoWindow `
     -WindowStyle $WindowStyle -LoadProfile:$LoadProfile -PriorityClass $PriorityClass
 
 $summary = $execution.Summary
-$infrastructureErrors = @($execution.Errors).Count
+$infrastructureErrors = @(
+    $execution.Errors | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) }
+).Count
 Write-Information -InformationAction Continue -MessageData (
     'Test batch: framework={0}; total={1}; succeeded={2}; failed={3}; timed-out={4}; cancelled={5}; infrastructure-errors={6}; duration-ms={7}' -f
     $Framework, $summary.Total, $summary.Succeeded, $summary.Failed, $summary.TimedOut,
     $summary.Cancelled, $infrastructureErrors, $execution.Timing.TotalMs)
 
 $execution
-if ($summary.Succeeded -ne $summary.Total -or $infrastructureErrors -gt 0) {
-    throw ('parallel.ps1: batch did not succeed: failed={0}; timed-out={1}; cancelled={2}; infrastructure-errors={3}' -f
+$cleanupState = if ($null -ne $execution.Cleanup) { [string]$execution.Cleanup.State } else { 'Confirmed' }
+if ($summary.Succeeded -ne $summary.Total -or $infrastructureErrors -gt 0 -or
+        $cleanupState -ne 'Confirmed') {
+    $message = 'parallel.ps1: batch did not succeed: failed={0}; timed-out={1}; cancelled={2}; infrastructure-errors={3}; cleanup={4}' -f
         $summary.Failed, $summary.TimedOut,
-        $summary.Cancelled, $infrastructureErrors)
+        $summary.Cancelled, $infrastructureErrors, $cleanupState
+    $errorRecord = [System.Management.Automation.ErrorRecord]::new(
+        [System.InvalidOperationException]::new($message),
+        'BatchExecutorConsumerFailure',
+        [System.Management.Automation.ErrorCategory]::OperationStopped,
+        $execution)
+    $errorRecord.CategoryInfo.TargetName = 'Invoke-BatchPlan'
+    throw $errorRecord
 }

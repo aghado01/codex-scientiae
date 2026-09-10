@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 <#
   src/batch-runner.ps1 — house caller for inventory-tree engine batches.
 
@@ -31,6 +31,8 @@ param(
     [ValidateRange(1, 100)] [int] $SerializationDepth = 12,
     [ValidateRange(0, [int]::MaxValue)] [int] $ProcessTimeoutSeconds = 0,
     [ValidateRange(0, [int]::MaxValue)] [int] $WaitTimeoutSeconds = 0,
+    [ValidateRange(0, [int]::MaxValue)] [int] $ExecutionTimeoutSeconds = 0,
+    [ValidateRange(0, [int]::MaxValue)] [int] $CleanupTimeoutSeconds = 30,
     [switch] $FailOnArticleFailure
 )
 
@@ -39,8 +41,8 @@ $ErrorActionPreference = 'Stop'
 $startedUtc = [datetime]::UtcNow
 $utf8 = [System.Text.UTF8Encoding]::new($false)
 
-if ($PSVersionTable.PSVersion.Major -lt 7) {
-    throw 'batch-runner requires PowerShell 7 or newer'
+if ($PSVersionTable.PSVersion -lt [version]'7.5') {
+    throw "batch-runner requires PowerShell 7.5 or newer; host is $($PSVersionTable.PSVersion)"
 }
 
 $repositoryInput = if (-not [string]::IsNullOrWhiteSpace($RepositoryRoot)) {
@@ -110,9 +112,36 @@ $invoke = @{
     SerializationDepth = $SerializationDepth
     ProcessTimeoutSeconds = $ProcessTimeoutSeconds
     WaitTimeoutSeconds = $WaitTimeoutSeconds
+    ExecutionTimeoutSeconds = $ExecutionTimeoutSeconds
+    CleanupTimeoutSeconds = $CleanupTimeoutSeconds
 }
 if ($null -ne $MaxWorkers) { $invoke.MaxWorkers = $MaxWorkers }
 $execution = Invoke-BatchPlan @invoke
+$executorEvidence = [ordered]@{
+    schema = 'codex-scientiae/executor-execution/0.1'
+    summary = $execution.Summary
+    cleanup = $execution.Cleanup
+    runtime = $execution.Runtime
+    errors = @($execution.Errors)
+    warnings = @($execution.Warnings)
+    results = @(
+        foreach ($result in @($execution.Results)) {
+            [ordered]@{
+                id = $result.Id
+                index = $result.Index
+                state = $result.State
+                observation = $result.Observation
+                capture = $result.Capture
+                exitCode = $result.ExitCode
+                errors = @($result.Errors)
+            }
+        }
+    )
+}
+[System.IO.File]::WriteAllText(
+    (Join-Path $RunDirectory 'executor-execution.json'),
+    (($executorEvidence | ConvertTo-Json -Depth 8) + "`n"),
+    $utf8)
 
 $rows = [System.Collections.Generic.List[object]]::new()
 $totals = [ordered]@{}
@@ -188,8 +217,13 @@ $runRecord = [ordered]@{
     (($runRecord | ConvertTo-Json -Depth 16) + "`n"),
     $utf8)
 
-if (@($execution.Errors).Count -gt 0) {
-    throw "Inventory batch executor reported infrastructure errors: $(@($execution.Errors) -join '; ')"
+if (@($execution.Errors).Count -gt 0 -or
+        ($null -ne $execution.Cleanup -and $execution.Cleanup.State -ne 'Confirmed')) {
+    $cleanupReason = if ($null -ne $execution.Cleanup -and $execution.Cleanup.Reason) {
+        [string]$execution.Cleanup.Reason
+    }
+    else { '' }
+    throw "Inventory batch executor reported infrastructure errors: $(@($execution.Errors) -join '; '); cleanup=$($execution.Cleanup.State) $cleanupReason"
 }
 Write-Output (
     "Inventory batch: engine={0}; articles={1}; ok={2}; failed={3}; missing={4}; run={5}" -f

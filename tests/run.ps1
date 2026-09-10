@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 <#
   tests/run.ps1 — import Pester (>=5) and run every *.Tests.ps1 recursively under this tree. Runs on Pester 5.x AND
   6.x (the invocation is version-robust — see the container note below).

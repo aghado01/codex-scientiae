@@ -32,6 +32,10 @@ function New-BatchExecutorSessionState {
             'Invoke-BatchDirectDispatcher', $script:BatchExecutorDirectDispatcher))
     }
     if ($ExecutionMode -in @('Process', 'Mixed')) {
+        Import-BatchExecutorNative
+        $iss.Assemblies.Add(
+            [System.Management.Automation.Runspaces.SessionStateAssemblyEntry]::new(
+                $script:BatchExecutorNativePath))
         $iss.Commands.Add([System.Management.Automation.Runspaces.SessionStateFunctionEntry]::new(
             'Invoke-BatchProcessDispatcher', $script:BatchExecutorProcessDispatcher))
     }

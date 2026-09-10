@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
@@ -210,15 +210,19 @@ Describe 'batch-executor lifecycle owner and dispatch' {
             -ExecutionMode Runspace -WorkingDirectory $TestDrive -MaxWorkers 1
 
         $run.PSObject.Properties.Name | Should -Be @(
-            'Results', 'Errors', 'Warnings', 'Budget', 'Policy', 'Timing', 'Summary')
+            'Results', 'Errors', 'Warnings', 'Budget', 'Policy', 'Timing', 'Summary',
+            'Cleanup', 'Runtime')
         $run.Timing.PSObject.Properties.Name | Should -Be @(
-            'PoolOpenMs', 'DispatchMs', 'WaitMs', 'CollectMs', 'TotalMs')
+            'PrepareMs', 'PoolOpenMs', 'DispatchMs', 'WaitMs', 'CollectMs', 'CleanupMs', 'TotalMs')
         $run.Summary.PSObject.Properties.Name | Should -Be @(
             'Total', 'Succeeded', 'Failed', 'TimedOut', 'Cancelled')
         $run.Results[0].PSObject.Properties.Name | Should -Be @(
             'Id', 'Index', 'Input', 'State', 'Output', 'Errors', 'Warnings', 'Information',
             'QueuedUtc', 'StartedUtc', 'EndedUtc', 'DurationMs', 'RunspaceId', 'ThreadId',
-            'ProcessId', 'ExitCode', 'StdOut', 'StdErr')
+            'ProcessId', 'ExitCode', 'StdOut', 'StdErr', 'Observation', 'Capture')
+        $run.Cleanup.State | Should -Be 'Confirmed'
+        $run.Runtime.Floor | Should -Be '7.5'
+        $run.Runtime.Host.PSVersion | Should -Match '^7\.(5|6)\.'
         @($run.PSObject.Properties.Name | Where-Object {
                 $_ -in @('Preparation', 'Phase', 'Pool', 'Invocations', 'ChildProcessRegistry',
                     'PendingPipeline', 'WaitOutcome', 'CompletedNormally', 'TeardownCompleted')

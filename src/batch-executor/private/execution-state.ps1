@@ -98,7 +98,11 @@ function New-BatchExecutorPreparation {
             [System.Threading.CancellationToken]::None,
         [ValidateRange(0, [int]::MaxValue)] [int] $WaitTimeoutSeconds = 0,
         [AllowNull()] [object] $InitialSessionState,
-        [AllowNull()] [string] $EncodedChildCommand
+        [AllowNull()] [string] $EncodedChildCommand,
+        [AllowNull()] [object] $Timeouts,
+        [AllowNull()] [object] $CaptureLimits,
+        [AllowNull()] [object] $Runtime,
+        [AllowNull()] [string] $NativeAssemblyPath
     )
 
     $items = [object[]]@($Item)
@@ -151,6 +155,12 @@ function New-BatchExecutorPreparation {
         ProcessDrainMilliseconds = 5000
         InitialSessionState = $InitialSessionState
         EncodedChildCommand = $EncodedChildCommand
+        Timeouts = if ($null -ne $Timeouts) { $Timeouts } else {
+            New-BatchExecutorTimeoutPolicy -WaitTimeoutSeconds $WaitTimeoutSeconds
+        }
+        CaptureLimits = $CaptureLimits
+        Runtime = $Runtime
+        NativeAssemblyPath = $NativeAssemblyPath
     }
     $record.PSObject.TypeNames.Insert(
         0, 'CodexScientiae.BatchExecutor.Internal.ExecutionPreparation')
@@ -176,13 +186,15 @@ function New-BatchExecutorLifecycleState {
         Invocations = [System.Collections.Generic.List[object]]::new($Preparation.ItemCount)
         Results = [object[]]::new($Preparation.ItemCount)
         ChildProcessRegistry = `
-            [System.Collections.Concurrent.ConcurrentDictionary[string, System.Diagnostics.Process]]::new(
+            [System.Collections.Concurrent.ConcurrentDictionary[string, object]]::new(
                 [System.StringComparer]::OrdinalIgnoreCase)
         InfrastructureErrors = [System.Collections.Generic.List[string]]::new()
-        Timing = [ordered]@{}
+        Timing = [ordered]@{ PrepareMs = 0 }
         WaitOutcome = $null
         CompletedNormally = $false
         TeardownCompleted = $false
+        Deadline = $null
+        Cleanup = New-BatchExecutorCleanupRecord
     }
     $record.PSObject.TypeNames.Insert(
         0, 'CodexScientiae.BatchExecutor.Internal.LifecycleState')
@@ -286,6 +298,9 @@ function New-BatchExecutorInvocationState {
         [Parameter(Mandatory)] [ValidateNotNull()]
         [System.Management.Automation.PowerShell] $Pipeline,
         [Parameter(Mandatory)] [ValidateNotNull()] [System.IAsyncResult] $AsyncResult,
+        [AllowNull()] [System.Threading.Tasks.Task] $InvocationTask,
+        [AllowNull()] [object] $InputCollection,
+        [AllowNull()] [object] $OutputCollection,
         [Parameter(Mandatory)] [datetime] $QueuedUtc
     )
 
@@ -298,6 +313,11 @@ function New-BatchExecutorInvocationState {
         PreparedItem = $PreparedItem
         Pipeline = $Pipeline
         AsyncResult = $AsyncResult
+        InvocationTask = $(if ($null -ne $InvocationTask) { $InvocationTask }
+            elseif ($AsyncResult -is [System.Threading.Tasks.Task]) { $AsyncResult }
+            else { $null })
+        InputCollection = $InputCollection
+        OutputCollection = $OutputCollection
         QueuedUtc = $QueuedUtc
         TerminalOverride = $null
     }
@@ -327,7 +347,7 @@ function New-BatchExecutorWaitOutcome {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [ValidateSet('Completed', 'CallerCancellation', 'BatchTimeout')]
+        [ValidateSet('Completed', 'CallerCancellation', 'BatchTimeout', 'ExecutionTimeout')]
         [string] $Kind,
         [AllowNull()] [string] $Reason
     )
@@ -336,6 +356,7 @@ function New-BatchExecutorWaitOutcome {
         $Reason = switch ($Kind) {
             'CallerCancellation' { 'caller cancellation' }
             'BatchTimeout' { 'batch wait timeout' }
+            'ExecutionTimeout' { 'executor execution timeout' }
             default { $null }
         }
     }

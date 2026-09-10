@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 <#
   tests/batch.ps1 — the house-convention caller over tests/parallel.ps1.
 
@@ -73,4 +73,49 @@ $forwarded = @{
 if ($PesterPath.Count -gt 0) { $forwarded.PesterPath = $PesterPath }
 if ($PytestPath.Count -gt 0) { $forwarded.PytestPath = $PytestPath }
 
-& ([System.IO.Path]::Combine($PSScriptRoot, 'parallel.ps1')) @forwarded @args
+function Write-BatchExecutorConsumerEvidence {
+    param($Execution, [string] $RunDirectory)
+    if ($null -eq $Execution -or [string]::IsNullOrWhiteSpace($RunDirectory)) { return }
+    $path = Join-Path $RunDirectory 'executor-execution.json'
+    $view = [ordered]@{
+        schema = 'codex-scientiae/executor-execution/0.1'
+        summary = $Execution.Summary
+        cleanup = $Execution.Cleanup
+        runtime = $Execution.Runtime
+        errors = @($Execution.Errors)
+        warnings = @($Execution.Warnings)
+        results = @(
+            foreach ($result in @($Execution.Results)) {
+                [ordered]@{
+                    id = $result.Id
+                    index = $result.Index
+                    state = $result.State
+                    observation = $result.Observation
+                    capture = $result.Capture
+                    exitCode = $result.ExitCode
+                    errors = @($result.Errors)
+                }
+            }
+        )
+    }
+    $utf8 = [System.Text.UTF8Encoding]::new($false)
+    [System.IO.File]::WriteAllText(
+        $path, (($view | ConvertTo-Json -Depth 8) + [Environment]::NewLine), $utf8)
+}
+
+try {
+    $execution = & ([System.IO.Path]::Combine($PSScriptRoot, 'parallel.ps1')) @forwarded @args
+    Write-BatchExecutorConsumerEvidence -Execution $execution -RunDirectory $RunDirectory
+    $execution
+}
+catch {
+    $failed = $_.TargetObject
+    if ($null -eq $failed) { $failed = $_.Exception.InnerException }
+    if ($null -ne $failed -and $failed.PSObject.Properties['Summary']) {
+        Write-BatchExecutorConsumerEvidence -Execution $failed -RunDirectory $RunDirectory
+    }
+    elseif ($null -ne $_.TargetObject -and $_.TargetObject.PSObject.Properties['Summary']) {
+        Write-BatchExecutorConsumerEvidence -Execution $_.TargetObject -RunDirectory $RunDirectory
+    }
+    throw
+}

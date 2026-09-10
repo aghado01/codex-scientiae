@@ -8,6 +8,16 @@ Import the canonical module through `batch-executor.psd1`. It is the only suppor
 flat `../batch-executor.ps1` compatibility facade and its `Compile-BatchPlan` alias were removed after a
 zero-caller inventory; callers use `New-BatchPlan` directly.
 
+The executor and its batch clients require PowerShell 7.5 or newer. Host admission uses the
+module `#requires` / `PowerShellVersion` floor. Every distinct child `ProcessSpec.PowerShellPath` is
+probed once per batch before workload code; the parent `$PSVersionTable` is not a child version.
+Resolved executable identity, PowerShell version, and .NET framework description are recorded on
+`Runtime`. APIs used here are available at the 7.5 floor (.NET 9); a newer controlled host such as
+7.6 (.NET 10) remains valid.
+
+The selected PowerShell 7.5 minimum, internal modernization, lifecycle, capture and consumer-coordination work are specified in the
+[execution-bounds brief](../../issues/batch-executor/briefs/execution-bounds-and-consumer-coordination-20260910.md).
+
 ## Public commands
 
 | Command | Contract |
@@ -90,8 +100,9 @@ joins the finite batch synchronously. Item failure is result data and does not a
 Infrastructure failures are reported at batch level without erasing collected item results.
 
 Each result contains `Id`, `Index`, `Input`, `State`, `Output`, `Errors`, `Warnings`,
-`Information`, queue/start/end timing, duration, runspace/thread/process identity, exit code, and
-captured child stdout/stderr. Terminal states are:
+`Information`, queue/start/end timing, duration, runspace/thread/process identity, exit code,
+captured child stdout/stderr, `Observation` (submitted/started/stop reason and phase), and `Capture`
+(stream completeness, protocol classification, truncation, and byte counts). Terminal states are:
 
 | State | Meaning |
 |---|---|
@@ -101,9 +112,17 @@ captured child stdout/stderr. Terminal states are:
 | `Cancelled` | Caller cancellation or hosting-pipeline unwind stopped the item. |
 
 The execution record also contains batch `Errors`, budget warnings, resolved `Budget`, effective
-`Policy`, phase `Timing`, and a state-count `Summary`. `Timing.DispatchMs` measures pipeline construction
-and submission only. Pre-dispatch validation and serialization remain included in `Timing.TotalMs`; Phase
-3 does not add a separate preparation timing field.
+`Policy`, phase `Timing`, a state-count `Summary`, `Cleanup`, and `Runtime`. `Timing.PrepareMs` is
+admission-to-dispatch preparation. `Timing.DispatchMs` measures pipeline construction and submission
+only. `Timing.CleanupMs` is teardown. `Cleanup.State` is `Confirmed` or `Incomplete`; incomplete
+teardown still projects collected results and does not enter `Closed`.
+
+`ExecutionTimeoutSeconds` is the executor-duration budget from admission (preparation, pool open,
+submission, wait, collection). `WaitTimeoutSeconds` remains await-only. `CleanupTimeoutSeconds`
+defaults to 30 and is one batch-wide cleanup allowance; 0 means unlimited. If execution and await
+limits are both set, the earlier applicable deadline wins. `ProcessSpec.TimeoutSeconds` still
+overrides invocation `ProcessTimeoutSeconds`. Zero timeout values keep their unlimited meaning and
+are not passed to `CancelAfter`.
 
 ## Internal lifecycle boundary
 
@@ -118,13 +137,19 @@ only the child-process registry. Private records and handles never appear in the
 record, and the completed decomposition preserves public names including `Input` and `Timing.WaitMs`. Dispatch
 publishes a newly constructed pool from inside its construction helper before configuration/open, keeps the
 pipeline currently being bound or submitted in an owner-visible pending slot, and registers each successful
-`BeginInvoke` immediately. A failed dispatch-side disposal retains the pending slot and blocks `Dispatched`,
-so exceptional unwind can always reach every acquired handle.
+`BeginInvoke` immediately. `InvokeAsync().GetResult()` deadlocks on the owning thread even when
+`IsCompleted` is true, so pooled pipelines keep the APM start/stop pair. Child-process waits use
+`WaitForExitAsync` and job-object containment. A failed dispatch-side disposal retains the pending slot and blocks `Dispatched`,
+so exceptional unwind can always reach every acquired handle. Remaining jobs are not submitted after
+cancellation or execution expiry.
 
-Await/cancel consumes only the preparation's frozen token, total timeout, 200 ms host-interruption slice,
-and process-drain allowance. Both the main wait and batch-wide process drain use the interruption slice.
-The phase records one typed wait outcome before collection begins and retains the parent-owned child-tree
-and batched pipeline-stop order.
+Await/cancel consumes the preparation's frozen token, the execution and await deadlines, a 200 ms
+host-interruption slice, and process-drain allowance. Waits use task completion plus that slice so
+host Stop() can land. The phase records one typed wait outcome (`Completed`, `CallerCancellation`,
+`BatchTimeout`, `ExecutionTimeout`) before collection begins and retains the parent-owned child-tree
+and batched pipeline-stop order. Child processes are born into a Windows job object before user-mode
+code runs. Protocol events travel on an owner-created named pipe; raw stdout/stderr stay separate.
+A missing final protocol frame is the native-exit path; a malformed frame is not.
 
 Collection materializes invocation envelopes into the original index slots, merges pipeline and worker
 diagnostics, preserves the caller's original `Input` reference, and verifies that every result slot is
@@ -139,15 +164,17 @@ Failed handle disposal is recorded and the handle remains owner-visible; such a 
 
 ## Cancellation and ownership
 
-The caller may provide a `CancellationToken`; `WaitTimeoutSeconds` bounds the whole join and
-`ProcessTimeoutSeconds` supplies a default per-child limit. Direct-runspace cancellation is
-cooperative until the parent stops the supervising pipeline. Child-process cancellation is
-preemptive at the process-tree boundary.
+The caller may provide a `CancellationToken`; `ExecutionTimeoutSeconds` bounds the executor from
+admission; `WaitTimeoutSeconds` bounds the join only; `ProcessTimeoutSeconds` supplies a default
+per-child limit. Direct-runspace cancellation is cooperative until the parent stops the supervising
+pipeline. Child-process cancellation is preemptive at the job-object boundary.
 
 The parent registers every live child immediately after start. Token cancellation, per-child
-timeout, total-batch timeout, hosting-pipeline stop, and exceptional teardown kill registered
-process trees before supervising pipelines and the pool are disposed. The current child process
-does not receive an operative cross-process cancellation token.
+timeout, executor/await timeout, hosting-pipeline stop, and exceptional teardown terminate the job
+object before supervising pipelines and the pool are disposed. Registry removal happens only after
+confirmed release. The current child process does not receive an operative cross-process cancellation
+token. `RunspacePool.Close`/`Dispose` are uninterruptible owner-thread operations after children are
+terminated.
 
 ## Data isolation
 

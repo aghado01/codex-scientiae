@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
@@ -75,7 +75,7 @@ BeforeAll {
         param([Parameter(Mandatory)] [string] $Path)
 
         Set-Content -LiteralPath $Path -Encoding utf8 -Value @'
-#requires -Version 7.0
+#requires -Version 7.5
 param(
     [Parameter(Mandatory)] [string] $PesterManifest,
     [Parameter(Mandatory)] [string] $Runner,

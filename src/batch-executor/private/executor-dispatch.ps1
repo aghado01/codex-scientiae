@@ -33,6 +33,29 @@ function New-BatchExecutorPipeline {
     return $Lifecycle.PendingPipeline
 }
 
+function New-BatchExecutorNeverStartedResult {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [object] $PreparedItem,
+        [Parameter(Mandatory)] [ValidateSet('Cancelled', 'TimedOut')] [string] $State,
+        [Parameter(Mandatory)] [string] $StopReason,
+        [string] $StopPhase = 'Dispatch',
+        [string] $Message
+    )
+
+    $errors = [string[]]@()
+    $warnings = [string[]]@()
+    if ($State -eq 'TimedOut' -and $Message) { $errors = @($Message) }
+    if ($State -eq 'Cancelled') { $warnings = @('caller cancellation requested') }
+    return New-BatchExecutorItemResult -Id $PreparedItem.Id -Index $PreparedItem.Index `
+        -OriginalInput $PreparedItem.Input -State $State -Errors $errors -Warnings $warnings `
+        -QueuedUtc ([datetime]::UtcNow) -EndedUtc ([datetime]::UtcNow) -DurationMs 0 `
+        -Observation (New-BatchExecutorObservation -Submitted:$false -Started:$false `
+            -StopReason $StopReason -StopPhase $StopPhase) `
+        -Capture (New-BatchExecutorCaptureRecord -StdOutComplete:$false -StdErrComplete:$false `
+            -Protocol $(if ($PreparedItem.Mode -eq 'Process') { 'missing' } else { 'not-applicable' }))
+}
+
 function Start-BatchExecutorInvocations {
     [CmdletBinding()]
     param(
@@ -46,6 +69,8 @@ function Start-BatchExecutorInvocations {
 
     Set-BatchExecutorLifecyclePhase -Lifecycle $Lifecycle -Phase Dispatching
     $preparation = $Lifecycle.Preparation
+    $deadline = $Lifecycle.Deadline
+    $cancellationToken = $preparation.CancellationToken
 
     $swPool = [System.Diagnostics.Stopwatch]::StartNew()
     $pool = New-BatchExecutorRunspacePool -Lifecycle $Lifecycle
@@ -58,13 +83,21 @@ function Start-BatchExecutorInvocations {
 
     $swDispatch = [System.Diagnostics.Stopwatch]::StartNew()
     foreach ($preparedItem in $preparation.Items) {
-        # PendingPipeline closes the narrow window before BeginInvoke returns and a complete
-        # InvocationState can be registered.
+        if ($cancellationToken.IsCancellationRequested -or
+                ($null -ne $deadline -and $deadline.ExecutionExpired)) {
+            $timedOut = $null -ne $deadline -and $deadline.ExecutionExpired -and
+                -not $cancellationToken.IsCancellationRequested
+            $Lifecycle.Results[$preparedItem.Index] = New-BatchExecutorNeverStartedResult `
+                -PreparedItem $preparedItem `
+                -State $(if ($timedOut) { 'TimedOut' } else { 'Cancelled' }) `
+                -StopReason $(if ($timedOut) { 'ExecutionTimeout' } else { 'CallerCancellation' }) `
+                -Message $(if ($timedOut) { 'executor execution timeout before submission' } else { $null })
+            continue
+        }
+
         $pipeline = $null
         $asyncResult = $null
         try {
-            # Construction and command binding are part of the item-local ownership boundary too.
-            # Until registration succeeds, this scope must dispose every handle it acquires.
             $pipeline = New-BatchExecutorPipeline -Lifecycle $Lifecycle
             $pipeline.RunspacePool = $pool
             if ($preparedItem.Mode -eq 'Runspace') {
@@ -89,25 +122,22 @@ function Start-BatchExecutorInvocations {
                 [void]$command.AddArgument($processSpec.PriorityClass)
                 [void]$command.AddArgument($Lifecycle.ChildProcessRegistry)
                 [void]$command.AddArgument($preparation.CancellationToken)
+                [void]$command.AddArgument($deadline)
+                [void]$command.AddArgument($preparation.CaptureLimits)
             }
 
             $asyncResult = $pipeline.BeginInvoke()
             $invocation = New-BatchExecutorInvocationState -PreparedItem $preparedItem `
-                -Pipeline $pipeline -AsyncResult $asyncResult -QueuedUtc ([datetime]::UtcNow)
+                -Pipeline $pipeline -AsyncResult $asyncResult `
+                -QueuedUtc ([datetime]::UtcNow)
             $Lifecycle.Invocations.Add($invocation)
             $Lifecycle.PendingPipeline = $null
         }
         catch {
             $submissionError = $_
             if ($null -eq $pipeline) { $pipeline = $Lifecycle.PendingPipeline }
-            # BeginInvoke failure is item-local. If submission itself succeeded but registration failed,
-            # stop that unowned pipeline before disposing it so the lifecycle cannot lose a live handle.
             if ($null -ne $asyncResult -and -not $asyncResult.IsCompleted) {
-                try {
-                    $stopAsync = $pipeline.BeginStop($null, $null)
-                    $pipeline.EndStop($stopAsync)
-                }
-                catch {}
+                try { $pipeline.Stop() } catch {}
             }
             $pipelineDisposed = $false
             if ($null -ne $pipeline) {
@@ -124,26 +154,14 @@ function Start-BatchExecutorInvocations {
                     [object]::ReferenceEquals($Lifecycle.PendingPipeline, $pipeline)) {
                 $Lifecycle.PendingPipeline = $null
             }
-            $Lifecycle.Results[$preparedItem.Index] = [pscustomobject]@{
-                Id = $preparedItem.Id
-                Index = $preparedItem.Index
-                Input = $preparedItem.Input
-                State = 'Failed'
-                Output = @()
-                Errors = @($submissionError.ToString())
-                Warnings = @()
-                Information = @()
-                QueuedUtc = [datetime]::UtcNow
-                StartedUtc = $null
-                EndedUtc = [datetime]::UtcNow
-                DurationMs = 0
-                RunspaceId = $null
-                ThreadId = $null
-                ProcessId = $null
-                ExitCode = $null
-                StdOut = @()
-                StdErr = @()
-            }
+            $Lifecycle.Results[$preparedItem.Index] = New-BatchExecutorItemResult `
+                -Id $preparedItem.Id -Index $preparedItem.Index -OriginalInput $preparedItem.Input `
+                -State Failed -Errors @($submissionError.ToString()) `
+                -QueuedUtc ([datetime]::UtcNow) -EndedUtc ([datetime]::UtcNow) -DurationMs 0 `
+                -Observation (New-BatchExecutorObservation -Submitted:$false -Started:$false `
+                    -StopReason '' -StopPhase Dispatch) `
+                -Capture (New-BatchExecutorCaptureRecord -StdOutComplete:$false -StdErrComplete:$false `
+                    -Protocol $(if ($preparedItem.Mode -eq 'Process') { 'missing' } else { 'not-applicable' }))
         }
     }
     $Lifecycle.Timing['DispatchMs'] = $swDispatch.ElapsedMilliseconds

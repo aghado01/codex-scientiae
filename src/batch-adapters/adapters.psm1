@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 $script:AdaptersModuleRoot = $PSScriptRoot
 $script:AdaptersDefaultRepositoryRoot = [System.IO.Path]::GetFullPath(

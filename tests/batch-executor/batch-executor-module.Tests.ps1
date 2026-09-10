@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 
 BeforeAll {
     $script:BatchExecutorModuleRoot = (Resolve-Path `
@@ -57,6 +57,15 @@ Describe 'batch-executor module surface' {
             'New-BatchExecutorInvocationState'
             'Set-BatchExecutorInvocationTerminalOverride'
             'New-BatchExecutorWaitOutcome'
+            'New-BatchExecutorTimeoutPolicy'
+            'New-BatchExecutorObservation'
+            'New-BatchExecutorCaptureRecord'
+            'New-BatchExecutorCleanupRecord'
+            'New-BatchExecutorItemResult'
+            'Import-BatchExecutorNative'
+            'Get-BatchExecutorHostRuntime'
+            'Get-BatchExecutorChildRuntime'
+            'Resolve-BatchExecutorRuntimeSet'
             'New-BatchExecutorSessionState'
             'ConvertTo-BatchExecutorCliXml'
             'Resolve-BatchExecutorPreparation'

@@ -1,4 +1,4 @@
-#requires -Version 7.0
+#requires -Version 7.5
 <#
   tests/suite-name.ps1 — tests/{owner} suite naming for tests/batch.ps1.
 
