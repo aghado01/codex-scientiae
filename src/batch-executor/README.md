@@ -17,6 +17,9 @@ Resolved executable identity, PowerShell version, and .NET framework description
 
 The selected PowerShell 7.5 minimum, internal modernization, lifecycle, capture and consumer-coordination work are specified in the
 [execution-bounds brief](../../issues/batch-executor/briefs/execution-bounds-and-consumer-coordination-20260910.md).
+A skippable join fixture at `tests/batch-executor/test_pwsh_exec_join.py` drives this module through
+science-facility `pwsh_exec` `invocation.run` when `PWSH_EXEC_ROOT` is set. The MCP does not import
+this module.
 
 ## Public commands
 

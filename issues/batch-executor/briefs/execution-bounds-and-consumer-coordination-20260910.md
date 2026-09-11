@@ -174,12 +174,13 @@ Date: 2026-09-10. Chip: execution-bounds-and-consumer-coordination.
 - Child floor: PowerShell 7.5.5 probed and used as `PowerShellPath`.
 - `tests/batch.ps1 -Framework Pester -PesterPath tests/batch-executor`: 10/10 files succeeded.
 - `tests/batch.ps1 -Framework Pester -PesterPath tests/batch-adapters`: 5/5 files succeeded.
+- Joined MCP fixture `tests/batch-executor/test_pwsh_exec_join.py` with `PWSH_EXEC_ROOT`: 4/4 against `invocation.run` (normal identity correlation, worker timeout with sibling, outer timeout + descendant containment + `result.json`, cancel then reuse).
 
 ### Remaining / unsupported
 
 - Pooled pipelines keep `BeginInvoke`/`BeginStop`. `InvokeAsync().GetResult()` deadlocked on the owning thread with `IsCompleted` true. Process waits use `WaitForExitAsync`.
 - `RunspacePool.Close`/`Dispose` remain uninterruptible owner-thread operations after children are terminated.
-- Joined MCP outer-timeout / forced executor-host-kill fixture not run (MCP workstream).
+- Live Grok `pwsh_exec` MCP was not registered in the join session; the fixture calls `invocation.run` directly. TAP/LaTeXAI profile path remains that workstream.
 - C1–C2 unselected.
 - No old-vs-new wall-time/CPU/allocation comparison report (brief forbade adopting a speedup claim).
 - Descendant-holds-pipes-open dedicated case not isolated beyond job-object drain bounds.
