@@ -37,73 +37,44 @@ function Stop-BatchExecutorLifecycle {
 
     $pendingPipeline = $Lifecycle.PendingPipeline
     Stop-BatchExecutorPendingPipeline -Pipeline $pendingPipeline -Deadline $deadline
+    # PowerShell.Dispose and RunspacePool.Dispose can block on uncooperative managed
+    # work. A .NET owner retains these resources while the caller waits only its budget.
+    $resources = [System.Collections.Generic.List[System.IDisposable]]::new()
     foreach ($invocation in $Lifecycle.Invocations) {
-        $pipeline = $invocation.Pipeline
-        if ($null -ne $invocation.InputCollection) {
-            try { $invocation.InputCollection.Dispose() } catch {}
-            $invocation.InputCollection = $null
+        if ($null -ne $invocation.Pipeline -and
+            -not [object]::ReferenceEquals($invocation.Pipeline, $pendingPipeline)) {
+            $resources.Add($invocation.Pipeline)
         }
-        if ($null -ne $invocation.OutputCollection) {
-            try { $invocation.OutputCollection.Dispose() } catch {}
-            $invocation.OutputCollection = $null
+        if ($null -ne $invocation.InputCollection) { $resources.Add($invocation.InputCollection) }
+        if ($null -ne $invocation.OutputCollection) { $resources.Add($invocation.OutputCollection) }
+    }
+    if ($null -ne $pendingPipeline) { $resources.Add($pendingPipeline) }
+    if ($null -ne $Lifecycle.Pool) { $resources.Add($Lifecycle.Pool) }
+    $disposal = [CodexScientiae.BatchExecutor.Native.BoundedDisposal]::Begin($resources.ToArray())
+    $slice = if ($null -ne $deadline) { $deadline.CleanupSlice([TimeSpan]::FromSeconds(30)) }
+        else { [TimeSpan]::FromSeconds(30) }
+    [void][CodexScientiae.BatchExecutor.Native.HostAwareWait]::Wait(
+        [System.Threading.Tasks.Task[]]@($disposal), $slice, [System.Threading.CancellationToken]::None)
+    if (-not $disposal.IsCompleted) {
+        $cleanupSucceeded = $false
+        $Lifecycle.InfrastructureErrors.Add('managed disposal exceeded the cleanup budget; resources remain owned until disposal completes')
+    }
+    else {
+        foreach ($message in $disposal.GetAwaiter().GetResult()) {
+            $cleanupSucceeded = $false
+            $Lifecycle.InfrastructureErrors.Add("managed disposal failed: $message")
         }
-        if ($null -eq $pipeline) {
-            $invocation.InvocationTask = $null
-            $invocation.AsyncResult = $null
-            continue
-        }
-        if ([object]::ReferenceEquals($pipeline, $pendingPipeline)) { continue }
-
-        try {
-            [void]$pipeline.Dispose()
+        if ($cleanupSucceeded) { foreach ($invocation in $Lifecycle.Invocations) {
             $invocation.Pipeline = $null
             $invocation.InvocationTask = $null
             $invocation.AsyncResult = $null
+            $invocation.InputCollection = $null
+            $invocation.OutputCollection = $null
         }
-        catch {
-            $cleanupSucceeded = $false
-            $Lifecycle.InfrastructureErrors.Add(
-                "could not dispose pipeline for item '$($invocation.PreparedItem.Id)': $($_.Exception.Message)")
-        }
-    }
-    if ($null -ne $pendingPipeline) {
-        try {
-            [void]$pendingPipeline.Dispose()
-            $Lifecycle.PendingPipeline = $null
-            foreach ($invocation in $Lifecycle.Invocations) {
-                if ([object]::ReferenceEquals($invocation.Pipeline, $pendingPipeline)) {
-                    $invocation.Pipeline = $null
-                    $invocation.InvocationTask = $null
-                    $invocation.AsyncResult = $null
-                }
-            }
-        }
-        catch {
-            $cleanupSucceeded = $false
-            $Lifecycle.InfrastructureErrors.Add(
-                "could not dispose pending pipeline: $($_.Exception.Message)")
+        $Lifecycle.PendingPipeline = $null
+        $Lifecycle.Pool = $null
         }
     }
-    else { $Lifecycle.PendingPipeline = $null }
-
-    if ($null -ne $Lifecycle.Pool) {
-        $pool = $Lifecycle.Pool
-        try { [void]$pool.Close() }
-        catch {
-            $Lifecycle.InfrastructureErrors.Add(
-                "could not close runspace pool: $($_.Exception.Message)")
-        }
-        try {
-            [void]$pool.Dispose()
-            $Lifecycle.Pool = $null
-        }
-        catch {
-            $cleanupSucceeded = $false
-            $Lifecycle.InfrastructureErrors.Add(
-                "could not dispose runspace pool: $($_.Exception.Message)")
-        }
-    }
-    else { $Lifecycle.Pool = $null }
 
     foreach ($entry in $Lifecycle.ChildProcessRegistry.ToArray()) {
         $owned = $entry.Value

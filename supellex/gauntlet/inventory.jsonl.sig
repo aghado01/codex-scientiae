@@ -1,9 +1,9 @@
 {
   "schema": "codex-scientiae/jsonl-signature/0.2",
-  "sha256": "d14dc2480c2e938986e957602dc29b0823d114e3d0eba6e26eee192152320de7",
-  "line_count": 91,
-  "file_size": 337053,
-  "ticks": 639238419663565244,
+  "sha256": "240c17a0c386ef658673d75101920b09a291bc5c5a2a1fd27839035254dd1492",
+  "line_count": 121,
+  "file_size": 570444,
+  "ticks": 639248362833806755,
   "discipline": "create",
   "encoding": "utf-8",
   "codec": "unicode",
@@ -13,5 +13,5 @@
     "version": "0.1",
     "run_id": null
   },
-  "created_at": "2026-09-01T06:46:06.357528+00:00"
+  "created_at": "2026-09-12T18:58:03.386206+00:00"
 }

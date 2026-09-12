@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32.SafeHandles;
 
 namespace CodexScientiae.BatchExecutor.Native;
@@ -42,6 +43,7 @@ internal static class NativeMethods
     internal const uint CREATE_SUSPENDED = 0x00000004;
     internal const uint CREATE_UNICODE_ENVIRONMENT = 0x00000400;
     internal const uint CREATE_NO_WINDOW = 0x08000000;
+    internal const uint EXTENDED_STARTUPINFO_PRESENT = 0x00080000;
     internal const uint STARTF_USESTDHANDLES = 0x00000100;
     internal const uint STARTF_USESHOWWINDOW = 0x00000001;
     internal const uint HANDLE_FLAG_INHERIT = 0x00000001;
@@ -95,6 +97,31 @@ internal static class NativeMethods
         public int dwProcessId;
         public int dwThreadId;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct STARTUPINFOEX
+    {
+        public STARTUPINFO StartupInfo;
+        public IntPtr AttributeList;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool InitializeProcThreadAttributeList(
+        IntPtr list, int count, int flags, ref IntPtr size);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool UpdateProcThreadAttribute(
+        IntPtr list, uint flags, IntPtr attribute, IntPtr value, IntPtr size,
+        IntPtr previousValue, IntPtr returnSize);
+
+    [DllImport("kernel32.dll")]
+    internal static extern void DeleteProcThreadAttributeList(IntPtr list);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool TerminateProcess(IntPtr process, uint exitCode);
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct JOBOBJECT_BASIC_LIMIT_INFORMATION
@@ -164,14 +191,14 @@ internal static class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool CreateProcessW(
         string? lpApplicationName,
-        string lpCommandLine,
+        StringBuilder lpCommandLine,
         IntPtr lpProcessAttributes,
         IntPtr lpThreadAttributes,
         [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
         uint dwCreationFlags,
         IntPtr lpEnvironment,
         string? lpCurrentDirectory,
-        ref STARTUPINFO lpStartupInfo,
+        ref STARTUPINFOEX lpStartupInfo,
         out PROCESS_INFORMATION lpProcessInformation);
 
     [DllImport("kernel32.dll", SetLastError = true)]

@@ -2,6 +2,27 @@
 
 BeforeAll {
     Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
+    if (-not ('LifecyclePoolFixture' -as [type])) {
+        Add-Type @'
+public sealed class LifecyclePoolFixture : System.IDisposable {
+    public object ThreadOptions { get; set; }
+    public object ApartmentState { get; set; }
+    public bool CloseCalled { get; private set; }
+    public bool DisposeCalled { get; private set; }
+    public bool SetMinRunspaces(int count) { return true; }
+    public bool SetMaxRunspaces(int count) { return true; }
+    public void Open() { throw new System.Exception("planned pool open failure"); }
+    public void Dispose() { CloseCalled = true; DisposeCalled = true; }
+}
+public sealed class LifecyclePipelineFixture : System.IDisposable {
+    public bool Fail { get; set; }
+    public void Dispose() {
+        if (Fail) throw new System.Exception("planned pipeline disposal failure");
+        System.AppDomain.CurrentDomain.SetData("BatchExecutorLifecyclePipelineDisposed", true);
+    }
+}
+'@
+    }
 
     function Write-LifecycleTestWorker {
         param([Parameter(Mandatory)] [string] $Path)
@@ -54,22 +75,7 @@ Describe 'batch-executor lifecycle owner and dispatch' {
         $worker = Write-LifecycleTestWorker (Join-Path $TestDrive 'pool-open-failure-worker.ps1')
 
         InModuleScope 'batch-executor' -Parameters @{ Worker = $worker; Work = $TestDrive } {
-            $fakePool = [pscustomobject]@{
-                ThreadOptions = $null
-                ApartmentState = $null
-                CloseCalled = $false
-                DisposeCalled = $false
-            }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name SetMinRunspaces `
-                -Value { param($Count) return $true }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name SetMaxRunspaces `
-                -Value { param($Count) return $true }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Open `
-                -Value { throw 'planned pool open failure' }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Close `
-                -Value { $this.CloseCalled = $true }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Dispose `
-                -Value { $this.DisposeCalled = $true }
+            $fakePool = [LifecyclePoolFixture]::new()
             $script:BatchExecutorLifecycleTestPool = $fakePool
             try {
                 Mock New-BatchExecutorRunspacePool {
@@ -94,14 +100,7 @@ Describe 'batch-executor lifecycle owner and dispatch' {
         $worker = Write-LifecycleTestWorker (Join-Path $TestDrive 'pool-construction-failure-worker.ps1')
 
         InModuleScope 'batch-executor' -Parameters @{ Worker = $worker; Work = $TestDrive } {
-            $fakePool = [pscustomobject]@{
-                CloseCalled = $false
-                DisposeCalled = $false
-            }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Close `
-                -Value { $this.CloseCalled = $true }
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Dispose `
-                -Value { $this.DisposeCalled = $true }
+            $fakePool = [LifecyclePoolFixture]::new()
             $script:BatchExecutorLifecycleTestPool = $fakePool
             try {
                 Mock New-BatchExecutorRunspacePool {
@@ -128,11 +127,7 @@ Describe 'batch-executor lifecycle owner and dispatch' {
         InModuleScope 'batch-executor' -Parameters @{ Worker = $worker; Work = $TestDrive } {
             $probeName = 'BatchExecutorLifecyclePipelineDisposed'
             [System.AppDomain]::CurrentDomain.SetData($probeName, $false)
-            $fakePipeline = [pscustomobject]@{}
-            $fakePipeline | Add-Member -MemberType ScriptMethod -Name Dispose -Value {
-                [System.AppDomain]::CurrentDomain.SetData(
-                    'BatchExecutorLifecyclePipelineDisposed', $true)
-            }
+            $fakePipeline = [LifecyclePipelineFixture]::new()
             $global:BatchExecutorLifecycleTestPipeline = $fakePipeline
             try {
                 Mock New-BatchExecutorPipeline {
@@ -162,9 +157,8 @@ Describe 'batch-executor lifecycle owner and dispatch' {
         $worker = Write-LifecycleTestWorker (Join-Path $TestDrive 'pipeline-disposal-failure-worker.ps1')
 
         InModuleScope 'batch-executor' -Parameters @{ Worker = $worker; Work = $TestDrive } {
-            $fakePipeline = [pscustomobject]@{}
-            $fakePipeline | Add-Member -MemberType ScriptMethod -Name Dispose `
-                -Value { throw 'planned pipeline disposal failure' }
+            $fakePipeline = [LifecyclePipelineFixture]::new()
+            $fakePipeline.Fail = $true
             $global:BatchExecutorLifecycleTestPipeline = $fakePipeline
             $lifecycle = $null
             try {

@@ -104,16 +104,16 @@ Describe 'batch-executor teardown and final assembly' {
     }
 
     It 'retains and diagnoses a handle whose disposal cannot be confirmed' {
+        if (-not ('TeardownFailureFixture' -as [type])) {
+            Add-Type 'public sealed class TeardownFailureFixture : System.IDisposable { public void Dispose() { throw new System.Exception("planned pool disposal failure"); } }'
+        }
         InModuleScope 'batch-executor' {
             $preparation = New-BatchExecutorPreparation -Item @() -ExecutionMode Runspace `
                 -WorkerDefinition ([pscustomobject]@{ Path = 'worker'; Body = 'body' }) -IssPreset Core `
                 -Budget ([pscustomobject]@{ Threads = 0; Warnings = @() }) `
                 -Policy ([pscustomobject]@{ FailureAction = 'Continue' })
             $lifecycle = New-BatchExecutorLifecycleState -Preparation $preparation
-            $fakePool = [pscustomobject]@{}
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Close -Value {}
-            $fakePool | Add-Member -MemberType ScriptMethod -Name Dispose `
-                -Value { throw 'planned pool disposal failure' }
+            $fakePool = [TeardownFailureFixture]::new()
             $lifecycle.Pool = $fakePool
             $lifecycle.CompletedNormally = $true
 
@@ -123,7 +123,7 @@ Describe 'batch-executor teardown and final assembly' {
             $lifecycle.Cleanup.State | Should -Be 'Incomplete'
             [object]::ReferenceEquals($lifecycle.Pool, $fakePool) | Should -BeTrue
             $lifecycle.InfrastructureErrors -join "`n" | Should -Match `
-                'could not dispose runspace pool:.*planned pool disposal failure'
+                'managed disposal failed:.*planned pool disposal failure'
             $record = New-BatchExecutorExecutionRecord -Lifecycle $lifecycle
             $record.Cleanup.State | Should -Be 'Incomplete'
             $record.Results.Count | Should -Be 0

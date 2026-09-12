@@ -114,6 +114,11 @@ public sealed class ContainedProcess : IDisposable
         IntPtr stderrRead = IntPtr.Zero;
         IntPtr stderrWrite = IntPtr.Zero;
         IntPtr environment = IntPtr.Zero;
+        IntPtr attributeList = IntPtr.Zero;
+        IntPtr childHandles = IntPtr.Zero;
+        bool attributesInitialized = false;
+        FileStream? stdin = null, stdout = null, stderr = null;
+        SafeProcessHandleOwned? processHandle = null;
         NativeMethods.PROCESS_INFORMATION processInfo = default;
         bool processCreated = false;
         bool transferred = false;
@@ -123,17 +128,32 @@ public sealed class ContainedProcess : IDisposable
             CreateInheritablePipe(out stdoutRead, out stdoutWrite, parentHoldsWrite: false);
             CreateInheritablePipe(out stderrRead, out stderrWrite, parentHoldsWrite: false);
 
-            var startup = new NativeMethods.STARTUPINFO
+            var startup = new NativeMethods.STARTUPINFOEX
             {
-                cb = Marshal.SizeOf<NativeMethods.STARTUPINFO>(),
+                StartupInfo = new NativeMethods.STARTUPINFO {
+                cb = Marshal.SizeOf<NativeMethods.STARTUPINFOEX>(),
                 dwFlags = NativeMethods.STARTF_USESTDHANDLES | NativeMethods.STARTF_USESHOWWINDOW,
                 hStdInput = stdinRead,
                 hStdOutput = stdoutWrite,
                 hStdError = stderrWrite,
-                wShowWindow = MapWindowStyle(startInfo.WindowStyle, startInfo.CreateNoWindow)
+                wShowWindow = MapWindowStyle(startInfo.WindowStyle, startInfo.CreateNoWindow) }
             };
 
-            uint flags = NativeMethods.CREATE_SUSPENDED | NativeMethods.CREATE_UNICODE_ENVIRONMENT;
+            IntPtr attributeSize = IntPtr.Zero;
+            NativeMethods.InitializeProcThreadAttributeList(IntPtr.Zero, 1, 0, ref attributeSize);
+            attributeList = Marshal.AllocHGlobal(attributeSize);
+            if (!NativeMethods.InitializeProcThreadAttributeList(attributeList, 1, 0, ref attributeSize))
+                throw new Win32Exception(Marshal.GetLastWin32Error(), "InitializeProcThreadAttributeList failed");
+            attributesInitialized = true;
+            childHandles = Marshal.AllocHGlobal(3 * IntPtr.Size);
+            Marshal.Copy(new[] { stdinRead, stdoutWrite, stderrWrite }, 0, childHandles, 3);
+            if (!NativeMethods.UpdateProcThreadAttribute(attributeList, 0, new IntPtr(0x20002),
+                    childHandles, new IntPtr(3 * IntPtr.Size), IntPtr.Zero, IntPtr.Zero))
+                throw new Win32Exception(Marshal.GetLastWin32Error(), "UpdateProcThreadAttribute failed");
+            startup.AttributeList = attributeList;
+
+            uint flags = NativeMethods.CREATE_SUSPENDED | NativeMethods.CREATE_UNICODE_ENVIRONMENT
+                | NativeMethods.EXTENDED_STARTUPINFO_PRESENT;
             if (startInfo.CreateNoWindow)
             {
                 flags |= NativeMethods.CREATE_NO_WINDOW;
@@ -147,7 +167,7 @@ public sealed class ContainedProcess : IDisposable
 
             if (!NativeMethods.CreateProcessW(
                     startInfo.FileName,
-                    commandLine,
+                    new StringBuilder(commandLine),
                     IntPtr.Zero,
                     IntPtr.Zero,
                     bInheritHandles: true,
@@ -173,6 +193,13 @@ public sealed class ContainedProcess : IDisposable
                 throw new Win32Exception(Marshal.GetLastWin32Error(), "AssignProcessToJobObject failed");
             }
 
+            stdin = new FileStream(new SafeFileHandle(stdinWrite, ownsHandle: true), FileAccess.Write);
+            stdinWrite = IntPtr.Zero;
+            stdout = new FileStream(new SafeFileHandle(stdoutRead, ownsHandle: true), FileAccess.Read);
+            stdoutRead = IntPtr.Zero;
+            stderr = new FileStream(new SafeFileHandle(stderrRead, ownsHandle: true), FileAccess.Read);
+            stderrRead = IntPtr.Zero;
+
             if (NativeMethods.ResumeThread(processInfo.hThread) == uint.MaxValue)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error(), "ResumeThread failed");
@@ -181,14 +208,8 @@ public sealed class ContainedProcess : IDisposable
             NativeMethods.CloseHandle(processInfo.hThread);
             processInfo.hThread = IntPtr.Zero;
 
-            var processHandle = new SafeProcessHandleOwned(processInfo.hProcess);
+            processHandle = new SafeProcessHandleOwned(processInfo.hProcess);
             processInfo.hProcess = IntPtr.Zero;
-            var stdin = new FileStream(new SafeFileHandle(stdinWrite, ownsHandle: true), FileAccess.Write);
-            stdinWrite = IntPtr.Zero;
-            var stdout = new FileStream(new SafeFileHandle(stdoutRead, ownsHandle: true), FileAccess.Read);
-            stdoutRead = IntPtr.Zero;
-            var stderr = new FileStream(new SafeFileHandle(stderrRead, ownsHandle: true), FileAccess.Read);
-            stderrRead = IntPtr.Zero;
             transferred = true;
             return new ContainedProcess(processInfo.dwProcessId, processHandle, job, stdin, stdout, stderr);
         }
@@ -197,13 +218,24 @@ public sealed class ContainedProcess : IDisposable
             if (processCreated)
             {
                 NativeMethods.TerminateJobObject(job.Handle, 1);
+                // Assignment may have failed: the suspended root is not then in the job.
+                IntPtr root = processHandle?.DangerousGetHandle() ?? processInfo.hProcess;
+                NativeMethods.TerminateProcess(root, 1);
+                NativeMethods.WaitForSingleObject(root, 5000);
             }
 
+            stdin?.Dispose();
+            stdout?.Dispose();
+            stderr?.Dispose();
+            processHandle?.Dispose();
             job.Dispose();
             throw;
         }
         finally
         {
+            if (attributesInitialized) NativeMethods.DeleteProcThreadAttributeList(attributeList);
+            if (attributeList != IntPtr.Zero) Marshal.FreeHGlobal(attributeList);
+            if (childHandles != IntPtr.Zero) Marshal.FreeHGlobal(childHandles);
             if (environment != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(environment);
@@ -256,12 +288,11 @@ public sealed class ContainedProcess : IDisposable
 
     public bool Terminate(TimeSpan wait)
     {
+        var watch = Stopwatch.StartNew();
         _job.Terminate(1);
-        uint milliseconds = wait <= TimeSpan.Zero
-            ? 0
-            : wait == Timeout.InfiniteTimeSpan
+        uint milliseconds = wait == Timeout.InfiniteTimeSpan
                 ? NativeMethods.INFINITE
-                : (uint)Math.Min(int.MaxValue, Math.Max(0, (int)wait.TotalMilliseconds));
+                : (uint)Math.Clamp(wait.TotalMilliseconds, 0, int.MaxValue);
         NativeMethods.WaitForSingleObject(_processHandle.DangerousGetHandle(), milliseconds);
         if (milliseconds == NativeMethods.INFINITE)
         {
@@ -273,7 +304,6 @@ public sealed class ContainedProcess : IDisposable
         else if (milliseconds > 0)
         {
             var remaining = TimeSpan.FromMilliseconds(milliseconds);
-            var watch = Stopwatch.StartNew();
             while (JobHasLiveProcesses() && watch.Elapsed < remaining)
             {
                 Thread.Sleep(20);
@@ -291,7 +321,7 @@ public sealed class ContainedProcess : IDisposable
         }
         catch
         {
-            return !HasExited;
+            return true; // A failed query does not confirm tree release.
         }
     }
 

@@ -19,10 +19,6 @@ function Receive-BatchExecutorResults {
             $pipelineOutput = @()
             try {
                 $asyncCompleted = $null -ne $invocation.AsyncResult -and $invocation.AsyncResult.IsCompleted
-                if ($invocation.TerminalOverride -eq 'TimedOut' -and -not $asyncCompleted) {
-                    try { $pipeline.Stop() } catch {}
-                    $asyncCompleted = $null -ne $invocation.AsyncResult -and $invocation.AsyncResult.IsCompleted
-                }
                 if ($asyncCompleted) {
                     try { $pipelineOutput = @($pipeline.EndInvoke($invocation.AsyncResult)) }
                     catch {
@@ -109,7 +105,7 @@ function Receive-BatchExecutorResults {
             }
             else {
                 New-BatchExecutorObservation -Submitted:$true `
-                    -Started:($null -ne $startedUtc) 
+                    -Started:($null -ne $startedUtc)
             }
             if ($invocation.TerminalOverride -eq 'TimedOut') {
                 $observation.StopReason = if ($Lifecycle.WaitOutcome.Kind -eq 'ExecutionTimeout') {

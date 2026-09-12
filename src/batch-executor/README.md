@@ -153,17 +153,24 @@ host Stop() can land. The phase records one typed wait outcome (`Completed`, `Ca
 and batched pipeline-stop order. Child processes are born into a Windows job object before user-mode
 code runs. Protocol events travel on an owner-created named pipe; raw stdout/stderr stay separate.
 A missing final protocol frame is the native-exit path; a malformed frame is not.
+Output/error/warning/information frames are collected independently of the terminal frame.
+The terminal frame contains status only, so output larger than one frame is preserved up
+to the protocol capture limit. An oversized individual object emits an explicit loss frame;
+loss sets `Capture.Truncated` and fails the item, while retaining earlier captured output.
+Completed frames remain available after control-reader cancellation. Children inherit only
+their own stdin/stdout/stderr handles, and failed job assignment kills the still-suspended
+root before returning a launch failure.
 
 Collection materializes invocation envelopes into the original index slots, merges pipeline and worker
 diagnostics, preserves the caller's original `Input` reference, and verifies that every result slot is
 filled before entering `Collected`. It does not dispose execution resources; teardown remains the owner.
 
 The exported function retains the sole lexical `try/finally`. Its teardown operation kills child trees,
-stops supervisors, clears disposed pipeline handles, then closes and clears the shared pool before entering
-`Closed`. Only a closed nonempty lifecycle can be projected into the public execution record; the empty
-preparation fast path remains execution-resource-free.
-Failed handle disposal is recorded and the handle remains owner-visible; such a lifecycle cannot claim
-`Closed` or be projected as a successful execution record.
+stops supervisors and submits managed resource disposal to a .NET owner. It waits only the
+remaining cleanup allowance, clears confirmed disposed handles and enters `Closed` only when
+cleanup is confirmed. Collected results can also be projected with `Cleanup.State = Incomplete`.
+The empty preparation fast path remains execution-resource-free. Failed or pending disposal
+is recorded; an incomplete lifecycle retains ownership and cannot claim `Closed`.
 
 ## Cancellation and ownership
 
@@ -176,8 +183,11 @@ The parent registers every live child immediately after start. Token cancellatio
 timeout, executor/await timeout, hosting-pipeline stop, and exceptional teardown terminate the job
 object before supervising pipelines and the pool are disposed. Registry removal happens only after
 confirmed release. The current child process does not receive an operative cross-process cancellation
-token. `RunspacePool.Close`/`Dispose` are uninterruptible owner-thread operations after children are
-terminated.
+token. Managed `Dispose` calls can outlive the cleanup deadline when direct-runspace work
+ignores cancellation. The .NET disposal task retains those resources until completion;
+the caller receives `Incomplete` without blocking past its cleanup allowance. Use Process
+mode when work requires preemptive termination. Stop submission has no 64-worker wait-handle
+limit. Root exit, descendant release, and stream completion are separate observations.
 
 ## Data isolation
 

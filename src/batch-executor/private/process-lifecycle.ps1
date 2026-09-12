@@ -19,7 +19,7 @@ function Stop-BatchExecutorChildProcesses {
             }
             else { [TimeSpan]::FromSeconds(5) }
             if ($owned -is [CodexScientiae.BatchExecutor.Native.ContainedProcess]) {
-                if (-not $owned.HasExited) { [void]$owned.Terminate($wait) }
+                if (-not $owned.ConfirmedRelease) { [void]$owned.Terminate($wait) }
             }
             elseif ($owned -is [System.Diagnostics.Process]) {
                 if (-not $owned.HasExited) { $owned.Kill($true) }
@@ -83,12 +83,9 @@ function Stop-BatchExecutorPipelines {
         if ($null -ne $Deadline -and $Deadline.CleanupExpired) { break }
         if ($null -eq $Deadline -and $watch.ElapsedMilliseconds -ge 5000) { break }
         $waitMs = [CodexScientiae.BatchExecutor.Native.HostAwareWait]::ToWaitMilliseconds($slice)
-        $handles = [System.Threading.WaitHandle[]]@(
-            foreach ($task in $incomplete) {
-                if ($null -ne $task.AsyncWaitHandle) { $task.AsyncWaitHandle }
-            })
-        if ($handles.Count -eq 0) { break }
-        [void][System.Threading.WaitHandle]::WaitAny($handles, $waitMs)
+        # Every stop is already submitted. Recheck all completions after one bounded wait;
+        # WaitAny over the whole set fails above the platform's 64-handle limit.
+        [void]$incomplete[0].AsyncWaitHandle.WaitOne($waitMs)
     }
 }
 

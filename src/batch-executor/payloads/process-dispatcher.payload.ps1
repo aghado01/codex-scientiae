@@ -181,9 +181,9 @@ else { try {
                 [void]$contained.Terminate([TimeSpan]::FromSeconds(2))
             }
             else {
-                if ($joinSlice -ne [System.Threading.Timeout]::InfiniteTimeSpan) {
-                    $ioCts.CancelAfter($joinSlice)
-                }
+                # The monotonic owner loop enforces the deadline. Cancelling I/O on
+                # a second timer can complete WaitForExitAsync before the root exits
+                # and before the monotonic timeout is observable, misclassifying it.
                 $stdoutTask = [CodexScientiae.BatchExecutor.Native.StreamPump]::PumpAsync(
                     $contained.StandardOutput, $stdoutCapture, $ioCts.Token)
                 $stderrTask = [CodexScientiae.BatchExecutor.Native.StreamPump]::PumpAsync(
@@ -245,6 +245,12 @@ else { try {
                 $failure = "child process exceeded timeout of $ProcessTimeoutSeconds second(s)"
             }
 
+            if (-not $contained.ConfirmedRelease) {
+                $releaseSlice = if ($null -ne $Deadline) {
+                    $Deadline.CleanupSlice([TimeSpan]::FromSeconds(5))
+                } else { [TimeSpan]::FromSeconds(5) }
+                [void]$contained.Terminate($releaseSlice)
+            }
             $drainToken = [System.Threading.CancellationToken]::None
             $drainCts = $null
             try {
@@ -287,6 +293,21 @@ else { try {
             $exitCode = if ($contained.HasExited) { $contained.ExitCode } else { $null }
 
             $protocolKind = 'missing'
+            # Frames are the output authority, including before timeout or cancellation.
+            $objects = [System.Collections.Generic.List[object]]::new()
+            if ($null -ne $protocol) {
+                foreach ($frame in $protocol.Frames) {
+                    if ($frame.Kind -notin @(1, 2, 3, 4)) { continue }
+                    $value = [System.Management.Automation.PSSerializer]::Deserialize($frame.PayloadText)
+                    switch ($frame.Kind) {
+                        1 { $objects.Add($value) }
+                        2 { $childErrors += [string]$value }
+                        3 { $childWarnings += [string]$value }
+                        4 { Write-Information -MessageData $value }
+                    }
+                }
+            }
+            $output = $objects.ToArray()
             if ($null -ne $protocol -and $protocol.Malformed) {
                 $protocolKind = 'malformed'
                 if ($state -notin @('Cancelled', 'TimedOut')) {
@@ -297,13 +318,14 @@ else { try {
             }
             elseif ($null -ne $protocol -and $protocol.Truncated) {
                 $protocolKind = 'truncated'
+                if ($state -notin @('Cancelled', 'TimedOut')) {
+                    $state = 'Failed'
+                    $failure = 'structured output exceeded the configured capture limit'
+                }
             }
             elseif ($null -ne $protocol -and $null -ne $protocol.Final) {
                 $protocolKind = 'ok'
                 $wire = [System.Management.Automation.PSSerializer]::Deserialize($protocol.Final.PayloadText)
-                $output = @($wire.Output)
-                $childErrors = @($wire.Errors)
-                $childWarnings = @($childWarnings) + @($wire.Warnings)
                 $failure = if ($wire.Failure) { [string]$wire.Failure } else { $failure }
                 if ($state -notin @('Cancelled', 'TimedOut')) {
                     $state = if ([bool]$wire.Succeeded -and $exitCode -eq 0) { 'Succeeded' } else { 'Failed' }
@@ -311,7 +333,7 @@ else { try {
             }
             elseif ($state -notin @('Cancelled', 'TimedOut')) {
                 $protocolKind = 'native-exit'
-                $output = $stdoutLines
+                if ($objects.Count -eq 0) { $output = $stdoutLines }
                 $state = if ($exitCode -eq 0) { 'Succeeded' } else { 'Failed' }
                 if ($state -eq 'Failed') {
                     $failure = "child PowerShell exited with code $exitCode without a structured result"
@@ -336,7 +358,7 @@ else { try {
                 ProtocolBytes = [long]$(if ($null -ne $protocol) { $protocol.Bytes } else { 0 })
             }
         }
-        finally { $ioCts.Dispose() }
+        finally { $ioCts.Cancel(); $ioCts.Dispose() }
     }
 }
 catch {

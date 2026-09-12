@@ -1,8 +1,7 @@
 $ErrorActionPreference = 'Continue'
 $utf8 = [System.Text.UTF8Encoding]::new($false)
-$errors = [System.Collections.Generic.List[string]]::new()
-$warnings = [System.Collections.Generic.List[string]]::new()
-$output = [System.Collections.Generic.List[object]]::new()
+$errorCount = 0
+$captureTruncated = $false
 $failure = $null
 $succeeded = $false
 $payload = $null
@@ -22,7 +21,13 @@ function Write-BatchExecutorControlFrame {
     )
 
     if ($null -eq $Payload) { $Payload = [byte[]]::new(0) }
-    if ($Payload.Length -gt $MaxFrameBytes) { return $false }
+    if ($Payload.Length -gt $MaxFrameBytes) {
+        $script:captureTruncated = $true
+        # A zero-payload loss frame fits every configured frame limit.
+        $Stream.Write([byte[]]@(0, 0, 0, 0, 6), 0, 5)
+        $Stream.Flush()
+        return $false
+    }
     $header = [System.BitConverter]::GetBytes([int]$Payload.Length)
     $Stream.Write($header, 0, 4)
     $Stream.WriteByte($Kind)
@@ -66,13 +71,12 @@ try {
     } *>&1 | ForEach-Object {
         if ($_ -is [System.Management.Automation.ErrorRecord]) {
             $text = $_.ToString()
-            $errors.Add($text)
+            $script:errorCount++
             $bytes = $utf8.GetBytes([System.Management.Automation.PSSerializer]::Serialize($text, 2))
             [void](Write-BatchExecutorControlFrame -Kind 2 -Payload $bytes -Stream $pipe -MaxFrameBytes $maxFrame)
         }
         elseif ($_ -is [System.Management.Automation.WarningRecord]) {
             $text = [string]$_.Message
-            $warnings.Add($text)
             $bytes = $utf8.GetBytes([System.Management.Automation.PSSerializer]::Serialize($text, 2))
             [void](Write-BatchExecutorControlFrame -Kind 3 -Payload $bytes -Stream $pipe -MaxFrameBytes $maxFrame)
         }
@@ -84,13 +88,12 @@ try {
             [void](Write-BatchExecutorControlFrame -Kind 4 -Payload $bytes -Stream $pipe -MaxFrameBytes $maxFrame)
         }
         else {
-            $output.Add($_)
             $bytes = $utf8.GetBytes([System.Management.Automation.PSSerializer]::Serialize($_, $depth))
             [void](Write-BatchExecutorControlFrame -Kind 1 -Payload $bytes -Stream $pipe -MaxFrameBytes $maxFrame)
         }
     }
 
-    $succeeded = ($errors.Count -eq 0)
+    $succeeded = ($errorCount -eq 0)
 }
 catch {
     if ($null -ne $LASTEXITCODE -and $LASTEXITCODE -ne 0) {
@@ -105,10 +108,8 @@ if ($null -eq $nativeExitCode -and $null -ne $LASTEXITCODE -and $LASTEXITCODE -n
 
 $depth = if ($payload -and $payload.SerializationDepth) { [int]$payload.SerializationDepth } else { 12 }
 $wire = [pscustomobject]@{
-    Succeeded = ($succeeded -and -not $failure)
-    Output    = $output.ToArray()
-    Errors    = $errors.ToArray()
-    Warnings  = $warnings.ToArray()
+    Succeeded = ($succeeded -and -not $failure -and -not $captureTruncated)
+    Truncated = $captureTruncated
     Failure   = $failure
 }
 if ($null -ne $pipe) {

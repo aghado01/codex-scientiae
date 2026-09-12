@@ -84,15 +84,11 @@ public static class HostAwareWait
 
     public static int ToWaitMilliseconds(TimeSpan slice)
     {
-        if (slice <= TimeSpan.Zero)
-        {
-            return 0;
-        }
-
         if (slice == Timeout.InfiniteTimeSpan)
         {
             return Timeout.Infinite;
         }
+        if (slice <= TimeSpan.Zero) return 0;
 
         double ms = slice.TotalMilliseconds;
         if (ms >= int.MaxValue)
@@ -101,5 +97,23 @@ public static class HostAwareWait
         }
 
         return Math.Max(1, (int)ms);
+    }
+}
+
+/// <summary>Owns potentially blocking managed disposal beyond a caller's cleanup deadline.</summary>
+public static class BoundedDisposal
+{
+    public static Task<string[]> Begin(IDisposable[] resources)
+    {
+        return Task.Run(() =>
+        {
+            var errors = new List<string>();
+            foreach (IDisposable resource in resources)
+            {
+                try { resource.Dispose(); }
+                catch (Exception error) { errors.Add(error.Message); }
+            }
+            return errors.ToArray();
+        });
     }
 }

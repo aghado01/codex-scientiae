@@ -18,6 +18,7 @@ public static class ControlProtocol
     public const byte KindWarning = 3;
     public const byte KindInformation = 4;
     public const byte KindFinal = 5;
+    public const byte KindTruncated = 6;
 
     public static string KindName(byte kind)
     {
@@ -28,6 +29,7 @@ public static class ControlProtocol
             KindWarning => "warn",
             KindInformation => "info",
             KindFinal => "final",
+            KindTruncated => "truncated",
             _ => "unknown"
         };
     }
@@ -41,6 +43,7 @@ public static class ControlProtocol
             "warn" => KindWarning,
             "info" => KindInformation,
             "final" => KindFinal,
+            "truncated" => KindTruncated,
             _ => 0
         };
     }
@@ -144,6 +147,8 @@ public sealed class ControlServer : IDisposable
 
                 int payloadLength = BitConverter.ToInt32(header, 0);
                 byte kind = header[4];
+                if (kind < ControlProtocol.KindObject || kind > ControlProtocol.KindTruncated)
+                    throw new InvalidDataException("unknown control-frame kind " + kind);
                 if (payloadLength < 0 || payloadLength > _limits.MaxFrameBytes)
                 {
                     result.Malformed = true;
@@ -181,6 +186,7 @@ public sealed class ControlServer : IDisposable
                     Payload = payload
                 };
                 result.Frames.Add(frame);
+                if (kind == ControlProtocol.KindTruncated) result.Truncated = true;
                 if (kind == ControlProtocol.KindFinal)
                 {
                     result.Final = frame;
@@ -190,7 +196,6 @@ public sealed class ControlServer : IDisposable
         catch (OperationCanceledException)
         {
             result.Failure = "control-channel read cancelled";
-            throw;
         }
         catch (Exception exception)
         {
