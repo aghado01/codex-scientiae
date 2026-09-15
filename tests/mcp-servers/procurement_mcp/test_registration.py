@@ -33,7 +33,7 @@ EXPECTED_TOOLS = (
     ),
     (
         "get_work",
-        "Return one normalized work while preserving its provider identity.",
+        "Return one normalized work while preserving its provider identity. An unversioned arXiv identifier selects the latest version.",
     ),
     (
         "prepare_source_deposit_metadata",
@@ -175,7 +175,8 @@ EXPECTED_INSTRUCTIONS = (
     "Semantic Scholar are metadata aggregators and never establish artifact provenance. "
     "Provider acquisition, configured local import, metadata resolution, source materialization, "
     "and article-inventory rebuild are independent operations. procure_source acquires into a "
-    "catalog destination and materializes article.json in the same leaf. acquisition.json records validated "
+    "catalog destination and materializes article.json in the same leaf. An unversioned arXiv "
+    "identifier means the latest version of that paper. acquisition.json records validated "
     "acquired "
     "bytes and custody; article.json is the canonical source-ready sentinel; "
     "inventory.jsonl is a rebuildable catalog view. fold_article_inventory flattens child "

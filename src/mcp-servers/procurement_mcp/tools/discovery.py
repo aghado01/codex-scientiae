@@ -88,7 +88,7 @@ def register_discovery_tools(server: MCPServer) -> None:
         ctx: Context[AppContext],
         source: ProviderName = "openalex",
     ) -> WorkRecord:
-        """Return one normalized work while preserving its provider identity."""
+        """Return one normalized work while preserving its provider identity. An unversioned arXiv identifier selects the latest version."""
 
         service = ctx.request_context.lifespan_context.application.discovery
         return await service.get_work(identifier, source=source)

@@ -6,7 +6,7 @@ The host slash command `procurement-request` is a trigger that loads this prompt
 
 ## One source-ready paper
 
-1. If the identifier is unversioned, call `get_work` (source `arxiv` when it is an arXiv id) and use the versioned id as the slug. A versioned arXiv id is already the slug; do not call `get_work` first, and do not pre-pass `plan_artifact_acquisition`; `procure_source` replans internally.
+1. An unversioned arXiv identifier means the latest version of that paper. Call `get_work` (source `arxiv`) and use the returned versioned id as the slug. A versioned arXiv id is already the slug; do not call `get_work` first, and do not pre-pass `plan_artifact_acquisition`; `procure_source` replans internally.
 2. Call `procure_source` with `provider`, `identifier`, and `catalog` set to the destination. Default artifacts are source, PDF, and HTML. Default metadata is `artifact-identity`. Do not pass `artifacts` unless asked to omit a form.
 3. `catalog` is a configured name (`inventory`) or a workspace-relative folder (`supellex/<collection>/<topic>`). Missing folders are created. Refuse absolute paths and `..`.
 4. Do not `acquire_artifact` into staging and then copy. Do not rename `arXiv-{slug}.tar.gz` to `{slug}.tar.gz`. The unpacked tree is `{slug}-tex/`. HTML, when available, lands as `{slug}-html/` with entrypoint `{slug}.html`. Missing HTML is `unavailable`, not a failed paper. HTML is a witness form; it does not mint `article.json` and is not a markdown conversion. Do not GET `/html/…` yourself, wget, or treat Atom `type="text/html"` as the paper (that link is the abs page).
