@@ -1,6 +1,7 @@
 # Inventory-batch dependency helpers.
 #
-# The engine lives in its own repository. Planning freezes only where it is
+# The engine lives in its own repository or a snapshot below this run's inputs.
+# Planning freezes only where it is
 # (EngineRoot) and which child entrypoint it offers (Worker). It never
 # resolves node, perl, or any other engine runtime. Runtime preflight is the
 # engine-side launcher's job, before it asks for a plan.
@@ -9,7 +10,8 @@ function Resolve-InventoryBatchEngineRoot {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $EngineRoot,
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot,
+        [string] $RunDirectory = ''
     )
 
     if (-not [System.IO.Path]::IsPathFullyQualified($EngineRoot)) {
@@ -21,6 +23,19 @@ function Resolve-InventoryBatchEngineRoot {
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
     $repository = (Resolve-Path -LiteralPath $RepositoryRoot).Path
+    if ($RunDirectory) {
+        $inputs = [IO.Path]::Combine([IO.Path]::GetFullPath($RunDirectory), 'inputs')
+        if (Test-PathIsDescendant -Root $inputs -Path $resolved) {
+            $cursor = $resolved
+            while ($cursor.Length -ge $RunDirectory.TrimEnd('\','/').Length) {
+                if ((Get-Item -LiteralPath $cursor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+                    throw "inventory-batch engine snapshot contains a reparse point: '$EngineRoot'"
+                }
+                $cursor = [IO.Path]::GetDirectoryName($cursor)
+            }
+            return $resolved
+        }
+    }
     if ($resolved -eq $repository -or
             (Test-PathIsDescendant -Root $repository -Path $resolved) -or
             (Test-PathIsDescendant -Root $resolved -Path $repository)) {

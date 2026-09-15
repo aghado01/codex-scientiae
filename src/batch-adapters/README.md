@@ -101,7 +101,8 @@ opens neither the jsonl engine nor `article.json`. `article.json` is read only f
 `Path` forms, which carry no row. The planner never walks directories looking for `article.json`; a
 catalog directory without `inventory.jsonl` is refused.
 
-The engine is identified by an `Engine` label, an absolute `EngineRoot` outside this repository, and
+The engine is identified by an `Engine` label, an absolute `EngineRoot` outside this repository
+(or a snapshot below the current run's `inputs/` directory), and
 the `Worker` child entrypoint the engine supplies. One document per job; the job container IS the
 document container: the worker emits at `RunDirectory/jobs/<slug>-<digest>/`, with ephemeral state
 under `RunDirectory/job-temp/<slug>-<digest>/`.
@@ -125,7 +126,7 @@ Planning resolves and freezes:
 - a stable `inventory:<engine>:<repository-relative-article-dir>#<digest>` id from the engine label,
   the article address, and the deposit's frozen `treeSha256` (a re-deposit changes the id; a re-run
   over the same tree does not; two engines over one deposit never share a container);
-- `EngineRoot` (absolute, existing, disjoint from `RepositoryRoot`) as the child working directory and
+- `EngineRoot` (absolute, existing, disjoint from `RepositoryRoot` or below this run's `inputs/`) as the child working directory and
   `Worker` (absolute, existing `.ps1` below `EngineRoot`) as the child entrypoint;
 - the frozen named parameters `Article`, `OutDirectory`, `EngineRoot`, `SourceTree` (the deposit's
   `{slug}-tex` directory), `Entrypoint` (the tree-relative main file from the row), and `TreeSha256`,

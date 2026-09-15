@@ -164,6 +164,6 @@ if (@($execution.Errors).Count -gt 0 -or
         $null -eq $execution.Cleanup -or $execution.Cleanup.State -ne 'Confirmed') {
     throw "Inventory batch executor reported infrastructure errors; see '$RunDirectory/batch.json'"
 }
-if ($FailOnArticleFailure -and $record.status -ne 'complete') {
-    throw "Inventory batch contains failed or incomplete paper attempts; see '$RunDirectory/batch.json'"
+if ($FailOnArticleFailure -and ($record.status -ne 'complete' -or ($RequireQualification -and $record.qualification.status -ne 'pass'))) {
+    throw "Inventory batch gate failed: status=$($record.status); qualification=$($record.qualification.status); see '$RunDirectory/batch.json'"
 }

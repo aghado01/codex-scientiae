@@ -287,6 +287,21 @@ Describe 'adapters module surface for inventory-batch' {
 }
 
 Describe 'Get-InventoryBatchJob planning' {
+    It 'accepts this run input snapshot and rejects another run snapshot' {
+        $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'snapshot')
+        $engine = Join-Path $fixture.RunDirectory 'inputs/engine'
+        $worker = Write-InventoryStubWorker (Join-Path $engine 'worker.ps1')
+        $invoke = @{Path=$fixture.Small;RunDirectory=$fixture.RunDirectory;RepositoryRoot=$fixture.Root;Engine='stub';EngineRoot=$engine;Worker=$worker}
+        $jobs = @(Get-InventoryBatchJob @invoke)
+        $jobs.Count | Should -Be 1
+        $jobs[0].WorkingDirectory | Should -Be $engine
+        Test-Path -LiteralPath (Join-Path $fixture.RunDirectory 'jobs') | Should -BeFalse
+        $other = Join-Path $fixture.Root 'artifacts/another-run'
+        [void][IO.Directory]::CreateDirectory($other)
+        $invoke.RunDirectory=$other
+        { Get-InventoryBatchJob @invoke } | Should -Throw '*EngineRoot must lie outside RepositoryRoot*'
+    }
+
     It 'plans one stable isolated process job per first-order inventory row without creating run artifacts' {
         $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'planning')
         $invoke = @{
@@ -559,6 +574,17 @@ Describe 'inventory worker hop' {
 }
 
 Describe 'batch-runner house caller' {
+    It 'fails the requested qualification gate even when every worker completes successfully' {
+        $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'qualification')
+        { & $script:BatchRunner -RepositoryRoot $fixture.Root -Engine 'stub' -EngineRoot $fixture.EngineRoot `
+            -Worker $fixture.Worker -Path $fixture.Small -RequireQualification -FailOnArticleFailure } | Should -Throw '*qualification=fail*'
+        $run=@(Get-ModuleRunDirs -Module 'stub' -RepositoryRoot $fixture.Root)[0]
+        $batch=Read-InventoryBatch $run
+        $batch.Record.status | Should -Be 'complete'
+        $batch.Record.coverage.complete | Should -Be 1
+        $batch.Record.qualification.status | Should -Be 'fail'
+    }
+
     It 'refuses to resolve a Codex root from a hardcoded or missing path' {
         $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'no-root')
         $previous = [System.Environment]::GetEnvironmentVariable('CDXSCI_ROOT', 'Process')

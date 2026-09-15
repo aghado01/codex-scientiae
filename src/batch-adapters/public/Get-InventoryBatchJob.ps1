@@ -4,7 +4,8 @@ function Get-InventoryBatchJob {
        catalog directory that holds inventory.jsonl (first-order or folded).
        Inventory rows are trusted as the article manifest; article.json is
        read only for the single-article forms. The engine lives in its own
-       repository (EngineRoot) and supplies the child entrypoint (Worker).
+       repository or this run's inputs snapshot (EngineRoot), and supplies
+       the child entrypoint (Worker).
        Emits BatchJob records only; the caller owns New-BatchPlan /
        Invoke-BatchPlan. Planning creates no directories and runs nothing. #>
     [CmdletBinding()]
@@ -23,7 +24,7 @@ function Get-InventoryBatchJob {
 
     $repository = Resolve-InventoryBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
     $run = Resolve-InventoryBatchRunDirectory -RunDirectory $RunDirectory -RepositoryRoot $repository
-    $engineRoot = Resolve-InventoryBatchEngineRoot -EngineRoot $EngineRoot -RepositoryRoot $repository
+    $engineRoot = Resolve-InventoryBatchEngineRoot -EngineRoot $EngineRoot -RepositoryRoot $repository -RunDirectory $run
     $worker = Resolve-InventoryBatchWorker -Worker $Worker -EngineRoot $engineRoot
     $childPowerShell = Resolve-InventoryBatchPowerShellPath -PowerShellPath $PowerShellPath
     $frozenWorkerParameter = Resolve-InventoryBatchWorkerParameter -WorkerParameter $WorkerParameter
