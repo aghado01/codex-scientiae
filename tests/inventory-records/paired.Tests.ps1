@@ -6,6 +6,7 @@ Describe 'Frozen LaTeXAI paired worker' -Skip:([string]::IsNullOrWhiteSpace($env
         $script:EngineRoot=(Resolve-Path $env:LATEXAI_ROOT).Path
         . (Join-Path $script:EngineRoot 'scripts/latexai-common.ps1')
         . (Join-Path $script:EngineRoot 'scripts/gauntlet-freeze.ps1')
+        . (Join-Path $script:EngineRoot 'scripts/gauntlet-reuse.ps1')
         Import-Module (Join-Path $script:RepositoryRoot 'src/inventory-records/inventory-records.psm1') -Force
         $script:Root=Join-Path ($env:CDXSCI_TEST_ARTIFACT_ROOT ? $env:CDXSCI_TEST_ARTIFACT_ROOT : $TestDrive) 'paired'
         $script:Article=Join-Path $script:Root 'paper'
@@ -34,6 +35,19 @@ Describe 'Frozen LaTeXAI paired worker' -Skip:([string]::IsNullOrWhiteSpace($env
             return (Read-InventoryBatch $Run)
         }
         $script:Success=Invoke-PairedFixture $script:SuccessRoot
+        $script:FailedRoot=Join-Path $script:Root 'failed-native'
+        $script:Failed=Invoke-PairedFixture $script:FailedRoot @('--unknown-paired-test-option')
+        function Invoke-ReuseFixture([string]$Run,[string]$Prior,[switch]$AnalysisOnly) {
+            [void][IO.Directory]::CreateDirectory($Run)
+            $previous=@{}
+            foreach($key in @('CDXSCI_TEMP','CDXSCI_JSON_SCRATCH_ROOT','TEMP','TMP','TMPDIR')){$previous[$key]=[Environment]::GetEnvironmentVariable($key)}
+            try {
+                $null=& (Join-Path $script:EngineRoot 'scripts/gauntlet-run.ps1') -CdxsciRoot $script:RepositoryRoot -RunDirectory $Run `
+                    -ReuseBatch $Prior -AnalysisOnly:$AnalysisOnly -OnArgument @() -MaxWorkers 1 `
+                    -ComparisonTimeoutSeconds 90 -ProcessTimeoutSeconds 900 -WaitTimeoutSeconds 1000 -ExecutionTimeoutSeconds 1000
+            } finally {foreach($key in $previous.Keys){[Environment]::SetEnvironmentVariable($key,$previous[$key])}}
+            return (Read-InventoryBatch $Run)
+        }
     }
 
     It 'runs and qualifies both frozen conditions inside one paper job' {
@@ -55,7 +69,7 @@ Describe 'Frozen LaTeXAI paired worker' -Skip:([string]::IsNullOrWhiteSpace($env
     }
 
     It 'keeps failed conditions and incomplete comparisons in the denominator' {
-        $failed=Invoke-PairedFixture (Join-Path $script:Root 'failed-native') @('--unknown-paired-test-option')
+        $failed=$script:Failed
         $failed.Record.coverage.expected | Should -Be 1
         $failed.Record.coverage.failed | Should -Be 1
         $failed.Record.qualification.status | Should -Be 'incomplete'
@@ -132,5 +146,78 @@ Describe 'Frozen LaTeXAI paired worker' -Skip:([string]::IsNullOrWhiteSpace($env
             [IO.File]::AppendAllText($path,"`n# changed",[Text.UTF8Encoding]::new($false))
             {Assert-LaTeXAIExperimentFreeze $paper.Record.payload.freeze $paper.Record.article} | Should -Throw '*Changed frozen file*'
         } finally {[IO.File]::WriteAllBytes($path,$bytes)}
+    }
+
+    It 'remeasures a retained pair without converting and keeps native observations historical' {
+        $before=$script:Success.Reference.sha256
+        $analysis=Invoke-ReuseFixture (Join-Path $script:Root 'analysis') $script:SuccessRoot -AnalysisOnly
+        $analysis.Record.qualification.status | Should -Be 'pass'
+        $paper=$analysis.Papers[0].Record
+        $paper.summary.conversionsExecuted | Should -Be 0
+        $paper.summary.conversionsReused | Should -Be 2
+        $paper.summary.latexmlMs | Should -Be 0
+        $paper.summary.xmlInspectMs | Should -BeGreaterThan 0
+        foreach($condition in $paper.payload.conditions){
+            $condition.conversion.action | Should -Be 'reused'
+            $condition.conversion.origin.nativeDurationMs | Should -BeGreaterThan 0
+            $condition.conversion.origin.record.sha256 | Should -Be $script:Success.Papers[0].Reference.sha256
+        }
+        (Get-InventoryFileReference $script:Success.Reference.path).sha256 | Should -Be $before
+        $paper.attemptId | Should -Not -Be $script:Success.Papers[0].Record.attemptId
+        $output=Join-Path $script:Root 'analysis-consumer'
+        $model=Join-Path $script:EngineRoot 'lib/LaTeXML/resources/RelaxNG/LaTeXML.model'
+        $run=Invoke-LaTeXAINative -FilePath $script:Perl -WorkingDirectory $script:EngineRoot -TimeoutSeconds 90 `
+            -Arguments @('-I','lib','tools/dev/capture-corpus-audit.pl','--baseline',(Split-Path $analysis.Reference.path),
+                '--candidate',(Split-Path $analysis.Reference.path),'--baseline-condition','off','--candidate-condition','on',
+                '--mode','parity','--project-baseline',$analysis.Reference.sha256,'--whitespace-model',$model,
+                '--whitespace-model-sha256',(Get-InventoryFileReference $model).sha256,'--output',$output)
+        $run.ExitCode | Should -Be 0 -Because ($run.StdOut+$run.StdErr)
+    }
+
+    It 'selectively retries a failed native condition and compares it with retained evidence' {
+        $retry=Invoke-ReuseFixture (Join-Path $script:Root 'retry') $script:FailedRoot
+        $retry.Record.qualification.status | Should -Be 'pass'
+        $paper=$retry.Papers[0].Record
+        $paper.summary.conversionsExecuted | Should -Be 1
+        $paper.summary.conversionsReused | Should -Be 1
+        @($paper.payload.conditions.conversion.action) | Should -Be @('reused','executed')
+        $paper.payload.conditions[1].conversion.reason | Should -Match 'did not complete'
+        (Read-InventoryBatch $script:FailedRoot).Record.qualification.status | Should -Be 'incomplete'
+    }
+
+    It 'accounts for unusable evidence in analysis-only mode without starting a replacement conversion' {
+        $analysis=Invoke-ReuseFixture (Join-Path $script:Root 'analysis-incomplete') $script:FailedRoot -AnalysisOnly
+        $analysis.Record.status | Should -Be 'incomplete'
+        $analysis.Record.coverage.failed | Should -Be 1
+        $paper=$analysis.Papers[0].Record
+        $paper.summary.conversionsExecuted | Should -Be 0
+        $paper.summary.conversionsReused | Should -Be 1
+        $paper.summary.conversionsRejected | Should -Be 1
+        @($paper.payload.conditions.conversion.action) | Should -Be @('reused','rejected')
+        $paper.payload.comparisons[0].status | Should -Be 'incomplete'
+    }
+
+    It 'invalidates a retained condition when its requested options change' {
+        $reuse=New-LaTeXAIReusePlan -Directory $script:SuccessRoot
+        $freeze=Read-LaTeXAIPinnedJson $reuse.Plan.specification.freeze
+        $article=$reuse.Plan.assignments[0].article
+        $condition=$reuse.Plan.specification.conditions[0]|ConvertTo-Json -Depth 20|ConvertFrom-Json -AsHashtable
+        $condition.arguments+=@('--quiet')
+        $expected=Get-LaTeXAIConversionIdentity $freeze $article $reuse.Plan.workerParameters $condition
+        {Get-LaTeXAIRetainedCondition $reuse.Specification $article $condition $expected} | Should -Throw '*Conversion identity changed*'
+    }
+
+    It 'rejects changed raw conversion bytes even when the prior record remains valid metadata' {
+        $reuse=New-LaTeXAIReusePlan -Directory $script:SuccessRoot
+        $freeze=Read-LaTeXAIPinnedJson $reuse.Plan.specification.freeze
+        $article=$reuse.Plan.assignments[0].article
+        $condition=$reuse.Plan.specification.conditions[0]
+        $expected=Get-LaTeXAIConversionIdentity $freeze $article $reuse.Plan.workerParameters $condition
+        $xml=Join-Path $script:Success.Papers[0].Directory $script:Success.Papers[0].Record.payload.conditions[0].outputs.xml
+        $bytes=[IO.File]::ReadAllBytes($xml)
+        try {
+            [IO.File]::AppendAllText($xml,'<!--unrecorded-->',[Text.UTF8Encoding]::new($false))
+            {Get-LaTeXAIRetainedCondition $reuse.Specification $article $condition $expected} | Should -Throw '*Changed retained artifact*'
+        } finally {[IO.File]::WriteAllBytes($xml,$bytes)}
     }
 }

@@ -110,7 +110,7 @@ function Get-PaperRunAssignment {
 
 function Read-PaperRun {
     param([Parameter(Mandatory)][string]$Path, [Parameter(Mandatory)][System.Collections.IDictionary]$Assignment,
-        [Parameter(Mandatory)][System.Collections.IDictionary]$Experiment)
+        [Parameter(Mandatory)][System.Collections.IDictionary]$Experiment, [switch]$MetadataOnly)
     $record = Read-RecordJson $Path
     Assert-InventoryRecord $record
     $expectedPath = Resolve-RecordPath ([IO.Path]::GetDirectoryName($Experiment.path)) $Assignment.record
@@ -123,7 +123,7 @@ function Read-PaperRun {
     foreach ($artifact in $record.artifacts) {
         if (-not $seen.Add($artifact.path)) { throw 'Duplicate paper artifact' }
         $null = Resolve-RecordPath ([IO.Path]::GetDirectoryName($Path)) $artifact.path
-        if ($record.status -ne 'running') { Assert-FileReference $artifact ([IO.Path]::GetDirectoryName($Path)) }
+        if (-not $MetadataOnly -and $record.status -ne 'running') { Assert-FileReference $artifact ([IO.Path]::GetDirectoryName($Path)) }
     }
     return [pscustomobject]@{ Record=$record; Reference=(Get-InventoryFileReference $Path) }
 }

@@ -123,6 +123,17 @@ Describe 'Inventory record ownership and validation' {
         { Read-InventoryBatch $f.Root } | Should -Throw '*Changed artifact*'
     }
 
+    It 'defers artifact bytes only when a stage consumer explicitly requests metadata' {
+        Write-PaperRun $f.Out $f.Record
+        [IO.File]::WriteAllText($f.Artifact,'changed',$script:Utf8)
+        {Read-PaperRun $f.Path $f.Plan.assignments[0] $f.Experiment} | Should -Throw '*Changed artifact*'
+        $metadata=Read-PaperRun $f.Path $f.Plan.assignments[0] $f.Experiment -MetadataOnly
+        $metadata.Record.artifacts[0].sha256 | Should -Be $f.Record.artifacts[0].sha256
+        $f.Record.article.slug='wrong'
+        Write-TestJson $f.Path $f.Record
+        {Read-PaperRun $f.Path $f.Plan.assignments[0] $f.Experiment -MetadataOnly} | Should -Throw '*Wrong paper identity*'
+    }
+
     It 'rejects a forged <Field> aggregate on readback' -ForEach @(
         @{Field='coverage'},@{Field='totals'},@{Field='summary'},@{Field='executor'},@{Field='qualification'},@{Field='producer'}
     ) {

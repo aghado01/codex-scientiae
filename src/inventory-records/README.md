@@ -42,6 +42,12 @@ parent traversal, reparse redirects, duplicate artifacts and self-hashing record
 are rejected. Workers alone publish terminal artifact hashes; the aggregate pins
 the terminal worker record, avoiding a self-hash cycle.
 
+`Read-PaperRun -MetadataOnly` validates the envelope, assignment and artifact
+addresses without reading artifact bytes. A stage consumer can then verify only
+the artifacts eligible for reuse and independently retry other conditions. The
+caller must pin the input record and perform those byte checks. Ordinary reads,
+publication and batch aggregation still validate all declared artifact bytes.
+
 ## Aggregation and qualification
 
 `Write-InventoryBatch` joins results by job identity, retains every planned attempt,
