@@ -7,6 +7,7 @@ BeforeAll {
     $script:BatchExecutorManifest = Join-Path $script:RepositoryRoot `
         'src/batch-executor/batch-executor.psd1'
     $script:BatchRunner = Join-Path $script:RepositoryRoot 'src/batch-runner.ps1'
+    Import-Module (Join-Path $script:RepositoryRoot 'src/inventory-records/inventory-records.psm1') -Force
     $script:Utf8 = [System.Text.UTF8Encoding]::new($false)
 
     function Write-InventoryDeposit {
@@ -110,13 +111,13 @@ param(
     [Parameter(Mandatory)] [string] $SourceTree,
     [Parameter(Mandatory)] [string] $Entrypoint,
     [Parameter(Mandatory)] [string] $TreeSha256,
+    [System.Collections.IDictionary] $RunContext,
     [string] $Marker = ''
 )
 $ErrorActionPreference = 'Stop'
 [void][System.IO.Directory]::CreateDirectory($OutDirectory)
-$receipt = [ordered]@{
-    schema = 'codex-scientiae/inventory-receipt/0.1'
-    status = 'ok'
+$payload = [ordered]@{
+    schema = 'test/inventory-worker/1'
     article = $Article
     outDirectory = $OutDirectory
     engineRoot = $EngineRoot
@@ -130,8 +131,17 @@ $receipt = [ordered]@{
     jobId = $env:CDXSCI_BATCH_JOB_ID
     location = (Get-Location).Path
 }
-$receipt | ConvertTo-Json -Depth 4 |
-    Set-Content -LiteralPath (Join-Path $OutDirectory 'receipt.json') -Encoding utf8
+Import-Module $RunContext.recordsModule -Force
+$assignment = Get-PaperRunAssignment $RunContext
+$now=[datetime]::UtcNow.ToString('o')
+$record=[ordered]@{
+    schema='codex-scientiae/paper-run/1';jobId=$assignment.Assignment.jobId;attemptId=$assignment.Assignment.attemptId
+    experiment=$assignment.Experiment;article=$assignment.Assignment.article
+    producer=@{engine=$assignment.Plan.engine;version='test';commit='test';worker=$assignment.Plan.worker}
+    status='complete';startedUtc=$now;endedUtc=$now;durationMs=0.25
+    summary=@{fractionalMs=0.25};artifacts=@();qualification=@{status='not-requested';issues=@()};payload=$payload
+}
+Write-PaperRun -OutDirectory $OutDirectory -Record $record
 '@
         return (Resolve-Path -LiteralPath $Path).Path
     }
@@ -323,8 +333,8 @@ Describe 'Get-InventoryBatchJob planning' {
             $job.Metadata.Adapter | Should -Be 'inventory-batch'
             $job.Metadata.Engine | Should -Be 'stub'
             $job.Metadata.AddressingContract | Should -Be 'RunDirectory/jobs'
-            $job.Metadata.ReceiptContract | Should -Be 'codex-scientiae/inventory-receipt/0.1'
-            $job.Metadata.ReceiptPath | Should -Be (Join-Path $job.Metadata.JobDirectory 'receipt.json')
+            $job.Metadata.RunContract | Should -Be 'codex-scientiae/paper-run/1'
+            $job.Metadata.RunPath | Should -Be (Join-Path $job.Metadata.JobDirectory 'run.json')
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.TempRoot | Should -BeFalse
         }
@@ -515,6 +525,8 @@ Describe 'inventory worker hop' {
         $jobs = @(Get-InventoryBatchJob -Path $fixture.Alpha -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -Engine 'stub' -EngineRoot $fixture.EngineRoot `
                 -Worker $fixture.Worker -WorkerParameter @{ Marker = 'hop' })
+        $experiment=Write-InventoryExperiment -RunDirectory $fixture.RunDirectory -Jobs $jobs -SelectedPaths @($fixture.Alpha) -WorkerParameters @{Marker='hop'}
+        $jobs=@(Get-InventoryBatchJob -Path $fixture.Alpha -RunDirectory $fixture.RunDirectory -RepositoryRoot $fixture.Root -Engine 'stub' -EngineRoot $fixture.EngineRoot -Worker $fixture.Worker -WorkerParameter @{Marker='hop'} -ExperimentSha256 $experiment.sha256)
         $compiled = New-BatchPlan -Job $jobs -BasePath $fixture.EngineRoot
         $compiled.Errors.Count | Should -Be 0
 
@@ -525,21 +537,21 @@ Describe 'inventory worker hop' {
         foreach ($job in $jobs) {
             $result = @($execution.Results | Where-Object Id -EQ $job.Id)[0]
             $result.State | Should -Be 'Succeeded'
-            Test-Path -LiteralPath $job.Metadata.ReceiptPath -PathType Leaf | Should -BeTrue
-            $receipt = Get-Content -LiteralPath $job.Metadata.ReceiptPath -Raw | ConvertFrom-Json
-            $receipt.schema | Should -Be 'codex-scientiae/inventory-receipt/0.1'
-            $receipt.article | Should -Be $job.Metadata.ArticleDirectory
-            $receipt.outDirectory | Should -Be $job.Metadata.JobDirectory
-            $receipt.engineRoot | Should -Be $fixture.EngineRoot
-            $receipt.sourceTree | Should -Be $job.Metadata.TreeDirectory
-            $receipt.entrypoint | Should -Be 'main.tex'
-            $receipt.treeSha256 | Should -Be $job.Metadata.TreeSha256
-            $receipt.entrypointExists | Should -BeTrue
-            $receipt.marker | Should -Be 'hop'
-            $receipt.temp | Should -Be $job.Metadata.TempRoot
-            $receipt.osTemp | Should -Be $job.Metadata.TempRoot
-            $receipt.jobId | Should -Be $job.Id
-            $receipt.location | Should -Be $fixture.EngineRoot
+            Test-Path -LiteralPath $job.Metadata.RunPath -PathType Leaf | Should -BeTrue
+            $receipt = Get-Content -LiteralPath $job.Metadata.RunPath -Raw | ConvertFrom-Json
+            $receipt.schema | Should -Be 'codex-scientiae/paper-run/1'
+            $receipt.payload.article | Should -Be $job.Metadata.ArticleDirectory
+            $receipt.payload.outDirectory | Should -Be $job.Metadata.JobDirectory
+            $receipt.payload.engineRoot | Should -Be $fixture.EngineRoot
+            $receipt.payload.sourceTree | Should -Be $job.Metadata.TreeDirectory
+            $receipt.payload.entrypoint | Should -Be 'main.tex'
+            $receipt.payload.treeSha256 | Should -Be $job.Metadata.TreeSha256
+            $receipt.payload.entrypointExists | Should -BeTrue
+            $receipt.payload.marker | Should -Be 'hop'
+            $receipt.payload.temp | Should -Be $job.Metadata.TempRoot
+            $receipt.payload.osTemp | Should -Be $job.Metadata.TempRoot
+            $receipt.payload.jobId | Should -Be $job.Id
+            $receipt.payload.location | Should -Be $fixture.EngineRoot
         }
         $landed = @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Directory | ForEach-Object Name | Sort-Object)
         $landed | Should -Be @('job-temp', 'jobs')
@@ -561,7 +573,7 @@ Describe 'batch-runner house caller' {
         }
     }
 
-    It 'mints artifacts/{engine}/{stamp} and folds receipts from CDXSCI_ROOT' {
+    It 'mints artifacts/{engine}/{stamp} and aggregates worker records from CDXSCI_ROOT' {
         $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'runner')
         $previous = [System.Environment]::GetEnvironmentVariable('CDXSCI_ROOT', 'Process')
         try {
@@ -579,14 +591,14 @@ Describe 'batch-runner house caller' {
         $run = $runs[0]
         $output | Should -Match 'Inventory batch: engine=stub; articles=2; ok=2'
         $output | Should -Match ([regex]::Escape($run))
-        Test-Path -LiteralPath (Join-Path $run 'run.json') -PathType Leaf | Should -BeTrue
-        Test-Path -LiteralPath (Join-Path $run 'inventory-summary.jsonl') -PathType Leaf | Should -BeTrue
-        $record = Get-Content -LiteralPath (Join-Path $run 'run.json') -Raw | ConvertFrom-Json
-        $record.schema | Should -Be 'codex-scientiae/inventory-run/0.1'
+        Test-Path -LiteralPath (Join-Path $run 'batch.json') -PathType Leaf | Should -BeTrue
+        Test-Path -LiteralPath (Join-Path $run 'experiment.json') -PathType Leaf | Should -BeTrue
+        $record = Get-Content -LiteralPath (Join-Path $run 'batch.json') -Raw | ConvertFrom-Json
+        $record.schema | Should -Be 'codex-scientiae/inventory-batch/1'
         $record.engine | Should -Be 'stub'
-        $record.jobs | Should -Be 2
-        $record.receipts.ok | Should -Be 2
-        $record.selectedPaths | Should -Be @($fixture.Alpha)
+        $record.coverage.expected | Should -Be 2
+        $record.coverage.complete | Should -Be 2
+        (Get-Content -LiteralPath $record.experiment.path -Raw | ConvertFrom-Json).selectedPaths | Should -Be @($fixture.Alpha)
         (Split-Path $run -Parent) | Should -Be (Join-Path $fixture.Root 'artifacts/stub')
         (Split-Path $run -Leaf) | Should -Match '^\d{8}_\d{6}(_\d{2})?$'
     }
@@ -598,8 +610,8 @@ Describe 'batch-runner house caller' {
         $runs = @(Get-ModuleRunDirs -Module 'stub' -RepositoryRoot $fixture.Root)
         $runs.Count | Should -Be 1
         $output | Should -Match 'articles=1; ok=1'
-        $record = Get-Content -LiteralPath (Join-Path $runs[0] 'run.json') -Raw | ConvertFrom-Json
-        $record.selectedPaths | Should -Be @($fixture.Gauntlet)
+        $record = Get-Content -LiteralPath (Join-Path $runs[0] 'batch.json') -Raw | ConvertFrom-Json
+        (Get-Content -LiteralPath $record.experiment.path -Raw | ConvertFrom-Json).selectedPaths | Should -Be @($fixture.Gauntlet)
         (Split-Path $runs[0] -Leaf) | Should -Match '^\d{8}_\d{6}(_\d{2})?$'
     }
 }

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [{"$ref":"#/$defs/experiment"},{"$ref":"#/$defs/paper"},{"$ref":"#/$defs/batch"}],
+  "$defs": {
+    "hash": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "text": {"type":"string","minLength":1},
+    "strings": {"type":"array","items":{"type":"string"}},
+    "numbers": {"type":"object","additionalProperties":{"type":"number"}},
+    "reference": {
+      "type":"object","additionalProperties":false,"required":["path","sha256"],
+      "properties":{"path":{"$ref":"#/$defs/text"},"sha256":{"$ref":"#/$defs/hash"}}
+    },
+    "artifact": {
+      "type":"object","additionalProperties":false,"required":["path","sha256","bytes"],
+      "properties":{"path":{"$ref":"#/$defs/text"},"sha256":{"$ref":"#/$defs/hash"},"bytes":{"type":"integer","minimum":0}}
+    },
+    "article": {
+      "type":"object","additionalProperties":false,
+      "required":["slug","directory","repositoryRelativePath","sourceTree","treeSha256","entrypoint"],
+      "properties":{
+        "slug":{"$ref":"#/$defs/text"},"directory":{"$ref":"#/$defs/text"},
+        "repositoryRelativePath":{"$ref":"#/$defs/text"},"sourceTree":{"$ref":"#/$defs/text"},
+        "treeSha256":{"$ref":"#/$defs/hash"},"entrypoint":{"$ref":"#/$defs/text"}
+      }
+    },
+    "assignment": {
+      "type":"object","additionalProperties":false,"required":["jobId","attemptId","article","record"],
+      "properties":{"jobId":{"$ref":"#/$defs/text"},"attemptId":{"$ref":"#/$defs/hash"},"article":{"$ref":"#/$defs/article"},"record":{"$ref":"#/$defs/text"}}
+    },
+    "qualification": {
+      "type":"object","additionalProperties":false,"required":["status","issues"],
+      "properties":{"status":{"enum":["pass","fail","incomplete","not-requested"]},"issues":{"$ref":"#/$defs/strings"}}
+    },
+    "experiment": {
+      "type":"object","additionalProperties":false,
+      "required":["schema","engine","createdUtc","worker","implementation","workerParameters","selectedPaths","policy","specification","assignments"],
+      "properties":{
+        "schema":{"const":"codex-scientiae/inventory-experiment/1"},"engine":{"$ref":"#/$defs/text"},"createdUtc":{"$ref":"#/$defs/text"},
+        "worker":{"$ref":"#/$defs/reference"},"implementation":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/reference"}},
+        "workerParameters":{"type":"object"},"selectedPaths":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/text"}},
+        "policy":{"type":"object","required":["requireQualification"],"properties":{"requireQualification":{"type":"boolean"}}},
+        "specification":{"type":"object","required":["schema"],"properties":{"schema":{"$ref":"#/$defs/text"}}},
+        "assignments":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/assignment"}}
+      }
+    },
+    "paper": {
+      "type":"object","additionalProperties":false,
+      "required":["schema","jobId","attemptId","experiment","article","producer","status","startedUtc","endedUtc","durationMs","summary","artifacts","qualification","payload"],
+      "properties":{
+        "schema":{"const":"codex-scientiae/paper-run/1"},"jobId":{"$ref":"#/$defs/text"},"attemptId":{"$ref":"#/$defs/hash"},
+        "experiment":{"$ref":"#/$defs/reference"},"article":{"$ref":"#/$defs/article"},
+        "producer":{"type":"object","additionalProperties":false,"required":["engine","version","commit","worker"],"properties":{
+          "engine":{"$ref":"#/$defs/text"},"version":{"type":"string"},"commit":{"type":"string"},"worker":{"$ref":"#/$defs/reference"}}},
+        "status":{"enum":["running","complete","failed"]},"startedUtc":{"$ref":"#/$defs/text"},"endedUtc":{"type":["string","null"]},
+        "durationMs":{"type":"number","minimum":0},"summary":{"$ref":"#/$defs/numbers"},
+        "artifacts":{"type":"array","items":{"$ref":"#/$defs/artifact"}},"qualification":{"$ref":"#/$defs/qualification"},
+        "payload":{"type":"object","required":["schema"],"properties":{"schema":{"$ref":"#/$defs/text"}}}
+      }
+    },
+    "row": {
+      "type":"object","additionalProperties":false,"required":["jobId","attemptId","path","sha256","state","executor","issues","summary"],
+      "properties":{
+        "jobId":{"$ref":"#/$defs/text"},"attemptId":{"$ref":"#/$defs/hash"},"path":{"$ref":"#/$defs/text"},
+        "sha256":{"anyOf":[{"$ref":"#/$defs/hash"},{"type":"null"}]},"state":{"enum":["complete","failed","nonterminal","missing","invalid"]},
+        "executor":{"type":["object","null"]},"issues":{"$ref":"#/$defs/strings"},"summary":{"$ref":"#/$defs/numbers"}
+      }
+    },
+    "batch": {
+      "type":"object","additionalProperties":false,
+      "required":["schema","engine","experiment","executor","startedUtc","endedUtc","durationMs","status","coverage","records","totals","issues","qualification"],
+      "properties":{
+        "schema":{"const":"codex-scientiae/inventory-batch/1"},"engine":{"$ref":"#/$defs/text"},
+        "experiment":{"$ref":"#/$defs/reference"},"executor":{"$ref":"#/$defs/reference"},
+        "startedUtc":{"$ref":"#/$defs/text"},"endedUtc":{"$ref":"#/$defs/text"},"durationMs":{"type":"number","minimum":0},
+        "status":{"enum":["complete","incomplete"]},
+        "coverage":{"type":"object","additionalProperties":false,"required":["expected","complete","failed","nonterminal","missing","invalid","unexpected"],"properties":{
+          "expected":{"type":"integer","minimum":1},"complete":{"type":"integer","minimum":0},"failed":{"type":"integer","minimum":0},
+          "nonterminal":{"type":"integer","minimum":0},"missing":{"type":"integer","minimum":0},"invalid":{"type":"integer","minimum":0},"unexpected":{"type":"integer","minimum":0}}},
+        "records":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/row"}},"totals":{"$ref":"#/$defs/numbers"},
+        "issues":{"$ref":"#/$defs/strings"},"qualification":{"$ref":"#/$defs/qualification"}
+      }
+    }
+  }
+}

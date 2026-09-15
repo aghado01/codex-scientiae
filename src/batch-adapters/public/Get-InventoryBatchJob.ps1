@@ -17,7 +17,8 @@ function Get-InventoryBatchJob {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $EngineRoot,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Worker,
         [string] $PowerShellPath,
-        [System.Collections.IDictionary] $WorkerParameter = @{}
+        [System.Collections.IDictionary] $WorkerParameter = @{},
+        [ValidatePattern('^$|^[0-9a-f]{64}$')] [string] $ExperimentSha256 = ''
     )
 
     $repository = Resolve-InventoryBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
@@ -46,6 +47,11 @@ function Get-InventoryBatchJob {
         $id = "inventory:${Engine}:$relativePath#$digest"
         $addressLeaf = ConvertTo-InventoryBatchAddressLeaf -Slug $manifest.Slug -Digest $digest
         $address = Resolve-InventoryBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
+        $attemptId = Get-InventoryBatchStableHash -Value "$run`n$id" -Length 64
+        $articleIdentity = [ordered]@{
+            slug=$manifest.Slug; directory=$articleDirectory; repositoryRelativePath=$relativePath
+            sourceTree=$manifest.TreeDirectory; treeSha256=$manifest.TreeSha256; entrypoint=$manifest.Entrypoint
+        }
 
         # The worker is handed everything the row already resolved; it never
         # has to open article.json or the inventory itself.
@@ -57,14 +63,21 @@ function Get-InventoryBatchJob {
         $parameters['SourceTree'] = $manifest.TreeDirectory
         $parameters['Entrypoint'] = $manifest.Entrypoint
         $parameters['TreeSha256'] = $manifest.TreeSha256
+        $parameters['RunContext'] = @{
+            jobId=$id; attemptId=$attemptId
+            experiment=@{path=[IO.Path]::Combine($run, 'experiment.json');sha256=$ExperimentSha256}
+            recordsModule=[IO.Path]::Combine($script:AdaptersDefaultRepositoryRoot, 'src/inventory-records/inventory-records.psm1')
+        }
 
         $metadata = @{
             Domain = 'inventory'
             Adapter = 'inventory-batch'
             AddressingContract = 'RunDirectory/jobs'
             ContainerContract = 'JobContainerIsDocumentContainer'
-            ReceiptContract = 'codex-scientiae/inventory-receipt/0.1'
-            ReceiptPath = [System.IO.Path]::Combine($address.JobDirectory, 'receipt.json')
+            RunContract = 'codex-scientiae/paper-run/1'
+            RunPath = [System.IO.Path]::Combine($address.JobDirectory, 'run.json')
+            AttemptId = $attemptId
+            ArticleIdentity = $articleIdentity
             TempEnvironment = 'CDXSCI_TEMP'
             ScratchEnvironment = 'CDXSCI_JSON_SCRATCH_ROOT'
             ManifestSource = $selection.Source

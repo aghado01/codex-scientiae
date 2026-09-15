@@ -74,7 +74,7 @@ function Resolve-InventoryBatchPowerShellPath {
 function Resolve-InventoryBatchWorkerParameter {
     <# Extra parameters the caller wants frozen into every child invocation.
        The adapter owns Article, OutDirectory, EngineRoot, SourceTree,
-       Entrypoint, and TreeSha256; a caller may not shadow them. Keys must be
+       Entrypoint, TreeSha256, and RunContext; a caller may not shadow them. Keys must be
        plain PowerShell parameter names. #>
     [CmdletBinding()]
     param(
@@ -88,7 +88,7 @@ function Resolve-InventoryBatchWorkerParameter {
         if ($name -notmatch '^[A-Za-z_][A-Za-z0-9_]*$') {
             throw "inventory-batch WorkerParameter key is not a parameter name: '$name'"
         }
-        if ($name -in @('Article', 'OutDirectory', 'EngineRoot', 'SourceTree', 'Entrypoint', 'TreeSha256')) {
+        if ($name -in @('Article', 'OutDirectory', 'EngineRoot', 'SourceTree', 'Entrypoint', 'TreeSha256', 'RunContext')) {
             throw "inventory-batch WorkerParameter may not shadow the adapter-owned parameter '$name'"
         }
         $frozen[$name] = $WorkerParameter[$key]

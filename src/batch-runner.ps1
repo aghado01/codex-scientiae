@@ -23,6 +23,8 @@ param(
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $EngineRoot,
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Worker,
     [System.Collections.IDictionary] $WorkerParameter = @{},
+    [System.Collections.IDictionary] $ExperimentSpecification = @{schema='codex-scientiae/acquisition/1'},
+    [switch] $RequireQualification,
     [string] $RunDirectory = '',
     [string] $PowerShellPath = '',
     [nullable[int]] $MaxWorkers = $null,
@@ -69,6 +71,7 @@ foreach ($required in @($containment, $executorManifest, $adapterManifest)) {
 . $containment
 Import-Module $executorManifest -Force
 Import-Module $adapterManifest -Force
+Import-Module (Join-Path $PSScriptRoot 'inventory-records/inventory-records.psm1') -Force
 
 [string[]] $selectedPaths = @(
     if ($null -ne $Path -and @($Path).Count -gt 0) { $Path }
@@ -100,6 +103,14 @@ if (-not [string]::IsNullOrWhiteSpace($PowerShellPath)) { $plan.PowerShellPath =
 
 $jobs = @(Get-InventoryBatchJob @plan)
 if ($jobs.Count -eq 0) { throw 'The inventory adapter produced no jobs' }
+$experiment = Write-InventoryExperiment -RunDirectory $RunDirectory -Jobs $jobs `
+    -WorkerParameters $WorkerParameter -Specification $ExperimentSpecification -SelectedPaths $selectedPaths `
+    -Policy @{
+        requireQualification=[bool]$RequireQualification; maxWorkers=$MaxWorkers; reservedCores=$ReservedCores
+        processTimeoutSeconds=$ProcessTimeoutSeconds; executionTimeoutSeconds=$ExecutionTimeoutSeconds
+        waitTimeoutSeconds=$WaitTimeoutSeconds; cleanupTimeoutSeconds=$CleanupTimeoutSeconds
+    }
+$jobs = @(Get-InventoryBatchJob @plan -ExperimentSha256 $experiment.sha256)
 $compiled = New-BatchPlan -Job $jobs -BasePath $EngineRoot
 if ($compiled.Errors.Count -gt 0 -or $null -eq $compiled.Plan) {
     throw "Inventory batch plan is invalid: $(@($compiled.Errors) -join '; ')"
@@ -143,89 +154,16 @@ $executorEvidence = [ordered]@{
     (($executorEvidence | ConvertTo-Json -Depth 8) + "`n"),
     $utf8)
 
-$rows = [System.Collections.Generic.List[object]]::new()
-$totals = [ordered]@{}
-$receiptOk = 0
-$receiptFailed = 0
-$receiptMissing = 0
-for ($index = 0; $index -lt $jobs.Count; $index++) {
-    $job = $jobs[$index]
-    $result = $execution.Results[$index]
-    $receipt = $null
-    if (Test-Path -LiteralPath $job.Metadata.ReceiptPath -PathType Leaf) {
-        try {
-            $receipt = Get-Content -LiteralPath $job.Metadata.ReceiptPath -Raw | ConvertFrom-Json
-        }
-        catch {
-            $result.Errors += "could not read receipt: $($_.Exception.Message)"
-        }
-    }
-    $receiptStatus = if ($null -eq $receipt) { 'missing' } else { [string]$receipt.status }
-    if ($receiptStatus -eq 'ok') { $receiptOk++ }
-    elseif ($receiptStatus -eq 'failed') { $receiptFailed++ }
-    else { $receiptMissing++ }
-    $counts = if ($null -ne $receipt -and $receipt.PSObject.Properties['counts']) {
-        $receipt.counts
-    }
-    else { [pscustomobject]@{} }
-    foreach ($property in $counts.PSObject.Properties) {
-        if ($property.Value -isnot [ValueType]) { continue }
-        if (-not $totals.Contains($property.Name)) { $totals[$property.Name] = 0L }
-        $totals[$property.Name] = [long]$totals[$property.Name] + [long]$property.Value
-    }
-    $rows.Add([pscustomobject][ordered]@{
-            schema = 'codex-scientiae/inventory-summary/0.1'
-            id = $job.Id
-            engine = $Engine
-            article = [ordered]@{
-                slug = $job.Metadata.Slug
-                repositoryRelativePath = $job.Metadata.RepositoryRelativePath
-                treeSha256 = $job.Metadata.TreeSha256
-            }
-            executorState = $result.State
-            executorExitCode = $result.ExitCode
-            status = $receiptStatus
-            counts = $counts
-            errors = @($result.Errors)
-            warnings = @($result.Warnings)
-        })
-}
-
-$summaryPath = Join-Path $RunDirectory 'inventory-summary.jsonl'
-$summaryLines = @($rows | ForEach-Object { $_ | ConvertTo-Json -Depth 12 -Compress })
-[System.IO.File]::WriteAllText($summaryPath, (($summaryLines -join "`n") + "`n"), $utf8)
-$endedUtc = [datetime]::UtcNow
-$runRecord = [ordered]@{
-    schema = 'codex-scientiae/inventory-run/0.1'
-    engine = $Engine
-    startedUtc = $startedUtc.ToString('o')
-    endedUtc = $endedUtc.ToString('o')
-    durationMs = [math]::Round(($endedUtc - $startedUtc).TotalMilliseconds, 2)
-    runDirectory = $RunDirectory
-    selectedPaths = @($selectedPaths)
-    jobs = $jobs.Count
-    receipts = [ordered]@{ ok = $receiptOk; failed = $receiptFailed; missing = $receiptMissing }
-    executor = [ordered]@{
-        summary = $execution.Summary
-        errors = @($execution.Errors)
-        warnings = @($execution.Warnings)
-    }
-    totals = $totals
-}
-[System.IO.File]::WriteAllText(
-    (Join-Path $RunDirectory 'run.json'),
-    (($runRecord | ConvertTo-Json -Depth 16) + "`n"),
-    $utf8)
-
-if (@($execution.Errors).Count -gt 0 -or
-        ($null -ne $execution.Cleanup -and $execution.Cleanup.State -ne 'Confirmed')) {
-    $cleanupReason = if ($null -ne $execution.Cleanup -and $execution.Cleanup.Reason) {
-        [string]$execution.Cleanup.Reason
-    }
-    else { '' }
-    throw "Inventory batch executor reported infrastructure errors: $(@($execution.Errors) -join '; '); cleanup=$($execution.Cleanup.State) $cleanupReason"
-}
+$aggregate = Write-InventoryBatch -RunDirectory $RunDirectory -Execution $execution -StartedUtc $startedUtc
+$record = $aggregate.Record
 Write-Output (
-    "Inventory batch: engine={0}; articles={1}; ok={2}; failed={3}; missing={4}; run={5}" -f
-    $Engine, $jobs.Count, $receiptOk, $receiptFailed, $receiptMissing, $RunDirectory)
-if ($FailOnArticleFailure -and ($receiptFailed + $receiptMissing -gt 0)) { exit 1 }
+    'Inventory batch: engine={0}; articles={1}; ok={2}; failed={3}; missing={4}; invalid={5}; batch={6}' -f
+    $Engine, $record.coverage.expected, $record.coverage.complete, $record.coverage.failed,
+    $record.coverage.missing, $record.coverage.invalid, $RunDirectory)
+if (@($execution.Errors).Count -gt 0 -or
+        $null -eq $execution.Cleanup -or $execution.Cleanup.State -ne 'Confirmed') {
+    throw "Inventory batch executor reported infrastructure errors; see '$RunDirectory/batch.json'"
+}
+if ($FailOnArticleFailure -and $record.status -ne 'complete') {
+    throw "Inventory batch contains failed or incomplete paper attempts; see '$RunDirectory/batch.json'"
+}

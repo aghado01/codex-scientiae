@@ -1,0 +1,40 @@
+{
+  "schema": "codex-scientiae/inventory-experiment/1",
+  "engine": "example",
+  "createdUtc": "2026-09-15T00:00:00Z",
+  "worker": {
+    "path": "D:/example/engine/worker.ps1",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "implementation": [
+    {
+      "path": "D:/example/inventory-records.psm1",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "workerParameters": {},
+  "selectedPaths": [
+    "D:/example/corpus"
+  ],
+  "policy": {
+    "requireQualification": false
+  },
+  "specification": {
+    "schema": "codex-scientiae/acquisition/1"
+  },
+  "assignments": [
+    {
+      "jobId": "inventory:example:paper",
+      "attemptId": "0000000000000000000000000000000000000000000000000000000000000000",
+      "article": {
+        "slug": "paper",
+        "directory": "D:/example/corpus/paper",
+        "repositoryRelativePath": "corpus/paper",
+        "sourceTree": "D:/example/corpus/paper/tex",
+        "treeSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "entrypoint": "main.tex"
+      },
+      "record": "jobs/paper/run.json"
+    }
+  ]
+}

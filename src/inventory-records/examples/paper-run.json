@@ -1,0 +1,41 @@
+{
+  "schema": "codex-scientiae/paper-run/1",
+  "jobId": "inventory:example:paper",
+  "attemptId": "0000000000000000000000000000000000000000000000000000000000000000",
+  "experiment": {
+    "path": "D:/example/batch/experiment.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "article": {
+    "slug": "paper",
+    "directory": "D:/example/corpus/paper",
+    "repositoryRelativePath": "corpus/paper",
+    "sourceTree": "D:/example/corpus/paper/tex",
+    "treeSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "entrypoint": "main.tex"
+  },
+  "producer": {
+    "engine": "example",
+    "version": "1",
+    "commit": "example",
+    "worker": {
+      "path": "D:/example/engine/worker.ps1",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "status": "complete",
+  "startedUtc": "2026-09-15T00:00:00Z",
+  "endedUtc": "2026-09-15T00:00:01Z",
+  "durationMs": 1000,
+  "summary": {
+    "items": 1
+  },
+  "artifacts": [],
+  "qualification": {
+    "status": "not-requested",
+    "issues": []
+  },
+  "payload": {
+    "schema": "example/acquisition/1"
+  }
+}

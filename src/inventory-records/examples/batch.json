@@ -1,0 +1,51 @@
+{
+  "schema": "codex-scientiae/inventory-batch/1",
+  "engine": "example",
+  "experiment": {
+    "path": "D:/example/batch/experiment.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "executor": {
+    "path": "D:/example/batch/executor-execution.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "startedUtc": "2026-09-15T00:00:00Z",
+  "endedUtc": "2026-09-15T00:00:01Z",
+  "durationMs": 1000,
+  "status": "complete",
+  "coverage": {
+    "expected": 1,
+    "complete": 1,
+    "failed": 0,
+    "nonterminal": 0,
+    "missing": 0,
+    "invalid": 0,
+    "unexpected": 0
+  },
+  "records": [
+    {
+      "jobId": "inventory:example:paper",
+      "attemptId": "0000000000000000000000000000000000000000000000000000000000000000",
+      "path": "jobs/paper/run.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "state": "complete",
+      "executor": {
+        "state": "Succeeded",
+        "exitCode": 0,
+        "errors": []
+      },
+      "issues": [],
+      "summary": {
+        "items": 1
+      }
+    }
+  ],
+  "totals": {
+    "items": 1
+  },
+  "issues": [],
+  "qualification": {
+    "status": "not-requested",
+    "issues": []
+  }
+}

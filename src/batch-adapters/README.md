@@ -108,15 +108,15 @@ under `RunDirectory/job-temp/<slug>-<digest>/`.
 
 | Owner | Owns |
 | --- | --- |
-| codex-scientiae | deposited articles and their `inventory.jsonl` views, this planner, the batch executor, `src/batch-runner.ps1`, `CDXSCI_TEMP`, and the receipt contract |
+| codex-scientiae | deposited articles and their `inventory.jsonl` views, this planner, the batch executor, `src/batch-runner.ps1`, `CDXSCI_TEMP`, and the paper/batch record contract |
 | the engine repository | `EngineRoot`, the `Worker` (a `.ps1` below `EngineRoot`, conventionally in a gitignored `private/` tree), its runtime preflight, and every file it writes inside the job container |
 
 `src/batch-runner.ps1` is the house caller. It loads containment, adapters, and the executor from
 its own `src/` directory. It resolves the inventory and artifacts tree from `-RepositoryRoot` or
 process-scope `CDXSCI_ROOT` (no hardcoded path), defaults `-Path` to `{root}/supellex/gauntlet`,
 mints `artifacts/{engine}/{stamp}/` through `New-ModuleRunDir` (no `-Slug`: that parameter is an
-article identity, and a batch is not one article), plans, invokes, and folds receipts. `{engine}`
-is the process that produced the output. The selected inventory is in `run.json`. Engine launchers
+article identity, and a batch is not one article), plans, invokes, and aggregates worker records. `{engine}`
+is the process that produced the output. The selected inventory is frozen in `experiment.json`. Engine launchers
 preflight their runtime, then call the runner with `-Engine`, `-EngineRoot`, `-Worker`, and
 `-WorkerParameter`.
 
@@ -129,7 +129,7 @@ Planning resolves and freezes:
   `Worker` (absolute, existing `.ps1` below `EngineRoot`) as the child entrypoint;
 - the frozen named parameters `Article`, `OutDirectory`, `EngineRoot`, `SourceTree` (the deposit's
   `{slug}-tex` directory), `Entrypoint` (the tree-relative main file from the row), and `TreeSha256`,
-  plus any caller-supplied `WorkerParameter` entries that do not shadow those six;
+  `RunContext` (plan hash and assignment), plus caller-supplied `WorkerParameter` entries that do not shadow the owned inputs;
 - a cost hint from the row's `latex-source-archive` byte count (falling back to the tree's file count),
   with no directory walk; and
 - the job container and temp addresses, declared in `Writes`.
@@ -144,7 +144,7 @@ dependency root. `ProcessSpec.Environment` transports `CDXSCI_TEMP`, a job-local
 
 The worker is a PowerShell 7 script taking `-Article` (deposit directory), `-OutDirectory` (the job
 container, not yet created), `-EngineRoot`, `-SourceTree` (the tex tree to process), `-Entrypoint` (the
-main file inside it), and `-TreeSha256` (to echo in the receipt), plus whatever `WorkerParameter` names the
+main file inside it), `-TreeSha256`, and `-RunContext` (the pinned experiment and assignment), plus whatever `WorkerParameter` names the
 caller froze. The row has already resolved everything the worker needs; it opens neither `article.json` nor
 the inventory. It creates `OutDirectory` itself, writes only below `OutDirectory` and `CDXSCI_TEMP`, and
 fails by **throwing** (any error record). The entrypoint is invoked with `&` inside the child bootstrap's
@@ -154,12 +154,19 @@ stream as failure, so a worker that spawns a native process must route that proc
 inside the job container rather than letting it flow into the PowerShell error stream (a child's own
 stderr lines surface as result warnings, not errors).
 
-On success the worker leaves `receipt.json` at the top of `OutDirectory` with schema
-`codex-scientiae/inventory-receipt/0.1`: `engine`, `engineVersion`, `engineCommit`, `article` (`slug`,
-`treeSha256`, `directory`), `status` (`ok` or `failed`), `startedUtc`, `endedUtc`, `durationMs`, `stores`
-(file names it emitted), and `counts` (a flat map of numeric measurements). The receipt is the only thing
-codex-scientiae reads back; the run caller folds receipts into `inventory-summary.jsonl` and `run.json`
-and never opens the engine's own stores. `Metadata.ReceiptPath` names the expected location.
+The worker publishes `run.json` at `Metadata.RunPath` with schema
+`codex-scientiae/paper-run/1`. Its engine-owned payload records conditions and
+observations; the generic envelope supplies source/attempt identity, status,
+measurements, artifact hashes and qualification. The caller writes `batch.json`
+with schema `codex-scientiae/inventory-batch/1`, accounting for every assignment.
+It does not parse engine outputs or fill in worker records. Publication, schemas,
+examples and failure behavior are defined in [inventory-records](../inventory-records/README.md).
+
+The caller first plans addresses, freezes `experiment.json`, and then binds its
+hash through `-ExperimentSha256` before execution. Preview jobs with no hash cannot
+publish records. The worker verifies the plan and its assignment before executing.
+New runs do not emit the old receipt or root-run convention; historical inputs
+remain immutable and need explicit readers.
 
 ## Ownership boundary
 
