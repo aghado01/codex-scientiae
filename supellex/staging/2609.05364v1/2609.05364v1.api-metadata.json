@@ -1,0 +1,113 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2609.05364v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2609.05364v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool",
+      "authors": [
+        "Samuel Kushnir",
+        "Kimia Noorbakhsh",
+        "Kavya Sreedhar",
+        "Liqun Cheng",
+        "Ming Liu",
+        "Parthasarathy Ranganathan",
+        "Mohammad Alizadeh",
+        "Fred Kjolstad",
+        "Suvinay Subramanian"
+      ],
+      "abstract": "Machine-learning performance modeling is a uniquely hostile terrain for long-lived software: the assumptions baked into today's abstractions are invalidated by tomorrow's models and systems, forcing perpetual refactoring of performance-modeling frameworks. Meanwhile, AI coding agents have become fast and capable enough that regenerating an entire library is cheaper than paying down the tech debt of incrementally patching it. We describe SMART, a rigorous symbolic performance-modeling library for ML systems whose main branch contains almost no code: the repository is a DAG of self-contained natural-language design docs, coding sub-agents regenerate the implementation from only the docs on new version updates, and every human change is a natural-language edit to a doc--self-documenting by construction. Two ingredients make regeneration reliable: (i) a design-doc style built around step-by-step worked examples that act as in-context demonstrations for the generating agents, and (ii) a minimal, recursively defined operator IR with symbolic (SymPy) cost expressions, a fast analytical roll-up mode for large sweeps, and a slow modulo-scheduling mode for fine-grained schedule studies. Regenerated implementations reproduce hand-audited reference models--including DeepSeek-V3 serving on a TPU pod slice--to round-off precision, suggesting that design docs--not code--can be the durable artifact for ML-systems co-design tools.",
+      "doi": null,
+      "arxiv_id": "2609.05364v1",
+      "published": "2026-09-04T17:08:51Z",
+      "updated": "2026-09-04T17:08:51Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2609.05364v1",
+      "pdf_url": "https://arxiv.org/pdf/2609.05364v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.PL",
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2609.05364v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2609.05364v1",
+          "url": "https://arxiv.org/abs/2609.05364v1",
+          "doi": null,
+          "arxiv_id": "2609.05364v1",
+          "published": "2026-09-04T17:08:51Z",
+          "updated": "2026-09-04T17:08:51Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2609.05364v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-26T13:59:45.935380Z",
+      "sha256": "b65ff2cd655756b386cf369d747bc371a8c76ee07dc8f1a558d7bc87a2526813",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvMnZkR21iVnMrVy9oM0lmcC9lbzdnMWxUZG5JPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOS4wNTM2NHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTI2VDEzOjU5OjQ1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA5LjA1MzY0djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOS4wNTM2NHYxPC9pZD4KICAgIDx0aXRsZT5EZXNpZ24gRG9jcyBBcmUgQWxsIFlvdSBOZWVkOiBBbiBBSS1uYXRpdmUgTWFjaGluZS1MZWFybmluZyBQZXJmb3JtYW5jZSBUb29sPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDktMDRUMTc6MDg6NTFaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDkuMDUzNjR2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDkuMDUzNjR2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5Pk1hY2hpbmUtbGVhcm5pbmcgcGVyZm9ybWFuY2UgbW9kZWxpbmcgaXMgYSB1bmlxdWVseSBob3N0aWxlIHRlcnJhaW4gZm9yIGxvbmctbGl2ZWQgc29mdHdhcmU6IHRoZSBhc3N1bXB0aW9ucyBiYWtlZCBpbnRvIHRvZGF5J3MgYWJzdHJhY3Rpb25zIGFyZSBpbnZhbGlkYXRlZCBieSB0b21vcnJvdydzIG1vZGVscyBhbmQgc3lzdGVtcywgZm9yY2luZyBwZXJwZXR1YWwgcmVmYWN0b3Jpbmcgb2YgcGVyZm9ybWFuY2UtbW9kZWxpbmcgZnJhbWV3b3Jrcy4gTWVhbndoaWxlLCBBSSBjb2RpbmcgYWdlbnRzIGhhdmUgYmVjb21lIGZhc3QgYW5kIGNhcGFibGUgZW5vdWdoIHRoYXQgcmVnZW5lcmF0aW5nIGFuIGVudGlyZSBsaWJyYXJ5IGlzIGNoZWFwZXIgdGhhbiBwYXlpbmcgZG93biB0aGUgdGVjaCBkZWJ0IG9mIGluY3JlbWVudGFsbHkgcGF0Y2hpbmcgaXQuIFdlIGRlc2NyaWJlIFNNQVJULCBhIHJpZ29yb3VzIHN5bWJvbGljIHBlcmZvcm1hbmNlLW1vZGVsaW5nIGxpYnJhcnkgZm9yIE1MIHN5c3RlbXMgd2hvc2UgbWFpbiBicmFuY2ggY29udGFpbnMgYWxtb3N0IG5vIGNvZGU6IHRoZSByZXBvc2l0b3J5IGlzIGEgREFHIG9mIHNlbGYtY29udGFpbmVkIG5hdHVyYWwtbGFuZ3VhZ2UgZGVzaWduIGRvY3MsIGNvZGluZyBzdWItYWdlbnRzIHJlZ2VuZXJhdGUgdGhlIGltcGxlbWVudGF0aW9uIGZyb20gb25seSB0aGUgZG9jcyBvbiBuZXcgdmVyc2lvbiB1cGRhdGVzLCBhbmQgZXZlcnkgaHVtYW4gY2hhbmdlIGlzIGEgbmF0dXJhbC1sYW5ndWFnZSBlZGl0IHRvIGEgZG9jLS1zZWxmLWRvY3VtZW50aW5nIGJ5IGNvbnN0cnVjdGlvbi4gVHdvIGluZ3JlZGllbnRzIG1ha2UgcmVnZW5lcmF0aW9uIHJlbGlhYmxlOiAoaSkgYSBkZXNpZ24tZG9jIHN0eWxlIGJ1aWx0IGFyb3VuZCBzdGVwLWJ5LXN0ZXAgd29ya2VkIGV4YW1wbGVzIHRoYXQgYWN0IGFzIGluLWNvbnRleHQgZGVtb25zdHJhdGlvbnMgZm9yIHRoZSBnZW5lcmF0aW5nIGFnZW50cywgYW5kIChpaSkgYSBtaW5pbWFsLCByZWN1cnNpdmVseSBkZWZpbmVkIG9wZXJhdG9yIElSIHdpdGggc3ltYm9saWMgKFN5bVB5KSBjb3N0IGV4cHJlc3Npb25zLCBhIGZhc3QgYW5hbHl0aWNhbCByb2xsLXVwIG1vZGUgZm9yIGxhcmdlIHN3ZWVwcywgYW5kIGEgc2xvdyBtb2R1bG8tc2NoZWR1bGluZyBtb2RlIGZvciBmaW5lLWdyYWluZWQgc2NoZWR1bGUgc3R1ZGllcy4gUmVnZW5lcmF0ZWQgaW1wbGVtZW50YXRpb25zIHJlcHJvZHVjZSBoYW5kLWF1ZGl0ZWQgcmVmZXJlbmNlIG1vZGVscy0taW5jbHVkaW5nIERlZXBTZWVrLVYzIHNlcnZpbmcgb24gYSBUUFUgcG9kIHNsaWNlLS10byByb3VuZC1vZmYgcHJlY2lzaW9uLCBzdWdnZXN0aW5nIHRoYXQgZGVzaWduIGRvY3MtLW5vdCBjb2RlLS1jYW4gYmUgdGhlIGR1cmFibGUgYXJ0aWZhY3QgZm9yIE1MLXN5c3RlbXMgY28tZGVzaWduIHRvb2xzLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5QTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDktMDRUMTc6MDg6NTFaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5QTCIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+U2FtdWVsIEt1c2huaXI8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPktpbWlhIE5vb3JiYWtoc2g8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkthdnlhIFNyZWVkaGFyPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5MaXF1biBDaGVuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TWluZyBMaXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlBhcnRoYXNhcmF0aHkgUmFuZ2FuYXRoYW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPk1vaGFtbWFkIEFsaXphZGVoPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5GcmVkIEtqb2xzdGFkPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5TdXZpbmF5IFN1YnJhbWFuaWFuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool",
+    "authors": [
+      "Samuel Kushnir",
+      "Kimia Noorbakhsh",
+      "Kavya Sreedhar",
+      "Liqun Cheng",
+      "Ming Liu",
+      "Parthasarathy Ranganathan",
+      "Mohammad Alizadeh",
+      "Fred Kjolstad",
+      "Suvinay Subramanian"
+    ],
+    "abstract": "Machine-learning performance modeling is a uniquely hostile terrain for long-lived software: the assumptions baked into today's abstractions are invalidated by tomorrow's models and systems, forcing perpetual refactoring of performance-modeling frameworks. Meanwhile, AI coding agents have become fast and capable enough that regenerating an entire library is cheaper than paying down the tech debt of incrementally patching it. We describe SMART, a rigorous symbolic performance-modeling library for ML systems whose main branch contains almost no code: the repository is a DAG of self-contained natural-language design docs, coding sub-agents regenerate the implementation from only the docs on new version updates, and every human change is a natural-language edit to a doc--self-documenting by construction. Two ingredients make regeneration reliable: (i) a design-doc style built around step-by-step worked examples that act as in-context demonstrations for the generating agents, and (ii) a minimal, recursively defined operator IR with symbolic (SymPy) cost expressions, a fast analytical roll-up mode for large sweeps, and a slow modulo-scheduling mode for fine-grained schedule studies. Regenerated implementations reproduce hand-audited reference models--including DeepSeek-V3 serving on a TPU pod slice--to round-off precision, suggesting that design docs--not code--can be the durable artifact for ML-systems co-design tools.",
+    "identifiers": {
+      "arxiv": "2609.05364",
+      "arxiv_versioned": "2609.05364v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2609.05364v1"
+      }
+    },
+    "categories": [
+      "cs.PL",
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.PL",
+    "published": "2026-09-04T17:08:51Z",
+    "updated": "2026-09-04T17:08:51Z"
+  }
+}

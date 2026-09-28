@@ -1,0 +1,173 @@
+\documentclass[11pt, a4paper, singlecolumn, copyright, goog]{google}
+
+\usepackage[authoryear, sort&compress, round]{natbib}
+\newcounter{noteZZctr} \setcounter{noteZZctr}{1}
+\newcommand{\ZZ}[1]{\textit{\textcolor{orange}{{{ZZ: \#\arabic{noteZZctr}: }}#1}} \addtocounter{noteZZctr}{1}}
+\newcounter{noteWuctr} \setcounter{noteWuctr}{1}
+\newcommand{\Wu}[1]{\textit{\textcolor{red}{{{Wu: \#\arabic{noteWuctr}: }}#1}} \addtocounter{noteWuctr}{1}}
+\bibliographystyle{abbrvnat}
+\usepackage[most]{tcolorbox}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{fontawesome5}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {—}{{---}}1
+    {–}{{--}}1
+    {×}{{$\times$}}1
+    {→}{{$\rightarrow$}}2
+    {“}{{``}}1
+    {”}{{''}}1
+    {‘}{{`}}1
+    {’}{{'}}1
+}
+
+\definecolor{promptbg}{gray}{0.97}
+\definecolor{promptgray}{gray}{0.45}
+
+\lstdefinestyle{promptstyle}{
+    basicstyle=\ttfamily\scriptsize,
+    backgroundcolor=\color{promptbg},
+    commentstyle=\color{promptgray},
+    numbers=left,
+    numberstyle=\tiny\color{promptgray},
+    numbersep=6pt,
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    keepspaces=true,
+    columns=fullflexible,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{black!20},
+    xleftmargin=1.5em,
+    framexleftmargin=1.2em
+}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+
+\definecolor{codegray}{gray}{0.45}
+\definecolor{codebg}{gray}{0.97}
+
+\lstdefinestyle{appendixcode}{
+    basicstyle=\ttfamily\scriptsize,
+    backgroundcolor=\color{codebg},
+    commentstyle=\color{codegray},
+    numbers=left,
+    numberstyle=\tiny\color{codegray},
+    numbersep=6pt,
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    keepspaces=true,
+    columns=fullflexible,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{black!20},
+    xleftmargin=1.5em,
+    framexleftmargin=1.2em
+}
+
+\newtcolorbox{taskbox}[1]{
+  enhanced,
+  colback=black!2,
+  colframe=black!25,
+  boxrule=0.6pt,
+  arc=1.5mm,
+  left=2.2mm,
+  right=2.2mm,
+  top=1.8mm,
+  bottom=1.8mm,
+  title={\textbf{#1}},
+  coltitle=black,
+  colbacktitle=black!5,
+  fonttitle=\small
+}
+
+% Remove these if they are not needed
+% \paperurl{https://arxiv.org/abs/123}
+
+% comment out if logo should not be used
+\uselogo{} 
+
+\title{Dream-RSI: Recursive Self-Improvement through Evolving Worlds}
+
+
+% Can leave this option out if you do not wish to add a corresponding author.
+\correspondingauthor{xidongwu@google.com, zzhangx@google.com}
+
+% Use the internally issued paper ID, if available
+% \reportnumber{0001} % Leave blank if n/a
+
+% Assign your own date to the report.
+% Can comment out if not needed or leave blank if n/a.
+\renewcommand{\today}
+
+% Can have as many authors and as many affiliations as needed. Best to indicate joint
+% first-authorship as shown below.
+\author[1,2]{Tong Zheng}
+\author[1]{Xidong Wu}
+\author[1]{Zheng Zhang}
+\author[3]{Zhankui He}
+\author[1]{Chaoyi Zhang}
+\author[3]{Benjamin Coleman}
+\author[1]{Ruoqiao Wei}
+\author[3]{Di Bai}
+\author[4]{Haolin Liu}
+\author[2]{Rui Liu}
+\author[1]{Xue Wang}
+\author[1]{Yue Zhuan}
+\author[3]{Wang-Cheng Kang}
+\author[1]{Renkai Xiang}
+\author[2]{Heng Huang}
+\author[1]{Xinwu Cheng}
+\author[1]{Yunsong Guo}
+
+
+% Affiliations *must* come after the declaration of \author[]
+% \affil[*]{Equal contributions}
+\affil[1]{\thepa{}{}}
+\affil[2]{University of Maryland, College Park}
+\affil[3]{Google Deepmind}
+\affil[4]{University of Virginia}
+\input{Main_Text/abstract}
+
+\begin{document}
+
+\maketitle
+
+\input{Main_Text/intro_RSI}
+\input{Main_Text/intuiton}
+\input{Main_Text/problem_formulation}
+% \input{Main_Text/A more math-formal formulation}
+% \input{Main_Text/method}
+\input{Main_Text/experiments}
+\input{Main_Text/further_analysis}
+\input{Main_Text/related_work}
+\input{Main_Text/conclusion}
+
+
+\newpage
+\bibliography{main}
+
+\appendix
+\newpage
+\input{Main_Text/appendix}
+
+\end{document}

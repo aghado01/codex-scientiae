@@ -1,0 +1,105 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2609.03874v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2609.03874v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "STAIR (STructure Aware Information Retriever): A novel dataset and LLM based retriever for document structure augmentation",
+      "authors": [
+        "Vineet Kumar",
+        "Meghanadh Pulivarthi",
+        "vishwajeet kumar",
+        "Jaydeep Sen",
+        "Riyaz Ahmad Bhat",
+        "Sachindra Joshi"
+      ],
+      "abstract": "Retrieval Augmented Generation (RAG) is a key component for generating accurate and hallucination free answers using Large Language Models (LLMs). LLMs are improving at handling long context, but still suffer from \"lost in the middle\" problem. Thus, precise and accurate retrieval is important. Current retrievers chunk long context into length-based manageable chunks - in the process throwing away rich and informative semantic global structure in the corpus. We introduce a novel retrieval system STAIR that empowers an LLM to exploit global structure in a corpus such as a Table of Contents (ToC) to efficiently store and retrieve information from its model parameters. Our thorough and careful ablation studies with a finetuned Differentiable Search Index (DSI) system show that ToC helps build a low hallucination (less than 0.05%) generative Information Retrieval (IR) system and can generalize to examples where very few training samples are available. To further research in this novel direction of ToC based retrieval we release SearchTome - a diverse benchmark created from 18 books across 6 diverse domains to further research in this novel direction. STAIR achieves a high Recall@1 score of 82.6% on SearchTome as compared to DSI (76.9%), where the difference is found to be statistically significant. STAIR easily beats other strong baselines such as BM25 (59.5%), DPR (68.7%) and out-of-the-box Mistral (13.8%).",
+      "doi": null,
+      "arxiv_id": "2609.03874v1",
+      "published": "2026-09-03T14:02:53Z",
+      "updated": "2026-09-03T14:02:53Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2609.03874v1",
+      "pdf_url": "https://arxiv.org/pdf/2609.03874v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI"
+      ],
+      "external_ids": {
+        "arxiv": "2609.03874v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2609.03874v1",
+          "url": "https://arxiv.org/abs/2609.03874v1",
+          "doi": null,
+          "arxiv_id": "2609.03874v1",
+          "published": "2026-09-03T14:02:53Z",
+          "updated": "2026-09-03T14:02:53Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2609.03874v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-19T08:52:42.883536Z",
+      "sha256": "9b2e738cc897045be3cafb23b4f56e38b565aa6885bb8e66c8522f89c158e9a7",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvRS85THRLaWdBT2VpVGducTd3cnNyZXhpNEVzPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOS4wMzg3NHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTE5VDA4OjUyOjQyWjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA5LjAzODc0djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOS4wMzg3NHYxPC9pZD4KICAgIDx0aXRsZT5TVEFJUiAoU1RydWN0dXJlIEF3YXJlIEluZm9ybWF0aW9uIFJldHJpZXZlcik6IEEgbm92ZWwgZGF0YXNldCBhbmQgTExNIGJhc2VkIHJldHJpZXZlciBmb3IgZG9jdW1lbnQgc3RydWN0dXJlIGF1Z21lbnRhdGlvbjwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA5LTAzVDE0OjAyOjUzWjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA5LjAzODc0djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA5LjAzODc0djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5SZXRyaWV2YWwgQXVnbWVudGVkIEdlbmVyYXRpb24gKFJBRykgaXMgYSBrZXkgY29tcG9uZW50IGZvciBnZW5lcmF0aW5nIGFjY3VyYXRlIGFuZCBoYWxsdWNpbmF0aW9uIGZyZWUgYW5zd2VycyB1c2luZyBMYXJnZSBMYW5ndWFnZSBNb2RlbHMgKExMTXMpLiBMTE1zIGFyZSBpbXByb3ZpbmcgYXQgaGFuZGxpbmcgbG9uZyBjb250ZXh0LCBidXQgc3RpbGwgc3VmZmVyIGZyb20gImxvc3QgaW4gdGhlIG1pZGRsZSIgcHJvYmxlbS4gVGh1cywgcHJlY2lzZSBhbmQgYWNjdXJhdGUgcmV0cmlldmFsIGlzIGltcG9ydGFudC4gQ3VycmVudCByZXRyaWV2ZXJzIGNodW5rIGxvbmcgY29udGV4dCBpbnRvIGxlbmd0aC1iYXNlZCBtYW5hZ2VhYmxlIGNodW5rcyAtIGluIHRoZSBwcm9jZXNzIHRocm93aW5nIGF3YXkgcmljaCBhbmQgaW5mb3JtYXRpdmUgc2VtYW50aWMgZ2xvYmFsIHN0cnVjdHVyZSBpbiB0aGUgY29ycHVzLiBXZSBpbnRyb2R1Y2UgYSBub3ZlbCByZXRyaWV2YWwgc3lzdGVtIFNUQUlSIHRoYXQgZW1wb3dlcnMgYW4gTExNIHRvIGV4cGxvaXQgZ2xvYmFsIHN0cnVjdHVyZSBpbiBhIGNvcnB1cyBzdWNoIGFzIGEgVGFibGUgb2YgQ29udGVudHMgKFRvQykgdG8gZWZmaWNpZW50bHkgc3RvcmUgYW5kIHJldHJpZXZlIGluZm9ybWF0aW9uIGZyb20gaXRzIG1vZGVsIHBhcmFtZXRlcnMuIE91ciB0aG9yb3VnaCBhbmQgY2FyZWZ1bCBhYmxhdGlvbiBzdHVkaWVzIHdpdGggYSBmaW5ldHVuZWQgRGlmZmVyZW50aWFibGUgU2VhcmNoIEluZGV4IChEU0kpIHN5c3RlbSBzaG93IHRoYXQgVG9DIGhlbHBzIGJ1aWxkIGEgbG93IGhhbGx1Y2luYXRpb24gKGxlc3MgdGhhbiAwLjA1JSkgZ2VuZXJhdGl2ZSBJbmZvcm1hdGlvbiBSZXRyaWV2YWwgKElSKSBzeXN0ZW0gYW5kIGNhbiBnZW5lcmFsaXplIHRvIGV4YW1wbGVzIHdoZXJlIHZlcnkgZmV3IHRyYWluaW5nIHNhbXBsZXMgYXJlIGF2YWlsYWJsZS4gVG8gZnVydGhlciByZXNlYXJjaCBpbiB0aGlzIG5vdmVsIGRpcmVjdGlvbiBvZiBUb0MgYmFzZWQgcmV0cmlldmFsIHdlIHJlbGVhc2UgU2VhcmNoVG9tZSAtIGEgZGl2ZXJzZSBiZW5jaG1hcmsgY3JlYXRlZCBmcm9tIDE4IGJvb2tzIGFjcm9zcyA2IGRpdmVyc2UgZG9tYWlucyB0byBmdXJ0aGVyIHJlc2VhcmNoIGluIHRoaXMgbm92ZWwgZGlyZWN0aW9uLiBTVEFJUiBhY2hpZXZlcyBhIGhpZ2ggUmVjYWxsQDEgc2NvcmUgb2YgODIuNiUgb24gU2VhcmNoVG9tZSBhcyBjb21wYXJlZCB0byBEU0kgKDc2LjklKSwgd2hlcmUgdGhlIGRpZmZlcmVuY2UgaXMgZm91bmQgdG8gYmUgc3RhdGlzdGljYWxseSBzaWduaWZpY2FudC4gU1RBSVIgZWFzaWx5IGJlYXRzIG90aGVyIHN0cm9uZyBiYXNlbGluZXMgc3VjaCBhcyBCTTI1ICg1OS41JSksIERQUiAoNjguNyUpIGFuZCBvdXQtb2YtdGhlLWJveCBNaXN0cmFsICgxMy44JSkuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjYtMDktMDNUMTQ6MDI6NTNaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+VmluZWV0IEt1bWFyPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5NZWdoYW5hZGggUHVsaXZhcnRoaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+dmlzaHdhamVldCBrdW1hcjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmF5ZGVlcCBTZW48L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlJpeWF6IEFobWFkIEJoYXQ8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlNhY2hpbmRyYSBKb3NoaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "STAIR (STructure Aware Information Retriever): A novel dataset and LLM based retriever for document structure augmentation",
+    "authors": [
+      "Vineet Kumar",
+      "Meghanadh Pulivarthi",
+      "vishwajeet kumar",
+      "Jaydeep Sen",
+      "Riyaz Ahmad Bhat",
+      "Sachindra Joshi"
+    ],
+    "abstract": "Retrieval Augmented Generation (RAG) is a key component for generating accurate and hallucination free answers using Large Language Models (LLMs). LLMs are improving at handling long context, but still suffer from \"lost in the middle\" problem. Thus, precise and accurate retrieval is important. Current retrievers chunk long context into length-based manageable chunks - in the process throwing away rich and informative semantic global structure in the corpus. We introduce a novel retrieval system STAIR that empowers an LLM to exploit global structure in a corpus such as a Table of Contents (ToC) to efficiently store and retrieve information from its model parameters. Our thorough and careful ablation studies with a finetuned Differentiable Search Index (DSI) system show that ToC helps build a low hallucination (less than 0.05%) generative Information Retrieval (IR) system and can generalize to examples where very few training samples are available. To further research in this novel direction of ToC based retrieval we release SearchTome - a diverse benchmark created from 18 books across 6 diverse domains to further research in this novel direction. STAIR achieves a high Recall@1 score of 82.6% on SearchTome as compared to DSI (76.9%), where the difference is found to be statistically significant. STAIR easily beats other strong baselines such as BM25 (59.5%), DPR (68.7%) and out-of-the-box Mistral (13.8%).",
+    "identifiers": {
+      "arxiv": "2609.03874",
+      "arxiv_versioned": "2609.03874v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2609.03874v1"
+      }
+    },
+    "categories": [
+      "cs.AI"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-09-03T14:02:53Z",
+    "updated": "2026-09-03T14:02:53Z"
+  }
+}

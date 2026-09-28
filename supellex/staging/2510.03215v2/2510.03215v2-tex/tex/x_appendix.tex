@@ -1,0 +1,847 @@
+\section{Appendix}
+\label{sec:appendix}
+
+%%%%%%%%%%%%%%%%% Design details %%%%%%%%%%%%%%%%%
+\subsection{Design Choice Exploration}
+\label{sec:appendix/design}
+
+We detail the design of \name and discuss alternative design choices.
+
+\subsubsection{Layer Alignment}
+\label{sec:appendix/layer_align}
+
+\xhdr{Terminal alignment}  
+In this strategy, the layers of the two models are aligned starting from the output side. Specifically, the final layer of the smaller model is paired with the final layer of the larger model, the penultimate layer with the penultimate layer, and so on. This scheme prioritizes alignment between the deeper layers across models, which typically capture higher-level semantic representations.
+  
+\xhdr{Depth-normalized alignment}  
+In this strategy, both models’ layer indices are normalized to $[0,1]$ by dividing by $(L-1)$, where $L$ is the total number of layers in the model. Let the model with fewer layers ($L_{\min}$) serve as the anchor. For each anchor layer $i$ (with normalized index $i/(L_{\min}-1)$), we select the layer $j$ in the other model ($L_{\max}$) whose normalized index $j/(L_{\max}-1)$ is closest:
+\begin{equation}
+    j^\star \;=\; \arg\min_j \Bigl| \tfrac{i}{L_{\min}-1} - \tfrac{j}{L_{\max}-1} \Bigr|.
+\end{equation}
+This method produces an alignment that distributes correspondences approximately uniformly across the model depth.
+
+
+\xhdr{\name Choice}  
+In our design, we adopt \textbf{terminal alignment}, as it provides a simpler and more direct layer mapping strategy that empirically performs slightly better in our experiments.
+
+\subsubsection{Tokenization Alignment}
+\label{sec:appendix/token_align}
+
+For dialogue inputs, we first apply the chat template of each tokenizer, which produces a sequence consisting of alternating sections of (1) \emph{template tokens} and (2) \emph{message tokens}. These two types of sections are handled differently during alignment.
+
+\xhdr{Template sections}
+Template tokens are structural markers (e.g., role delimiters, formatting tokens) that differ across tokenizers and carry no semantic content. To preserve sequence consistency without introducing unnecessary distortions, these sections are aligned by simple length padding: the shorter side is padded with \texttt{<pad>} tokens until both tokenizers’ sequences are of equal length.
+
+\xhdr{Message sections}
+Message tokens correspond to the actual textual content of user or assistant dialogs. Each target model token in a message section is decoded into its string form and re-encoded using the source model tokenizer.
+Special tokens (e.g., \texttt{<pad>}, \texttt{<eos>}) are mapped directly if possible; otherwise, the source model's unknown token is used.
+For regular tokens, if the re-encoding produces a single source model token, a direct one-to-one mapping is established. If multiple source model tokens are produced (a one-to-many case), one of the two selection strategies is applied:
+(1) \emph{first-occurrence selection}: choose the first source model token from the candidate set, yielding a deterministic and computationally efficient mapping.
+(2) \emph{Maximal-coverage selection}: decode each candidate token, compute its string length, and select the longest; this heuristic aims to preserve maximal surface correspondence with the original target model token.
+
+\textbf{\name choice} We observed that the two selection strategies generally produce very similar results, with more than 80\% of sequences yielding identical alignments across strategies. Based on this observation, we empirically adopt \textbf{Maximal-coverage selection} as the default strategy to reduce the risk of losing information in one-to-many tokenization cases.
+
+Through this design, template sections are aligned structurally via padding, while message sections are aligned semantically at the token level, ensuring robust correspondences between target model and source model representations in chat-formatted inputs.
+
+%%%%%%%%%%%%%%%%% Exp Results %%%%%%%%%%%%%%%%%
+\subsubsection{Fuser Architecture}
+\label{sec:appendix/arch}
+
+\begin{table}[t]
+\centering
+\caption{Comparison of the default \name fuser and the complex C2C-C variant (Sharer: Qwen3-4B, Receiver: Qwen3-0.6B). PGR (Performance Gap Recovered) measures the fraction of the accuracy gap between the Receiver and Sharer that is recovered.}
+\label{tab:llm_overall}
+% \footnotesize
+\setlength\tabcolsep{2pt}
+\begin{tabular}{l|ccc|ccc|ccc|ccc}
+\toprule
+~ & \multicolumn{3}{c|}{\textbf{C-Eval}} & \multicolumn{3}{c|}{\textbf{ARC-C}} & \multicolumn{3}{c|}{\textbf{MMLU-Redux}} & \multicolumn{3}{c}{\textbf{OpenBook}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13} 
+\textbf{Method} & Acc & PGR & Time & Acc & PGR & Time & Acc & PGR & Time & Acc & PGR & Time \\
+\midrule
+Qwen3-4B   & 68.09 & 100\% & 0.24 & 87.48 & 100\% & 0.24 & 71.38 & 100\% & 0.24 & 79.40 & 100\% & 0.25 \\
+Qwen3-0.6B & 32.04 & 0\%   & 0.18 & 41.04 & 0\%   & 0.19 & 35.53 & 0\%   & 0.18 & 39.20 & 0\%   & 0.21 \\
+T2T     & 36.96 & 14\%  & 0.92 & 52.00 & 24\%  & 0.80 & 42.95 & 21\%  & 0.99 & 46.40 & 18\%  & 1.70 \\
+\midrule
+\name & 44.40 & 34\% & 0.27 & 60.17 & 41\% & 0.27 & 45.92 & 29\% & 0.27 & 55.20 & 40\% & 0.28 \\
+\name-C & 60.63 & 79\% & 0.21 & 80.96 & 86\% & 0.23 & 62.78 & 76\% & 0.15 & 70.40 & 78\% & 0.26 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Beyond the \name fuser, we also examined a more complex yet potentially more powerful variant, which we denote as \textbf{C2C-C (Complex)}. The main complexity comes from the introduction of an additional projection stage: instead of directly concatenating Sharer and Receiver caches as in \name, Sharer cache is first projected into the receiver’s dimensionality through a 3-layer MLP. The concatenated representation is then processed along two familiar routes—feature fusion and dynamic weighting—to yield the final S\&R cache.
+
+The main experiment results are presented in Table~\ref{tab:llm_overall}.
+Note that we fix the maximum response length to 8 tokens and the maximum communication length to 256 tokens in this experiment to reduce evaluation cost.
+C2C-C attains stronger performance than the default \name, suggesting that increasing the architectural sophistication of fuser can further amplify the benefits of C2C communication. 
+In this table, we also report Performance Gap Recovered (PGR)~\citep{ong2024routellm} metric, which quantifies how much of the performance gap between a weak and a strong model is recovered. Nevertheless, the focus of this work is on introducing the C2C paradigm itself. For this purpose, we adopt a simple yet effective fuser design, leaving systematic investigation of more elaborate architectures to future work.
+
+
+
+\subsection{Additional Experimental Results}
+\label{sec:appendix/exp}
+
+\subsubsection{Cache Enrichment Detail}
+\label{sec:appendix/exp/oracle1}
+
+In Table~\ref{tab:single_layer_aug} we show the effect of single-layer cache enrichment. Layer 4 and 16 benefit from the cache enrichment approach by replacing the KV-Cache with the few-shot one, while cache enrichment on other layers shows performance degradation. 
+\begin{table}[h]
+\centering
+\caption{Accuracy (\%) when enriching only a single transformer layer's KV-Cache via the cache enrichment oracle. Baseline without enrichment: 58.42\%. Bold indicates layers that benefit from enrichment.}
+\label{tab:single_layer_aug}
+\setlength{\tabcolsep}{4pt} % smaller to fit 4 columns
+\begin{tabular}{c c | c c | c c | c c}
+\toprule
+\textbf{Layer} & \textbf{Acc.} &
+\textbf{Layer} & \textbf{Acc.} &
+\textbf{Layer} & \textbf{Acc.} &
+\textbf{Layer} & \textbf{Acc.} \\
+\midrule
+0  & 56.36 & 7  & 56.82 & 14 & 54.24 & 21 & 57.74 \\
+1  & 56.36 & 8  & 55.01 & 15 & 58.06 & 22 & 57.23 \\
+2  & 57.14 & 9  & 56.78 & 16 & \textbf{58.45} & 23 & 55.22 \\
+3  & 57.53 & 10 & 55.29 & 17 & 57.88 & 24 & 55.75 \\
+4  & \textbf{58.52} & 11 & 57.05 & 18 & 57.21 & 25 & 56.16 \\
+5  & 56.45 & 12 & 55.04 & 19 & 56.71 & 26 & 55.79 \\
+6  & 54.56 & 13 & 54.83 & 20 & 55.93 & 27 & 55.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Strong-to-Weak Communication}
+\label{sec:appendix/exp/strong2weak}
+
+\begin{table}[ht]
+\centering
+\caption{LongBenchV1 scores comparing Receiver-only, Sharer-only, T2T, and \name in the strong-to-weak setting (Sharer: Qwen3-4B, Receiver: Qwen3-0.6B) across different input lengths.}
+\label{tab:strong_weak}
+% \footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c | c c c}
+\toprule
+Length & Receiver & Sharer & T2T & \name \\
+\midrule
+0--4k & 30.52 & 50.48 & 38.52 & 41.46 \\
+4--8k & 26.03 & 48.28 & 35.79 & 37.57 \\
+8k+   & 25.99 & 44.36 & 33.79 & 34.23 \\
+\midrule
+Average & 27.63 & 47.90 & 36.18 & 37.97 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+Table~\ref{tab:strong_weak} reports the results on LongBenchV1 when pairing the weak receiver Qwen3-0.6B with a much stronger sharer, Qwen3-4B, under different input lengths. Across all length regimes, \name consistently outperforms both the receiver alone and the T2T baseline. On average, \name achieves a 51.01\% PGR over the weak-to-strong gap. These results demonstrate that in strong-to-weak settings, \name can effectively transfer the stronger model’s contextual understanding, yielding notable gains for the weaker receiver.
+
+We additionally evaluated the strong-to-weak setting (Qwen3-0.6B as receiver and Qwen3-4B as sharer) on other benchmarks beyond LongBenchV1. The detailed results are provided in Section~\ref{sec:appendix/arch}, Table~\ref{tab:llm_overall}.
+
+\subsubsection{Accuracy Breakdown}
+\label{sec:appendix/accuracy}
+We analyze where the accuracy gains of C2C come from by using Venn diagrams on the MMLU-Redux benchmark, as illustrated in Figure~\ref{fig:venn_breakdown}. For this analysis, we use the C2C-C variant introduced in Section~\ref{sec:appendix/arch}, as it has the potential to achieve stronger performance and provides a clearer breakdown of where \name’s accuracy originates.  
+
+
+\xhdr{Models with comparable capacity} When the Receiver (Qwen3-0.6B) and the Sharer (Qwen2.5-Math-1.5B-Instruct, denoted as Qwen2.5-Math-1.5B) have comparable overall capacity but complementary strengths, C2C not only inherits part of the Sharer’s ability but also solves additional questions by integrating understanding from both models. 
+
+\xhdr{Models with disparate capacity} When the Sharer (Qwen3-4B) is substantially stronger than the Receiver (Qwen3-0.6B), C2C tends to integrate more of the stronger model’s understanding. Quantitatively, in the disparate-capacity case (Figure~\ref{fig:venn_4b}), among the questions that the Sharer can answer correctly, C2C also answers 72.11\% correctly. In contrast, in the comparable-capacity case (Figure~\ref{fig:venn_math}), C2C succeeds on only 50.97\%.
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{figure/experiment/venn_0.6+Math.pdf}
+         \caption{\makebox[.99\linewidth][c]{%
+    Sharer: Qwen2.5-Math-1.5B, Receiver: Qwen3-0.6B}}
+        \label{fig:venn_math}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{figure/experiment/venn_0.6+4.pdf}
+        \caption{Sharer: Qwen3-4B, Receiver: Qwen3-0.6B}
+        \label{fig:venn_4b}
+    \end{subfigure}
+    \caption{Venn diagrams of correctly answered questions on MMLU-Redux, comparing Receiver-only, Sharer-only, and \name (C2C-C variant) answer sets.}
+    \label{fig:venn_breakdown}
+\end{figure}
+
+\xhdr{Subcategory breakdown} We analyze the accuracy gains on different subcategories using the radar plot and histogram plot shown in Figure~\ref{fig:sub_categories_radar}, Figure~\ref{fig:sub_categories_hist1}, and Figure~\ref{fig:sub_categories_hist2}. The result shows that for the Qwen2.5-0.5B and Qwen3-0.6B model pair, C2C outperforms T2T on 12 out of 17 total categories. Using C2C in history, law, and chemistry can bring an additional 7, 7.6, and 7.5 accuracy improvement compared to T2T. For the Qwen3-4B and Qwen3-0.6B model pair, C2C outperforms T2T on all 17 categories. Using T2T in engineering results in a 1\% performance drop, showing the case where text communication between models fails to help the receiver models achieve better performance. At the same time, C2C better utilizes the 4B model's contextual understanding of the problems and achieves a 24\% increase in accuracy.
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=0.95\linewidth]{figure/setting1_model_accuracy_radar_plot.pdf}
+        \caption{Sharer: Qwen2.5-0.5B, Receiver: Qwen3-0.6B}
+        \label{fig:sub_categories_radar1}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=0.95\linewidth]{figure/setting2_model_accuracy_radar_plot.pdf}
+        \caption{Sharer: Qwen3-4B, Receiver: Qwen3-0.6B}
+        \label{fig:sub_categories_radar2}
+    \end{subfigure}
+    
+    \caption{Per-subcategory accuracy on MMLU-Redux, comparing Receiver, Sharer, T2T, and \name.}
+    \label{fig:sub_categories_radar}
+\end{figure}
+
+
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure/accuracy_gains_by_category_setting1.pdf}
+    \captionsetup{justification=centering, singlelinecheck=false}
+    \caption{Per-subcategory accuracy gain of T2T and \name over the Receiver baseline on MMLU-Redux. \\ (Sharer: Qwen2.5-0.5B, Receiver: Qwen3-0.6B)}
+    \label{fig:sub_categories_hist1}
+\end{figure}
+
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figure/accuracy_gains_by_category_setting2.pdf}
+    \captionsetup{justification=centering, singlelinecheck=false}
+    \caption{Per-subcategory accuracy gain of T2T and \name over the Receiver baseline on MMLU-Redux. \\ (Sharer: Qwen3-4B, Receiver: Qwen3-0.6B)}
+    \label{fig:sub_categories_hist2}
+\end{figure}
+
+\subsubsection{Progressive Behavior}
+\label{sec:appendix/progressive_behavior}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figure/proportion.pdf}
+    \captionsetup{justification=centering, singlelinecheck=false}
+    \caption{MMLU-Redux accuracy as the proportion of the Receiver's KV-Cache replaced by \name-fused cache increases. ``Former'' replaces tokens front-to-back; ``Latter'' replaces back-to-front. \\ (Sharer: Qwen3-4B, Receiver: Qwen3-0.6B)}
+    \label{fig:proportion}
+\end{figure}
+To investigate the impact of fused KV-Cache proportion on the accuracy of the receiver model, we gradually added the proportion of fused KV-Cache derived from the sharer to the receiver model before generating outputs. Specifically, former and latter refer to progressively replacing the receiver’s KV-Cache with the fused KV-Cache from front to back and back to front, respectively. 
+We observe that the overall accuracy first decreases and then increases as the replacement ratio grows. 
+The performance reduction may stem from the gap between training and testing, where only the full receiver KV-Cache is used during training. 
+When the fused proportion goes up to over 50\%, the performance of \name continues to increase with respect to the proportion, reflecting the progressive benefits of \name.
+Note that projecting using the latter cache generally has a larger impact than projecting the former, since it is closer to the final response.
+
+%%%%%%%%%%%%%%%%% Setup %%%%%%%%%%%%%%%%%
+\subsection{Additional Experiment Setup}
+\label{sec:appendix/setup}
+
+\subsubsection{Cache Enrichment}
+\label{sec:appendix/setup/enrichment_oracle}
+
+% We conducted oracle experiments using Qwen3-0.6B and Qwen3-4B models to investigate the impact of optimized KV-Cache on model performance. The evaluation was performed on MMLU-Redux, using subject-specific MMLU examples after excluding duplicates with MMLU-Redux for fairness. Baseline methods included Zero-Shot and Few-Shot Retain,.We adopted four different KV-Cache injection strategies: Few-Shot KV-Inject (global injection), Single-Layer (single-layer injection), After-Layer (injection for the latter layers), and Selective (selective layer injection).All methods utilized Few-Shot optimized KV-Cache while maintaining the same cache length as Zero-Shot.  
+We conducted Oracle experiments with Qwen3-0.6B and Qwen3-4B to examine how KV-Cache enrichment influences model performance. The evaluation was performed on MMLU-Redux. The few-shot examples are selected from MMLU while excluding overlaps with MMLU-Redux to ensure fairness. To probe different ways of applying cache enrichment, we compared four cache enrichment strategies: All-layer Cache Enrichment (apply cache enrichment on all layers), Single-Layer Cache Enrichment (apply cache enrichment only on single layers), Selective Cache Enrichment - Best (select n layers that have the highest accuracy according to Single-Layer Cache Enrichment), Selective Cache Enrichment - Worst (select n layers that have the lowest accuracy according to Single-Layer Cache Enrichment). All methods utilized Few-Shot–optimized KV-Caches while maintaining the same cache length as Zero-Shot, enabling a controlled evaluation of cache enrichment and its layer-specific effects.
+
+\subsubsection{Cache Transformation}
+\label{sec:appendix/setup/transformation_oracle}
+
+We employed the MMLU-Redux dataset to train a 3-layer MLP that maps the last layer KV-Cache in the source LLM (Qwen3-4B) to the last layer of the target LLM (Qwen3-0.6B). In this oracle experiment, we adopt the MSE loss of the projected KV-Cache and the target KV-Cache instead of the next-token prediction loss, as we aim to test whether the representation space can be transformed using a neural network. The Key Cache and Value Cache are first concatenated on the hidden space dimension, then put for MSE calculation. A detailed calculation of loss is shown in the following code:
+\begin{verbatim}
+source_prefilled = source_model.forward(prefill_input_id)
+target_prefilled = target_model.forward(prefill_intput_id)
+source_k, source_v = source_prefilled.past_key_values[-1]
+target_k, target_v = target_prefilled.past_key_values[-1]
+project_k = k_projector(source_k)
+project_v = v_projector(source_v)
+mseloss(torch.dstack([project_k, project_v]), 
+        torch.dstack([target_k, target_v]))
+\end{verbatim}
+
+For visualization, 300 samples were randomly selected from the dataset. The source, target, and transformed KV-Cache were all projected into two-dimensional space using t-SNE, allowing us to examine the alignment of representations between the two models. For t-SNE generation, we set perplexity to 50 and max iterations to 1000.
+
+\subsubsection{Query-level routing}
+
+Query-level routing aims to improve the performance–efficiency trade-off by dynamically assigning harder queries to a stronger LLM. Following prior work, we adopt a matrix factorization framework. Query embeddings are obtained from the OpenAI text-embedding-3-small encoder, while model embeddings are taken from pretrained vectors of gpt-4-1106-preview and mixtral-8x7b-instruct-v0.1. These embeddings are used to compute a strong win rate score for each query, which reflects its relative difficulty. Queries are then ranked by this score. For each evaluated model pair, we define the strong model as the one achieving higher standalone benchmark accuracy and the weak model as the lower-performing one. Queries in the upper half of the ranking are routed to the strong model, while those in the lower half are routed to the weak model.
+
+\subsubsection{Evaluation Method}
+\label{sec:appendix/setup/eval}
+
+\xhdr{Main evaluation} We evaluate \name on four multiple-choice benchmarks: OpenBookQA, MMLU-Redux, ARC-Challenge, and C-Eval. For MMLU-Redux, we exclude questions annotated with the error type \textit{no correct answer}. For all evaluations, we adopt a deterministic generation configuration without sampling, using greedy decoding to ensure reproducibility. Specifically, we use Non-CoT prompts, following the unified format described in Section~\ref{sec:appendix/prompts}. Model outputs are then matched to the correct option labels to compute accuracy. To control evaluation cost, we set the maximum response length to 64 tokens unless otherwise specified, where the response refers to the final answer generated by the Receiver, since the base models do not always follow instructions, and longer limits would substantially increase inference time. For the T2T setting, we additionally set the maximum communication length to 256 tokens, where the communication refers to the messages passed from the Sharer to the Receiver.
+
+\xhdr{LongBench evaluation}
+We evaluate \name on the LongBench-E dataset, which comprises a total of 13 individual datasets. 
+The prompts and evaluation procedures use the official LongBench settings, with a maximum output length of 2,048 tokens.
+
+\subsubsection{\name Training}
+\xhdr{Training data} 
+(1) \emph{Performance experiment.}
+The fuser was trained on the OpenHermes-2.5 Dataset with a maximum sequence length of 2,048 tokens. Training used 500,000 samples for one epoch with a macro batch size of 256, corresponding to 1,929 total training steps.  
+
+(2) \emph{Scaling sequence lengths experiment.}
+% We evaluate the scaling behavior of \name with respect to sequence length on long-context tasks from the LongBench-E benchmark. We randomly split 3/4 data for training and 1/4 for testing while filtering data whose length is greater than 12k tokens due to GPU memory limitations during training.
+% Training used 1,896 samples with a macro batch size of 16, corresponding to 118 total training steps.
+The fuser was trained on the LongBench-E benchmark with a maximum sequence length of 12,000 tokens. 
+The data was randomly split into 3/4 for training and 1/4 for evaluation by data index, ensuring independence between training and evaluation. 
+Training used 1,896 samples for one epoch with a macro batch size of 16, corresponding to 118 total training steps.
+
+(3) \emph{Scaling model sizes and different model combinations experiment.}
+The fuser was trained on the auxiliary\_train split of the MMLU dataset with a maximum sequence length of 1,024 tokens. Training used 15,000 samples for one epoch with a macro batch size of 128, corresponding to 116 total training steps.  
+
+\xhdr{Training scheme} All experiments were conducted with a fixed random seed of 42 to ensure reproducibility. Unless otherwise noted, the training configuration was as follows: optimization employed a learning rate of $1 \times 10^{-4}$ with a linear scheduler and a 10\% warmup ratio, a weight decay of 0.01, and a maximum gradient norm of 1. The temperature was linearly annealed from 1.0 to 0.001 across the total number of training steps. Layer alignment was configured with the last aligned scheme across all experiments. The tokenization alignment was applied only when the paired models employed different tokenizers, in which case the longest strategy was used. For data preparation, each dataset was partitioned into a training split (99\%) and a small held-out validation split (1\%). The validation split was not used for model updates but was monitored during training to report evaluation loss.
+
+
+%%%%%%%%%%%%%%%%% Prompts %%%%%%%%%%%%%%%%
+\subsubsection{Evaluation Prompts}
+\label{sec:appendix/prompts}
+Text 1 presents the prompts used for the main evaluation on multiple-choice datasets.
+Text 2 is the alternative non-CoT version used for response diagnosis in Appendix~\ref{sec:appendix/Example}.
+Text 3 provides the prompt for the Sharer model in the T2T evaluation; the Receiver model uses the same prompt as in the C2C setting.
+Text 4 shows the prompt used in the cache enrichment experiment. For the zero-shot method, no shots are included in the prompt. The few-shot method uses exactly the same prompt as Text 4. For Oracle methods, we adopt the few-shot prompt but remove the KV-Cache associated with the shots after the forward pass.
+The prompt for LongBench evaluation follows its official configuration, which varies across the different sub-datasets.
+
+\begin{bluebox}[Prompt for Non-CoT Evaluation ]{width=\linewidth, valign=top, breakable}
+\label{text:prompt_example}
+Accurately answer the following question:
+
+\vspace{0.8em}
+ {\ttfamily\small
+\{{{QUESTION}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Choices:}
+
+ {\ttfamily\small
+\{{{CHOICES}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Instructions:}
+
+- Carefully read the question and all options.  \vspace{0.3em}  
+
+- Select the single most correct answer.  \vspace{0.3em}  
+
+- Respond ONLY in the following format: "The correct answer is A/B/C/D".  \vspace{0.3em}  
+
+- Do not include any explanations, additional text, or punctuation besides the answer. \vspace{0.3em}  
+
+The correct answer is
+\end{bluebox}
+
+\begin{bluebox}[Prompt for CoT Evaluation ]{width=\linewidth, valign=top, breakable}
+Accurately answer the following question:
+
+\vspace{0.8em}
+{\ttfamily\small
+\{{{QUESTION}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Choices:}
+
+{\ttfamily\small
+\{{{CHOICES}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Instructions:}
+
+- Carefully read the question and all options. \vspace{0.3em}  
+
+- Let's think step by step and explain your reasoning briefly. \vspace{0.3em}  
+
+- Then give the final answer starting with The correct answer is. 
+
+\end{bluebox}
+
+\begin{bluebox}[Prompt for Sharer model in T2T Evaluation]{width=\linewidth, valign=top, breakable}
+In one clear sentence, describe the most essential background knowledge needed to answer the question:
+{\ttfamily\small
+\{{{QUSETION}}\}}
+Do NOT directly solve or give answer to the question.
+
+\end{bluebox}
+
+\begin{bluebox}[Prompt for Oracle Experiment]{width=\linewidth, valign=top, breakable}
+The following are single choice questions (with answers) about {\ttfamily\small
+\{{{SUBJECT}}\}}.
+
+\vspace{1.2em}
+{\footnotesize\itshape
+Shot 1:
+}
+
+\medskip
+\noindent\textbf{Question:}
+{\ttfamily\small
+\{{{QUSETION}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Options:}
+
+{\ttfamily\small
+\{{{OPTIONS}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Answer:} {\ttfamily\small
+\{{{ANSWER}}\}} {\footnotesize\itshape(
+A,B,C or D)
+}
+
+\centerline{\textellipsis}
+
+{\footnotesize\itshape
+Shot N:
+}
+
+\medskip
+\noindent\textbf{Question:}
+{\ttfamily\small
+\{{{QUSETION}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Options:}
+
+{\ttfamily\small
+\{{{OPTIONS}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Answer:} {\ttfamily\small
+\{{{ANSWER}}\}} {\footnotesize\itshape(
+A,B,C or D)
+}
+
+\vspace{1.5em}
+
+\medskip
+\noindent\textbf{Question:}
+{\ttfamily\small
+\{{{QUSETION}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Options:}
+
+{\ttfamily\small
+\{{{OPTIONS}}\}}
+\vspace{0.8em}
+
+\medskip
+\noindent\textbf{Answer:}
+
+\vspace{1em}
+
+\end{bluebox}
+
+
+\subsection{Additional Analysis}
+\subsubsection{Effective Rank}
+\label{sec:appendix/setup/effective_rank}
+
+We list the definition of effective rank that was proposed by \citet{roy2007effective} here as a reference. For a matrix W that has size $M \times N$, the singular value decomposition of it can be expressed as $W = U\Sigma V$ and the singular values $\sigma = (\sigma_1, \sigma_2, ...,\sigma_{min(M, N)})^{T}$ are the non-negative diagonal entries of the matrix $\Sigma$. 
+The singular value distribution is denoted as:
+\begin{equation}
+p_i = \frac{\sigma_i}{\Vert \sigma \Vert_{1}}
+\end{equation}
+Denote the Shannon Entropy as:
+\begin{equation}
+H(p_{1}, p_{2},...,p_{min(M,N)}) = -\sum_{i=1}^{min(M,N)}p_i \log p_i
+\end{equation}
+The effective rank is defined as:
+\begin{equation}
+    erank(W) = e^{-\sum_{i=1}^{min(M,N)}p_ilog p_i}
+\end{equation}
+
+In Figure~\ref{fig:effective_rank}, we present the effective rank of key and value caches across all the layers. The plot shows a continuous increase in the effective rank of value caches after applying C2C, especially in the shallow layers. Key caches after applying C2C also have a comparable effective rank and increase at deep layers.
+
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figure/experiment/effective_rank_key.pdf}
+        \caption{Effective rank of the Key cache.}
+        \label{fig:rank_key}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figure/experiment/effective_rank_value.pdf}
+        \caption{Effective rank of the Value cache.}
+        \label{fig:rank_value}
+    \end{subfigure}
+    \caption{Per-layer effective rank of Key and Value caches for the Receiver (Qwen3-0.6B), Sharer (Qwen3-4B), and after \name fusion. Higher effective rank indicates richer semantic information.}
+    \label{fig:effective_rank}
+\end{figure}
+
+
+\subsubsection{Gating Behavior}
+\label{sec:appendix/gate}
+
+We analyze the behavior of the learnable gates by contrasting models trained on general-purpose versus task-specific data. This comparison reveals markedly different gating dynamics across the two regimes.  
+
+\xhdr{General-purpose training}  
+When \name is trained on the OpenHermes-2.5 dataset, the learned key and value gates remain almost fully open. Across the three model combinations reported in Table~\ref{tab:llm_comm}, the average gate activation ratio exceeds 98.21\%. Despite this near-complete activation, we observe that in certain layers the dynamic weights are concentrated at very small values—for example, the average key weight in some layers falls below 0.1. This suggests that under general-purpose training, \name leverages the dynamic weighting mechanism to modulate how much information is incorporated from the sharer on a per-query basis, effectively treating dynamic weights as the primary control signal while leaving most gates open.  
+
+\xhdr{Task-specific training}  
+In contrast, when \name is trained on the MMLU auxiliary\_train split, the gates exhibit a much sparser activation pattern. Across model combinations shown in Table~\ref{tab:c2c_model_combination}, the average gate activation ratio drops to 52.67\%. For the layers where gates do open, however, the dynamic weights are substantially larger, with most layers exhibiting average weights above 0.4. This indicates that under task-specific training, the gating mechanism selects a smaller subset of layers that are consistently useful, while the dynamic weights primarily regulate the contribution strength of these selected layers.  
+
+Overall, these findings highlight the adaptive interplay between gates and weights: general-purpose training favors broad gate activation with fine-grained modulation via weights, whereas task-specific training favors sparse gate activation with stronger reliance on the selected layers.
+
+
+%%%%%%%%%%%%%%%%% Outlier %%%%%%%%%%%%%%%%%
+\subsubsection{Outlier cases in inference time}  
+\label{sec:appendix/result/time}
+
+\xhdr{Llama3.2} We observe that the Llama3.2 model achieves significantly lower inference time compared to other baselines in Table~\ref{tab:llm_comm}. This improvement can be attributed to two factors. First, the Llama3.2 model itself has faster inference speed due to its implementation. Second, under the Non-CoT evaluation prompts described in Section~\ref{sec:appendix/prompts}, the model tends to output only a single option letter (e.g., “A” or “B”), rather than a longer formatted string such as “The correct answer is A.” The shorter outputs further reduce the average decoding time, leading to the observed advantage.  
+
+\xhdr{Qwen2.5-Math} In contrast, the Qwen2.5-Math model exhibits considerably longer inference time, as shown in Table~\ref{tab:c2c_model_combination}. The primary cause is its tendency to ignore the Non-CoT evaluation and T2T prompts described in Section~\ref{sec:appendix/prompts}, producing verbose, step-by-step solutions rather than concise answers. To accommodate these long outputs and avoid truncation, we set both the maximum response length and the maximum communication length to 1024 tokens during evaluation. Under this configuration, the model decodes substantially more tokens on average, resulting in significantly longer inference time.
+
+
+%%%%%%%%%%%%%%%%% Examples %%%%%%%%%%%%%%%%%
+\subsubsection{Example Model Output}
+\label{sec:appendix/Example}
+
+To help better understand the response pattern of different models, we show the example response from different methods using the CoT prompt.
+We use Qwen2.5-0.5B as the Sharer model and Qwen3-0.6B as the Receiver model.
+
+As shown in the following examples, Qwen3-0.6B misunderstood the question. It treated a probe for deeper meaning as merely a rephrasing task. Qwen2.5-0.5B-Instruct misinterpreted the question type altogether, taking it as sentence completion and answering the replaced question instead, with overly verbose reasoning. T2T altered the context of the question itself. In contrast, C2C maintained a solid understanding, recognizing that the rewritten sentence aimed to explore deeper moral reasoning, and accordingly selected the correct answer.
+
+\begin{bluebox}[Question]{width=\linewidth, valign=top}
+Instead of asking why the act of destroying the environment might be immoral, Hill wants to ask \dots
+
+\medskip
+\noindent\textbf{Choices:}
+\begin{enumerate}[label=\Alph*)]
+  \item why the act of destroying nature might be immoral.
+  \item why people who destroy the environment might be bad people.
+  \item how the decision to preserve the environment benefits the environment.
+  \item whether plants have interests.
+\end{enumerate}
+\end{bluebox}
+%%%%%%%%%%%%%%%%%%%%%%%%%% Responses %%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[Qwen3-0.6B Response]{width=\linewidth, valign=top, equal height group=exA1, before skip=0pt, after skip=0pt}
+The correct answer is A. why the act of destroying nature might be immoral.
+
+Hill is not asking why the act of destroying the environment is immoral, but rather what he wants to ask in a different way. The other options do not align with the question as stated.
+
+The correct answer is A.
+\end{bluebox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[Qwen2.5-0.5B-Instruct Response]{width=\linewidth, valign=top, equal height group=exA1, before skip=0pt, after skip=0pt}
+To accurately answer the question, let's carefully analyze each option and think through the implications of each choice:
+
+A.
+%Why the act of destroying nature might be immoral.
+This option suggests that the act of destroying nature might be considered immoral. This is a reasonable and common interpretation of the act of destroying nature, as it involves the destruction of natural resources and ecosystems.
+However, it does not directly address the question of why the act might be immoral.
+
+B.
+%Why people who destroy the environment might be bad people.
+This option implies that people who destroy the environment are inherently bad. This is a more extreme interpretation and does not align with the general understanding of environmental destruction. It also does not directly address the question of why the act might be immoral.
+
+C,D.
+%How the decision to preserve the environment benefits the environment.
+% This option suggests that preserving the environment is beneficial for the environment. This is a reasonable interpretation of the act of preserving the environment, as it involves protecting natural resources and ecosystems. However, it does not directly address the question of why the act might be immoral.
+...
+
+
+%Whether plants have interests.
+% This option suggests that plants have interests. While plants do have interests, this is not a direct answer to the question of why the act of destroying the environment might be immoral. The question is more about the moral implications of the act of destroying the environment.
+
+After analyzing all the options, the most appropriate and accurate answer is:
+
+The correct answer is A. Why the act of destroying nature might be immoral.
+
+This answer directly addresses the question by suggesting that the act of destroying nature might be considered immoral, which aligns with the general understanding of environmental destruction.
+\end{bluebox}
+\end{minipage}
+
+\medskip
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[Text-to-Text Response]{width=\linewidth, valign=top, equal height group=exA2, before skip=0pt, after skip=0pt}
+\xhdrl{Context from Qwen2.5-0.5B:}
+
+\medskip
+To understand the concept of environmental destruction, one must first grasp the fundamental principles of sustainability, the importance of biodiversity, and the impact of human activities on the natural world.
+\medskip
+
+\xhdrl{Response from Qwen3-0.6B:}
+\medskip
+
+The correct answer is **C. how the decision to preserve the environment benefits the environment**.
+
+Hill wants to ask how the act of preserving the environment benefits the environment, not why it might be immoral. This aligns with the question's focus on understanding the consequences of environmental action rather than its moral implications.
+
+The other options either directly address the question or are irrelevant.
+
+The correct answer is C.
+\medskip
+\end{bluebox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[C2C Response]{width=\linewidth, valign=top, equal height group=exA2, before skip=0pt, after skip=0pt}
+The correct answer is B.
+Hill wants to ask why people who destroy the environment might be bad people.
+Hill's goal is to understand the motivations behind people's actions and to identify the underlying reasons for their destructive behavior. This can help in developing strategies to prevent such actions and promote sustainable practices.
+Hill's question is a way to explore the complexities of human behavior and to gain a deeper understanding of the factors that contribute to destructive actions.
+The other options are not the best answers because they are not directly related to the question or the reasons behind destructive behavior.
+The correct answer is B.
+\end{bluebox}
+\end{minipage}
+
+\subsubsection{Training Cost Analysis}
+
+Here we present the training cost in Table~\ref{tab:training_cost}. As shown in the table, accuracy quickly increases in the first few hundred steps. With 300 training steps (less than 9 GPU hours), C2C achieves a comparable result to the final checkpoint.
+
+\begin{table}[b]
+\centering
+\small
+\caption{Training cost (wall-clock and GPU hours) and MMLU-Redux accuracy at each training step (columns) for three Sharer–Receiver pairs.}
+\label{tab:training_cost}
+\begin{tabular}{l l | c c c c c c}
+\toprule
+\textbf{C2C Setting} & \textbf{Metric} & \textbf{0} & \textbf{50} & \textbf{100} & \textbf{150} & \textbf{300} & \textbf{1929} \\
+\midrule
+\multirow{3}{*}{\textbf{Qwen2.5-0.5B+Qwen3-0.6B}}
+ & Wall-clock (h) & - & 0.15 & 0.29 & 0.44 & 0.87 & 5.59 \\
+ & GPU Hours      & - & 1.20 & 2.32 & 3.52 & 6.95 & 44.72 \\
+ & MMLU-Redux & 35.53 & 40.36 & 41.10 & 42.06 & \textbf{44.30} & 42.92 \\
+\midrule
+\multirow{3}{*}{\textbf{Llama3.2-1B+Qwen3-0.6B}}
+ & Wall-clock (h) & - & 0.18 & 0.35 & 0.53 & 1.05 & 6.78 \\
+ & GPU Hours      & - & 1.44 & 2.80 & 4.24 & 8.44 & 54.24 \\
+ & MMLU-Redux & 35.53 & 28.66 & 41.16 & 43.98 & 44.37 & \textbf{44.42} \\
+\midrule
+\multirow{3}{*}{\textbf{Qwen3-4B-Base+Qwen3-0.6B}}
+ & Wall-clock (h) & - & 0.16 & 0.32 & 0.48 & 0.96 & 6.17 \\
+ & GPU Hours      & - & 1.28 & 2.56 & 3.84 & 7.68 & 49.36 \\
+ & MMLU-Redux & 35.53 & 38.07 & 39.56 & 40.77 & \textbf{44.11} & 43.95 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+Additionally, in Figure~\ref{fig:loss_comparison} we have plots of training loss and validation loss to compare the settings using Qwen2.5-0.5B or Llama3.2-1B as Sharer. The plot shows that for both settings, the training loss converges at 250 steps and the eval loss becomes stable at step 1000, suggesting that C2C across different model families incurs no extra computational cost.
+
+
+
+\begin{figure}[tb]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figure/training_loss_comparison.pdf}
+         \caption{\makebox[.99\linewidth][c]{%
+    Training loss comparison}}
+        \label{fig:training_comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{figure/eval_loss_comparison.pdf}
+        \caption{Validation loss comparison}
+        \label{fig:eval_comparison}
+    \end{subfigure}
+    \caption{Training and validation loss curves for \name with two Sharer–Receiver pairs: Qwen2.5-0.5B+Qwen3-0.6B and Llama3.2-1B+Qwen3-0.6B.}
+    \label{fig:loss_comparison}
+\end{figure}
+
+
+\begin{table}[t]
+    \centering
+    \caption{MMLU accuracy in the one-Receiver, multiple-Sharers setting (Receiver: Qwen3-0.6B, Sharer 1: Qwen3-4B-Base, Sharer 2: Qwen2.5-1.5B-Math). Arrows denote KV-Cache transfer direction via \name.}
+    \label{tab:1rms}
+    % \footnotesize
+    \begin{tabular}{lc}
+    \toprule
+    \textbf{Type} & \textbf{MMLU Acc.} \\
+    \midrule
+    Receiver & 35.53 \\
+    Sharer1 & 1.03 \\
+    Sharer2 & 39.86 \\
+    Sharer1 → Receiver & 60.71 \\
+    Sharer2 → Receiver & 46.13 \\
+    Sharer1, Sharer2 → Receiver & 64.60 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+    
+
+\subsubsection{Failure Mode Analysis}
+\label{sec:appendix/failure}
+We have shown that in various settings, C2C, as a new communication paradigm, can increase the receiver model performance by using the sharer's contextual understanding. However, in some specific cases, C2C can fail to do so as the contextual understanding from the Sharer model is not always accurate and can mislead the Receiver into generating wrong answers. As shown in Figure~\ref{fig:venn_breakdown}, though in general the number of correctly answered questions increases, there are some questions that the receiver can answer correctly but are answered incorrectly after applying C2C. Below we show an example of an accounting question where Qwen3-0.6B generates the correct answer. However, when using T2T and C2C, Qwen2.5-0.5B conveys incorrect information, leading Qwen3-0.6B to the wrong answer. \\
+This type of failure is more likely when using a very weak Sharer with strong Receiver and can lead to a performance degradation as mentioned in the limitation part.
+
+\begin{bluebox}[Question]{width=\linewidth, valign=top}
+Sussman Co. prepared cash-basis financial statements for the month ended January 31. A summary of Sussman's January activities follows: Credit sales of \$5600. Collections of \$1900 relating to January credit sales. Accrued salaries of \$1200. By what amount will Sussman's cash-basis income for the month ended January 31 increase as a result of restating these activities to the accrual basis of accounting?
+
+\medskip
+\noindent\textbf{Choices:}
+\begin{enumerate}[label=\Alph*)]
+  \item \$2,500
+  \item \$3,700
+  \item \$4,400
+  \item \$4,900
+\end{enumerate}
+\end{bluebox}
+%%%%%%%%%%%%%%%%%%%%%%%%%% Responses %%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[Qwen3-0.6B Response]{width=\linewidth, valign=top, equal height group=exB1, before skip=0pt, after skip=0pt}
+To determine the increase in cash-basis income for Sussman Co. as a result of restating its January activities to the accrual basis, we need to identify the \textbf{cash} and \textbf{accrual} differences.
+
+- \textbf{Credit sales}: \$5,600 (cash is not recorded yet)
+- \textbf{Collections}: \$1,900 (cash is recorded)
+- \textbf{Accrued salaries}: \$1,200 (cash is not recorded yet)
+
+\textbf{Cash-basis income} would be:
+\$5,600 (credit sales) + \$1,900 (collections) - \$1,200 (accrued salaries) = \textbf{\$5,300}
+
+\textbf{Accrual basis income} would be:
+\$5,600 (credit sales) + \$1,900 (collections) + \$1,200 (accrued salaries) = \textbf{\$7,700}
+
+\textbf{Increase in cash-basis income} = \textbf{\$7,700 - \$5,300 = \$2,400}
+
+The correct answer is: \textbf{A. \$2,500}.
+\end{bluebox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[Qwen2.5-0.5B-Instruct Response]{width=\linewidth, valign=top, equal height group=exB1, before skip=0pt, after skip=0pt}
+To determine the increase in Sussman's cash-basis income due to restating the January activities to the accrual basis of accounting, let's follow these steps:
+
+1. \textbf{Identify the cash-basis income for January:}
+   - Credit sales: \$5600
+   - Collections: \$1900
+   - Accrued salaries: \$1200
+   - Total cash-basis income: \$5600 + \$1900 + \$1200 = \$8700
+
+2. \textbf{Understand the impact of restating activities to the accrual basis:}
+   % - Restating activities to the accrual basis means that the cash-basis income is recognized as expenses when they are incurred, rather than when they are paid.
+   % - This means that the cash-basis income will be understated by the amount of the accrued expenses.
+   ...
+
+3. \textbf{Calculate the understated cash-basis income:}
+   % - The understated cash-basis income is the difference between the cash-basis income and the actual cash-basis income.
+   % - Understated cash-basis income = Actual cash-basis income - Cash-basis income
+   ... \\
+   - Understated cash-basis income = \$8700 - \$5600 = \$3100
+
+4. \textbf{Determine the increase in cash-basis income:}
+   - The increase in cash-basis income is the understated cash-basis income.
+   - Increase in cash-basis income = Understated cash-basis income = \$3100
+
+5. \textbf{Match the increase to the given choices:}
+   - The correct answer is \$3100, which corresponds to choice B.
+
+Therefore, the correct answer is B. \$3,700.
+\end{bluebox}
+\end{minipage}
+
+\medskip
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[Text-to-Text Response]{width=\linewidth, valign=top, equal height group=exB2, before skip=0pt, after skip=0pt}
+\xhdrl{Context from Qwen2.5-0.5B:}
+
+\medskip
+To determine the increase in Sussman's cash-basis income for the month ended January 31 due to restating the activities to the accrual basis of accounting, you need to consider the following steps:
+
+1. \textbf{Identify the cash-basis income for January 31}: ...
+
+2. \textbf{Identify the accrual basis income for January 31}: ...
+
+3. \textbf{Calculate the difference between the accrual basis and cash-basis income}: ...
+\medskip
+
+\xhdrl{Response from Qwen3-0.6B:}
+\medskip
+
+The correct answer is \textbf{B. \$3,700}.
+
+To determine the increase in Sussman's cash-basis income for the month ended January 31 due to restating the activities to the accrual basis of accounting, we need to calculate the difference between the accrual basis and cash
+\medskip
+\end{bluebox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{bluebox}[C2C Response]{width=\linewidth, valign=top, equal height group=exB2, before skip=0pt, after skip=0pt}
+To calculate the increase in cash-basis income for the month ended January 31, we need to subtract the cash sales from the credit sales. In this case, the cash sales are \$1900 and the credit sales are \$5600. So, the increase in cash-basis income is \$5600 - \$1900 = \$3700.
+The correct answer is B.
+\end{bluebox}
+\end{minipage}
+
+\subsection{\name Extensions and Future Work}
+
+As an initial exploration, this work focuses on pairwise communication to establish a foundation for future research. Communication via KV-Cache among multiple models is a direction that requires future exploration, with different designs that can be employed. Here, we explore two settings that involve multiple Sharers and/or Receivers.
+
+\subsubsection{One Receiver, Multiple Sharers}
+\label{sec:appendix/many2one}
+
+We explore the scenario in which three models are involved in the communication. Here we set Qwen3-0.6B as the Receiver and use both Qwen2.5-1.5B-Math and Qwen3-4B-Base as Sharers. Here, we separately trained the C2C fusers from Qwen2.5-1.5B-Math to Qwen3-0.6B and Qwen3-4B-Base to Qwen3-0.6B. The result in Table~\ref{tab:1rms} shows that without additional training, the receiver can use C2C to fuse two Sharers' semantic information and improve the performance.
+
+\subsubsection{Multiple Receivers Multiple Sharers}
+\label{sec:appendix/many2many}
+
+We provide a possible path towards more efficient scaling, with $O(N)$ fusers instead of $O(N^2)$ fusers to communicate among $N$ LLMs.
+
+The design philosophy is to decompose $M\times N$ communication routes into $M\times 1$, then $1\times N$ steps, with $1$ being the unified latent space.
+This is achieved by using Projectors $P_{s_i}$ to transform the KV-Cache from different Sharer LLMs $s_0,\dots,s_{M-1}$ into a unified latent representation KV-Latent $L$, then using the C2C fuser $F_{r_j}$ to fuse them with each Receiver model $r_0,\dots,r_{N-1}$. $C_{s_i}$ represents the KV-Cache from model $s_i$.
+For M Sharers, N Receivers, we have M projectors and N fusers. Each sharer-receiver pair has its own gate. 
+During training, all Sharer KV-Caches are projected into a unified hidden space with respective Projectors.
+$$
+C_{s_i} \xrightarrow{P_{s_i}} U_{s_i}, \quad i=\mathbb{M}=\{0,\dots,M-1\}
+$$
+Then, each of the $N$ Receivers fuses all the $M$ available information from this hidden space.
+$$
+(U_{s_i}, C_{r_j}) \xrightarrow{F_{r_j}} C_{r_j}, \quad j=\mathbb{N}=\{0,\dots,N-1\}
+$$
+This yields $N$ updated caches $C_{r_j}'$, which can be optimized using the same SFT loss discussed in Section 3.3.4. 
+Losses from all Receivers are summed to update all Projectors and fusers.
+During inference, the model supports both one-to-one and many-to-one (multi-sharer to single receiver) settings. 
+As an initial exploration, we directly adopted the training data, fuser architecture, and hyperparameter settings from the pairwise fuser training, with vast possibilities left for future work.
+
+In Table~\ref{tab:mrms} we show the result of using Qwen2.5-Coder-0.5B-Instruct and Qwen2.5-Math-1.5B-Instruct as Sharers, Qwen3-0.6B and Qwen2.5-0.5B-Instruct as Receivers.
+
+\begin{table}[t]
+\centering
+\caption{MMLU-Redux accuracy in the multiple-Receiver, multiple-Sharer setting with shared latent projectors. Receivers: Qwen3-0.6B and Qwen2.5-0.5B-Instruct; Sharers: Qwen2.5-Coder-0.5B-Instruct and Qwen3-4B-Base.}
+\label{tab:mrms}
+\begin{tabular}{l|cc}
+\toprule
+\multirow{2}{*}{\textbf{Sharer}} & \multicolumn{2}{c}{\textbf{Receivers (MMLU Acc.)}} \\
+ & Qwen3-0.6B & Qwen2.5-0.5B \\
+\midrule
+None & 34.78 & 38.44 \\
+Coder-0.5B & 46.07 & 42.44 \\
+4B-Base & 51.23 & 59.17 \\
+Both & 51.08 & 59.81 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Incorporating with Agentic Flow}
+\label{sec:appendix/agentic}
+
+Here we show an exploration of C2C in agentic flow. We adopt the agentic flow for math problem-solving, following the workflow and prompts from Cognify~\citep{he2025cognify}. The workflow consists of a problem interpreter that analyzes the math problem and a problem solver that calculates the answer. For C2C, we use the prompt of the math solver, so the problem interpretation is done by KVCache fusion. Here we present the result on GSM8K. As shown in the table, the multi-agent flow increases the accuracy of math problem solving by 20.01. C2C has an accuracy of 62.55, increasing the accuracy by 1.37 when compared with the multi-agent flow using T2T. The performance can be further elevated to 78.01 by using T-C2C, which lets the math interpreter generate the interpretation and use C2C on both the question and the interpretation. 
+
+
+\begin{table}[t]
+\centering
+\caption{GSM8K accuracy comparing single-model inference, multi-agent T2T flow, \name, and T-C2C (T2T interpretation combined with \name cache fusion).}
+\label{tab:agentic}
+\begin{tabular}{l|c}
+\toprule
+Method & Accuracy \\
+\midrule
+Single Model (Qwen3-0.6B) & 41.17 \\
+T2T (Multi-agent flow) & 61.18 \\
+C2C & 62.55 \\
+T-C2C & 78.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+% \subsection{Use of Large Language Models (LLMs)}
+% Large language models (GPT-5, Gemini) were used solely for proofreading and minor language editing. 
+% They were not used to generate scientific content, contribute to research ideation, or design methods. 
+% All research ideas, methods, and conclusions are the sole responsibility of the authors.

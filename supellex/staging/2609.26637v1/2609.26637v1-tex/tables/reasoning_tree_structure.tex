@@ -1,0 +1,19 @@
+% Complete cleaned trees_wr sample; all 80 problems per model.
+\begin{table}[t]
+\centering
+\caption{Reasoning-tree structure on MATH.
+Median [25th, 75th percentile] of tree width, depth, and size across all Math problems, summarizing the overall structure of each model's reasoning trajectory.}
+\label{tab:reasoning-tree-structure}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Model & Width $p$ & Depth $q$ & Nodes $N$ \\
+\midrule
+GPT-6 Astra & \textbf{5.0} {\scriptsize [3.0, 9.0]} & 11.0 {\scriptsize [8.8, 15.0]} & \textbf{27.0} {\scriptsize [17.8, 44.0]} \\
+GPT-5.6 Sol & 12.0 {\scriptsize [5.0, 19.3]} & 11.0 {\scriptsize [10.0, 13.0]} & 60.0 {\scriptsize [29.8, 90.3]} \\
+Claude Opus 4.8 & 22.0 {\scriptsize [5.0, 44.0]} & 12.0 {\scriptsize [9.0, 14.0]} & 96.0 {\scriptsize [28.5, 220.3]} \\
+Claude Sonnet 5 & 28.5 {\scriptsize [9.0, 49.3]} & 13.0 {\scriptsize [10.0, 15.0]} & 136.0 {\scriptsize [44.8, 234.8]} \\
+\bottomrule
+\end{tabular}
+\end{table}

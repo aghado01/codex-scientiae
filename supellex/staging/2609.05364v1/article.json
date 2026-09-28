@@ -1,0 +1,187 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2609.05364v1",
+  "initialized_utc": "2026-09-26T13:59:46.128920Z",
+  "title": "Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool",
+  "authors": [
+    "Samuel Kushnir",
+    "Kimia Noorbakhsh",
+    "Kavya Sreedhar",
+    "Liqun Cheng",
+    "Ming Liu",
+    "Parthasarathy Ranganathan",
+    "Mohammad Alizadeh",
+    "Fred Kjolstad",
+    "Suvinay Subramanian"
+  ],
+  "abstract": "Machine-learning performance modeling is a uniquely hostile terrain for long-lived software: the assumptions baked into today's abstractions are invalidated by tomorrow's models and systems, forcing perpetual refactoring of performance-modeling frameworks. Meanwhile, AI coding agents have become fast and capable enough that regenerating an entire library is cheaper than paying down the tech debt of incrementally patching it. We describe SMART, a rigorous symbolic performance-modeling library for ML systems whose main branch contains almost no code: the repository is a DAG of self-contained natural-language design docs, coding sub-agents regenerate the implementation from only the docs on new version updates, and every human change is a natural-language edit to a doc--self-documenting by construction. Two ingredients make regeneration reliable: (i) a design-doc style built around step-by-step worked examples that act as in-context demonstrations for the generating agents, and (ii) a minimal, recursively defined operator IR with symbolic (SymPy) cost expressions, a fast analytical roll-up mode for large sweeps, and a slow modulo-scheduling mode for fine-grained schedule studies. Regenerated implementations reproduce hand-audited reference models--including DeepSeek-V3 serving on a TPU pod slice--to round-off precision, suggesting that design docs--not code--can be the durable artifact for ML-systems co-design tools.",
+  "identifiers": {
+    "arxiv": "2609.05364",
+    "arxiv_versioned": "2609.05364v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2609.05364v1"
+    }
+  },
+  "categories": [
+    "cs.PL",
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.PL",
+  "published": "2026-09-04T17:08:51Z",
+  "updated": "2026-09-04T17:08:51Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2609.05364v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 10245,
+        "sha256": "79ff05a1e1f9c0456baaea13f5af59d465ad84b60701738254c34522c019fd60",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-26T13:59:45.935380Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2609.05364v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "b65ff2cd655756b386cf369d747bc371a8c76ee07dc8f1a558d7bc87a2526813"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "explicit",
+      "declarations": {
+        "title_tex": "Design Docs Are All You Need: \\\\\n  An AI-native Machine-Learning Performance Tool",
+        "authors_tex": [
+          "\\hspace{-1cm}\n  \\textbf{Samuel Kushnir}$^1$ \\quad\n  \\textbf{Kimia Noorbakhsh}$^2$ \\quad\n  \\textbf{Kavya Sreedhar}$^4$ \\quad\n  \\textbf{Liqun Cheng}$^4$ \\quad\n  \\textbf{Ming Liu}$^4$ \\\\\n  \\hspace{-0.5cm}\n  \\textbf{Parthasarathy Ranganathan}$^4$ \\quad\n  \\textbf{Mohammad Alizadeh}$^2$ \\quad\n  \\textbf{Fred Kjolstad}$^3$ \\quad\n  \\textbf{Suvinay Subramanian}$^1$ \\quad\n  \\\\\n  \\vspace{0.2cm}\n  $^1$Google DeepMind \\quad\n  $^2$MIT \\quad\n  $^3$Stanford \\quad\n  $^4$Google"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 377,
+        "sha256": "b1c70b0fd64ac92aa91724c07b55be1a86b423c058e50b35157af79a5ababfb2"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2609.05364v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2609.05364v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 14532,
+      "sha256": "390cfe425c2f54ee01fa2aa61e8f6c607958055eb4480835b0c43ca387f10b74",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2609.05364v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2609.05364v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "explicit",
+      "files": 5,
+      "tex_files": 1,
+      "sha256": "202e8ac5da3ca5b521947246d385ee5075d4f737cea450732065a901cf23de05"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2609.05364v1.pdf",
+      "format": "application/pdf",
+      "bytes": 226625,
+      "sha256": "98010c2ff6a519a021af8f80a2909eaa0b8751b2656231ae32cc8eed9f8e5f9a"
+    },
+    {
+      "role": "html-source",
+      "path": "2609.05364v1-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2609.05364v1.html",
+      "files": 1,
+      "bytes": 128145,
+      "sha256": "4dcc392f5a6410bedf67a27e85bb22d76cd808ef4d9dda2ef3e233cdd4168760"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-26T13:59:46.128920Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 5
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 5
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 1
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "not-applicable",
+        "reason": "entrypoint named explicitly; the ambiguity scan did not run",
+        "selection": "explicit",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

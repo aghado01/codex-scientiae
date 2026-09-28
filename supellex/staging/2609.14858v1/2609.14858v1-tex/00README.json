@@ -1,0 +1,37 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "Main_Text/Figures/HAE-latest.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "Main_Text/method.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "Main_Text/raw_data/data/manifest.json"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "Main_Text/table/lasso_main_results.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bib"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

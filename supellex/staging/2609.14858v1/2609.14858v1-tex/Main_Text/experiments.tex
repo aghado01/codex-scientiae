@@ -1,0 +1,107 @@
+\section{Experiments}
+We evaluate \textsc{Dream-RSI} across three scientific discovery domains: algorithm engineering, kernel optimization and math optimization. Our primary controlled baseline is Recursive Fixed Exploration, which uses the same underlying discovery setting and initialization but keeps the exploration policy fixed across recursive discovery rounds. We additionally compare against task-specific domain baselines. 
+
+Across all tasks, \textsc{Dream-RSI} and Recursive Fixed Exploration
+use the same discovery agent, evaluator, initialization, and resource constraints.
+Both methods start from the same manually designed exploration policy.
+This exploration policy follows a simple \emph{parallel refining} strategy: it launches
+multiple independent exploration workspaces in parallel, with each workspace
+maintaining its own local discovery trajectory and repeatedly refining its
+current candidate based on the history accumulated within that workspace.
+The two methods therefore follow the same exploration policy in the first
+discovery round. In subsequent rounds, while Recursive Fixed Exploration keeps its exploration policy static, \textsc{Dream-RSI} progressively refines the policy by dreaming over a replay simulator conditioned on accumulated global discovery history, subsequently deploying the updated policy in each new round. The discovery cost is quantified by the total cumulative number of discovery-agent calls.
+
+
+Specifically, we evaluate Gemini-3.1 Pro and Gemini-3.7-Flash across multiple recursive discovery rounds via the Gemini CLI~\footnote{\url{https://geminicli.com/}}. Under Recursive Fixed Exploration, each round for Gemini-3.1 Pro executes 10 parallel workspaces with up to 11 refinement steps ($10 \times 11 = 110$ discovery-agent calls), whereas Gemini-3.7-Flash operates 32 parallel workspaces with up to 20 refinement steps ($32 \times 20 = 640$ calls). \textsc{Dream-RSI} maintains identical per-round budgets, aligning with the baseline in Round 1 while progressively updating its policy in subsequent rounds. Further details on recursive rounds, task setups, resource budgets, and evaluation protocols follow below.
+
+\input{Main_Text/Figures/scaling_lasso}
+
+
+\subsection{Algorithm Engineering}
+\label{subsec:lasso}
+
+In this task, we consider \textbf{Lasso Regularization Path} as our algorithm-engineering task, a fundamental computational primitive in high-dimensional statistics that is widely used in model selection and cross-validation across domains such as genomics and finance. We follow the benchmark setting of SimpleTES~\citep{ye2026evaluation}, where the goal is to discover efficient implementations of the complete Lasso regularization path while preserving numerical correctness. During discovery, we use the same 17 synthetic instances as SimpleTES, which cover diverse problem regimes in terms of dimensionality, sparsity, feature correlation, and active-set structure. To evaluate whether the discovered algorithms generalize beyond the search distribution, we additionally evaluate them on six held-out downstream datasets spanning both biological and non-biological domains. 
+
+\paragraph{Baselines and Setup.}
+We compare against standard Lasso solvers
+\textbf{sklearn}~\citep{pedregosa2011scikit} and
+\textbf{glmnet}~\citep{friedman2010regularization},
+as well as \textbf{SimpleTES}~\citep{ye2026evaluation}, which uses
+GPT-OSS-120B with a reported budget of 51,200 generations.
+We additionally include Recursive Fixed Exploration as our controlled baseline. Specifically, we run both Recursive Fixed Exploration and \textsc{Dream-RSI} for 5 rounds.
+
+\paragraph{Main Results.}
+Figure~\ref{fig:lasso-main}(a) summarizes the Lasso discovery results.
+Across both discovery-agent backbones, \textsc{Dream-RSI} achieves a better
+downstream quality--compute trade-off than Recursive Fixed Exploration.
+With Gemini-3.1 Pro, it reduces the average runtime across the six held-out
+datasets from 3587.1\,ms to 2931.0\,ms while using only 317 discovery-agent
+calls, compared with 550 calls for fixed exploration.
+With Gemini-3.7-Flash, \textsc{Dream-RSI} further reduces the average runtime
+from 2516.7\,ms to 2350.6\,ms using 1879 calls instead of 3200. Despite using substantially less discovery compute, the resulting solvers also
+outperform the standard sklearn and glmnet implementations on all six held-out
+datasets. Compared with SimpleTES, which uses 51,200 generations,
+\textsc{Dream-RSI} achieves lower average downstream runtime with roughly
+two orders of magnitude fewer discovery-agent calls. Notably, the program discovered by Gemini-3.1-Pro appears particularly well suited to large-scale matrices such as RCV1. In contrast, Gemini-3.7-Flash discovers a more general-purpose program that performs consistently across different problem scales.
+
+\paragraph{Recursive Discovery Dynamics.}
+Figure~\ref{fig:lasso-main}(b) illustrates the trajectory of downstream performance across recursive discovery rounds relative to cumulative discovery compute. By design, both methods share identical search behavior in the initial round. In subsequent rounds, Recursive Fixed Exploration maintains a static exploration policy, whereas \textsc{Dream-RSI} progressively refines and redeploys its policy via dreaming over accumulated discovery history. Consequently, the two trajectories diverge markedly: \textsc{Dream-RSI} consistently achieves superior downstream performance while requiring substantially lower cumulative compute across both Gemini-3.1-Pro and Gemini-3.7-Flash.
+
+
+\paragraph{Discovered Solver Analysis.}
+We further analyze the discovered solver, with its implementation provided in
+the Appendix \ref{app:discovered-lasso}. Unlike SimpleTES, which switches between LARS and coordinate
+descent according to problem dimensions, the discovered solver introduces
+adaptivity within the active-set optimization itself. It combines strong-rule
+screening with Cauchy--Schwarz-based KKT pruning, selectively recomputing exact
+gradients only when the bound cannot certify a feature and falling back to a
+full refresh when pruning becomes ineffective. This adaptive verification
+scheme is further integrated with efficient active-set bookkeeping, lazy
+Gram-matrix construction, and hardware-aware implementation.
+
+\input{Main_Text/table/math_optimization}
+\subsection{Mathematics Optimization}
+
+We further evaluate \textsc{Dream-RSI} on three mathematical discovery tasks spanning discrete combinatorial optimization, geometric optimization, and functional optimization: the \textbf{Sum--Difference Problem}, \textbf{Circle Packing}, and \textbf{Autocorrelation Inequalities}. The goal of these problems is to discover high-quality solutions that optimize task-specific mathematical objectives under their respective constraints. Formal definitions of the three tasks are provided in Appendix.
+
+We use Gemini-3.1 Pro via the Gemini CLI as the discovery agent for both Recursive Fixed Exploration and \textsc{Dream-RSI} for 10 rounds. For each task, the agent iteratively proposes and evaluates candidate constructions or optimization procedures according to the task-specific objective. We compare against a broad set of existing automated discovery systems, including AlphaEvolve~\citep{novikov2025alphaevolve}, AlphaEvolveV2~\citep{georgiev2025mathematical}, OpenEvolve~\citep{openevolve}, CodeEvolve~\citep{assumpccao2025codeevolve}, ShinkaEvolve~\citep{lange2026shinkaevolve}, TTS-Discovery~\citep{yuksekgonul2026learning}, ThetaEvolve~\citep{wang2025thetaevolve}, EvoX~\citep{liu2026evox}, and SimpleTES~\citep{ye2026evaluation}.
+
+\paragraph{Results.}
+Table~\ref{tab:downstream_results} summarizes the results across the three mathematical discovery tasks.
+\textsc{Dream-RSI} achieves a Sum--Difference score of $1.145427$, outperforming SimpleTES and Recursive Fixed Exploration.
+On Circle Packing, it reaches $2.635983$, matching the strongest reported result among the compared methods.
+For Autocorrelation, \textsc{Dream-RSI} obtains $1.456375$, remaining competitive with existing discovery systems. Notably, SimpleTES achieves state-of-the-art performance on Autocorrelation Inequalities, but requires 51,200 generations, significantly more than the fewer than 1,000 generations used by our approach.
+Overall, these results show that our \textsc{Dream-RSI} generalize well on mathematics optimization.
+
+
+
+\begin{figure}[t]
+    \centering
+    \input{Main_Text/Figures/kernelbench_scaling_curves}
+    \caption{
+\textbf{GPU kernel engineering results.}
+Discovery performance of \textsc{Dream-RSI} and Recursive Fixed Exploration as a function of the number of generations.
+On VGG16 and LayerNorm, \textsc{Dream-RSI} reaches comparable performance with $2.43\times$ and $1.79\times$ fewer generations, respectively.
+On ConvDiv and ConvMax, it achieves $2.09\times$ and $1.44\times$ higher performance under comparable discovery budgets.
+Higher is better for all tasks.
+}
+    \label{fig:kernelbench-scaling}
+\end{figure}
+\subsection{Kernel Engineering}
+
+We further evaluate \textsc{Dream-RSI} on \textbf{GPU kernel engineering}, where the goal is to automatically discover high-performance implementations of kernels while preserving numerical correctness. Unlike mathematical discovery, kernel engineering requires reasoning jointly about algorithmic structure, memory access, parallelization, and hardware-specific optimizations, providing a substantially different testbed for evaluating whether our \textsc{Dream-RSI} generalizes across discovery domains.
+
+We consider four representative kernel-engineering tasks from KernelBench~\citep{ouyang2025kernelbench}: \textbf{VGG16}, \textbf{LayerNorm}, \textbf{ConvDiv}, and \textbf{ConvMax}. Candidate implementations are evaluated by their execution performance, measured as inverse runtime ($1/\mathrm{ms}$), subject to correctness checks against the reference implementation. We use Gemini-3.1 Pro as the coding agent and compare \textsc{Dream-RSI} with Recursive Fixed Exploration under the same evaluation protocol and initialization.
+
+\paragraph{Results.}
+Figure~\ref{fig:kernelbench-scaling} shows the discovery trajectories as the number of generations increases.
+On VGG16 and LayerNorm, \textsc{Dream-RSI} reaches comparable final performance using
+$2.43\times$ and $1.79\times$ fewer generations, respectively.
+On ConvDiv and ConvMax, under comparable discovery budgets,
+\textsc{Dream-RSI} achieves $2.09\times$ and $1.44\times$ higher performance, respectively.
+These results show that adapting the exploration policy across recursive rounds can improve the efficiency and effectiveness of long-horizon discovery.
+
+
+
+
+

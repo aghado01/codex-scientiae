@@ -1,0 +1,1307 @@
+{
+  "definition": {
+    "x": "cumulative active attempts from history.json; failed attempts consume budget and inactive raw-score slots do not",
+    "y": "best valid combined_score so far (reciprocal latency in ms^-1)",
+    "granularity": "one point per archived/current raw_scores.json snapshot"
+  },
+  "runs": [
+    {
+      "task": "VGG16",
+      "method": "ours",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion",
+      "history_prefix": "iter",
+      "output": "vgg16_ours.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.14577259475218657
+        },
+        {
+          "budget": 110,
+          "score": 0.3676470588235294
+        },
+        {
+          "budget": 126,
+          "score": 0.4444444444444444
+        },
+        {
+          "budget": 146,
+          "score": 0.4504504504504504
+        },
+        {
+          "budget": 163,
+          "score": 0.4504504504504504
+        },
+        {
+          "budget": 186,
+          "score": 0.45454545454545453
+        },
+        {
+          "budget": 222,
+          "score": 0.4694835680751174
+        },
+        {
+          "budget": 276,
+          "score": 0.5128205128205129
+        },
+        {
+          "budget": 356,
+          "score": 0.5208333333333334
+        },
+        {
+          "budget": 408,
+          "score": 0.5319148936170213
+        },
+        {
+          "budget": 513,
+          "score": 0.5319148936170213
+        },
+        {
+          "budget": 598,
+          "score": 0.5319148936170213
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter000/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter000/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 0.3676470588235294,
+          "incumbent": 0.3676470588235294
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter001/history.json",
+          "raw_node_count": 16,
+          "active_attempt_count": 16,
+          "active_raw_node_count": 16,
+          "cumulative_budget": 126,
+          "snapshot_best": 0.4444444444444444,
+          "incumbent": 0.4444444444444444
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter002/history.json",
+          "raw_node_count": 20,
+          "active_attempt_count": 20,
+          "active_raw_node_count": 20,
+          "cumulative_budget": 146,
+          "snapshot_best": 0.4504504504504504,
+          "incumbent": 0.4504504504504504
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter003/history.json",
+          "raw_node_count": 24,
+          "active_attempt_count": 17,
+          "active_raw_node_count": 17,
+          "cumulative_budget": 163,
+          "snapshot_best": 0.4504504504504504,
+          "incumbent": 0.4504504504504504
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter004/history.json",
+          "raw_node_count": 30,
+          "active_attempt_count": 23,
+          "active_raw_node_count": 23,
+          "cumulative_budget": 186,
+          "snapshot_best": 0.45454545454545453,
+          "incumbent": 0.45454545454545453
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter005/history.json",
+          "raw_node_count": 42,
+          "active_attempt_count": 36,
+          "active_raw_node_count": 36,
+          "cumulative_budget": 222,
+          "snapshot_best": 0.4694835680751174,
+          "incumbent": 0.4694835680751174
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter006/history.json",
+          "raw_node_count": 54,
+          "active_attempt_count": 54,
+          "active_raw_node_count": 54,
+          "cumulative_budget": 276,
+          "snapshot_best": 0.5128205128205129,
+          "incumbent": 0.5128205128205129
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter007/history.json",
+          "raw_node_count": 80,
+          "active_attempt_count": 80,
+          "active_raw_node_count": 80,
+          "cumulative_budget": 356,
+          "snapshot_best": 0.5208333333333334,
+          "incumbent": 0.5208333333333334
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter008/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter008/history.json",
+          "raw_node_count": 88,
+          "active_attempt_count": 52,
+          "active_raw_node_count": 52,
+          "cumulative_budget": 408,
+          "snapshot_best": 0.5319148936170213,
+          "incumbent": 0.5319148936170213
+        },
+        {
+          "index": 9,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter009/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter009/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 105,
+          "active_raw_node_count": 105,
+          "cumulative_budget": 513,
+          "snapshot_best": 0.5319148936170213,
+          "incumbent": 0.5319148936170213
+        },
+        {
+          "index": 10,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter010/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_ours_from_e0_no_direction_no_champion/history/iter010/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 85,
+          "active_raw_node_count": 85,
+          "cumulative_budget": 598,
+          "snapshot_best": 0.5319148936170213,
+          "incumbent": 0.5319148936170213
+        }
+      ],
+      "excluded_scores": []
+    },
+    {
+      "task": "VGG16",
+      "method": "baseline",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch",
+      "history_prefix": "baseline_r",
+      "output": "vgg16_baseline.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.14577259475218657
+        },
+        {
+          "budget": 110,
+          "score": 0.3676470588235294
+        },
+        {
+          "budget": 220,
+          "score": 0.4484304932735426
+        },
+        {
+          "budget": 330,
+          "score": 0.5102040816326531
+        },
+        {
+          "budget": 440,
+          "score": 0.5208333333333334
+        },
+        {
+          "budget": 550,
+          "score": 0.5263157894736842
+        },
+        {
+          "budget": 660,
+          "score": 0.5291005291005292
+        },
+        {
+          "budget": 770,
+          "score": 0.53475935828877
+        },
+        {
+          "budget": 880,
+          "score": 0.53475935828877
+        },
+        {
+          "budget": 990,
+          "score": 0.5376344086021505
+        },
+        {
+          "budget": 1100,
+          "score": 0.5555555555555556
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 0.3676470588235294,
+          "incumbent": 0.3676470588235294
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r002/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 220,
+          "snapshot_best": 0.4484304932735426,
+          "incumbent": 0.4484304932735426
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r003/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 330,
+          "snapshot_best": 0.5102040816326531,
+          "incumbent": 0.5102040816326531
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r004/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 440,
+          "snapshot_best": 0.5208333333333334,
+          "incumbent": 0.5208333333333334
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 550,
+          "snapshot_best": 0.5263157894736842,
+          "incumbent": 0.5263157894736842
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 660,
+          "snapshot_best": 0.5291005291005292,
+          "incumbent": 0.5291005291005292
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r007/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 770,
+          "snapshot_best": 0.53475935828877,
+          "incumbent": 0.53475935828877
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r008/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r008/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 880,
+          "snapshot_best": 0.53475935828877,
+          "incumbent": 0.53475935828877
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r009/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history/baseline_r009/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 990,
+          "snapshot_best": 0.5376344086021505,
+          "incumbent": 0.5376344086021505
+        },
+        {
+          "index": 9,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/vgg16/Self-Evolving-Exploration/workspace/gpukernel_kb_l3_11_vgg16_baseline_from_scratch/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 1100,
+          "snapshot_best": 0.5555555555555556,
+          "incumbent": 0.5555555555555556
+        }
+      ],
+      "excluded_scores": []
+    },
+    {
+      "task": "LayerNorm",
+      "method": "ours",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction",
+      "history_prefix": "iter",
+      "output": "layernorm_ours.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.16233766233766234
+        },
+        {
+          "budget": 110,
+          "score": 1.0298661174047374
+        },
+        {
+          "budget": 188,
+          "score": 1.0660980810234542
+        },
+        {
+          "budget": 268,
+          "score": 1.1049723756906078
+        },
+        {
+          "budget": 348,
+          "score": 1.1210762331838564
+        },
+        {
+          "budget": 381,
+          "score": 1.1210762331838564
+        },
+        {
+          "budget": 448,
+          "score": 1.1210762331838564
+        },
+        {
+          "budget": 501,
+          "score": 1.122334455667789
+        },
+        {
+          "budget": 553,
+          "score": 1.122334455667789
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter000/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter000/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 1.0298661174047374,
+          "incumbent": 1.0298661174047374
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 78,
+          "active_raw_node_count": 78,
+          "cumulative_budget": 188,
+          "snapshot_best": 1.0660980810234542,
+          "incumbent": 1.0660980810234542
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter002/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 80,
+          "active_raw_node_count": 80,
+          "cumulative_budget": 268,
+          "snapshot_best": 1.1049723756906078,
+          "incumbent": 1.1049723756906078
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter003/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 80,
+          "active_raw_node_count": 80,
+          "cumulative_budget": 348,
+          "snapshot_best": 1.1210762331838564,
+          "incumbent": 1.1210762331838564
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter004/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 33,
+          "active_raw_node_count": 33,
+          "cumulative_budget": 381,
+          "snapshot_best": 1.1198208286674132,
+          "incumbent": 1.1210762331838564
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 67,
+          "active_raw_node_count": 67,
+          "cumulative_budget": 448,
+          "snapshot_best": 1.1198208286674132,
+          "incumbent": 1.1210762331838564
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history/iter006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 53,
+          "active_raw_node_count": 53,
+          "cumulative_budget": 501,
+          "snapshot_best": 1.122334455667789,
+          "incumbent": 1.122334455667789
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/ours/Self-Evolving-Exploration/workspace/baseline_r001_no_direction/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 52,
+          "active_raw_node_count": 52,
+          "cumulative_budget": 553,
+          "snapshot_best": 1.1210762331838564,
+          "incumbent": 1.122334455667789
+        }
+      ],
+      "excluded_scores": []
+    },
+    {
+      "task": "LayerNorm",
+      "method": "baseline",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final",
+      "history_prefix": "baseline_r",
+      "output": "layernorm_baseline.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.16233766233766234
+        },
+        {
+          "budget": 110,
+          "score": 1.0298661174047374
+        },
+        {
+          "budget": 220,
+          "score": 1.097694840834248
+        },
+        {
+          "budget": 330,
+          "score": 1.1135857461024499
+        },
+        {
+          "budget": 440,
+          "score": 1.1173184357541899
+        },
+        {
+          "budget": 550,
+          "score": 1.1173184357541899
+        },
+        {
+          "budget": 660,
+          "score": 1.1273957158962795
+        },
+        {
+          "budget": 770,
+          "score": 1.1363636363636365
+        },
+        {
+          "budget": 880,
+          "score": 1.1363636363636365
+        },
+        {
+          "budget": 990,
+          "score": 1.1376564277588168
+        },
+        {
+          "budget": 1100,
+          "score": 1.1376564277588168
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 1.0298661174047374,
+          "incumbent": 1.0298661174047374
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r002/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 220,
+          "snapshot_best": 1.097694840834248,
+          "incumbent": 1.097694840834248
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r003/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 330,
+          "snapshot_best": 1.1135857461024499,
+          "incumbent": 1.1135857461024499
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r004/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 440,
+          "snapshot_best": 1.1173184357541899,
+          "incumbent": 1.1173184357541899
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 550,
+          "snapshot_best": 1.1173184357541899,
+          "incumbent": 1.1173184357541899
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 660,
+          "snapshot_best": 1.1273957158962795,
+          "incumbent": 1.1273957158962795
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r007/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 770,
+          "snapshot_best": 1.1363636363636365,
+          "incumbent": 1.1363636363636365
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r008/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r008/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 880,
+          "snapshot_best": 1.1363636363636365,
+          "incumbent": 1.1363636363636365
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r009/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r009/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 990,
+          "snapshot_best": 1.1376564277588168,
+          "incumbent": 1.1376564277588168
+        },
+        {
+          "index": 9,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 1100,
+          "snapshot_best": 1.1376564277588168,
+          "incumbent": 1.1376564277588168
+        }
+      ],
+      "excluded_scores": [
+        {
+          "snapshot": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/layernorm/no_shell_command/Self-Evolving-Exploration/workspace/gpukernel_kb_l1_40_layernorm_baseline_multi_new_new_l40s_isolated_final/history/baseline_r009/raw_scores.json",
+          "node_id": "b0_a5",
+          "score": 531.9148936170213,
+          "reason": "score > 10"
+        }
+      ]
+    },
+    {
+      "task": "ConvDiv",
+      "method": "ours",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001",
+      "history_prefix": "iter",
+      "output": "convdiv_ours.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.1183431952662722
+        },
+        {
+          "budget": 110,
+          "score": 0.4273504273504274
+        },
+        {
+          "budget": 220,
+          "score": 0.625
+        },
+        {
+          "budget": 307,
+          "score": 0.8547008547008548
+        },
+        {
+          "budget": 387,
+          "score": 1.402524544179523
+        },
+        {
+          "budget": 437,
+          "score": 1.488095238095238
+        },
+        {
+          "budget": 529,
+          "score": 1.4992503748125936
+        },
+        {
+          "budget": 609,
+          "score": 1.7699115044247788
+        },
+        {
+          "budget": 700,
+          "score": 1.8796992481203008
+        },
+        {
+          "budget": 786,
+          "score": 1.8975332068311195
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter000/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter000/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 0.4273504273504274,
+          "incumbent": 0.4273504273504274
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 220,
+          "snapshot_best": 0.625,
+          "incumbent": 0.625
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter002/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 87,
+          "active_raw_node_count": 87,
+          "cumulative_budget": 307,
+          "snapshot_best": 0.8547008547008548,
+          "incumbent": 0.8547008547008548
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter003/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 80,
+          "active_raw_node_count": 80,
+          "cumulative_budget": 387,
+          "snapshot_best": 1.402524544179523,
+          "incumbent": 1.402524544179523
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter004/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 50,
+          "active_raw_node_count": 50,
+          "cumulative_budget": 437,
+          "snapshot_best": 1.488095238095238,
+          "incumbent": 1.488095238095238
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 92,
+          "active_raw_node_count": 92,
+          "cumulative_budget": 529,
+          "snapshot_best": 1.4992503748125936,
+          "incumbent": 1.4992503748125936
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 80,
+          "active_raw_node_count": 80,
+          "cumulative_budget": 609,
+          "snapshot_best": 1.7699115044247788,
+          "incumbent": 1.7699115044247788
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history/iter007/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 91,
+          "active_raw_node_count": 91,
+          "cumulative_budget": 700,
+          "snapshot_best": 1.8796992481203008,
+          "incumbent": 1.8796992481203008
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_same_e0_policy_ablation/ours_no_direction_no_champion/replicate_001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 86,
+          "active_raw_node_count": 86,
+          "cumulative_budget": 786,
+          "snapshot_best": 1.8975332068311195,
+          "incumbent": 1.8975332068311195
+        }
+      ],
+      "excluded_scores": []
+    },
+    {
+      "task": "ConvDiv",
+      "method": "baseline",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001",
+      "history_prefix": "baseline_r",
+      "output": "convdiv_baseline.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.1183431952662722
+        },
+        {
+          "budget": 110,
+          "score": 0.4273504273504274
+        },
+        {
+          "budget": 220,
+          "score": 0.5076142131979695
+        },
+        {
+          "budget": 330,
+          "score": 0.5319148936170213
+        },
+        {
+          "budget": 440,
+          "score": 0.5319148936170213
+        },
+        {
+          "budget": 550,
+          "score": 0.6097560975609756
+        },
+        {
+          "budget": 660,
+          "score": 0.8771929824561404
+        },
+        {
+          "budget": 770,
+          "score": 0.9090909090909091
+        },
+        {
+          "budget": 880,
+          "score": 1.282051282051282
+        },
+        {
+          "budget": 990,
+          "score": 1.282051282051282
+        },
+        {
+          "budget": 1100,
+          "score": 1.303780964797914
+        },
+        {
+          "budget": 1210,
+          "score": 1.3440860215053763
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 0.4273504273504274,
+          "incumbent": 0.4273504273504274
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r002/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 220,
+          "snapshot_best": 0.5076142131979695,
+          "incumbent": 0.5076142131979695
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r003/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 330,
+          "snapshot_best": 0.5319148936170213,
+          "incumbent": 0.5319148936170213
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r004/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 440,
+          "snapshot_best": 0.5291005291005292,
+          "incumbent": 0.5319148936170213
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 550,
+          "snapshot_best": 0.6097560975609756,
+          "incumbent": 0.6097560975609756
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 660,
+          "snapshot_best": 0.8771929824561404,
+          "incumbent": 0.8771929824561404
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r007/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 770,
+          "snapshot_best": 0.9090909090909091,
+          "incumbent": 0.9090909090909091
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r008/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r008/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 880,
+          "snapshot_best": 1.282051282051282,
+          "incumbent": 1.282051282051282
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r009/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r009/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 990,
+          "snapshot_best": 1.2048192771084338,
+          "incumbent": 1.282051282051282
+        },
+        {
+          "index": 9,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r010/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history/baseline_r010/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 1100,
+          "snapshot_best": 1.303780964797914,
+          "incumbent": 1.303780964797914
+        },
+        {
+          "index": 10,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convdiv/baseline/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_8_convdiv_baseline_e0_test/replicate_001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 1210,
+          "snapshot_best": 1.3440860215053763,
+          "incumbent": 1.3440860215053763
+        }
+      ],
+      "excluded_scores": []
+    },
+    {
+      "task": "ConvMax",
+      "method": "ours",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion",
+      "history_prefix": "iter",
+      "output": "convmax_ours.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.15479876160990713
+        },
+        {
+          "budget": 110,
+          "score": 0.23696682464454977
+        },
+        {
+          "budget": 220,
+          "score": 0.24630541871921185
+        },
+        {
+          "budget": 296,
+          "score": 0.2577319587628866
+        },
+        {
+          "budget": 372,
+          "score": 0.27624309392265195
+        },
+        {
+          "budget": 407,
+          "score": 0.2777777777777778
+        },
+        {
+          "budget": 489,
+          "score": 0.2785515320334262
+        },
+        {
+          "budget": 560,
+          "score": 0.2785515320334262
+        },
+        {
+          "budget": 610,
+          "score": 0.2785515320334262
+        },
+        {
+          "budget": 669,
+          "score": 0.4310344827586207
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter000/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter000/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 0.23696682464454977,
+          "incumbent": 0.23696682464454977
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 220,
+          "snapshot_best": 0.24630541871921185,
+          "incumbent": 0.24630541871921185
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter002/history.json",
+          "raw_node_count": 77,
+          "active_attempt_count": 76,
+          "active_raw_node_count": 76,
+          "cumulative_budget": 296,
+          "snapshot_best": 0.2577319587628866,
+          "incumbent": 0.2577319587628866
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter003/history.json",
+          "raw_node_count": 77,
+          "active_attempt_count": 76,
+          "active_raw_node_count": 76,
+          "cumulative_budget": 372,
+          "snapshot_best": 0.27624309392265195,
+          "incumbent": 0.27624309392265195
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter004/history.json",
+          "raw_node_count": 88,
+          "active_attempt_count": 35,
+          "active_raw_node_count": 35,
+          "cumulative_budget": 407,
+          "snapshot_best": 0.2777777777777778,
+          "incumbent": 0.2777777777777778
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 82,
+          "active_raw_node_count": 82,
+          "cumulative_budget": 489,
+          "snapshot_best": 0.2785515320334262,
+          "incumbent": 0.2785515320334262
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 71,
+          "active_raw_node_count": 71,
+          "cumulative_budget": 560,
+          "snapshot_best": 0.2785515320334262,
+          "incumbent": 0.2785515320334262
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history/iter007/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 50,
+          "active_raw_node_count": 50,
+          "cumulative_budget": 610,
+          "snapshot_best": 0.2777777777777778,
+          "incumbent": 0.2785515320334262
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/ours/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_ours_from_e0_no_direction_no_champion/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 59,
+          "active_raw_node_count": 59,
+          "cumulative_budget": 669,
+          "snapshot_best": 0.4310344827586207,
+          "incumbent": 0.4310344827586207
+        }
+      ],
+      "excluded_scores": []
+    },
+    {
+      "task": "ConvMax",
+      "method": "baseline",
+      "run_dir": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch",
+      "history_prefix": "baseline_r",
+      "output": "convmax_baseline.dat",
+      "max_plausible_score": 10.0,
+      "points": [
+        {
+          "budget": 0,
+          "score": 0.15479876160990713
+        },
+        {
+          "budget": 110,
+          "score": 0.23696682464454977
+        },
+        {
+          "budget": 220,
+          "score": 0.24630541871921185
+        },
+        {
+          "budget": 330,
+          "score": 0.2770083102493075
+        },
+        {
+          "budget": 440,
+          "score": 0.29411764705882354
+        },
+        {
+          "budget": 550,
+          "score": 0.2976190476190476
+        },
+        {
+          "budget": 660,
+          "score": 0.29940119760479045
+        },
+        {
+          "budget": 770,
+          "score": 0.29940119760479045
+        },
+        {
+          "budget": 880,
+          "score": 0.3003003003003003
+        },
+        {
+          "budget": 960,
+          "score": 0.3003003003003003
+        }
+      ],
+      "snapshots": [
+        {
+          "index": 0,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r001/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r001/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 110,
+          "snapshot_best": 0.23696682464454977,
+          "incumbent": 0.23696682464454977
+        },
+        {
+          "index": 1,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r002/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r002/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 220,
+          "snapshot_best": 0.24630541871921185,
+          "incumbent": 0.24630541871921185
+        },
+        {
+          "index": 2,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r003/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r003/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 330,
+          "snapshot_best": 0.2770083102493075,
+          "incumbent": 0.2770083102493075
+        },
+        {
+          "index": 3,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r004/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r004/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 440,
+          "snapshot_best": 0.29411764705882354,
+          "incumbent": 0.29411764705882354
+        },
+        {
+          "index": 4,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r005/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r005/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 550,
+          "snapshot_best": 0.2976190476190476,
+          "incumbent": 0.2976190476190476
+        },
+        {
+          "index": 5,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r006/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r006/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 660,
+          "snapshot_best": 0.29940119760479045,
+          "incumbent": 0.29940119760479045
+        },
+        {
+          "index": 6,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r007/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r007/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 770,
+          "snapshot_best": 0.29940119760479045,
+          "incumbent": 0.29940119760479045
+        },
+        {
+          "index": 7,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r008/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history/baseline_r008/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 110,
+          "active_raw_node_count": 110,
+          "cumulative_budget": 880,
+          "snapshot_best": 0.3003003003003003,
+          "incumbent": 0.3003003003003003
+        },
+        {
+          "index": 8,
+          "path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/raw_scores.json",
+          "history_path": "/beacon-projects/heng-bio-llm/tong/projects/ours/broader_evaulation/convmax/Self-Evolving-Exploration/workspace/gpukernel_kb_l2_43_convmax_baseline_from_scratch/history.json",
+          "raw_node_count": 110,
+          "active_attempt_count": 80,
+          "active_raw_node_count": 80,
+          "cumulative_budget": 960,
+          "snapshot_best": 0.3003003003003003,
+          "incumbent": 0.3003003003003003
+        }
+      ],
+      "excluded_scores": []
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+\definecolor{oursblue}{HTML}{0072B2}
+\definecolor{baselinegray}{HTML}{6B7280}
+\definecolor{guidanceorange}{HTML}{D55E00}
+\definecolor{guidancegreen}{HTML}{009E73}
+
+\begin{wrapfigure}[14]{r}{0.5\linewidth}
+% \vspace{-1em}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\linewidth,
+  height=4cm,
+  xmin=0,
+  xmax=1050,
+  ymin=0.40,
+  ymax=2.00,
+  axis lines=left,
+  axis line style={black!55,line width=0.65pt},
+  xmajorgrids=false,
+  ymajorgrids=true,
+  grid style={black!8,line width=0.30pt},
+  scaled ticks=false,
+  tick align=outside,
+  tick style={black!55,line width=0.50pt},
+  tick label style={font=\scriptsize,text=black!80},
+  xlabel style={font=\small,yshift=2pt},
+  ylabel style={font=\small},
+  clip=true,
+  clip marker paths=true,
+  xtick={0,250,500,750,1000},
+  ytick={0.4,0.8,1.2,1.6,2.0},
+  xlabel={Number of Generations},
+  ylabel={Performance ($1/\mathrm{ms}$)},
+  legend style={
+    draw=none,
+    font=\scriptsize,
+    at={(0.43,1.03)},
+    anchor=south,
+    legend columns=2,
+    row sep=1pt,
+    column sep=0.8em
+  }
+]
+
+% ============================================================
+% Dream-RSI
+% ============================================================
+\addplot[
+  const plot,
+  color=oursblue,
+  line width=2.0pt,
+  mark=*,
+  mark size=1.2pt,
+  mark options={
+    fill=oursblue,
+    draw=oursblue
+  }
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convdiv_ours.dat};
+
+\addlegendentry{\textsc{Dream-RSI}}
+
+% ============================================================
+% Recursive Fixed Exploration
+% ============================================================
+\addplot[
+  const plot,
+  color=baselinegray,
+  line width=1.5pt,
+  densely dashed,
+  mark=square*,
+  mark size=1.0pt,
+  mark options={
+    fill=white,
+    draw=baselinegray,
+    line width=0.65pt
+  }
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convdiv_baseline.dat};
+
+\addlegendentry{Fixed Exploration}
+
+% ============================================================
+% Dream-RSI + History as Guidance
+% ============================================================
+\addplot[
+  const plot,
+  color=guidanceorange,
+  line width=1.8pt,
+  densely dashdotted,
+  mark=triangle*,
+  mark size=1.15pt,
+  mark options={
+    fill=guidanceorange,
+    draw=guidanceorange
+  }
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convdiv_ours_guidance.dat};
+
+\addlegendentry{\textsc{Dream-RSI} + Guidance}
+
+% ============================================================
+% Fixed Exploration + History as Guidance
+% ============================================================
+\addplot[
+  const plot,
+  color=guidancegreen,
+  line width=1.6pt,
+  densely dotted,
+  mark=diamond*,
+  mark size=1.05pt,
+  mark options={
+    fill=white,
+    draw=guidancegreen,
+    line width=0.65pt
+  }
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convdiv_baseline_guidance.dat};
+
+\addlegendentry{Fixed + Guidance}
+
+\end{axis}
+\end{tikzpicture}
+
+\vspace{-0.6em}
+\caption{
+Discovery performance on ConvDiv.
+Using history as an interactive replay simulator outperforms using it only as guidance.
+}
+\label{fig:convdiv_guidance}
+\vspace{-0.8em}
+\end{wrapfigure}

@@ -1,0 +1,83 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{caption}
+\usepackage{xcolor}
+
+
+\title{Cache-to-Cache: Direct Semantic Communication Between Large Language Models}
+
+% Tianyu Fu*, Zihan Min*, Hanling Zhang*, Jichao Yan
+% Guohao Dai, Wanli Ouyang, Yu Wang
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{%
+    \textbf{Tianyu Fu}\thanks{Equal contribution.} \ $^{1,2}$,
+    \textbf{Zihan Min}$^{* 1}$,
+    \textbf{Hanling Zhang}$^{* 3}$,
+    \textbf{Jichao Yan}$^{ 1}$,
+    \\
+    \textbf{Guohao Dai}$^{ 4,2}$,
+    \textbf{Wanli Ouyang}$^{ 3,5,6}$,
+    \textbf{Yu Wang}\thanks{Corresponding author: Yu Wang (yu-wang@tsinghua.edu.cn).} \ $^{1}$
+    \\
+    \\
+    $^{1}$Tsinghua University \quad
+    $^{2}$Infinigence AI \quad
+    $^{3}$The Chinese University of Hong Kong
+    \\
+    $^{4}$Shanghai Jiao Tong University \quad
+    $^{5}$SLAI \quad
+    $^{6}$Shanghai AI Laboratory 
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\input{macros.tex}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+\maketitle
+\newcommand{\rebuttal}[1]{\textcolor{blue}{#1}}
+
+\input{tex/0_abstract.tex}
+\input{tex/1_intro.tex}
+\input{tex/2_related_work}
+\input{tex/3_method}
+\input{tex/4_experiment}
+\input{tex/5_conclusion}
+
+% To comment, use \tianyu{comment}, \hanling{comment}, \zihan{comment}, \jichao{comment}
+% For todos, use \todo{add content}.
+
+% \subsubsection*{Author Contributions}
+% If you'd like to, you may include a section for author contributions as is done
+% in many journals. This is optional and at the discretion of the authors.
+
+\clearpage
+\input{tex/6_acknowledgement.tex}
+\input{tex/7_ethics.tex}
+\bibliography{main}
+\bibliographystyle{iclr2026_conference}
+
+\clearpage
+\appendix
+\input{tex/x_appendix.tex}
+
+
+\end{document}

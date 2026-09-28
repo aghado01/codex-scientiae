@@ -1,0 +1,109 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2510.03215v2",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2510.03215v2",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+      "authors": [
+        "Tianyu Fu",
+        "Zihan Min",
+        "Hanling Zhang",
+        "Jichao Yan",
+        "Guohao Dai",
+        "Wanli Ouyang",
+        "Yu Wang"
+      ],
+      "abstract": "Multi-LLM systems harness the complementary strengths of diverse Large Language Models, achieving performance and efficiency gains that are not attainable by a single model. In existing designs, LLMs communicate through text, forcing internal representations to be transformed into output token sequences. This process both loses rich semantic information and incurs token-by-token generation latency. Motivated by these limitations, we ask: Can LLMs communicate beyond text? Oracle experiments show that enriching the KV-Cache semantics can improve response quality without increasing cache size, supporting KV-Cache as an effective medium for inter-model communication. Thus, we propose Cache-to-Cache (C2C), a new paradigm for direct semantic communication between LLMs. C2C uses a neural network to project and fuse the source model's KV-cache with that of the target model to enable direct semantic transfer. A learnable gating mechanism selects the target layers that benefit from cache communication. Compared with text communication, C2C utilizes the deep, specialized semantics from both models, while avoiding explicit intermediate text generation. Experiments show that C2C achieves 6.4-14.2% higher average accuracy than individual models. It further outperforms the text communication paradigm by approximately 3.1-5.4%, while delivering an average 2.5x speedup in latency. Our code is available at https://github.com/thu-nics/C2C.",
+      "doi": null,
+      "arxiv_id": "2510.03215v2",
+      "published": "2025-10-03T17:52:32Z",
+      "updated": "2026-03-02T19:24:02Z",
+      "year": 2025,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2510.03215v2",
+      "pdf_url": "https://arxiv.org/pdf/2510.03215v2",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.LG"
+      ],
+      "external_ids": {
+        "arxiv": "2510.03215v2"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2510.03215v2",
+          "url": "https://arxiv.org/abs/2510.03215v2",
+          "doi": null,
+          "arxiv_id": "2510.03215v2",
+          "published": "2025-10-03T17:52:32Z",
+          "updated": "2026-03-02T19:24:02Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2510.03215v2&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-19T08:17:28.886074Z",
+      "sha256": "a38ae8e631db8f85a33f955f11fb82c5dedb69de555c06453fcd8f980635674a",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvK09WdEZHYnBObWlFcGR5N1B4WllicWMxeTBVPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjUxMC4wMzIxNXYyJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTE5VDA4OjE3OjI4WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNTEwLjAzMjE1djIiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjUxMC4wMzIxNXYyPC9pZD4KICAgIDx0aXRsZT5DYWNoZS10by1DYWNoZTogRGlyZWN0IFNlbWFudGljIENvbW11bmljYXRpb24gQmV0d2VlbiBMYXJnZSBMYW5ndWFnZSBNb2RlbHM8L3RpdGxlPgogICAgPHVwZGF0ZWQ+MjAyNi0wMy0wMlQxOToyNDowMlo8L3VwZGF0ZWQ+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjUxMC4wMzIxNXYyIiByZWw9ImFsdGVybmF0ZSIgdHlwZT0idGV4dC9odG1sIi8+CiAgICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9wZGYvMjUxMC4wMzIxNXYyIiByZWw9InJlbGF0ZWQiIHR5cGU9ImFwcGxpY2F0aW9uL3BkZiIgdGl0bGU9InBkZiIvPgogICAgPHN1bW1hcnk+TXVsdGktTExNIHN5c3RlbXMgaGFybmVzcyB0aGUgY29tcGxlbWVudGFyeSBzdHJlbmd0aHMgb2YgZGl2ZXJzZSBMYXJnZSBMYW5ndWFnZSBNb2RlbHMsIGFjaGlldmluZyBwZXJmb3JtYW5jZSBhbmQgZWZmaWNpZW5jeSBnYWlucyB0aGF0IGFyZSBub3QgYXR0YWluYWJsZSBieSBhIHNpbmdsZSBtb2RlbC4gSW4gZXhpc3RpbmcgZGVzaWducywgTExNcyBjb21tdW5pY2F0ZSB0aHJvdWdoIHRleHQsIGZvcmNpbmcgaW50ZXJuYWwgcmVwcmVzZW50YXRpb25zIHRvIGJlIHRyYW5zZm9ybWVkIGludG8gb3V0cHV0IHRva2VuIHNlcXVlbmNlcy4gVGhpcyBwcm9jZXNzIGJvdGggbG9zZXMgcmljaCBzZW1hbnRpYyBpbmZvcm1hdGlvbiBhbmQgaW5jdXJzIHRva2VuLWJ5LXRva2VuIGdlbmVyYXRpb24gbGF0ZW5jeS4gTW90aXZhdGVkIGJ5IHRoZXNlIGxpbWl0YXRpb25zLCB3ZSBhc2s6IENhbiBMTE1zIGNvbW11bmljYXRlIGJleW9uZCB0ZXh0PyBPcmFjbGUgZXhwZXJpbWVudHMgc2hvdyB0aGF0IGVucmljaGluZyB0aGUgS1YtQ2FjaGUgc2VtYW50aWNzIGNhbiBpbXByb3ZlIHJlc3BvbnNlIHF1YWxpdHkgd2l0aG91dCBpbmNyZWFzaW5nIGNhY2hlIHNpemUsIHN1cHBvcnRpbmcgS1YtQ2FjaGUgYXMgYW4gZWZmZWN0aXZlIG1lZGl1bSBmb3IgaW50ZXItbW9kZWwgY29tbXVuaWNhdGlvbi4gVGh1cywgd2UgcHJvcG9zZSBDYWNoZS10by1DYWNoZSAoQzJDKSwgYSBuZXcgcGFyYWRpZ20gZm9yIGRpcmVjdCBzZW1hbnRpYyBjb21tdW5pY2F0aW9uIGJldHdlZW4gTExNcy4gQzJDIHVzZXMgYSBuZXVyYWwgbmV0d29yayB0byBwcm9qZWN0IGFuZCBmdXNlIHRoZSBzb3VyY2UgbW9kZWwncyBLVi1jYWNoZSB3aXRoIHRoYXQgb2YgdGhlIHRhcmdldCBtb2RlbCB0byBlbmFibGUgZGlyZWN0IHNlbWFudGljIHRyYW5zZmVyLiBBIGxlYXJuYWJsZSBnYXRpbmcgbWVjaGFuaXNtIHNlbGVjdHMgdGhlIHRhcmdldCBsYXllcnMgdGhhdCBiZW5lZml0IGZyb20gY2FjaGUgY29tbXVuaWNhdGlvbi4gQ29tcGFyZWQgd2l0aCB0ZXh0IGNvbW11bmljYXRpb24sIEMyQyB1dGlsaXplcyB0aGUgZGVlcCwgc3BlY2lhbGl6ZWQgc2VtYW50aWNzIGZyb20gYm90aCBtb2RlbHMsIHdoaWxlIGF2b2lkaW5nIGV4cGxpY2l0IGludGVybWVkaWF0ZSB0ZXh0IGdlbmVyYXRpb24uIEV4cGVyaW1lbnRzIHNob3cgdGhhdCBDMkMgYWNoaWV2ZXMgNi40LTE0LjIlIGhpZ2hlciBhdmVyYWdlIGFjY3VyYWN5IHRoYW4gaW5kaXZpZHVhbCBtb2RlbHMuIEl0IGZ1cnRoZXIgb3V0cGVyZm9ybXMgdGhlIHRleHQgY29tbXVuaWNhdGlvbiBwYXJhZGlnbSBieSBhcHByb3hpbWF0ZWx5IDMuMS01LjQlLCB3aGlsZSBkZWxpdmVyaW5nIGFuIGF2ZXJhZ2UgMi41eCBzcGVlZHVwIGluIGxhdGVuY3kuIE91ciBjb2RlIGlzIGF2YWlsYWJsZSBhdCBodHRwczovL2dpdGh1Yi5jb20vdGh1LW5pY3MvQzJDLjwvc3VtbWFyeT4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DTCIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkxHIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8cHVibGlzaGVkPjIwMjUtMTAtMDNUMTc6NTI6MzJaPC9wdWJsaXNoZWQ+CiAgICA8YXJ4aXY6Y29tbWVudD5QdWJsaXNoZWQgaW4gSUNMUicyNjwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UaWFueXUgRnU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlppaGFuIE1pbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFubGluZyBaaGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SmljaGFvIFlhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+R3VvaGFvIERhaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+V2FubGkgT3V5YW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZdSBXYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgPC9lbnRyeT4KPC9mZWVkPgo="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+    "authors": [
+      "Tianyu Fu",
+      "Zihan Min",
+      "Hanling Zhang",
+      "Jichao Yan",
+      "Guohao Dai",
+      "Wanli Ouyang",
+      "Yu Wang"
+    ],
+    "abstract": "Multi-LLM systems harness the complementary strengths of diverse Large Language Models, achieving performance and efficiency gains that are not attainable by a single model. In existing designs, LLMs communicate through text, forcing internal representations to be transformed into output token sequences. This process both loses rich semantic information and incurs token-by-token generation latency. Motivated by these limitations, we ask: Can LLMs communicate beyond text? Oracle experiments show that enriching the KV-Cache semantics can improve response quality without increasing cache size, supporting KV-Cache as an effective medium for inter-model communication. Thus, we propose Cache-to-Cache (C2C), a new paradigm for direct semantic communication between LLMs. C2C uses a neural network to project and fuse the source model's KV-cache with that of the target model to enable direct semantic transfer. A learnable gating mechanism selects the target layers that benefit from cache communication. Compared with text communication, C2C utilizes the deep, specialized semantics from both models, while avoiding explicit intermediate text generation. Experiments show that C2C achieves 6.4-14.2% higher average accuracy than individual models. It further outperforms the text communication paradigm by approximately 3.1-5.4%, while delivering an average 2.5x speedup in latency. Our code is available at https://github.com/thu-nics/C2C.",
+    "identifiers": {
+      "arxiv": "2510.03215",
+      "arxiv_versioned": "2510.03215v2",
+      "doi": null,
+      "external": {
+        "arxiv": "2510.03215v2"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.LG"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2025-10-03T17:52:32Z",
+    "updated": "2026-03-02T19:24:02Z"
+  }
+}

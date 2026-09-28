@@ -1,0 +1,23 @@
+\begin{abstract}
+\label{sec:abstract}
+% What problem; why important
+% Existing multi-LLM frameworks leverage the complementary expertise of different models, achieving stronger capabilities than scaling a single model.
+Multi-LLM systems harness the complementary strengths of diverse Large Language Models, achieving performance and efficiency gains that are not attainable by a single model.
+% Current solution
+In existing designs, LLMs communicate through text, forcing internal representations to be transformed into output token sequences.
+This process both loses rich semantic information and incurs token-by-token generation latency. 
+Motivated by these limitations, we ask: \emph{Can LLMs communicate beyond text?} 
+% Oracle?
+Oracle experiments show that enriching the KV-Cache semantics can improve response quality without increasing cache size, supporting KV-Cache as an effective medium for inter-model communication.
+% we identify it as an ideal communication medium with complementary perspectives of different LLMs on the same input.
+% Ours
+Thus, we propose Cache-to-Cache (\name), a new paradigm for direct semantic communication between LLMs.
+% Method
+\name uses a neural network to project and fuse the source model’s KV-cache with that of the target model to enable direct semantic transfer. 
+A learnable gating mechanism selects the target layers that benefit from cache communication.
+Compared with text communication, \name utilizes the deep, specialized semantics from both models, while avoiding explicit intermediate text generation.
+% Experiments
+Experiments show that \name achieves 6.4-14.2\% higher average accuracy than individual models. 
+It further outperforms the text communication paradigm by approximately 3.1-5.4\%, while delivering an average 2.5× speedup in latency.
+Our code is available at \url{https://github.com/thu-nics/C2C}.
+\end{abstract}

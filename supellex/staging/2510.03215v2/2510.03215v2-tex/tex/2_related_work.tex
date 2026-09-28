@@ -1,0 +1,35 @@
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{KV-Cache Sharing and Reuse}
+Based on the similarity of KV-Cache between layers, intra-model cache sharing methods~\citep{yang2024kvsharer, wu2024layer, sun2024you, brandon2024reducing, wu2025systematic} have been proposed to reuse shallow layers' KV-Cache for deeper layers to accelerate single LLM inference. 
+Another research focus is to reuse a portion of KV-Cache (e.g., common prefix, reference documents) for the same model in multiple user queries~\citep{bang2023gptcache, ye2024chunkattention, yao2024cacheblend, qin2024mooncake, yang2025kvlink, ye2025kvcomm, eyuboglu2025cartridges}.
+DroidSpeak~\citep{liu2024droidspeak} extends cache reuse to models fine-tuned from the same base model. 
+% C2C improves performance
+Unlike existing works that focus on computational efficiency through cache reuse, our approach leverages the KV-Cache as a medium for semantic transfer between LLMs.
+% Generalize to different model sizes and families
+Furthermore, unlike existing cache sharing methods that are restricted to only a single model or models with identical structure and size, our method supports sharing across different model families and varying model sizes. 
+
+\subsection{Multi-LLM Systems}
+% \subsection{Collaborative Multi-LLM Systems}
+\xhdr{{Collaborative multi-LLM systems}}
+% Strong to strong
+Collaborative systems treat multiple LLMs as peers that exchange information to improve collective performance. 
+Chain-of-Agents~\citep{zhang2024chain} and MetaGPT~\citep{hong2024metagpt} create sequential message flows where agents directly communicate using natural language interfaces. 
+Mixture-of-Agents~\citep{wang2024moa}, DyLAN~\citep{liu2024dylan}, and Owl~\citep{hu2025owl} introduce layered communication architectures. Target LLMs aggregate messages from multiple models using voting or summarization mechanisms.
+Multi-agent debate methods~\citep{estornell2024multi, liang2024encouraging, du2023improving} involve iterative communication rounds, letting LLM agents discuss and refine responses.
+Recent works such as MCP~\cite{anthropic2024mcp} and A2A~\cite{google2025a2a} establish formal text protocols beyond natural language, standardizing agent interaction and tool usage in collaborative multi-LLM systems. 
+% Do not require explicit token-by-token decoding to communicate
+% Deeper semantic
+These approaches rely on text-level interfaces, where communication requires one model to generate text token-by-token and another to ingest it as input. 
+Our work explores a deeper and more efficient collaboration~\citep{gibberlink, zheng2025thought} by directly sharing internal KV-Cache representations.
+
+% \subsection{Routing-based Multi-LLM Inference Systems}
+\xhdr{Routing-based multi-LLM inference systems}
+% Strong to weak
+To accelerate LLM inference, several systems leverage multiple models with different capabilities and costs. 
+Dynamic model selection methods~\citep{OpenAI2025GPT5, ong2024routellm, feng2024graphrouter, ning2024sot} route queries to different models with varying sizes and configurations to balance efficiency and performance. 
+Token-level routing methods~\citep{zhang2024fast, shen2024learning, zheng2025citer, fu2025r2r} enable finer-grained selection, utilizing smaller models for simple token generation within the reasoning process of complex tasks. 
+While these systems achieve efficiency through strategic model switching, they either completely drop context from other models, or simply rely on their own understandings of the context. 
+% There is no contextual understanding transfer, and the small model generally does not have a strong an understanding as the big model. 
+Without understanding sharing, smaller models cannot benefit from the richer representations already computed by larger models.

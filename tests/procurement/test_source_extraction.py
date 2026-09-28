@@ -15,8 +15,14 @@ from jsonl_engine.deposit import _fingerprint_tree as deposit_fingerprint_tree
 from jsonl_engine.publication import PinnedPublicationRoot
 from procurement.source.contracts import ArchiveLimits, SourceArchiveError
 from procurement.source.extraction import SourceArchiveExtractor, extract_source_archive
-from procurement.source.latex import LatexSourceInspector, inspect_latex_source_tree
-from procurement.source.tree import fingerprint_source_tree
+from procurement.source.findings import build_source_findings
+from procurement.source.latex import (
+    EmbeddedLatexMetadata,
+    LatexSourceInspection,
+    LatexSourceInspector,
+    inspect_latex_source_tree,
+)
+from procurement.source.tree import TreeFile, fingerprint_source_tree
 
 
 def _limits(**overrides: int) -> ArchiveLimits:
@@ -333,10 +339,59 @@ class SourceExtractionTests(unittest.TestCase):
                 self.assertFalse(os.path.lexists(destination))
                 self.assertNoPayloadScratch(destination)
 
+    def test_later_case_colliding_regular_file_is_left_in_the_archive(self) -> None:
+        kept = b"kept-bytes"
+        omitted = b"omitted-bytes"
+        source = b"\\documentclass{article}\n\\begin{document}x\\end{document}\n"
+        payload = _tar_gzip(
+            [
+                _regular("procedure.png", kept),
+                _regular("Procedure.png", omitted),
+                _regular("main.tex", source),
+            ]
+        )
+        _, destination, extracted = self._extract("case-file", payload)
+
+        self.assertEqual((("procedure.png", "Procedure.png"),), extracted.omitted_case_collisions)
+        self.assertEqual(2, extracted.archive_entries)
+        self.assertEqual(len(kept) + len(source), extracted.extracted_bytes)
+        self.assertEqual(kept, (destination / "procedure.png").read_bytes())
+        self.assertEqual(
+            ["main.tex", "procedure.png"],
+            sorted(path.name for path in destination.iterdir()),
+        )
+        self.assertNoPayloadScratch(destination)
+
+        digest = hashlib.sha256(b"x").hexdigest()
+        inspection = LatexSourceInspection(
+            root_path=str(destination),
+            entrypoint="main.tex",
+            entrypoint_selection="single-candidate",
+            file_count=2,
+            tex_file_count=1,
+            tree_sha256=digest,
+            files=(TreeFile(path="main.tex", bytes=1, sha256=digest),),
+            package_control_files=(),
+            embedded_metadata=EmbeddedLatexMetadata(
+                title_tex=None,
+                authors_tex=(),
+                doi=None,
+            ),
+        )
+        check = {
+            item["name"]: item
+            for item in build_source_findings(extracted, inspection)["checks"]
+        }["archive-members-confined"]
+        self.assertEqual("waived", check["outcome"])
+        self.assertEqual(
+            [{"kept": "procedure.png", "omitted": "Procedure.png"}],
+            check["omitted"],
+        )
+        self.assertTrue(check["reason"])
+
     def test_duplicate_case_colliding_and_file_directory_conflicts_are_rejected(self) -> None:
         cases = (
             [_regular("same.tex", b"a"), _regular("same.tex", b"b")],
-            [_regular("Case.tex", b"a"), _regular("case.tex", b"b")],
             [_regular("Foo/a.tex", b"a"), _regular("foo/b.tex", b"b")],
             [_regular("node", b"a"), _regular("node/child.tex", b"b")],
         )

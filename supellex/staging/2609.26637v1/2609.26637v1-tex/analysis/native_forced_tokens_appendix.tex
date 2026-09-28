@@ -1,0 +1,27 @@
+\begin{table}[t]
+\centering
+\caption{Comparison of reasoning excerpts from different models on the same problem, showing how each model expresses the corresponding reasoning steps.}
+\label{tab:closed-lengths}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{llrr}
+\toprule
+Task & Model & Native $R_N$ & Forced $O_F$ \\
+\midrule
+MATH & GPT-6-Astra & 2,903 & 1,752 \\
+ & GPT-5.6-sol & 5,526 & 3,925 \\
+ & Opus 4.8 & 24,087 & 16,283 \\
+ & Sonnet 5 & 27,846 & 27,851 \\
+\midrule
+HLE & GPT-6-Astra & 2,313 & 652 \\
+ & GPT-5.6-sol & 3,293 & 2,214 \\
+ & Opus 4.8 & 5,385 & 3,627 \\
+ & Sonnet 5 & 10,604 & 10,705 \\
+\midrule
+LCB & GPT-6-Astra & 1,962 & 939 \\
+ & GPT-5.6-sol & 4,058 & 2,665 \\
+ & Opus 4.8 & 14,849 & 12,696 \\
+ & Sonnet 5 & 25,128 & 26,416 \\
+\bottomrule
+\end{tabular}
+\end{table}

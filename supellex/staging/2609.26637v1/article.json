@@ -1,0 +1,184 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2609.26637v1",
+  "initialized_utc": "2026-09-26T14:00:51.512986Z",
+  "title": "Capable yet Parsimonious: Extracting and Characterizing Hidden Chain-of-Thought in Frontier Models",
+  "authors": [
+    "Xiaoyu Luo",
+    "Tao Ren",
+    "Wenrui Yu",
+    "Xiao Li",
+    "Qiongxiu Li",
+    "Johannes Bjerva"
+  ],
+  "abstract": "The rapid capability gains of frontier language models are widely attributed to improved reasoning abilities, yet this cannot be verified as raw CoT traces in closed-source systems are hidden. By registering a simple custom tool through a standard API feature, we induce frontier models to externalize intermediate reasoning. Because these traces may reflect post-hoc rationalization rather than genuine reasoning, we first evaluate against native CoT on open-source models and extend to closed-source frontier models including GPT-6 Astra. We find that the extracted reasoning matches native reasoning performance and substantially outperforms no-reasoning baselines, across competition mathematics, science, and code generation. We then characterize how frontier models structure their intermediate reasoning. Across token efficiency, reasoning-step types, and induced reasoning trees, we identify systematic differences in how models externalize, compress, and organize reasoning. We find that Astra exhibits token-efficient directed reasoning, selecting a correct trajectory earlier, while resolving elementary steps internally and externalizing only crucial reasoning. These findings provide a behavioral lens on frontier-model reasoning beyond benchmark scores.",
+  "identifiers": {
+    "arxiv": "2609.26637",
+    "arxiv_versioned": "2609.26637v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2609.26637v1"
+    }
+  },
+  "categories": [
+    "cs.CL",
+    "cs.AI",
+    "cs.CR"
+  ],
+  "concepts": [],
+  "primary_category": "cs.CL",
+  "published": "2026-09-22T16:10:18Z",
+  "updated": "2026-09-22T16:10:18Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2609.26637v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9435,
+        "sha256": "5b30750f5c108d221afa1ec99e6ff355c2ac13cb64eef54ef546c606c7cc161d",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-26T14:00:50.410669Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2609.26637v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "3808b2d5c8ef29961007793d685a0cf414cf54c06535e9afd7c39350554f56ca"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "arxiv.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "Capable yet Parsimonious: \\\\ Extracting and Characterizing Hidden Chain-of-Thought in Frontier Models",
+        "authors_tex": [
+          "\\textbf{Xiaoyu Luo}$^{1}$,\n\\textbf{Tao Ren}$^{1}$,\n\\textbf{Wenrui Yu}$^{2}$,\n\\textbf{Xiao Li}$^{3}$,\n\\textbf{Qiongxiu Li}$^{2,3}$,\n\\textbf{Johannes Bjerva}$^{1}$\\\\\n$^{1}$Department of Computer Science,\n$^{2}$Department of Electronic Systems\\\\\nAalborg University, Copenhagen, Denmark\\\\\n$^{3}$Seafill\\\\\n\\texttt{\\{xilu,taoren,jbjerva\\}@cs.aau.dk},\n\\texttt{\\{wenyu,qili\\}@es.aau.dk}\\\\\n\\texttt{xiao.li@seafill.com}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 214,
+        "sha256": "f8701fa631c1bb367c886b9e16028cad2f0cf37463a4e26268b9f1ae7f23a663"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2609.26637v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2609.26637v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 1681926,
+      "sha256": "621d31a93dad464b8256acd0f27a2a5c99f32616b7f6e9eae32fee050edac979",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2609.26637v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2609.26637v1.tar.gz",
+      "entrypoint": "arxiv.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 32,
+      "tex_files": 14,
+      "sha256": "18bbf37dce49e728283196ae6d4d74471ed16e929672383bedd93f39e3b0321f"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2609.26637v1.pdf",
+      "format": "application/pdf",
+      "bytes": 2192767,
+      "sha256": "0fbdf779394e07caa881349145e2415b4bdc7701641830eb5322b3747bf467da"
+    },
+    {
+      "role": "html-source",
+      "path": "2609.26637v1-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2609.26637v1.html",
+      "files": 15,
+      "bytes": 6432165,
+      "sha256": "83cbce0e5ab104e1ba4f6165677f9fd7509b4f9ade447245659d88f4847d3312"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-26T14:00:51.512986Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 35
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 32
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 14
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "arxiv.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

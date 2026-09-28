@@ -1,0 +1,76 @@
+
+\begin{table}[t!]
+\centering
+\caption{
+Performance comparison on mathematical discovery tasks.
+Higher is better for \textbf{Sum Diff} and \textbf{Circle Packing}, while lower is better for \textbf{Auto Correlation}.
+Best results are shown in \textbf{bold}.
+}
+\label{tab:downstream_results}
+\small
+\setlength{\tabcolsep}{1pt}
+\renewcommand{\arraystretch}{1.15}
+\vspace{0.1in}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Method}
+& \textbf{LLM}
+& \textbf{Sum Diff ($\uparrow$)}
+& \textbf{Auto Correlation ($\downarrow$)}
+& \textbf{Circle Packing ($\uparrow$)} \\
+\midrule
+
+AlphaEvolve
+& Gemini-2.0 Pro + Flash 
+& -- &  1.455700 &  2.635862 \\
+
+AlphaEvolveV2
+& Gemini-2.0 Pro + Flash 
+& 1.121936 & -- & \textbf{2.635983} \\
+
+OpenEvolve 
+& - 
+& -- &  1.460000 &  - \\
+
+CodeEvolve 
+& -
+& -- & -- & 2.635980 \\
+
+ShinkaEvolve 
+& Mixed 
+& -- &  1.457800 &  2.635982 \\
+
+TTS-Discovery
+& Qwen3-8B 
+& -- & -- &  \textbf{2.635983} \\
+
+ThetaEvolve
+& Distilled-Qwen3-8B 
+& -- & 1.493000 & \textbf{2.635983} \\
+
+EvoX
+& Gemini-3.0-Pro 
+& -- & 1.458900 & 2.635900 \\
+
+SimpleTES
+& GPT-OSS-120B 
+& 1.143975 & \bf 1.453675 & \textbf{2.635983} \\
+
+
+\midrule
+\textit{Our System} \\
+Recursive Fixed Exploration
+& Gemini-3.1-Pro 
+& 1.144047 & 1.456001 & \textbf{2.635983} \\
+
+\textsc{Dream-RSI}
+& Gemini-3.1-Pro  
+& \textbf{1.145427}
+& 1.456375
+& \textbf{2.635983} \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+

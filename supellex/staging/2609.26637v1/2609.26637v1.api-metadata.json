@@ -1,0 +1,109 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2609.26637v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2609.26637v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Capable yet Parsimonious: Extracting and Characterizing Hidden Chain-of-Thought in Frontier Models",
+      "authors": [
+        "Xiaoyu Luo",
+        "Tao Ren",
+        "Wenrui Yu",
+        "Xiao Li",
+        "Qiongxiu Li",
+        "Johannes Bjerva"
+      ],
+      "abstract": "The rapid capability gains of frontier language models are widely attributed to improved reasoning abilities, yet this cannot be verified as raw CoT traces in closed-source systems are hidden. By registering a simple custom tool through a standard API feature, we induce frontier models to externalize intermediate reasoning. Because these traces may reflect post-hoc rationalization rather than genuine reasoning, we first evaluate against native CoT on open-source models and extend to closed-source frontier models including GPT-6 Astra. We find that the extracted reasoning matches native reasoning performance and substantially outperforms no-reasoning baselines, across competition mathematics, science, and code generation. We then characterize how frontier models structure their intermediate reasoning. Across token efficiency, reasoning-step types, and induced reasoning trees, we identify systematic differences in how models externalize, compress, and organize reasoning. We find that Astra exhibits token-efficient directed reasoning, selecting a correct trajectory earlier, while resolving elementary steps internally and externalizing only crucial reasoning. These findings provide a behavioral lens on frontier-model reasoning beyond benchmark scores.",
+      "doi": null,
+      "arxiv_id": "2609.26637v1",
+      "published": "2026-09-22T16:10:18Z",
+      "updated": "2026-09-22T16:10:18Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2609.26637v1",
+      "pdf_url": "https://arxiv.org/pdf/2609.26637v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.CR"
+      ],
+      "external_ids": {
+        "arxiv": "2609.26637v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2609.26637v1",
+          "url": "https://arxiv.org/abs/2609.26637v1",
+          "doi": null,
+          "arxiv_id": "2609.26637v1",
+          "published": "2026-09-22T16:10:18Z",
+          "updated": "2026-09-22T16:10:18Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2609.26637v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-26T14:00:50.410669Z",
+      "sha256": "3808b2d5c8ef29961007793d685a0cf414cf54c06535e9afd7c39350554f56ca",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvZ1hRUGlsTUJOcjIzQVk5MVdPL2RqLzVVc2JzPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOS4yNjYzN3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTI2VDE0OjAwOjQ5WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA5LjI2NjM3djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOS4yNjYzN3YxPC9pZD4KICAgIDx0aXRsZT5DYXBhYmxlIHlldCBQYXJzaW1vbmlvdXM6IEV4dHJhY3RpbmcgYW5kIENoYXJhY3Rlcml6aW5nIEhpZGRlbiBDaGFpbi1vZi1UaG91Z2h0IGluIEZyb250aWVyIE1vZGVsczwvdGl0bGU+CiAgICA8dXBkYXRlZD4yMDI2LTA5LTIyVDE2OjEwOjE4WjwvdXBkYXRlZD4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL2Ficy8yNjA5LjI2NjM3djEiIHJlbD0iYWx0ZXJuYXRlIiB0eXBlPSJ0ZXh0L2h0bWwiLz4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vYXJ4aXYub3JnL3BkZi8yNjA5LjI2NjM3djEiIHJlbD0icmVsYXRlZCIgdHlwZT0iYXBwbGljYXRpb24vcGRmIiB0aXRsZT0icGRmIi8+CiAgICA8c3VtbWFyeT5UaGUgcmFwaWQgY2FwYWJpbGl0eSBnYWlucyBvZiBmcm9udGllciBsYW5ndWFnZSBtb2RlbHMgYXJlIHdpZGVseSBhdHRyaWJ1dGVkIHRvIGltcHJvdmVkIHJlYXNvbmluZyBhYmlsaXRpZXMsIHlldCB0aGlzIGNhbm5vdCBiZSB2ZXJpZmllZCBhcyByYXcgQ29UIHRyYWNlcyBpbiBjbG9zZWQtc291cmNlIHN5c3RlbXMgYXJlIGhpZGRlbi4gQnkgcmVnaXN0ZXJpbmcgYSBzaW1wbGUgY3VzdG9tIHRvb2wgdGhyb3VnaCBhIHN0YW5kYXJkIEFQSSBmZWF0dXJlLCB3ZSBpbmR1Y2UgZnJvbnRpZXIgbW9kZWxzIHRvIGV4dGVybmFsaXplIGludGVybWVkaWF0ZSByZWFzb25pbmcuIEJlY2F1c2UgdGhlc2UgdHJhY2VzIG1heSByZWZsZWN0IHBvc3QtaG9jIHJhdGlvbmFsaXphdGlvbiByYXRoZXIgdGhhbiBnZW51aW5lIHJlYXNvbmluZywgd2UgZmlyc3QgZXZhbHVhdGUgYWdhaW5zdCBuYXRpdmUgQ29UIG9uIG9wZW4tc291cmNlIG1vZGVscyBhbmQgZXh0ZW5kIHRvIGNsb3NlZC1zb3VyY2UgZnJvbnRpZXIgbW9kZWxzIGluY2x1ZGluZyBHUFQtNiBBc3RyYS4gV2UgZmluZCB0aGF0IHRoZSBleHRyYWN0ZWQgcmVhc29uaW5nIG1hdGNoZXMgbmF0aXZlIHJlYXNvbmluZyBwZXJmb3JtYW5jZSBhbmQgc3Vic3RhbnRpYWxseSBvdXRwZXJmb3JtcyBuby1yZWFzb25pbmcgYmFzZWxpbmVzLCBhY3Jvc3MgY29tcGV0aXRpb24gbWF0aGVtYXRpY3MsIHNjaWVuY2UsIGFuZCBjb2RlIGdlbmVyYXRpb24uIFdlIHRoZW4gY2hhcmFjdGVyaXplIGhvdyBmcm9udGllciBtb2RlbHMgc3RydWN0dXJlIHRoZWlyIGludGVybWVkaWF0ZSByZWFzb25pbmcuIEFjcm9zcyB0b2tlbiBlZmZpY2llbmN5LCByZWFzb25pbmctc3RlcCB0eXBlcywgYW5kIGluZHVjZWQgcmVhc29uaW5nIHRyZWVzLCB3ZSBpZGVudGlmeSBzeXN0ZW1hdGljIGRpZmZlcmVuY2VzIGluIGhvdyBtb2RlbHMgZXh0ZXJuYWxpemUsIGNvbXByZXNzLCBhbmQgb3JnYW5pemUgcmVhc29uaW5nLiBXZSBmaW5kIHRoYXQgQXN0cmEgZXhoaWJpdHMgdG9rZW4tZWZmaWNpZW50IGRpcmVjdGVkIHJlYXNvbmluZywgc2VsZWN0aW5nIGEgY29ycmVjdCB0cmFqZWN0b3J5IGVhcmxpZXIsIHdoaWxlIHJlc29sdmluZyBlbGVtZW50YXJ5IHN0ZXBzIGludGVybmFsbHkgYW5kIGV4dGVybmFsaXppbmcgb25seSBjcnVjaWFsIHJlYXNvbmluZy4gVGhlc2UgZmluZGluZ3MgcHJvdmlkZSBhIGJlaGF2aW9yYWwgbGVucyBvbiBmcm9udGllci1tb2RlbCByZWFzb25pbmcgYmV5b25kIGJlbmNobWFyayBzY29yZXMuPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkNMIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQUkiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxjYXRlZ29yeSB0ZXJtPSJjcy5DUiIgc2NoZW1lPSJodHRwOi8vYXJ4aXYub3JnL3NjaGVtYXMvYXRvbSIvPgogICAgPHB1Ymxpc2hlZD4yMDI2LTA5LTIyVDE2OjEwOjE4WjwvcHVibGlzaGVkPgogICAgPGFyeGl2OmNvbW1lbnQ+MzMgcGFnZXMsMTQgZmlndXJlczwvYXJ4aXY6Y29tbWVudD4KICAgIDxhcnhpdjpwcmltYXJ5X2NhdGVnb3J5IHRlcm09ImNzLkNMIi8+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5YaWFveXUgTHVvPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5UYW8gUmVuPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5XZW5ydWkgWXU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlhpYW8gTGk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlFpb25neGl1IExpPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5Kb2hhbm5lcyBCamVydmE8L25hbWU+CiAgICA8L2F1dGhvcj4KICA8L2VudHJ5Pgo8L2ZlZWQ+Cg=="
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Capable yet Parsimonious: Extracting and Characterizing Hidden Chain-of-Thought in Frontier Models",
+    "authors": [
+      "Xiaoyu Luo",
+      "Tao Ren",
+      "Wenrui Yu",
+      "Xiao Li",
+      "Qiongxiu Li",
+      "Johannes Bjerva"
+    ],
+    "abstract": "The rapid capability gains of frontier language models are widely attributed to improved reasoning abilities, yet this cannot be verified as raw CoT traces in closed-source systems are hidden. By registering a simple custom tool through a standard API feature, we induce frontier models to externalize intermediate reasoning. Because these traces may reflect post-hoc rationalization rather than genuine reasoning, we first evaluate against native CoT on open-source models and extend to closed-source frontier models including GPT-6 Astra. We find that the extracted reasoning matches native reasoning performance and substantially outperforms no-reasoning baselines, across competition mathematics, science, and code generation. We then characterize how frontier models structure their intermediate reasoning. Across token efficiency, reasoning-step types, and induced reasoning trees, we identify systematic differences in how models externalize, compress, and organize reasoning. We find that Astra exhibits token-efficient directed reasoning, selecting a correct trajectory earlier, while resolving elementary steps internally and externalizing only crucial reasoning. These findings provide a behavioral lens on frontier-model reasoning beyond benchmark scores.",
+    "identifiers": {
+      "arxiv": "2609.26637",
+      "arxiv_versioned": "2609.26637v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2609.26637v1"
+      }
+    },
+    "categories": [
+      "cs.CL",
+      "cs.AI",
+      "cs.CR"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2026-09-22T16:10:18Z",
+    "updated": "2026-09-22T16:10:18Z"
+  }
+}

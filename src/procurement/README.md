@@ -115,7 +115,7 @@ arXiv identity proves the origin of those bytes.
 `SourceMaterializationService` consumes an existing `acquisition.json` in the destination catalog leaf; it
 never downloads an artifact and does not copy receipted bytes. It requires exactly one receipted source
 form, safely expands gzip-wrapped tar or single-TeX source in place, validates the complete LaTeX
-closure, keeps the receipted archive leaf (`{slug}.tar.gz` or `arXiv-{slug}.tar.gz`) and the trimmed
+closure, keeps the receipted archive leaf (`{slug}.tar.gz` or `arXiv-{slug}.tar.gz`) and the complete
 `{slug}-tex/` tree without replacement, and calls `jsonl_engine` to publish `article.json` last. Bibliography is selected by one typed strategy: acquisition artifact identity,
 caller-supplied DOI, or deliberate omission. Explicit DOI resolution is identity-checked against API results
 and any DOI declared by the validated LaTeX closure. There is no best-effort mode
@@ -123,6 +123,19 @@ that could permanently mint an accidentally metadata-free sentinel. Tar input re
 terminator and zero-only padding. The first sentinel freezes PDF inclusion, so a later receipt cannot mutate
 an existing article or leave an orphan PDF. The fixed seven-probe ledger remains independent evidence of
 source integrity.
+
+LaTeX inspection recognizes directory copies with same-named entrypoints when every relative
+file path, size, and SHA-256 agrees. Nested candidate directories are compared separately;
+their files remain in the physical tree and its fingerprint. Selection prefers the shallowest
+copy, then ordinal path order; an explicit `main_tex` takes precedence. Differing same-named
+copies require `main_tex`. Equal individual files or differently named documents do not imply
+interchangeable entrypoints. The `entrypoint-unambiguous` probe records `duplicate_sources`,
+including the canonical directory, copied directory, and relative file fingerprints. Compilation
+and literal input lookup retain the extraction root; selection never rebases input paths or
+removes files. Missing literal inputs retain their separate validation finding. Existing article
+manifests and historical inventory hashes are not rewritten by inspection. Republishing a
+previously deposited copy layout with the new findings requires `rebuild=true`, following the
+existing explicit manifest-rebuild contract; the archive and source tree stay unchanged.
 
 The materialization transaction publishes `article.json` last. It uses no separate source journal because
 every persistent pre-sentinel component is immutable and independently validated: exact archive, PDF,

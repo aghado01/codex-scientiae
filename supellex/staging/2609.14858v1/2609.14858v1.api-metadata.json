@@ -1,0 +1,127 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2609.14858v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2609.14858v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Dream-RSI: Recursive Self-Improvement through Evolving Worlds",
+      "authors": [
+        "Tong Zheng",
+        "Xidong Wu",
+        "Zheng Zhang",
+        "Zhankui He",
+        "Chaoyi Zhang",
+        "Benjamin Coleman",
+        "Ruoqiao Wei",
+        "Di Bai",
+        "Haolin Liu",
+        "Rui Liu",
+        "Xue Wang",
+        "Yue Zhuan",
+        "Wang-Cheng Kang",
+        "Renkai Xiang",
+        "Heng Huang",
+        "Xinwu Cheng",
+        "Yunsong Guo"
+      ],
+      "abstract": "Recursive self-improvement is becoming increasingly vital for autonomous AI agents, where progress hinges on discovering high-value solutions across complex domains. The driver of this process is effective exploration, however, managing and improving exploration strategies remains a major bottleneck. Current systems face a fundamental dilemma: fixed strategies fail to adapt as search spaces scale, while online policy optimization requires navigating vast meta-search spaces under delayed and expensive feedback over long-horizon rollouts. We introduce \\textsc{Dream-RSI}, a framework for scalable and recursively self-improving exploration. A lightweight orchestration layer makes exploration explicit and programmable while leaving the underlying coding agent unchanged. Our key insight is that accumulated discovery history can serve as a replay simulator over the realized search space. By performing dreaming in the replay simulator constructed from historical discovery trees, \\textsc{Dream-RSI} secures immediate, low-cost off-policy feedback to evaluate and refine exploration policies without invoking repetitive, expensive online evaluations. The improved policy is subsequently redeployed online to drive further discovery, continuously expanding the simulator pool in a self-improving loop. Across algorithm engineering, mathematical optimization, and GPU kernel engineering, \\textsc{Dream-RSI} achieves competitive or improved discovery quality while substantially reducing discovery cost in several settings.",
+      "doi": null,
+      "arxiv_id": "2609.14858v1",
+      "published": "2026-09-14T00:10:47Z",
+      "updated": "2026-09-14T00:10:47Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2609.14858v1",
+      "pdf_url": "https://arxiv.org/pdf/2609.14858v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.CL"
+      ],
+      "external_ids": {
+        "arxiv": "2609.14858v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2609.14858v1",
+          "url": "https://arxiv.org/abs/2609.14858v1",
+          "doi": null,
+          "arxiv_id": "2609.14858v1",
+          "published": "2026-09-14T00:10:47Z",
+          "updated": "2026-09-14T00:10:47Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2609.14858v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-21T02:44:26.083332Z",
+      "sha256": "5e7014bb0688ab32a3d5c58fbf35a822f80f33339fdcab0893daa9e261984d17",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvYXRTd21mR2NtVkpXdkJkcUFjQXIrNUs2YTd3PC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOS4xNDg1OHYxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTIxVDAyOjQ0OjI1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA5LjE0ODU4djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOS4xNDg1OHYxPC9pZD4KICAgIDx0aXRsZT5EcmVhbS1SU0k6IFJlY3Vyc2l2ZSBTZWxmLUltcHJvdmVtZW50IHRocm91Z2ggRXZvbHZpbmcgV29ybGRzPC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDktMTRUMDA6MTA6NDdaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDkuMTQ4NTh2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDkuMTQ4NTh2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlJlY3Vyc2l2ZSBzZWxmLWltcHJvdmVtZW50IGlzIGJlY29taW5nIGluY3JlYXNpbmdseSB2aXRhbCBmb3IgYXV0b25vbW91cyBBSSBhZ2VudHMsIHdoZXJlIHByb2dyZXNzIGhpbmdlcyBvbiBkaXNjb3ZlcmluZyBoaWdoLXZhbHVlIHNvbHV0aW9ucyBhY3Jvc3MgY29tcGxleCBkb21haW5zLiBUaGUgZHJpdmVyIG9mIHRoaXMgcHJvY2VzcyBpcyBlZmZlY3RpdmUgZXhwbG9yYXRpb24sIGhvd2V2ZXIsIG1hbmFnaW5nIGFuZCBpbXByb3ZpbmcgZXhwbG9yYXRpb24gc3RyYXRlZ2llcyByZW1haW5zIGEgbWFqb3IgYm90dGxlbmVjay4gQ3VycmVudCBzeXN0ZW1zIGZhY2UgYSBmdW5kYW1lbnRhbCBkaWxlbW1hOiBmaXhlZCBzdHJhdGVnaWVzIGZhaWwgdG8gYWRhcHQgYXMgc2VhcmNoIHNwYWNlcyBzY2FsZSwgd2hpbGUgb25saW5lIHBvbGljeSBvcHRpbWl6YXRpb24gcmVxdWlyZXMgbmF2aWdhdGluZyB2YXN0IG1ldGEtc2VhcmNoIHNwYWNlcyB1bmRlciBkZWxheWVkIGFuZCBleHBlbnNpdmUgZmVlZGJhY2sgb3ZlciBsb25nLWhvcml6b24gcm9sbG91dHMuIFdlIGludHJvZHVjZSBcdGV4dHNje0RyZWFtLVJTSX0sIGEgZnJhbWV3b3JrIGZvciBzY2FsYWJsZSBhbmQgcmVjdXJzaXZlbHkgc2VsZi1pbXByb3ZpbmcgZXhwbG9yYXRpb24uIEEgbGlnaHR3ZWlnaHQgb3JjaGVzdHJhdGlvbiBsYXllciBtYWtlcyBleHBsb3JhdGlvbiBleHBsaWNpdCBhbmQgcHJvZ3JhbW1hYmxlIHdoaWxlIGxlYXZpbmcgdGhlIHVuZGVybHlpbmcgY29kaW5nIGFnZW50IHVuY2hhbmdlZC4gT3VyIGtleSBpbnNpZ2h0IGlzIHRoYXQgYWNjdW11bGF0ZWQgZGlzY292ZXJ5IGhpc3RvcnkgY2FuIHNlcnZlIGFzIGEgcmVwbGF5IHNpbXVsYXRvciBvdmVyIHRoZSByZWFsaXplZCBzZWFyY2ggc3BhY2UuIEJ5IHBlcmZvcm1pbmcgZHJlYW1pbmcgaW4gdGhlIHJlcGxheSBzaW11bGF0b3IgY29uc3RydWN0ZWQgZnJvbSBoaXN0b3JpY2FsIGRpc2NvdmVyeSB0cmVlcywgXHRleHRzY3tEcmVhbS1SU0l9IHNlY3VyZXMgaW1tZWRpYXRlLCBsb3ctY29zdCBvZmYtcG9saWN5IGZlZWRiYWNrIHRvIGV2YWx1YXRlIGFuZCByZWZpbmUgZXhwbG9yYXRpb24gcG9saWNpZXMgd2l0aG91dCBpbnZva2luZyByZXBldGl0aXZlLCBleHBlbnNpdmUgb25saW5lIGV2YWx1YXRpb25zLiBUaGUgaW1wcm92ZWQgcG9saWN5IGlzIHN1YnNlcXVlbnRseSByZWRlcGxveWVkIG9ubGluZSB0byBkcml2ZSBmdXJ0aGVyIGRpc2NvdmVyeSwgY29udGludW91c2x5IGV4cGFuZGluZyB0aGUgc2ltdWxhdG9yIHBvb2wgaW4gYSBzZWxmLWltcHJvdmluZyBsb29wLiBBY3Jvc3MgYWxnb3JpdGhtIGVuZ2luZWVyaW5nLCBtYXRoZW1hdGljYWwgb3B0aW1pemF0aW9uLCBhbmQgR1BVIGtlcm5lbCBlbmdpbmVlcmluZywgXHRleHRzY3tEcmVhbS1SU0l9IGFjaGlldmVzIGNvbXBldGl0aXZlIG9yIGltcHJvdmVkIGRpc2NvdmVyeSBxdWFsaXR5IHdoaWxlIHN1YnN0YW50aWFsbHkgcmVkdWNpbmcgZGlzY292ZXJ5IGNvc3QgaW4gc2V2ZXJhbCBzZXR0aW5ncy48L3N1bW1hcnk+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuQ0wiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOS0xNFQwMDoxMDo0N1o8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PjEyIHBhZ2VzPC9hcnhpdjpjb21tZW50PgogICAgPGFyeGl2OnByaW1hcnlfY2F0ZWdvcnkgdGVybT0iY3MuQ0wiLz4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlRvbmcgWmhlbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlhpZG9uZyBXdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WmhlbmcgWmhhbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlpoYW5rdWkgSGU8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkNoYW95aSBaaGFuZzwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+QmVuamFtaW4gQ29sZW1hbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UnVvcWlhbyBXZWk8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkRpIEJhaTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+SGFvbGluIExpdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+UnVpIExpdTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WHVlIFdhbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPll1ZSBaaHVhbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+V2FuZy1DaGVuZyBLYW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5SZW5rYWkgWGlhbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPkhlbmcgSHVhbmc8L25hbWU+CiAgICA8L2F1dGhvcj4KICAgIDxhdXRob3I+CiAgICAgIDxuYW1lPlhpbnd1IENoZW5nPC9uYW1lPgogICAgPC9hdXRob3I+CiAgICA8YXV0aG9yPgogICAgICA8bmFtZT5ZdW5zb25nIEd1bzwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Dream-RSI: Recursive Self-Improvement through Evolving Worlds",
+    "authors": [
+      "Tong Zheng",
+      "Xidong Wu",
+      "Zheng Zhang",
+      "Zhankui He",
+      "Chaoyi Zhang",
+      "Benjamin Coleman",
+      "Ruoqiao Wei",
+      "Di Bai",
+      "Haolin Liu",
+      "Rui Liu",
+      "Xue Wang",
+      "Yue Zhuan",
+      "Wang-Cheng Kang",
+      "Renkai Xiang",
+      "Heng Huang",
+      "Xinwu Cheng",
+      "Yunsong Guo"
+    ],
+    "abstract": "Recursive self-improvement is becoming increasingly vital for autonomous AI agents, where progress hinges on discovering high-value solutions across complex domains. The driver of this process is effective exploration, however, managing and improving exploration strategies remains a major bottleneck. Current systems face a fundamental dilemma: fixed strategies fail to adapt as search spaces scale, while online policy optimization requires navigating vast meta-search spaces under delayed and expensive feedback over long-horizon rollouts. We introduce \\textsc{Dream-RSI}, a framework for scalable and recursively self-improving exploration. A lightweight orchestration layer makes exploration explicit and programmable while leaving the underlying coding agent unchanged. Our key insight is that accumulated discovery history can serve as a replay simulator over the realized search space. By performing dreaming in the replay simulator constructed from historical discovery trees, \\textsc{Dream-RSI} secures immediate, low-cost off-policy feedback to evaluate and refine exploration policies without invoking repetitive, expensive online evaluations. The improved policy is subsequently redeployed online to drive further discovery, continuously expanding the simulator pool in a self-improving loop. Across algorithm engineering, mathematical optimization, and GPU kernel engineering, \\textsc{Dream-RSI} achieves competitive or improved discovery quality while substantially reducing discovery cost in several settings.",
+    "identifiers": {
+      "arxiv": "2609.14858",
+      "arxiv_versioned": "2609.14858v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2609.14858v1"
+      }
+    },
+    "categories": [
+      "cs.CL"
+    ],
+    "concepts": [],
+    "primary_category": "cs.CL",
+    "published": "2026-09-14T00:10:47Z",
+    "updated": "2026-09-14T00:10:47Z"
+  }
+}

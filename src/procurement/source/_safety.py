@@ -113,8 +113,25 @@ def _portable_relative(
     return normalized
 
 
+class PortableCaseFileCollision(SourceMaterializationError):
+    """A later regular-file member case-collides with an earlier regular file."""
+
+    def __init__(self, kept: str, omitted: str) -> None:
+        self.kept = kept
+        self.omitted = omitted
+        super().__init__(
+            f"source paths collide by portable case: {kept!r} and {omitted!r}"
+        )
+
+
 class _PortablePathRegistry:
-    """Detect case collisions and file/directory prefix conflicts."""
+    """Detect case collisions and file/directory prefix conflicts.
+
+    A later archive member that is a regular file and case-collides with an
+    earlier regular file raises PortableCaseFileCollision. Directory collisions,
+    file/directory conflicts, and on-disk tree inventory still raise
+    SourceMaterializationError.
+    """
 
     def __init__(self) -> None:
         self._nodes: dict[str, tuple[str, Literal["file", "directory"]]] = {}
@@ -131,6 +148,14 @@ class _PortablePathRegistry:
             current = self._nodes.get(key)
             if current is not None:
                 if current[0] != prefix:
+                    colliding_leaf = (
+                        member
+                        and not is_directory
+                        and index == len(components)
+                        and current[1] == "file"
+                    )
+                    if colliding_leaf:
+                        raise PortableCaseFileCollision(current[0], prefix)
                     raise SourceMaterializationError(
                         f"source paths collide by portable case: {current[0]!r} and {prefix!r}"
                     )

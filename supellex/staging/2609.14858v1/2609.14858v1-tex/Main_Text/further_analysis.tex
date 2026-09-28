@@ -1,0 +1,9 @@
+\section{Further Analysis}
+\subsection{Analysis of Historical Inductive Biases in Long-Horizon Discovery}
+\input{Main_Text/Figures/history_as_guidance_vs_replay_simulator}
+We further investigate how the nature of the historical inductive bias affects long-horizon discovery. A natural alternative for utilizing history is to abstract prior trajectories into high-level directional insights, which are directly injected into the prompt as explicit semantic guidance for subsequent rounds. To evaluate the efficacy of this prompt-level semantic guidance, we apply it to both Recursive Fixed Exploration and \textsc{Dream-RSI}. As illustrated in Figure~\ref{fig:convdiv_guidance}, explicit directional guidance consistently underperforms its unguided counterpart across both paradigms under equivalent discovery budgets. These results suggest that in long-horizon discovery---where multiple parallel threads are deployed for exploration---imposing strong semantic inductive biases regarding future search directions tends to over-constrain the search space and impede diverse exploration.
+
+
+\subsection{Analysis of Evolution of Exploration Behavior}
+\input{Main_Text/Figures/policy_analysis}
+Figure~\ref{fig:convdiv-dynamics} illustrates how the learned exploration policy evolves across recursive rounds on ConvDiv. As shown, the exploration policy exhibits a clear adaptive pattern: as performance improves, it initially conserves discovery compute (e.g., reducing the number of evaluated attempts from 110 to 50). When progress subsequently plateaus, it increases exploration effort again, coinciding with further performance gains..

@@ -1,0 +1,488 @@
+
+
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+
+% ============================================================
+% Scaling data
+% Metric: arithmetic mean runtime over six real downstream tasks
+% Lower is better.
+% ============================================================
+
+% ------------------------------------------------------------
+% Gemini-3.1-Pro: Fixed Exploration
+% ------------------------------------------------------------
+\pgfplotstableread{
+compute avg iter
+110 5267.0500 1
+220 5365.4000 2
+330 5295.2333 3
+440 4691.0833 4
+550 3587.0667 5
+}\probaseline
+
+% ------------------------------------------------------------
+% Gemini-3.1-Pro: Dream-RSI
+% Iter 1 shares the same initialization
+% ------------------------------------------------------------
+\pgfplotstableread{
+compute avg iter
+110 5267.0500 1
+119 5349.1500 2
+147 5368.9000 3
+234 5705.4333 4
+317 2931.0000 5
+}\proours
+
+% ------------------------------------------------------------
+% Gemini-3.7-Flash: Fixed Exploration
+% Iter 1--2 have no downstream evaluation
+% ------------------------------------------------------------
+\pgfplotstableread{
+compute avg iter
+640  2735.6 1
+1280 2988.3 2
+1920 3011.1333 3
+2560 2909.1833 4
+3200 2516.6833 5
+}\flashbaseline
+
+% ------------------------------------------------------------
+% Gemini-3.7-Flash: Dream-RSI
+% Iter 1 has no downstream evaluation
+% ------------------------------------------------------------
+\pgfplotstableread{
+compute avg iter
+640  2735.6 1
+976  2394.9167 2
+1230 2378.0500 3
+1529 2327.7000 4
+1879 2350.5833 5
+}\flashours
+
+
+% ============================================================
+% Main figure
+% ============================================================
+
+\begin{figure*}[t]
+\centering
+
+% ============================================================
+% (a) Final performance table
+% ============================================================
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l r r rr rrrr r}
+\toprule
+
+\textbf{Method}
+& \textbf{Model}
+& \textbf{Compute}
+& \multicolumn{2}{c}{\textit{Non-biological}}
+& \multicolumn{4}{c}{\textit{Biological}}
+& \textbf{Avg.}
+\\
+
+\cmidrule(lr){4-5}
+\cmidrule(lr){6-9}
+
+&
+&
+&
+\textbf{Gisette}
+&
+\textbf{RCV1}
+&
+\textbf{DNA}
+&
+\textbf{Leukemia}
+&
+\textbf{Colon}
+&
+\textbf{Duke Breast}
+&
+\\
+
+\midrule
+
+\multicolumn{10}{l}{\textit{Previous solvers}} \\[1pt]
+
+sklearn
+& --
+& --
+& 11275.2
+& 252881.7
+& 93.8
+& 227.2
+& 229.8
+& 374.0
+& 44180.3
+\\
+
+glmnet
+& --
+& --
+& 9063.6
+& 73072.8
+& 351.9
+& 45.0
+& 24.2
+& 47.7
+& 13767.5
+\\
+
+SimpleTES
+& gpt-oss-120b
+& 51{,}200
+& 3141.9
+& 19625.6
+& 15.9
+& 15.5
+& 11.6
+& 18.1
+& 3804.8
+\\
+
+SimpleTES $\dagger$
+& gpt-oss-120b
+& 51{,}200
+& 8651.0
+& 41143.1
+& 37.6
+& 28.2
+& 19.5
+& 31.1
+& 8318.4
+\\
+
+\midrule
+
+\multicolumn{10}{l}{\textit{Our System}} \\[1pt]
+
+Recursive Fixed Exploration
+& Gemini-3.1-Pro
+& 550
+& 1861.8
+& 19550.1
+& 41.5
+& 26.1
+& 14.5
+& 28.4
+& 3587.1
+\\
+
+&
+Gemini-3.7-Flash
+& 3200
+& 1133.1
+& 13873.0
+& 29.8
+& 24.1
+& 15.7
+& 24.4
+& 2516.7
+\\
+
+\textbf{\textsc{Dream-RSI}}
+& Gemini-3.1-Pro
+& 317
+& 2841.0
+& 14616.0
+& 49.9
+& 30.2
+& 16.4
+& 32.5
+& 2931.0
+\\
+
+&
+Gemini-3.7-Flash
+& 1879
+& 1091.9
+& 12923.4
+& 31.4
+& 21.0
+& 12.2
+& 23.6
+& \textbf{2350.6}
+\\
+
+\bottomrule
+\end{tabular}%
+}
+
+\vspace{0.08cm}
+
+{\small\textbf{(a) Final performance.}}
+
+\vspace{0.27cm}
+
+
+% ============================================================
+% (b) Scaling curves
+% ============================================================
+
+\begin{tikzpicture}
+
+\begin{groupplot}[
+group style={
+  group size=2 by 1,
+  horizontal sep=0.1\textwidth
+},
+width=0.5\textwidth,
+height=4.85cm,
+grid=major,
+major grid style={
+  gray!16,
+  line width=0.3pt
+},
+axis line style={
+  black!55,
+  line width=0.65pt
+},
+tick style={
+  black!55,
+  line width=0.5pt
+},
+tick align=outside,
+tick label style={
+  font=\scriptsize,
+  text=black!80
+},
+xlabel style={
+  font=\small,
+  yshift=1pt
+},
+ylabel style={
+  font=\small
+},
+title style={
+  font=\small\bfseries,
+  yshift=2pt
+},
+scaled ticks=false,
+clip=false
+]
+
+
+% ============================================================
+% Left: Gemini-3.1-Pro
+% ============================================================
+
+\nextgroupplot[
+title={Gemini-3.1-Pro},
+xmin=50,
+xmax=600,
+ymin=2800,
+ymax=6000,
+xtick={100,300,500},
+ytick={3000,4000,5000,6000},
+xlabel={Discovery Compute},
+ylabel={Avg. Runtime (ms)},
+xticklabel style={
+  /pgf/number format/fixed,
+  /pgf/number format/precision=0
+},
+yticklabel style={
+  /pgf/number format/fixed,
+  /pgf/number format/precision=0,
+  /pgf/number format/1000 sep={,}
+},
+legend to name=scalinglegend,
+legend columns=2,
+legend style={
+  draw=none,
+  font=\footnotesize,
+  /tikz/every even column/.append style={
+    column sep=1.4em
+  }
+}
+]
+
+
+% ------------------------------------------------------------
+% Gemini-3.1-Pro: Fixed Exploration
+% ------------------------------------------------------------
+
+\addplot[
+color=blue!75!black,
+line width=1.7pt,
+mark=square*,
+mark size=2.5pt,
+point meta=explicit symbolic,
+nodes near coords,
+every node near coord/.append style={
+  font=\tiny,
+  text=blue!75!black,
+  anchor=north,
+  yshift=-1.5pt,
+  fill=white,
+  fill opacity=0.90,
+  text opacity=1,
+  inner sep=0.7pt
+}
+]
+table[
+x=compute,
+y=avg,
+meta=iter
+] {\probaseline};
+
+\addlegendentry{Recursive Fixed Exploration}
+
+
+% ------------------------------------------------------------
+% Gemini-3.1-Pro: Dream-RSI
+% ------------------------------------------------------------
+
+\addplot[
+color=red!80!black,
+line width=1.9pt,
+mark=*,
+mark size=2.8pt,
+point meta=explicit symbolic,
+nodes near coords,
+every node near coord/.append style={
+  font=\tiny,
+  text=red!80!black,
+  anchor=south,
+  yshift=1.5pt,
+  fill=white,
+  fill opacity=0.90,
+  text opacity=1,
+  inner sep=0.7pt
+}
+]
+table[
+x=compute,
+y=avg,
+meta=iter
+] {\proours};
+
+\addlegendentry{\textsc{Dream-RSI}}
+
+
+% ============================================================
+% Right: Gemini-3.7-Flash
+% ============================================================
+
+\nextgroupplot[
+title={Gemini-3.7-Flash},
+xmin=500,
+xmax=3400,
+ymin=2250,
+ymax=3100,
+xtick={1000,2000,3000},
+ytick={2250,2500,2750,3000},
+xlabel={Discovery Compute},
+ylabel={},
+xticklabel style={
+  /pgf/number format/fixed,
+  /pgf/number format/precision=0,
+  /pgf/number format/1000 sep={,}
+},
+yticklabel style={
+  /pgf/number format/fixed,
+  /pgf/number format/precision=0,
+  /pgf/number format/1000 sep={,}
+}
+]
+
+
+% ------------------------------------------------------------
+% Gemini-3.7-Flash: Fixed Exploration
+% ------------------------------------------------------------
+
+\addplot[
+color=blue!75!black,
+line width=1.7pt,
+mark=square*,
+mark size=2.5pt,
+point meta=explicit symbolic,
+nodes near coords,
+every node near coord/.append style={
+  font=\tiny,
+  text=blue!75!black,
+  anchor=south,
+  yshift=1.5pt,
+  fill=white,
+  fill opacity=0.90,
+  text opacity=1,
+  inner sep=0.7pt
+}
+]
+table[
+x=compute,
+y=avg,
+meta=iter
+] {\flashbaseline};
+
+
+% ------------------------------------------------------------
+% Gemini-3.7-Flash: Dream-RSI
+% ------------------------------------------------------------
+
+\addplot[
+color=red!80!black,
+line width=1.9pt,
+mark=*,
+mark size=2.8pt,
+point meta=explicit symbolic,
+nodes near coords,
+every node near coord/.append style={
+  font=\tiny,
+  text=red!80!black,
+  anchor=south,
+  yshift=1.5pt,
+  fill=white,
+  fill opacity=0.90,
+  text opacity=1,
+  inner sep=0.7pt
+}
+]
+table[
+x=compute,
+y=avg,
+meta=iter
+] {\flashours};
+
+
+\end{groupplot}
+
+\end{tikzpicture}
+
+
+% ============================================================
+% Shared legend
+% ============================================================
+
+\vspace{0.00cm}
+
+{\centering
+\pgfplotslegendfromname{scalinglegend}
+\par
+}
+
+\vspace{0.015cm}
+
+{\small\textbf{(b) Recursive Discovery Dynamics.}}
+
+\vspace{-0.05cm}
+
+
+% ============================================================
+% Caption
+% ============================================================
+
+\caption{
+\textbf{Lasso regularization-path discovery results.}
+\textbf{(a)} Final wall-clock runtime on six held-out downstream tasks;
+lower is better.
+\textbf{Compute} denotes the cumulative number of discovery-agent calls.
+\textbf{(b)} \textbf{Recursive discovery dynamics.} Average downstream runtime across six held-out tasks versus cumulative discovery compute for Gemini-3.1-Pro and Gemini-3.7-Flash. Numbers next to markers denote recursive rounds (iterations). Lower is better.
+}
+
+\label{fig:lasso-main}
+
+\end{figure*}

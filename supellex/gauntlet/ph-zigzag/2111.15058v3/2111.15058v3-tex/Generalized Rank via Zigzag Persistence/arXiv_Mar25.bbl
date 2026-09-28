@@ -1,0 +1,219 @@
+\begin{thebibliography}{10}
+
+\bibitem{asashiba2018interval}
+Hideto Asashiba, Micka{\"e}l Buchet, Emerson~G Escolar, Ken Nakashima, and
+  Michio Yoshiwaki.
+\newblock On interval decomposability of 2d persistence modules.
+\newblock {\em arXiv preprint arXiv:1812.05261v2}, 2018.
+
+\bibitem{asashiba2019approximation}
+Hideto Asashiba, Emerson~G Escolar, Ken Nakashima, and Michio Yoshiwaki.
+\newblock On approximation of $2d$-persistence modules by
+  interval-decomposables.
+\newblock {\em arXiv preprint arXiv:1911.01637}, 2019.
+
+\bibitem{azumaya1950corrections}
+Gor{\^o} Azumaya.
+\newblock Corrections and supplementaries to my paper concerning
+  {K}rull-{R}emak-{S}chmidt’s theorem.
+\newblock {\em Nagoya Mathematical Journal}, 1:117--124, 1950.
+
+\bibitem{bauer2020cotorsion}
+Ulrich Bauer, Magnus~B Botnan, Steffen Oppermann, and Johan Steen.
+\newblock Cotorsion torsion triples and the representation theory of filtered
+  hierarchical clustering.
+\newblock {\em Advances in Mathematics}, 369:107171, 2020.
+
+\bibitem{betthauser2021graded}
+Leo Betthauser, Peter Bubenik, and Parker~B Edwards.
+\newblock Graded persistence diagrams and persistence landscapes.
+\newblock {\em Discrete \& Computational Geometry}, pages 1--28, 2021.
+
+\bibitem{biasotti2008multidimensional}
+Silvia Biasotti, Andrea Cerri, Patrizio Frosini, Daniela Giorgi, and Claudia
+  Landi.
+\newblock Multidimensional size functions for shape comparison.
+\newblock {\em Journal of Mathematical Imaging and Vision}, 32(2):161--179,
+  2008.
+
+\bibitem{botnan2020rectangle}
+Magnus Botnan, Vadim Lebovici, and Steve Oudot.
+\newblock {On Rectangle-Decomposable 2-Parameter Persistence Modules}.
+\newblock In {\em 36th International Symposium on Computational Geometry (SoCG
+  2020)}, volume 164, pages 22:1--22:16, 2020.
+
+\bibitem{botnan2018algebraic}
+Magnus Botnan and Michael Lesnick.
+\newblock Algebraic stability of zigzag persistence modules.
+\newblock {\em Algebraic \& geometric topology}, 18(6):3133--3204, 2018.
+
+\bibitem{botnan2021signed}
+Magnus Botnan, Steffen Oppermann, and Steve Oudot.
+\newblock Signed barcodes for multi-parameter persistence via rank
+  decompositions and rank-exact resolutions.
+\newblock {\em arXiv preprint arXiv:2107.06800}, 2021.
+
+\bibitem{bubenik2020virtual}
+Peter Bubenik and Alex Elchesen.
+\newblock Virtual persistence diagrams, signed measures, and wasserstein
+  distance.
+\newblock {\em arXiv preprint arXiv:2012.10514}, 2020.
+
+\bibitem{cai2020elder}
+Chen Cai, Woojin Kim, Facundo M{\'e}moli, and Yusu Wang.
+\newblock Elder-rule-staircodes for augmented metric spaces.
+\newblock {\em SIAM Journal on Applied Algebra and Geometry}, 5(3):417--454,
+  2021.
+
+\bibitem{carlsson2010zigzag}
+Gunnar Carlsson and Vin de~Silva.
+\newblock Zigzag persistence.
+\newblock {\em Foundations of computational mathematics}, 10(4):367--405, 2010.
+
+\bibitem{carlsson2010multiparameter}
+Gunnar Carlsson and Facundo M{\'e}moli.
+\newblock Multiparameter hierarchical clustering methods.
+\newblock In {\em Classification as a Tool for Research}, pages 63--70.
+  Springer, 2010.
+
+\bibitem{carlsson2009theory}
+Gunnar Carlsson and Afra Zomorodian.
+\newblock The theory of multidimensional persistence.
+\newblock {\em Discrete \& Computational Geometry}, 42(1):71--93, 2009.
+
+\bibitem{chambers2018persistent}
+Erin Chambers and David Letscher.
+\newblock Persistent homology over directed acyclic graphs.
+\newblock In {\em Research in Computational Topology}, pages 11--32. Springer,
+  2018.
+
+\bibitem{cochoy2020decomposition}
+J{\'e}r{\'e}my Cochoy and Steve Oudot.
+\newblock Decomposition of exact pfd persistence bimodules.
+\newblock {\em Discrete \& Computational Geometry}, 63(2):255--293, 2020.
+
+\bibitem{DH21}
+Tamal~K. Dey and Tao Hou.
+\newblock Updating zigzag persistence and maintaining representatives over
+  changing filtrations.
+\newblock {\em CoRR}, abs/2112.02352, 2021.
+
+\bibitem{DW22}
+Tamal~K. Dey and Yusu Wang.
+\newblock {\em Computational Topology for Data Analysis}.
+\newblock Cambridge University Press, 2022.
+\newblock
+  \url{https://www.cs.purdue.edu/homes/tamaldey/book/CTDAbook/CTDAbook.pdf}.
+
+\bibitem{dey2019generalized}
+Tamal~K Dey and Cheng Xin.
+\newblock Generalized persistence algorithm for decomposing multiparameter
+  persistence modules.
+\newblock {\em Journal of Applied and Computational Topology}, pages 1--52,
+  2022.
+
+\bibitem{EH2010}
+Herbert Edelsbrunner and John Harer.
+\newblock {\em Computational Topology: An Introduction}.
+\newblock American Mathematical Society, Jan 2010.
+
+\bibitem{escolar2016persistence}
+Emerson~G Escolar and Yasuaki Hiraoka.
+\newblock Persistence modules on commutative ladders of finite type.
+\newblock {\em Discrete \& Computational Geometry}, 55(1):100--157, 2016.
+
+\bibitem{gabrielsthm}
+Pierre Gabriel.
+\newblock Unzerlegbare darstellungen i.
+\newblock {\em Manuscripta Mathematica}, pages 71--103, 1972.
+
+\bibitem{kerber2020multi}
+Michael Kerber.
+\newblock Multi-parameter persistent homology is practical.
+\newblock In {\em NeurIPS 2020 Workshop on Topological Data Analysis and
+  Beyond}, 2020.
+
+\bibitem{kim2018generalized_v1}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Rank invariant for zigzag modules.
+\newblock {\em arXiv preprint arXiv:1810.11517v1}, 2018.
+
+\bibitem{kim2018generalized}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Generalized persistence diagrams for persistence modules over posets.
+\newblock {\em Journal of Applied and Computational Topology}, 5(4):533--581,
+  2021.
+
+\bibitem{kim2021spatiotemporal}
+Woojin Kim and Facundo M{\'e}moli.
+\newblock Spatiotemporal persistent homology for dynamic metric spaces.
+\newblock {\em Discrete \& Computational Geometry}, 66(3):831--875, 2021.
+
+\bibitem{kim2021bigraded}
+Woojin Kim and Samantha Moore.
+\newblock The generalized persistence diagram encodes the bigraded {B}etti
+  numbers.
+\newblock {\em arXiv preprint arXiv:2111.02551}, 2021.
+
+\bibitem{lesnick2012multidimensional}
+Michael Lesnick.
+\newblock {\em Multidimensional interleavings and applications to topological
+  inference}.
+\newblock Stanford University, 2012.
+
+\bibitem{lesnick2015theory}
+Michael Lesnick.
+\newblock The theory of the interleaving distance on multidimensional
+  persistence modules.
+\newblock {\em Foundations of Computational Mathematics}, 15(3):613--650, 2015.
+
+\bibitem{lesnick2015interactive}
+Michael Lesnick and Matthew Wright.
+\newblock Interactive visualization of 2-d persistence modules.
+\newblock {\em arXiv preprint arXiv:1512.00180}, 2015.
+
+\bibitem{mac2013categories}
+Saunders Mac~Lane.
+\newblock {\em Categories for the working mathematician}, volume~5.
+\newblock Springer Science \& Business Media, 2013.
+
+\bibitem{mccleary2020edit}
+Alexander McCleary and Amit Patel.
+\newblock Edit distance and persistence diagrams over lattices.
+\newblock {\em arXiv preprint arXiv:2010.07337}, 2020.
+
+\bibitem{miller2019modules}
+Ezra Miller.
+\newblock Modules over posets: commutative and homological algebra.
+\newblock {\em arXiv preprint arXiv:1908.09750}, 2019.
+
+\bibitem{milosavljevic2011zigzag}
+Nikola Milosavljevi{\'c}, Dmitriy Morozov, and Primoz Skraba.
+\newblock Zigzag persistent homology in matrix multiplication time.
+\newblock In {\em Proceedings of the twenty-seventh Annual Symposium on
+  Computational Geometry}, pages 216--225, 2011.
+
+\bibitem{munkres2018elements}
+James~R Munkres.
+\newblock {\em Elements of algebraic topology}.
+\newblock CRC press, 2018.
+
+\bibitem{patel2018generalized}
+Amit Patel.
+\newblock Generalized persistence diagrams.
+\newblock {\em Journal of Applied and Computational Topology}, 1(3):397--419,
+  2018.
+
+\bibitem{rota1964foundations}
+Gian-Carlo Rota.
+\newblock On the foundations of combinatorial theory i. theory of {M}{\"o}bius
+  functions.
+\newblock {\em Zeitschrift f{\"u}r Wahrscheinlichkeitstheorie und verwandte
+  Gebiete}, 2(4):340--368, 1964.
+
+\bibitem{stanley2011enumerative}
+Richard~P Stanley.
+\newblock Enumerative combinatorics volume 1 second edition.
+\newblock {\em Cambridge studies in advanced mathematics}, 2011.
+
+\end{thebibliography}

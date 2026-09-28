@@ -1,0 +1,32 @@
+\begin{table*}[!htbp]
+\centering
+\caption{Comparison of reasoning excerpts from different models on the same problem, showing how each model expresses the corresponding reasoning steps.}
+\label{tab:local-telegraphic-examples}
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}*{3}{>{\raggedright\arraybackslash}p{\dimexpr0.28\textwidth-8pt\relax}}@{}}
+\toprule
+Category & GPT-6 Astra & GPT-5.6 Sol & Claude Opus 4.8 \\
+\midrule
+\textbf{Arithmetic verification}\par hmmt-002 &
+verify420261 /1014161 \hl{yes}. &
+Verify division: 420261 /101: 101*4161 = 416100+4161=420261 \hl{exactly}. &
+420261/101: 101*4161 = 420261? 101*4000=404000, 101*161=16261, sum=420261. \hl{Yes. Good.} \\
+\midrule
+\textbf{Algebraic derivation}\par hmmt-004 &
+Subtract first two gives (b-c)(a+b+c-3)=0 so sum\hl{3}. &
+Subtract first two equations: ab+b\mbox{\textasciicircum{}}2-ac-c\mbox{\textasciicircum{}}2 =3(b-c). Factor (b-c)(a+b+c)=3(b-c). Since b != c, a+b+c=\hl{3}. &
+Subtract first two equations:\newline (a\mbox{\textsuperscript{2}}+ab+b\mbox{\textsuperscript{2}}) - (a\mbox{\textsuperscript{2}}+ac+c\mbox{\textsuperscript{2}}) = 3(a+b) - 3(a+c)\newline ab+b\mbox{\textsuperscript{2}} - ac - c\mbox{\textsuperscript{2}} = 3(b-c)\newline a(b-c) + (b\mbox{\textsuperscript{2}}-c\mbox{\textsuperscript{2}}) = 3(b-c)\newline (b-c)(a + b + c) = 3(b-c)\newline Since b\mbox{$\ne$}c, a+b+c = \hl{3}. \\
+\midrule
+\textbf{Mass and valence-electron checks}\par hle-075 &
+Need construct C12 H18 O6: mass 258.27 average vs exact258.1103 yes given exact. valence48+18+36=\hl{102}. &
+Average molecular mass: C12 144.132 + H18 18.144 + O6 95.994 = 258.27 nominal average, but stated 258.11 likely perhaps exact formula C12H18O6 monoisotopic 258.1103. Valence electrons: C12*4=48, H18=18, O6*6=36 total \hl{102}. Exactly. &
+Monoisotopic: C=12.000, H=1.00783, O=15.9949.
+C12 = 144.000, O6 = 95.9694, H18 = 18.141. Total = 258.110. Yes! C12H18O6.
+Valence electrons: C=4, H=1, O=6. 12*4 + 18*1 + 6*6 = 48+18+36 = \hl{102}. \\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{table*}

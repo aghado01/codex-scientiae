@@ -24,6 +24,7 @@ from procurement.errors import SourceMaterializationError
 from procurement.source._safety import (
     _CHUNK_BYTES,
     _PortablePathRegistry,
+    PortableCaseFileCollision,
     _plain_directory,
     _portable_relative,
     _regular_file,
@@ -44,6 +45,7 @@ class ArchiveExtraction:
     archive_sha256: str
     gzip_payload_bytes: int
     extracted_bytes: int
+    omitted_case_collisions: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,6 +54,8 @@ class _TarMemberPlan:
     relative: str
     is_directory: bool
     size: int
+    omit: bool = False
+    kept_collision: str = ""
 
 
 _OpenMember = Callable[[str], ContextManager[BinaryIO]]
@@ -140,13 +144,6 @@ def _plan_tar_handle(
                             "source archive member exceeds the "
                             f"{limits.max_member_bytes}-byte boundary: {member.name!r}"
                         )
-                    if member.size > limits.max_extracted_bytes - extracted_bytes:
-                        raise SourceArchiveError(
-                            "source archive exceeds the "
-                            f"{limits.max_extracted_bytes}-byte extraction boundary"
-                        )
-                    extracted_bytes += member.size
-                    regular_files += 1
                 else:
                     raise SourceArchiveError(
                         "source archive contains an unsafe link or special member: "
@@ -160,6 +157,18 @@ def _plan_tar_handle(
                         directory_member=is_directory,
                     )
                     registry.add(relative, is_directory=is_directory, member=True)
+                except PortableCaseFileCollision as exc:
+                    plans.append(
+                        _TarMemberPlan(
+                            name=member.name,
+                            relative=exc.omitted,
+                            is_directory=False,
+                            size=member.size,
+                            omit=True,
+                            kept_collision=exc.kept,
+                        )
+                    )
+                    continue
                 except SourceMaterializationError as exc:
                     raise SourceArchiveError(str(exc)) from exc
                 if is_directory and member.size not in (0,):
@@ -167,6 +176,14 @@ def _plan_tar_handle(
                         "source archive directory has a nonzero payload size: "
                         f"{member.name!r}"
                     )
+                if not is_directory:
+                    if member.size > limits.max_extracted_bytes - extracted_bytes:
+                        raise SourceArchiveError(
+                            "source archive exceeds the "
+                            f"{limits.max_extracted_bytes}-byte extraction boundary"
+                        )
+                    extracted_bytes += member.size
+                    regular_files += 1
                 plans.append(
                     _TarMemberPlan(
                         name=member.name,
@@ -213,8 +230,9 @@ def _extract_tar_handle(
                     raise SourceArchiveError(
                         "source tar changed between validation and extraction"
                     )
-                if expected.is_directory:
-                    ensure_directory(expected.relative)
+                if expected.omit or expected.is_directory:
+                    if expected.is_directory:
+                        ensure_directory(expected.relative)
                     continue
                 parent = posixpath.dirname(expected.relative)
                 if parent:
@@ -432,7 +450,12 @@ class SourceArchiveExtractor:
                         open_member=open_member,
                     )
                     archive_kind: Literal["tar+gzip", "single-tex+gzip"] = "tar+gzip"
-                    entry_count = len(plans)
+                    entry_count = sum(1 for plan in plans if not plan.omit)
+                    omitted_case_collisions = tuple(
+                        (plan.kept_collision, plan.relative)
+                        for plan in plans
+                        if plan.omit
+                    )
                 else:
                     if payload_bytes > self.limits.max_member_bytes:
                         raise SourceArchiveError(
@@ -468,6 +491,7 @@ class SourceArchiveExtractor:
                     archive_kind = "single-tex+gzip"
                     entry_count = 1
                     extracted_bytes = payload_bytes
+                    omitted_case_collisions = ()
 
             destination_root.unlink(payload)
             _tree_inventory(
@@ -485,6 +509,7 @@ class SourceArchiveExtractor:
                 archive_sha256=archive_digest.hexdigest(),
                 gzip_payload_bytes=payload_bytes,
                 extracted_bytes=extracted_bytes,
+                omitted_case_collisions=omitted_case_collisions,
             )
         except SourceArchiveError:
             raise

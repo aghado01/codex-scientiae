@@ -24,10 +24,12 @@ from procurement.source._safety import (
 )
 from procurement.storage.safety import is_link_or_reparse
 from procurement.source.contracts import ArchiveLimits, LatexSourceError
+from procurement.source.duplicates import DuplicateSourceCopy, inspect_source_copies
 from procurement.source.tree import (
     TreeFile,
     _TreeEntry,
     _fingerprint_inventory,
+    _same_inventory,
     _tree_inventory,
 )
 
@@ -73,6 +75,7 @@ class LatexSourceInspection:
     package_control_files: tuple[TreeFile, ...]
     embedded_metadata: EmbeddedLatexMetadata
     unresolved_inputs: tuple[UnresolvedLatexInput, ...] = ()
+    duplicate_copies: tuple[DuplicateSourceCopy, ...] = ()
 
 
 def _stable_read_text(entry: _TreeEntry, *, maximum: int) -> tuple[str, str]:
@@ -145,6 +148,8 @@ def _entrypoint(
     slug: str,
     main_tex: str,
     limits: ArchiveLimits,
+    duplicate_copies: Sequence[DuplicateSourceCopy] = (),
+    conflicting_copies: Sequence[str] = (),
 ) -> tuple[str, str]:
     by_path = {entry.relative: entry for entry in entries}
     candidate_set = set(document_class_candidates)
@@ -165,14 +170,21 @@ def _entrypoint(
             )
         return explicit, "explicit"
 
+    if conflicting_copies:
+        raise LatexSourceError(
+            "same-named LaTeX source copies differ; specify main_tex. Candidates: "
+            + ", ".join(conflicting_copies)
+        )
+    duplicates = {copy.entrypoint for copy in duplicate_copies}
     candidates = sorted(
-        document_class_candidates,
+        (candidate for candidate in document_class_candidates if candidate not in duplicates),
         key=lambda value: value.encode("utf-16-be", "surrogatepass"),
     )
     if not candidates:
         raise LatexSourceError("no LaTeX entrypoint with a document class declaration was found")
     if len(candidates) == 1:
-        return candidates[0], "single-candidate"
+        selection = "equivalent-source-copies" if duplicates else "single-candidate"
+        return candidates[0], selection
     roots = [candidate for candidate in candidates if "/" not in candidate]
     if len(roots) == 1:
         return roots[0], "unique-root"
@@ -558,12 +570,23 @@ class LatexSourceInspector:
                     document_class_candidates.append(entry.relative)
         if not decoded_digests:
             raise LatexSourceError("source tree contains no .tex files")
+        fingerprint = _fingerprint_inventory(
+            root,
+            entries,
+            limits=self.limits,
+            publication_root=publication_root,
+        )
+        duplicate_copies, conflicting_copies = inspect_source_copies(
+            fingerprint.files, document_class_candidates, main_tex=selected_main_tex
+        )
         entrypoint, selection = _entrypoint(
             entries,
             document_class_candidates,
             slug=selected_slug,
             main_tex=selected_main_tex,
             limits=self.limits,
+            duplicate_copies=duplicate_copies,
+            conflicting_copies=conflicting_copies,
         )
         resolved, input_digests, unresolved_inputs = _resolve_inputs(
             entrypoint,
@@ -576,12 +599,9 @@ class LatexSourceInspector:
             raise LatexSourceError(
                 f"resolved LaTeX entrypoint has no document environment: {entrypoint!r}"
             )
-        fingerprint = _fingerprint_inventory(
-            root,
-            entries,
-            limits=self.limits,
-            publication_root=publication_root,
-        )
+        current = _tree_inventory(root, limits=self.limits, publication_root=publication_root)
+        if not _same_inventory(entries, current):
+            raise LatexSourceError("source tree changed during LaTeX inspection")
         by_path = {record.path: record for record in fingerprint.files}
         for relative, digest in decoded_digests.items():
             if by_path[relative].sha256 != digest:
@@ -600,6 +620,7 @@ class LatexSourceInspector:
             package_control_files=controls,
             embedded_metadata=_embedded_metadata(resolved),
             unresolved_inputs=unresolved_inputs,
+            duplicate_copies=duplicate_copies,
         )
 
 

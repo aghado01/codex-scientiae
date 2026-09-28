@@ -1,0 +1,192 @@
+% ============================================================
+% Preamble
+% ============================================================
+\pgfplotsset{compat=1.18}
+
+\definecolor{oursblue}{HTML}{2563EB}
+\definecolor{barblue}{HTML}{BFDBFE}
+
+% ============================================================
+% Data
+% ============================================================
+
+\pgfplotstableread{
+round perf
+0 0.427
+1 0.625
+2 0.855
+3 1.403
+4 1.488
+5 1.499
+6 1.770
+7 1.880
+8 1.898
+}\perfdata
+
+\pgfplotstableread{
+round attempts
+0 110
+1 110
+2 87
+3 80
+4 50
+5 92
+6 80
+7 91
+8 86
+}\attemptdata
+
+% ============================================================
+% Figure
+% ============================================================
+
+\begin{wrapfigure}[18]{r}{0.5\linewidth}
+\centering
+\vspace{-2em}
+% ------------------------------------------------------------
+% (a) Round-best performance
+% ------------------------------------------------------------
+\begin{tikzpicture}
+\begin{axis}[
+    width=\linewidth,
+    height=3.6cm,
+    xmin=-0.4,
+    xmax=8.4,
+    ymin=0.35,
+    ymax=2.03,
+    xtick={0,1,2,3,4,5,6,7,8},
+    xticklabels={E0,E1,E2,E3,E4,E5,E6,E7,E8},
+    ylabel={Performance (1/ms)},
+    axis lines=left,
+    axis line style={black!55,line width=0.6pt},
+    ymajorgrids=true,
+    grid style={black!8,line width=0.3pt},
+    tick align=outside,
+    tick style={black!55},
+    tick label style={font=\scriptsize},
+    label style={font=\scriptsize},
+    clip=false,
+]
+
+\addplot[
+    color=oursblue,
+    line width=1.5pt,
+    mark=*,
+    mark size=2.4pt,
+    mark options={
+        fill=white,
+        draw=oursblue,
+        line width=1.0pt
+    }
+]
+table[x=round,y=perf] {\perfdata};
+
+\addplot[
+    only marks,
+    mark=none,
+    point meta=explicit symbolic,
+    nodes near coords,
+    every node near coord/.append style={
+        font=\tiny\bfseries,
+        text=oursblue,
+        yshift=5pt
+    }
+]
+table[
+    x=round,
+    y=perf,
+    meta=perf
+] {\perfdata};
+
+\end{axis}
+\end{tikzpicture}
+
+\vspace{-2mm}
+
+{\scriptsize\textbf{(a) Round-best performance}}
+
+\vspace{1mm}
+
+% ------------------------------------------------------------
+% (b) Evaluated attempts
+% ------------------------------------------------------------
+\begin{tikzpicture}
+\begin{axis}[
+    width=\linewidth,
+    height=3.6cm,
+    xmin=-0.4,
+    xmax=8.4,
+    ymin=0,
+    ymax=125,
+    xtick={0,1,2,3,4,5,6,7,8},
+    xticklabels={E0,E1,E2,E3,E4,E5,E6,E7,E8},
+    ylabel={Evaluated attempts},
+    xlabel={Recursive execution round},
+    axis lines=left,
+    axis line style={black!55,line width=0.6pt},
+    ymajorgrids=true,
+    grid style={black!8,line width=0.3pt},
+    tick align=outside,
+    tick style={black!55},
+    tick label style={font=\scriptsize},
+    label style={font=\scriptsize},
+    clip=false,
+]
+
+% bars
+\addplot[
+    ybar,
+    bar width=14pt,
+    fill=barblue,
+    draw=oursblue,
+    line width=0.7pt
+]
+table[x=round,y=attempts] {\attemptdata};
+
+% line connecting bar tops
+\addplot[
+    color=oursblue,
+    line width=1.3pt,
+    mark=*,
+    mark size=2.2pt,
+    mark options={
+        fill=white,
+        draw=oursblue,
+        line width=1.0pt
+    }
+]
+table[x=round,y=attempts] {\attemptdata};
+
+% value labels
+\addplot[
+    only marks,
+    mark=none,
+    point meta=explicit symbolic,
+    nodes near coords,
+    every node near coord/.append style={
+        font=\tiny\bfseries,
+        text=oursblue,
+        yshift=7pt
+    }
+]
+table[
+    x=round,
+    y=attempts,
+    meta=attempts
+] {\attemptdata};
+
+\end{axis}
+\end{tikzpicture}
+
+\vspace{-2mm}
+
+{\scriptsize\textbf{(b) Exploration effort}}
+
+\caption{
+\textbf{Evolution of exploration behavior on ConvDiv.}
+\textbf{(a)} Round-best performance across recursive execution rounds.
+\textbf{(b)} The number of evaluated attempts in each round.
+}
+\label{fig:convdiv-dynamics}
+
+\end{wrapfigure}

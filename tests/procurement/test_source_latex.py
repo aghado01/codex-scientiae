@@ -8,6 +8,7 @@ from pathlib import Path
 
 from procurement.source.contracts import ArchiveLimits, LatexSourceError
 from procurement.source.latex import inspect_latex_source_tree
+from procurement.source.tree import fingerprint_source_tree
 
 
 def _limits(**overrides: int) -> ArchiveLimits:
@@ -62,7 +63,129 @@ class LatexSourceTests(unittest.TestCase):
         (nested / "paper.tex").write_bytes(source)
         inspection = inspect_latex_source_tree(tree)
         self.assertEqual("paper.tex", inspection.entrypoint)
-        self.assertEqual("unique-root", inspection.entrypoint_selection)
+        self.assertEqual("equivalent-source-copies", inspection.entrypoint_selection)
+        self.assertEqual(1, len(inspection.duplicate_copies))
+        copy = inspection.duplicate_copies[0]
+        self.assertEqual("copy", copy.directory)
+        self.assertEqual(".", copy.canonical_directory)
+        self.assertEqual("copy/paper.tex", copy.entrypoint)
+        self.assertEqual("paper.tex", copy.canonical_entrypoint)
+        self.assertEqual(("paper.tex",), tuple(item.path for item in copy.files))
+
+    def test_complete_copies_preserve_assets_paths_and_physical_fingerprint(self) -> None:
+        tree = self.root / "complete-copies"
+        bundle = {
+            "paper.tex": b"\\documentclass{article}\n\\input{section}\n"
+            b"\\begin{document}\\bibliography{refs}\\includegraphics{fig/chart.pdf}"
+            b"\\end{document}\n",
+            "section.tex": b"\\author{Same Source}\n",
+            "refs.bib": b"@book{example,title={Example}}\n",
+            "paper.bbl": b"A bibliography.\n",
+            "fig/chart.pdf": b"%PDF-1.7\nfixture\n",
+        }
+        for directory in ("", "Copy A", "Copy B", "Copy A/nested"):
+            for name, data in bundle.items():
+                path = tree / directory / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+        before = fingerprint_source_tree(tree)
+        inspection = inspect_latex_source_tree(tree)
+        after = fingerprint_source_tree(tree)
+        self.assertEqual(before, after)
+        self.assertEqual(before.sha256, inspection.tree_sha256)
+        self.assertEqual(20, inspection.file_count)
+        self.assertEqual("paper.tex", inspection.entrypoint)
+        self.assertEqual(("Same Source",), inspection.embedded_metadata.authors_tex)
+        self.assertEqual((), inspection.unresolved_inputs)
+        self.assertEqual(3, len(inspection.duplicate_copies))
+        for copy in inspection.duplicate_copies:
+            self.assertEqual("paper.tex", copy.canonical_entrypoint)
+            self.assertEqual(5, len(copy.files))
+            for item in copy.files:
+                self.assertEqual(
+                    (tree / copy.directory / item.path).read_bytes(),
+                    (tree / copy.canonical_directory / item.path).read_bytes(),
+                )
+
+    def test_sibling_copies_use_depth_then_ordinal_order_without_rebasing_inputs(self) -> None:
+        tree = self.root / "sibling-copies"
+        source = b"\\documentclass{article}\n\\input{shared}\n\\begin{document}x\\end{document}\n"
+        for directory in ("nested/first", "z-copy", "a-copy"):
+            path = tree / directory
+            path.mkdir(parents=True)
+            (path / "paper.tex").write_bytes(source)
+            (path / "shared.tex").write_bytes(b"\\author{Directory Copy}\n")
+        (tree / "shared.tex").write_bytes(b"\\author{Compile Root}\n")
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual("a-copy/paper.tex", inspection.entrypoint)
+        self.assertEqual("equivalent-source-copies", inspection.entrypoint_selection)
+        self.assertEqual(("Compile Root",), inspection.embedded_metadata.authors_tex)
+        self.assertEqual(2, len(inspection.duplicate_copies))
+
+        explicit = inspect_latex_source_tree(tree, main_tex="z-copy/paper.tex")
+        self.assertEqual("z-copy/paper.tex", explicit.entrypoint)
+        self.assertEqual("explicit", explicit.entrypoint_selection)
+        self.assertTrue(all(
+            copy.canonical_entrypoint == "z-copy/paper.tex"
+            for copy in explicit.duplicate_copies
+        ))
+
+    def test_differing_copy_files_require_explicit_selection(self) -> None:
+        source = b"\\documentclass{article}\n\\begin{document}x\\end{document}\n"
+        variations = {
+            "changed-asset": {"paper.tex": source, "figure.pdf": b"different"},
+            "missing-asset": {"paper.tex": source},
+            "renamed-asset": {"paper.tex": source, "other.pdf": b"asset"},
+            "extra-asset": {"paper.tex": source, "figure.pdf": b"asset", "extra": b"x"},
+            "changed-document": {"paper.tex": source + b"% changed\n", "figure.pdf": b"asset"},
+        }
+        for name, files in variations.items():
+            with self.subTest(name=name):
+                tree = self.root / name
+                (tree / "copy").mkdir(parents=True)
+                (tree / "paper.tex").write_bytes(source)
+                (tree / "figure.pdf").write_bytes(b"asset")
+                for leaf, data in files.items():
+                    (tree / "copy" / leaf).write_bytes(data)
+                before = fingerprint_source_tree(tree)
+                with self.assertRaisesRegex(LatexSourceError, "copies differ; specify main_tex"):
+                    inspect_latex_source_tree(tree, slug="paper")
+                explicit = inspect_latex_source_tree(tree, main_tex="paper.tex")
+                self.assertEqual((), explicit.duplicate_copies)
+                self.assertEqual(before, fingerprint_source_tree(tree))
+
+    def test_duplicate_pair_does_not_hide_a_third_conflicting_copy(self) -> None:
+        tree = self.root / "third-copy"
+        source = b"\\documentclass{article}\n\\begin{document}x\\end{document}\n"
+        for directory, body in (("", source), ("copy", source), ("different", source + b"% changed\n")):
+            path = tree / directory
+            path.mkdir(parents=True, exist_ok=True)
+            (path / "paper.tex").write_bytes(body)
+        with self.assertRaisesRegex(LatexSourceError, "copies differ"):
+            inspect_latex_source_tree(tree)
+        explicit = inspect_latex_source_tree(tree, main_tex="different/paper.tex")
+        self.assertEqual("different/paper.tex", explicit.entrypoint)
+        self.assertEqual(1, len(explicit.duplicate_copies))
+
+    def test_duplicate_selection_keeps_missing_input_evidence(self) -> None:
+        tree = self.root / "duplicate-missing-input"
+        (tree / "copy").mkdir(parents=True)
+        source = b"\\documentclass{article}\n\\input{missing}\n\\begin{document}x\\end{document}\n"
+        for path in (tree / "paper.tex", tree / "copy" / "paper.tex"):
+            path.write_bytes(source)
+        inspection = inspect_latex_source_tree(tree)
+        self.assertEqual("equivalent-source-copies", inspection.entrypoint_selection)
+        self.assertEqual("missing", inspection.unresolved_inputs[0].literal)
+
+    def test_differently_named_identical_documents_are_not_duplicate_copies(self) -> None:
+        tree = self.root / "different-names"
+        tree.mkdir()
+        source = b"\\documentclass{article}\n\\begin{document}x\\end{document}\n"
+        (tree / "paper.tex").write_bytes(source)
+        (tree / "other.tex").write_bytes(source)
+        with self.assertRaisesRegex(LatexSourceError, "ambiguous"):
+            inspect_latex_source_tree(tree)
+        self.assertEqual((), inspect_latex_source_tree(tree, main_tex="paper.tex").duplicate_copies)
 
     def test_inspection_requires_strict_utf8_for_every_tex_file(self) -> None:
         tree = self.root / "invalid-tex"

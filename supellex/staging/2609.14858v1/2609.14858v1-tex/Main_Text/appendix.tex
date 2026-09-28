@@ -1,0 +1,232 @@
+\section{Detailed Task Description}
+\begin{taskbox}{Problem 1 (Lasso Regularization Path)}
+\small
+
+Given a feature matrix
+$X \in \mathbb{R}^{n \times p}$,
+response $y \in \mathbb{R}^{n}$,
+and a decreasing sequence
+$\lambda_1 > \cdots > \lambda_K$,
+define
+\[
+F_k(w)
+:=
+\frac{1}{2n}\|y-Xw\|_2^2
++
+\lambda_k\|w\|_1,
+\qquad
+w_k^\star
+\in
+\arg\min_{w\in\mathbb{R}^p} F_k(w).
+\]
+
+A candidate solver returns approximate coefficients
+$\widetilde{W}
+=
+(\widetilde{w}_1,\ldots,\widetilde{w}_K)$.
+It passes the benchmark's objective-value check if
+\[
+F_k(\widetilde{w}_k)
+\le
+F_k(w_{k,\mathrm{sklearn}})
++
+10^{-6},
+\qquad
+\text{for every } k,
+\]
+where correctness is checked on fresh instances distinct from the timing
+instances. If any required check fails, the search score is zero.
+
+Otherwise, letting $\mathcal{I}$ denote the timing instances and $t_i$ the
+time required to compute the complete regularization path on instance $i$,
+the search score is
+\[
+R_{\mathrm{search}}
+=
+\left(
+\prod_{i\in\mathcal{I}} t_i
+\right)^{-1/|\mathcal{I}|}.
+\]
+
+\end{taskbox}
+
+\begin{taskbox}{Problem 2 (Sum--Difference Problem)}
+\small
+
+The Sum--Difference Problem asks for a finite set
+$A \subset \mathbb{Z}$
+whose normalized sumset is large relative to its normalized difference set.
+The objective is
+\[
+\Gamma(A)
+:=
+\frac{
+\log\!\left(|A+A|/|A|\right)
+}{
+\log\!\left(|A-A|/|A|\right)
+},
+\]
+where
+\[
+A+A
+:=
+\{a+a' : a,a' \in A\},
+\qquad
+A-A
+:=
+\{a-a' : a,a' \in A\}.
+\]
+
+The goal is to construct a finite set $A \subset \mathbb{Z}$ that maximizes
+$\Gamma(A)$.
+
+\end{taskbox}
+
+
+\begin{taskbox}{Problem 3 (Circle Packing in a Unit Square)}
+\small
+
+For $n \in \{26,32\}$, the circle-packing task asks for centers
+$(x_i,y_i)\in[0,1]^2$
+and radii $r_i\ge 0$ such that every circle lies inside the unit square
+and no two circles overlap:
+\[
+r_i \le x_i \le 1-r_i,
+\qquad
+r_i \le y_i \le 1-r_i,
+\]
+\[
+(x_i-x_j)^2+(y_i-y_j)^2
+\ge
+(r_i+r_j)^2,
+\qquad
+1\le i<j\le n.
+\]
+
+The objective is to maximize
+\[
+\sum_i r_i.
+\]
+
+\end{taskbox}
+
+\begin{taskbox}{Problem 4 (Autocorrelation Inequalities)}
+\small
+
+For an integrable function $f:\mathbb{R}\to\mathbb{R}$, define the
+autoconvolution
+\[
+(f*f)(t)
+:=
+\int_{\mathbb{R}} f(t-x)f(x)\,dx,
+\qquad
+t\in\left[-\frac12,\frac12\right].
+\]
+
+\textbf{First Autocorrelation Inequality.}
+Find a non-negative integrable function
+$f:\mathbb{R}\to\mathbb{R}$
+supported on
+$\left[-\frac14,\frac14\right]$
+such that
+\[
+\int_{-1/4}^{1/4} f(x)\,dx = 1.
+\]
+The objective is to minimize
+\[
+\Phi_1(f)
+:=
+\max_{t\in[-1/2,\,1/2]} (f*f)(t).
+\]
+
+\textbf{Second Autocorrelation Inequality.}
+Find a non-negative integrable function
+$f:\mathbb{R}\to\mathbb{R}$
+supported on
+$\left[-\frac14,\frac14\right]$
+such that
+\[
+\int_{-1/4}^{1/4} f(x)\,dx = 1.
+\]
+The objective is to maximize
+\[
+\Phi_2(f)
+:=
+\frac{\|f*f\|_2^2}
+{\|f*f\|_1\|f*f\|_\infty}.
+\]
+
+\textbf{Third Autocorrelation Inequality.}
+Find an integrable (possibly signed) function
+$f:\mathbb{R}\to\mathbb{R}$
+supported on
+$\left[-\frac14,\frac14\right]$
+such that
+\[
+\int_{-1/4}^{1/4} f(x)\,dx = 1.
+\]
+The objective is to minimize
+\[
+\Phi_3(f)
+:=
+\max_{t\in[-1/2,\,1/2]}
+\left|(f*f)(t)\right|.
+\]
+
+\end{taskbox}
+
+
+
+\section{Prompts}
+\label{app:prompts}
+
+For reproducibility, we provide the prompts used for online exploration and
+replay-based exploration-policy improvement.
+Variables enclosed by dollar signs or braces are instantiated by the runtime
+system before execution.
+
+\subsection{Exploration Prompt}
+\label{app:exploration-prompt}
+
+The following prompt is used to guide the discovery agent during online
+exploration. It requires the agent to inspect the complete available discovery
+history before proposing a new solution, explicitly reason about both successful
+and failed attempts, and avoid repeatedly exploiting a locally saturated
+direction.
+
+\lstinputlisting[
+    style=promptstyle,
+    caption={Prompt used for online exploration.},
+    label={lst:exploration-prompt}
+]{appendix/prompt/exploration_prompt.txt}
+
+
+\subsection{Replay-Based Policy Improvement Prompt}
+\label{app:replay-prompt}
+
+The following prompt is used by the controller-development agent during
+historical replay. The agent modifies the exploration policy using feedback
+obtained from replay over previously collected discovery trajectories while
+remaining restricted to prefix-observable information.
+
+\lstinputlisting[
+    style=promptstyle,
+    caption={Prompt used for replay-based improvement of the exploration policy.},
+    label={lst:replay-prompt}
+]{appendix/prompt/replay_learning_prompt.txt}
+
+\section{Discovered Programs}
+\label{app:discovered-lasso}
+
+We provide the complete implementation of the Lasso-path solver discovered by
+\textsc{Dream-RSI}. As discussed in Section~\ref{subsec:lasso}, the solver combines
+strong-rule screening with adaptive Cauchy--Schwarz KKT pruning, disjoint
+active-set bookkeeping, lazy Gram-matrix construction, and hardware-aware
+optimizations.
+
+\lstinputlisting[
+    style=appendixcode,
+    language=Python,
+    caption={Complete Lasso-path solver discovered by \textsc{Dream-RSI}.},
+    label={lst:discovered-lasso}
+]{appendix/discovered_programs/lasso/code.cpp}

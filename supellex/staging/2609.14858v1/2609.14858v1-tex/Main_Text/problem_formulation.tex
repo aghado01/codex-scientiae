@@ -1,0 +1,181 @@
+% Requires: \usepackage{amsmath,amssymb}
+
+
+\section{\textsc{Dream-RSI}: Recursive Self-Improvement through Evolving Worlds}
+\label{sec:replay-based-controller-improvement}
+
+
+As shown in Figure~\ref{fig:method}, \textsc{Dream-RSI} alternates
+between online exploration and offline ``dreaming'' to improve an
+executable \emph{exploration policy} that allocates discovery computation.
+During the online phase, the policy guides a fixed \emph{discovery agent}, while a fixed
+\emph{evaluator} scores the resulting candidates and provides diagnostic
+feedback. The resulting \emph{discovery tree} serves as a \emph{replay
+world} in which alternative policies can be evaluated using recorded
+outcomes. A fixed LLM-based \emph{policy-development agent} uses this
+feedback to revise the \emph{exploration policy} code, and the best evaluated version is
+deployed for the next online rollout. Only the exploration-policy code
+changes; the underlying models, evaluator, and execution interfaces
+remain fixed.
+
+\paragraph{Discovery trees and the shared decision interface.}
+A discovery tree is rooted at \(r\), which represents the initial
+workspace state. Each non-root node \(v\) has exactly one
+\emph{primary parent}, either the root or a previously created node.
+This parent identifies where the attempt in \(v\) begins:
+the discovery agent resumes the parent's saved workspace and uses
+its accumulated observations as context to produce a new attempt. Node \(v\) preserves this
+inherited history and records the outcome of the new
+generation--evaluation attempt, including the resulting filesystem
+snapshot, generated artifact, evaluation diagnostics, and score \(s_v\).
+Scores follow a fixed task-scoring protocol, with larger values
+indicating better quality.
+
+In both online execution and offline replay, the exploration policy
+observes a tree \(\mathcal T\), initially containing only the root,
+and selects the nodes from which to continue exploration.
+The eligible nodes form the set
+\(A(\mathcal T)=\{r\}\cup\{v\in\mathcal T:v\text{ is a leaf}\}\),
+where leaves are determined from the currently observed tree.
+Let \(W\geq 1\) be the number of parallel workers, each of which can
+execute one generation--evaluation request at a time (e.g. concurrent API calls).
+The exploration policy's action is a batch \(C\in A(\mathcal T;W)\), where
+\(A(\mathcal T;W)=\{C\subseteq A(\mathcal T):|C|\leq W\}\) is the feasible batch set.
+Each selected node specifies the starting point of one attempt,
+so the batch determines both where exploration continues and
+how many attempts are scheduled in parallel. Both the online and offline phases use this same decision interface but differ in the
+transition that follows a selected batch.
+
+\paragraph{Online rollout.}
+Let \(t=1,2,\ldots\) index the outer iterations, starting from an
+initial policy \(\pi_1\) and an empty history \(\mathcal H_0=()\).
+At iteration \(t\), policy \(\pi_t\) guides a new online rollout
+with access to the completed discovery history \(\mathcal H_{t-1}\).
+This history provides context for exploration but remains separate
+from the new tree being constructed. The policy code stays fixed
+throughout the rollout.
+
+Let \(\mathcal T_{t}^k\) denote the new discovery tree after \(k\)
+completed decision rounds, with \(\mathcal T_{t}^0=\{r\}\).
+The rollout allows at most \(K_1\) rounds. At round $k \le K_1$, the \emph{exploration policy} chooses a node batch \(C_{t}^k \in A(\mathcal T_{t}^k;W)\) and each node \(v\in C_{t}^k\) is assigned to a worker.
+The discovery agent uses \(v\)'s saved workspace and available
+context to produce a new candidate, and the evaluator assesses
+the result. These attempts run in parallel, each producing one
+new child of its selected parent. Attaching the completed children
+to the current tree yields \(\mathcal T_{t}^{k+1}\), while all
+previously recorded nodes remain unchanged. This transition is stochastic because the discovery agent may
+generate different outcomes from the same starting workspace. For the next round, the newly created
+child becomes the selectable leaf of an extended branch, while the root remains selectable for opening further branches. The rollout ends when the policy selects an empty batch or completes \(K_1\) decision rounds. After the rollout terminates, its final tree is recorded as
+\(\mathcal T_t\) and appended to the history, giving
+\(\mathcal H_t= \mathcal H_{t-1} \cup \{\mathcal{T}_t\}\).
+The method then enters the offline phase using this expanded collection of replay worlds.
+
+\paragraph{Offline evaluation.}
+During the offline phase of outer iteration \(t\), the history
+\(\mathcal H_t\) remains fixed while the method constructs and
+evaluates \(M\geq 1\) policy versions
+\(\pi_t^0,\ldots,\pi_t^{M-1}\), starting with
+\(\pi_t^0=\pi_t\).
+Each version is evaluated separately on every historical tree
+\(\mathcal T_i\), \(i=1,\ldots,t\), before the next version is
+developed from the resulting feedback.
+We use \(m\) to index policy versions, \(i\) to index replay worlds, and \(k\) to count decision rounds within one policy--world
+evaluation. The outer index \(t\) is fixed throughout this phase
+and is suppressed in the notation for replay trajectories and scores.
+
+
+For each policy--tree pair \((m,i)\), replay resets the policy's
+per-rollout state and starts from \(\mathcal T_i^{m,0}=\{r\}\).
+Here, \(\mathcal T_i^{m,k}\subseteq\mathcal T_i\) denotes the subtree
+revealed after \(k\) completed rounds. The full recorded tree
+\(\mathcal T_i\) remains fixed; only the portion observed by the
+policy evolves. At each decision, \(\pi_t^m\) selects a batch
+\(C_i^{m,k}\in A(\mathcal T_i^{m,k};W)\) using the revealed
+observations. Unlike online execution, replay returns recorded children of the
+selected nodes deterministically rather than generating new candidates.
+After the \emph{exploration policy} takes a nonempty batch $C_i^{m,k}$, the next observed tree is
+\(\mathcal T_i^{m,k+1}
+=\mathcal T_i^{m,k}
+\cup\bigcup_{v\in C_i^{m,k}}
+\operatorname{Child}(v;\mathcal T_i,\mathcal T_i^{m,k})\) where \(\operatorname{Child}(v;\mathcal T_i,\mathcal T_i^{m,k})\) denotes the node set containing unobserved children of $v$ on tree $\mathcal T_i$ given the current observed tree $T_i^{m,k}$. For \(v\ne r\), \(\operatorname{Child}(v;\mathcal T_i,\mathcal T_i^{m,k})\) is \(v\)'s unique recorded child, if one exists. Since \(v\) is a leaf of \(\mathcal T_i^{m,k}\), that child is still unrevealed.
+For \(v=r\), replay returns the earliest-created child of \(r\)
+outside \(\mathcal T_i^{m,k}\), opening one previously unrevealed branch.
+In either case, \(\operatorname{Child}(v;\mathcal T_i,\mathcal T_i^{m,k})
+=\emptyset\) when no recorded continuation remains. The newly revealed nodes expose their stored observations before
+the policy makes its next decision.
+
+Replay allows at most \(K_2\) decision rounds where each nonempty batch counts as one round, and terminates when
+the policy selects \(C_i^{m,k}=\emptyset\), the round limit
+\(k=K_2\) is reached, or \(\mathcal T_i^{m,k}=\mathcal T_i\),
+meaning that all recorded nodes have been revealed.
+Let \(k_i^{m,\star}\in\{0,\ldots,K_2\}\) denote the number of
+completed rounds at termination, yielding the final subtree
+\(\mathcal T_i^{m,k_i^{m,\star}}\subseteq\mathcal T_i\).
+
+Thus, replay evaluates how far to pursue each opened branch,
+how to group attempts into parallel batches, and when to open
+another branch or stop. These decisions may differ across policies,
+but each branch is traversed in its recorded parent--child order,
+and no outcomes beyond \(\mathcal T_i\) are generated.
+
+
+
+
+\paragraph{Replay objective.}
+The replay objective balances discovery quality, execution cost,
+and parallelism. Let
+\(N_i^m=|\mathcal T_i^{m,k_i^{m,\star}}|-1\)
+be the number of revealed non-root nodes.
+Although replay itself does not execute new discovery attempts,
+\(N_i^m\) counts the generation--evaluation requests represented
+by its trajectory.
+For fixed coefficients \(\beta_1,\beta_2\geq 0\), the replay score is
+\begin{equation}
+    V_i^m
+    =
+    \underbrace{
+        \max_{v\in\mathcal T_i^{m,k_i^{m,\star}}} s_v
+    }_{\text{discovery quality}}
+    -
+    \underbrace{
+        \beta_1 N_i^m
+    }_{\text{execution cost}}
+    +
+    \underbrace{
+        \beta_2
+        \frac{N_i^m}{\max\{1,k_i^{m,\star}\}}
+    }_{\text{parallelism bonus}}.
+    \label{eq:dream-rsi-replay-score}
+\end{equation}
+The first term measures the best solution quality attained during
+replay. The second penalizes the
+number of attempted generations. For a nonempty replay, the third
+rewards the average number of attempts executed per decision round,
+favoring policies that batch useful continuations rather than
+execute them sequentially.
+
+\paragraph{Policy improvement and selection.}
+The evaluation score of policy version \(\pi_t^m\) is its average
+replay score across the fixed history,
+\(V^m=\frac{1}{t}\sum_{i=1}^{t}V_i^m\).
+The offline phase begins by evaluating the current policy
+\(\pi_t^0=\pi_t\).
+For each \(m=0,\ldots,M-1\), the \emph{policy-development agent} examines
+the replay trajectories and scores of \(\pi_t^m\), together with
+feedback from earlier revisions, to identify successful decisions
+and recurring failures. It then revises the executable policy code
+to produce \(\pi_t^{m+1}\), which is evaluated on the same
+\(t\) replay worlds.
+Replay feedback is available to the development agent between
+revisions.
+
+After \(M\) revisions, the next online policy is selected from all
+\(M\) evaluated versions as \(\pi_{t+1}=\pi_t^{m^\star}\), where
+\(m^\star\in\operatorname*{arg\,max}_{m\in\{0,\ldots,M-1\}}V^m\).
+Because the candidate set includes the current policy, this
+selection satisfies \(V^{m^\star}\geq V^0\).
+Thus, the selected policy $\pi_{t+1}$ is no worse than the current policy $\pi_t$
+in average replay score on the fixed history \(\mathcal H_t\). The selected policy is then deployed online to collect
+\(\mathcal T_{t+1}\), expanding the history available for the next offline improvement phase.
+
+

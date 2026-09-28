@@ -1,0 +1,492 @@
+@inproceedings{lin2004rouge,
+  title         = {{ROUGE}: A Package for Automatic Evaluation of Summaries},
+  author        = {Lin, Chin-Yew},
+  booktitle     = {Text Summarization Branches Out},
+  year          = {2004},
+  pages         = {74--81},
+  publisher     = {Association for Computational Linguistics},
+  url           = {https://aclanthology.org/W04-1013/}
+}
+
+@misc{lanham2023faithfulness,
+  title         = {Measuring Faithfulness in Chain-of-Thought Reasoning},
+  author        = {Lanham, Tamera and Chen, Anna and Radhakrishnan, Ansh and others},
+  year          = {2023},
+  eprint        = {2307.13702},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2307.13702}
+}
+@article{qu2026echocot,
+  title={EchoCoT: Extracting Hidden Chain-of-Thought from Large Reasoning Models},
+  author={Qu, Yiting and Yang, Ziqing and Cui, Chi and Leng, Ye and Chu, Junjie and Zhang, Yang},
+  journal={arXiv preprint arXiv:2608.20055},
+  year={2026}
+}
+
+@inproceedings{turpin2023unfaithful,
+  title         = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
+  author        = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  year          = {2023},
+  url           = {https://arxiv.org/abs/2305.04388}
+}
+
+@misc{deepseek2025r1,
+      title={DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning},
+      author={{DeepSeek-AI}},
+      year={2025},
+      eprint={2501.12948},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2501.12948},
+}
+
+@misc{deepseek2026encoding,
+  title         = {{DeepSeek-V4} Encoding},
+  author        = {{DeepSeek-AI}},
+  year          = {2026},
+  howpublished  = {Model documentation},
+  url           = {https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/encoding/README.md}
+}
+
+@misc{panfilov2026stealing,
+  title         = {Stealing Reasoning Traces from Proprietary LLM APIs},
+  author        = {Alexander Panfilov and David Schmotz and Ilia Shumailov and
+                   Luca Beurer-Kellner and Joachim Schaeffer and Ameya Prabhu and
+                   Jonas Geiping and Maksym Andriushchenko},
+  year          = {2026},
+  eprint        = {2608.09867},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2608.09867}
+}
+
+@article{ni2025reprobe,
+  title={ReProbe: Efficient Test-Time Scaling of Multi-Step Reasoning by Probing Internal States of Large Language Models},
+  author={Ni, Jingwei and Fadeeva, Ekaterina and Wu, Tianyi and Akhtar, Mubashara and Zhang, Jiaheng and Ash, Elliott and Leippold, Markus and Baldwin, Timothy and Ng, See-Kiong and Shelmanov, Artem and others},
+  journal={arXiv preprint arXiv:2511.06209},
+  year={2025}
+}
+@article{lu2026hidden,
+  title={Hidden Thoughts Are Not Secret: Reasoning Trace Exposure in LLMs},
+  author={Lu, Yu-An and Tsai, Ci-Yang and Tsai, Yu-Lin and Popa, Raluca Ada and Yu, Chia-Mu},
+  journal={arXiv preprint arXiv:2606.00642},
+  year={2026}
+}
+@misc{anthropic2026opus46,
+  author = {Anthropic},
+  title = {Claude Opus 4.6 System Card},
+  year = {2026},
+  note = {Adaptive thinking allows Claude to calibrate reasoning depth to task difficulty}
+}
+@article{zhang2026steal,
+  title={How to Steal Reasoning Without Reasoning Traces},
+  author={Zhang, Tingwei and Morris, John X and Shmatikov, Vitaly},
+  journal={arXiv preprint arXiv:2603.07267},
+  year={2026}
+}
+
+
+@inproceedings{li2026puzzleworld,
+  title={Puzzleworld: A benchmark for multimodal, open-ended reasoning in puzzlehunts},
+  author={Li, Hengzhi and Zhang, Justin and Jiang, Brendon and Naehu, Alexander and Song, Regan and Tjandrasuwita, Megan and Ekbote, Chanakya and Chen, Steven-Shine and Balachandran, Adithya and Dai, Wei and others},
+  booktitle={International Conference on Learning Representations},
+  year={2026}
+}
+
+@inproceedings{li-etal-2025-understanding,
+    title = "Understanding the Thinking Process of Reasoning Models: A Perspective from Schoenfeld{'}s Episode Theory",
+    author = "Li, Ming  and
+      Zhang, Nan  and
+      Fan, Chenrui  and
+      Jiao, Hong  and
+      Fu, Yanbin  and
+      Peters, Sydney  and
+      Xu, Qingshu  and
+      Lissitz, Robert  and
+      Zhou, Tianyi",
+    editor = "Christodoulopoulos, Christos  and
+      Chakraborty, Tanmoy  and
+      Rose, Carolyn  and
+      Peng, Violet",
+    booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2025",
+    address = "Suzhou, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.emnlp-main.922/",
+    doi = "10.18653/v1/2025.emnlp-main.922",
+    pages = "18267--18288",
+    ISBN = "979-8-89176-332-6",
+    abstract = "While Large Reasoning Models (LRMs) generate extensive chain-of-thought reasoning, we lack a principled framework for understanding how these thoughts are structured. In this paper, we introduce a novel approach by applying Schoenfeld{'}s Episode Theory, a classic cognitive framework for human mathematical problem-solving, to analyze the reasoning traces of LRMs. We annotated thousands of sentences and paragraphs from model-generated solutions to math problems using seven cognitive labels (e.g., Plan, Implement, Verify). The result is the first publicly available benchmark for the fine-grained analysis of machine reasoning, including a large annotated corpus and detailed annotation guidebooks. Our preliminary analysis reveals distinct patterns in LRM reasoning, such as the transition dynamics between cognitive states. This framework provides a theoretically grounded methodology for interpreting LRM cognition and enables future work on more controllable and transparent reasoning systems."
+}
+
+@inproceedings{li-etal-2026-schoenfelds,
+    title = "Schoenfeld{'}s Anatomy of Mathematical Reasoning by Language Models",
+    author = "Li, Ming  and
+      Fan, Chenrui  and
+      Cheng, Yize  and
+      Feizi, Soheil  and
+      Zhou, Tianyi",
+    editor = "Liakata, Maria  and
+      Moreira, Viviane P.  and
+      Zhang, Jiajun  and
+      Jurgens, David",
+    booktitle = "Proceedings of the 64th Annual Meeting of the {A}ssociation for {C}omputational {L}inguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2026",
+    address = "San Diego, California, United States",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.acl-long.1513/",
+    doi = "10.18653/v1/2026.acl-long.1513",
+    pages = "32773--32802",
+    ISBN = "979-8-89176-390-6",
+    abstract = "Large language models increasingly expose reasoning traces, yet their underlying cognitive structure and steps remain difficult to identify and analyze beyond surface-level statistics. We adopt Schoenfeld{'}s Episode Theory as an inductive, intermediate-scale lens and introduce ThinkARM (Anatomy of Reasoning in Models), a scalable framework that explicitly abstracts reasoning traces into functional reasoning steps such as Analysis, Explore, Implement, Verify, etc. When applied to mathematical problem solving by diverse models, this abstraction reveals reproducible thinking dynamics and structural differences between reasoning and non-reasoning models, which are not apparent from token-level views. We further present two diagnostic case studies showing that exploration functions as a critical branching step associated with correctness, and that efficiency-oriented methods selectively suppress evaluative feedback steps rather than uniformly shortening responses. Together, our results demonstrate that episode-level representations make reasoning steps explicit, enabling systematic analysis of how reasoning is structured, stabilized, and altered in modern language models."
+}
+@article{ma2025nothinking,
+  title={Reasoning Models Can Be Effective Without Thinking},
+  author={Ma, Wenjie and He, Jingxuan and Snell, Charlie and Griggs, Tyler and Min, Sewon and Zaharia, Matei},
+  journal={arXiv preprint arXiv:2504.09858},
+  year={2025},
+  url={https://arxiv.org/abs/2504.09858}
+}
+
+@article{wang2025hybridthinking,
+  title={Demystifying Hybrid Thinking: Can {LLMs} Truly Switch Between Think and No-Think?},
+  author={Wang, Shouren and Yang, Wang and Long, Xianxuan and Wang, Qifan and Chaudhary, Vipin and Han, Xiaotian},
+  journal={arXiv preprint arXiv:2510.12680},
+  year={2025},
+  url={https://arxiv.org/abs/2510.12680}
+}
+
+
+@misc{openai2026astra,
+  title={{GPT-6 Astra} Model},
+  author={{OpenAI}},
+  year={2026},
+  url={https://developers.openai.com/api/docs/models/gpt-6-astra},
+  note={Accessed September 13, 2026}
+}
+
+@misc{openai2026sol,
+  title={{GPT-5.6 Sol} Model},
+  author={{OpenAI}},
+  year={2026},
+  url={https://developers.openai.com/api/docs/models/gpt-5.6-sol},
+  note={Accessed September 13, 2026}
+}
+
+@misc{openai2026luna,
+  title={{GPT-5.6 Luna} Model},
+  author={{OpenAI}},
+  year={2026},
+  url={https://developers.openai.com/api/docs/models/gpt-5.6-luna},
+  note={Accessed September 13, 2026}
+}
+
+% GLM-5.2 model card explicitly recommends this GLM-5 report.
+% https://huggingface.co/zai-org/GLM-5.2
+@misc{glm5team2026glm5vibecodingagentic,
+      title={GLM-5: from Vibe Coding to Agentic Engineering},
+      author={GLM-5-Team},
+      year={2026},
+      eprint={2602.15763},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2602.15763},
+}
+
+@InProceedings{chen2024not,
+  title = 	 {Do {NOT} Think That Much for 2+3=? {O}n the Overthinking of Long Reasoning Models},
+  author =       {Chen, Xingyu and Xu, Jiahao and Liang, Tian and He, Zhiwei and Pang, Jianhui and Yu, Dian and Song, Linfeng and Liu, Qiuzhi and Zhou, Mengfei and Zhang, Zhuosheng and Wang, Rui and Tu, Zhaopeng and Mi, Haitao and Yu, Dong},
+  booktitle = 	 {Proceedings of the 42nd International Conference on Machine Learning},
+  pages = 	 {9487--9499},
+  year = 	 {2025},
+  editor = 	 {Singh, Aarti and Fazel, Maryam and Hsu, Daniel and Lacoste-Julien, Simon and Berkenkamp, Felix and Maharaj, Tegan and Wagstaff, Kiri and Zhu, Jerry},
+  volume = 	 {267},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {13--19 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://raw.githubusercontent.com/mlresearch/v267/main/assets/chen25bx/chen25bx.pdf},
+  url = 	 {https://proceedings.mlr.press/v267/chen25bx.html},
+  abstract = 	 {The remarkable performance of long reasoning models can be attributed to their ability to emulate human-like long-time thinking during inference. These models employ extended chain-of-thought (CoT) processes, exploring multiple strategies to enhance problem-solving capabilities. However, a critical question remains: How to intelligently and efficiently scale computational resources during testing. This paper presents the first comprehensive study on the prevalent issue of overthinking in these models, where long reasoning models generate redundant solutions that contribute minimally to accuracy and diversity, thereby wasting computational resources on simple problems with minimal benefit. We introduce novel efficiency metrics from both outcome and process perspectives to evaluate the rational use of computational resources by long reasoning models. Using a self-training paradigm, we propose strategies to mitigate overthinking, simplifying reasoning processes without compromising accuracy. Experimental results show that our approach successfully reduces computational overhead while preserving model performance across a range of testsets with varying difficulty levels, such as GSM8K, MATH500, GPQA, and AIME. Our code is open-source and available at https://github.com/galaxyChen/overthinking.}
+}
+
+@inproceedings{munkhbat-etal-2025-self,
+    title = "Self-Training Elicits Concise Reasoning in Large Language Models",
+    author = "Munkhbat, Tergel  and
+      Ho, Namgyu  and
+      Kim, Seo Hyun  and
+      Yang, Yongjin  and
+      Kim, Yujin  and
+      Yun, Se-Young",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2025",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-acl.1289/",
+    doi = "10.18653/v1/2025.findings-acl.1289",
+    pages = "25127--25152",
+    ISBN = "979-8-89176-256-5",
+    abstract = "Chain-of-thought (CoT) reasoning has enabled large language models (LLMs) to utilize additional computation through intermediate tokens to solve complex tasks. However, we posit that typical reasoning traces contain many redundant tokens, incurring extraneous inference costs. Upon examination of the output distribution of current LLMs, we find evidence on their latent ability to reason more concisely, relative to their default behavior. To elicit this capability, we propose simple fine-tuning methods which leverage self-generated concise reasoning paths obtained by best-of-N sampling and few-shot conditioning, in task-specific settings. Our combined method achieves a 30{\%} reduction in output tokens on average, across five model families on GSM8K and MATH, while maintaining average accuracy. By exploiting the fundamental stochasticity and in-context learning capabilities of LLMs, our self-training approach robustly elicits concise reasoning on a wide range of models, including those with extensive post-training."
+}
+@inproceedings{xia2025tokenskip,
+  title={Tokenskip: Controllable chain-of-thought compression in llms},
+  author={Xia, Heming and Leong, Chak Tou and Wang, Wenjie and Li, Yongqi and Li, Wenjie},
+  booktitle={Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing},
+  pages={3351--3363},
+  year={2025}
+}
+
+@inproceedings{zhang-etal-2026-llms-really,
+    title = "Do {LLM}s Really Need 10+ Thoughts for ``Find the Time 1000 Days Later''? Towards Structural Understanding of {LLM} Overthinking",
+    author = "Zhang, Xinliang Frederick  and
+      Mohananey, Anhad  and
+      Chronopoulou, Alexandra  and
+      Papalampidi, Pinelopi  and
+      Gupta, Somit  and
+      Munkhdalai, Tsendsuren  and
+      Wang, Lu  and
+      Upadhyay, Shyam",
+    editor = "Liakata, Maria  and
+      Moreira, Viviane P.  and
+      Zhang, Jiajun  and
+      Jurgens, David",
+    booktitle = "Proceedings of the 64th Annual Meeting of the {A}ssociation for {C}omputational {L}inguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2026",
+    address = "San Diego, California, United States",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.acl-long.773/",
+    doi = "10.18653/v1/2026.acl-long.773",
+    pages = "17005--17030",
+    ISBN = "979-8-89176-390-6",
+    abstract = "Models employing long chain-of-thought (CoT) reasoning have shown superior performance on complex reasoning tasks. Yet, this capability introduces a critical and often overlooked inefficiency{---}overthinking{---}models often engage in unnecessarily extensive reasoning even for simple queries, incurring significant computations without accuracy improvements. While prior work has explored solutions to mitigate overthinking, a fundamental gap remains in our understanding of its underlying causes. Most existing analyses are limited to superficial, profiling-based observations, failing to delve into LLMs' inner workings. This study introduces a systematic, fine-grained analyzer of LLMs' thought process to bridge the gap, TRACE. We first benchmark the overthinking issue, confirming that long-thinking models are five to twenty times slower on simple tasks with no substantial gains. We then use TRACE to first decompose the thought process into minimally complete sub-thoughts. Next, by inferring discourse relationships among sub-thoughts, we construct granular thought progression graphs and subsequently identify common thinking patterns for topically similar queries. Our analysis reveals two major patterns for open-weight thinking models{---}Explorer and Late Landing. This finding provides evidence that over-verification and over-exploration are the primary drivers of overthinking in LLMs. Grounded in thought structures, we propose a utility-based definition of overthinking, which moves beyond length-based metrics. This revised definition offers a more insightful understanding of LLMs' thought progression, as well as practical guidelines for principled overthinking management."
+}
+% Official citation: https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash
+@misc{deepseekai2026deepseekv4,
+      title={DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence},
+      author={{DeepSeek-AI}},
+      year={2026},
+}
+
+@misc{anthropic2026opus48,
+  title={Introducing {Claude Opus 4.8}},
+  author={{Anthropic}},
+  year={2026},
+  url={https://www.anthropic.com/news/claude-opus-4-8},
+  note={Accessed September 13, 2026}
+}
+
+@misc{anthropic2026opus5,
+  title={Introducing {Claude Opus 5}},
+  author={{Anthropic}},
+  year={2026},
+  url={https://www.anthropic.com/news/claude-opus-5},
+  note={Accessed September 13, 2026}
+}
+
+@misc{anthropic2026sonnet5,
+  title={Introducing {Claude Sonnet 5}},
+  author={{Anthropic}},
+  year={2026},
+  url={https://www.anthropic.com/news/claude-sonnet-5},
+  note={Accessed September 13, 2026}
+}
+
+@misc{anthropic2025haiku45,
+  title={Introducing {Claude Haiku 4.5}},
+  author={{Anthropic}},
+  year={2025},
+  url={https://www.anthropic.com/news/claude-haiku-4-5},
+  note={Accessed September 13, 2026}
+}
+
+@misc{google2026gemini38flash,
+  title={{Gemini 3.8 Flash}},
+  author={{Google DeepMind}},
+  year={2026},
+  url={https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash},
+  note={Accessed September 13, 2026}
+}
+
+% Recommended by both MathArena/apex-shortlist and MathArena/hmmt_feb_2026 HF cards.
+@article{dekoninck2026matharena,
+      title={Beyond Benchmarks: MathArena as an Evaluation Platform for Mathematics with LLMs},
+      author={Jasper Dekoninck and Nikola Jovanovi{\'c} and Tim Gehrunger and K{\'a}ri R{\"o}gnvaldsson and Ivo Petrov and Chenhao Sun and Martin Vechev},
+      year={2026},
+      eprint={2605.00674},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2605.00674},
+}
+
+
+
+@misc{anthropic2026distillation,
+  title={Detecting and preventing distillation attacks},
+  author={{Anthropic}},
+  year={2026},
+  url={https://www.anthropic.com/news/detecting-and-preventing-distillation-attacks},
+  note={Accessed September 13, 2026}
+}
+
+@article{wei2022chain,
+  title={Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  author={Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and Ichter, Brian and Xia, Fei and Chi, Ed and Le, Quoc and Zhou, Denny},
+  journal={arXiv preprint arXiv:2201.11903},
+  year={2022},
+  url={https://arxiv.org/abs/2201.11903}
+}
+@inproceedings{shridhar2023distilling,
+  title     = {Distilling Reasoning Capabilities into Smaller Language Models},
+  author    = {Shridhar, Kumar and Stolfo, Alessandro and Sachan, Mrinmaya},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL 2023},
+  year      = {2023},
+  pages     = {7059--7073},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2023.findings-acl.441},
+  url       = {https://aclanthology.org/2023.findings-acl.441/}
+}
+@article{hsieh2023distilling,
+  title={Distilling Step-by-Step! Outperforming Larger Language Models with Less Training Data and Smaller Model Sizes},
+  author={Hsieh, Cheng-Yu and Li, Chun-Liang and Yeh, Chih-Kuan and Nakhost, Hootan and Fujii, Yasuhisa and Ratner, Alexander and Krishna, Ranjay and Lee, Chen-Yu and Pfister, Tomas},
+  journal={arXiv preprint arXiv:2305.02301},
+  year={2023},
+  url={https://arxiv.org/abs/2305.02301}
+}
+
+@article{jain2024livecodebench,
+  title={{LiveCodeBench}: Holistic and Contamination Free Evaluation of Large Language Models for Code},
+  author={Jain, Naman and Han, King and Gu, Alex and Li, Wen-Ding and Yan, Fanjia and Zhang, Tianjun and Wang, Sida and Solar-Lezama, Armando and Sen, Koushik and Stoica, Ion},
+  journal={arXiv preprint arXiv:2403.07974},
+  year={2024},
+  url={https://arxiv.org/abs/2403.07974}
+}
+
+@article{phan2025hle,
+  title={Humanity's Last Exam},
+  author={Phan, Long and others},
+  journal={arXiv preprint arXiv:2501.14249},
+  year={2025},
+  url={https://arxiv.org/abs/2501.14249}
+}
+
+@article{arora2023jeebench,
+  title={Have {LLMs} Advanced Enough? A Challenging Problem Solving Benchmark for Large Language Models},
+  author={Arora, Daman and Singh, Himanshu Gaurav and Mausam},
+  journal={arXiv preprint arXiv:2305.15074},
+  year={2023},
+  url={https://arxiv.org/abs/2305.15074}
+}
+
+@article{tian2024scicode,
+  title={{SciCode}: A Research Coding Benchmark Curated by Scientists},
+  author={Tian, Minyang and others},
+  journal={arXiv preprint arXiv:2407.13168},
+  year={2024},
+  url={https://arxiv.org/abs/2407.13168}
+}
+
+% The official HF card has no recommended BibTeX; cite the card itself.
+@misc{kimi2026k3,
+  title={{Kimi K3}},
+  author={{Moonshot AI}},
+  year={2026},
+  howpublished={Hugging Face model card},
+  url={https://huggingface.co/moonshotai/Kimi-K3},
+  note={Accessed September 14, 2026}
+}
+
+
+@misc{anthropic2026thinkingconstraints,
+  title={{Claude API} Errors: Thinking Cannot Be Disabled},
+  author={{Anthropic}},
+  year={2026},
+  url={https://platform.claude.com/docs/en/api/errors},
+  note={Accessed September 13, 2026}
+}
+
+@misc{anthropic2026toolconstraints,
+  title={{Claude API} Usage Primer: Forcing Tool Use},
+  author={{Anthropic}},
+  year={2026},
+  url={https://platform.claude.com/docs/en/claude_api_primer},
+  note={Accessed September 13, 2026}
+}
+
+
+@misc{kydlicek2025mathverify,
+  title={{Math-Verify}: Math Verification Library},
+  author={Kydl{\'i}{\v{c}}ek, Hynek},
+  year={2025},
+  howpublished={Hugging Face, software repository},
+  url={https://github.com/huggingface/Math-Verify},
+  note={Accessed September 14, 2026}
+}
+
+@inproceedings{ouyang2022training,
+ author = {Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and Schulman, John and Hilton, Jacob and Kelton, Fraser and Miller, Luke and Simens, Maddie and Askell, Amanda and Welinder, Peter and Christiano, Paul F and Leike, Jan and Lowe, Ryan},
+ booktitle = {Advances in Neural Information Processing Systems},
+ doi = {10.52202/068431-2011},
+ editor = {S. Koyejo and S. Mohamed and A. Agarwal and D. Belgrave and K. Cho and A. Oh},
+ pages = {27730--27744},
+ publisher = {Curran Associates, Inc.},
+ title = {Training language models to follow instructions with human feedback},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2022/file/b1efde53be364a73914f58805a001731-Paper-Conference.pdf},
+ volume = {35},
+ year = {2022}
+}
+
+@inproceedings{jiang-etal-2025-makes,
+  title = {What Makes a Good Reasoning Chain? Uncovering Structural Patterns in Long Chain-of-Thought Reasoning},
+  author = {Jiang, Gangwei and Liu, Yahui and Li, Zhaoyi and Bi, Wei and Zhang, Fuzheng and Song, Linqi and Wei, Ying and Lian, Defu},
+  booktitle = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing},
+  year = {2025},
+  pages = {6490--6514},
+  publisher = {Association for Computational Linguistics},
+  doi = {10.18653/v1/2025.emnlp-main.329},
+  url = {https://aclanthology.org/2025.emnlp-main.329/}
+}
+
+@inproceedings{chen-etal-2025-unveiling-key,
+    title = "Unveiling the Key Factors for Distilling Chain-of-Thought Reasoning",
+    author = "Chen, Xinghao  and
+      Sun, Zhijing  and
+      Guo, Wenjin  and
+      Zhang, Miaoran  and
+      Chen, Yanjun  and
+      Sun, Yirong  and
+      Su, Hui  and
+      Pan, Yijie  and
+      Klakow, Dietrich  and
+      Li, Wenjie  and
+      Shen, Xiaoyu",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2025",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-acl.782/",
+    doi = "10.18653/v1/2025.findings-acl.782",
+    pages = "15094--15119",
+    ISBN = "979-8-89176-256-5",
+    abstract = "Large Language Models (LLMs) excel in reasoning tasks through Chain-of-Thought (CoT) prompting. However, CoT prompting greatly increases computational demands, which has prompted growing interest in distilling CoT capabilities into Small Language Models (SLMs). This study systematically examines the factors influencing CoT distillation, including the choice of granularity, format and teacher model. Through experiments involving four teacher models and seven student models across seven mathematical and commonsense reasoning datasets, we uncover three key findings: (1) Unlike LLMs, SLMs exhibit a \textit{non-monotonic} relationship with granularity, with stronger models benefiting from finer-grained reasoning and weaker models performing better with simpler CoT supervision; (2) CoT format significantly impacts LLMs but has \textit{minimal} effect on SLMs, likely due to their reliance on supervised fine-tuning rather than pretraining preferences; (3) Stronger teacher models do \textit{NOT} always produce better student models, as diversity and complexity in CoT supervision can outweigh accuracy alone. These findings emphasize the need to tailor CoT strategies to specific student model, offering actionable insights for optimizing CoT distillation in SLMs."
+}
+
+@techreport{deutsch1996zlib,
+  author      = {P. Deutsch and J.-L. Gailly},
+  title       = {ZLIB Compressed Data Format Specification version 3.3},
+  institution = {RFC Editor},
+  number      = {RFC 1950},
+  year        = {1996},
+  doi         = {10.17487/RFC1950}
+}

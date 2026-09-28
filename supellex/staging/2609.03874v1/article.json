@@ -1,0 +1,182 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2609.03874v1",
+  "initialized_utc": "2026-09-19T08:52:45.556094Z",
+  "title": "STAIR (STructure Aware Information Retriever): A novel dataset and LLM based retriever for document structure augmentation",
+  "authors": [
+    "Vineet Kumar",
+    "Meghanadh Pulivarthi",
+    "vishwajeet kumar",
+    "Jaydeep Sen",
+    "Riyaz Ahmad Bhat",
+    "Sachindra Joshi"
+  ],
+  "abstract": "Retrieval Augmented Generation (RAG) is a key component for generating accurate and hallucination free answers using Large Language Models (LLMs). LLMs are improving at handling long context, but still suffer from \"lost in the middle\" problem. Thus, precise and accurate retrieval is important. Current retrievers chunk long context into length-based manageable chunks - in the process throwing away rich and informative semantic global structure in the corpus. We introduce a novel retrieval system STAIR that empowers an LLM to exploit global structure in a corpus such as a Table of Contents (ToC) to efficiently store and retrieve information from its model parameters. Our thorough and careful ablation studies with a finetuned Differentiable Search Index (DSI) system show that ToC helps build a low hallucination (less than 0.05%) generative Information Retrieval (IR) system and can generalize to examples where very few training samples are available. To further research in this novel direction of ToC based retrieval we release SearchTome - a diverse benchmark created from 18 books across 6 diverse domains to further research in this novel direction. STAIR achieves a high Recall@1 score of 82.6% on SearchTome as compared to DSI (76.9%), where the difference is found to be statistically significant. STAIR easily beats other strong baselines such as BM25 (59.5%), DPR (68.7%) and out-of-the-box Mistral (13.8%).",
+  "identifiers": {
+    "arxiv": "2609.03874",
+    "arxiv_versioned": "2609.03874v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2609.03874v1"
+    }
+  },
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-09-03T14:02:53Z",
+  "updated": "2026-09-03T14:02:53Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2609.03874v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 9831,
+        "sha256": "992c76b378029020f5cb0a3b489d0f33ef6eac7eccb3efaf1279eac260176df9",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-19T08:52:42.883536Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2609.03874v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "9b2e738cc897045be3cafb23b4f56e38b565aa6885bb8e66c8522f89c158e9a7"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "paper.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "STAIR (STructure Aware Information Retriever): A novel dataset and LLM based retriever for document structure augmentation",
+        "authors_tex": [
+          "\\normalsize\\textbf{Vineet Kumar\\footnotemark[1] \\quad Meghanadh Pulivarthi \\quad Vishwajeet Kumar \\quad Jaydeep Sen} \\\\\n  \\normalsize\\textbf{Riyaz Ahmad Bhat \\quad Sachindra Joshi} \\\\\n  \\normalsize IBM \\\\\n  \\normalsize\\texttt{vineet.mundhra@gmail.com \\quad vishk024@in.ibm.com} \\\\\n  \\normalsize\\texttt{jaydesen@in.ibm.com \\quad Riyaz.Bhat@ibm.com \\quad jsachind@in.ibm.com}"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 214,
+        "sha256": "e6e86d3037dfe0631acf07ea00c9835337f734c91e0ce2689e8b5cd242838047"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2609.03874v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2609.03874v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 3489466,
+      "sha256": "36c82bf6875df84e8d2c9315eb5bf24f765f117ff3f2768f5e7f1e4eb1d66b10",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2609.03874v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2609.03874v1.tar.gz",
+      "entrypoint": "paper.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 20,
+      "tex_files": 12,
+      "sha256": "83f9e065a226c32bd9ab9500e6d5054a608a7800c06f60ae54a91da3aeab3500"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2609.03874v1.pdf",
+      "format": "application/pdf",
+      "bytes": 4339869,
+      "sha256": "3bd184d873154b105b60d16c07f6f6ec3b800b582d4b50ada034ab85245dda8b"
+    },
+    {
+      "role": "html-source",
+      "path": "2609.03874v1-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2609.03874v1.html",
+      "files": 5,
+      "bytes": 4938237,
+      "sha256": "138fbfefe68eb11ad7177a61b88c575160f145fc9f64cb9bcbebed87915ce41a"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-19T08:52:45.556094Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 22
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 20
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 12
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "paper.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\caption{Forced reasoning with native reasoning enabled on APEX (47 questions per condition, one recorded rollout per question). Sol uses maximal-deliberation and Astra uses think-here. }
+\label{tab:live-channel-apex}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrr}
+\toprule
+Model & Effort & Correct & Tool-zero & All-zero & Mean tool output tokens \\
+\midrule
+Sol & high & 44/47 & 46/47 & 38/47  & 15,044 \\
+Sol & xhigh & 47/47 & 42/47 & 39/47 & 19,733 \\
+Astra & high & 47/47 & 38/47 & 18/47  & 5,775 \\
+Astra & xhigh & 47/47 & 34/47 & 7/47  & 12,014 \\
+\bottomrule
+\end{tabular}
+\end{table}

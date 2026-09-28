@@ -19,6 +19,7 @@ import pytest
 import jsonschema
 from pydantic import ValidationError
 
+from jsonl_engine.deposit import DepositConflict
 from jsonl_engine.kinds.article import ArticleManifest
 from procurement.configuration import ArtifactLimitSettings
 from procurement.domain.materialization import (
@@ -372,6 +373,86 @@ def test_real_tar_materialization_keeps_arxiv_archive_leaf_and_trimmed_tree(
     assert validated["source_forms"][0]["archive_kind"] == "tar+gzip"
     assert validated["source_forms"][1]["path"] == f"{SLUG}-tex"
     assert validated["validation"]["publication"] == "published-new-tree"
+
+
+@pytest.mark.parametrize("main_tex", (None, "copy/main.tex"))
+def test_duplicate_source_evidence_survives_publication_and_retry(
+    layout: Layout, main_tex: str | None,
+) -> None:
+    bundle = {
+        "main.tex": MAIN_TEX,
+        "section.tex": b"A resolved input.\n",
+        "00README.json": b'{"source":"test"}\n',
+        "references.bib": b"@book{example,title={Example}}\n",
+        "fig/chart.pdf": PDF,
+    }
+    extras = {**bundle, **{f"copy/{path}": body for path, body in bundle.items()}}
+    source_body = tar_gzip_source(extras=extras)
+    stage_source(layout, source_body)
+    materializer = service(layout, RejectingMetadataService())
+    result = asyncio.run(materializer.materialize(request(main_tex=main_tex)))
+    document = layout.catalog_root / SLUG
+    article_path = document / "article.json"
+    before = article_path.read_bytes()
+    article = ArticleManifest(target_dir=str(document)).validate_record(json.loads(before))
+    tree = document / f"{SLUG}-tex"
+    assert (document / ARXIV_ALIAS).read_bytes() == source_body
+    assert article["source_forms"][1]["files"] == 10
+    assert article["source_forms"][1]["sha256"] == result.tree_sha256
+    for path, body in bundle.items():
+        assert (tree / path).read_bytes() == body
+        assert (tree / "copy" / path).read_bytes() == body
+    check = next(
+        item for item in article["validation"]["checks"]
+        if item["name"] == "entrypoint-unambiguous"
+    )
+    assert len(article["validation"]["checks"]) == 7
+    assert check["entrypoint"] == (main_tex or "main.tex")
+    assert check["outcome"] == ("not-applicable" if main_tex else "passed")
+    assert check["selection"] == ("explicit" if main_tex else "equivalent-source-copies")
+    evidence = check["duplicate_sources"]
+    assert evidence["basis"] == "relative-path-size-sha256"
+    assert evidence["compile_root"] == "."
+    assert evidence["paths_preserved"] is True
+    assert len(evidence["copies"]) == 1
+    duplicate = evidence["copies"][0]
+    assert duplicate["canonical_directory"] == ("copy" if main_tex else ".")
+    assert duplicate["directory"] == ("." if main_tex else "copy")
+    assert duplicate["canonical_entrypoint"] == result.entrypoint
+    assert {item["path"] for item in duplicate["files"]} == set(bundle)
+    for item in duplicate["files"]:
+        assert item["bytes"] == len(bundle[item["path"]])
+        assert item["sha256"] == hashlib.sha256(bundle[item["path"]]).hexdigest()
+    repeated = asyncio.run(materializer.materialize(request(main_tex=main_tex)))
+    assert repeated.created is False
+    assert repeated.tree_sha256 == result.tree_sha256
+    assert article_path.read_bytes() == before
+
+    historical = copy.deepcopy(article)
+    legacy_selection = "explicit" if main_tex else "unique-root"
+    historical["evidence"]["latex_source"]["selection"] = legacy_selection
+    historical["source_forms"][1]["entrypoint_selection"] = legacy_selection
+    old_check = next(
+        item for item in historical["validation"]["checks"]
+        if item["name"] == "entrypoint-unambiguous"
+    )
+    old_check["selection"] = legacy_selection
+    del old_check["duplicate_sources"]
+    ArticleManifest(target_dir=str(document)).validate_record(historical)
+    old_bytes = (json.dumps(historical, indent=2) + "\n").encode("utf-8")
+    article_path.write_bytes(old_bytes)
+    with pytest.raises(DepositConflict, match="existing article.json conflicts"):
+        asyncio.run(materializer.materialize(request(main_tex=main_tex)))
+    assert article_path.read_bytes() == old_bytes
+    rebuilt = asyncio.run(materializer.materialize(request(main_tex=main_tex, rebuild=True)))
+    assert rebuilt.status == "rebuilt"
+    assert rebuilt.tree_sha256 == result.tree_sha256
+    updated = json.loads(article_path.read_bytes())
+    assert updated["initialized_utc"] == historical["initialized_utc"]
+    assert next(
+        item["duplicate_sources"] for item in updated["validation"]["checks"]
+        if item["name"] == "entrypoint-unambiguous"
+    ) == evidence
 
 
 def test_materialize_creates_a_missing_workspace_destination(layout: Layout) -> None:

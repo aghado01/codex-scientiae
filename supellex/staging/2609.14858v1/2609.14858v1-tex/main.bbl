@@ -1,0 +1,277 @@
+\begin{thebibliography}{52}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Anthropic}(2026)]{anthropic2026riemann}
+{Anthropic}.
+\newblock Learning more about claude's mathematical capabilities.
+\newblock \url{https://www.anthropic.com/research/riemann-zeta}, Aug. 2026.
+\newblock Accessed: 2026-08-13.
+
+\bibitem[Assump{\c{c}}{\~a}o et~al.(2025)Assump{\c{c}}{\~a}o, Ferreira, Campos, and Murai]{assumpccao2025codeevolve}
+H.~Assump{\c{c}}{\~a}o, D.~Ferreira, L.~Campos, and F.~Murai.
+\newblock Codeevolve: an open source evolutionary coding agent for algorithmic discovery and optimization.
+\newblock \emph{arXiv preprint arXiv:2510.14150}, 2025.
+
+\bibitem[Cao et~al.(2026)Cao, Mao, Gonzalez, and Stoica]{cao2026k}
+S.~Cao, Z.~Mao, J.~E. Gonzalez, and I.~Stoica.
+\newblock K-search: Llm kernel generation via co-evolving intrinsic world model.
+\newblock \emph{arXiv preprint arXiv:2602.19128}, 2026.
+
+\bibitem[Dai et~al.(2026)Dai, Huang, Kang, and Liao]{dai2026takes}
+R.~Dai, K.~Huang, C.~Kang, and C.~Liao.
+\newblock It takes two to match: Co-evolving generative retriever with reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:2609.00638}, 2026.
+
+\bibitem[Du et~al.(2026)Du, Yan, Shi, Cao, Feng, Liang, Sun, Peng, Zhou, Li, et~al.]{du2026mlevolve}
+S.~Du, X.~Yan, J.~Shi, Z.~Cao, S.~Feng, Z.~Liang, B.~Sun, T.~Peng, Y.~Zhou, X.~Li, et~al.
+\newblock Mlevolve: A self-evolving framework for automated machine learning algorithm discovery.
+\newblock \emph{arXiv preprint arXiv:2606.06473}, 2026.
+
+\bibitem[Friedman et~al.(2010)Friedman, Hastie, and Tibshirani]{friedman2010regularization}
+J.~H. Friedman, T.~Hastie, and R.~Tibshirani.
+\newblock Regularization paths for generalized linear models via coordinate descent.
+\newblock \emph{Journal of statistical software}, 33:\penalty0 1--22, 2010.
+
+\bibitem[Georgiev et~al.(2025)Georgiev, G{\'o}mez-Serrano, Tao, and Wagner]{georgiev2025mathematical}
+B.~Georgiev, J.~G{\'o}mez-Serrano, T.~Tao, and A.~Z. Wagner.
+\newblock Mathematical exploration and discovery at scale.
+\newblock \emph{arXiv preprint arXiv:2511.02864}, 2025.
+
+\bibitem[Gupta et~al.(2017)Gupta, Davidson, Levine, Sukthankar, and Malik]{gupta2017cognitive}
+S.~Gupta, J.~Davidson, S.~Levine, R.~Sukthankar, and J.~Malik.
+\newblock Cognitive mapping and planning for visual navigation.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 2616--2625, 2017.
+
+\bibitem[Ha and Schmidhuber(2018)]{ha2018world}
+D.~Ha and J.~Schmidhuber.
+\newblock World models.
+\newblock \emph{arXiv preprint arXiv:1803.10122}, 2\penalty0 (3):\penalty0 440, 2018.
+
+\bibitem[Hafner et~al.(2019)Hafner, Lillicrap, Ba, and Norouzi]{hafner2019dream}
+D.~Hafner, T.~Lillicrap, J.~Ba, and M.~Norouzi.
+\newblock Dream to control: Learning behaviors by latent imagination.
+\newblock \emph{arXiv preprint arXiv:1912.01603}, 2019.
+
+\bibitem[Hafner et~al.(2020)Hafner, Lillicrap, Norouzi, and Ba]{hafner2020mastering}
+D.~Hafner, T.~Lillicrap, M.~Norouzi, and J.~Ba.
+\newblock Mastering atari with discrete world models.
+\newblock \emph{arXiv preprint arXiv:2010.02193}, 2020.
+
+\bibitem[Hafner et~al.(2023)Hafner, Pasukonis, Ba, and Lillicrap]{hafner2023mastering}
+D.~Hafner, J.~Pasukonis, J.~Ba, and T.~Lillicrap.
+\newblock Mastering diverse domains through world models.
+\newblock \emph{arXiv preprint arXiv:2301.04104}, 2023.
+
+\bibitem[Hafner et~al.(2025)Hafner, Yan, and Lillicrap]{hafner2025training}
+D.~Hafner, W.~Yan, and T.~Lillicrap.
+\newblock Training agents inside of scalable world models.
+\newblock \emph{arXiv preprint arXiv:2509.24527}, 2025.
+
+\bibitem[Hu et~al.(2025)Hu, Liu, Yue, Zhang, Liu, Zhu, Lin, Guo, Dou, Xi, et~al.]{hu2025memory}
+Y.~Hu, S.~Liu, Y.~Yue, G.~Zhang, B.~Liu, F.~Zhu, J.~Lin, H.~Guo, S.~Dou, Z.~Xi, et~al.
+\newblock Memory in the age of ai agents.
+\newblock \emph{arXiv preprint arXiv:2512.13564}, 2025.
+
+\bibitem[Huang et~al.(2026{\natexlab{a}})Huang, Liu, Zheng, Dai, Huang, Li, Li, Wei, Meng, and Huang]{huang2026g}
+C.~Huang, H.~Liu, T.~Zheng, R.~Dai, L.~Huang, J.~Li, Z.~Li, Z.~Wei, Y.~Meng, and J.~Huang.
+\newblock G-zero: Self-play for open-ended generation from zero data.
+\newblock \emph{arXiv preprint arXiv:2605.09959}, 2026{\natexlab{a}}.
+
+\bibitem[Huang et~al.(2026{\natexlab{b}})Huang, Wang, Han, Yan, Chen, CuiZhu, Jiang, Xia, Yu, Zhuang, et~al.]{huang2026envharness}
+C.~Huang, Z.~Wang, R.~Han, J.~Yan, Y.~Chen, Z.~CuiZhu, K.~Jiang, P.~Xia, H.~Yu, Y.~Zhuang, et~al.
+\newblock Envharness: Awakening static worlds for agent learning.
+\newblock \emph{arXiv preprint arXiv:2608.19880}, 2026{\natexlab{b}}.
+
+\bibitem[Huang et~al.(2026{\natexlab{c}})Huang, Yu, Wang, Zhang, Li, Li, Huang, Mi, and Yu]{huang2026r}
+C.~Huang, W.~Yu, X.~Wang, H.~Zhang, Z.~Li, R.~Li, J.~Huang, H.~Mi, and D.~Yu.
+\newblock R-zero: Self-evolving reasoning llm from zero data.
+\newblock In \emph{International Conference on Learning Representations}, volume 2026, pages 130770--130790, 2026{\natexlab{c}}.
+
+\bibitem[Jaber and Jaber(2026)]{jaber2026autokernel}
+J.~Jaber and O.~Jaber.
+\newblock Autokernel: Autonomous gpu kernel optimization via iterative agent-driven search.
+\newblock \emph{arXiv preprint arXiv:2603.21331}, 2026.
+
+\bibitem[Jiang et~al.(2026)Jiang, Ding, and Zhu]{jiang2026deltaevolve}
+J.~Jiang, T.~Ding, and Z.~Zhu.
+\newblock Deltaevolve: Accelerating scientific discovery through momentum-driven evolution.
+\newblock \emph{arXiv preprint arXiv:2602.02919}, 2026.
+
+\bibitem[Kim et~al.(2026)Kim, Lee, Jwa, and Kang]{kim2026meta}
+Z.~M. Kim, Y.-J. Lee, S.~Jwa, and D.~Kang.
+\newblock {Meta${}^n$}: Recursive self-improvement through emergent depth.
+\newblock \emph{arXiv preprint arXiv:2608.24735}, 2026.
+
+\bibitem[Lange et~al.(2026)Lange, Imajuku, and Cetin]{lange2026shinkaevolve}
+R.~Lange, Y.~Imajuku, and E.~Cetin.
+\newblock Shinkaevolve: Towards open-ended and sample-efficient program evolution.
+\newblock In \emph{International Conference on Learning Representations}, volume 2026, pages 74026--74078, 2026.
+
+\bibitem[Lee et~al.(2026)Lee, Nair, Zhang, Lee, Khattab, and Finn]{lee2026meta}
+Y.~Lee, R.~Nair, Q.~Zhang, K.~Lee, O.~Khattab, and C.~Finn.
+\newblock Meta-harness: End-to-end optimization of model harnesses.
+\newblock \emph{arXiv preprint arXiv:2603.28052}, 2026.
+
+\bibitem[Liu et~al.(2026{\natexlab{a}})Liu, Agarwal, Maheswaran, Cemri, Li, Mang, Naren, Boneh, Cheng, Pan, et~al.]{liu2026evox}
+S.~Liu, S.~Agarwal, M.~Maheswaran, M.~Cemri, Z.~Li, Q.~Mang, A.~Naren, E.~Boneh, A.~Cheng, M.~Z. Pan, et~al.
+\newblock Evox: Meta-evolution for automated discovery.
+\newblock \emph{arXiv preprint arXiv:2602.23413}, 2026{\natexlab{a}}.
+
+\bibitem[Liu et~al.(2026{\natexlab{b}})Liu, Cemri, Agarwal, Krentsel, Naren, Mang, Li, Gupta, Maheswaran, Cheng, Pan, Boneh, Ramchandran, Sen, Zaharia, Dimakis, and Stoica]{liu2026skydiscover}
+S.~Liu, M.~Cemri, S.~Agarwal, A.~Krentsel, A.~Naren, Q.~Mang, Z.~Li, A.~Gupta, M.~Maheswaran, A.~Cheng, M.~Pan, E.~Boneh, K.~Ramchandran, K.~Sen, M.~Zaharia, A.~G. Dimakis, and I.~Stoica.
+\newblock Skydiscover: A flexible, adaptive framework for ai-driven scientific and algorithmic discovery.
+\newblock In \emph{Proceedings of the ACM Conference on AI and Agentic Systems}, CAIS '26, pages 1223--1227. Association for Computing Machinery, 2026{\natexlab{b}}.
+\newblock \doi{10.1145/3786335.3813221}.
+\newblock URL \url{https://doi.org/10.1145/3786335.3813221}.
+
+\bibitem[Liu et~al.(2026{\natexlab{c}})Liu, Lin, Zhang, Ren, Wu, Li, Wang, Fu, and Ye]{202608.0051}
+S.~Liu, Z.~Lin, Y.~Zhang, Y.~Ren, Y.~Wu, Y.~Li, Z.~Wang, Z.~Fu, and J.~Ye.
+\newblock The path to recursive self-improving agents: Foundation, framework, and future directions.
+\newblock \emph{Preprints}, August 2026{\natexlab{c}}.
+\newblock \doi{10.20944/preprints202608.0051.v1}.
+\newblock URL \url{https://doi.org/10.20944/preprints202608.0051.v1}.
+
+\bibitem[M.~Moerland et~al.(2023)M.~Moerland, Broekens, Plaat, and M.~Jonker]{m2023model}
+T.~M.~Moerland, J.~Broekens, A.~Plaat, and C.~M.~Jonker.
+\newblock Model-based reinforcement learning: A survey.
+\newblock \emph{Foundations and Trends in Machine Learning}, 16\penalty0 (1):\penalty0 1--118, 2023.
+
+\bibitem[Novikov et~al.(2025)Novikov, V{\~u}, Eisenberger, Dupont, Huang, Wagner, Shirobokov, Kozlovskii, Ruiz, Mehrabian, et~al.]{novikov2025alphaevolve}
+A.~Novikov, N.~V{\~u}, M.~Eisenberger, E.~Dupont, P.-S. Huang, A.~Z. Wagner, S.~Shirobokov, B.~Kozlovskii, F.~J. Ruiz, A.~Mehrabian, et~al.
+\newblock Alphaevolve: A coding agent for scientific and algorithmic discovery.
+\newblock \emph{arXiv preprint arXiv:2506.13131}, 2025.
+
+\bibitem[{OpenAI}(2026)]{openai2026navierstokes}
+{OpenAI}.
+\newblock On the navier--stokes millennium prize problem.
+\newblock \url{https://openai.com/index/navier-stokes-solution/}, Sept. 2026.
+\newblock Accessed: 2026-09-10.
+
+\bibitem[Ouyang et~al.(2025)Ouyang, Guo, Arora, Zhang, Hu, R{\'e}, and Mirhoseini]{ouyang2025kernelbench}
+A.~Ouyang, S.~Guo, S.~Arora, A.~L. Zhang, W.~Hu, C.~R{\'e}, and A.~Mirhoseini.
+\newblock Kernelbench: Can llms write efficient gpu kernels?
+\newblock \emph{arXiv preprint arXiv:2502.10517}, 2025.
+
+\bibitem[Ouyang et~al.(2026{\natexlab{a}})Ouyang, Yan, Chen, Han, Wang, Mishra, Meng, Li, Jiao, Zha, et~al.]{ouyang2026skillos}
+S.~Ouyang, J.~Yan, Y.~Chen, R.~Han, Z.~Wang, B.~D. Mishra, R.~Meng, C.-L. Li, Y.~Jiao, K.~Zha, et~al.
+\newblock Skillos: Learning skill curation for self-evolving agents.
+\newblock \emph{arXiv preprint arXiv:2605.06614}, 2026{\natexlab{a}}.
+
+\bibitem[Ouyang et~al.(2026{\natexlab{b}})Ouyang, Yan, Hsu, Chen, Jiang, Wang, Han, Le, Daruki, Tang, et~al.]{ouyang2026reasoningbank}
+S.~Ouyang, J.~Yan, I.~Hsu, Y.~Chen, K.~Jiang, Z.~Wang, R.~Han, L.~Le, S.~Daruki, X.~Tang, et~al.
+\newblock Reasoningbank: Scaling agent self-evolving with reasoning memory.
+\newblock In \emph{International Conference on Learning Representations}, volume 2026, pages 94327--94354, 2026{\natexlab{b}}.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, et~al.]{pedregosa2011scikit}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel, M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, et~al.
+\newblock Scikit-learn: Machine learning in python.
+\newblock \emph{the Journal of machine Learning research}, 12:\penalty0 2825--2830, 2011.
+
+\bibitem[Romera-Paredes et~al.(2024)Romera-Paredes, Barekatain, Novikov, Balog, Kumar, Dupont, Ruiz, Ellenberg, Wang, Fawzi, et~al.]{romera2024mathematical}
+B.~Romera-Paredes, M.~Barekatain, A.~Novikov, M.~Balog, M.~P. Kumar, E.~Dupont, F.~J. Ruiz, J.~S. Ellenberg, P.~Wang, O.~Fawzi, et~al.
+\newblock Mathematical discoveries from program search with large language models.
+\newblock \emph{Nature}, 625\penalty0 (7995):\penalty0 468--475, 2024.
+
+\bibitem[Sharma(2025)]{openevolve}
+A.~Sharma.
+\newblock Openevolve: an open-source evolutionary coding agent, 2025.
+\newblock URL \url{https://github.com/algorithmicsuperintelligence/openevolve}.
+
+\bibitem[Sutton(1990)]{SUTTON1990216}
+R.~S. Sutton.
+\newblock Integrated architectures for learning, planning, and reacting based on approximating dynamic programming.
+\newblock In B.~Porter and R.~Mooney, editors, \emph{Machine Learning Proceedings 1990}, pages 216--224. Morgan Kaufmann, San Francisco (CA), 1990.
+\newblock ISBN 978-1-55860-141-3.
+\newblock \doi{https://doi.org/10.1016/B978-1-55860-141-3.50030-4}.
+\newblock URL \url{https://www.sciencedirect.com/science/article/pii/B9781558601413500304}.
+
+\bibitem[Virk et~al.(2026)Virk, Edds, Xia, and Zhang]{virk2026swarmresearch}
+Y.~Virk, Z.~Edds, C.~S. Xia, and L.~Zhang.
+\newblock Swarmresearch: Orchestrating coding agents for open-ended discovery.
+\newblock \emph{arXiv preprint arXiv:2607.02807}, 2026.
+
+\bibitem[Wang et~al.(2025)Wang, Su, Zeng, Xu, Ren, Yang, Huang, He, Ma, Peng, et~al.]{wang2025thetaevolve}
+Y.~Wang, S.-R. Su, Z.~Zeng, E.~Xu, L.~Ren, X.~Yang, Z.~Huang, X.~He, L.~Ma, B.~Peng, et~al.
+\newblock Thetaevolve: Test-time learning on open problems.
+\newblock \emph{arXiv preprint arXiv:2511.23473}, 2025.
+
+\bibitem[Wang et~al.(2026)Wang, Yan, Bi, Yan, Tresp, and Ma]{wang2026metaskill}
+Z.~Wang, M.~Yan, J.~Bi, S.~Yan, V.~Tresp, and Y.~Ma.
+\newblock Metaskill-evolve: Recursive self-improvement of llm agents via two-timescale meta-skill evolution.
+\newblock \emph{arXiv preprint arXiv:2607.05297}, 2026.
+
+\bibitem[Wu et~al.(2026{\natexlab{a}})Wu, Qian, Chen, and Ji]{wu2026teaching}
+S.~Wu, C.~Qian, X.~Chen, and H.~Ji.
+\newblock Teaching llms to self-evolve: Cultivating core meta-skills with reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:2607.21971}, 2026{\natexlab{a}}.
+
+\bibitem[Wu et~al.(2026{\natexlab{b}})Wu, Zhuan, Wei, Chen, Bai, Liu, Wang, Wang, Wang, and Cheng]{wu2026agenticrectune}
+X.~Wu, Y.~Zhuan, R.~Wei, H.~Chen, D.~Bai, J.~Liu, X.~Wang, X.~Wang, L.~Wang, and X.~Cheng.
+\newblock Agenticrectune: Multi-agent with self-evolving skillhub for recommendation system optimization.
+\newblock \emph{arXiv preprint arXiv:2604.26969}, 2026{\natexlab{b}}.
+
+\bibitem[Xiong et~al.(2026)Xiong, Yang, Wang, Lin, Ma, Lin, Wang, Li, Liu, Chen, et~al.]{xiong2026rubrics}
+T.~Xiong, Z.~Yang, X.~Wang, C.-C. Lin, R.~Ma, K.~Lin, Z.~Wang, L.~Li, C.~Liu, R.~Chen, et~al.
+\newblock Rubrics as visual-repair context for self-evolving ui-to-code generation.
+\newblock \emph{arXiv preprint arXiv:2608.24138}, 2026.
+
+\bibitem[Xu et~al.(2026)Xu, Sordoni, Singh, Gero, Galley, Yuan, and Gao]{xu2026test}
+W.~Xu, A.~Sordoni, C.~Singh, Z.~Gero, M.~Galley, X.~Yuan, and J.~Gao.
+\newblock Test-time learning with an evolving library.
+\newblock \emph{arXiv preprint arXiv:2605.14477}, 2026.
+
+\bibitem[Yan et~al.(2026{\natexlab{a}})Yan, Peng, Coleman, Chen, Xie, Chen, He, Sachdeva, Wang, Chi, et~al.]{yan2026pacevolve++}
+M.~Yan, B.~Peng, B.~Coleman, Z.~Chen, Z.~Xie, S.~Chen, Z.~He, N.~Sachdeva, W.~Wang, E.~H. Chi, et~al.
+\newblock Pacevolve++: Improving test-time learning for evolutionary search agents.
+\newblock \emph{arXiv preprint arXiv:2605.07039}, 2026{\natexlab{a}}.
+
+\bibitem[Yan et~al.(2026{\natexlab{b}})Yan, Peng, Coleman, Chen, Xie, Chen, He, Sachdeva, Ye, Wang, et~al.]{yan2026pacevolve}
+M.~Yan, B.~Peng, B.~Coleman, Z.~Chen, Z.~Xie, S.~Chen, Z.~He, N.~Sachdeva, I.~Ye, W.~Wang, et~al.
+\newblock Pacevolve: Enabling long-horizon progress-aware consistent evolution.
+\newblock \emph{arXiv preprint arXiv:2601.10657}, 2026{\natexlab{b}}.
+
+\bibitem[Ye et~al.(2026)Ye, Lin, Tang, Luo, Yang, Su, Thapa, Yang, Liu, Li, et~al.]{ye2026evaluation}
+H.~Ye, H.~Lin, J.~Tang, Y.~Luo, C.~Yang, C.~Su, R.~Thapa, R.~Yang, R.~Liu, Z.~Li, et~al.
+\newblock Evaluation-driven scaling for scientific discovery.
+\newblock \emph{arXiv preprint arXiv:2604.19341}, 2026.
+
+\bibitem[Yuksekgonul et~al.(2026)Yuksekgonul, Koceja, Li, Bianchi, McCaleb, Wang, Kautz, Choi, Zou, Guestrin, et~al.]{yuksekgonul2026learning}
+M.~Yuksekgonul, D.~Koceja, X.~Li, F.~Bianchi, J.~McCaleb, X.~Wang, J.~Kautz, Y.~Choi, J.~Zou, C.~Guestrin, et~al.
+\newblock Learning to discover at test time.
+\newblock \emph{arXiv preprint arXiv:2601.16175}, 2026.
+
+\bibitem[Zhang et~al.(2026{\natexlab{a}})Zhang, Fan, Zou, Chen, Wang, Zhou, Li, Huang, Yao, Zheng, et~al.]{zhang2026coevoskills}
+H.~Zhang, S.~Fan, H.~P. Zou, Y.~Chen, Z.~Wang, J.~Zhou, C.~Li, W.-C. Huang, Y.~Yao, K.~Zheng, et~al.
+\newblock Coevoskills: Self-evolving agent skills via co-evolutionary verification.
+\newblock \emph{arXiv preprint arXiv:2604.01687}, 2026{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{b}})Zhang, Hu, Lu, Lange, and Clune]{zhang2026darwin}
+J.~Zhang, S.~Hu, C.~Lu, R.~Lange, and J.~Clune.
+\newblock Darwin g{\"o}del machine: open-ended evolution of self-improving agents.
+\newblock In \emph{International Conference on Learning Representations}, volume 2026, pages 104223--104294, 2026{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{c}})Zhang, Zhao, Yang, Foerster, Clune, Jiang, Devlin, and Shavrina]{zhang2026hyperagents}
+J.~Zhang, B.~Zhao, W.~Yang, J.~Foerster, J.~Clune, M.~Jiang, S.~Devlin, and T.~Shavrina.
+\newblock Hyperagents.
+\newblock \emph{arXiv preprint arXiv:2603.19461}, 2026{\natexlab{c}}.
+
+\bibitem[Zhang et~al.(2026{\natexlab{d}})Zhang, Hu, Upasani, Ma, Hong, Kamanuru, Rainton, Wu, Ji, Li, et~al.]{zhang2026agentic}
+Q.~Zhang, C.~Hu, S.~Upasani, B.~Ma, F.~Hong, V.~Kamanuru, J.~Rainton, C.~Wu, M.~Ji, H.~Li, et~al.
+\newblock Agentic context engineering: Evolving contexts for self-improving language models.
+\newblock In \emph{International Conference on Learning Representations}, volume 2026, pages 86069--86100, 2026{\natexlab{d}}.
+
+\bibitem[Zheng et~al.(2026{\natexlab{a}})Zheng, Liu, Huang, Bao, Zhang, Liu, Dai, Chen, Liu, Xiong, et~al.]{zheng2026llms}
+T.~Zheng, H.~Liu, C.~Huang, H.~Bao, S.~Zhang, R.~Liu, R.~Dai, R.~Chen, C.~Liu, T.~Xiong, et~al.
+\newblock Llms improving llms: Agentic discovery for test-time scaling.
+\newblock \emph{arXiv preprint arXiv:2605.08083}, 2026{\natexlab{a}}.
+
+\bibitem[Zheng et~al.(2026{\natexlab{b}})Zheng, Zhang, Yu, Wang, Xing, Dai, Liu, Bao, Huang, Huang, et~al.]{zheng2026parallel}
+T.~Zheng, H.~Zhang, W.~Yu, X.~Wang, H.~Xing, R.~Dai, R.~Liu, H.~Bao, C.~Huang, H.~Huang, et~al.
+\newblock Parallel-r1: Towards parallel thinking via reinforcement learning.
+\newblock In \emph{International Conference on Learning Representations}, volume 2026, pages 121144--121166, 2026{\natexlab{b}}.
+
+\end{thebibliography}

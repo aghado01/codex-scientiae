@@ -1,0 +1,175 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[final]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{subcaption}
+
+\usepackage{enumitem}
+\setlist{nolistsep}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{STAIR (STructure Aware Information Retriever): A novel dataset and LLM based retriever for document structure augmentation}
+\author{
+  \normalsize\textbf{Vineet Kumar\footnotemark[1] \quad Meghanadh Pulivarthi \quad Vishwajeet Kumar \quad Jaydeep Sen} \\
+  \normalsize\textbf{Riyaz Ahmad Bhat \quad Sachindra Joshi} \\
+  \normalsize IBM \\
+  \normalsize\texttt{vineet.mundhra@gmail.com \quad vishk024@in.ibm.com} \\
+  \normalsize\texttt{jaydesen@in.ibm.com \quad Riyaz.Bhat@ibm.com \quad jsachind@in.ibm.com}
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\newcommand{\systable}{{STAIR}}
+\newcommand{\sys}{{\textbf{STAIR}}}
+\newcommand{\ben}{{\textbf{SearchTome}}}
+\newcommand{\task}{{ToCSearch task}}
+\newcommand{\basellm}{{Mistral Instruct v0.2}}
+\newcommand{\devmetric}{{Recall@1}}
+\newcommand{\toc}{\textbf{{ToC}}}
+\newcommand{\eat}[1]{}
+
+%For TOC Image
+% \usepackage{geometry}
+% \usepackage{titlesec}
+% \usepackage{tcolorbox}
+% \usepackage{xcolor}
+% \usepackage{multicol}
+% \usepackage{lipsum}
+
+% % Set page margins
+% % \geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+% % Define colors
+% \definecolor{boxred}{RGB}{255, 0, 0} % Adding red color for the box
+% \definecolor{darkblue}{RGB}{37, 72, 127}
+% \definecolor{lightgray}{RGB}{240, 240, 240}
+% % Style settings for titles
+% \titleformat{\chapter}[display]
+%   {\normalfont\bfseries}
+%   {Chapter \thechapter:}
+%   {0pt}
+%   {\large}
+% \titlespacing*{\chapter}{0pt}{0pt}{10pt}
+% \titleformat{\section}
+%   {\normalfont\bfseries}
+%   {\thesection:}
+%   {0.5em}
+%   {}
+% \titlespacing*{\section}{0pt}{10pt}{5pt}
+% \titleformat{\subsection}
+%   {\normalfont}
+%   {\thesubsection:}
+%   {0.5em}
+%   {}
+% \titlespacing*{\subsection}{0pt}{5pt}{2pt}
+% \titleformat{\subsubsection}
+%   {\normalfont}
+%   {\thesubsubsection:}
+%   {0.5em}
+%   {}
+% \titlespacing*{\subsubsection}{0pt}{2pt}{2pt}
+% % Define custom environment for learning objectives
+% \newenvironment{learningobjectives}
+%   {\par\smallskip\noindent\textbf{Learning Objectives}\par\nobreak\smallskip}
+%   {\par}
+
+% % Create a zero width box for positioning arrow
+% \newcommand{\zerospacerow}[1]{%
+%   \makebox[0pt][l]{#1}%
+% }
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\begin{document}
+\maketitle
+
+
+\footnotetext[1]{Work done while at IBM. Currently at Amazon Books Science.}
+\renewcommand{\thefootnote}{\arabic{footnote}}  % restore for body footnotes
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\section{Introduction}
+\label{intro}
+\input{sections/intro}
+
+\section{Related Work}
+\label{sec:relatedwork}
+\input{sections/related_work}
+
+\section{{\ben}: A new benchmark for Table of Contents based retrieval}
+\label{sec:benchmark}
+\input{sections/benchmark2}
+
+\section{{\sys}: Table of Contents Searcher}
+\label{sec:system}
+\input{sections/system}
+
+\section{Experiments}
+\label{sec:expt}
+\input{sections/experiments}
+
+\section{Results and Analysis}
+\label{sec:results}
+\input{sections/results_vk}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{sections/conclusion}
+
+\section{Limitations}
+\input{sections/limitations}
+
+
+\bibliography{emnlp}
+
+% \appendix
+
+% \section{Example Appendix}
+% \label{sec:appendix}
+
+% This is an appendix.
+
+\end{document}

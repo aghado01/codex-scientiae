@@ -1,0 +1,13 @@
+\section{Discussion}
+
+\xhdr{Future work} \name opens several directions for future research.
+(1) Cache communication in multi-agent systems: \name may serve as a better communication primitive for real-world agentic tasks with complex multi-round reasoning, coding, and tool use. A preliminary case study on mathematical problem solving is provided in Appendix~\ref{sec:appendix/agentic}. 
+(2) Cross-modal collaboration: beyond text-only models, fusing caches among vision–language models (VLMs) and vision–language–action (VLA) models may enable richer multi-modal collaboration.
+(3) Inference acceleration: \name can enhance speculative decoding and enable token-level routing across heterogeneous models for lower latency and cost.
+(4) Privacy-aware collaboration: LLMs can transmit KV-Cache segments without explicit text, limiting content exposure and improving privacy.
+
+\xhdr{Limitations} (1) Multi-LLM systems experience performance degradation when a much weaker Sharer provides noisy information to a stronger Receiver. This limitation is shared by both T2T and \name, as Sharer semantic quality directly impacts Receiver performance. (2) While pairwise KV-Cache communication is feasible and advantageous, scaling up the number of communicating LLMs with \(O(N)\) training cost remains an open problem. Preliminary efforts towards this goal are in Appendix~\ref{sec:appendix/many2one} and~\ref{sec:appendix/many2many}.
+
+\section{Conclusion}
+\label{sec:conclusion}
+We demonstrate that LLMs can communicate beyond text. We introduce Cache-to-Cache (\name), a general paradigm that transforms and fuses key–value (KV) caches across models to enable direct semantic communication. Across diverse tasks and model configurations, \name consistently achieves higher task performance and better efficiency than text-to-text communication. These results establish cache-to-cache as a practical alternative to token-based communication and highlight its promise for scalable, low-latency multi-LLM systems.

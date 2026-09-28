@@ -1,0 +1,185 @@
+\begin{thebibliography}{33}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bachmann and Nagarajan(2024)]{bachmann2024pitfalls}
+Gregor Bachmann and Vaishnavh Nagarajan.
+\newblock The pitfalls of next-token prediction.
+\newblock \emph{arXiv preprint arXiv:2403.06963}, 2024.
+
+\bibitem[Bender et~al.(2021)Bender, Gebru, McMillan-Major, and Shmitchell]{bender2021dangers}
+Emily~M Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell.
+\newblock On the dangers of stochastic parrots: Can language models be too big?
+\newblock In \emph{Proceedings of the 2021 ACM conference on fairness, accountability, and transparency}, pages 610--623, 2021.
+
+\bibitem[Bricken et~al.(2023)Bricken, Templeton, Batson, Chen, Jermyn, Conerly, Turner, Anil, Denison, Askell, Lasenby, Wu, Kravec, Schiefer, Maxwell, Joseph, Hatfield-Dodds, Tamkin, Nguyen, McLean, Burke, Hume, Carter, Henighan, and Olah]{bricken2023monosemanticity}
+Trenton Bricken, Adly Templeton, Joshua Batson, Brian Chen, Adam Jermyn, Tom Conerly, Nick Turner, Cem Anil, Carson Denison, Amanda Askell, Robert Lasenby, Yifan Wu, Shauna Kravec, Nicholas Schiefer, Tim Maxwell, Nicholas Joseph, Zac Hatfield-Dodds, Alex Tamkin, Karina Nguyen, Brayden McLean, Josiah~E Burke, Tristan Hume, Shan Carter, Tom Henighan, and Christopher Olah.
+\newblock Towards monosemanticity: Decomposing language models with dictionary learning.
+\newblock \emph{Transformer Circuits Thread}, 2023.
+\newblock https://transformer-circuits.pub/2023/monosemantic-features/index.html.
+
+\bibitem[Crutchfield(2012)]{Crut12a}
+J.~P. Crutchfield.
+\newblock Between order and chaos.
+\newblock \emph{Nature Physics}, 8\penalty0 (January):\penalty0 17--24, 2012.
+\newblock \doi{10.1038/NPHYS2190}.
+
+\bibitem[Crutchfield et~al.(2010)Crutchfield, Ellison, Mahoney, and James]{Crut10a}
+J.~P. Crutchfield, C.~J. Ellison, J.~R. Mahoney, and R.~G. James.
+\newblock Synchronization and control in intrinsic and designed computation: {An} information-theoretic analysis of competing models of stochastic computation.
+\newblock \emph{CHAOS}, 20\penalty0 (3):\penalty0 037105, 2010.
+\newblock Santa Fe Institute Working Paper 10-08-015; arxiv.org:1007.5354 [cond-mat.stat-mech].
+
+\bibitem[Crutchfield and Marzen(2015)]{crutchfield2015signatures}
+James~P Crutchfield and Sarah Marzen.
+\newblock Signatures of infinity: Nonergodicity and resource scaling in prediction, complexity, and learning.
+\newblock \emph{Physical Review E}, 91\penalty0 (5):\penalty0 050106, 2015.
+
+\bibitem[Debowski(2020)]{debowski2020information}
+Lukasz Debowski.
+\newblock \emph{Information theory meets power laws: Stochastic processes and language models}.
+\newblock John Wiley \& Sons, 2020.
+
+\bibitem[D{\k{e}}bowski(2023)]{dkebowski2023simplistic}
+{\L}ukasz D{\k{e}}bowski.
+\newblock A simplistic model of neural scaling laws: Multiperiodic santa fe processes.
+\newblock \emph{arXiv preprint arXiv:2302.09049}, 2023.
+
+\bibitem[Engels et~al.(2024)Engels, Liao, Michaud, Gurnee, and Tegmark]{engels2024not}
+Joshua Engels, Isaac Liao, Eric~J Michaud, Wes Gurnee, and Max Tegmark.
+\newblock Not all language model features are linear.
+\newblock \emph{arXiv preprint arXiv:2405.14860}, 2024.
+
+\bibitem[Gloeckle et~al.(2024)Gloeckle, Idrissi, Rozi{\`e}re, Lopez-Paz, and Synnaeve]{Gloeckle24_Better}
+Fabian Gloeckle, Badr~Youbi Idrissi, Baptiste Rozi{\`e}re, David Lopez-Paz, and Gabriel Synnaeve.
+\newblock Better \& faster large language models via multi-token prediction.
+\newblock \emph{arXiv preprint arXiv:2404.19737}, 2024.
+
+\bibitem[Goldstein(2024)]{GoldsteinHand}
+Rick Goldstein.
+\newblock Handcrafting a network to predict next token probabilities for the random-random-xor process.
+\newblock https://apartresearch.com/event/compmech, June 2024.
+\newblock Research submission to the Computational Mechanics Hackathon! research sprint hosted by Apart, PIBBSS, and Simplex.
+
+\bibitem[Gu and Dao(2023)]{Gu23_Mamba}
+Albert Gu and Tri Dao.
+\newblock Mamba: Linear-time sequence modeling with selective state spaces.
+\newblock \emph{arXiv preprint arXiv:2312.00752}, 2023.
+
+\bibitem[Ha and Schmidhuber(2018)]{ha2018world}
+David Ha and J{\"u}rgen Schmidhuber.
+\newblock World models.
+\newblock \emph{arXiv preprint arXiv:1803.10122}, 2018.
+
+\bibitem[Hu et~al.(2024)Hu, Liu, and Jin]{hu2024limitation}
+Jiachen Hu, Qinghua Liu, and Chi Jin.
+\newblock On limitation of transformer for learning hmms.
+\newblock \emph{arXiv preprint arXiv:2406.04089}, 2024.
+
+\bibitem[Jurgens and Crutchfield(2021{\natexlab{a}})]{Jurg21_Shannon}
+A.~M. Jurgens and J.~P. Crutchfield.
+\newblock Shannon entropy rate of hidden {M}arkov processes.
+\newblock \emph{Journal of Statistical Physics}, 183\penalty0 (2):\penalty0 32, 2021{\natexlab{a}}.
+
+\bibitem[Jurgens and Crutchfield(2021{\natexlab{b}})]{jurgens2021divergent}
+Alexandra~M Jurgens and James~P Crutchfield.
+\newblock Divergent predictive states: The statistical complexity dimension of stationary, ergodic hidden markov processes.
+\newblock \emph{Chaos: An Interdisciplinary Journal of Nonlinear Science}, 31\penalty0 (8), 2021{\natexlab{b}}.
+
+\bibitem[Li et~al.(2022)Li, Hopkins, Bau, Vi{\'e}gas, Pfister, and Wattenberg]{li2022emergent}
+Kenneth Li, Aspen~K Hopkins, David Bau, Fernanda Vi{\'e}gas, Hanspeter Pfister, and Martin Wattenberg.
+\newblock Emergent world representations: Exploring a sequence model trained on a synthetic task.
+\newblock \emph{arXiv preprint arXiv:2210.13382}, 2022.
+
+\bibitem[Liu et~al.(2022)Liu, Ash, Goel, Krishnamurthy, and Zhang]{liu2022transformers}
+Bingbin Liu, Jordan~T Ash, Surbhi Goel, Akshay Krishnamurthy, and Cyril Zhang.
+\newblock Transformers learn shortcuts to automata.
+\newblock \emph{arXiv preprint arXiv:2210.10749}, 2022.
+
+\bibitem[L{\"o}hr(2012)]{lohr2012predictive}
+Wolfgang L{\"o}hr.
+\newblock Predictive models and generative complexity.
+\newblock \emph{Journal of Systems Science and Complexity}, 25:\penalty0 30--45, 2012.
+
+\bibitem[Marzen and Crutchfield(2017{\natexlab{a}})]{Marz17a}
+S.~E. Marzen and J.~P. Crutchfield.
+\newblock Nearly maximally predictive features and their dimensions.
+\newblock \emph{Phys. Rev. E}, 95\penalty0 (5):\penalty0 051301(R), 2017{\natexlab{a}}.
+\newblock \doi{10.1103/PhysRevE.95.051301}.
+\newblock SFI Working Paper 17-02-007; arxiv.org:1702.08565 [cond-mat.stat-mech].
+
+\bibitem[Marzen and Crutchfield(2017{\natexlab{b}})]{marzen2017nearly}
+Sarah~E Marzen and James~P Crutchfield.
+\newblock Nearly maximally predictive features and their dimensions.
+\newblock \emph{Physical Review E}, 95\penalty0 (5):\penalty0 051301, 2017{\natexlab{b}}.
+
+\bibitem[Nanda and Bloom(2022)]{Nanda2022_Transformerlens}
+Neel Nanda and Joseph Bloom.
+\newblock Transformerlens.
+\newblock \url{https://github.com/TransformerLensOrg/TransformerLens}, 2022.
+
+\bibitem[Nanda et~al.(2023)Nanda, Lee, and Wattenberg]{nanda2023emergent}
+Neel Nanda, Andrew Lee, and Martin Wattenberg.
+\newblock Emergent linear representations in world models of self-supervised sequence models.
+\newblock \emph{arXiv preprint arXiv:2309.00941}, 2023.
+
+\bibitem[Ortega et~al.(2019)Ortega, Wang, Rowland, Genewein, Kurth-Nelson, Pascanu, Heess, Veness, Pritzel, Sprechmann, et~al.]{ortega2019meta}
+Pedro~A Ortega, Jane~X Wang, Mark Rowland, Tim Genewein, Zeb Kurth-Nelson, Razvan Pascanu, Nicolas Heess, Joel Veness, Alex Pritzel, Pablo Sprechmann, et~al.
+\newblock Meta-learning of sequential strategies.
+\newblock \emph{arXiv preprint arXiv:1905.03030}, 2019.
+
+\bibitem[Pal et~al.(2023)Pal, Sun, Yuan, Wallace, and Bau]{Pal23_Future}
+Koyena Pal, Jiuding Sun, Andrew Yuan, Byron~C Wallace, and David Bau.
+\newblock Future lens: Anticipating subsequent tokens from a single hidden state.
+\newblock \emph{arXiv preprint arXiv:2311.04897}, 2023.
+
+\bibitem[Pepper(2024)]{rnn_belief}
+Keenan Pepper.
+\newblock {RNNs} represent belief state geometry in their hidden states.
+\newblock https://apartresearch.com/event/compmech, June 2024.
+\newblock Research submission to the Computational Mechanics Hackathon! research sprint hosted by Apart, PIBBSS, and Simplex.
+
+\bibitem[Riechers and Crutchfield(2018{\natexlab{a}})]{Riec18_SSAC1}
+P.~M. Riechers and J.~P. Crutchfield.
+\newblock Spectral simplicity of apparent complexity, {Part I}: {The} nondiagonalizable metadynamics of prediction.
+\newblock \emph{Chaos}, 28:\penalty0 033115, 2018{\natexlab{a}}.
+\newblock \doi{10.1063/1.4985199}.
+
+\bibitem[Riechers and Crutchfield(2018{\natexlab{b}})]{Riec18_SSAC2}
+P.~M. Riechers and J.~P. Crutchfield.
+\newblock Spectral simplicity of apparent complexity, {Part II}: {Exact} complexities and complexity spectra.
+\newblock \emph{Chaos}, 28:\penalty0 033116, 2018{\natexlab{b}}.
+\newblock \doi{10.1063/1.4986248}.
+
+\bibitem[Riechers and Crutchfield(2021)]{riechers2021fraudulent}
+Paul~M Riechers and James~P Crutchfield.
+\newblock Fraudulent white noise: Flat power spectra belie arbitrarily complex processes.
+\newblock \emph{Physical Review Research}, 3\penalty0 (1):\penalty0 013170, 2021.
+
+\bibitem[Ruebeck et~al.(2018)Ruebeck, James, Mahoney, and Crutchfield]{ruebeck2018prediction}
+Joshua~B Ruebeck, Ryan~G James, John~R Mahoney, and James~P Crutchfield.
+\newblock Prediction and generation of binary markov processes: Can a finite-state fox catch a markov mouse?
+\newblock \emph{Chaos: An Interdisciplinary Journal of Nonlinear Science}, 28\penalty0 (1), 2018.
+
+\bibitem[Shalizi and Crutchfield(2001)]{Shal98a}
+C.~R. Shalizi and J.~P. Crutchfield.
+\newblock Computational mechanics: Pattern and prediction, structure and simplicity.
+\newblock \emph{J. Stat. Phys.}, 104:\penalty0 817--879, 2001.
+
+\bibitem[Sutskever(2023)]{Sutskever2023}
+Ilya Sutskever.
+\newblock Building {AGI}, alignment, future models, spies, {M}icrosoft, {T}aiwan, \& enlightenment.
+\newblock Podcast on Dwarkesh Patel Podcast, March 2023.
+\newblock URL \url{https://www.youtube.com/watch?v=YEUclZdj_Sc}.
+\newblock Accessed: 2024-05-22.
+
+\bibitem[Upper(1997)]{Uppe97a}
+D.~R. Upper.
+\newblock \emph{Theory and Algorithms for Hidden {M}arkov Models and Generalized Hidden {M}arkov Models}.
+\newblock PhD thesis, University of California, Berkeley, 1997.
+\newblock {P}ublished by University Microfilms Intl, Ann Arbor, Michigan.
+
+\end{thebibliography}

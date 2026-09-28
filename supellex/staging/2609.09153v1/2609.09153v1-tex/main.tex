@@ -1,0 +1,90 @@
+\documentclass[11pt, a4paper]{googlecloud}
+
+\pdfinfoomitdate 1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+
+\usepackage[authoryear, sort&compress, round]{natbib}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[most]{tcolorbox}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\captionsetup[table]{font=footnotesize}
+\captionsetup[figure]{font=footnotesize}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.72}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+\definecolor{GoogleBlue}{HTML}{4285F4}
+\definecolor{GoogleRed}{HTML}{EA4335}
+\definecolor{GoogleYellow}{HTML}{FBBC05}
+\definecolor{GoogleGreen}{HTML}{34A853}
+
+\title{Procedural Graphs: Self-Evolving Execution Structures for LLM Agents}
+
+\correspondingauthor{\footnotesize{Corresponding author: soarik@google.com}\\}
+
+
+\author[1,2,3]{Yuxing Lu}
+\author[1]{Yicheng Chen}
+\author[1]{Shanchan Wu}
+\author[1]{Sercan \"{O}. Ar{\i}k}
+
+\affil[1]{Google}
+\affil[2]{Georgia Institute of Technology}
+\affil[3]{Peking University}
+
+\begin{abstract}
+Large language models are increasingly deployed as agents that plan over long horizons and act through external tools. Most agents select actions through unconstrained generation over an accumulating history, leaving implicit the procedural knowledge of what to do, in what order, and under which conditions. As trajectories lengthen, agents can lose track of their objectives, invoke tools out of order, and repeat unproductive actions. We introduce the \textbf{Procedural Graph}: just as a knowledge graph organizes factual knowledge into (entity, relation, entity) triplets for \textit{what-is} questions, a Procedural Graph organizes procedural knowledge into (procedure, relation, procedure) triplets for \textit{what-to-do} questions. At each decision step, the framework localizes the agent's active node, and a guidance model translates the surrounding subgraph into step-level situational guidance that biases the solver's next action without dictating it. The graph is self-evolving: an LLM refiner contrasts failed trajectories with successful ones and edits the graph's topology and attributes, committing edits that preserve or improve held-out validation performance while retaining rejected ones to discourage repetition. Starting from a minimal skeleton, the loop builds graphs that match or surpass hand-designed ones. It can also repair a flawed expert prior. Across multiple datasets, task types, and LLMs, the Procedural Graph delivers consistent gains over memory-based baselines, and self-evolution further improves performance without manual engineering.
+\end{abstract}
+
+\begin{document}
+
+\newtcolorbox{modebox}[1]{
+  colback=GoogleBlue!3,
+  colframe=GoogleBlue,
+  colbacktitle=GoogleBlue,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title=#1,
+  arc=3pt,
+  outer arc=3pt,
+  boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=8pt, after skip=8pt
+}
+
+\newtcolorbox{tracebox}[3][]{
+  colback=#2!3,
+  colframe=#2,
+  colbacktitle=#2,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title=#3,
+  title after break={#3 (continued)},
+  arc=3pt,
+  breakable,
+  boxrule=0.8pt,
+  outer arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=8pt, after skip=8pt,
+  #1
+}
+
+\maketitle
+
+\input{body}
+\end{document}

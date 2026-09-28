@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import asdict
 from typing import Any
 
 from procurement.source.extraction import ArchiveExtraction
@@ -21,7 +22,23 @@ def build_source_findings(
             "archive_kind": extraction.archive_kind,
         }
     ]
-    if extraction.archive_kind == "tar+gzip":
+    if extraction.archive_kind == "tar+gzip" and extraction.omitted_case_collisions:
+        checks.append(
+            {
+                "name": "archive-members-confined",
+                "outcome": "waived",
+                "reason": (
+                    "later regular-file members collide by portable case with an "
+                    "earlier file and were left in the archive"
+                ),
+                "entries": extraction.archive_entries,
+                "omitted": [
+                    {"kept": kept, "omitted": omitted}
+                    for kept, omitted in extraction.omitted_case_collisions
+                ],
+            }
+        )
+    elif extraction.archive_kind == "tar+gzip":
         checks.append(
             {
                 "name": "archive-members-confined",
@@ -71,6 +88,22 @@ def build_source_findings(
                 "entrypoint": inspection.entrypoint,
             }
         )
+    if inspection.duplicate_copies:
+        checks[-1]["duplicate_sources"] = {
+            "basis": "relative-path-size-sha256",
+            "compile_root": ".",
+            "paths_preserved": True,
+            "copies": [
+                {
+                    "directory": copy.directory,
+                    "canonical_directory": copy.canonical_directory,
+                    "entrypoint": copy.entrypoint,
+                    "canonical_entrypoint": copy.canonical_entrypoint,
+                    "files": [asdict(item) for item in copy.files],
+                }
+                for copy in inspection.duplicate_copies
+            ],
+        }
     if inspection.unresolved_inputs:
         checks.append(
             {

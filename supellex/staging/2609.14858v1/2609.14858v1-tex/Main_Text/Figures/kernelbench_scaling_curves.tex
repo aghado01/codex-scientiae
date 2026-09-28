@@ -1,0 +1,256 @@
+\definecolor{oursblue}{HTML}{0072B2}
+\definecolor{baselinegray}{HTML}{6B7280}
+\usepgfplotslibrary{groupplots}
+\begin{tikzpicture}
+
+\begin{groupplot}[
+  group style={group size=2 by 2,horizontal sep=1.00cm,vertical sep=1.45cm},
+  width=7.3cm,
+  height=4.4cm,
+  xmin=0,
+  axis lines=left,
+  axis line style={black!55,line width=0.65pt},
+  xmajorgrids=false,
+  ymajorgrids=true,
+  grid style={black!8,line width=0.30pt},
+  scaled ticks=false,
+  tick align=outside,
+  tick style={black!55,line width=0.50pt},
+  tick label style={font=\scriptsize,text=black!80},
+  title style={font=\small\bfseries,yshift=3pt},
+  xlabel style={font=\small,yshift=2pt},
+  ylabel style={font=\small},
+  clip=true,
+  clip marker paths=true,
+  restrict x to domain=1:2000,
+  unbounded coords=discard,
+  filter discard warning=false
+]
+
+% ============================================================
+% VGG16
+% ============================================================
+
+\nextgroupplot[
+  title={VGG16},
+  xmax=1050,
+  ymin=0.35,
+  ymax=0.57,
+  xtick={0,250,500,750,1000},
+  xticklabels=\empty,
+  ytick={0.35,0.40,0.45,0.50,0.55},
+  ylabel={Performance ($1/\mathrm{ms}$)},
+  legend to name=sharedlegend,
+  legend columns=2,
+  legend style={draw=none,font=\small,column sep=1.4em}
+]
+
+\addplot[
+  const plot,
+  color=oursblue,
+  line width=2.55pt,
+  mark=*,
+  mark size=1.35pt,
+  mark options={fill=oursblue,draw=oursblue}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/vgg16_ours.dat};
+
+\addlegendentry{\textsc{Dream-RSI}}
+
+\addplot[
+  const plot,
+  color=baselinegray,
+  line width=1.75pt,
+  densely dashed,
+  mark=square*,
+  mark size=1.00pt,
+  mark options={fill=white,draw=baselinegray,line width=0.65pt}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/vgg16_baseline.dat};
+
+\addlegendentry{Recursive Fixed Exploration}
+
+\node[
+  anchor=north west,
+  font=\scriptsize\bfseries,
+  text=oursblue!80!black,
+  fill=white,
+  draw=oursblue!20,
+  rounded corners=1pt,
+  line width=0.3pt,
+  inner xsep=3pt,
+  inner ysep=1.7pt
+]
+at (axis description cs:0.38,0.67)
+{\makecell{$2.43\times$ fewer costs \\ (comparable performance)}};
+
+
+% ============================================================
+% LayerNorm
+% ============================================================
+
+\nextgroupplot[
+  title={LayerNorm},
+  xmax=1050,
+  ymin=1.02,
+  ymax=1.15,
+  xtick={0,250,500,750,1000},
+  xticklabels=\empty,
+  ytick={1.00,1.05,1.10,1.15}
+]
+
+\addplot[
+  const plot,
+  color=oursblue,
+  line width=2.55pt,
+  mark=*,
+  mark size=1.35pt,
+  mark options={fill=oursblue,draw=oursblue}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/layernorm_ours.dat};
+
+\addplot[
+  const plot,
+  color=baselinegray,
+  line width=1.75pt,
+  densely dashed,
+  mark=square*,
+  mark size=1.00pt,
+  mark options={fill=white,draw=baselinegray,line width=0.65pt}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/layernorm_baseline.dat};
+
+\node[
+  anchor=north west,
+  font=\scriptsize\bfseries,
+  text=oursblue!80!black,
+  fill=white,
+  draw=oursblue!20,
+  rounded corners=1pt,
+  line width=0.3pt,
+  inner xsep=3pt,
+  inner ysep=1.7pt
+]
+at (axis description cs:0.335,0.55)
+{\makecell{$1.79\times$ fewer costs \\ (comparable performance)}};
+
+
+% ============================================================
+% ConvDiv
+% ============================================================
+
+\nextgroupplot[
+  title={ConvDiv},
+  xmax=1050,
+  ymin=0.40,
+  ymax=2.00,
+  xtick={0,250,500,750,1000},
+  ytick={0.4,0.8,1.2,1.6,2.0},
+  xlabel={Number of Generations},
+  ylabel={Performance ($1/\mathrm{ms}$)}
+]
+
+\addplot[
+  const plot,
+  color=oursblue,
+  line width=2.55pt,
+  mark=*,
+  mark size=1.35pt,
+  mark options={fill=oursblue,draw=oursblue}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convdiv_ours.dat};
+
+\addplot[
+  const plot,
+  color=baselinegray,
+  line width=1.75pt,
+  densely dashed,
+  mark=square*,
+  mark size=1.00pt,
+  mark options={fill=white,draw=baselinegray,line width=0.65pt}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convdiv_baseline.dat};
+
+\node[
+  anchor=north west,
+  font=\scriptsize\bfseries,
+  text=oursblue!80!black,
+  fill=white,
+  draw=oursblue!20,
+  rounded corners=1pt,
+  line width=0.3pt,
+  inner xsep=3pt,
+  inner ysep=1.7pt
+]
+at (axis description cs:0.035,0.95)
+{\makecell{$2.09\times$ higher score \\ (Similar Budget)}};
+
+
+% ============================================================
+% ConvMax
+% ============================================================
+
+\nextgroupplot[
+  title={ConvMax},
+  xmax=1050,
+  ymin=0.22,
+  ymax=0.45,
+  xtick={0,250,500,750,1000},
+  ytick={0.25,0.30,0.35,0.40,0.45},
+  xlabel={Number of Generations}
+]
+
+\addplot[
+  const plot,
+  color=oursblue,
+  line width=2.55pt,
+  mark=*,
+  mark size=1.35pt,
+  mark options={fill=oursblue,draw=oursblue}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convmax_ours.dat};
+
+\addplot[
+  const plot,
+  color=baselinegray,
+  line width=1.75pt,
+  densely dashed,
+  mark=square*,
+  mark size=1.00pt,
+  mark options={fill=white,draw=baselinegray,line width=0.65pt}
+]
+table[x=budget,y=score]
+{Main_Text/raw_data/data/convmax_baseline.dat};
+
+\node[
+  anchor=north west,
+  font=\scriptsize\bfseries,
+  text=oursblue!80!black,
+  fill=white,
+  draw=oursblue!20,
+  rounded corners=1pt,
+  line width=0.3pt,
+  inner xsep=3pt,
+  inner ysep=1.7pt
+]
+at (axis description cs:0.035,0.95)
+{\makecell{$1.44\times$ higher score \\ (Similar Budget)}};
+
+\end{groupplot}
+
+% ============================================================
+% Shared legend on top
+% ============================================================
+
+\node[anchor=south]
+at ([yshift=0.05cm]current bounding box.north)
+{\pgfplotslegendfromname{sharedlegend}};
+
+\end{tikzpicture}
