@@ -1,0 +1,224 @@
+\section{Additional Results}
+\label{sec:appendix-results}
+
+This appendix reports the complete numerical results underlying the paper's
+plots. The guide below follows the order of the corresponding main-text
+analyses and points to the relevant figures and tables. In matched-budget
+method comparisons, boldface marks the best displayed value and underlining
+marks the second-best; table panel headings state the metric direction.
+
+\subsection{Guide to the Complete Results}
+\label{sec:appendix-guide}
+
+\paragraph{Headline method comparison.}
+The exact values behind the principal accuracy--efficiency
+comparison is in Table~\ref{tab:main-fixed-budget-complete}; it reports
+executed questions, execution fraction, pass-rate MAE, Spearman correlation,
+and Kendall's $\tau$ for every method and operating point in
+Figures~\ref{fig:main-mae} and~\ref{fig:main-ranking}.
+Table~\ref{tab:cache-complete} gives the
+corresponding threshold-level results for historical caching. Together, these
+tables provide the complete numerical record for the two headline plots.
+
+\paragraph{Fixed-subset design results.}
+Figures~\ref{fig:fixed-subset-spearman} and
+\ref{fig:fixed-subset-kendall} give the full ranking-fidelity curves for the
+selection-by-estimation comparison whose MAE results appear in
+Figure~\ref{fig:fixed-subset-mae}. Table~\ref{tab:fixed-design-complete}
+then collects all three metrics for every selector, estimator, and budget. 
+% Use
+% the figures to compare trends and the table to recover exact matched-budget
+% values.
+
+\paragraph{Adaptive-model design results.}
+Figure~\ref{fig:adaptive-model-ranking} supplies the Spearman and Kendall views
+corresponding to the MAE comparison in Figure~\ref{fig:adaptive-model-mae}.
+Table~\ref{tab:adaptive-model-complete} reports the exact MAE and rank correlations
+for Rasch adaptive testing, multidimensional 2PL adaptive testing, and random
+sampling at every evaluated budget.
+
+\paragraph{Cross-agent transfer results.}
+Table~\ref{tab:cross-agent-run-counts} first defines the five held-out
+families and their run counts. For the aggregate transfer result,
+Figure~\ref{fig:cross-agent-transfer-ranking} and
+Table~\ref{tab:transfer-pooled-complete} provide the pooled ranking curves
+and all exact pooled metrics. 
+Figures~\ref{fig:cross-agent-family-mae}--
+\ref{fig:cross-agent-family-kendall} and
+Tables~\ref{tab:transfer-family-a-complete}--
+\ref{tab:transfer-family-e-complete} report the same results
+separately for each agent family.
+
+\paragraph{Calibration-window sensitivity.}
+Figure~\ref{fig:calibration-window-ranking} gives the Spearman and Kendall
+sensitivity curves that complement the MAE results in
+Figure~\ref{fig:calibration-window-mae}. Table~\ref{tab:calibration-window-complete}
+reports every window's start day, number of calibration runs, subset size, and
+three fidelity metrics. 
+
+\clearpage
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@dblfptop}{0pt}
+\makeatother
+
+\input{tables/appendix_main_fixed_budget}
+
+\FloatBarrier
+
+\input{tables/appendix_cache_thresholds}
+
+\FloatBarrier
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.82\textwidth]{figures/fixed_subset_spearman.pdf}
+    \caption{Spearman ranking fidelity for the fixed-subset
+    selection-by-estimation comparison. Higher values are better. All methods
+    use the same 287 held-out evaluation runs and the same question budgets;
+    random sampling is averaged over 20 seeds.}
+    \label{fig:fixed-subset-spearman}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.82\textwidth]{figures/fixed_subset_kendall.pdf}
+    \caption{Kendall's $\tau$ ranking fidelity for the fixed-subset
+    selection-by-estimation comparison. Higher values are better. The test
+    population, budgets, and random-sampling seeds match
+    Figure~\ref{fig:fixed-subset-spearman}.}
+    \label{fig:fixed-subset-kendall}
+\end{figure*}
+
+\FloatBarrier
+
+\input{tables/appendix_fixed_subset_design}
+
+\FloatBarrier
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/adaptive_model_spearman.pdf}
+        \caption{Spearman correlation.}
+        \label{fig:adaptive-model-spearman}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/adaptive_model_kendall.pdf}
+        \caption{Kendall's $\tau$.}
+        \label{fig:adaptive-model-kendall}
+    \end{subfigure}
+    \caption{Ranking fidelity for the adaptive-model comparison. Higher values
+    are better. Both panels use the same 287 held-out evaluation runs and
+    question budgets as Figure~\ref{fig:adaptive-model-mae}; random sampling is
+    averaged over 20 seeds.}
+    \label{fig:adaptive-model-ranking}
+\end{figure*}
+
+\FloatBarrier
+
+\input{tables/appendix_adaptive_model}
+
+\FloatBarrier
+
+\input{tables/appendix_transfer_run_counts}
+
+\FloatBarrier
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/cross_agent_transfer_spearman.pdf}
+        \caption{Spearman correlation.}
+        \label{fig:cross-agent-transfer-spearman}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/cross_agent_transfer_kendall.pdf}
+        \caption{Kendall's $\tau$.}
+        \label{fig:cross-agent-transfer-kendall}
+    \end{subfigure}
+    \caption{Pooled cross-agent ranking fidelity for a
+    difficulty-stratified gp-IRT subset calibrated on the focal family and
+    transferred unchanged to 299 runs from five held-out families. Higher
+    values are better. Random sampling is averaged over 20 seeds.}
+    \label{fig:cross-agent-transfer-ranking}
+\end{figure*}
+
+\FloatBarrier
+
+\input{tables/appendix_transfer_pooled}
+
+\FloatBarrier
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.82\textwidth]{figures/cross_agent_family_mae_panels.pdf}
+    \caption{Cross-agent pass-rate MAE by anonymized family for the transferred
+    difficulty-stratified gp-IRT subset and 20-seed random sampling. Lower is
+    better. Each panel compares methods on the same held-out runs within that
+    family.}
+    \label{fig:cross-agent-family-mae}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.82\textwidth]{figures/cross_agent_family_spearman_panels.pdf}
+    \caption{Cross-agent Spearman ranking fidelity by anonymized family. Higher
+    is better. Correlations are computed within family, and random sampling is
+    averaged over 20 seeds.}
+    \label{fig:cross-agent-family-spearman}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.82\textwidth]{figures/cross_agent_family_kendall_panels.pdf}
+    \caption{Cross-agent Kendall's $\tau$ ranking fidelity by anonymized
+    family. Higher is better. Correlations are computed within family, and
+    random sampling is averaged over 20 seeds.}
+    \label{fig:cross-agent-family-kendall}
+\end{figure*}
+
+\FloatBarrier
+
+\input{tables/appendix_transfer_family_a}
+\input{tables/appendix_transfer_family_b}
+\input{tables/appendix_transfer_family_c}
+\input{tables/appendix_transfer_family_d}
+\input{tables/appendix_transfer_family_e}
+
+\FloatBarrier
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/calibration_window_spearman.pdf}
+        \caption{Spearman correlation.}
+        \label{fig:calibration-window-spearman}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/calibration_window_kendall.pdf}
+        \caption{Kendall's $\tau$.}
+        \label{fig:calibration-window-kendall}
+    \end{subfigure}
+    \caption{Ranking-fidelity sensitivity of difficulty-stratified fixed
+    subsets to nested calibration windows ending Day 28. Higher values are
+    better. Windows vary jointly in historical range and calibration-run
+    count; all curves use the same 287 held-out evaluation runs.}
+    \label{fig:calibration-window-ranking}
+\end{figure*}
+
+\FloatBarrier
+
+\input{tables/appendix_calibration_windows}
+
+\FloatBarrier

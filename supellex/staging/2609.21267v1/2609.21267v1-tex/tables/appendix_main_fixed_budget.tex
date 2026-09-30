@@ -1,0 +1,58 @@
+\begin{table*}[t]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{rrrrrr}
+    \toprule
+    \multicolumn{6}{l}{\textit{(a) Pass-rate MAE (percentage points; lower is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Difficulty\\weighted} & \shortstack{Difficulty\\gp-IRT} & \shortstack{Rasch\\adaptive} \\
+    \midrule
+    10 & 1.9 & 10.48 & \underline{8.10} & \textbf{7.57} & 10.94 \\
+    20 & 3.9 & 7.22 & \underline{6.37} & \textbf{5.51} & 9.79 \\
+    30 & 5.8 & 5.86 & \underline{4.63} & \textbf{4.35} & 6.50 \\
+    50 & 9.6 & 4.41 & \underline{3.37} & \textbf{3.28} & 6.46 \\
+    75 & 14.5 & 3.49 & \textbf{3.04} & \underline{3.05} & 3.51 \\
+    100 & 19.3 & 2.94 & \underline{2.71} & \textbf{2.65} & 2.92 \\
+    150 & 28.9 & 2.25 & \underline{2.01} & \textbf{2.00} & 2.07 \\
+    200 & 38.5 & 1.79 & 1.43 & \underline{1.40} & \textbf{1.37} \\
+    250 & 48.2 & 1.46 & 1.17 & \underline{1.15} & \textbf{1.03} \\
+    300 & 57.8 & 1.18 & 1.06 & \underline{0.99} & \textbf{0.79} \\
+    350 & 67.4 & 0.93 & 0.77 & \underline{0.73} & \textbf{0.60} \\
+    400 & 77.1 & 0.69 & 0.51 & \underline{0.47} & \textbf{0.42} \\
+    \midrule
+    \multicolumn{6}{l}{\textit{(b) Spearman correlation (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Difficulty\\weighted} & \shortstack{Difficulty\\gp-IRT} & \shortstack{Rasch\\adaptive} \\
+    \midrule
+    10 & 1.9 & 0.559 & \underline{0.586} & \textbf{0.598} & 0.446 \\
+    20 & 3.9 & 0.692 & \textbf{0.804} & \underline{0.803} & 0.510 \\
+    30 & 5.8 & 0.757 & \textbf{0.803} & \underline{0.796} & 0.667 \\
+    50 & 9.6 & 0.835 & \underline{0.876} & \textbf{0.883} & 0.697 \\
+    75 & 14.5 & \underline{0.884} & \textbf{0.924} & \textbf{0.924} & 0.883 \\
+    100 & 19.3 & 0.911 & \textbf{0.930} & \textbf{0.930} & \underline{0.923} \\
+    150 & 28.9 & 0.941 & \underline{0.960} & \textbf{0.961} & 0.948 \\
+    200 & 38.5 & \underline{0.957} & \textbf{0.972} & \textbf{0.972} & \textbf{0.972} \\
+    250 & 48.2 & 0.967 & 0.977 & \underline{0.978} & \textbf{0.979} \\
+    300 & 57.8 & 0.975 & 0.980 & \underline{0.981} & \textbf{0.986} \\
+    350 & 67.4 & 0.983 & 0.987 & \underline{0.988} & \textbf{0.992} \\
+    400 & 77.1 & 0.989 & 0.993 & \underline{0.994} & \textbf{0.995} \\
+    \midrule
+    \multicolumn{6}{l}{\textit{(c) Kendall's Tau (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Difficulty\\weighted} & \shortstack{Difficulty\\gp-IRT} & \shortstack{Rasch\\adaptive} \\
+    \midrule
+    10 & 1.9 & 0.426 & \textbf{0.434} & \underline{0.431} & 0.323 \\
+    20 & 3.9 & 0.531 & \textbf{0.632} & \underline{0.619} & 0.383 \\
+    30 & 5.8 & 0.585 & \textbf{0.617} & \underline{0.607} & 0.517 \\
+    50 & 9.6 & 0.661 & \underline{0.692} & \textbf{0.700} & 0.570 \\
+    75 & 14.5 & 0.715 & \textbf{0.764} & \textbf{0.764} & \underline{0.719} \\
+    100 & 19.3 & 0.751 & \textbf{0.771} & \underline{0.770} & 0.760 \\
+    150 & 28.9 & 0.798 & \underline{0.832} & \textbf{0.834} & 0.813 \\
+    200 & 38.5 & 0.829 & 0.857 & \underline{0.859} & \textbf{0.873} \\
+    250 & 48.2 & 0.853 & \underline{0.874} & \underline{0.874} & \textbf{0.900} \\
+    300 & 57.8 & 0.875 & 0.884 & \underline{0.887} & \textbf{0.920} \\
+    350 & 67.4 & 0.898 & 0.912 & \underline{0.915} & \textbf{0.944} \\
+    400 & 77.1 & 0.923 & 0.937 & \underline{0.941} & \textbf{0.962} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Complete fixed-budget headline results on 287 held-out runs. Within each budget and metric, bold marks the best displayed value and underlining marks the second-best; emphasis is descriptive and does not denote statistical significance.}
+  \label{tab:main-fixed-budget-complete}
+\end{table*}

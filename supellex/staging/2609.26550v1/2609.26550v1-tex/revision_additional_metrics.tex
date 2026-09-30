@@ -1,0 +1,21 @@
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Judge & \shortstack{Existing labels\\macro-F1} & \shortstack{Trajectory\\correct / 108} & \shortstack{Evidence\\correct / 64} & \shortstack{RB error\\AUROC} & \shortstack{JB error\\AUROC} & \shortstack{HA error\\AUROC} \\
+\midrule
+JEV 1.13 & 0.923 & 108 & 64 & 0.869 & 0.745 & 0.863 \\
+GPT-4.1 mini & 0.742 & 108 & 64 & 0.642 & 0.538 & 0.432 \\
+GPT-4.1 & 0.877 & 108 & 64 & 0.672 & 0.599 & 0.789 \\
+GPT-5.2 & 0.934 & 108 & 64 & 0.839 & 0.864 & 0.830 \\
+GPT-5.4 & 0.888 & 108 & 64 & 0.858 & 0.912 & 0.775 \\
+GPT-5.6 Sol & 0.925 & 108 & 64 & 0.902 & 0.905 & 0.845 \\
+GPT-6 Astra & 0.947 & 108 & 64 & 0.891 & 0.907 & 0.899 \\
+GPT-OSS 120B & 0.935 & 108 & 64 & 0.774 & 0.757 & 0.832 \\
+Qwen3 32B local & 0.919 & 108 & 64 & 0.646 & 0.595 & 0.497 \\
+Qwen3.5 27B local & 0.893 & 108 & 64 & 0.699 & 0.626 & 0.781 \\
+Qwen3.6 27B & 0.928 & 105 & 61 & 0.852 & 0.848 & 0.870 \\
+Qwen3.8 27B & 0.934 & 108 & 64 & 0.879 & 0.607 & 0.842 \\
+Claude Sonnet 5 & 0.934 & 108 & 64 & 0.841 & 0.774 & 0.897 \\
+Gemini 3 Flash & 0.939 & 108 & 64 & 0.791 & 0.674 & 0.695 \\
+Gemini 3.1 Pro & 0.923 & 108 & 64 & 0.874 & 0.631 & 0.779 \\
+\bottomrule
+\end{tabular}

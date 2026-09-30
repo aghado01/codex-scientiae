@@ -1,21 +1,60 @@
-# Codex Scientiae - Repository of Bound Knowledge
+# `codex-scientiae` - "Bound knowledge"
 
-This repository contains structured corpora of long-form reference material.
-Each collection should be entered from its local `CONTENTS.md` file when one exists.
-This README is only the top-level map; deeper chapter and section navigation lives inside each collection.
+**WIP**
 
-## Core concepts
+`codex-scientiae` is a Pythonic repository dedicated to the procurement, husbandry, and compilation of contemporary research-grade technical manuscripts sourced from the web The long-term goal to generate on-demand context payloads for agents and RAG applications.
 
-### The target audience
+## Core Pillars
 
-The goal of codex-scientiae is to bind knowledge reproducibly and reliably in a format and encoding that is optimised in various ways for LLM consumption, to enable effective, token efficient, high-capacity reasoning over mathematically and scientifically dense subject matter in order to drive accurate implementation and synthesis in other projects. In particular, adapting cutting-edge work that will often be published after training cut-offs of models.
+### `jsonl_engine`
 
-### The Math Channel
+... and client for creating metadata store inventories of collected documents in various forms. Written in Python.
 
-Also known as the "math register" — the currently under-specified notion of a lexically invariant, renderable (Katex), standard that is targeted and which all ingestion workflows converge on for capturing math semantics in markdown deliverables that would be consistent across document sources. The purpose of this canonicalization is to enable highly consistent tokenization of mathematical detail for any given model across documents by mapping variable source encodings to a single convergent standard, including mapping glyphs to katex control sequences and standardizing katex control sequences and syntax.
+Features
 
-Its an evolving target spec that is being developed iteratively in the living document `issues/math-register/math-register-spec.md`. Preferred nomenclature is currently fluid, but the concept, goal and purpose is what is important.
+- Atomic writes
+- Schema validation
+- etc
 
-### The Latent Manuscript
+### `batch-executor`
 
-A core thesis of codex-Scientiae and its document ingestion workflows is that variable research publication source materials (across publishers, standards, formats) can be surjectively mapped to a canonical universal latent manuscript archetype. The latent manuscript can be viewed abstractly as a graph, with projections as a tree, with the reading order of the document determining a specific sequential traversal of the graph. The concept is still under development, but with an emerging spec that informs current and future development in this project.
+... and client for implementing a generic, configurable Powershell runspace manager and batch execution engine for parallel processing on a local machine.
+
+Features
+
+- Reusable/Configurable Powershell Runspace Manager
+- Process or Runspace-level concurrency
+- Graded dispatch and smart allocation
+- Cancellation and fault tolerance
+- Structured results
+- etc
+
+### `procurement`
+
+... and associated agentic MCP services + skills to enable interactive literature research and acquisition via integrated API providers such as arXiv and Zenodo as well as aggregators such as CrossRef and Semantic Scholar. Written in Python.
+
+Features
+
+- Automated backoff for rate-limited APIs
+- Shared abstraction over multiple provider APIs
+- Agent MCP and skills for on-the-fly acquisitions
+
+### `supellex`
+
+Collected materials, mainly from arXiv, organized by topics and directory path conventions including different format versions of each article when available to support dev testing and benchmarking during development of the TBD document processing applications for PDF and Latex.
+
+## Coming soon
+
+### `texml-compiler`
+
+A modern python adaptation of the LaTeXML project that will implement stateful latex emulation and deterministically compile raw LaTeX source payloads into a canonical designer XML intermediate form for downstream applications with specific focus on high-fidelity capture of mathematical, algorithmic and quantitative content and rich XML representations designed for flexible but accurate projections to different renderings, formats and spellings.
+
+### Later
+
+#### `pdf_decompiler`
+
+A pdf-to-XML extraction pipeline targeting the same XML IR that will be developed with a stabilized `texml_compiler` as a verified baseline for dev cycle validation and regression testing via batched `gauntlet` runs. May involve judicious application of agents or sub-agent swarms for semantic resolution and structural repair.
+
+#### `xml_scholar_mcp`
+
+An MCP server that will be designed to mount collections of the XML IR emitted by the above two initiatives and which will optimize for token efficiency, context-hygiene, etc.

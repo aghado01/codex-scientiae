@@ -1,0 +1,99 @@
+{
+  "schema": "codex-scientiae/deposit-metadata/0.1",
+  "deposit_slug": "2609.21267v1",
+  "artifact": {
+    "provider": "arxiv",
+    "identifier": "2609.21267v1",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ]
+  },
+  "identity_anchor": null,
+  "route": "artifact-provider",
+  "selected": {
+    "provider": "arxiv",
+    "provider_roles": [
+      "artifact-access",
+      "artifact-origin",
+      "metadata-authority"
+    ],
+    "work": {
+      "title": "Efficient Benchmarking in Production: A Study of an Evolving LLM Agent",
+      "authors": [
+        "Yining She",
+        "Lei Lin"
+      ],
+      "abstract": "Production LLM agents are evaluated repeatedly as they evolve, but full agent benchmarks are costly to rerun. We study efficient recurring evaluation for a production analytics agent serving tens of thousands of monthly active users and report first-hand deployment experience. Using 574 historical runs of the production benchmark, split chronologically into calibration and held-out periods, we compare random sampling, historical caching, fixed representative subsets, and IRT-based adaptive testing. The results show that multidimensional 2PL adaptive testing achieves the best overall score fidelity: executing 200 questions, 38.5% of a full run, yields 1.03 pp of MAE. We nevertheless deployed difficulty-stratified fixed subsets because of their operational simplicity, and show they transfer without recalibration to five other agent families and remain stable across calibration windows as short as one day. Drawing on this deployment experience, we report practical recommendations for recurring production-agent evaluation.",
+      "doi": null,
+      "arxiv_id": "2609.21267v1",
+      "published": "2026-09-18T03:26:05Z",
+      "updated": "2026-09-18T03:26:05Z",
+      "year": 2026,
+      "venue": null,
+      "open_access_url": "https://arxiv.org/abs/2609.21267v1",
+      "pdf_url": "https://arxiv.org/pdf/2609.21267v1",
+      "citation_count": null,
+      "reference_count": null,
+      "tldr": null,
+      "concepts": [],
+      "categories": [
+        "cs.AI",
+        "cs.SE"
+      ],
+      "external_ids": {
+        "arxiv": "2609.21267v1"
+      },
+      "sources": [
+        {
+          "provider": "arxiv",
+          "identifier": "2609.21267v1",
+          "url": "https://arxiv.org/abs/2609.21267v1",
+          "doi": null,
+          "arxiv_id": "2609.21267v1",
+          "published": "2026-09-18T03:26:05Z",
+          "updated": "2026-09-18T03:26:05Z"
+        }
+      ]
+    },
+    "response": {
+      "url": "https://export.arxiv.org/api/query?id_list=2609.21267v1&max_results=1",
+      "media_type": "application/atom+xml",
+      "fetched_at": "2026-09-28T20:23:05.973437Z",
+      "sha256": "43fdeb778236247c897d3d089608e3d0f7dd1f3e833d64d83017d060bba8b9a6",
+      "body_base64": "PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPGZlZWQgeG1sbnM6b3BlbnNlYXJjaD0iaHR0cDovL2E5LmNvbS8tL3NwZWMvb3BlbnNlYXJjaC8xLjEvIiB4bWxuczphcnhpdj0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L0F0b20iPgogIDxpZD5odHRwczovL2FyeGl2Lm9yZy9hcGkvcDQwN1NMU3YxL3JjRmZTSGgrWjl1RXlxSEtrPC9pZD4KICA8dGl0bGU+YXJYaXYgUXVlcnk6IHNlYXJjaF9xdWVyeT0mYW1wO2lkX2xpc3Q9MjYwOS4yMTI2N3YxJmFtcDtzdGFydD0wJmFtcDttYXhfcmVzdWx0cz0xPC90aXRsZT4KICA8dXBkYXRlZD4yMDI2LTA5LTI4VDIwOjIzOjA1WjwvdXBkYXRlZD4KICA8bGluayBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hcGkvcXVlcnk/c2VhcmNoX3F1ZXJ5PSZhbXA7c3RhcnQ9MCZhbXA7bWF4X3Jlc3VsdHM9MSZhbXA7aWRfbGlzdD0yNjA5LjIxMjY3djEiIHR5cGU9ImFwcGxpY2F0aW9uL2F0b20reG1sIi8+CiAgPG9wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPjE8L29wZW5zZWFyY2g6aXRlbXNQZXJQYWdlPgogIDxvcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4xPC9vcGVuc2VhcmNoOnRvdGFsUmVzdWx0cz4KICA8b3BlbnNlYXJjaDpzdGFydEluZGV4PjA8L29wZW5zZWFyY2g6c3RhcnRJbmRleD4KICA8ZW50cnk+CiAgICA8aWQ+aHR0cDovL2FyeGl2Lm9yZy9hYnMvMjYwOS4yMTI2N3YxPC9pZD4KICAgIDx0aXRsZT5FZmZpY2llbnQgQmVuY2htYXJraW5nIGluIFByb2R1Y3Rpb246IEEgU3R1ZHkgb2YgYW4gRXZvbHZpbmcgTExNIEFnZW50PC90aXRsZT4KICAgIDx1cGRhdGVkPjIwMjYtMDktMThUMDM6MjY6MDVaPC91cGRhdGVkPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzI2MDkuMjEyNjd2MSIgcmVsPSJhbHRlcm5hdGUiIHR5cGU9InRleHQvaHRtbCIvPgogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzI2MDkuMjEyNjd2MSIgcmVsPSJyZWxhdGVkIiB0eXBlPSJhcHBsaWNhdGlvbi9wZGYiIHRpdGxlPSJwZGYiLz4KICAgIDxzdW1tYXJ5PlByb2R1Y3Rpb24gTExNIGFnZW50cyBhcmUgZXZhbHVhdGVkIHJlcGVhdGVkbHkgYXMgdGhleSBldm9sdmUsIGJ1dCBmdWxsIGFnZW50IGJlbmNobWFya3MgYXJlIGNvc3RseSB0byByZXJ1bi4gV2Ugc3R1ZHkgZWZmaWNpZW50IHJlY3VycmluZyBldmFsdWF0aW9uIGZvciBhIHByb2R1Y3Rpb24gYW5hbHl0aWNzIGFnZW50IHNlcnZpbmcgdGVucyBvZiB0aG91c2FuZHMgb2YgbW9udGhseSBhY3RpdmUgdXNlcnMgYW5kIHJlcG9ydCBmaXJzdC1oYW5kIGRlcGxveW1lbnQgZXhwZXJpZW5jZS4gVXNpbmcgNTc0IGhpc3RvcmljYWwgcnVucyBvZiB0aGUgcHJvZHVjdGlvbiBiZW5jaG1hcmssIHNwbGl0IGNocm9ub2xvZ2ljYWxseSBpbnRvIGNhbGlicmF0aW9uIGFuZCBoZWxkLW91dCBwZXJpb2RzLCB3ZSBjb21wYXJlIHJhbmRvbSBzYW1wbGluZywgaGlzdG9yaWNhbCBjYWNoaW5nLCBmaXhlZCByZXByZXNlbnRhdGl2ZSBzdWJzZXRzLCBhbmQgSVJULWJhc2VkIGFkYXB0aXZlIHRlc3RpbmcuIFRoZSByZXN1bHRzIHNob3cgdGhhdCBtdWx0aWRpbWVuc2lvbmFsIDJQTCBhZGFwdGl2ZSB0ZXN0aW5nIGFjaGlldmVzIHRoZSBiZXN0IG92ZXJhbGwgc2NvcmUgZmlkZWxpdHk6IGV4ZWN1dGluZyAyMDAgcXVlc3Rpb25zLCAzOC41JSBvZiBhIGZ1bGwgcnVuLCB5aWVsZHMgMS4wMyBwcCBvZiBNQUUuIFdlIG5ldmVydGhlbGVzcyBkZXBsb3llZCBkaWZmaWN1bHR5LXN0cmF0aWZpZWQgZml4ZWQgc3Vic2V0cyBiZWNhdXNlIG9mIHRoZWlyIG9wZXJhdGlvbmFsIHNpbXBsaWNpdHksIGFuZCBzaG93IHRoZXkgdHJhbnNmZXIgd2l0aG91dCByZWNhbGlicmF0aW9uIHRvIGZpdmUgb3RoZXIgYWdlbnQgZmFtaWxpZXMgYW5kIHJlbWFpbiBzdGFibGUgYWNyb3NzIGNhbGlicmF0aW9uIHdpbmRvd3MgYXMgc2hvcnQgYXMgb25lIGRheS4gRHJhd2luZyBvbiB0aGlzIGRlcGxveW1lbnQgZXhwZXJpZW5jZSwgd2UgcmVwb3J0IHByYWN0aWNhbCByZWNvbW1lbmRhdGlvbnMgZm9yIHJlY3VycmluZyBwcm9kdWN0aW9uLWFnZW50IGV2YWx1YXRpb24uPC9zdW1tYXJ5PgogICAgPGNhdGVnb3J5IHRlcm09ImNzLkFJIiBzY2hlbWU9Imh0dHA6Ly9hcnhpdi5vcmcvc2NoZW1hcy9hdG9tIi8+CiAgICA8Y2F0ZWdvcnkgdGVybT0iY3MuU0UiIHNjaGVtZT0iaHR0cDovL2FyeGl2Lm9yZy9zY2hlbWFzL2F0b20iLz4KICAgIDxwdWJsaXNoZWQ+MjAyNi0wOS0xOFQwMzoyNjowNVo8L3B1Ymxpc2hlZD4KICAgIDxhcnhpdjpjb21tZW50PkEgc3R1ZHkgb2YgZWZmaWNpZW50IHJlY3VycmluZyBldmFsdWF0aW9uIG9mIGEgcHJvZHVjdGlvbiBMTE0gYWdlbnQgYmFzZWQgb24gcmVhbC13b3JsZCBoaXN0b3JpY2FsIGRhdGE8L2FyeGl2OmNvbW1lbnQ+CiAgICA8YXJ4aXY6cHJpbWFyeV9jYXRlZ29yeSB0ZXJtPSJjcy5BSSIvPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+WWluaW5nIFNoZTwvbmFtZT4KICAgIDwvYXV0aG9yPgogICAgPGF1dGhvcj4KICAgICAgPG5hbWU+TGVpIExpbjwvbmFtZT4KICAgIDwvYXV0aG9yPgogIDwvZW50cnk+CjwvZmVlZD4K"
+    }
+  },
+  "attempts": [
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "error": null
+    }
+  ],
+  "article": {
+    "title": "Efficient Benchmarking in Production: A Study of an Evolving LLM Agent",
+    "authors": [
+      "Yining She",
+      "Lei Lin"
+    ],
+    "abstract": "Production LLM agents are evaluated repeatedly as they evolve, but full agent benchmarks are costly to rerun. We study efficient recurring evaluation for a production analytics agent serving tens of thousands of monthly active users and report first-hand deployment experience. Using 574 historical runs of the production benchmark, split chronologically into calibration and held-out periods, we compare random sampling, historical caching, fixed representative subsets, and IRT-based adaptive testing. The results show that multidimensional 2PL adaptive testing achieves the best overall score fidelity: executing 200 questions, 38.5% of a full run, yields 1.03 pp of MAE. We nevertheless deployed difficulty-stratified fixed subsets because of their operational simplicity, and show they transfer without recalibration to five other agent families and remain stable across calibration windows as short as one day. Drawing on this deployment experience, we report practical recommendations for recurring production-agent evaluation.",
+    "identifiers": {
+      "arxiv": "2609.21267",
+      "arxiv_versioned": "2609.21267v1",
+      "doi": null,
+      "external": {
+        "arxiv": "2609.21267v1"
+      }
+    },
+    "categories": [
+      "cs.AI",
+      "cs.SE"
+    ],
+    "concepts": [],
+    "primary_category": "cs.AI",
+    "published": "2026-09-18T03:26:05Z",
+    "updated": "2026-09-18T03:26:05Z"
+  }
+}

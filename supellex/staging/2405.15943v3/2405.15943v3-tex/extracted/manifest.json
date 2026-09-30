@@ -1,0 +1,343 @@
+{
+  "root_file": "fractals_in_residual_stream.tex",
+  "base_name": "fractals_in_residual_stream",
+  "project_dir": "D:\\aghado01\\codex-scientiae\\supellex\\staging\\2405.15943v3\\2405.15943v3-tex",
+  "engine": "pdflatex",
+  "toolchain": {
+    "pdflatex_available": false,
+    "latexmk_available": false,
+    "bibtex_available": false,
+    "biber_available": false,
+    "tectonic_available": false,
+    "pdflatex_path": null,
+    "latexmk_path": null
+  },
+  "bibliography": {
+    "kind": "CLASSIC_BIBTEX",
+    "backend": "bibtex",
+    "bbl_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/fractals_in_residual_stream.bbl",
+    "bbl_exists": true,
+    "bbl_needed": false,
+    "bib_files": [
+      "chaos.bib",
+      "ref.bib"
+    ],
+    "missing_bib_files": [],
+    "citations_count": 0
+  },
+  "active_images": [
+    {
+      "rel_path": "Z1R_example.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/Z1R_example.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 178473,
+      "width": 1828,
+      "height": 726,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "MSEvsloss.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/MSEvsloss.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 117656,
+      "width": 1210,
+      "height": 402,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "mess3_overview.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/mess3_overview.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 693605,
+      "width": 1126,
+      "height": 1004,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "Fig6.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/Fig6.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 350022,
+      "width": 1352,
+      "height": 804,
+      "unit": "px",
+      "dpi": null,
+      "color_mode": "RGB",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "z1rmsp.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/z1rmsp.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 372505,
+      "width": 2776,
+      "height": 730,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "rrxor.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/rrxor.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 411019,
+      "width": 2032,
+      "height": 1268,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "procedure.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/procedure.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 290335,
+      "width": 2304,
+      "height": 710,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "LN.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/LN.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 478903,
+      "width": 1646,
+      "height": 526,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    },
+    {
+      "rel_path": "main_results.png",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/main_results.png",
+      "ext": ".png",
+      "is_vector": false,
+      "size_bytes": 657487,
+      "width": 1928,
+      "height": 646,
+      "unit": "px",
+      "dpi": [
+        143.99259999999998,
+        143.99259999999998
+      ],
+      "color_mode": "RGBA",
+      "converted_from_eps": false
+    }
+  ],
+  "dormant_images": [
+    "formatting_neurips_2024.pdf",
+    "mess3_detailed_analsysis.png",
+    "overview.png",
+    "rrxor_figure.png",
+    "z1r_msp_simplex.png"
+  ],
+  "active_tex_files": [
+    "fractals_in_residual_stream.tex"
+  ],
+  "dormant_tex_files": [
+    "fractals_in_residual_stream_clean.tex"
+  ],
+  "packages_declared": [
+    {
+      "name": "neurips_2024",
+      "options": [
+        "final"
+      ],
+      "is_local": true,
+      "local_path": "neurips_2024.sty"
+    },
+    {
+      "name": "placeins",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "inputenc",
+      "options": [
+        "utf8"
+      ],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "fontenc",
+      "options": [
+        "T1"
+      ],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "hyperref",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "url",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "booktabs",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "amsfonts",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "nicefrac",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "microtype",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "xcolor",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "graphicx",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "amsmath",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "amssymb",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    },
+    {
+      "name": "float",
+      "options": [],
+      "is_local": false,
+      "local_path": null
+    }
+  ],
+  "local_styles": [
+    {
+      "rel_path": "neurips_2024.sty",
+      "abs_path": "D:/aghado01/codex-scientiae/supellex/staging/2405.15943v3/2405.15943v3-tex/neurips_2024.sty",
+      "is_active": true,
+      "size_bytes": 11625,
+      "declared_commands": [
+        "\\rmdefault",
+        "\\sfdefault",
+        "\\acksection",
+        "\\normalsize",
+        "\\small",
+        "\\footnotesize",
+        "\\scriptsize",
+        "\\tiny",
+        "\\large",
+        "\\Large",
+        "\\LARGE",
+        "\\huge",
+        "\\Huge",
+        "\\section",
+        "\\subsection",
+        "\\subsubsection",
+        "\\paragraph",
+        "\\subparagraph",
+        "\\subsubsubsection",
+        "\\topfraction",
+        "\\bottomfraction",
+        "\\textfraction",
+        "\\floatpagefraction",
+        "\\footnoterule",
+        "\\maketitle",
+        "\\thefootnote",
+        "\\ftype",
+        "\\answerYes",
+        "\\answerNo",
+        "\\answerNA",
+        "\\answerTODO",
+        "\\justificationTODO",
+        "\\patchAmsMathEnvironmentForLineno",
+        "\\patchBothAmsMathEnvironmentsForLineno",
+        "\\And",
+        "\\AND"
+      ],
+      "declared_environments": [
+        "table",
+        "abstract",
+        "#1"
+      ]
+    }
+  ],
+  "dormant_styles": [],
+  "code_inputs": [],
+  "implicit_graphics": [],
+  "implicit_graphics_count": 0,
+  "has_implicit_graphics": false,
+  "has_commutative_diagrams": false,
+  "has_tikz": false,
+  "has_tikz_external": false,
+  "has_minted": false,
+  "has_listings": false
+}

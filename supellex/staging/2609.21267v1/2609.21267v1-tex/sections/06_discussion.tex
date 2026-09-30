@@ -1,0 +1,26 @@
+\section{Practical Recommendations}
+\label{sec:discussion}
+
+Production deployment requires considering
+operational properties alongside statistical fidelity. Historical caching
+retains the full question set, but requires recent outcomes and monitoring for stale verdicts. Fixed subsets provide predictable
+execution and common questions across runs. Adaptive testing can
+tailor selection to each run, but requires sequential orchestration,
+run-specific state, and repeated ability updates. These operational differences
+make the appropriate method dependent on the surrounding evaluation workflow.
+
+
+For our production workflow, we deployed difficulty-stratified fixed subsets with $k\in\{100,200,300,400\}$, allowing users to choose an execution--fidelity tradeoff. 
+Fixed subsets reveal the workload
+before execution and preserve question-level comparisons for diagnosing
+behavioral changes. They also avoid additional sequential serving logic in an evaluation
+system designed to execute questions in parallel.
+The subset transferred without recalibration to five additional agent families
+and showed no monotonic loss of fidelity across the calibration windows. These
+results support reuse across the systems and period studied.
+
+As the agent evolves, we recommend recalibrating after material changes to its
+models, prompts, tools, or execution system, or after sustained shifts in
+question-level outcomes. Developers should also periodically run the full
+benchmark and compare its pass rate with the fixed-subset estimate to measure
+the error introduced during ongoing monitoring.

@@ -1,0 +1,44 @@
+\section{Experimental Setup}
+\label{sec:experimental-setup}
+
+\subsection{Production Evaluation Data}
+
+The evaluated system is a production analytics agent designed to answer
+natural-language questions about data. It combines language-model reasoning
+with tools for retrieving and analyzing information, and is evaluated
+repeatedly as its models, prompts, tools, and surrounding system change.
+
+The benchmark consists of human-curated questions about data written by internal analysts; neither the questions nor the recorded evaluation outcomes contain user data or personal information. Each recorded outcome is a binary pass/fail verdict produced by an automated grader. We
+retain evaluation runs with valid outcomes for at least 80\% of the benchmark
+and compute each run's reference pass rate over its valid outcomes. 
+This yields 287 calibration runs from Day 1 through Day 28, and 287 test runs from Day 29 through Day 52 (Figure~\ref{fig:overview}).
+
+
+\subsection{Temporal Protocol and Method Configurations}
+
+\paragraph{Random sampling.}
+We evaluate $k\in\{10,\allowbreak20,\allowbreak30,\allowbreak50,\allowbreak75,\allowbreak100,\allowbreak150,\allowbreak200,\allowbreak250,\allowbreak300,\allowbreak350,\allowbreak400\}$, averaging
+results over 20 random seeds.
+
+\paragraph{Historical caching.}
+Caching uses a rolling seven-day window of prior routine runs, requires at least
+five historical trials per eligible question, and is rebuilt daily for reuse on
+that day’s evaluations. We sweep $\epsilon$ from 0.00 to 0.30 in increments of
+0.01, caching a question when
+Eq.\ref{equation:cache-eligible} is satisfied.
+
+\paragraph{Fixed-subset evaluation.}
+We construct each subset once from all calibration runs at the same computational budgets $k$ used for random sampling and apply it unchanged to every test run. IRT models for selection and
+p-IRT reconstruction are also fitted on all calibration runs. To estimate the
+gp-IRT bias term $\hat{b}^2$, we split calibration runs in half, fit an auxiliary
+IRT model on the first half, and measure reconstruction error on the second by
+revealing half of each run’s available outcomes. For every multidimensional 2PL
+fit, we select $d\in\{2,5,10,15\}$ by log likelihood on a fixed 15\% sample of
+observed calibration cells.
+
+
+\paragraph{Adaptive testing.}
+We evaluate adaptive testing at the same $k$. Item parameters are fitted on all calibration runs and held fixed during
+question selection for each test run. We compare Rasch adaptive testing with the multidimensional 2PL
+variant to assess whether modeling multiple latent abilities improves the
+accuracy--execution tradeoff.

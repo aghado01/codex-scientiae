@@ -1,0 +1,58 @@
+\begin{table*}[t]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{rrrrrrr}
+    \toprule
+    \multicolumn{7}{l}{\textit{(a) Pass-rate MAE (percentage points; lower is better)}} \\
+    $k$ & Exec. (\%) & \shortstack{Original\\weighted} & \shortstack{Original\\gp-IRT} & \shortstack{Transfer\\random} & \shortstack{Transfer\\weighted} & \shortstack{Transfer\\gp-IRT} \\
+    \midrule
+    10 & 1.9 & \underline{8.10} & \textbf{7.57} & 10.96 & \underline{9.83} & \textbf{8.40} \\
+    20 & 3.9 & \underline{6.37} & \textbf{5.51} & 7.69 & \underline{6.88} & \textbf{6.15} \\
+    30 & 5.8 & \underline{4.63} & \textbf{4.35} & \underline{6.19} & 6.26 & \textbf{5.85} \\
+    50 & 9.6 & \underline{3.37} & \textbf{3.28} & 4.67 & \underline{4.18} & \textbf{4.07} \\
+    75 & 14.5 & \textbf{3.04} & \underline{3.05} & 3.68 & \underline{3.37} & \textbf{3.32} \\
+    100 & 19.3 & \underline{2.71} & \textbf{2.65} & 3.08 & \underline{2.52} & \textbf{2.50} \\
+    150 & 28.9 & \underline{2.01} & \textbf{2.00} & 2.29 & \underline{2.25} & \textbf{2.17} \\
+    200 & 38.5 & \underline{1.43} & \textbf{1.40} & 1.86 & \underline{1.49} & \textbf{1.47} \\
+    250 & 48.2 & \underline{1.17} & \textbf{1.15} & 1.53 & \underline{1.30} & \textbf{1.28} \\
+    300 & 57.8 & \underline{1.06} & \textbf{0.99} & 1.24 & \underline{1.21} & \textbf{1.19} \\
+    350 & 67.4 & \underline{0.77} & \textbf{0.73} & \textbf{0.99} & 1.05 & \underline{1.02} \\
+    400 & 77.1 & \underline{0.51} & \textbf{0.47} & 0.75 & \underline{0.66} & \textbf{0.62} \\
+    \midrule
+    \multicolumn{7}{l}{\textit{(b) Spearman correlation (higher is better)}} \\
+    $k$ & Exec. (\%) & \shortstack{Original\\weighted} & \shortstack{Original\\gp-IRT} & \shortstack{Transfer\\random} & \shortstack{Transfer\\weighted} & \shortstack{Transfer\\gp-IRT} \\
+    \midrule
+    10 & 1.9 & \underline{0.586} & \textbf{0.598} & 0.600 & \underline{0.648} & \textbf{0.683} \\
+    20 & 3.9 & \textbf{0.804} & \underline{0.803} & \underline{0.702} & \textbf{0.817} & \textbf{0.817} \\
+    30 & 5.8 & \textbf{0.803} & \underline{0.796} & 0.756 & \underline{0.844} & \textbf{0.847} \\
+    50 & 9.6 & \underline{0.876} & \textbf{0.883} & 0.821 & \textbf{0.853} & \underline{0.846} \\
+    75 & 14.5 & \textbf{0.924} & \textbf{0.924} & 0.869 & \textbf{0.937} & \underline{0.936} \\
+    100 & 19.3 & \textbf{0.930} & \textbf{0.930} & 0.900 & \underline{0.947} & \textbf{0.948} \\
+    150 & 28.9 & \underline{0.960} & \textbf{0.961} & 0.935 & \underline{0.938} & \textbf{0.941} \\
+    200 & 38.5 & \textbf{0.972} & \textbf{0.972} & \underline{0.955} & \textbf{0.965} & \textbf{0.965} \\
+    250 & 48.2 & \underline{0.977} & \textbf{0.978} & \underline{0.968} & \textbf{0.974} & \textbf{0.974} \\
+    300 & 57.8 & \underline{0.980} & \textbf{0.981} & \underline{0.979} & \textbf{0.981} & \textbf{0.981} \\
+    350 & 67.4 & \underline{0.987} & \textbf{0.988} & 0.986 & \underline{0.987} & \textbf{0.988} \\
+    400 & 77.1 & \underline{0.993} & \textbf{0.994} & \underline{0.992} & \textbf{0.995} & \textbf{0.995} \\
+    \midrule
+    \multicolumn{7}{l}{\textit{(c) Kendall's Tau (higher is better)}} \\
+    $k$ & Exec. (\%) & \shortstack{Original\\weighted} & \shortstack{Original\\gp-IRT} & \shortstack{Transfer\\random} & \shortstack{Transfer\\weighted} & \shortstack{Transfer\\gp-IRT} \\
+    \midrule
+    10 & 1.9 & \textbf{0.434} & \underline{0.431} & 0.465 & \underline{0.497} & \textbf{0.522} \\
+    20 & 3.9 & \textbf{0.632} & \underline{0.619} & 0.549 & \textbf{0.655} & \underline{0.652} \\
+    30 & 5.8 & \textbf{0.617} & \underline{0.607} & 0.597 & \underline{0.672} & \textbf{0.673} \\
+    50 & 9.6 & \underline{0.692} & \textbf{0.700} & 0.661 & \textbf{0.680} & \underline{0.675} \\
+    75 & 14.5 & \textbf{0.764} & \textbf{0.764} & 0.713 & \textbf{0.799} & \underline{0.797} \\
+    100 & 19.3 & \textbf{0.771} & \underline{0.770} & 0.752 & \underline{0.816} & \textbf{0.818} \\
+    150 & 28.9 & \underline{0.832} & \textbf{0.834} & 0.804 & \underline{0.808} & \textbf{0.812} \\
+    200 & 38.5 & \underline{0.857} & \textbf{0.859} & 0.838 & \textbf{0.858} & \underline{0.856} \\
+    250 & 48.2 & \textbf{0.874} & \textbf{0.874} & 0.865 & \textbf{0.879} & \underline{0.878} \\
+    300 & 57.8 & \underline{0.884} & \textbf{0.887} & \underline{0.891} & \underline{0.891} & \textbf{0.892} \\
+    350 & 67.4 & \underline{0.912} & \textbf{0.915} & 0.911 & \underline{0.912} & \textbf{0.917} \\
+    400 & 77.1 & \underline{0.937} & \textbf{0.941} & 0.934 & \underline{0.946} & \textbf{0.949} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Complete pooled cross-agent transfer results. Original denotes the 287 calibration-agent test runs; Transfer denotes 299 pooled runs from five additional families. Emphasis is computed separately within the original and transferred populations.}
+  \label{tab:transfer-pooled-complete}
+\end{table*}

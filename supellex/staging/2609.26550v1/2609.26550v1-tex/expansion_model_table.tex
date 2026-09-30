@@ -1,0 +1,22 @@
+\begin{tabular}{@{}llllr@{}}
+\toprule
+Configuration & Exact requested identifier & Host & Effort / mode & Input / output \\
+\midrule
+JEV 1.13 & jev-1.13.0 & typesafe & native Choice & 0.042 / 0 \\
+GPT-4.1 mini & gpt-4.1-mini-2025-04-14 & openai & temperature 0 & 0.4 / 1.6 \\
+GPT-4.1 & gpt-4.1-2025-04-14 & openai & temperature 0 & 2 / 8 \\
+GPT-5.2 & gpt-5.2-2025-12-11 & openai & low / schema & 1.75 / 14 \\
+GPT-5.4 & gpt-5.4-2026-03-05 & openai & low / schema & 2.5 / 15 \\
+GPT-5.6 Sol & gpt-5.6-sol & openai & low / schema & 4 / 20 \\
+GPT-6 Astra & gpt-6-astra & openai & low / schema & 10 / 50 \\
+GPT-OSS 120B & openai/gpt-oss-120b & groq & low / schema & 0.15 / 0.6 \\
+Qwen3 32B local & Qwen/Qwen3-32B & H100 & non-thinking & -- \\
+Qwen3.5 27B local & Qwen/Qwen3.5-27B & H100 & non-thinking & -- \\
+Qwen3.6 27B & qwen/qwen3.6-27b & groq & default / JSON & 0.6 / 3 \\
+Qwen3.8 27B & qwen/qwen3.8-27b & groq & low / schema & 0.8 / 4 \\
+Claude Sonnet 5 & claude-sonnet-5 & anthropic & low / schema & 2 / 10 \\
+Gemini 3 Flash & gemini-3-flash-preview & google & low / schema & 0.5 / 3 \\
+Gemini 3.1 Pro & gemini-3.1-pro-preview & google & low / schema & 2 / 12 \\
+PairRM (local) & llm-blender/PairRM-hf & H100 & pairwise score & -- \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,58 @@
+\begin{table*}[t]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{rrrrr}
+    \toprule
+    \multicolumn{5}{l}{\textit{(a) Pass-rate MAE (percentage points; lower is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Rasch\\adaptive} & \shortstack{Multidimensional 2PL\\adaptive} \\
+    \midrule
+    10 & 1.9 & \underline{10.48} & 10.94 & \textbf{5.07} \\
+    20 & 3.9 & \underline{7.22} & 9.79 & \textbf{3.90} \\
+    30 & 5.8 & \underline{5.86} & 6.50 & \textbf{3.27} \\
+    50 & 9.6 & \underline{4.41} & 6.46 & \textbf{2.81} \\
+    75 & 14.5 & \underline{3.49} & 3.51 & \textbf{2.39} \\
+    100 & 19.3 & 2.94 & \underline{2.92} & \textbf{1.97} \\
+    150 & 28.9 & 2.25 & \underline{2.07} & \textbf{1.44} \\
+    200 & 38.5 & 1.79 & \underline{1.37} & \textbf{1.03} \\
+    250 & 48.2 & 1.46 & \underline{1.03} & \textbf{0.73} \\
+    300 & 57.8 & 1.18 & \underline{0.79} & \textbf{0.58} \\
+    350 & 67.4 & 0.93 & \underline{0.60} & \textbf{0.46} \\
+    400 & 77.1 & 0.69 & \underline{0.42} & \textbf{0.29} \\
+    \midrule
+    \multicolumn{5}{l}{\textit{(b) Spearman correlation (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Rasch\\adaptive} & \shortstack{Multidimensional 2PL\\adaptive} \\
+    \midrule
+    10 & 1.9 & \underline{0.559} & 0.446 & \textbf{0.762} \\
+    20 & 3.9 & \underline{0.692} & 0.510 & \textbf{0.832} \\
+    30 & 5.8 & \underline{0.757} & 0.667 & \textbf{0.884} \\
+    50 & 9.6 & \underline{0.835} & 0.697 & \textbf{0.908} \\
+    75 & 14.5 & \underline{0.884} & 0.883 & \textbf{0.929} \\
+    100 & 19.3 & 0.911 & \underline{0.923} & \textbf{0.954} \\
+    150 & 28.9 & 0.941 & \underline{0.948} & \textbf{0.972} \\
+    200 & 38.5 & 0.957 & \underline{0.972} & \textbf{0.982} \\
+    250 & 48.2 & 0.967 & \underline{0.979} & \textbf{0.989} \\
+    300 & 57.8 & 0.975 & \underline{0.986} & \textbf{0.992} \\
+    350 & 67.4 & 0.983 & \underline{0.992} & \textbf{0.995} \\
+    400 & 77.1 & 0.989 & \underline{0.995} & \textbf{0.998} \\
+    \midrule
+    \multicolumn{5}{l}{\textit{(c) Kendall's Tau (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Rasch\\adaptive} & \shortstack{Multidimensional 2PL\\adaptive} \\
+    \midrule
+    10 & 1.9 & \underline{0.426} & 0.323 & \textbf{0.575} \\
+    20 & 3.9 & \underline{0.531} & 0.383 & \textbf{0.640} \\
+    30 & 5.8 & \underline{0.585} & 0.517 & \textbf{0.702} \\
+    50 & 9.6 & \underline{0.661} & 0.570 & \textbf{0.738} \\
+    75 & 14.5 & 0.715 & \underline{0.719} & \textbf{0.774} \\
+    100 & 19.3 & 0.751 & \underline{0.760} & \textbf{0.819} \\
+    150 & 28.9 & 0.798 & \underline{0.813} & \textbf{0.864} \\
+    200 & 38.5 & 0.829 & \underline{0.873} & \textbf{0.894} \\
+    250 & 48.2 & 0.853 & \underline{0.900} & \textbf{0.918} \\
+    300 & 57.8 & 0.875 & \underline{0.920} & \textbf{0.933} \\
+    350 & 67.4 & 0.898 & \underline{0.944} & \textbf{0.948} \\
+    400 & 77.1 & 0.923 & \underline{0.962} & \textbf{0.970} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Complete adaptive-model comparison on 287 held-out runs. Bold and underlining mark the best and second-best displayed values at each budget, respectively.}
+  \label{tab:adaptive-model-complete}
+\end{table*}

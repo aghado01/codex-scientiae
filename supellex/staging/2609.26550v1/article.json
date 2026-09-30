@@ -1,0 +1,181 @@
+{
+  "schema": "codex-scientiae/article/0.1",
+  "state": "source-ready",
+  "slug": "2609.26550v1",
+  "initialized_utc": "2026-09-28T08:09:23.961333Z",
+  "title": "JEV-as-a-Judge: Accept When Confident, Escalate When Unsure",
+  "authors": [
+    "Yubo Li",
+    "Yidi Miao",
+    "Ramayya Krishnan",
+    "Rema Padman"
+  ],
+  "abstract": "LLM-as-a-judge enables evaluation across diverse tasks, but inference cost and confidence reliability become critical at scale. We study whether a decision-only judge can provide an economical first pass and identify when stronger evaluation is needed. Comparing jev-as-a-judge with sixteen generative and reward-model judges, with blinded human adjudication, we find it within three percentage points of a state-of-the-art LLM judge, our strongest comparator, on ordinary preference and evidence-grounded factuality at 0.36% of the comparator's fee. Larger gaps arise when judgments require checking a derivation or resisting an elaborately written wrong answer. On several benchmarks, JEV's gap to this comparator is concentrated in low-confidence decisions. A frozen cascade that accepts confident verdicts and escalates uncertain ones retains 99% of the comparator's accuracy at lower cost.",
+  "identifiers": {
+    "arxiv": "2609.26550",
+    "arxiv_versioned": "2609.26550v1",
+    "doi": null,
+    "external": {
+      "arxiv": "2609.26550v1"
+    }
+  },
+  "categories": [
+    "cs.AI"
+  ],
+  "concepts": [],
+  "primary_category": "cs.AI",
+  "published": "2026-09-22T15:05:56Z",
+  "updated": "2026-09-22T15:05:56Z",
+  "evidence": {
+    "provider_metadata": [
+      {
+        "role": "api-metadata-bundle",
+        "path": "2609.26550v1.api-metadata.json",
+        "format": "application/vnd.codex-scientiae.deposit-metadata+json",
+        "bytes": 7519,
+        "sha256": "437013309b0aad6d07f3483224fda4eaf10a33794fe8c853ce15ebff57ba813f",
+        "provider": "arxiv",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "artifact_provider": "arxiv",
+        "artifact_provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ],
+        "route": "artifact-provider",
+        "fetched_at": "2026-09-28T08:09:20.102784Z",
+        "response_url": "https://export.arxiv.org/api/query?id_list=2609.26550v1&max_results=1",
+        "response_format": "application/atom+xml",
+        "response_sha256": "68a5066ef0fe8fdddea4e2bdb062d3c856e84e3ffd5f969b59f884ff9c9f2bce"
+      }
+    ],
+    "latex_source": {
+      "entrypoint": "main.tex",
+      "selection": "single-candidate",
+      "declarations": {
+        "title_tex": "JEV-as-a-Judge: Accept When Confident, Escalate When Unsure",
+        "authors_tex": [
+          "Yubo Li \\quad Yidi Miao \\quad Ramayya Krishnan \\quad Rema Padman\\\\[3pt]\n\\mdseries Carnegie Mellon University\\\\\n\\mdseries\\texttt{\\{yubol, yidim, rk2x, rpadman\\}@andrew.cmu.edu}\\\\[3pt]",
+          "Anonymous authors"
+        ],
+        "doi": null
+      }
+    },
+    "package_control_files": [
+      {
+        "path": "00README.json",
+        "bytes": 383,
+        "sha256": "7f07dc2fe3abda157368f547fc93b7a1cc1776cb486d1d20e6112f0fde247c2f"
+      }
+    ],
+    "metadata_resolution": {
+      "route": "artifact-provider",
+      "artifact": {
+        "provider": "arxiv",
+        "identifier": "2609.26550v1",
+        "provider_roles": [
+          "artifact-access",
+          "artifact-origin",
+          "metadata-authority"
+        ]
+      },
+      "selected_provider": "arxiv",
+      "selected_provider_roles": [
+        "artifact-access",
+        "artifact-origin",
+        "metadata-authority"
+      ],
+      "attempts": [
+        {
+          "provider": "arxiv",
+          "status": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "source_forms": [
+    {
+      "role": "latex-source-archive",
+      "path": "arXiv-2609.26550v1.tar.gz",
+      "format": "application/gzip",
+      "bytes": 2891859,
+      "sha256": "c80d7dd0b3d0b48afc0cf3cf277bc39e85f76699d3a1063c6aff9a768efb9037",
+      "archive_kind": "tar+gzip"
+    },
+    {
+      "role": "latex-source-tree",
+      "path": "2609.26550v1-tex",
+      "format": "application/x-latex-source-tree",
+      "derived_from": "arXiv-2609.26550v1.tar.gz",
+      "entrypoint": "main.tex",
+      "entrypoint_selection": "single-candidate",
+      "files": 47,
+      "tex_files": 26,
+      "sha256": "c11440129e1165b072db28b572f44790e9c4fc6d34bd247e676f878385d033a2"
+    },
+    {
+      "role": "pdf-source",
+      "path": "2609.26550v1.pdf",
+      "format": "application/pdf",
+      "bytes": 3206194,
+      "sha256": "0ee9958b85289d0a878c9f78942149520a48d78d40e14c1d78b931a1d22d7d73"
+    },
+    {
+      "role": "html-source",
+      "path": "2609.26550v1-html",
+      "format": "application/x-html-source-tree",
+      "entrypoint": "2609.26550v1.html",
+      "files": 18,
+      "bytes": 2836135,
+      "sha256": "fc64ad5af7abd8c864c48737089d031544e19e57d9d148fe4fe477a974f8b273"
+    }
+  ],
+  "validation": {
+    "status": "valid",
+    "validated_utc": "2026-09-28T08:09:23.961333Z",
+    "publication": "published-new-tree",
+    "checks": [
+      {
+        "name": "gzip-readable",
+        "outcome": "passed",
+        "archive_kind": "tar+gzip"
+      },
+      {
+        "name": "archive-members-confined",
+        "outcome": "passed",
+        "entries": 48
+      },
+      {
+        "name": "no-links-or-reparse-points",
+        "outcome": "passed",
+        "files": 47
+      },
+      {
+        "name": "tex-valid-utf8",
+        "outcome": "passed",
+        "tex_files": 26
+      },
+      {
+        "name": "entrypoint-unambiguous",
+        "outcome": "passed",
+        "selection": "single-candidate",
+        "entrypoint": "main.tex"
+      },
+      {
+        "name": "literal-inputs-resolved",
+        "outcome": "passed",
+        "unresolved": []
+      },
+      {
+        "name": "document-environment-present",
+        "outcome": "passed",
+        "basis": "resolved-input-text"
+      }
+    ]
+  }
+}

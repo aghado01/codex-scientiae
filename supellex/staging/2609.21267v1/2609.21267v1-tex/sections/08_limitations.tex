@@ -1,0 +1,13 @@
+\section*{Limitations}
+\label{sec:limitations}
+
+Our data come from one organization and one production benchmark. Although the
+difficulty-stratified subset transferred to five additional agent families,
+this evidence covers only fixed subsets and does not establish generalization
+to other benchmarks, historical caching, or adaptive testing. Future work should extend the analysis using data from a more diverse range of agents.
+
+We evaluate pass-rate MAE and aggregate ranking fidelity using Spearman and
+Kendall correlations, which do not directly measure regression detection or
+release-gate decisions at operational thresholds. Future work should add threshold-based analyses that measure missed regressions, false alarms, and agreement with decisions based on the full benchmark.
+
+We do not release the benchmark questions, the question-level outcome matrix, or the implementation. The methods we compare are fully specified in Section 3 and are reproducible on any benchmark with recorded per-item outcomes.

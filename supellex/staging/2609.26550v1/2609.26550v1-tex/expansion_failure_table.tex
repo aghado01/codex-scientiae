@@ -1,0 +1,16 @@
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Judge & Valid / base & \shortstack{Provider\\generation} & \shortstack{HTTP-200\\contract} & Transport & \shortstack{Valid-only accuracy (\%)\\RB / JB / HA} \\
+\midrule
+JEV 1.13 & 1312/1312 & 0 & 0 & 0 & 92.2 / 78.6 / 87.5 \\
+GPT-5.4 & 1310/1312 & 0 & 0 & 2 & 93.0 / 91.1 / 88.7 \\
+GPT-5.6 Sol & 1312/1312 & 0 & 0 & 0 & 93.2 / 93.1 / 89.2 \\
+GPT-6 Astra & 1312/1312 & 0 & 0 & 0 & 93.5 / 93.1 / 86.7 \\
+GPT-OSS 120B & 1289/1312 & 22 & 0 & 1 & 90.0 / 73.2 / 88.2 \\
+Qwen3.6 27B & 1206/1312 & 16 & 57 & 33 & 93.3 / 87.5 / 87.0 \\
+Qwen3.8 27B & 1303/1312 & 1 & 7 & 1 & 93.8 / 76.2 / 87.9 \\
+Claude Sonnet 5 & 1308/1312 & 0 & 4 & 0 & 91.7 / 89.4 / 85.8 \\
+Gemini 3 Flash & 1312/1312 & 0 & 0 & 0 & 92.8 / 76.0 / 83.3 \\
+Gemini 3.1 Pro & 1312/1312 & 0 & 0 & 0 & 94.5 / 87.4 / 87.1 \\
+\bottomrule
+\end{tabular}

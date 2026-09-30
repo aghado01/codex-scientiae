@@ -1,0 +1,58 @@
+\begin{table*}[t]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{2.4pt}
+  \begin{tabular}{rrrrrrrrr}
+    \toprule
+    \multicolumn{9}{l}{\textit{(a) Pass-rate MAE (percentage points; lower is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Difficulty\\weighted} & \shortstack{Difficulty\\gp-IRT} & \shortstack{Hist. K-means\\weighted} & \shortstack{Hist. K-means\\gp-IRT} & \shortstack{IRT K-means\\weighted} & \shortstack{IRT K-means\\gp-IRT} \\
+    \midrule
+    10 & 1.9 & 10.48 & 8.10 & 7.57 & \textbf{6.24} & 10.11 & 10.44 & \underline{6.53} \\
+    20 & 3.9 & 7.22 & 6.37 & 5.51 & \textbf{4.51} & 5.82 & 8.00 & \underline{5.00} \\
+    30 & 5.8 & 5.86 & 4.63 & \underline{4.35} & 4.37 & \textbf{3.88} & 9.10 & 5.27 \\
+    50 & 9.6 & 4.41 & 3.37 & \underline{3.28} & 3.44 & \textbf{2.77} & 7.95 & 5.47 \\
+    75 & 14.5 & 3.49 & \underline{3.04} & 3.05 & 4.12 & \textbf{2.96} & 4.76 & 3.29 \\
+    100 & 19.3 & 2.94 & 2.71 & \underline{2.65} & 2.93 & \textbf{2.46} & 4.21 & 2.88 \\
+    150 & 28.9 & 2.25 & \underline{2.01} & \textbf{2.00} & 2.61 & 2.13 & 3.36 & 2.71 \\
+    200 & 38.5 & 1.79 & \underline{1.43} & \textbf{1.40} & 2.51 & 2.12 & 2.47 & 2.07 \\
+    250 & 48.2 & 1.46 & \underline{1.17} & \textbf{1.15} & 1.75 & 1.56 & 2.06 & 1.70 \\
+    300 & 57.8 & 1.18 & \underline{1.06} & \textbf{0.99} & 1.38 & 1.27 & 1.63 & 1.50 \\
+    350 & 67.4 & 0.93 & \underline{0.77} & \textbf{0.73} & 1.18 & 1.05 & 1.52 & 1.42 \\
+    400 & 77.1 & 0.69 & \underline{0.51} & \textbf{0.47} & 1.07 & 0.93 & 0.94 & 0.88 \\
+    \midrule
+    \multicolumn{9}{l}{\textit{(b) Spearman correlation (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Difficulty\\weighted} & \shortstack{Difficulty\\gp-IRT} & \shortstack{Hist. K-means\\weighted} & \shortstack{Hist. K-means\\gp-IRT} & \shortstack{IRT K-means\\weighted} & \shortstack{IRT K-means\\gp-IRT} \\
+    \midrule
+    10 & 1.9 & 0.559 & 0.586 & 0.598 & \textbf{0.823} & \underline{0.765} & 0.394 & 0.555 \\
+    20 & 3.9 & 0.692 & \underline{0.804} & 0.803 & \textbf{0.862} & 0.796 & 0.641 & 0.752 \\
+    30 & 5.8 & 0.757 & 0.803 & 0.796 & \underline{0.852} & \textbf{0.863} & 0.559 & 0.722 \\
+    50 & 9.6 & 0.835 & 0.876 & 0.883 & \underline{0.906} & \textbf{0.930} & 0.769 & 0.861 \\
+    75 & 14.5 & 0.884 & \underline{0.924} & \underline{0.924} & 0.921 & \textbf{0.929} & 0.873 & 0.903 \\
+    100 & 19.3 & 0.911 & \underline{0.930} & \underline{0.930} & 0.924 & \textbf{0.934} & 0.872 & 0.907 \\
+    150 & 28.9 & 0.941 & \underline{0.960} & \textbf{0.961} & 0.944 & 0.953 & 0.908 & 0.932 \\
+    200 & 38.5 & 0.957 & \textbf{0.972} & \textbf{0.972} & 0.948 & \underline{0.958} & 0.925 & 0.940 \\
+    250 & 48.2 & 0.967 & \underline{0.977} & \textbf{0.978} & 0.969 & 0.974 & 0.949 & 0.957 \\
+    300 & 57.8 & 0.975 & 0.980 & \underline{0.981} & 0.979 & \textbf{0.982} & 0.966 & 0.971 \\
+    350 & 67.4 & 0.983 & 0.987 & \underline{0.988} & 0.987 & \textbf{0.989} & 0.968 & 0.973 \\
+    400 & 77.1 & 0.989 & \underline{0.993} & \textbf{0.994} & \underline{0.993} & \textbf{0.994} & 0.984 & 0.986 \\
+    \midrule
+    \multicolumn{9}{l}{\textit{(c) Kendall's Tau (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & \shortstack{Difficulty\\weighted} & \shortstack{Difficulty\\gp-IRT} & \shortstack{Hist. K-means\\weighted} & \shortstack{Hist. K-means\\gp-IRT} & \shortstack{IRT K-means\\weighted} & \shortstack{IRT K-means\\gp-IRT} \\
+    \midrule
+    10 & 1.9 & 0.426 & 0.434 & 0.431 & \textbf{0.611} & \underline{0.566} & 0.282 & 0.399 \\
+    20 & 3.9 & 0.531 & \underline{0.632} & 0.619 & \textbf{0.668} & 0.598 & 0.457 & 0.557 \\
+    30 & 5.8 & 0.585 & 0.617 & 0.607 & \underline{0.656} & \textbf{0.668} & 0.397 & 0.528 \\
+    50 & 9.6 & 0.661 & 0.692 & 0.700 & \underline{0.728} & \textbf{0.766} & 0.580 & 0.676 \\
+    75 & 14.5 & 0.715 & \textbf{0.764} & \textbf{0.764} & \underline{0.749} & \textbf{0.764} & 0.682 & 0.724 \\
+    100 & 19.3 & 0.751 & \underline{0.771} & 0.770 & 0.762 & \textbf{0.775} & 0.693 & 0.737 \\
+    150 & 28.9 & 0.798 & \underline{0.832} & \textbf{0.834} & 0.804 & 0.820 & 0.733 & 0.772 \\
+    200 & 38.5 & 0.829 & \underline{0.857} & \textbf{0.859} & 0.811 & 0.830 & 0.760 & 0.790 \\
+    250 & 48.2 & 0.853 & \textbf{0.874} & \textbf{0.874} & \underline{0.867} & \textbf{0.874} & 0.806 & 0.825 \\
+    300 & 57.8 & 0.875 & 0.884 & 0.887 & \underline{0.893} & \textbf{0.897} & 0.846 & 0.859 \\
+    350 & 67.4 & 0.898 & 0.912 & \underline{0.915} & 0.913 & \textbf{0.920} & 0.851 & 0.865 \\
+    400 & 77.1 & 0.923 & 0.937 & \underline{0.941} & 0.940 & \textbf{0.944} & 0.896 & 0.902 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Complete fixed-subset selection and estimation results on 287 held-out runs. Bold and underlining mark the best and second-best displayed values at each budget, respectively.}
+  \label{tab:fixed-design-complete}
+\end{table*}

@@ -1,0 +1,58 @@
+\begin{table*}[t]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{rrrrr}
+    \toprule
+    \multicolumn{5}{l}{\textit{(a) Pass-rate MAE (percentage points; lower is better)}} \\
+    $k$ & Exec. (\%) & Random & Weighted & gp-IRT \\
+    \midrule
+    10 & 1.9 & 10.66 & \underline{10.14} & \textbf{8.57} \\
+    20 & 3.9 & 7.54 & \underline{6.03} & \textbf{5.68} \\
+    30 & 5.8 & 6.04 & \underline{5.31} & \textbf{5.01} \\
+    50 & 9.6 & 4.55 & \textbf{4.16} & \underline{4.26} \\
+    75 & 14.5 & 3.65 & \underline{3.16} & \textbf{3.11} \\
+    100 & 19.3 & \underline{3.01} & \textbf{2.25} & \textbf{2.25} \\
+    150 & 28.9 & 2.21 & \underline{2.04} & \textbf{1.96} \\
+    200 & 38.5 & 1.80 & \textbf{1.09} & \underline{1.15} \\
+    250 & 48.2 & 1.50 & \textbf{0.96} & \underline{0.97} \\
+    300 & 57.8 & 1.21 & \textbf{0.97} & \underline{0.99} \\
+    350 & 67.4 & \textbf{0.98} & \underline{1.00} & 1.03 \\
+    400 & 77.1 & \underline{0.77} & \textbf{0.45} & \textbf{0.45} \\
+    \midrule
+    \multicolumn{5}{l}{\textit{(b) Spearman correlation (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & Weighted & gp-IRT \\
+    \midrule
+    10 & 1.9 & \underline{0.393} & \textbf{0.441} & \textbf{0.441} \\
+    20 & 3.9 & 0.491 & \textbf{0.645} & \underline{0.641} \\
+    30 & 5.8 & \underline{0.572} & \textbf{0.579} & \textbf{0.579} \\
+    50 & 9.6 & \textbf{0.642} & \underline{0.614} & \underline{0.614} \\
+    75 & 14.5 & \underline{0.711} & \textbf{0.893} & \textbf{0.893} \\
+    100 & 19.3 & 0.768 & \underline{0.888} & \textbf{0.889} \\
+    150 & 28.9 & 0.841 & \textbf{0.929} & \underline{0.927} \\
+    200 & 38.5 & 0.881 & \underline{0.926} & \textbf{0.928} \\
+    250 & 48.2 & 0.910 & \textbf{0.953} & \underline{0.952} \\
+    300 & 57.8 & 0.936 & \underline{0.958} & \textbf{0.959} \\
+    350 & 67.4 & 0.953 & \underline{0.973} & \textbf{0.974} \\
+    400 & 77.1 & \underline{0.969} & \textbf{0.990} & \textbf{0.990} \\
+    \midrule
+    \multicolumn{5}{l}{\textit{(c) Kendall's Tau (higher is better)}} \\
+    $k$ & Exec. (\%) & Random & Weighted & gp-IRT \\
+    \midrule
+    10 & 1.9 & \underline{0.303} & \textbf{0.333} & \textbf{0.333} \\
+    20 & 3.9 & 0.373 & \textbf{0.523} & \underline{0.513} \\
+    30 & 5.8 & \underline{0.435} & \textbf{0.441} & \textbf{0.441} \\
+    50 & 9.6 & \textbf{0.491} & \underline{0.467} & \underline{0.467} \\
+    75 & 14.5 & \underline{0.548} & \textbf{0.727} & \textbf{0.727} \\
+    100 & 19.3 & \underline{0.605} & \textbf{0.754} & \textbf{0.754} \\
+    150 & 28.9 & 0.686 & \textbf{0.786} & \underline{0.781} \\
+    200 & 38.5 & 0.734 & \underline{0.794} & \textbf{0.795} \\
+    250 & 48.2 & 0.773 & \textbf{0.843} & \underline{0.839} \\
+    300 & 57.8 & 0.815 & \underline{0.846} & \textbf{0.847} \\
+    350 & 67.4 & 0.843 & \underline{0.884} & \textbf{0.885} \\
+    400 & 77.1 & 0.879 & \textbf{0.936} & \underline{0.933} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Complete transfer results for anonymized Family C. Bold and underlining mark the best and second-best displayed values at each budget, respectively.}
+  \label{tab:transfer-family-c-complete}
+\end{table*}
