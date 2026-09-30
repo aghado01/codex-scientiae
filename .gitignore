@@ -13,6 +13,9 @@ artifacts/**
 packages/
 **/node_modules/
 
+# Local manuscript corpus. Conventions stay in the repo; deposits stay on disk.
+supellex-private/
+
 # Dot directories
 .obsidian
 .copilot

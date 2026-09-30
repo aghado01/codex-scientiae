@@ -197,8 +197,8 @@ class TestCatalogDestination(unittest.TestCase):
     def test_accepts_a_configured_name_or_relative_workspace_path(self) -> None:
         self.assertEqual(validate_catalog_destination("inventory"), "inventory")
         self.assertEqual(
-            validate_catalog_destination("supellex/gauntlet/blahblah/"),
-            "supellex/gauntlet/blahblah",
+            validate_catalog_destination("supellex-private/gauntlet/blahblah/"),
+            "supellex-private/gauntlet/blahblah",
         )
 
     def test_rejects_absolute_parent_and_backslash_destinations(self) -> None:
@@ -206,10 +206,10 @@ class TestCatalogDestination(unittest.TestCase):
             "",
             "/",
             "../outside",
-            "supellex\\gauntlet",
-            "C:/supellex",
-            "supellex/../staging",
-            "supellex/CON",
+            "supellex-private\\gauntlet",
+            "C:/supellex-private",
+            "supellex-private/../staging",
+            "supellex-private/CON",
         )
         for destination in invalid:
             with self.subTest(destination=destination):

@@ -1,6 +1,6 @@
 # Staging catalog convention
 
-Status: work in progress. `supellex/staging` is the sandbox for developing source-deposit, article, and
+Status: work in progress. `supellex-private/staging` is the sandbox for developing source-deposit, article, and
 localized inventory-store conventions before broader corpus integration.
 
 Schema ownership is in the Python JSONL engine. The canonical leaf and inventory-row schema is
@@ -42,7 +42,7 @@ The canonical entrypoint is `New-LatexSourceDeposit` in `src/procurement/scripts
 
 ```pwsh
 . ./src/procurement/scripts/latex-source.ps1
-New-LatexSourceDeposit -DocumentDir ./supellex/staging/1105.4224v1
+New-LatexSourceDeposit -DocumentDir ./supellex-private/staging/1105.4224v1
 ```
 
 PowerShell owns the source truth: archive selection and extraction, source confinement, entrypoint
@@ -139,13 +139,13 @@ Canonical on-demand build:
 
 ```pwsh
 # Enumerate direct-child article.json and publish inventory.jsonl
-pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex-private/staging
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex-private/staging -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./src/procurement/scripts/catalog.ps1 -Fold -CatalogDir ./supellex/gauntlet -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Fold -CatalogDir ./supellex-private/gauntlet -Force
 ```
 
 PowerShell helper: `Invoke-InventoryBuild` in `src/procurement/scripts/catalog.ps1`. Engine verb:
@@ -156,7 +156,7 @@ publishes the registry. An existing `inventory.jsonl` is refused unless `-Force`
 Precursor unpack/deposit over the same parent (arXiv-shaped archives only today):
 
 ```pwsh
-pwsh -File ./src/procurement/scripts/catalog.ps1 -DepositBatch -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -DepositBatch -CatalogDir ./supellex-private/staging
 ```
 
 `ConvertFrom-ArxivSourceArchiveLeaf` extracts `\d{4}\.\d{4,5}(?:v\d+)?` from tarball filenames so prefixes

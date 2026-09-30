@@ -4,7 +4,7 @@
 
   Resolves the Codex Scientiae root from -RepositoryRoot or process-scope
   CDXSCI_ROOT (no drive-letter fallback). Defaults -Path to
-  {root}/supellex/gauntlet, which is a folded catalog: the planner reads that
+  {root}/supellex-private/gauntlet, which is a folded catalog: the planner reads that
   directory's inventory.jsonl. A child catalog's inventory.jsonl is used when
   -Path names that child.
 
@@ -75,7 +75,7 @@ Import-Module (Join-Path $PSScriptRoot 'inventory-records/inventory-records.psm1
 
 [string[]] $selectedPaths = @(
     if ($null -ne $Path -and @($Path).Count -gt 0) { $Path }
-    else { , (Join-Path $repositoryRoot 'supellex/gauntlet') }
+    else { , (Join-Path $repositoryRoot 'supellex-private/gauntlet') }
 )
 if ($selectedPaths.Count -eq 0) { throw 'batch-runner produced no inventory paths' }
 

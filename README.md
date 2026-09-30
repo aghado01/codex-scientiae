@@ -40,9 +40,9 @@ Features
 - Agent MCP and skills for on-the-fly acquisitions
 - ...and more
 
-### `supellex`
+### `supellex-private`
 
-Collected materials, mainly from arXiv, organized by topics and directory path conventions including different format versions of each article when available to support dev testing and benchmarking during development of the TBD document processing applications for PDF and Latex.
+Git-ignored local corpus of collected materials, mainly from arXiv, organized by topics and directory path conventions including different format versions of each article when available to support dev testing and benchmarking during development of the TBD document processing applications for PDF and Latex. Configured catalog `inventory` resolves to `supellex-private/staging`. The house batch runner defaults to `supellex-private/gauntlet`.
 
 ## Coming soon
 

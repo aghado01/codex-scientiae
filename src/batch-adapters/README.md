@@ -114,7 +114,7 @@ under `RunDirectory/job-temp/<slug>-<digest>/`.
 
 `src/batch-runner.ps1` is the house caller. It loads containment, adapters, and the executor from
 its own `src/` directory. It resolves the inventory and artifacts tree from `-RepositoryRoot` or
-process-scope `CDXSCI_ROOT` (no hardcoded path), defaults `-Path` to `{root}/supellex/gauntlet`,
+process-scope `CDXSCI_ROOT` (no hardcoded path), defaults `-Path` to `{root}/supellex-private/gauntlet`,
 mints `artifacts/{engine}/{stamp}/` through `New-ModuleRunDir` (no `-Slug`: that parameter is an
 article identity, and a batch is not one article), plans, invokes, and aggregates worker records. `{engine}`
 is the process that produced the output. The selected inventory is frozen in `experiment.json`. Engine launchers

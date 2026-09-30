@@ -153,7 +153,7 @@ Write-PaperRun -OutDirectory $OutDirectory -Record $record
         $run = Join-Path $repository 'artifacts/20261208_000000'
         $alpha = Join-Path $repository 'catalog/alpha'
         $beta = Join-Path $repository 'catalog/beta'
-        $gauntlet = Join-Path $repository 'supellex/gauntlet/topic'
+        $gauntlet = Join-Path $repository 'supellex-private/gauntlet/topic'
         $engine = Join-Path $Root 'engine'
         foreach ($directory in @($repository, $run, $alpha, $beta, $gauntlet, $engine)) {
             [void][System.IO.Directory]::CreateDirectory($directory)
@@ -171,7 +171,7 @@ Write-PaperRun -OutDirectory $OutDirectory -Record $record
         Write-FirstOrderInventory -CatalogDir $beta
         Write-FirstOrderInventory -CatalogDir $gauntlet
         Write-FoldedInventory -CatalogDir (Join-Path $repository 'catalog') -ChildName @('alpha', 'beta')
-        Write-FoldedInventory -CatalogDir (Join-Path $repository 'supellex/gauntlet') -ChildName @('topic')
+        Write-FoldedInventory -CatalogDir (Join-Path $repository 'supellex-private/gauntlet') -ChildName @('topic')
         $worker = Write-InventoryStubWorker -Path (Join-Path $engine 'private/inventory/worker.ps1')
 
         return [pscustomobject]@{
@@ -180,7 +180,7 @@ Write-PaperRun -OutDirectory $OutDirectory -Record $record
             Catalog = (Resolve-Path -LiteralPath (Join-Path $repository 'catalog')).Path
             Alpha = (Resolve-Path -LiteralPath $alpha).Path
             Beta = (Resolve-Path -LiteralPath $beta).Path
-            Gauntlet = (Resolve-Path -LiteralPath (Join-Path $repository 'supellex/gauntlet')).Path
+            Gauntlet = (Resolve-Path -LiteralPath (Join-Path $repository 'supellex-private/gauntlet')).Path
             Small = $small
             Large = $large
             Other = $other
@@ -629,7 +629,7 @@ Describe 'batch-runner house caller' {
         (Split-Path $run -Leaf) | Should -Match '^\d{8}_\d{6}(_\d{2})?$'
     }
 
-    It 'defaults Path to supellex/gauntlet under the resolved Codex root' {
+    It 'defaults Path to supellex-private/gauntlet under the resolved Codex root' {
         $fixture = New-InventoryBatchFixture -Root (Join-Path $TestDrive 'default-path')
         $output = & $script:BatchRunner -RepositoryRoot $fixture.Root -Engine 'stub' `
             -EngineRoot $fixture.EngineRoot -Worker $fixture.Worker

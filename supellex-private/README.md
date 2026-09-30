@@ -1,6 +1,6 @@
 # Supellex workspace
 
-`supellex/` is transitional: it contains source intake, document deposits, reprocessing queues, generated
+`supellex-private/` is the git-ignored local corpus. It is transitional: it contains source intake, document deposits, reprocessing queues, generated
 lane output, and curated collection material accumulated under several generations of tooling. Do not treat
 the whole tree as one homogeneous inventory and do not bulk-rename it into apparent compliance.
 
@@ -68,14 +68,14 @@ Run commands from the repository root or supply another explicit/relative docume
 
    ```pwsh
    . ./src/procurement/scripts/latex-source.ps1
-   New-LatexSourceDeposit -DocumentDir './supellex/<segment>/<slug>'
+   New-LatexSourceDeposit -DocumentDir './supellex-private/<segment>/<slug>'
    ```
 
 6. Inspect the returned status and validate the article when reviewing a migration:
 
    ```pwsh
    Import-Module ./src/jsonl_engine-client/jsonl_engine-client.psd1
-   $articlePath = (Resolve-Path './supellex/<segment>/<slug>/article.json').Path
+   $articlePath = (Resolve-Path './supellex-private/<segment>/<slug>/article.json').Path
    $validated = @(Invoke-JsonlEngineCommand `
        -Verb validate-json -Argument @($articlePath, 'article.schema.json'))
    if ($validated.Count -ne 1) { throw "expected one validated article" }
@@ -103,16 +103,16 @@ On-demand helpers:
 
 ```pwsh
 # Full unpack/validate/deposit ceremony for arXiv-shaped archives under a catalog parent
-pwsh -File ./src/procurement/scripts/catalog.ps1 -DepositBatch -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -DepositBatch -CatalogDir ./supellex-private/staging
 
 # Sweep direct-child article.json and build inventory.jsonl via jsonl_engine
-pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex-private/staging
 
 # Overwrite an existing inventory.jsonl
-pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex/staging -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Build -CatalogDir ./supellex-private/staging -Force
 
 # Fold child inventories into a parent inventory.jsonl
-pwsh -File ./src/procurement/scripts/catalog.ps1 -Fold -CatalogDir ./supellex/gauntlet -Force
+pwsh -File ./src/procurement/scripts/catalog.ps1 -Fold -CatalogDir ./supellex-private/gauntlet -Force
 ```
 
 After procuring into a destination, rebuild that destination's first-order `inventory.jsonl`
