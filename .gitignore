@@ -13,7 +13,6 @@ artifacts/**
 packages/
 **/node_modules/
 
-
 # Dot directories
 .obsidian
 .copilot
