@@ -14,7 +14,7 @@ Features
 
 - Atomic writes
 - Schema validation
-- etc
+- ... and more
 
 ### `batch-executor`
 
@@ -27,7 +27,7 @@ Features
 - Graded dispatch and smart allocation
 - Cancellation and fault tolerance
 - Structured results
-- etc
+- ... and more
 
 ### `procurement`
 
@@ -38,6 +38,7 @@ Features
 - Automated backoff for rate-limited APIs
 - Shared abstraction over multiple provider APIs
 - Agent MCP and skills for on-the-fly acquisitions
+- ...and more
 
 ### `supellex`
 
@@ -48,6 +49,8 @@ Collected materials, mainly from arXiv, organized by topics and directory path c
 ### `texml-compiler`
 
 A modern python adaptation of the LaTeXML project that will implement stateful latex emulation and deterministically compile raw LaTeX source payloads into a canonical designer XML intermediate form for downstream applications with specific focus on high-fidelity capture of mathematical, algorithmic and quantitative content and rich XML representations designed for flexible but accurate projections to different renderings, formats and spellings.
+
+![figure: texml-compiler-preview](assets/texml-compiler-dev.png)
 
 ### Later
 
