@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "scientiae-procurement": {
+      "command": "../../../packages/uv/uv.exe",
+      "args": [
+        "run",
+        "--project",
+        "../../..",
+        "--locked",
+        "--no-sync",
+        "--no-dev",
+        "--offline",
+        "scientiae-procurement"
+      ],
+      "env": {
+        "UV_PROJECT_ENVIRONMENT": "./.venv",
+        "UV_PYTHON_INSTALL_DIR": "./packages/python",
+        "UV_CACHE_DIR": "./artifacts/uv/cache",
+        "UV_NO_PROGRESS": "1",
+        "PYTHONUTF8": "1",
+        "PYTHONIOENCODING": "utf-8",
+        "TEMP": "../../../artifacts/procurement-mcp/temp",
+        "TMP": "../../../artifacts/procurement-mcp/temp",
+        "TMPDIR": "../../../artifacts/procurement-mcp/temp",
+        "VIRTUAL_ENV": "",
+        "PYTHONHOME": "",
+        "PYTHONPATH": ""
+      }
+    }
+  }
+}

@@ -20,9 +20,25 @@ A lone PDF cannot mint `article.json`. Fresh preprints often have no journal DOI
 
 ## Batch (related papers, one destination)
 
-Resolve `catalog` once. For each paper, in list order: identity, then `procure_source`. Continue after a per-item failure that is not a rate limit. Report destination, slug, status, and error.
+Resolve `catalog` once. For each paper, in list order: identity, then `procure_source`. A versioned id whose leaf already has `article.json` is skipped. Continue after a per-item failure that is not a rate limit. Record destination, slug, status, and error. Do not repair a leaf inside the download loop.
 
 Keep the batch sequential. Do not parallelize arXiv-touching tools or subagents.
+
+## Exception follow-up
+
+After the download loop stops — the list is finished, or a rate limit halted it — rebuild the first-order inventory if any leaf deposited, then disposition every row that is not clean.
+
+A clean row is a skipped leaf that already had `article.json`, or a deposit whose requested forms are receipted. HTML recorded `unavailable` on an otherwise source-ready leaf is clean. Do not reopen a clean row.
+
+A rate-limit halt is not a disposition. The unfinished tail stays stopped until resume is asked. Rows that already landed still take a disposition.
+
+Each remaining row gets one disposition. State it, then act. Do not call `procure_source` or `get_work` again for a slug whose bytes are already receipted.
+
+- **Triage.** Name the row and leave it. Report destination, slug, what landed (`acquisition.json`, forms, `article.json`), and the error. No further tool call on that leaf. Use this when the repair is not determined by the receipt, including two or more `.tex` candidates that do not show which file is the document root.
+- **Manual repair.** The receipt is on disk and the fix does not download the paper again. Ambiguous entrypoint: read the candidate `.tex` members in the receipted archive, choose the document root (it `\input`s or `\include`s the others, or it carries the paper title), then `materialize_source_deposit` with that `main_tex`. A receipt that gained a form an existing `article.json` omitted: `materialize_source_deposit` with `rebuild=true` on that leaf. One leaf at a time.
+- **Rubber stamp.** Close an accepted witness gap. A figure or landing failure that left source, PDF, and `article.json` in place is closed as HTML unavailable. Record the slug and the reason. Do not retry the missing form.
+
+After the last manual repair that writes or replaces `article.json`, rebuild the first-order inventory once. A rubber stamp or a triage row does not rebuild.
 
 ## arXiv penalty box
 

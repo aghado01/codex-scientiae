@@ -14,3 +14,6 @@ lock-step tool is `procure_source`.
 
 The local corpus is git-ignored `supellex-private/`. Configured catalog `inventory` is
 `supellex-private/staging`. A workspace-relative catalog is `supellex-private/<collection>/<topic>`.
+
+After a batch, disposition each exception row: triage leaves it, manual repair finishes a
+receipted leaf without a second download, and a rubber stamp closes an accepted witness gap.
