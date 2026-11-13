@@ -147,6 +147,9 @@ try {
         (Get-FileHash -LiteralPath $uvCandidates[0].FullName -Algorithm SHA256).Hash) {
         throw 'published uv executable differs from the verified archive member'
     }
+    if (-not $SkipOccupantStop) {
+        Stop-ProjectVenvOccupants -RepositoryRoot $repoRoot
+    }
     [System.IO.File]::Move($pendingUv, $packageUv, $true)
 
     $uvVersion = (& $packageUv --version | Out-String).Trim()
@@ -156,9 +159,6 @@ try {
 
     & $packageUv python install $pythonVersion
     if ($LASTEXITCODE -ne 0) { throw "uv python install failed ($LASTEXITCODE)" }
-    if (-not $SkipOccupantStop) {
-        Stop-ProjectVenvOccupants -RepositoryRoot $repoRoot
-    }
     & $packageUv sync --project $repoRoot --locked --managed-python --python $pythonVersion `
         --no-install-project
     if ($LASTEXITCODE -ne 0) { throw "uv dependency sync failed ($LASTEXITCODE)" }

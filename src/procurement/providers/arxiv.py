@@ -5,7 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date
-from typing import Any
+from html.parser import HTMLParser
+from typing import Any, Literal
 from urllib.parse import quote, urlsplit
 
 from defusedxml import ElementTree
@@ -19,9 +20,15 @@ from procurement.domain.acquisition.planning import (
 from procurement.domain.discovery import SearchPage, SearchRequest
 from procurement.domain.metadata import ArtifactReference, RetrievedMetadata
 from procurement.domain.works import SourceReference, WorkRecord
-from procurement.errors import IdentifierError, ProviderPayloadError, ProviderRecordNotFoundError
+from procurement.errors import (
+    IdentifierError,
+    ProviderHttpError,
+    ProviderPayloadError,
+    ProviderRateLimitError,
+    ProviderRecordNotFoundError,
+)
 from procurement.transport.http import HttpClient, RequestPolicy, browser_headers
-from procurement.identifiers import normalize_doi, split_arxiv_id
+from procurement.identifiers import ArxivIdentifier, artifact_slug, normalize_doi, split_arxiv_id
 from procurement.providers.base import (
     Capability,
     ProviderCategory,
@@ -30,7 +37,6 @@ from procurement.providers.base import (
     retrieved_metadata,
 )
 from procurement.configuration import ArtifactLimitSettings, ProviderHttpSettings, RuntimeSecrets
-from procurement.identifiers import artifact_slug
 
 _ATOM = "http://www.w3.org/2005/Atom"
 _ARXIV = "http://arxiv.org/schemas/atom"
@@ -46,6 +52,66 @@ class ArxivFeed:
     start: int
     items_per_page: int | None
     works: tuple[WorkRecord, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class ResolvedArxivVersion:
+    """Version-pinned arXiv identifier and the authoritative source that resolved it."""
+
+    versionless: str
+    versioned: str
+    version: int
+    resolution_source: Literal["identity", "arxiv-api", "arxiv-abs-html"]
+
+
+class _ArxivAbsVersionParser(HTMLParser):
+    """Extract citation_arxiv_id and canonical link href from an arXiv abstract page."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.citation_arxiv_id: str | None = None
+        self.canonical_href: str | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        lowered_tag = tag.casefold()
+        if lowered_tag not in {"meta", "link"}:
+            return
+        attr_map = {key.casefold(): value for key, value in attrs if key}
+        if lowered_tag == "meta":
+            name = (attr_map.get("name") or "").strip().casefold()
+            content = (attr_map.get("content") or "").strip()
+            if name == "citation_arxiv_id" and content and self.citation_arxiv_id is None:
+                self.citation_arxiv_id = content
+        elif lowered_tag == "link":
+            rel_tokens = (attr_map.get("rel") or "").casefold().split()
+            href = (attr_map.get("href") or "").strip()
+            if "canonical" in rel_tokens and href and self.canonical_href is None:
+                self.canonical_href = href
+
+
+def parse_abs_version(html: str, expected_versionless: str) -> ArxivIdentifier:
+    """Extract and validate a version-pinned arXiv identifier from an abstract HTML page."""
+
+    parser = _ArxivAbsVersionParser()
+    parser.feed(html)
+    parser.close()
+
+    for candidate in (parser.citation_arxiv_id, parser.canonical_href):
+        if not candidate:
+            continue
+        try:
+            parsed = split_arxiv_id(candidate)
+        except IdentifierError:
+            continue
+        if parsed.version is None:
+            continue
+        if parsed.versionless.casefold() != expected_versionless.casefold():
+            raise ProviderPayloadError(
+                f"arXiv abstract page returned {parsed.versioned!r} "
+                f"for artifact {expected_versionless!r}"
+            )
+        return parsed
+    raise ProviderPayloadError("arXiv abstract page did not resolve an exact artifact version")
 
 
 def build_search_query(request: SearchRequest) -> str:
@@ -291,16 +357,23 @@ class ArxivProvider:
         feed = self.parse_feed(document.text)
         return [retrieved_metadata(w, document) for w in feed.works]
 
-    async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
-        """Resolve one request to version-pinned arXiv artifact routes."""
+    async def resolve_latest_version(self, identifier: str) -> ResolvedArxivVersion:
+        """Resolve an arXiv identifier to an exact version via API or abstract HTML."""
 
-        if request.provider.casefold() != self.name:
-            raise ValueError("arXiv cannot plan an acquisition for another provider")
-        requested = split_arxiv_id(request.identifier)
+        requested = split_arxiv_id(identifier)
         if requested.version is not None:
-            identifier = requested.versioned
-        else:
+            return ResolvedArxivVersion(
+                versionless=requested.versionless,
+                versioned=requested.versioned,
+                version=requested.version,
+                resolution_source="identity",
+            )
+
+        try:
             retrieved = await self.get_metadata(requested.versioned)
+        except (ProviderRateLimitError, ProviderHttpError):
+            pass
+        else:
             returned_raw = retrieved.work.arxiv_id
             if returned_raw is None:
                 raise ProviderPayloadError("arXiv metadata omitted the returned identifier")
@@ -311,7 +384,36 @@ class ArxivProvider:
                 raise ProviderPayloadError(
                     f"arXiv returned {returned.versioned!r} for artifact {requested.versionless!r}"
                 )
-            identifier = returned.versioned
+            return ResolvedArxivVersion(
+                versionless=requested.versionless,
+                versioned=returned.versioned,
+                version=returned.version,
+                resolution_source="arxiv-api",
+            )
+
+        encoded = quote(requested.versionless, safe="/")
+        html = await self._http.get_text(
+            f"{self._artifact_base_url}/abs/{encoded}",
+            headers=browser_headers(),
+            rate_key=f"{self.name}-web",
+            policy=self._policy,
+        )
+        found = parse_abs_version(html, requested.versionless)
+        assert found.version is not None
+        return ResolvedArxivVersion(
+            versionless=requested.versionless,
+            versioned=found.versioned,
+            version=found.version,
+            resolution_source="arxiv-abs-html",
+        )
+
+    async def plan_artifact(self, request: ArtifactAcquisitionRequest) -> ArtifactPlan:
+        """Resolve one request to version-pinned arXiv artifact routes."""
+
+        if request.provider.casefold() != self.name:
+            raise ValueError("arXiv cannot plan an acquisition for another provider")
+        resolved = await self.resolve_latest_version(request.identifier)
+        identifier = resolved.versioned
 
         slug = artifact_slug(self.name, identifier)
         encoded = quote(identifier, safe="/")

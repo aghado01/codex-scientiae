@@ -502,6 +502,88 @@ class TestProviderPlanning(unittest.TestCase):
 
         asyncio.run(exercise())
 
+    def test_arxiv_resolves_latest_version_via_abs_html_when_api_rate_limited(self) -> None:
+        settings = ProviderHttpSettings(
+            base_url="https://export.arxiv.test/api/query",
+            artifact_base_url="https://arxiv.test",
+            secondary_artifact_base_url="https://export.arxiv.test",
+            min_interval_seconds=0.0,
+            jitter_seconds=0.0,
+            timeout_seconds=10.0,
+            max_attempts=1,
+            retry_rate_limits=False,
+        )
+        abs_html = (
+            "<html><head>"
+            "<meta content='2010.03828v2' name='citation_arxiv_id'>"
+            "<link rel='canonical' href='https://arxiv.test/abs/2010.03828'>"
+            "</head></html>"
+        )
+        canonical_only_html = (
+            "<html><head>"
+            "<link href='https://arxiv.test/abs/2010.03828v3' rel='canonical'>"
+            "</head></html>"
+        )
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            if request.url.host == "export.arxiv.test":
+                return httpx.Response(429, headers={"Retry-After": "60"})
+            if request.url.path == "/abs/2010.03828":
+                return httpx.Response(200, text=abs_html)
+            return httpx.Response(404)
+
+        async def exercise() -> None:
+            from procurement.providers.arxiv import parse_abs_version
+
+            canonical_parsed = parse_abs_version(canonical_only_html, "2010.03828")
+            self.assertEqual(canonical_parsed.versioned, "2010.03828v3")
+
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as raw:
+                provider = ArxivProvider(HttpClient(raw, utc_now=lambda: NOW), settings)
+                fast = await provider.resolve_latest_version("2010.03828v1")
+                self.assertEqual(fast.resolution_source, "identity")
+                self.assertEqual(fast.versioned, "2010.03828v1")
+
+                resolved = await provider.resolve_latest_version("2010.03828")
+                self.assertEqual(resolved.resolution_source, "arxiv-abs-html")
+                self.assertEqual(resolved.versioned, "2010.03828v2")
+                self.assertEqual(resolved.version, 2)
+
+                plan = await provider.plan_artifact(
+                    ArtifactAcquisitionRequest(
+                        provider="arxiv",
+                        identifier="2010.03828",
+                        artifacts=("pdf",),
+                    )
+                )
+                self.assertEqual(plan.artifact.identifier, "2010.03828v2")
+
+            mismatched_html = (
+                "<html><head>"
+                "<meta name='citation_arxiv_id' content='2010.99999v1'>"
+                "</head></html>"
+            )
+            async with httpx.AsyncClient(
+                transport=httpx.MockTransport(
+                    lambda request: (
+                        httpx.Response(429)
+                        if request.url.host == "export.arxiv.test"
+                        else httpx.Response(200, text=mismatched_html)
+                    )
+                )
+            ) as raw:
+                provider = ArxivProvider(HttpClient(raw, utc_now=lambda: NOW), settings)
+                with self.assertRaisesRegex(ProviderPayloadError, "for artifact '2010.03828'"):
+                    await provider.plan_artifact(
+                        ArtifactAcquisitionRequest(
+                            provider="arxiv",
+                            identifier="2010.03828",
+                            artifacts=("pdf",),
+                        )
+                    )
+
+        asyncio.run(exercise())
+
     def test_zenodo_plans_manifest_checksum_and_reports_ambiguous_files(self) -> None:
         record = {
             "id": 123,
